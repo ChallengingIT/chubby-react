@@ -1,0 +1,126 @@
+import React, { useState, useEffect }           from "react";
+import { useNavigate, useLocation }             from "react-router-dom";
+import axios                                    from "axios";
+import Sidebar                                  from "../../components/Sidebar";
+import FieldsBox                                from "../../components/FieldsBox";
+
+const ModificaFatturazionePassiva = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { fatturazionePassivaData = {} } = location.state || {};
+  
+  const [statoOptions, setStatoOptions] = useState([]);
+
+
+
+  useEffect(() => {
+    const fetchAziendeOptions = async () => {
+      try {
+        const responseStato = await axios.get("http://localhost:8080/fatturazionePassiva/react/stato");
+        if (Array.isArray(responseStato.data)) {
+          const statoOptions = responseStato.data.map((stato) => ({
+            label: stato.descrizione,
+            value: stato.id,
+          }));
+          setStatoOptions(statoOptions);
+        }
+
+      } catch (error) {
+        console.error("Errore durante il recupero delle province:", error);
+      }
+    };
+
+    fetchAziendeOptions();
+  }, []);
+
+  const campiObbligatori = ["idFornitore", "stato", "dataFattura", "scadenza", "tipologia", "importo"];
+
+
+  const fields = [
+    // { label: "Fornitore", name: "fornitore", type: "select" },
+    { label: "Stato",                   name: "stato",            type: "select", options: statoOptions },
+    { label: "Data Scadenza",           name: "scadenza",         type: "date" },
+    { label: "Data Fattura",            name: "dataFattura",      type: "date" },
+    { label: "Tipologia",               name: "tipologia",        type: "text" },
+    { label: "Descrizione",             name: "descrizione",      type: "text" },
+    { label: "Importo",                 name: "importo",          type: "text" },
+    { label: "Imponibile",              name: "imponibile",       type: "text" },
+    { label: "Iva",                     name: "iva",              type: "text" },
+    { label: "Riferimenti",             name: "riferimenti",      type: "text" },
+    { label: "Note",                    name: "note",             type: "note" },
+  ];
+  const initialValues = {
+    // fornitore: fatturazionePassivaData.fornitore || "",
+    id:                 fatturazionePassivaData.id,
+    stato:              fatturazionePassivaData.stato && fatturazionePassivaData.stato.id || "",
+    dataFattura:        fatturazionePassivaData.dataFattura    || "",
+    scadenza:           fatturazionePassivaData.scadenza       || "",
+    tipologia:          fatturazionePassivaData.tipologia      || "",
+    descrizione:        fatturazionePassivaData.descrizione    || "",
+    importo:            fatturazionePassivaData.importo        || "",
+    imponibile:         fatturazionePassivaData.imponibile     || "",
+    iva:                fatturazionePassivaData.iva            || "",
+    riferimenti:        fatturazionePassivaData.riferimenti    || "",
+    note:               fatturazionePassivaData.note           || "",
+  };
+
+console.log("DATI IN INTIAL: ", initialValues);
+
+
+
+const handleSubmit = async (initialValues) => {
+  const errors = validateFields(initialValues);
+  const hasErrors = Object.keys(errors).length > 0;
+
+  if (!hasErrors) {
+  try {
+    console.log("DATI DI VALUES: ", initialValues);
+
+    const response = await axios.post("http://localhost:8080/fatturazionePassiva/react/salva", initialValues);
+    console.log("Response from server:", response.data);
+
+    navigate("/fatturazionePassiva");
+  } catch (error) {
+    console.error("Errore durante il salvataggio:", error);
+  }
+} else {
+  // Gestisci qui gli errori di validazione...
+  console.log("Errore di validazione:", errors);
+  // Potresti voler impostare lo stato degli errori o visualizzare un messaggio all'utente
+}
+};
+
+const validateFields = (values) => {
+  let errors = {};
+  campiObbligatori.forEach(field => {
+    if (!values[field]) {
+      errors[field] = 'Questo campo è obbligatorio';
+    }
+  });
+  return errors;
+};
+
+
+
+  return (
+    <div className="container">
+      <div className="content">
+        <div className="sidebar-container">
+          <Sidebar />
+        </div>
+        <div className="container">
+          <div className="page-name">Modifica Fatturazione Passiva</div>
+          <FieldsBox 
+          fields={fields} 
+          initialValues={initialValues} 
+          campiObbligatori={campiObbligatori} 
+          onSubmit={handleSubmit} 
+          title="" 
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ModificaFatturazionePassiva;

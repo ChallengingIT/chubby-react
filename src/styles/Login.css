@@ -1,0 +1,86 @@
+.login {
+  background-color: #000000;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+
+.login .WE-HUB {
+  color: transparent;
+  font-family: "Inter-ExtraBold", Helvetica;
+  font-size: 36px;
+  font-weight: 800;
+  left: 1223px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 49px;
+}
+
+.login .span {
+  color: #ffffff;
+}
+
+.login .text-wrapper-6 {
+  color: #ffb800;
+}
+
+.login .overlap-group {
+
+  height: 441px;
+  left: 754px;
+  position: absolute;
+  top: 156px;
+  width: 527px;
+}
+
+.login .text-wrapper-7 {
+  color: #000000;
+  font-family: "Inter-Bold", Helvetica;
+  font-size: 28px;
+  font-weight: 700;
+  left: 0;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 39px;
+}
+
+.login .img {
+  height: 3px;
+  left: 12px;
+  position: absolute;
+  top: 78px;
+  width: 62px;
+}
+
+.login .login-light-instance {
+  left: 12px !important;
+  position: absolute !important;
+  top: 0 !important;
+}
+
+
+.login .loginimg {
+  height: 100%;
+  object-fit: cover;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 619px;
+  border-radius: 0px 20px 20px 0px;
+  box-shadow: 5px 5px 35px rgba(227, 225, 225, 0.5);
+}
+
+.login .loginimg-2 {
+  background-color: #d9d9d9;
+  height: 3257px;
+  left: -3713px;
+  position: absolute;
+  top: -8257px;
+  width: 8056px;
+}

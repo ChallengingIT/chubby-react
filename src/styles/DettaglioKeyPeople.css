@@ -1,0 +1,34 @@
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+.dettaglioContainerKeyPeople {
+    background-color: #fbb800;
+    width: 100%;
+}
+.contentDettaglioKeyPeople {
+    flex: 1; 
+    display: flex;
+    width: 100%;
+  }
+
+
+.containerTitle {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 40px;
+    font-size: 15px;
+    font-weight: bolder;
+    margin: 20px;
+}
+
+.containerTable {
+     display: flex;
+     margin: 20px;
+     width: 100%;
+
+}

@@ -1,0 +1,175 @@
+.login-container {
+  background-color: #ffb800;
+  border-radius: 10px;
+  max-height: 441px;
+  position: relative;
+  max-width: 515px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.email-input:-webkit-autofill,
+.email-input:-webkit-autofill:hover,
+.email-input:-webkit-autofill:focus,
+.email-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px transparent inset !important;
+  background-color: transparent !important;
+}
+
+.text-wrapper-login {
+  color: black;
+  font-family: "Inter-Bold", Helvetica;
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  font-size: 24px;
+  margin-top: 20px;
+}
+
+.input-login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.input-login-container input {
+  position: relative;
+  width: 100%;
+  padding: 10px;
+  margin: -10px 100px;
+  left: -100px;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: transparent !important;
+  border-color: transparent;
+  outline: none;
+}
+
+.email-fill,
+.password-fill {
+  border-color: #000000;
+  font-family: "Inter-Bold", Helvetica;
+  font-size: 44px;
+  font-weight: 700;
+  width: 100%;
+  max-width: 400px;
+  margin: 5px 0;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.username-error-container,
+.email-error-container,
+.password-error-container,
+.confirm_password-error-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 5px 10px;
+}
+
+.username-error,
+.email-error,
+.password-error,
+.confirm_password-error {
+  color: red;
+  font-size: 14px;
+  margin: 0;
+}
+
+.text-wrapper-password-dimenticata {
+  position: relative;
+  color: #000000;
+  font-family: "Inter-Medium", Helvetica;
+  font-size: 12px;
+  font-weight: 500;
+  left: 13px;
+  letter-spacing: 0;
+  line-height: normal;
+  top: 18px;
+}
+
+.div {
+  position: relative;
+  color: #ffb800;
+  font-family: "Inter-Bold", Helvetica;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -0.05px;
+  cursor: pointer;
+}
+
+.login-button {
+  background-color: #000000;
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  border: none;
+  border-radius: 40px;
+  font-size: 18px;
+  cursor: pointer;
+  margin: 70px 0;
+
+}
+
+.login-button:hover {
+  transform: scale(1.05);
+}
+
+.text-wrapper-noAccount {
+  color: #000000;
+  font-family: "Inter-Bold", Helvetica;
+  font-size: 15px;
+  font-weight: 700;
+  height: 18px;
+  left: 132px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  text-align: center;
+  top: 390px;
+  white-space: nowrap;
+}
+
+.text-wrapper-registrati {
+  color: #817b7b;
+  font-family: "Inter-Bold", Helvetica;
+  font-size: 15px;
+  font-weight: 700;
+  height: 18px;
+  left: 311px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  text-align: center;
+  top: 390px;
+  white-space: nowrap;
+  margin-left: -24px;
+}
+
+.container .text-wrapper-5 {
+  color: #000000b2;
+  font-family: "Inter-Medium", Helvetica;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+
+.container .linea {
+  height: 4px;
+  left: 32px;
+  position: absolute;
+  top: 91px;
+  width: 80px;
+}

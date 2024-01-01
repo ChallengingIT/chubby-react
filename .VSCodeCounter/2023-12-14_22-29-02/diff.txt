@@ -1,0 +1,85 @@
+Date : 2023-12-14 22:29:02
+Directory : /Users/andrearizza/Desktop/react/wehub/src
+Total : 48 files,  1853 codes, 216 comments, 570 blanks, all 2639 lines
+
+Languages
++----------------+------------+------------+------------+------------+------------+
+| language       | files      | code       | comment    | blank      | total      |
++----------------+------------+------------+------------+------------+------------+
+| JavaScript JSX |         45 |      1,746 |        215 |        551 |      2,512 |
+| JavaScript     |          2 |         82 |          0 |         11 |         93 |
+| CSS            |          1 |         25 |          1 |          8 |         34 |
++----------------+------------+------------+------------+------------+------------+
+
+Directories
++-------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                            | files      | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                               |         48 |      1,853 |        216 |        570 |      2,639 |
+| . (Files)                                                                                       |          1 |          4 |          0 |          1 |          5 |
+| components                                                                                      |         12 |      1,152 |       -186 |        147 |      1,113 |
+| components (Files)                                                                              |          8 |      1,105 |       -188 |        139 |      1,056 |
+| components/button                                                                               |          3 |         49 |          0 |          8 |         57 |
+| components/searchBox                                                                            |          1 |         -2 |          2 |          0 |          0 |
+| pages                                                                                           |         34 |        672 |        401 |        414 |      1,487 |
+| pages (Files)                                                                                   |         10 |         11 |        322 |         69 |        402 |
+| pages/AggiungiPagine                                                                            |         10 |        469 |         66 |        238 |        773 |
+| pages/DettaglioPagine                                                                           |          6 |         61 |          9 |         17 |         87 |
+| pages/ModificaPagine                                                                            |          8 |        131 |          4 |         90 |        225 |
+| styles                                                                                          |          1 |         25 |          1 |          8 |         34 |
++-------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| filename                                                                                        | language       | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| /Users/andrearizza/Desktop/react/wehub/src/App.js                                               | JavaScript     |          4 |          0 |          1 |          5 |
+| /Users/andrearizza/Desktop/react/wehub/src/components/DynamicForm.jsx                           | JavaScript JSX |        181 |          0 |         10 |        191 |
+| /Users/andrearizza/Desktop/react/wehub/src/components/MyBoxGroups.jsx                           | JavaScript JSX |        108 |       -112 |          4 |          0 |
+| /Users/andrearizza/Desktop/react/wehub/src/components/MyBoxMIU.jsx                              | JavaScript JSX |        129 |       -111 |         12 |         30 |
+| /Users/andrearizza/Desktop/react/wehub/src/components/MyDataGrid.jsx                            | JavaScript JSX |          2 |          1 |          0 |          3 |
+| /Users/andrearizza/Desktop/react/wehub/src/components/ProvaComponente.jsx                       | JavaScript JSX |        306 |         13 |         36 |        355 |
+| /Users/andrearizza/Desktop/react/wehub/src/components/TimesheetComponent.jsx                    | JavaScript JSX |        261 |         17 |         60 |        338 |
+| /Users/andrearizza/Desktop/react/wehub/src/components/TimesheetProva.jsx                        | JavaScript JSX |         40 |          4 |          7 |         51 |
+| /Users/andrearizza/Desktop/react/wehub/src/components/WeekPicker.js                             | JavaScript     |         78 |          0 |         10 |         88 |
+| /Users/andrearizza/Desktop/react/wehub/src/components/button/BackButton.jsx                     | JavaScript JSX |         26 |          0 |          5 |         31 |
+| /Users/andrearizza/Desktop/react/wehub/src/components/button/SaveButton.jsx                     | JavaScript JSX |         22 |          0 |          3 |         25 |
+| /Users/andrearizza/Desktop/react/wehub/src/components/button/VisibilityButton.jsx               | JavaScript JSX |          1 |          0 |          0 |          1 |
+| /Users/andrearizza/Desktop/react/wehub/src/components/searchBox/KeyPeopleSearchBox.jsx          | JavaScript JSX |         -2 |          2 |          0 |          0 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/AggiungiPagine/AggiungiAzienda.jsx             | JavaScript JSX |         46 |         18 |         25 |         89 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/AggiungiPagine/AggiungiCandidato.jsx           | JavaScript JSX |         71 |          5 |         29 |        105 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/AggiungiPagine/AggiungiContatto.jsx            | JavaScript JSX |         36 |          3 |         23 |         62 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/AggiungiPagine/AggiungiDipendente.jsx          | JavaScript JSX |         90 |         12 |         44 |        146 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/AggiungiPagine/AggiungiFatturazioneAttiva.jsx  | JavaScript JSX |         16 |          0 |          7 |         23 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/AggiungiPagine/AggiungiFatturazionePassiva.jsx | JavaScript JSX |         39 |          1 |         20 |         60 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/AggiungiPagine/AggiungiFornitore.jsx           | JavaScript JSX |         30 |          1 |         11 |         42 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/AggiungiPagine/AggiungiIncontro.jsx            | JavaScript JSX |          9 |          0 |          9 |         18 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/AggiungiPagine/AggiungiNeed.jsx                | JavaScript JSX |         90 |         25 |         54 |        169 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/AggiungiPagine/AggiungiProgetto.jsx            | JavaScript JSX |         42 |          1 |         16 |         59 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/Aziende.jsx                                    | JavaScript JSX |         -2 |         26 |          5 |         29 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/DettaglioPagine/DettaglioAziende.jsx           | JavaScript JSX |          1 |          0 |          1 |          2 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/DettaglioPagine/DettaglioIntervista.jsx        | JavaScript JSX |          2 |          0 |          8 |         10 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/DettaglioPagine/DettaglioKeyPeople.jsx         | JavaScript JSX |          2 |          0 |          3 |          5 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/DettaglioPagine/Interviste.jsx                 | JavaScript JSX |          3 |          0 |          1 |          4 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/DettaglioPagine/ListaNeed.jsx                  | JavaScript JSX |          6 |          0 |          0 |          6 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/DettaglioPagine/NeedMatchPages.jsx             | JavaScript JSX |         47 |          9 |          4 |         60 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/Fornitori.jsx                                  | JavaScript JSX |          8 |          0 |         -1 |          7 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/HR.jsx                                         | JavaScript JSX |         21 |          0 |          5 |         26 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/KeyPeople.jsx                                  | JavaScript JSX |         56 |        -28 |          6 |         34 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/ModificaPagine/ModificaAzienda.jsx             | JavaScript JSX |         21 |          3 |         14 |         38 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/ModificaPagine/ModificaContatto.jsx            | JavaScript JSX |          7 |          1 |          8 |         16 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/ModificaPagine/ModificaDipendente.jsx          | JavaScript JSX |          0 |          0 |          3 |          3 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/ModificaPagine/ModificaFornitori.jsx           | JavaScript JSX |          6 |          0 |          5 |         11 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/ModificaPagine/ModificaIntervista.jsx          | JavaScript JSX |          0 |          0 |         10 |         10 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/ModificaPagine/ModificaNeed.jsx                | JavaScript JSX |         68 |          0 |         32 |        100 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/ModificaPagine/ModificaProgetto.jsx            | JavaScript JSX |          0 |          0 |          3 |          3 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/ModificaPagine/ModificaStaffing.jsx            | JavaScript JSX |         29 |          0 |         15 |         44 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/Need.jsx                                       | JavaScript JSX |         20 |          0 |          3 |         23 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/Progetti.jsx                                   | JavaScript JSX |          2 |          0 |          0 |          2 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/Prova.jsx                                      | JavaScript JSX |       -132 |        318 |         22 |        208 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/Prova2.jsx                                     | JavaScript JSX |          6 |         15 |         26 |         47 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/Recruiting.jsx                                 | JavaScript JSX |          8 |        -10 |         -5 |         -7 |
+| /Users/andrearizza/Desktop/react/wehub/src/pages/TimesheetPages.jsx                             | JavaScript JSX |         24 |          1 |          8 |         33 |
+| /Users/andrearizza/Desktop/react/wehub/src/styles/Timesheet.css                                 | CSS            |         25 |          1 |          8 |         34 |
+| Total                                                                                           |                |      1,853 |        216 |        570 |      2,639 |
++-------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+

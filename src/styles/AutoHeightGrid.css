@@ -1,0 +1,19 @@
+.button-remove {
+    background-color: black;
+    color: white;
+}
+
+.button-add {
+    background-color: black;
+    color: white;
+}
+
+.button-add:hover{
+    background-color: green;
+    color: black;
+}
+
+.button-remove:hover {
+    background-color: red;
+    color: black;
+}

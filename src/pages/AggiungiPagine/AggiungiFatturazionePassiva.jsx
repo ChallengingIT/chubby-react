@@ -1,0 +1,130 @@
+import React, { useState, useEffect }     from "react";
+import { useNavigate, useLocation }       from "react-router-dom";
+import axios                              from "axios";
+import Sidebar                            from "../../components/Sidebar";
+import FieldsBox                          from "../../components/FieldsBox";
+
+const AggiungiFatturazioneAttiva = () => {
+  const navigate = useNavigate();
+
+  const [ clientiOptions,     setClientiOptions  ] = useState([]);
+  const [ fornitoriOptions,   setFornitoriOptions] = useState([]);
+  const [ statoOptions,       setStatoOptions    ] = useState([]);
+
+  useEffect(() => {
+    const fetchAziendeOptions = async () => {
+      try {
+        const responseClienti   = await axios.get("http://localhost:8080/aziende/react");
+        const responseFornitori = await axios.get("http://localhost:8080/fornitori/react");
+        const responseStato     = await axios.get("http://localhost:8080/fatturazionePassiva/react/stato");
+
+
+        if (Array.isArray(responseStato.data)) {
+          const statoOptions = responseStato.data.map((stato) => ({
+            label: stato.descrizione,
+            value: stato.id,
+          }));
+          setStatoOptions(statoOptions);
+
+          if (Array.isArray(responseFornitori.data)) {
+            const fornitoriOptions = responseFornitori.data.map((fornitori) => ({
+              label: fornitori.denominazione,
+              value: fornitori.id,
+            }));
+            setFornitoriOptions(fornitoriOptions);
+
+
+            if (Array.isArray(responseClienti.data)) {
+              const clientiOptions = responseClienti.data.map((clienti) => ({
+                label: clienti.denominazione,
+                value: clienti.id,
+              }));
+              setClientiOptions(clientiOptions);
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Errore durante il recupero delle province:", error);
+      }
+    };
+
+    fetchAziendeOptions();
+  }, []);
+
+  const campiObbligatori = ["idFornitore", "stato", "dataFattura", "scadenza", "tipologia", "importo"];
+
+  const fields = [
+ 
+    { label: "Fornitore",             name: "idFornitore",    type: "select", options: fornitoriOptions },
+    { label: "Stato",                 name: "stato",          type: "select", options: statoOptions },
+    { label: "Data Fattura",          name: "dataFattura",    type: "date" },
+    { label: "Data Scadenza",         name: "scadenza",       type: "date" },
+    { label: "Tipologia",             name: "tipologia",      type: "text" },
+    { label: "Descrizione",           name: "descrizione",    type: "text" },
+    { label: "Importo",               name: "importo",        type: "text" },
+    { label: "Imponibile",            name: "imponibile",     type: "text" },
+    { label: "Iva",                   name: "iva",            type: "text" },
+    { label: "Riferimenti",           name: "riferimenti",    type: "text" },
+    { label: "Note",                  name: "note",           type: "note" },
+
+
+
+  ];
+
+
+  const handleSubmit = async (values) => {
+    const errors = validateFields(values);
+    const hasErrors = Object.keys(errors).length > 0;
+  
+    if (!hasErrors) {
+    try {
+      console.log("DATI DI VALUES: ", values);
+
+      const response = await axios.post("http://localhost:8080/fatturazionePassiva/react/salva", values);
+      console.log("Response from server:", response.data);
+
+      navigate("/fatturazionePassiva");
+    } catch (error) {
+      console.error("Errore durante il salvataggio:", error);
+    }
+  } else {
+    // Gestisci qui gli errori di validazione...
+    console.log("Errore di validazione:", errors);
+    // Potresti voler impostare lo stato degli errori o visualizzare un messaggio all'utente
+  }
+  };
+
+  const validateFields = (values) => {
+    let errors = {};
+    campiObbligatori.forEach(field => {
+      if (!values[field]) {
+        errors[field] = 'Questo campo è obbligatorio';
+      }
+    });
+    return errors;
+  };
+
+
+
+
+  return (
+    <div className="container">
+      <div className="content">
+        <div className="sidebar-container">
+          <Sidebar />
+        </div>
+        <div className="container">
+          <div className="page-name">Aggiungi un nuova fattura Passiva</div>
+          <FieldsBox 
+          fields={fields} 
+          campiObbligatori={campiObbligatori}  
+          onSubmit={handleSubmit} 
+          title="" 
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AggiungiFatturazioneAttiva;

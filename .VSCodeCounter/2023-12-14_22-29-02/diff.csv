@@ -1,0 +1,50 @@
+"filename", "language", "JavaScript", "JavaScript JSX", "CSS", "comment", "blank", "total"
+"/Users/andrearizza/Desktop/react/wehub/src/App.js", "JavaScript", 4, 0, 0, 0, 1, 5
+"/Users/andrearizza/Desktop/react/wehub/src/components/DynamicForm.jsx", "JavaScript JSX", 0, 181, 0, 0, 10, 191
+"/Users/andrearizza/Desktop/react/wehub/src/components/MyBoxGroups.jsx", "JavaScript JSX", 0, 108, 0, -112, 4, 0
+"/Users/andrearizza/Desktop/react/wehub/src/components/MyBoxMIU.jsx", "JavaScript JSX", 0, 129, 0, -111, 12, 30
+"/Users/andrearizza/Desktop/react/wehub/src/components/MyDataGrid.jsx", "JavaScript JSX", 0, 2, 0, 1, 0, 3
+"/Users/andrearizza/Desktop/react/wehub/src/components/ProvaComponente.jsx", "JavaScript JSX", 0, 306, 0, 13, 36, 355
+"/Users/andrearizza/Desktop/react/wehub/src/components/TimesheetComponent.jsx", "JavaScript JSX", 0, 261, 0, 17, 60, 338
+"/Users/andrearizza/Desktop/react/wehub/src/components/TimesheetProva.jsx", "JavaScript JSX", 0, 40, 0, 4, 7, 51
+"/Users/andrearizza/Desktop/react/wehub/src/components/WeekPicker.js", "JavaScript", 78, 0, 0, 0, 10, 88
+"/Users/andrearizza/Desktop/react/wehub/src/components/button/BackButton.jsx", "JavaScript JSX", 0, 26, 0, 0, 5, 31
+"/Users/andrearizza/Desktop/react/wehub/src/components/button/SaveButton.jsx", "JavaScript JSX", 0, 22, 0, 0, 3, 25
+"/Users/andrearizza/Desktop/react/wehub/src/components/button/VisibilityButton.jsx", "JavaScript JSX", 0, 1, 0, 0, 0, 1
+"/Users/andrearizza/Desktop/react/wehub/src/components/searchBox/KeyPeopleSearchBox.jsx", "JavaScript JSX", 0, -2, 0, 2, 0, 0
+"/Users/andrearizza/Desktop/react/wehub/src/pages/AggiungiPagine/AggiungiAzienda.jsx", "JavaScript JSX", 0, 46, 0, 18, 25, 89
+"/Users/andrearizza/Desktop/react/wehub/src/pages/AggiungiPagine/AggiungiCandidato.jsx", "JavaScript JSX", 0, 71, 0, 5, 29, 105
+"/Users/andrearizza/Desktop/react/wehub/src/pages/AggiungiPagine/AggiungiContatto.jsx", "JavaScript JSX", 0, 36, 0, 3, 23, 62
+"/Users/andrearizza/Desktop/react/wehub/src/pages/AggiungiPagine/AggiungiDipendente.jsx", "JavaScript JSX", 0, 90, 0, 12, 44, 146
+"/Users/andrearizza/Desktop/react/wehub/src/pages/AggiungiPagine/AggiungiFatturazioneAttiva.jsx", "JavaScript JSX", 0, 16, 0, 0, 7, 23
+"/Users/andrearizza/Desktop/react/wehub/src/pages/AggiungiPagine/AggiungiFatturazionePassiva.jsx", "JavaScript JSX", 0, 39, 0, 1, 20, 60
+"/Users/andrearizza/Desktop/react/wehub/src/pages/AggiungiPagine/AggiungiFornitore.jsx", "JavaScript JSX", 0, 30, 0, 1, 11, 42
+"/Users/andrearizza/Desktop/react/wehub/src/pages/AggiungiPagine/AggiungiIncontro.jsx", "JavaScript JSX", 0, 9, 0, 0, 9, 18
+"/Users/andrearizza/Desktop/react/wehub/src/pages/AggiungiPagine/AggiungiNeed.jsx", "JavaScript JSX", 0, 90, 0, 25, 54, 169
+"/Users/andrearizza/Desktop/react/wehub/src/pages/AggiungiPagine/AggiungiProgetto.jsx", "JavaScript JSX", 0, 42, 0, 1, 16, 59
+"/Users/andrearizza/Desktop/react/wehub/src/pages/Aziende.jsx", "JavaScript JSX", 0, -2, 0, 26, 5, 29
+"/Users/andrearizza/Desktop/react/wehub/src/pages/DettaglioPagine/DettaglioAziende.jsx", "JavaScript JSX", 0, 1, 0, 0, 1, 2
+"/Users/andrearizza/Desktop/react/wehub/src/pages/DettaglioPagine/DettaglioIntervista.jsx", "JavaScript JSX", 0, 2, 0, 0, 8, 10
+"/Users/andrearizza/Desktop/react/wehub/src/pages/DettaglioPagine/DettaglioKeyPeople.jsx", "JavaScript JSX", 0, 2, 0, 0, 3, 5
+"/Users/andrearizza/Desktop/react/wehub/src/pages/DettaglioPagine/Interviste.jsx", "JavaScript JSX", 0, 3, 0, 0, 1, 4
+"/Users/andrearizza/Desktop/react/wehub/src/pages/DettaglioPagine/ListaNeed.jsx", "JavaScript JSX", 0, 6, 0, 0, 0, 6
+"/Users/andrearizza/Desktop/react/wehub/src/pages/DettaglioPagine/NeedMatchPages.jsx", "JavaScript JSX", 0, 47, 0, 9, 4, 60
+"/Users/andrearizza/Desktop/react/wehub/src/pages/Fornitori.jsx", "JavaScript JSX", 0, 8, 0, 0, -1, 7
+"/Users/andrearizza/Desktop/react/wehub/src/pages/HR.jsx", "JavaScript JSX", 0, 21, 0, 0, 5, 26
+"/Users/andrearizza/Desktop/react/wehub/src/pages/KeyPeople.jsx", "JavaScript JSX", 0, 56, 0, -28, 6, 34
+"/Users/andrearizza/Desktop/react/wehub/src/pages/ModificaPagine/ModificaAzienda.jsx", "JavaScript JSX", 0, 21, 0, 3, 14, 38
+"/Users/andrearizza/Desktop/react/wehub/src/pages/ModificaPagine/ModificaContatto.jsx", "JavaScript JSX", 0, 7, 0, 1, 8, 16
+"/Users/andrearizza/Desktop/react/wehub/src/pages/ModificaPagine/ModificaDipendente.jsx", "JavaScript JSX", 0, 0, 0, 0, 3, 3
+"/Users/andrearizza/Desktop/react/wehub/src/pages/ModificaPagine/ModificaFornitori.jsx", "JavaScript JSX", 0, 6, 0, 0, 5, 11
+"/Users/andrearizza/Desktop/react/wehub/src/pages/ModificaPagine/ModificaIntervista.jsx", "JavaScript JSX", 0, 0, 0, 0, 10, 10
+"/Users/andrearizza/Desktop/react/wehub/src/pages/ModificaPagine/ModificaNeed.jsx", "JavaScript JSX", 0, 68, 0, 0, 32, 100
+"/Users/andrearizza/Desktop/react/wehub/src/pages/ModificaPagine/ModificaProgetto.jsx", "JavaScript JSX", 0, 0, 0, 0, 3, 3
+"/Users/andrearizza/Desktop/react/wehub/src/pages/ModificaPagine/ModificaStaffing.jsx", "JavaScript JSX", 0, 29, 0, 0, 15, 44
+"/Users/andrearizza/Desktop/react/wehub/src/pages/Need.jsx", "JavaScript JSX", 0, 20, 0, 0, 3, 23
+"/Users/andrearizza/Desktop/react/wehub/src/pages/Progetti.jsx", "JavaScript JSX", 0, 2, 0, 0, 0, 2
+"/Users/andrearizza/Desktop/react/wehub/src/pages/Prova.jsx", "JavaScript JSX", 0, -132, 0, 318, 22, 208
+"/Users/andrearizza/Desktop/react/wehub/src/pages/Prova2.jsx", "JavaScript JSX", 0, 6, 0, 15, 26, 47
+"/Users/andrearizza/Desktop/react/wehub/src/pages/Recruiting.jsx", "JavaScript JSX", 0, 8, 0, -10, -5, -7
+"/Users/andrearizza/Desktop/react/wehub/src/pages/TimesheetPages.jsx", "JavaScript JSX", 0, 24, 0, 1, 8, 33
+"/Users/andrearizza/Desktop/react/wehub/src/styles/Timesheet.css", "CSS", 0, 0, 25, 1, 8, 34
+"Total", "-", 82, 1746, 25, 216, 570, 2639

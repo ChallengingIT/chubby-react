@@ -1,0 +1,16 @@
+/* DettaglioAziende.module.css */
+
+.gridContainer {
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* Due colonne, la prima occupa 1 frazione, la seconda occupa 2 frazioni */
+    gap: 20px; /* Aggiungi uno spazio tra le colonne */
+  }
+  
+  .gridContent {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Due colonne con larghezza uguale */
+    gap: 20px; /* Aggiungi uno spazio tra le colonne */
+  }
+  
+  /* Aggiungi altri stili secondo necessità */
+  
