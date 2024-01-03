@@ -27,7 +27,7 @@ const ModificaContatto = () => {
         if (Array.isArray(responseOwner.data)) {
           const ownerOptions = responseOwner.data.map((owner) => ({
             label: owner.descrizione,
-            value: owner.descrizione, 
+            value: owner.id, 
           }));
           setOwnerOptions(ownerOptions);
 
@@ -35,7 +35,7 @@ const ModificaContatto = () => {
         if (Array.isArray(responseAziende.data)) {
           const aziendeOptions = responseAziende.data.map((aziende) => ({
             label: aziende.denominazione,
-            value: aziende.denominazione,
+            value: aziende.id,
           }));
           setAziendeOptions(aziendeOptions);
         }
@@ -52,14 +52,14 @@ const ModificaContatto = () => {
   }, []);
 
 
-  const campiObbligatori = [ "nome", "cliente", "email", "owner", "status", "ruolo", "dataCreazione", "dataUltimaAttivita" ];
+  const campiObbligatori = [ "nome", "idAzienda", "email", "idOwner", "status", "ruolo", "dataCreazione", "dataUltimaAttivita" ];
 
   const fields = [
     { label: "Nome Contatto",           name: "nome",                         type: "text" },
-    { label: "Azienda",                 name: "cliente",                      type: "select", options: aziendeOptions },
+    { label: "Azienda",                 name: "idAzienda",                    type: "select", options: aziendeOptions },
     { label: "Email",                   name: "email",                        type: "text" },
     { label: "Cellulare",               name: "cellulare",                    type: "text" },
-    { label: "Proprietario",            name: "owner",                        type: "select", options: ownerOptions},
+    { label: "Proprietario",            name: "idOwner",                      type: "select", options: ownerOptions},
     { label: "Stato",                   name: "status",                       type: "selectValue", options: [
       { value: "1", label: "Verde" },
       { value: "2", label: "Giallo" },
@@ -77,8 +77,8 @@ const ModificaContatto = () => {
   const initialValues = {
     id:                 keyPeopleData.id                                                  || "",
     nome:               keyPeopleData.nome                                                || "",
-    cliente:            keyPeopleData.cliente && keyPeopleData.cliente.denominazione      || "",
-    owner:              keyPeopleData.owner   && keyPeopleData.owner.descrizione          || "",
+    idAzienda:          keyPeopleData.cliente && keyPeopleData.cliente.id                 || "",
+    idOwner:            keyPeopleData.owner   && keyPeopleData.owner.id                   || "",
     email:              keyPeopleData.email                                               || "",
     cellulare:          keyPeopleData.cellulare                                           || "",
     ruolo:              keyPeopleData.ruolo                                               || "",

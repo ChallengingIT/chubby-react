@@ -118,7 +118,7 @@ const fields = [
     { label: "Location",                  name: "location",               type: "text"},
     { label: "Job Title",                 name: "tipologia",              type: "select", options: tipologiaOptions },
     { label: "Anni di Esperienza",        name: "anniEsperienza",         type: "text"},
-    { label: "Data Incontro",             name: "dataIncontro",           type: "date"},
+    { label: "Data Incontro",             name: "dataColloquio",           type: "date"},
     { label: "Recapiti",                  name: "cellulare",              type: "text"},
     { label: "Intervistatore",            name: "owner",                  type: "select", options: ownerOptions },
 
@@ -171,7 +171,7 @@ const initialValues = {
     location:                         candidato.citta                               || "", 
     tipologia:                        candidato.tipologia?.id                       || "",
     anniEsperienza:                   candidato.anniEsperienza                      || "",
-    dataIncontro:                     candidato.dataColloquio                       || "",
+    dataColloquio:                    candidato.dataColloquio                       || "",
     cellulare:                        candidato.cellulare                           || "",
     owner:                            candidato.owner?.id                           || "",
     aderenza:                         interviste.aderenza                           || "",
@@ -216,9 +216,18 @@ const handleSubmit = async (values) => {
     const note = values.note;
     const modifica = 0; 
 
-    const url = `http://localhost:8080/intervista/react/salva?idCandidato=${candidatoID}&note=${encodeURIComponent(note)}&modifica=${modifica}`;
+    // delete values.candidatoID;
+    // delete values.modifica;
+    // delete values.note;
 
-    const response = await axios.post(url, values);
+    // const url = `http://localhost:8080/intervista/react/salva?idCandidato=${idCandidato}&note=${encodeURIComponent(note)}&modifica=${modifica}`;
+    const response = await axios.post("http://localhost:8080/intervista/react/salva", values, {
+      params: {
+        idCandidato: candidatoID,
+        note: note,
+        modifica: modifica
+      }
+    });
     console.log("DATI INVIATI: ", values);
     console.log("Response from server:", response.data);
 

@@ -25,11 +25,11 @@ const DettaglioDipendente = () => {
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseJobTitle = await axios.get("http://localhost:8080/aziende/react/tipologia");
-        const responseNeed     = await axios.get("http://localhost:8080/staffing/react/skill");
-        const facoltaResponse               = await axios.get("http://localhost:8080/staffing/react/facolta"  );
-        const livelloScolasticoResponse     = await axios.get("http://localhost:8080/staffing/react/livello"  );
-        const tipologiaContrattoResponse             = await axios.get("http://localhost:8080/hr/react/tipocontratto"  );
+        const responseJobTitle              = await axios.get("http://localhost:8080/aziende/react/tipologia");
+        const responseNeed                  = await axios.get("http://localhost:8080/staffing/react/skill");
+        const facoltaResponse               = await axios.get("http://localhost:8080/staffing/react/facolta");
+        const livelloScolasticoResponse     = await axios.get("http://localhost:8080/staffing/react/livello");
+        const tipologiaContrattoResponse    = await axios.get("http://localhost:8080/hr/react/tipocontratto");
 
         if (Array.isArray(tipologiaContrattoResponse.data)) {
           const tipologiaContrattoOptions = tipologiaContrattoResponse.data.map((tipologiaContratto) => ({
@@ -100,11 +100,11 @@ const DettaglioDipendente = () => {
     { label: "IBAN",                      name: "iban",                 type:"text",                                      disabled: true},
     { label: "Codice Fiscale",            name: "codFiscale",           type:"text",                                      disabled: true},
     { label: "RAL/Tariffa",               name: "ral",                  type:"text",                                      disabled: true},
-    { label: "Job Title",                 name: "tipologia",            type: "select",         options: tipologiaOptions, disabled: true },
-    { label: "Seleziona le Skills",       name: "skills",               type: "multipleSelect", options: skillsOptions,   disabled: true },
-    { label: "Tipologia Contratto",       name: "tipologiaContratto", type: "select",          options: tipologiaContrattoOptions, disabled: true }, 
+    { label: "Job Title",                 name: "tipologia",            type: "select",          options: tipologiaOptions, disabled: true },
+    { label: "Seleziona le Skills",       name: "skills",               type: "multipleSelect",  options: skillsOptions,   disabled: true },
+    { label: "Tipologia Contratto",       name: "tipologiaContratto",   type: "select",          options: tipologiaContrattoOptions, disabled: true }, 
     { label: "Note",                      name: "note",                 type: "note",                                     disabled: true },
-    { label: "Allegati",                  name: "files",                type: "downloadAllegati" },
+    { label: "Allegati",                  name: "files",                type: "soloDownloadAllegati" },
   ];
 
   const initialValues = {
@@ -133,6 +133,37 @@ const DettaglioDipendente = () => {
   console.log("Valore iniziale di status:", initialValues.status);
 
 
+  const handleDownloadAllegati = async () => {
+    for (const file of dipendentiData.files) {
+      try {
+        const fileID = file.id;
+        const fileDescrizione = file.descrizione; // Assicurati che ogni file abbia una descrizione.
+        console.log("File ID: ", fileID);
+  
+        const url = `http://localhost:8080/files/react/download/file/${fileID}`;
+        const response = await axios({
+          method: 'GET',
+          url: url,
+          responseType: 'blob', 
+        });
+  
+        const fileURL = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+  
+        const link = document.createElement('a');
+        link.href = fileURL;
+        link.setAttribute('download', `${fileDescrizione}.pdf`); 
+        document.body.appendChild(link);
+    
+        link.click();
+        document.body.removeChild(link);
+  
+      } catch (error) {
+        console.error('Si è verificato un errore durante il download del file:', error);
+      }
+    }
+  };
+
+
 
   return (
     <div className="container">
@@ -142,7 +173,13 @@ const DettaglioDipendente = () => {
         </div>
         <div className="container">
           <div className="page-name">Visualizza Staff {nomeDipendente} {cognomeDipendente} </div>
-          <FieldsBox fields={fields} initialValues={initialValues} showSaveButton={false} title="" />
+          <FieldsBox 
+          fields={fields} 
+          initialValues={initialValues} 
+          showSaveButton={false} 
+          title="" 
+          onDownloadAllegati = {handleDownloadAllegati}
+          />
         </div>
       </div>
     </div>

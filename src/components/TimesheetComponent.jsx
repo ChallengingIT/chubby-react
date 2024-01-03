@@ -1,10 +1,42 @@
 import React, { useEffect, useState } from 'react';
-import { Dialog, Paper, Grid, Button, Typography, Box, DialogContent, TextField, DialogActions, FormControlLabel, Checkbox, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
+import { 
+  Dialog, 
+  Paper, 
+  Grid, 
+  Button, 
+  Typography, 
+  Box, 
+  DialogContent, 
+  TextField, 
+  DialogActions, 
+  FormControlLabel, 
+  Checkbox, 
+  Alert,
+  Snackbar,
+  Select, 
+  MenuItem, 
+  InputLabel, 
+  FormControl 
+} from '@mui/material';
 import BackButton from './button/BackButton';
 import SaveButton from './button/SaveButton';
 import axios from 'axios';
 
+
 const TimeSheetComponent = ({ anno, setAnno, mese, setMese, timesheetData, setTimesheetData, id, idProgetti }) => {
+
+
+  useEffect(() => {
+    const today = new Date();
+    const currentYear = today.getFullYear();
+    const currentMonthIndex = today.getMonth(); // Gennaio è 0, Dicembre è 11
+
+    setMeseCorrente(currentMonthIndex + 1); // Imposta il mese corrente (i mesi partono da 1)
+    setAnnoCorrente(currentYear); // Imposta l'anno corrente
+
+    // ... [eventuali altre operazioni che vuoi effettuare quando il componente viene montato]
+  }, []); // L'array vuoto come secondo argomento fa sì che l'effetto venga eseguito solo una volta, quando il componente viene montato
+
 
 const [ currentMonth,           setCurrentMonth               ] = useState(new Date());
 const [ modalOpen,              setModalOpen                  ] = useState(false);
@@ -15,14 +47,17 @@ const [ modalCloseAction,       setModalCloseAction           ] = useState('');
 const [ meseCorrente,           setMeseCorrente               ] = useState('');
 const [ annoCorrente,           setAnnoCorrente               ] = useState('');
 const [ isMonthSubmitted,       setIsMonthSubmitted           ] = useState(false);
+const [ alert,                  setAlert                      ] = useState({ open: false, message: '' });
+const [ originalTimesheet,      setOriginalTimesheet          ] = useState([]);
+const [ filteredTimesheet,      setFilteredTimesheet          ] = useState([]);
 
 
 
 //dati da inviare
-const [ orePermesso,            setOrePermesso               ] = useState('');
+const [ orePermesso,            setOrePermesso                ] = useState('');
 const [ data,                   setData                       ] = useState('');
 const [ dataFinePeriodo,        setDataFinePeriodo            ] = useState('');
-const [ ore,                    setOre                        ] = useState('');
+const [ oreOrdinarie,           setOreOrdinarie               ] = useState('');
 const [ ferieChecked,           setFerieChecked               ] = useState(false);
 const [ malattiaChecked,        setMalattiaChecked            ] = useState(false);
 const [ permessoChecked,        setPermessoChecked            ] = useState(false);
@@ -33,16 +68,89 @@ const idProgetto = idProgetti && idProgetti.length > 0 ? idProgetti[0] : null;
 // console.log("ID PRIMO PROGETTO: ", idProgetto);
 
 
+useEffect(() => {
+  // Se "ferie" o "malattia" sono selezionati, imposta "ore" a 8
+  if (ferieChecked || malattiaChecked) {
+    setOreOrdinarie('8');
+  }
+  // Se "permesso" è selezionato, imposta "ore" a 0
+  else if (permessoChecked) {
+    setOreOrdinarie('0');
+  }
+  // Se nessuno è selezionato, potresti voler resettare il campo "ore" o lasciarlo come sta
+  else {
+    setOreOrdinarie('0'); // Scommenta questa riga se vuoi resettare il campo "ore" quando nessun checkbox è selezionato
+  }
+}, [ferieChecked, malattiaChecked, permessoChecked]); // Dipendenze: Esegui l'effetto quando questi valori cambiano
+
+
+
+
+
+const fetchData = async () => {
+  const mese = meseCorrente;
+  const anno = annoCorrente;
+
+  
+  try {
+    const response = await axios.get(`http://localhost:8080/timesheet/react/staff/${id}/${anno}/${mese}`);
+    
+    // Verifica che la risposta abbia la struttura prevista
+    if (response.data && response.data.mese && Array.isArray(response.data.mese.days)) {
+      const timesheetConId = response.data.mese.days.map((timesheet) => ({...timesheet}));
+      setOriginalTimesheet(timesheetConId);
+      setFilteredTimesheet(timesheetConId);
+      console.log("Dati arrivati: ", timesheetConId);
+    } else {
+      console.error("I dati ottenuti non sono nel formato previsto:", response.data);
+    } 
+  } catch (error) {
+    console.error("Errore durante il recupero dei dati: ", error);
+  }
+};
+
+
+
+useEffect(() => {
+  // Assicurati che sia annoCorrente che meseCorrente non siano vuoti o nulli
+  if (annoCorrente && meseCorrente) {
+    fetchData();
+  }
+}, [annoCorrente, meseCorrente]); // Dipendenze: esegui fetchData ogni volta che annoCorrente o meseCorrente cambiano
+
+
+
+
 const handleFerieChange = (event) => {
   setFerieChecked(event.target.checked);
+  if (event.target.checked) {
+    setMalattiaChecked(false);
+    setPermessoChecked(false);
+  }
 };
 
 const handleMalattiaChange = (event) => {
   setMalattiaChecked(event.target.checked);
+  if (event.target.checked) {
+    setFerieChecked(false);
+    setPermessoChecked(false);
+  }
 };
 
 const handlePermessoChange = (event) => {
   setPermessoChecked(event.target.checked);
+  if (event.target.checked) {
+    setFerieChecked(false);
+    setMalattiaChecked(false);
+  }
+};
+
+
+const handleCloseAlert = (event, reason) => {
+  if (reason === 'clickaway') {
+    return;
+  }
+  setAlert({ ...alert, open: false });
 };
 
 
@@ -85,7 +193,7 @@ const handlePermessoChange = (event) => {
     // Controlla se il nuovo mese è prima del mese corrente del sistema
     if (newMonthDate.getFullYear() < currentYear || (newMonthDate.getFullYear() === currentYear && newMonthDate.getMonth() < currentMonthIndex)) {
       // Se è un mese precedente, non fare nulla (o eventualmente mostra un messaggio)
-      console.log("Non è possibile navigare ai mesi precedenti il mese corrente del sistema");
+      setAlert({ open: true, message: "Non è possibile navigare ai mesi precedenti il mese corrente del sistema" });
       return; // Esci dalla funzione
     }
 
@@ -93,7 +201,7 @@ const handlePermessoChange = (event) => {
 
   
 
-    const prevMonth = newMonthDate.getMonth(); 
+    const prevMonth = newMonthDate.getMonth() + 1; 
     // console.log("Prev MESE: ",prevMonth);
     const prevYear = newMonthDate.getFullYear();
     // console.log("PREV ANNO:", prevYear);
@@ -111,7 +219,7 @@ const handlePermessoChange = (event) => {
       console.error('Errore durante l\'invio dei dati del timesheet:', error);
     }
     setCurrentMonth(newMonthDate);
-    setMeseCorrente(newMonthDate);
+    setMeseCorrente(prevMonth);
     // console.log("NUOVO MESE: ", newMonthDate);
   };
   
@@ -157,48 +265,24 @@ const handlePermessoChange = (event) => {
       // console.log("DATI PRIMA DELL'INVIO: ", timesheetData);
 
 
-      const url = `http://localhost:8080/timesheet/react/staff/salva/${id}/${anno}/${mese}`;
+      const url = `http://localhost:8080/timesheet/react/staff/salva/${id}/${annoCorrente}/${meseCorrente}`;
 
 
       const response = await axios.post(url, { timesheetData });
       
-
+      setAlert({ open: true, message: response.data });
       console.log('Risposta dal server:', response.data);
       // console.log("DATI INVIATI: ", timesheetData );
     } catch (error) {
       console.error('Errore durante l\'invio dei dati del timesheet:', error);
     }
-   
+
 
   };
 
- const handleSubmitModal = async () => {
 
-  const selectedDateString = selectedDay.toISOString().split('T')[0];
-    // setHours((prevHours) => ({ ...prevHours, [selectedDateString]: Number(hours[selectedDateString] || 0) }));
-    const datiDaInviare = {
-      progetto: idProgetto, 
-      permesso: permessoChecked,
-      malattia: malattiaChecked,
-      ferie: ferieChecked,
-      data: selectedDateString + 'T00:00',
-      dataFinePeriodo: dataFinePeriodo || null,
-      orePermesso: orePermesso || null, 
-      ore: ore
-    };
-console.log("ANNO E MESE CORRENTE: ", annoCorrente, meseCorrente);
-    console.log("DATI DA INVITARE :", datiDaInviare );
-    try {
-      const url = `http://localhost:8080/timesheet/react/staff/aggiorna/${id}/${annoCorrente}/${meseCorrente}`;
-      const response = await axios.post(url, datiDaInviare );
-      console.log('Risposta dal server:', response.data);
-      // console.log("DATI INVIATI: ", timesheetData );
-    } catch (error) {
-      console.error('Errore durante l\'invio dei dati del timesheet:', error);
-    }
-    
-    handleCloseModal();
-  };
+
+  
 
 
   const handleHoursChange = (date, value) => {
@@ -206,10 +290,19 @@ console.log("ANNO E MESE CORRENTE: ", annoCorrente, meseCorrente);
     setHours((prevHours) => ({ ...prevHours, [dateString]: Number(value) || 0 }));
   };
 
-  const calculateTotalHours = () => {
-    const total = Object.values(hours).reduce((sum, current) => sum + current, 0);
-    setTotHours(total);
+
+
+  const calculateTotalOrdinaryHours = () => {
+    return filteredTimesheet.reduce((total, day) => {
+      return total + (day.oreOrdinarie || 0); // Aggiungi il valore di oreOrdinarie per ogni giorno, assicurandoti di gestire valori nulli o undefined
+    }, 0); // Inizia da 0
   };
+  
+
+  // const calculateTotalHours = () => {
+  //   const total = Object.values(hours).reduce((sum, current) => sum + current, 0);
+  //   setTotHours(total);
+  // };
 
   // const handleDayClick = (day) => {
   //   const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
@@ -235,6 +328,8 @@ console.log("ANNO E MESE CORRENTE: ", annoCorrente, meseCorrente);
 
 const handleDayClick = (day) => {
   const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+  console.log("DATA DEL MODAL: ", date);
+  date.setDate(date.getDate() + 1); // Aggiungi un giorno qui
   const dateString = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T00:00`;
 
   setSelectedDay(date);
@@ -247,19 +342,36 @@ const handleDayClick = (day) => {
   }));
 
   // Imposta il valore di 'ore' nel modal
-  setOre(prevHours => prevHours[dateString] || 8);
+  setOreOrdinarie(prevHours => prevHours[dateString] || 8);
 };
+
+useEffect(() => {
+  if (selectedDay) {
+    const newSelectedDateString = selectedDay.toISOString().split('T')[0];
+    console.log("Nuovo valore di selectedDateString:", newSelectedDateString);
+    // Qui puoi eseguire altre logiche dipendenti da selectedDay
+  }
+}, [selectedDay]); // Dipendenze: selectedDay
+
 
 
 
 
 
   const handleCloseModal = () => {
-    calculateTotalHours();
+    // calculateTotalHours();
     setModalOpen(false);
-    setSelectedDay(null);
-    setOre(''); 
+    // setSelectedDay(null);
+    setOreOrdinarie(''); 
   };
+
+  useEffect(() => {
+    // Se il modal è chiuso, resetta selectedDay
+    if (!modalOpen) {
+      setSelectedDay(null);
+    }
+  }, [modalOpen]);
+  
 
   // const handleSaveChanges = () => {
   //   const selectedDateString = selectedDay.toISOString().split('T')[0];
@@ -329,74 +441,163 @@ const handleDayClick = (day) => {
 };
 
  // Renderizza i quadrati per i giorni
- const renderDayBox = () => {
+//  const renderDayBox = () => {
+//   const year = currentMonth.getFullYear();
+//     const month = currentMonth.getMonth();
+//     const totalDays = daysInMonth(month, year);
+//     const firstDay = firstDayOfWeek(month, year);
+//     let dayOfWeek = firstDay;
+
+//     const days = [];
+//     for (let day = 1; day <= totalDays; day++) {
+//       const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+//       const isHoliday = isPublicHoliday(day, month);
+//       const daySquareBgColor = isWeekend ? '#FF4D4D' : (isHoliday ? '#FF4D4D' : 'grey.200');
+//       const dateString = new Date(year, month, day).toISOString().split('T')[0];
+
+//     days.push(
+//       <Box
+//         key={day}
+//         onClick={() => handleDayClick(day)}
+//         sx={{
+//           height: "80px",
+//           backgroundColor: daySquareBgColor,
+//           display: "flex",
+//           flexDirection: "column",
+//           alignItems: "center",
+//           justifyContent: "center",
+//           width: "98%",
+//           // minWidth: "30px",
+
+//           // flexGrow: 1,
+//           ':hover': {
+//             backgroundColor: "#fbb800",
+//             cursor: 'pointer',
+//           }
+//         }}
+//       >
+   
+//           <Typography>{hours[dateString] || 0}</Typography>
+//       </Box>
+//     );
+    
+//     // Aggiorna il giorno della settimana
+//     dayOfWeek = (dayOfWeek + 1) % 7;
+//     }
+    
+//     return (
+//       <Grid item xs>
+//         <Box
+//           sx={{
+//             display: 'flex',
+//             flexDirection: 'row',
+//             flexWrap: 'nowrap', // Impedisce il passaggio a capo
+//             overflowX: 'auto', // Permette lo scorrimento orizzontale se necessario
+//             minWidth: "30px",
+//             width: "98%",
+            
+//           }}
+//         >
+//           {days}
+//         </Box>
+//       </Grid>
+//     );
+// };
+
+const renderDayBox = () => {
   const year = currentMonth.getFullYear();
-    const month = currentMonth.getMonth();
-    const totalDays = daysInMonth(month, year);
-    const firstDay = firstDayOfWeek(month, year);
-    let dayOfWeek = firstDay;
+  const month = currentMonth.getMonth();
+  const totalDays = daysInMonth(month, year);
 
-    const days = [];
-    for (let day = 1; day <= totalDays; day++) {
-      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-      const isHoliday = isPublicHoliday(day, month);
-      const daySquareBgColor = isWeekend ? '#FF4D4D' : (isHoliday ? '#FF4D4D' : 'grey.200');
-      const dateString = new Date(year, month, day).toISOString().split('T')[0];
-
-    days.push(
+  return (
+    <Grid item xs>
       <Box
-        key={day}
-        onClick={() => handleDayClick(day)}
         sx={{
-          height: "80px",
-          backgroundColor: daySquareBgColor,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'nowrap', // Impedisce il passaggio a capo
+          overflowX: 'auto', // Permette lo scorrimento orizzontale se necessario
+          minWidth: "30px",
           width: "98%",
-          // minWidth: "30px",
-
-          // flexGrow: 1,
-          ':hover': {
-            backgroundColor: "#fbb800",
-            cursor: 'pointer',
-          }
         }}
       >
-   
-          <Typography>{hours[dateString] || 0}</Typography>
+        {filteredTimesheet.map((dayData) => {
+          const isWeekend = dayData.iniziale === 'S' || dayData.iniziale === 'D'; // Adattalo secondo la logica corretta
+          const isHoliday = dayData.festivo;
+          const daySquareBgColor = isWeekend ? '#FF4D4D' : (isHoliday ? '#FF4D4D' : 'grey.200');
+
+          return (
+            <Box
+              key={dayData.id}
+              sx={{
+                height: "80px",
+                backgroundColor: daySquareBgColor,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "98%",
+                ':hover': {
+                  backgroundColor: "#fbb800",
+                  cursor: 'pointer',
+                }
+              }}
+              onClick={() => handleDayClick(dayData.giorno)} // Assicurati che handleDayClick possa gestire questo parametro correttamente
+            >
+              <Typography>{dayData.oreOrdinarie || 0}</Typography>
+            </Box>
+          );
+        })}
       </Box>
-    );
-    
-    // Aggiorna il giorno della settimana
-    dayOfWeek = (dayOfWeek + 1) % 7;
+    </Grid>
+  );
+};
+
+
+
+const handleSubmitModal = async () => {
+  selectedDay.setDate(selectedDay.getDate() + 1);
+  const selectedDateString = selectedDay.toISOString().split('T')[0];
+  console.log("SELECTEDATESTRING: ", selectedDateString);
+    // setHours((prevHours) => ({ ...prevHours, [selectedDateString]: Number(hours[selectedDateString] || 0) }));
+    const datiDaInviare = {
+      progetto: idProgetto, 
+      permesso: permessoChecked,
+      malattia: malattiaChecked,
+      ferie: ferieChecked,
+      data: selectedDateString + 'T00:00',
+      dataFinePeriodo: dataFinePeriodo || null,
+      orePermesso: orePermesso || null, 
+      ore: oreOrdinarie
+    };
+
+    console.log("DATI DA INVITARE :", datiDaInviare );
+    try {
+      const url = `http://localhost:8080/timesheet/react/staff/aggiorna/${id}/${annoCorrente}/${meseCorrente}`;
+      const response = await axios.post(url, datiDaInviare );
+      if (response.data !== "OK") {
+        setAlert({ open: true, message: response.data });
+      } else {
+        // Aggiornamento dei dati del timesheet solo se la risposta è "OK"
+        fetchData(); // Richiama la funzione per ottenere i dati aggiornati
+      }
+      console.log('Risposta dal server:', response.data);
+      // console.log("DATI INVIATI: ", timesheetData );
+    } catch (error) {
+      console.error('Errore durante l\'invio dei dati del timesheet:', error);
     }
     
-    return (
-      <Grid item xs>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            flexWrap: 'nowrap', // Impedisce il passaggio a capo
-            overflowX: 'auto', // Permette lo scorrimento orizzontale se necessario
-            minWidth: "30px",
-            width: "98%",
-            
-          }}
-        >
-          {days}
-        </Box>
-      </Grid>
-    );
-};
+    handleCloseModal();
+  };
+
 
 
 
 
 
 return (
+
+  
     <Box 
     sx={{ width:"95%",
     margin: "auto",
@@ -404,6 +605,11 @@ return (
     boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.5)",
     overflow: 'hidden' ,
 }}>
+  <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+        <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
+          {alert.message}
+        </Alert>
+      </Snackbar>
       <Paper>
       <Grid container justifyContent="space-between" alignItems="flex-end" paddingLeft="20px" sx={{ borderBottom: '1px solid black', }} spacing={2}>
 
@@ -442,7 +648,7 @@ return (
 
         <Grid >
         <Typography variant="h6" align="left" style={{ marginTop: '30px', marginLeft: '16px' }}>
-  Totale: {Object.values(hours).reduce((sum, current) => sum + current, 0)}
+  Totale: {calculateTotalOrdinaryHours()}
 </Typography>
 
             </Grid>
@@ -578,8 +784,8 @@ return (
     type="number"
     // value={selectedDay ? hours[selectedDay.toISOString().split('T')[0]] : ''} 
     // onChange={(e) => handleHoursChange(selectedDay, e.target.value)}
-    value={ore}  
-  onChange={(e) => setOre(e.target.value)}
+    value={oreOrdinarie}  
+  onChange={(e) => setOreOrdinarie(e.target.value)}
   />
       </Grid>
     </Grid>

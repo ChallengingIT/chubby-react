@@ -162,7 +162,12 @@ fetchData();
     // { field: "associazioni",  headerName: "Associazioni",    width: 110, renderCell: (params) => ( <BagButton to={`/associazioni/${params.row.id}/${params.row.nome}`}/> ), },
     { field: "azioni",        headerName: "Azioni",          width: 200, renderCell: (params) => (
       <div>
-        <ClipButton to={`/associazioni/${params.row.id}/${params.row.nome}`}/>
+       <ClipButton 
+      onClick={handleDownloadCV} 
+      idFile={params.row.files && params.row.files.length > 0 ? params.row.files[0].id : null} 
+      fileDescrizione={params.row.files && params.row.files.length > 0 ? params.row.files[0].descrizione : null}
+      />
+
         <DeleteButton onClick={handleDelete} id={params.row.id}/>
       </div>
     ), },
@@ -178,6 +183,39 @@ fetchData();
     setSearchText(""); 
     fetchData();
   };
+
+
+  const handleDownloadCV = async (fileId, fileDescrizione) => {
+    console.log("FILE ID: ", fileId);
+
+    const url = `http://localhost:8080/files/react/download/file/${fileId}`;
+  
+    try {
+
+      const response = await axios({
+        method: 'GET',
+        url: url,
+        responseType: 'blob', 
+      });
+  
+   
+      const fileURL = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+  
+
+      const link = document.createElement('a');
+      link.href = fileURL;
+      link.setAttribute('download', `${fileDescrizione}.pdf`); 
+      document.body.appendChild(link);
+  
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Si è verificato un errore durante il download del file:', error);
+
+    }
+  };
+
+
 
  return (
   <div className="container">

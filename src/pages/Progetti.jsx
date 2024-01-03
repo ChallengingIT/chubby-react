@@ -17,26 +17,25 @@ const Progetti = () => {
   const [ filteredProgetti,           setFilteredProgetti       ] = useState([]);
   const [ searchText,                 setSearchText             ] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://localhost:8080/progetti/react");
-        if (Array.isArray(response.data)) {
-        const progettiConId = response.data.map((progetti) => ({ ...progetti}));
-        setOriginalProgetti(progettiConId);
-
-        console.log("DATI ARRIVATI :", progettiConId);
-        } else {
-          console.error("I dati ottenuti non sono nel formato Array:", response.data);
-        }
-      } catch (error) {
-        console.error("Errore durante il recupero dei dati:", error);
+  const fetchData = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/progetti/react");
+      if (Array.isArray(response.data)) {
+      const progettiConId = response.data.map((progetti) => ({ ...progetti}));
+      setOriginalProgetti(progettiConId);
+      setFilteredProgetti(progettiConId);
+      console.log(progettiConId);
+      } else {
+        console.error("I dati ottenuti non sono nel formato Array:", response.data);
       }
-    };
+    } catch (error) {
+      console.error("Errore durante il recupero dei dati:", error);
+    }
+  };
 
-
-    fetchData();
-  }, []);
+  useEffect(() => {
+  fetchData();
+}, []);
 
   const navigate = useNavigate();
 
@@ -45,13 +44,24 @@ const Progetti = () => {
   };
 
 
+  // const handleDelete = async (id) => {
+  //   try {
+  //     await axios.delete(`http://localhost:8080/progetti/react/elimina/${id}`);
+  //     const updatedProgetti = originalProgetti.filter((progetti) => progetti.id !== id);
+  //     setProgetti(updatedProgetti);
+  //     setOriginalProgetti(updatedProgetti);
+
+  //   } catch (error) {
+  //     console.error("Errore durante la cancellazione:", error);
+  //   }
+  // };
+
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/progetti/react/elimina/${id}`);
-      const updatedProgetti = originalProgetti.filter((progetti) => progetti.id !== id);
-      setProgetti(updatedProgetti);
-      setOriginalProgetti(updatedProgetti);
-
+      const response = await axios.delete(`http://localhost:8080/progetti/react/elimina/${id}`);
+console.log("Risposta dalla chiamata Delete: ", response);
+console.log("ID ELIMINATO: ", id);
+fetchData();
     } catch (error) {
       console.error("Errore durante la cancellazione:", error);
     }

@@ -89,60 +89,59 @@ useEffect(() => {
 
 
 
+const fields = [
 
-  const fields = [
+  { label: "Tipologia Incontro",        name: "stato",                  type: "select", options: statoOptions, 
 
-    { label: "Tipologia Incontro",        name: "stato",                  type: "select", options: statoOptions, 
-  
 },
-    { label: "Nome",                      name: "nome",                   type: "text"},
-    { label: "Cognome",                   name: "cognome",                type: "text"},
-    { label: "Data di Nasciata",          name: "dataNascita",            type: "date"},
-    { label: "Location",                  name: "location",               type: "text"},
-    { label: "Job Title",                 name: "tipologia",              type: "select", options: tipologiaOptions },
-    { label: "Anni di Esperienza",        name: "anniEsperienza",         type: "text"},
-    { label: "Data Incontro",             name: "dataIncontro",           type: "date"},
-    { label: "Recapiti",                  name: "cellulare",              type: "text"},
-    { label: "Intervistatore",            name: "owner",                  type: "select", options: ownerOptions },
+  { label: "Nome",                      name: "nome",                   type: "text"},
+  { label: "Cognome",                   name: "cognome",                type: "text"},
+  { label: "Data di Nasciata",          name: "dataNascita",            type: "date"},
+  { label: "Location",                  name: "location",               type: "text"},
+  { label: "Job Title",                 name: "tipologia",              type: "select", options: tipologiaOptions },
+  { label: "Anni di Esperienza",        name: "anniEsperienza",         type: "text"},
+  { label: "Data Incontro",             name: "dataColloquio",          type: "date"},
+  { label: "Recapiti",                  name: "cellulare",              type: "text"},
+  { label: "Intervistatore",            name: "owner",                  type: "select", options: ownerOptions },
 
 
 
 
-    { type: "titleGroups",                label: "Soft Skills"                         },
-    { label: "Aderenza Posizione",        name: "aderenzaPosizione",       type: "text"},
-    { label: "Coerenza Percorso",         name: "coerenzaPercorso",        type: "text"},
-    { label: "Motivazione Posizione",     name: "motivazionePosizione",    type: "text"},
-    { label: "Standing",                  name: "standing",                type: "text"},
-    { label: "Energia",                   name: "energia",                 type: "text"},
-    { label: "Comunicazione",             name: "comunicazione",           type: "text"},
-    { label: "Livello di Inglese",        name: "livelloInglese",          type: "text"},
+  { type: "titleGroups",                label: "Soft Skills"                         },
+  { label: "Aderenza Posizione",        name: "aderenza",                type: "text"},
+  { label: "Coerenza Percorso",         name: "coerenza",                type: "text"},
+  { label: "Motivazione Posizione",     name: "motivazione",             type: "text"},
+  { label: "Standing",                  name: "standing",                type: "text"},
+  { label: "Energia",                   name: "energia",                 type: "text"},
+  { label: "Comunicazione",             name: "comunicazione",           type: "text"},
+  { label: "Livello di Inglese",        name: "inglese",                 type: "text"},
 
 
 
-    { type: "titleGroups",                label: "Hard Skills"                         },
-    { label: "Competenze vs ruolo",       name: "competenzeRuolo",         type: "text"},
-    { label: "Valutazione",               name: "valutazione",             type: "text"},
+  { type: "titleGroups",                label: "Hard Skills"                         },
+  { label: "Competenze vs ruolo",       name: "competenze",              type: "text"},
+  { label: "Valutazione",               name: "valutazione",             type: "text"},
 
 
 
-    { type: "titleGroups",                label: "Ultime Osservazioni"                  },
-    { label: "One word",                  name: "oneWord",                  type: "text"},
-    { label: "Lo vorresti nel tuo team?", name: "loVorrestiNelTuoTeam",     type: "text"},
-    { label: "Descrizione Candidato",     name: "descrizione",              type: "note"},
-    
+  { type: "titleGroups",                label: "Ultime Osservazioni"                 },
+  { label: "One word",                  name: "descrizioneCandidatoUna", type: "text"},
+  { label: "Lo vorresti nel tuo team?", name: "teamSiNo",                type: "text"},
+  { label: "Descrizione Candidato",     name: "note",                    type: "note"},
+  
 
 
-    { type: "titleGroups",                label: "Next Steps"},
-    { label: "Disponibilità",             name: "disponibilita",            type: "text"},
-    { label: "RAL Attuale",               name: "ralAttuale",               type: "text"},
-    { label: "RAL Desiderata",            name: "ralDesiderata",            type: "text"},
-    { label: "Proposta economica",        name: "propostaEconomica",        type: "text"},
-    { label: "Follow Up",                 name: "followUp",                 type: "select", options: tipoIntervistaOptions },
-    { label: "Preavviso",                 name: "preavviso",                type: "text"},
-    { label: "Next Deadline",             name: "nextDeadline",             type: "date"},
-    { label: "Owner next Deadline",       name: "ownerNextDeadline",        type: "select", options: ownerOptions },
+  { type: "titleGroups",                label: "Next Steps"},
+  { label: "Disponibilità",             name: "disponibilita",           type: "text"},
+  { label: "RAL Attuale",               name: "attuale",                 type: "text"},
+  { label: "RAL Desiderata",            name: "desiderata",              type: "text"},
+  { label: "Proposta economica",        name: "proposta",                type: "text"},
+  { label: "Follow Up",                 name: "idTipo",                  type: "select", options: tipoIntervistaOptions },
+  { label: "Preavviso",                 name: "preavviso",               type: "text"},
+  { label: "Next Deadline",             name: "dataAggiornamento",       type: "dateOra"},
+  { label: "Owner next Deadline",       name: "idNextOwner",             type: "select", options: ownerOptions },
 
-  ];
+];
 
 
 
@@ -155,29 +154,29 @@ const initialValues = {
   location:                         rowData.candidato?.citta                  || "", 
   tipologia:                        rowData.candidato?.tipologia?.id          || "",
   anniEsperienza:                   rowData.candidato?.anniEsperienza         || "",
-  dataIncontro:                     rowData.dataColloquio                     || "",
-  recapiti:                         rowData.candidato?.cellulare              || "",
+  dataColloquio:                    rowData.dataColloquio                     || "",
+  cellulare:                        rowData.candidato?.cellulare              || "",
   owner:                            rowData.owner?.id                         || "",
-  aderenzaPosizione:                rowData.aderenza                          || "",
-  coerenzaPercorso:                 rowData.coerenza                          || "",
-  motivazionePosizione:             rowData.motivazione                       || "",
+  aderenza:                         rowData.aderenza                          || "",
+  coerenza:                         rowData.coerenza                          || "",
+  motivazione:                      rowData.motivazione                       || "",
   standing:                         rowData.standing?.toString()              || "",
   energia:                          rowData.energia?.toString()               || "",
   comunicazione:                    rowData.comunicazione?.toString()         || "",
-  livelloInglese:                   rowData.inglese?.toString()               || "",
-  competenzeRuolo:                  rowData.competenze                        || "",
+  inglese:                          rowData.inglese?.toString()               || "",
+  competenze:                       rowData.competenze                        || "",
   valutazione:                      rowData.valutazione                       || "",
-  oneWord:                          rowData.descrizioneCandidatoUna           || "",
-  loVorrestiNelTuoTeam:             rowData.teamSiNo                          || "",
-  descrizione:                      rowData.descrizioneCandidato              || "",
+  descrizioneCandidatoUna:          rowData.descrizioneCandidatoUna           || "",
+  teamSiNo:                         rowData.teamSiNo                          || "",
+  note:                             rowData.note                              || "",
   disponibilita:                    rowData.disponibilita                     || "",
-  ralAttuale:                       rowData.attuale                           || "",
-  ralDesiderata:                    rowData.desiderata                        || "",
-  propostaEconomica:                rowData.proposta                          || "",
-  followUp:                         rowData.tipo?.id                          || "",
+  attuale:                          rowData.attuale                           || "",
+  desiderata:                       rowData.desiderata                        || "",
+  proposta:                         rowData.proposta                          || "",
+  idTipo:                           rowData.tipo?.id                          || "",
   preavviso:                        rowData.preavviso                         || "",
-  nextDeadline:                     rowData.dataAVideo                        || "", // Assicurati che questo sia il campo corretto
-  ownerNextDeadline:                rowData.candidato?.owner?.id              || ""
+  dataAggiornamento:                rowData.dataAggiornamento                 || "", // Assicurati che questo sia il campo corretto
+  idNextOwner:                      rowData.candidato?.owner?.id              || ""
 };
 
 
@@ -225,29 +224,29 @@ const disableFields = {
   location:                   true,
   tipologia:                  true,
   anniEsperienza:             true,
-  dataIncontro:               true,
+  dataColloquio:              true,
   cellulare:                  true,
   owner:                      true,
-  aderenzaPosizione:          true,
-  coerenzaPercorso:           true,
-  motivazionePosizione:       true,
+  aderenza:                   true,
+  coerenza:                   true,
+  motivazione:                true,
   standing:                   true,
   energia:                    true,
   comunicazione:              true,
-  livelloInglese:             true,
-  competenzeRuolo:            true,
+  inglese:                    true,
+  competenze:                 true,
   valutazione:                true,
-  oneWord:                    true,
-  loVorrestiNelTuoTeam:       true,
-  descrizione:                true,
+  descrizioneCandidatoUna:    true,
+  teamSiNo:                   true,
+  note:                       true,
   disponibilita:              true,
-  ralAttuale:                 true,
-  ralDesiderata:              true,
-  propostaEconomica:          true,
+  attuale:                    true,
+  desiderata:                 true,
+  proposta:                   true,
   preavviso:                  true,
-  nextDeadline:               true,
-  ownerNextDeadline:          true,
-  followUp:                   true,
+  dataAggiornamento:          true,
+  idNextOwner:                true,
+  idTipo:                     true,
 
 };
 

@@ -115,22 +115,28 @@ const [ selectedCandidateNotes,           setSelectedCandidateNotes       ] = us
   ];
 
 
-  const handleSearch = (text) => {
-    setSearchText(text);
+  // const handleSearch = (text) => {
+  //   setSearchText(text);
   
-    const filtered = originalHr.filter((item) =>
-      Object.values(item).some(
-        (value) =>
-          value && value.toString().toLowerCase().includes(text.toLowerCase())
-      )
-    );
+  //   const filtered = originalHr.filter((item) =>
+  //     Object.values(item).some(
+  //       (value) =>
+  //         value && value.toString().toLowerCase().includes(text.toLowerCase())
+  //     )
+  //   );
   
-    setFilteredHr(filtered);
+  //   setFilteredHr(filtered);
+  // };
+  
+  const handleSearch = (filteredData) => {
+    setFilteredHr(filteredData);
   };
-  
+
+
   const handleReset = () => {
     setSearchText(""); 
-    fetchData();
+    // fetchData();
+    setFilteredHr(originalHr);
   };
 
 
@@ -142,31 +148,7 @@ const [ selectedCandidateNotes,           setSelectedCandidateNotes       ] = us
         </div>
         <div className="container">
           <div className="page-name">HR Managing</div>
-          <Button
-              className="button-add"
-              variant="contained"
-              size="medium"
-              startIcon={<AddIcon />}
-              onClick={navigateToAggiungiUser}
-              sx={{
-              width: "100%",
-              maxWidth: "210px",
-              backgroundColor: "black",
-              color: "white",
-              borderRadius: "10px",
-              fontSize: "0.6rem",
-              fontWeight: "bolder",
-              marginLeft: "20px",
-              padding: "0.5rem 1rem",
-              "&:hover": {
-                backgroundColor: "#ffb800",
-                transform: "scale(1.05)",
-                color: 'black',
-              },
-            }}
-          >
-            Crea User
-          </Button>
+      
           <div className="row-container1">
             <Button
                 className="button-add"
@@ -246,7 +228,13 @@ const [ selectedCandidateNotes,           setSelectedCandidateNotes       ] = us
               Invia Sollecito
             </Button>
           </div>
-          <HRSearchBox data={hr} onSearch={handleSearch} onReset={handleReset} onSearchTextChange={(text) => setSearchText(text)}/>
+         
+          <HRSearchBox data={hr}
+          onSearch={handleSearch} 
+          onReset={handleReset}
+          searchText={searchText}
+          onSearchTextChange={(text) => setSearchText(text)}
+          OriginalHr={originalHr}/>
             <MyDataGrid data={filteredHr} columns={columns} title="Staff" getRowId={(row) => row.id}/>
           <Modal
   isOpen={isNotesPopupOpen}

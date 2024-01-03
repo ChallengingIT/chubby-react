@@ -24,56 +24,50 @@ const Aziende = () => {
   const [ filteredAziende,            setFilteredAziende        ] = useState([]);
 
 
-  // const translateOwnerNames = async (aziendeData) => {
-  //   try {
-  //     const updatedAziende = await Promise.all(
-  //       aziendeData.map(async (aziende) => {
-  //         if (aziende.idOwner !== null && aziende.idOwner !== undefined) {
-  //           try {
-  //             const responseOwner = await axios.get(`http://localhost:8080/aziende/react/owner/${aziende.idOwner}`);
-  //             const descrizioneOwner = responseOwner.data.descrizione;
 
-  //             return { ...aziende, descrizioneOwner };
-  //           } catch (error) {
-  //             console.error(`Errore durante la traduzione dell'azienda con id=${aziende.idOwner}:`, error);
-  //             return aziende;
-  //           }
-  //         }
-  //         return aziende;
-  //       })
-  //     );
+// const fetchData = async () => {
+//   try {
+//     const response = await axios.get("http://localhost:8080/aziende/react");
+//     if (Array.isArray(response.data)) {
+//       const aziendeConId = response.data.map((aziende) => ({ ...aziende }));
 
-  //     return updatedAziende;
-  //   } catch (error) {
-  //     console.error("Errore durante la traduzione delle aziende:", error);
-  //     return aziendeData;
-  //   }
-  // };
+//       // const aziendeConOwner = await translateOwnerNames(aziendeConId);
+//       setFilteredAziende(aziendeConId);
+//       setOriginalAziende(aziendeConId);
+//       console.log(aziendeConId);
+//     } else {
+//       console.error("I dati ottenuti non sono nel formato Array:", response.data);
+//     }
+//   } catch (error) {
+//     console.error("Errore durante il recupero dei dati:", error);
+//   }
+// };
+
+// useEffect(() => {
+//   fetchData();
+// }, []);
 
 
- const fetchDataAndTranslate = async () => {
+
+const fetchData = async () => {
   try {
     const response = await axios.get("http://localhost:8080/aziende/react");
     if (Array.isArray(response.data)) {
-      const aziendeConId = response.data.map((aziende) => ({ ...aziende }));
-
-      // const aziendeConOwner = await translateOwnerNames(aziendeConId);
-      setAziende(aziendeConId);
-      setFilteredAziende(aziendeConId);
+      const aziendeConId = response.data.map((aziende) => ({...aziende}));
       setOriginalAziende(aziendeConId);
-      console.log(aziendeConId);
+      setFilteredAziende(aziendeConId);
+      console.log("Dati arrivati: ", aziendeConId);
     } else {
       console.error("I dati ottenuti non sono nel formato Array:", response.data);
-    }
+    } 
   } catch (error) {
-    console.error("Errore durante il recupero dei dati:", error);
+    console.error("Errore durante il recupero dei dati: ", error);
   }
 };
 
 useEffect(() => {
-  fetchDataAndTranslate();
+  fetchData();
 }, []);
-
 
   const navigate = useNavigate();
 
@@ -87,17 +81,30 @@ useEffect(() => {
 
 
 
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`http://localhost:8080/aziende/react/elimina/${id}`);
-      const updatedAziende = originalAziende.filter((azienda) => azienda.id !== id);
-      setAziende(updatedAziende);
-      setOriginalAziende(updatedAziende);
-      setFilteredAziende(updatedAziende);
-      console.log("ELIMINATA AZIENDA: ", id);
-    } catch (error) {
-      console.error("Errore durante la cancellazione:", error);
-    }
+  // const handleDelete = async (id) => {
+  //   try {
+  //     await axios.delete(`http://localhost:8080/aziende/react/elimina/${id}`);
+  //     // const updatedAziende = originalAziende.filter((azienda) => azienda.id !== id);
+  //     // setAziende(updatedAziende);
+  //     // setOriginalAziende(updatedAziende);
+  //     // setFilteredAziende(updatedAziende);
+  //     fetchData();
+  //     console.log("ELIMINATA AZIENDA: ", id);
+  //   } catch (error) {
+  //     console.error("Errore durante la cancellazione:", error);
+  //   }
+  // };
+const handleDelete = async (id) => {
+  try {
+
+
+const response = await axios.delete(`http://localhost:8080/aziende/react/elimina/${id}`);
+console.log("Risposta dalla chiamata delete: ", response);
+console.log("ID AZIENDA ELIMINATA: ", id,)
+fetchData();
+  } catch (error) {
+    console.error("Errore durante la cancellazione: ", error);
+  }
   };
 
 
@@ -186,7 +193,8 @@ useEffect(() => {
           searchText={searchText}
           onSearchTextChange={(text) => setSearchText(text)}
           OriginalAziende={originalAziende}/>
-            <MyDataGrid data={filteredAziende} columns={columns} title="Aziende" getRowId={(row) => row.id} />
+           <MyDataGrid data={filteredAziende} columns={columns} title="Aziende" getRowId={(row) => row.id} />
+
         </div>
       </div>
     </div>

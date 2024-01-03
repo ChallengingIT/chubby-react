@@ -11,6 +11,7 @@ const ModificaDipendente = () => {
   const { dipendentiData = {} }         = location.state || {};
   const nomeDipendente                  = dipendentiData.nome;
   const cognomeDipendente               = dipendentiData.cognome;
+  const idStaff                         = dipendentiData.id;
 
 
   const [ tipologiaOptions,               setTipologiaOptions                 ] = useState([]);
@@ -25,7 +26,7 @@ const ModificaDipendente = () => {
     const fetchAziendeOptions = async () => {
       try {
         const responseTipologia                      = await axios.get("http://localhost:8080/aziende/react/tipologia");
-        const responseNeed                           = await axios.get("http://localhost:8080/staffing/react/skill");
+        const skillsResponse                          = await axios.get("http://localhost:8080/staffing/react/skill");
         const facoltaResponse                        = await axios.get("http://localhost:8080/staffing/react/facolta"  );
         const livelloScolasticoResponse              = await axios.get("http://localhost:8080/staffing/react/livello"  );
         const tipologiaContrattoResponse             = await axios.get("http://localhost:8080/hr/react/tipocontratto"  );
@@ -53,13 +54,13 @@ const ModificaDipendente = () => {
           }));
           setFacoltaOptions(facoltaOptions);
 
+          if (Array.isArray(skillsResponse.data)) {
+            const skillsOptions = skillsResponse.data.map((skills) => ({
+              label: skills.descrizione,
+              value: skills.id,
+            }));
+            setSkillsOptions(skillsOptions);
 
-        if (Array.isArray(responseNeed.data)) {
-          const skillsNames = responseNeed.data.map((need) => need.descrizione || '');
-        setSkillsOptions(skillsNames);          
-        } else {
-          console.error("I dati ottenuti non sono nel formato Array:", responseNeed.data);
-        }
 
         if (Array.isArray(responseTipologia.data)) {
           const tipologiaOptions = responseTipologia.data.map((tipologia) => ({
@@ -71,6 +72,7 @@ const ModificaDipendente = () => {
       }
     }
   }
+}
       } catch (error) {
         console.error("Errore durante il recupero delle province:", error);
       }
@@ -89,18 +91,18 @@ const ModificaDipendente = () => {
     { label: "Cellulare",           name: "cellulare",                  type: "text" },
     { label: "Residenza",           name: "citta",                      type: "text" },
     { label: "Data Inizio",         name: "dataInizio",                 type: "date" },
-    { label: "Scadenza Contratto",  name: "dataScadenza",                   type: "date" },
+    { label: "Scadenza Contratto",  name: "dataScadenza",               type: "date" },
     { label: "Anni Esperienza",     name: "anniEsperienza",             type: "text" },
     { label: "Livello Scolastico",  name: "livelloScolastico",          type: "select",          options: livelloScolasticoOptions },
     { label: "Facoltà",             name: "facolta",                    type: "select",          options: facoltaOptions},
     { label: "IBAN",                name: "iban",                       type:"text"   },
     { label: "Codice Fiscale",      name: "codFiscale",                 type:"text"   },
     { label: "RAL/Tariffa",         name: "ral",                        type:"text"   },
-    { label: "Job Title",           name: "tipologia",                type: "select",          options: tipologiaOptions },
+    { label: "Job Title",           name: "tipologia",                  type: "select",          options: tipologiaOptions },
     { label: "Seleziona le Skills", name: "skills",                     type: "multipleSelect",  options: skillsOptions },
-    { label: "Tipologia Contratto", name: "tipologiaContratto",              type: "select",          options: tipologiaContrattoOptions },
+    { label: "Tipologia Contratto", name: "tipologiaContratto",         type: "select",          options: tipologiaContrattoOptions },
     { label: "Note",                name: "note",                       type: "note"  },
-    { lavel: "Allegati",            name: "files",                      type: "downloadAllegati"  },
+    { lavel: "Allegati",            name: "files",                      type: "mofificaAllegati"},
   ];
 
   const initialValues = {
@@ -123,7 +125,12 @@ const ModificaDipendente = () => {
     skills:                (dipendentiData.skills?.map(skill => skill?.id))                                       || [],
     tipologiaContratto:     dipendentiData.tipologiaContratto && dipendentiData.tipologiaContratto.id             || "",
     note:                   dipendentiData.note                                                                   || "",
-    files:                 (dipendentiData.files?.map(file => file?.descrizione))                                 || [],     
+    files: (dipendentiData.files?.map(file => {
+      return {
+        id: file.id, 
+        descrizione: file.descrizione
+      };
+    })) || [],
   };
 
   const handleSubmit = async (values) => {
@@ -247,6 +254,25 @@ for (let key of formData.keys()) {
       }
     }
   };
+
+  const handleDeleteAllegati = async (fileID) => {
+    try {
+      const ids = idStaff; // L'id dello staff è già noto qui.
+      const url = `http://localhost:8080/files/react/elimina/file/${fileID}/${ids}`;
+  
+      const response = await axios.delete(url);
+      console.log("Risposta del server: ", response);
+  
+      // Dopo l'eliminazione, potresti voler aggiornare lo stato per rimuovere il file dall'elenco.
+      // Ad esempio, potresti impostare lo stato del componente con i file rimanenti.
+      // Questo dipende da come gestisci lo stato dei file nel tuo componente.
+  
+    } catch (error) {
+      console.error('Si è verificato un errore durante l\'eliminazione del file:', error);
+    }
+  };
+  
+      
   
 
   return (
@@ -264,7 +290,8 @@ for (let key of formData.keys()) {
           onSubmit={handleSubmit}
           title=""
           onDownloadAllegati = {handleDownloadAllegati}
-           />
+          onDeleteAllegati = {handleDeleteAllegati}
+          />
         </div>
       </div>
     </div>

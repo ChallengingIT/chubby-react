@@ -80,56 +80,56 @@
   const fields = [
 
     { label: "Tipologia Incontro",        name: "stato",                  type: "select", options: statoOptions, 
-  
+
 },
-    { label: "Nome",                      name: "nome",                   type: "text"   },
-    { label: "Cognome",                   name: "cognome",                type: "text"   },
-    { label: "Data di Nasciata",          name: "dataNascita",            type: "date"   },
-    { label: "Location",                  name: "location",               type: "text"   },
+    { label: "Nome",                      name: "nome",                   type: "text"},
+    { label: "Cognome",                   name: "cognome",                type: "text"},
+    { label: "Data di Nasciata",          name: "dataNascita",            type: "date"},
+    { label: "Location",                  name: "location",               type: "text"},
     { label: "Job Title",                 name: "tipologia",              type: "select", options: tipologiaOptions },
-    { label: "Anni di Esperienza",        name: "anniEsperienza",         type: "text"   },
-    { label: "Data Incontro",             name: "dataColloquio",           type: "date"   },
-    { label: "Recapiti",                  name: "cellulare",              type: "text"   },
-    { label: "Intervistatore",            name: "idOwner",                  type: "select", options: ownerOptions },
+    { label: "Anni di Esperienza",        name: "anniEsperienza",         type: "text"},
+    { label: "Data Incontro",             name: "dataColloquio",          type: "date"},
+    { label: "Recapiti",                  name: "cellulare",              type: "text"},
+    { label: "Intervistatore",            name: "owner",                  type: "select", options: ownerOptions },
 
 
 
 
-    { type: "titleGroups",                label: "Soft Skills"                           },
-    { label: "Aderenza Posizione",        name: "aderenza",                type: "number"},
-    { label: "Coerenza Percorso",         name: "coerenza",                type: "number"},
-    { label: "Motivazione Posizione",     name: "motivazione",             type: "number"},
-    { label: "Standing",                  name: "standing",                type: "number"},
-    { label: "Energia",                   name: "energia",                 type: "number"},
-    { label: "Comunicazione",             name: "comunicazione",           type: "number"},
-    { label: "Livello di Inglese",        name: "inglese",                 type: "number"},
+    { type: "titleGroups",                label: "Soft Skills"                         },
+    { label: "Aderenza Posizione",        name: "aderenza",                type: "text"},
+    { label: "Coerenza Percorso",         name: "coerenza",                type: "text"},
+    { label: "Motivazione Posizione",     name: "motivazione",             type: "text"},
+    { label: "Standing",                  name: "standing",                type: "text"},
+    { label: "Energia",                   name: "energia",                 type: "text"},
+    { label: "Comunicazione",             name: "comunicazione",           type: "text"},
+    { label: "Livello di Inglese",        name: "inglese",                 type: "text"},
 
 
 
-    { type: "titleGroups",                label: "Hard Skills"                           },
-    { label: "Competenze vs ruolo",       name: "competenze",              type: "text"  },
-    { label: "Valutazione",               name: "valutazione",             type: "number"},
+    { type: "titleGroups",                label: "Hard Skills"                         },
+    { label: "Competenze vs ruolo",       name: "competenze",              type: "text"},
+    { label: "Valutazione",               name: "valutazione",             type: "text"},
 
 
 
-    { type: "titleGroups",                label: "Ultime Osservazioni"                    },
-    { label: "One word",                  name: "descrizioneCandidatoUna",  type: "text"  },
-    { label: "Lo vorresti nel tuo team?", name: "teamSiNo",                 type: "text"  },
-    { label: "Descrizione Candidato",     name: "descrizione",              type: "note"  },
+    { type: "titleGroups",                label: "Ultime Osservazioni"                 },
+    { label: "One word",                  name: "descrizioneCandidatoUna", type: "text"},
+    { label: "Lo vorresti nel tuo team?", name: "teamSiNo",                type: "text"},
+    { label: "Descrizione Candidato",     name: "note",                    type: "note"},
     
 
 
     { type: "titleGroups",                label: "Next Steps"},
-    { label: "Disponibilità",             name: "disponibilita",            type: "text"  },
-    { label: "RAL Attuale",               name: "attuale",                  type: "text"  },
-    { label: "RAL Desiderata",            name: "desiderata",               type: "text"  },
-    { label: "Proposta economica",        name: "proposta",                 type: "text"  },
-    { label: "Follow Up",                 name: "tipo",                     type: "select", options: tipoIntervistaOptions },
-    { label: "Preavviso",                 name: "preavviso",                type: "text"  },
-    { label: "Next Deadline",             name: "dataAggiornamento",        type: "date"  },
-    { label: "Owner next Deadline",       name: "ownerNextDeadline",        type: "select", options: ownerOptions },
+    { label: "Disponibilità",             name: "disponibilita",           type: "text"},
+    { label: "RAL Attuale",               name: "attuale",                 type: "text"},
+    { label: "RAL Desiderata",            name: "desiderata",              type: "text"},
+    { label: "Proposta economica",        name: "proposta",                type: "text"},
+    { label: "Follow Up",                 name: "idTipo",                  type: "select", options: tipoIntervistaOptions },
+    { label: "Preavviso",                 name: "preavviso",               type: "text"},
+    { label: "Next Deadline",             name: "dataAggiornamento",       type: "dateOra"},
+    { label: "Owner next Deadline",       name: "idNextOwner",             type: "select", options: ownerOptions },
 
-  ];
+];
 
  
 
@@ -138,12 +138,12 @@
       nome:                             rowData.candidato?.nome                     || "",
       cognome:                          rowData.candidato?.cognome                  || "",
       dataNascita:                      rowData.candidato?.dataNascita              || "",
-      citta:                            rowData.candidato?.citta                    || "", 
+      location:                         rowData.candidato?.citta                    || "", 
       tipologia:                        rowData.candidato?.tipologia?.id            || "",
       anniEsperienza:                   rowData.candidato?.anniEsperienza           || "",
-      dataColloquio:                    rowData.dataColloquio                       || "",
+      dataColloquio:                     rowData.dataColloquio                       || "",
       cellulare:                        rowData.candidato?.cellulare                || "",
-      idOwner:                          rowData.owner?.id                           || "",
+      owner:                            rowData.owner?.id                           || "",
       aderenza:                         rowData.aderenza                            || "",
       coerenza:                         rowData.coerenza                            || "",
       motivazione:                      rowData.motivazione                         || "",
@@ -155,15 +155,15 @@
       valutazione:                      rowData.valutazione                         || "",
       descrizioneCandidatoUna:          rowData.descrizioneCandidatoUna             || "",
       teamSiNo:                         rowData.teamSiNo                            || "",
-      descrizione:                      rowData.descrizioneCandidato                || "",
+      note:                             rowData.note                                || "",
       disponibilita:                    rowData.disponibilita                       || "",
       attuale:                          rowData.attuale                             || "",
       desiderata:                       rowData.desiderata                          || "",
       proposta:                         rowData.proposta                            || "",
-      tipo:                             rowData.tipo?.id                            || "",
+      idTipo:                           rowData.tipo?.id                            || "",
       preavviso:                        rowData.preavviso                           || "",
-      nextDeadline:                     rowData.dataAVideo                          || "", // Assicurati che questo sia il campo corretto
-      ownerNextDeadline:                rowData.candidato?.owner?.id                || ""
+      dataAggiornamento:                rowData.dataAggiornamento                   || "", // Assicurati che questo sia il campo corretto
+      idNextOwner:                      rowData.candidato?.owner?.id                || ""
     };
 
   //   tipologiaIncontro:                    rowData.stato?.descrizione || "",
@@ -254,12 +254,21 @@ const disableFields = {
     
   
         const idCandidato = rowData.candidato?.id;
-        const note        = values.descrizioneCandidatoUna;
+        const note        = values.note;
         const modifica    = 1; 
+
+        // delete values.idCandidato;
+        // delete values.modifica;
+        // delete values.note;
     
-        const url = `http://localhost:8080/intervista/react/salva?idCandidato=${idCandidato}&note=${encodeURIComponent(note)}&modifica=${modifica}`;
-    
-        const response = await axios.post(url, values);
+        // const url = `http://localhost:8080/intervista/react/salva?idCandidato=${idCandidato}&note=${encodeURIComponent(note)}&modifica=${modifica}`;
+        const response = await axios.post("http://localhost:8080/intervista/react/salva", values, {
+          params: {
+            idCandidato: idCandidato,
+            note: note,
+            modifica: modifica
+          }
+        });
         console.log("DATI INVIATI: ", response);
         console.log("Response from server:", response.data);
     

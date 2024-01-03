@@ -22,75 +22,96 @@ const KeyPeople = () => {
   const [ filteredKeypeople,    setFilteredKeypeople        ] = useState([]);
   const [ denominazioneAzienda, setDenominazioneAzienda     ] = useState("");
 
-  const translateAziendaNames = async (keypeopleData) => {
-    try {
-      const updatedKeypeople = await Promise.all(
-        keypeopleData.map(async (keypeople) => {
-          if (keypeople.idAzienda !== null && keypeople.idAzienda !== undefined) {
-            try {
-              const responseAzienda = await axios.get(`http://localhost:8080/aziende/react/${keypeople.idAzienda}`);
-              const denominazioneAzienda = responseAzienda.data.denominazione;
+  // const translateAziendaNames = async (keypeopleData) => {
+  //   try {
+  //     const updatedKeypeople = await Promise.all(
+  //       keypeopleData.map(async (keypeople) => {
+  //         if (keypeople.idAzienda !== null && keypeople.idAzienda !== undefined) {
+  //           try {
+  //             const responseAzienda = await axios.get(`http://localhost:8080/aziende/react/${keypeople.idAzienda}`);
+  //             const denominazioneAzienda = responseAzienda.data.denominazione;
 
-              return { ...keypeople, denominazioneAzienda };
-            } catch (error) {
-              console.error(`Errore durante la traduzione dell'azienda con id=${keypeople.idAzienda}:`, error);
-              return keypeople;
-            }
-          }
-          return keypeople;
-        })
-      );
+  //             return { ...keypeople, denominazioneAzienda };
+  //           } catch (error) {
+  //             console.error(`Errore durante la traduzione dell'azienda con id=${keypeople.idAzienda}:`, error);
+  //             return keypeople;
+  //           }
+  //         }
+  //         return keypeople;
+  //       })
+  //     );
 
-      return updatedKeypeople;
-    } catch (error) {
-      console.error("Errore durante la traduzione delle aziende:", error);
-      return keypeopleData;
-    }
-  };
+  //     return updatedKeypeople;
+  //   } catch (error) {
+  //     console.error("Errore durante la traduzione delle aziende:", error);
+  //     return keypeopleData;
+  //   }
+  // };
 
-  const translateOwnerNames = async (keypeopleData) => {
-    try {
-      const updatedKeypeople = await Promise.all(
-        keypeopleData.map(async (keypeople) => {
-          if (keypeople.idOwner !== null && keypeople.idOwner !== undefined) {
-            try {
-              const responseOwner = await axios.get(`http://localhost:8080/aziende/react/owner/${keypeople.idOwner}`);
-              const descrizioneOwner = responseOwner.data.descrizione;
+  // const translateOwnerNames = async (keypeopleData) => {
+  //   try {
+  //     const updatedKeypeople = await Promise.all(
+  //       keypeopleData.map(async (keypeople) => {
+  //         if (keypeople.idOwner !== null && keypeople.idOwner !== undefined) {
+  //           try {
+  //             const responseOwner = await axios.get(`http://localhost:8080/aziende/react/owner/${keypeople.idOwner}`);
+  //             const descrizioneOwner = responseOwner.data.descrizione;
 
-              return { ...keypeople, descrizioneOwner };
-            } catch (error) {
-              console.error(`Errore durante la traduzione dell'azienda con id=${keypeople.idOwner}:`, error);
-              return keypeople;
-            }
-          }
-          return keypeople;
-        })
-      );
+  //             return { ...keypeople, descrizioneOwner };
+  //           } catch (error) {
+  //             console.error(`Errore durante la traduzione dell'azienda con id=${keypeople.idOwner}:`, error);
+  //             return keypeople;
+  //           }
+  //         }
+  //         return keypeople;
+  //       })
+  //     );
 
-      return updatedKeypeople;
-    } catch (error) {
-      console.error("Errore durante la traduzione delle aziende:", error);
-      return keypeopleData;
-    }
-  };
+  //     return updatedKeypeople;
+  //   } catch (error) {
+  //     console.error("Errore durante la traduzione delle aziende:", error);
+  //     return keypeopleData;
+  //   }
+  // };
   
   
   
-  const fetchDataAndTranslate = async () => {
+  // const fetchDataAndTranslate = async () => {
+  //   try {
+  //     const response = await axios.get("http://localhost:8080/keypeople/react");
+  //     if (Array.isArray(response.data)) {
+  //       const keypeopleConId = response.data.map((keypeople) => ({ ...keypeople }));
+
+  //       console.log("DATI CHE ARRIVANO DAL DB: ", keypeopleConId);
+
+  //       const keypeopleConDenominazione = await translateAziendaNames(keypeopleConId);
+  //       const keypeopleConOwner = await translateOwnerNames(keypeopleConDenominazione);
+
+  //       // Aggiorna lo stato con i dettagli delle aziende
+  //       setKeypeople(keypeopleConOwner);
+  //       setOriginalKeypeople(keypeopleConOwner);
+  //       setFilteredKeypeople(keypeopleConOwner);
+  //     } else {
+  //       console.error("I dati ottenuti non sono nel formato Array:", response.data);
+  //     }
+  //   } catch (error) {
+  //     console.error("Errore durante il recupero dei dati:", error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchDataAndTranslate();
+  // }, []);
+
+  
+  const fetchData = async () => {
     try {
       const response = await axios.get("http://localhost:8080/keypeople/react");
       if (Array.isArray(response.data)) {
-        const keypeopleConId = response.data.map((keypeople) => ({ ...keypeople }));
-
-        console.log("DATI CHE ARRIVANO DAL DB: ", keypeopleConId);
-
-        const keypeopleConDenominazione = await translateAziendaNames(keypeopleConId);
-        const keypeopleConOwner = await translateOwnerNames(keypeopleConDenominazione);
-
-        // Aggiorna lo stato con i dettagli delle aziende
-        setKeypeople(keypeopleConOwner);
-        setOriginalKeypeople(keypeopleConOwner);
-        setFilteredKeypeople(keypeopleConOwner);
+      const keypeopleConId = response.data.map((keypeople) => ({ ...keypeople}));
+      setOriginalKeypeople(keypeopleConId);
+      setFilteredKeypeople(keypeopleConId);
+      console.log(keypeopleConId);
       } else {
         console.error("I dati ottenuti non sono nel formato Array:", response.data);
       }
@@ -100,9 +121,8 @@ const KeyPeople = () => {
   };
 
   useEffect(() => {
-    fetchDataAndTranslate();
-  }, []);
-
+  fetchData();
+}, []);
   
   
   
@@ -113,18 +133,30 @@ const KeyPeople = () => {
     navigate("/keyPeople/aggiungi");
   };
 
+  // const handleDelete = async (id) => {
+  //   try {
+  //     await axios.delete(`http://localhost:8080/keypeople/react/elimina/${id}`);
+
+  //     const updatedKeypeople = originalKeypeople.filter((keypeople) => keypeople.id !== id);
+  //     setKeypeople(updatedKeypeople);
+  //     setOriginalKeypeople(updatedKeypeople);
+  //     setFilteredKeypeople(updatedKeypeople);
+  //   } catch (error) {
+  //     console.error("Errore durante la cancellazione:", error);
+  //   }
+  // };
+
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/keypeople/react/elimina/${id}`);
-
-      const updatedKeypeople = originalKeypeople.filter((keypeople) => keypeople.id !== id);
-      setKeypeople(updatedKeypeople);
-      setOriginalKeypeople(updatedKeypeople);
-      setFilteredKeypeople(updatedKeypeople);
+      const response = await axios.delete(`http://localhost:8080/keypeople/react/elimina/${id}`);
+console.log("Risposta dalla chiamata Delete: ", response);
+console.log("ID ELIMINATO: ", id);
+fetchData();
     } catch (error) {
       console.error("Errore durante la cancellazione:", error);
     }
   };
+
 
   const getSmileIcon = (params) => {
     switch (params.row.status) {

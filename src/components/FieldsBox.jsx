@@ -42,7 +42,8 @@ const FieldsBox = ({
   campiObbligatori,
   skillsOptions,
   skills2Options,
-  onDownloadAllegati
+  onDownloadAllegati,
+  onDeleteAllegati
 }) => {
   const [values, setValues] = useState(initialValues || {});
   const [errors, setErrors] = useState({});
@@ -533,6 +534,87 @@ case 'multipleSelectSkill2':
                           </Box>
                         </Box>
                     );
+
+
+                    case 'soloDownloadAllegati':
+                    
+                      return (
+                        <Box>
+                          <Typography variant="subtitle1" gutterBottom>{field.label}</Typography>
+                          {values[field.name] && values[field.name].map((file, index) => { // Controlla che l'array esista e che field.name sia 'files'
+                            
+                            return (
+                              <Box key={file.id} style={{ display: 'flex', flexDirection: "row", alignItems: 'center', margin: '10px 0', justifyContent: 'space-between', }}>
+                      
+                                <Typography variant="body1" style={{ marginRight: '10px' }}>{file}</Typography> {/* Qui viene visualizzato il nome del file */}
+                                <Button
+                                  variant="contained"
+                                  color="primary"
+                                  style={{ marginLeft: '10px', marginBottom: "10px", marginTop: "10px" }}
+                                  startIcon={<CloudDownloadIcon />}
+                                  onClick={() => {
+                                    console.log(`Scaricando file con id: ${file.id} e descrizione: ${file}`); // Verifica quali dati vengono passati alla funzione di download
+                                    onDownloadAllegati(file.id, file.descrizione);
+                                  }}
+                                >
+                     
+                                </Button>
+                              </Box>
+                            );
+                          })}
+                        </Box>
+                      );
+
+
+                      case 'mofificaAllegati':
+                    
+                      return (
+                        <Box>
+                          <Typography variant="subtitle1" gutterBottom>{field.label}</Typography>
+                          {values[field.name] && values[field.name].map((file, index) => (
+                            <Box key={file.id} style={{
+                                display: 'flex', 
+                                flexDirection: "row", 
+                                alignItems: 'center', 
+                                justifyContent: 'space-between',
+                                margin: '10px 0'
+                              }}>
+                              <Typography variant="body1" style={{ marginRight: '10px' }}>
+                                {file.descrizione}
+                              </Typography>
+                              <div style={{ display: 'flex', gap: '10px' }}> {/* Contenitore per i bottoni */}
+                                <Button
+                                  variant="contained"
+                                  color="primary"
+                                  startIcon={<CloudDownloadIcon />}
+                                  onClick={() => onDownloadAllegati(file.id, file.descrizione)}
+                                >
+                                </Button>
+                                <Button
+                                  variant="contained"
+                                  startIcon={<DeleteIcon />}
+                                  onClick={() => onDeleteAllegati(file.id)}
+                                  style={{ backgroundColor: 'red', color: "white" }}
+                                  disabled={!values[field.name]}
+                                >
+                                </Button>
+                                
+                              </div>
+                              
+                            </Box>
+                          ))}
+                          <input
+                            type="file"
+                            name={field.name}
+                            multiple
+                            onChange={handleChangeMultiple(field.name)}
+                            />
+                        </Box>
+
+                      );
+
+
+                    
                   
                   
                 
@@ -587,35 +669,35 @@ case 'multipleSelectSkill2':
                         </Box>
                     );
 
-                    case 'downloadAllegati':
-                      return (
-                        <Box>
-                          <Typography variant="subtitle1" gutterBottom>{field.label}</Typography>
-                          <Box style={{ display: 'flex', flexDirection: "column", alignItems: 'center', margin: '10px 0' }}>
-                            {values[field.name] && values[field.name].length > 0 ? (
-                              values[field.name].map((file, index) => (
-                                <Box key={file.id || index} style={{ display: 'flex', alignItems: 'center', marginBottom: "10px" }}>
-                                  <Typography variant="body2" style={{ marginRight: '10px', flexGrow: 1 }}>
-                                    {file.descrizione || 'Nessun file selezionato'}  
-                                  </Typography>
+                    // case 'downloadAllegati':
+                    //   return (
+                    //     <Box>
+                    //       <Typography variant="subtitle1" gutterBottom>{field.label}</Typography>
+                    //       <Box style={{ display: 'flex', flexDirection: "column", alignItems: 'center', margin: '10px 0' }}>
+                    //         {values[field.name] && values[field.name].length > 0 ? (
+                    //           values[field.name].map((file, index) => (
+                    //             <Box key={file.id || index} style={{ display: 'flex', alignItems: 'center', marginBottom: "10px" }}>
+                    //               <Typography variant="body2" style={{ marginRight: '10px', flexGrow: 1 }}>
+                    //                 {file.descrizione || 'Nessun file selezionato'}  
+                    //               </Typography>
                           
-                                  <Button
-                                    variant="contained"
-                                    color="primary"
-                                    startIcon={<CloudDownloadIcon />}
-                                    onClick={() => onDownloadAllegati(file.id, file.descrizione)}  
-                                    disabled={!file}
-                                  >
+                    //               <Button
+                    //                 variant="contained"
+                    //                 color="primary"
+                    //                 startIcon={<CloudDownloadIcon />}
+                    //                 onClick={() => onDownloadAllegati(file.id, file.descrizione)}  
+                    //                 disabled={!file}
+                    //               >
                                     
-                                  </Button>
-                                </Box>
-                              ))
-                            ) : (
-                              <Typography variant="body2">Nessun file disponibile</Typography>
-                            )}
-                          </Box>
-                        </Box>
-                      );
+                    //               </Button>
+                    //             </Box>
+                    //           ))
+                    //         ) : (
+                    //           <Typography variant="body2">Nessun file disponibile</Typography>
+                    //         )}
+                    //       </Box>
+                    //     </Box>
+                    //   );
                     
                     
         case 'selectValue':

@@ -48,7 +48,7 @@ const AggiungiFatturazioneAttiva = () => {
 
   const fields = [
  
-    { label: "Cliente",               name: "idCliente",            type: "select", options: clienteOptions },
+    { label: "Cliente",               name: "idCliente",            type: "select", options: clienteOptions,  disabled: true},
     { label: "Stato",                 name: "stato",                type: "select", options: statoOptions},
     { label: "Data Emissione",        name: "dataEmissione",        type: "date" },
     { label: "Data Scadenza",         name: "dataScadenza",         type: "date" },

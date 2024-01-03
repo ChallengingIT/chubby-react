@@ -136,9 +136,9 @@ useEffect(() => {
     { label: "Location",                  name: "location",               type: "text"   },
     { label: "Job Title",                 name: "tipologia",              type: "select", options: tipologiaOptions },
     { label: "Anni di Esperienza",        name: "anniEsperienza",         type: "text"   },
-    { label: "Data Incontro",             name: "dataColloquio",           type: "date"   },
+    { label: "Data Incontro",             name: "dataUltimoContatto",     type: "date"   },
     { label: "Recapiti",                  name: "cellulare",              type: "text"   },
-    { label: "Intervistatore",            name: "idOwner",                  type: "select", options: ownerOptions },
+    { label: "Intervistatore",            name: "idOwner",                type: "select", options: ownerOptions },
 
 
 
@@ -163,7 +163,7 @@ useEffect(() => {
     { type: "titleGroups",                label: "Ultime Osservazioni"                    },
     { label: "One word",                  name: "descrizioneCandidatoUna",  type: "text"  },
     { label: "Lo vorresti nel tuo team?", name: "teamSiNo",                 type: "text"  },
-    { label: "Descrizione Candidato",     name: "descrizione",              type: "note"  },
+    { label: "Descrizione Candidato",     name: "descrizioneCandidato",     type: "note"  },
     
 
 
@@ -192,7 +192,7 @@ const initialValues = {
     citta:                            candidatoDataObject.citta                                                       || "", 
     tipologia:                        candidatoDataObject.tipologia?.id                                               || "",
     anniEsperienza:                   ultimaIntervista ? ultimaIntervista.anniEsperienza                               : "",
-    dataColloquio:                    ultimaIntervista ? ultimaIntervista.dataColloquio                                : "",
+    dataUltimoContatto:               ultimaIntervista ? ultimaIntervista.dataUltimoContatto                           : "",
     cellulare:                        candidatoDataObject?.cellulare                                                  || "",
     idOwner:                          ultimaIntervista ? ultimaIntervista.owner?.id                                    : "",
     aderenza:                         ultimaIntervista ? ultimaIntervista.aderenza                                     : "",
@@ -206,7 +206,7 @@ const initialValues = {
     valutazione:                      ultimaIntervista ? ultimaIntervista.valutazione                                  : "",
     descrizioneCandidatoUna:          ultimaIntervista ? ultimaIntervista.descrizioneCandidatoUna                      : "",
     teamSiNo:                         ultimaIntervista ? ultimaIntervista.teamSiNo                                     : "",
-    descrizione:                      candidatoDataObject.note                                                        || "",
+    descrizioneCandidato:             candidatoDataObject.note                                                        || "",
     disponibilita:                    ultimaIntervista ? ultimaIntervista.disponibilita                                : "",
     attuale:                          ultimaIntervista ? ultimaIntervista.attuale                                      : "",
     desiderata:                       ultimaIntervista ? ultimaIntervista.desiderata                                   : "",
@@ -256,12 +256,15 @@ console.log("DATI IN INTIAL VALUES: ", initialValues);
   // console.log("DATI IN INITIAL VALUES: ", initialValues); 
 
   const disableFields = {
-    nome:         true,
-    cognome:      true,
-    dataNascita:  true,
-    tipologia:    true,
-    // anniEsperienza: true,
-    cellulare:    true,
+    stato:                      true,
+    nome:                       true,
+    cognome:                    true,
+    dataNascita:                true,
+    citta:                      true,
+    tipologia:                  true,
+    anniEsperienza:             true,
+    cellulare:                  true,
+    owner:                      true
   };
 
   const handleSubmit = async (values) => {
@@ -269,13 +272,17 @@ console.log("DATI IN INTIAL VALUES: ", initialValues);
       // console.log("DATI DI VALUES: ", values);
   
 
-   
-      const note = values.descrizione;
+      const idCandidato = candidatoID;
+      const note = values.note;
       const modifica = 0; 
   
-      const url = `http://localhost:8080/intervista/react/salva?idCandidato=${candidatoID}&note=${encodeURIComponent(note)}&modifica=${modifica}`;
-  
-      const response = await axios.post(url, values);
+      const response = await axios.post("http://localhost:8080/intervista/react/salva", values, {
+          params: {
+            idCandidato: idCandidato,
+            note: note,
+            modifica: modifica
+          }
+        });
       console.log("DATI INVIATI: ", values);
       console.log("Response from server:", response.data);
   

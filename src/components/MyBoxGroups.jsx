@@ -136,7 +136,7 @@ const MyBoxGroups = ({
               value={values[field.name] || ''}
               onChange={(e) => handleInputChange(e)}
               InputLabelProps={{ shrink: true }}
-              disabled={field.disabled}
+              disabled={isDisabled}
               fullWidth
             />
           );

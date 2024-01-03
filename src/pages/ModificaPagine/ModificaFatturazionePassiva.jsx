@@ -33,7 +33,8 @@ const ModificaFatturazionePassiva = () => {
     fetchAziendeOptions();
   }, []);
 
-  const campiObbligatori = ["idFornitore", "stato", "dataFattura", "scadenza", "tipologia", "importo"];
+  // const campiObbligatori = ["idFornitore", "stato", "dataFattura", "scadenza", "tipologia", "importo"];
+  const campiObbligatori = ["importo"];
 
 
   const fields = [
