@@ -34,7 +34,7 @@ const MyBoxGroups = ({
   const handleInputChange = (e) => {
     const { name, value, type, options } = e.target;
 
-    if (type === "select-multiple") {
+    if (type === "select") {
       const selectedOptions = Array.from(options)
         .filter((option) => option.selected)
         .map((option) => option.value);
@@ -75,15 +75,14 @@ const MyBoxGroups = ({
     switch (field.type) {
       case "select":
       case "selectValue":
-      case "multipleSelect":
         return (
           <FormControl fullWidth key={field.name}>
             <InputLabel>{field.label}</InputLabel>
             <Select
               name={field.name}
-              value={values[field.name] || (field.type === "multipleSelect" ? [] : "")}
+              value={values[field.name] || (field.type === "select" ? [] : "")}
               onChange={handleInputChange}
-              multiple={field.type === "multipleSelect"}
+              // multiple={field.type === "select"}
               disabled={isDisabled}
               style={{ width: "100%", textAlign: "left" }}
             >

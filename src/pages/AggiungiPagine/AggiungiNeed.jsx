@@ -18,19 +18,6 @@ const AggiungiNeed = () => {
   const [ statoOptions,         setStatoOptions       ] = useState([]);
 
 
-  const convertStatusStringToNumber = (statusString) => {
-    switch (statusString) {
-      case "Verde":
-        return 1;
-      case "Giallo":
-        return 2;
-      case "Rosso":
-        return 3;
-      default:
-        return ;
-    }
-  };
-
   useEffect(() => {
     const fetchNeedOptions = async () => {
       try {

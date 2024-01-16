@@ -1,17 +1,46 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 
 const MyDataGrid = ({ data, columns, title }) => {
+
+  const [ rowsPerPage,                setRowsPerPage ] = React.useState(25);
+  const [ page,                       setPage        ] = React.useState(0);
+  const [ loading,                    setLoading     ] = React.useState(false);
+
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      if (data.length === 0) {
+        setLoading(true);
+      }
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [data]);
+
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+
 
 
   return (
     <Box
       sx={{
         width: "95%",
-        height: "430px",
+        height: "57%",
         backgroundColor: "white",
         borderRadius: "40px",
         display: "flex",
@@ -25,6 +54,7 @@ const MyDataGrid = ({ data, columns, title }) => {
         fontWeight: "bolder",
       }}
     >
+      
       <div
         style={{
           minHeight: "52px",
@@ -56,14 +86,49 @@ const MyDataGrid = ({ data, columns, title }) => {
       </div>
 
       <DataGrid
+        // rows={data}
+        // columns={columns}
+        // pageSize={5}
+        // rowsPerPage={rowsPerPage}
+        // pagination={{ pageSize: 25 }} 
+        // pstatoSizeOptions={[5, 10, 20]}
+        // checkboxSelection={false}
+        // disableRowSelectionOnClick
+        // disableColumnMenu={true}
         rows={data}
         columns={columns}
-        pageSize={5}
-        pagination={{ pageSize: 25 }} 
-        pstatoSizeOptions={[5, 10, 20]}
-        checkboxSelection={false}
-        disableRowSelectionOnClick
-        disableColumnMenu={true}
+        initialState={{
+          pagination: {
+            paginationModel: { page: 0, pageSize: 25 },
+          },
+        }}
+        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPage={rowsPerPage}
+        pageSize={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+        loading={data.length === 0 && loading}
+        noRowsOverlay={
+          loading ? (
+            <div>Caricamento dei dati in corso...</div>
+          ) : (
+            <div>No rows</div>
+          )
+        }
+        components={{
+          LoadingOverlay: () => (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '100%',
+            }}>
+              <CircularProgress style={{ color: '#fbb800' }} />
+            </div>
+          ),
+        }}
+        
         sx={{
           height: `${5 * 52}px`,
           borderStyle: "none",
@@ -102,6 +167,7 @@ const MyDataGrid = ({ data, columns, title }) => {
             borderTop: "2px solid #dbd9d9",
             width: "100%",
           },
+          
         }}
       />
     </Box>

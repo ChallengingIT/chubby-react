@@ -20,6 +20,8 @@ import {
 import CloudDownloadIcon  from '@mui/icons-material/CloudDownload';
 import CloudUploadIcon    from '@mui/icons-material/CloudUpload';
 import DeleteIcon         from '@mui/icons-material/Delete';
+import { GlobalStyles }   from '@mui/material';
+
 // import axios from 'axios';
 
 
@@ -47,11 +49,23 @@ const FieldsBox = ({
 }) => {
   const [values, setValues] = useState(initialValues || {});
   const [errors, setErrors] = useState({});
+  
 
 
   // const handleChange = (name) => (event) => {
   //   setValues({ ...values, [name]: event.target.value });
   // };
+
+
+//stile campi disabilitati
+const getDisabledStyles = (isDisabled) => {
+  return isDisabled ? { color: 'black' } : {};
+};
+
+
+
+  
+
   const handleChangeMultiple = (name) => (event) => {
     if (event.target.type === 'file') {
       // Prendi tutti i file dall'input
@@ -348,13 +362,19 @@ const FieldsBox = ({
 
   const renderField = (field) => {
     const isDisabled = disableFields[field.name];
+
     const errorMessage = errors[field.name];
     switch (field.type) {
       case 'text':
 
         return (
+
+          
+          
   
           <TextField
+          style={getDisabledStyles(field.disabled)}
+          
           label={field.label}
           name={field.name}
           onChange={handleChange(field.name)}
@@ -363,6 +383,7 @@ const FieldsBox = ({
           error={!!errors[field.name]} // Il campo diventa rosso se c'è un errore
           helperText={errors[field.name]} // Mostra il messaggio di errore se c'è un errore
           disabled={field.disabled}
+
         />
 
         
@@ -376,7 +397,7 @@ const FieldsBox = ({
       case 'select':
         return (
           <FormControl fullWidth error={!!errorMessage} disabled={isDisabled}> {/* Aggiungi error qui */}
-  <InputLabel>{field.label}</InputLabel>
+  <InputLabel style={getDisabledStyles(isDisabled)} >{field.label}</InputLabel>
   <Select
     style={{ width: "100%", textAlign: "left" }}
     name={field.name}
@@ -384,6 +405,7 @@ const FieldsBox = ({
     onChange={handleChange(field.name)}
     error={!!errors[field.name]}
     disabled={field.disabled}
+    
   >
     {field.options.map((option) => (
       <MenuItem key={option.value} value={option.value}>
@@ -496,7 +518,7 @@ case 'multipleSelectSkill2':
                           <Button
                             variant="contained"
                             color="primary"
-                            style={{  marginLeft: '10px', marginBottom: "10px", marginTop: "10px" }}
+                            style={{ display:"flex", justifyContent:"flex-end", marginLeft: '10px', marginBottom: "10px", marginTop: "10px" }}
                             startIcon={<CloudDownloadIcon />}
                             // onChange={(event) => handleFileChange(field.name, event)}
                             onClick={() => onDownloadCF(values.cf.id, values.cf.descrizione)}
@@ -510,7 +532,7 @@ case 'multipleSelectSkill2':
                             variant="contained"
                             component="label"
                             startIcon={<CloudUploadIcon />}
-                            style={{ marginLeft: '10px', backgroundColor: "green", color: "white",  marginBottom: "10px" }}
+                            style={{ display:"flex", justifyContent:"flex-end", marginLeft: '10px', backgroundColor: "green", color: "white",  marginBottom: "10px" }}
                           >
                         
                             <input
@@ -526,7 +548,7 @@ case 'multipleSelectSkill2':
                             
                             startIcon={<DeleteIcon />}
                             onClick={() => onDeleteCF(values.cf.id)}
-                            style={{ backgroundColor: 'red', marginLeft: '10px', color: "white", marginBottom: "10px" }}
+                            style={{ display:"flex", justifyContent:"flex-end", backgroundColor: 'red', marginLeft: '10px', color: "white", marginBottom: "10px" }}
                             disabled={!values[field.name]}
                           >
                             
@@ -538,32 +560,33 @@ case 'multipleSelectSkill2':
 
                     case 'soloDownloadAllegati':
                     
-                      return (
-                        <Box>
-                          <Typography variant="subtitle1" gutterBottom>{field.label}</Typography>
-                          {values[field.name] && values[field.name].map((file, index) => { // Controlla che l'array esista e che field.name sia 'files'
-                            
-                            return (
-                              <Box key={file.id} style={{ display: 'flex', flexDirection: "row", alignItems: 'center', margin: '10px 0', justifyContent: 'space-between', }}>
-                      
-                                <Typography variant="body1" style={{ marginRight: '10px' }}>{file}</Typography> {/* Qui viene visualizzato il nome del file */}
-                                <Button
-                                  variant="contained"
-                                  color="primary"
-                                  style={{ marginLeft: '10px', marginBottom: "10px", marginTop: "10px" }}
-                                  startIcon={<CloudDownloadIcon />}
-                                  onClick={() => {
-                                    console.log(`Scaricando file con id: ${file.id} e descrizione: ${file}`); // Verifica quali dati vengono passati alla funzione di download
-                                    onDownloadAllegati(file.id, file.descrizione);
-                                  }}
-                                >
-                     
-                                </Button>
-                              </Box>
-                            );
-                          })}
-                        </Box>
-                      );
+                     return (
+  <Box>
+    <Typography variant="subtitle1" gutterBottom>{field.label}</Typography>
+    {values[field.name] && values[field.name].length > 0 ? (
+      values[field.name].map((file, index) => (
+        <Box key={file.id} style={{ display: 'flex', flexDirection: "row", alignItems: 'center', margin: '10px 0', justifyContent: 'space-between', }}>
+          <Typography variant="body1" style={{ marginRight: '10px' }}>{file}</Typography> {/* Qui viene visualizzato il nome del file */}
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ marginLeft: '10px', marginBottom: "10px", marginTop: "10px" }}
+            startIcon={<CloudDownloadIcon style={{justifyContent:"flex-end", marginLeft: "10px"}} />}
+
+            onClick={() => {
+              console.log(`Scaricando file con id: ${file.id} e descrizione: ${file}`); // Verifica quali dati vengono passati alla funzione di download
+              onDownloadAllegati(file.id, file.descrizione);
+            }}
+          >
+          </Button>
+        </Box>
+      ))
+    ) : (
+      <Typography variant="body2">Non ci sono allegati presenti</Typography>
+    )}
+  </Box>
+);
+
 
 
                       case 'mofificaAllegati':
@@ -588,13 +611,14 @@ case 'multipleSelectSkill2':
                                   color="primary"
                                   startIcon={<CloudDownloadIcon />}
                                   onClick={() => onDownloadAllegati(file.id, file.descrizione)}
+                                  style={{ marginLeft: '10px', marginBottom: "10px", marginTop: "10px", justifyContent:"flex-end" }}
                                 >
                                 </Button>
                                 <Button
                                   variant="contained"
                                   startIcon={<DeleteIcon />}
                                   onClick={() => onDeleteAllegati(file.id)}
-                                  style={{ backgroundColor: 'red', color: "white" }}
+                                  style={{ marginLeft: '10px', marginBottom: "10px", marginTop: "10px", justifyContent:"flex-end", backgroundColor: "red", color: "white" }}
                                   disabled={!values[field.name]}
                                 >
                                 </Button>
@@ -631,7 +655,8 @@ case 'multipleSelectSkill2':
                           <Button
                             variant="contained"
                             color="primary"
-                            style={{  marginLeft: '10px', marginBottom: "10px", marginTop: "10px" }}
+                            // style={{  display:"flex", justifyContent:"flex-end", marginLeft: '10px', marginBottom: "10px", marginTop: "10px" }}
+                            style={{ marginLeft: '10px', marginBottom: "10px", marginTop: "10px", justifyContent:"flex-end" }}
                             startIcon={<CloudDownloadIcon />}
                             // onClick={() => values[field.name] && handleDownload(values[field.name].url, values[field.name].name)}
                             onClick={() => onDownloadCV(values.cv.id, values.cv.descrizione)}
@@ -644,7 +669,8 @@ case 'multipleSelectSkill2':
                             variant="contained"
                             component="label"
                             startIcon={<CloudUploadIcon />}
-                            style={{ marginLeft: '10px', backgroundColor: "green", color: "white",  marginBottom: "10px" }}
+                            // style={{ display:"flex", justifyContent:"flex-end", marginLeft: '10px', backgroundColor: "green", color: "white",  marginBottom: "10px" }}
+                            style={{ marginLeft: '10px', marginBottom: "10px", marginTop: "10px",  backgroundColor: "green", color: "white", justifyContent:"flex-end" }}
                           >
                         
                             <input
@@ -660,7 +686,7 @@ case 'multipleSelectSkill2':
                             
                             startIcon={<DeleteIcon />}
                             onClick={() => onDeleteCV(values.cv.id)}
-                            style={{ backgroundColor: 'red', marginLeft: '10px', color: "white", marginBottom: "10px" }}
+                            style={{ display:"flex", justifyContent:"flex-end", backgroundColor: 'red', marginLeft: '10px', color: "white", marginBottom: "10px" }}
                             disabled={!values[field.name]}
                           >
                             
@@ -864,10 +890,12 @@ case 'multipleSelectSkill2':
             color="primary"
             onClick={handleGoBack}
             style={{
-              backgroundColor: "#6C757D",
+              // backgroundColor: "#6C757D",
+              backgroundColor: "black",
               color: "white",
+              fontWeight:"bold",
               "&:hover": {
-                backgroundColor: "#6C757D",
+                backgroundColor: "black",
                 transform: "scale(1.05)",
               },
             }}
@@ -882,9 +910,13 @@ case 'multipleSelectSkill2':
               // onClick={() => onSubmit(values)}
               type="submit"
               style={{
-                backgroundColor: "black",
+                backgroundColor: "#fbb800",
+                color: "black",
+                fontWeight:"bold",
+                
                 "&:hover": {
-                  backgroundColor: "black",
+                  backgroundColor: "#fbb800",
+                  color: "black",
                   transform: "scale(1.05)",
                 },
               }}

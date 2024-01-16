@@ -15,6 +15,8 @@ const AggiungiIncontro = () => {
 const candidatoData = location.state?.candidatoData;
 const candidatoID   = location.state?.candidatoID; 
 
+console.log("CANDIDATO DATA ARRIVATO: ", candidatoData);
+
 useEffect(() => {
   // console.log("ID DEL CANDIDATO: ", candidatoID); 
 
@@ -172,17 +174,18 @@ useEffect(() => {
     { label: "RAL Attuale",               name: "attuale",                  type: "text"  },
     { label: "RAL Desiderata",            name: "desiderata",               type: "text"  },
     { label: "Proposta economica",        name: "proposta",                 type: "text"  },
-    { label: "Follow Up",                 name: "tipo",                     type: "select", options: tipoIntervistaOptions },
+    { label: "Follow Up",                 name: "idTipo",                   type: "select", options: tipoIntervistaOptions },
     { label: "Preavviso",                 name: "preavviso",                type: "text"  },
     { label: "Next Deadline",             name: "dataAggiornamento",        type: "date"  },
-    { label: "Owner next Deadline",       name: "ownerNextDeadline",        type: "select", options: ownerOptions },
+    { label: "Owner next Deadline",       name: "idNextOwner",              type: "select", options: ownerOptions },
 
   ];
   // const intervistaData = intervisteData.intervista && intervisteData.intervista[0];
   const candidatoDataObject = candidatoData[0];
-  // console.log("CANDIDATO OBJECT: ", candidatoDataObject);
+  console.log("CANDIDATO OBJECT: ", candidatoDataObject);
   const ultimaIntervista = getUltimaIntervista();
-  // console.log("ULTIMA INTERVISTA: ", ultimaIntervista);
+  console.log("ULTIMA INTERVISTA: ", ultimaIntervista);
+  
 
 const initialValues = {
     stato:                            candidatoDataObject.stato?.id                                                   || "",
@@ -191,12 +194,12 @@ const initialValues = {
     dataNascita:                      candidatoDataObject.dataNascita                                                 || "",
     citta:                            candidatoDataObject.citta                                                       || "", 
     tipologia:                        candidatoDataObject.tipologia?.id                                               || "",
-    anniEsperienza:                   ultimaIntervista ? ultimaIntervista.anniEsperienza                               : "",
+    anniEsperienza:                   candidatoDataObject.anniEsperienza                                              || "",
     dataUltimoContatto:               ultimaIntervista ? ultimaIntervista.dataUltimoContatto                           : "",
     cellulare:                        candidatoDataObject?.cellulare                                                  || "",
     idOwner:                          ultimaIntervista ? ultimaIntervista.owner?.id                                    : "",
     aderenza:                         ultimaIntervista ? ultimaIntervista.aderenza                                     : "",
-    coerenz:                          ultimaIntervista ? ultimaIntervista.coerenza                                     : "",
+    coerenza:                         ultimaIntervista ? ultimaIntervista.coerenza                                     : "",
     motivazione:                      ultimaIntervista ? ultimaIntervista.motivazione                                  : "",
     standing:                         ultimaIntervista ? ultimaIntervista.standing                                     : "",
     energia:                          ultimaIntervista ? ultimaIntervista.energia                                      : "",
@@ -211,10 +214,10 @@ const initialValues = {
     attuale:                          ultimaIntervista ? ultimaIntervista.attuale                                      : "",
     desiderata:                       ultimaIntervista ? ultimaIntervista.desiderata                                   : "",
     proposta:                         ultimaIntervista ? ultimaIntervista.proposta                                     : "",
-    tipo:                             ultimaIntervista ? ultimaIntervista.tipo?.id                                     : "",
+    idTipo:                           ultimaIntervista ? ultimaIntervista.tipo?.id                                     : "",
     preavviso:                        ultimaIntervista ? ultimaIntervista.preavviso                                    : "",
     dataAggiornamento:                candidatoDataObject?.dataAggiornamento                                          || "",
-    ownerNextDeadline:                candidatoDataObject?.nextOwner?.id                                              || ""
+    idNextOwner:                      ultimaIntervista?.nextOwner?.id                                                 || ""
 };
 
 console.log("DATI IN INTIAL VALUES: ", initialValues);

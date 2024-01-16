@@ -13,10 +13,6 @@
     console.log("ID Candidato: ", rowData.candidato?.id);
 
 
-
-
-
-
     const [ tipologiaOptions,         setTipologiaOptions      ] = useState([]); //jobtile
     const [ ownerOptions,             setOwnerOptions          ] = useState([]);
     const [ statoOptions,             setStatoOptions          ] = useState([]); //tipologiaIncontro
@@ -155,15 +151,15 @@
       valutazione:                      rowData.valutazione                         || "",
       descrizioneCandidatoUna:          rowData.descrizioneCandidatoUna             || "",
       teamSiNo:                         rowData.teamSiNo                            || "",
-      note:                             rowData.note                                || "",
+      note:                             rowData.candidato?.note                     || "",
       disponibilita:                    rowData.disponibilita                       || "",
       attuale:                          rowData.attuale                             || "",
       desiderata:                       rowData.desiderata                          || "",
       proposta:                         rowData.proposta                            || "",
       idTipo:                           rowData.tipo?.id                            || "",
       preavviso:                        rowData.preavviso                           || "",
-      dataAggiornamento:                rowData.dataAggiornamento                   || "", // Assicurati che questo sia il campo corretto
-      idNextOwner:                      rowData.candidato?.owner?.id                || ""
+      dataAggiornamento:                rowData.dataAggiornamento                   || "", 
+      idNextOwner:                      rowData.owner?.id                           || ""
     };
 
   //   tipologiaIncontro:                    rowData.stato?.descrizione || "",

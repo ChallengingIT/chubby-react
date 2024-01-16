@@ -2,15 +2,14 @@ import React, { useEffect, useState}                  from 'react'
 import MyDataGrid                                     from '../../components/MyDataGrid';
 import Sidebar                                        from '../../components/Sidebar';
 import { useParams }                                  from 'react-router-dom';
-import { useNavigate }                   from "react-router-dom";
+import { useNavigate }                                from "react-router-dom";
 import DeleteButton                                   from '../../components/button/DeleteButton';
 import axios                                          from 'axios';
 import { Link }                                       from "react-router-dom";
 import NeedMatchSearchBox                             from '../../components/searchBox/NeedMatchSearchBox.jsx';
-import FieldsBox                                      from '../../components/FieldsBox.jsx';
 import { Modal, Box, Button }                         from '@mui/material';
-import ModalBox from '../../components/ModalBox.jsx';
-import { useLocation } from 'react-router-dom';
+import ModalBox                                       from '../../components/ModalBox.jsx';
+import { useLocation }                                from 'react-router-dom';
 
 
 
@@ -350,11 +349,12 @@ const tableAssociati = [
       <Button
       onClick={() => handleOpenModal(params.row)}
       sx={{ backgroundColor: '#FFB800',
-      color: 'white',
+      fontWeight: 'bold',
+      color: 'black',
       "&:hover": {
         backgroundColor: "#ffb800",
         transform: "scale(1.05)",
-        color: 'white',
+        color: 'black',
         
       },
     }}>Aggiorna</Button>
@@ -397,11 +397,12 @@ const tableAssociati = [
         <Button
         onClick={() => handleAssocia(params.row)}
         sx={{ backgroundColor: '#FFB800',
-        color: 'white',
+        fontWeight: 'bold',
+        color: 'black',
         "&:hover": {
           backgroundColor: "#ffb800",
           transform: "scale(1.05)",
-          color: 'white',
+          color: 'black',
         },
       }}>Associa</Button>
       </div>
@@ -442,8 +443,6 @@ const tableAssociati = [
         <div className="containerTitle">
                     <h1>{`${descrizione} ${nomeAzienda} Staffing`}</h1>
                 </div>
-                <MyDataGrid data={storicoOptions}      columns={tableStorico}   title="Storico"               getRowId={(row) => row.id} />
-                <MyDataGrid data={associatiOptions}    columns={tableAssociati} title="Candidati Associati"   getRowId={(row) => row.id} />
                 <NeedMatchSearchBox data={needMatch}
           onSearch={handleSearch}
           onReset={handleReset}
@@ -451,6 +450,8 @@ const tableAssociati = [
           onSearchTextChange={(text) => setSearchText(text)}
           OriginalAssociabili={originalAssociabili}/>
                 <MyDataGrid data={filteredAssociabili} columns={tableAssociabili} title="Candidati"             getRowId={(row) => row.id} />
+                <MyDataGrid data={storicoOptions}      columns={tableStorico}   title="Storico"               getRowId={(row) => row.id} />
+                <MyDataGrid data={associatiOptions}    columns={tableAssociati} title="Candidati Associati"   getRowId={(row) => row.id} />
             <Button
           color="primary"
           onClick={handleGoBack}

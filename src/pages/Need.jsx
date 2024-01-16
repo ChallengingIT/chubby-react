@@ -93,17 +93,45 @@ const Need = () => {
       console.error("Errore durante l'aggiornamento dello stato:", error);
     }
   };
+
+
+  function WrappedTextCell(props) {
+    return (
+      <div style={{
+        whiteSpace: 'normal',
+        overflowWrap: 'break-word',
+        textAlign:"left",
+        fontWeight:"bold",
+        maxWidth: '250px', // Imposta la larghezza massima della cella
+      }}>
+        {props.value}
+      </div>
+    );
+  }
+  
   
 
 
   const columns = [
-    { field: "id",               headerName: "#",                  width: 70  },
-    { field: "weekDescrizione",  headerName: "Week/Descrizione",    width: 200, renderCell: (params) => (
-      <div style={{ textAlign: "left" }}>
-      <div style={{ textAlign: "start" }}>{params.row.week}</div>
-      <div style={{ textAlign: "start" }}>{params.row.descrizione}</div>
-    </div>
-      ),
+    { field: "id",               headerName: "#",                  width: 70, renderCell: (params) => (
+      <div style={{ textAlign: "center" }}>
+        {params.row.id }
+      </div>
+    ),
+  }, 
+    // { field: "weekDescrizione",  headerName: "Week/Descrizione",    width: 200, renderCell: (params) => (
+    //   <div style={{ textAlign: "left" }}>
+    //   <div style={{ textAlign: "start" }}>{params.row.week}</div>
+    //   <div style={{ textAlign: "start" }}>{params.row.descrizione}</div>
+    // </div>
+    //   ),
+    // },
+    { field: "week",              headerNmae: "Week",                width: 100 },
+    {
+      field: "descrizione",
+      headerName: "Descrizione",
+      width: 360,
+      renderCell: (params) => <WrappedTextCell value={params.row.descrizione} />
     },
     { field: "priorita",          headerName: "Priorità",            width: 100 },
     { field: "tipologia",
@@ -260,11 +288,11 @@ const Need = () => {
         color="primary"
         onClick={() => setIsModalOpen(false)}
         sx={{
-          backgroundColor: "#6C757D",
+          backgroundColor: "black",
           color: "white",
           marginRight: '10px', 
           "&:hover": {
-            backgroundColor: "#6C757D",
+            backgroundColor: "black",
             transform: "scale(1.05)",
           },
         }}
@@ -276,10 +304,13 @@ const Need = () => {
         variant="contained"
         onClick={handleUpdateStato}
         sx={{
-          backgroundColor: "black",
+          backgroundColor: "#fbb800",
+          color: "black",
           "&:hover": {
-            backgroundColor: "black",
+            backgroundColor: "#fbb800",
+            color: "black",
             transform: "scale(1.05)",
+
           },
         }}
       >

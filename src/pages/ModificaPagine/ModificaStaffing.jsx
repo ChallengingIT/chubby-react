@@ -156,7 +156,7 @@ const ModificaStaffing = () => {
     { label: "Data Inserimento",                    name: "dataUltimoContatto",            type: "date" },
     { label: "Stato",                               name: "stato",                      type: "select",         options: statoOptions },
     { label: "Owner",                               name: "owner",                      type: "select",         options: ownerOptions },
-    { label: "Seleziona le Skills",                 name: "skills",                     type: "multipleSelect", options: skillsOptions },
+    { label: "Seleziona le Skills",                 name: "skills",                     type: "multipleSelectSkill", options: skillsOptions },
     { label: "RAL/Tariffa",                         name: "ral",                        type: "text" },
     { label: "Disponibilità",                       name: "disponibilita",              type: "text" },
     { label: "Note",                                name: "note",                       type: "note" },
@@ -408,6 +408,7 @@ console.log("CF prima dell''invio :",values.cf);
           onUploadCV      ={handleUploadCV}
           onUploadCF      ={handleUploadCF}
           campiObbligatori={campiObbligatori}
+          skillsOptions={skillsOptions} 
         
           />
         </div>

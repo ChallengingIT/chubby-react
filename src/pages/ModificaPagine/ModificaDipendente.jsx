@@ -25,8 +25,8 @@ const ModificaDipendente = () => {
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseTipologia                      = await axios.get("http://localhost:8080/aziende/react/tipologia");
-        const skillsResponse                          = await axios.get("http://localhost:8080/staffing/react/skill");
+        const responseTipologia                      = await axios.get("http://localhost:8080/aziende/react/tipologia" );
+        const skillsResponse                         = await axios.get("http://localhost:8080/staffing/react/skill"    );
         const facoltaResponse                        = await axios.get("http://localhost:8080/staffing/react/facolta"  );
         const livelloScolasticoResponse              = await axios.get("http://localhost:8080/staffing/react/livello"  );
         const tipologiaContrattoResponse             = await axios.get("http://localhost:8080/hr/react/tipocontratto"  );
@@ -83,48 +83,48 @@ const ModificaDipendente = () => {
   const campiObbligatori = [ "nome", "cognome", "dataNasciata", "luogoNascita", "email", "cellulare", "dataInizio", "scadenza", "anniEsperienza", "idTipologia" ];
 
   const fields = [
-    { label: "Nome",                name: "nome",                       type: "text" },
-    { label: "Cognome",             name: "cognome",                    type: "text" },
-    { label: "Data di Nascita",     name: "dataNascita",                type: "date" },
-    { label: "Luogo di Nascita",    name: "luogoNascita",               type: "text" },
-    { label: "Email",               name: "email",                      type: "text" },
-    { label: "Cellulare",           name: "cellulare",                  type: "text" },
-    { label: "Residenza",           name: "citta",                      type: "text" },
-    { label: "Data Inizio",         name: "dataInizio",                 type: "date" },
-    { label: "Scadenza Contratto",  name: "dataScadenza",               type: "date" },
-    { label: "Anni Esperienza",     name: "anniEsperienza",             type: "text" },
-    { label: "Livello Scolastico",  name: "livelloScolastico",          type: "select",          options: livelloScolasticoOptions },
-    { label: "Facoltà",             name: "facolta",                    type: "select",          options: facoltaOptions},
-    { label: "IBAN",                name: "iban",                       type:"text"   },
-    { label: "Codice Fiscale",      name: "codFiscale",                 type:"text"   },
-    { label: "RAL/Tariffa",         name: "ral",                        type:"text"   },
-    { label: "Job Title",           name: "tipologia",                  type: "select",          options: tipologiaOptions },
-    { label: "Seleziona le Skills", name: "skills",                     type: "multipleSelect",  options: skillsOptions },
-    { label: "Tipologia Contratto", name: "tipologiaContratto",         type: "select",          options: tipologiaContrattoOptions },
-    { label: "Note",                name: "note",                       type: "note"  },
-    { lavel: "Allegati",            name: "files",                      type: "mofificaAllegati"},
+      { label: "Nome",                                name: "nome",                                           type: "text" },
+      { label: "Cognome",                             name: "cognome",                                        type: "text" },
+      { label: "Data di Nascita",                     name: "dataNascita",                                    type: "date" },
+      { label: "Luogo di Nascita",                    name: "luogoNascita",                                   type: "text" },
+      { label: "Email",                               name: "email",                                          type: "text" },
+      { label: "Cellulare",                           name: "cellulare",                                      type: "text" },
+      { label: "Residenza",                           name: "citta",                                          type: "text" },
+      { label: "Data Inizio",                         name: "dataInizio",                                     type: "date" },
+      { label: "Scadenza Contratto",                  name: "dataScadenza",                                   type: "date" },
+      { label: "Anni Esperienza",                     name: "anniEsperienza",                                 type: "text" },
+      { label: "Livello Scolastico",                  name: "livelloScolastico",                              type: "select",          options: livelloScolasticoOptions },
+      { label: "Facoltà",                             name: "facolta",                                        type: "select",          options: facoltaOptions},
+      { label: "IBAN",                                name: "iban",                                           type:"text"   },
+      { label: "Codice Fiscale",                      name: "codFiscale",                                     type:"text"   },
+      { label: "RAL/Tariffa",                         name: "ral",                                            type:"text"   },
+      { label: "Job Title",                           name: "tipologia",                                      type: "select",          options: tipologiaOptions },
+      { label: "Seleziona le Skills",                 name: "skills",                                         type: "multipleSelectSkill",  options: skillsOptions },
+      { label: "Tipologia Contratto",                 name: "tipologiaContratto",                             type: "select",          options: tipologiaContrattoOptions },
+      { label: "Note",                                name: "note",                                           type: "note"  },
+      { lavel: "Allegati",                            name: "files",                                          type: "mofificaAllegati"},
   ];
 
   const initialValues = {
-    nome:                   dipendentiData.nome                                                                   || "",
-    cognome:                dipendentiData.cognome                                                                || "",
-    dataNascita:            dipendentiData.dataNascita                                                            || "",
-    luogoNascita:           dipendentiData.luogoNascita                                                           || "",
-    email:                  dipendentiData.email                                                                  || "",
-    cellulare:              dipendentiData.cellulare                                                              || "",
-    citta:                  dipendentiData.citta                                                                  || "",
-    dataInizio:             dipendentiData.dataInizio                                                             || "",
-    datascadenza:           dipendentiData.dataScadenza                                                           || "",
-    anniEsperienza:         dipendentiData.anniEsperienza                                                         || "",
-    livelloScolastico:      dipendentiData.livelloScolastico  && dipendentiData.livelloScolastico.id              || "",
-    facolta:                dipendentiData.facolta            && dipendentiData.facolta.id                        || "",
-    iban:                   dipendentiData.iban                                                                   || "",
-    codFiscale:             dipendentiData.codFiscale                                                             || "",
-    ral:                    dipendentiData.ral                                                                    || "",
-    tipologia:              dipendentiData.tipologia          && dipendentiData.tipologia.id                      || "",
-    skills:                (dipendentiData.skills?.map(skill => skill?.id))                                       || [],
-    tipologiaContratto:     dipendentiData.tipologiaContratto && dipendentiData.tipologiaContratto.id             || "",
-    note:                   dipendentiData.note                                                                   || "",
+    nome:                                             dipendentiData.nome                                                                   || "",
+    cognome:                                          dipendentiData.cognome                                                                || "",
+    dataNascita:                                      dipendentiData.dataNascita                                                            || "",
+    luogoNascita:                                     dipendentiData.luogoNascita                                                           || "",
+    email:                                            dipendentiData.email                                                                  || "",
+    cellulare:                                        dipendentiData.cellulare                                                              || "",
+    citta:                                            dipendentiData.citta                                                                  || "",
+    dataInizio:                                       dipendentiData.dataInizio                                                             || "",
+    datascadenza:                                     dipendentiData.dataScadenza                                                           || "",
+    anniEsperienza:                                   dipendentiData.anniEsperienza                                                         || "",
+    livelloScolastico:                                dipendentiData.livelloScolastico  && dipendentiData.livelloScolastico.id              || "",
+    facolta:                                          dipendentiData.facolta            && dipendentiData.facolta.id                        || "",
+    iban:                                             dipendentiData.iban                                                                   || "",
+    codFiscale:                                       dipendentiData.codFiscale                                                             || "",
+    ral:                                              dipendentiData.ral                                                                    || "",
+    tipologia:                                        dipendentiData.tipologia          && dipendentiData.tipologia.id                      || "",
+    skills:                                         (dipendentiData.skills?.map(skill => skill?.id))                                       || [],
+    tipologiaContratto:                               dipendentiData.tipologiaContratto && dipendentiData.tipologiaContratto.id             || "",
+    note:                                             dipendentiData.note                                                                   || "",
     files: (dipendentiData.files?.map(file => {
       return {
         id: file.id, 
@@ -291,6 +291,7 @@ for (let key of formData.keys()) {
           title=""
           onDownloadAllegati = {handleDownloadAllegati}
           onDeleteAllegati = {handleDeleteAllegati}
+          skillsOptions={skillsOptions} 
           />
         </div>
       </div>

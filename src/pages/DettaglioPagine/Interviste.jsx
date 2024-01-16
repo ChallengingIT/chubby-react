@@ -37,9 +37,7 @@ function Interviste() {
       const candidatoResponse       = await axios.get(`http://localhost:8080/staffing/react/${candidatoID}`);
 
       if (typeof candidatoResponse.data === 'object') {
-        // Assumi che response.data sia l'oggetto che ti aspetti
-        setCandidatoData([candidatoResponse.data]); // Inserisci l'oggetto in un array se necessario
-        // Gestisci altri dati annidati come necessario
+        setCandidatoData([candidatoResponse.data]); 
       }
 
 
@@ -111,8 +109,8 @@ const candidatoCognome = candidatoData.length > 0 ? candidatoData[0].cognome : '
 
   const prepareDataForChild = (rowData) => {
     return {
-      rowData, // dati della riga corrente
-      candidatoData, // dati del candidato
+      rowData,
+      candidatoData,
     };
   };
   
@@ -171,12 +169,6 @@ state={params.row}
 ];
 
 
-// const data1 = [
-//   { id: 1, stato: "Q.M.", dataColloquio: "2022-04-12", intervistatore: "RM", followUpDataAggiornamento: "Feedback"},
-
-// ];
-
-
   return (
     <div className="container">
       <div className="content">
@@ -185,9 +177,7 @@ state={params.row}
         </div>
         <div className="container">
         <div className="containerTitle">
-        <h1>
- {`Lista ITW di ${candidatoNome} ${candidatoCognome}`}
-</h1>
+        <h1>{`Lista ITW di ${candidatoNome} ${candidatoCognome}`}</h1>
                 </div>
                 <MyButton onClick={navigateToAggiungiIntervista}>Aggiungi Intervista</MyButton>
                 <IntervisteSearchBox data={interviste}

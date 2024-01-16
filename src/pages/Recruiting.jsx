@@ -17,6 +17,9 @@ import ClipButton                             from "../components/button/ClipBut
 import Modal                                  from 'react-modal';
 import { Button }                             from "@mui/material";
 import { Link }                               from "react-router-dom";
+import SmileGreenIcon                         from "../components/button/SmileGreenIcon.jsx";
+import SmileOrangeIcon                        from "../components/button/SmileOrangeIcon.jsx";
+import SmileRedIcon                           from "../components/button/SmileRedIcon.jsx";
 
 import "../styles/Recruiting.css";
 
@@ -36,6 +39,7 @@ const Recruiting = () => {
   const [ isNotesPopupOpen,               setIsNotesPopupOpen             ] = useState(false);
   const [ isRalPopupOpen,                 setIsRalPopupOpen               ] = useState(false);
   const [ selectedCandidateNotes,         setSelectedCandidateNotes       ] = useState("");
+  const [ selectedCandidateRal,           setSelectedCandidateRal         ] = useState("");
 
 
   useEffect(() => {
@@ -94,25 +98,39 @@ fetchData();
     setIsNotesPopupOpen(false);
   };
 
+
+  const getSmileIcon = (params) => {
+    const rating = params.row.rating;
+  
+    if (rating <= 1) {
+      return <SmileRedIcon />;
+    } else if (rating >= 2 && rating < 3) {
+      return <SmileOrangeIcon />;
+    } else if (rating >= 3) {
+      return <SmileGreenIcon />;
+    } else {
+      return rating; // o un altro valore di default se necessario
+    }
+  };
+  
+
   
 
   const columns = [
     // { field: "id",            headerName: "ID",             width: 70  },
-    { field: "nomeEmail",     headerName: "Nome/Email",     width: 250, renderCell: (params) => (
+    { field: "nome",         headerName: "Nome",           width: 250, renderCell: (params) => (
       <div style={{ textAlign: "left"  }}>
       <Link
       to={`/staffing/modifica/${params.row.id}`}
       state={{ recruitingData: params.row }}
-
     >
       {params.row.nome} {params.row.cognome}
     </Link>
-      <div style={{ textAlign: "left" }}>
-      <div style={{ textAlign: "start" }}>{params.row.email}</div>
-    </div>
+     
     </div>
       ),
     },
+    { field: "email",          headerName: "Email",          width: 250},
     { field: "tipologia",      headerName: "Job Title",      width: 150, renderCell: (params) => (
       <div style={{ textAlign: "start" }}>
         {params.row.tipologia && params.row.tipologia.descrizione
@@ -121,7 +139,7 @@ fetchData();
       </div>
     ),
   }, 
-    { field: "rating",        headerName: "Rating",         width: 100 }, //fino a 1.9 è rosso, da 2 a 3 giallo, sopra 3 è verde
+    { field: "rating",        headerName: "Rating",         width: 100, renderCell: (params) => getSmileIcon(params), }, //fino a 1.9 è rosso, da 2 a 3 giallo, sopra 3 è verde
     { field: "nrating",       headerName: "N. Rating",      width: 90  },
     { field: "owner",         headerName: "Owner",          width: 70, renderCell: (params) => (
         <div style={{ textAlign: "start" }}>
@@ -144,16 +162,22 @@ fetchData();
       ),
     },
     { field: "dataUltimoContatto",      headerName: "Contatto",       width: 100 },
-    { field: "noteRal",       headerName: "Note/Ral",       width: 200,  renderCell: (params) => (
+    { field: "noteRal",                 headerName: "Note/Ral",       width: 200,  renderCell: (params) => (
       <div>
-        <NoteButton onClick={() => setIsNotesPopupOpen(true)} />
+        <NoteButton onClick={() => {
+          setIsNotesPopupOpen(true);
+          setSelectedCandidateNotes(params.row.note);
+        }} />
 
-        <EuroButton onClick={() => setIsRalPopupOpen(true)}/>
+        <EuroButton onClick={() => {
+          setIsRalPopupOpen(true);
+          setSelectedCandidateRal(params.row.ral)
+        }}
+        />
       </div>
     ), },
     { field: "schedaITW",     headerName: "Scheda ITW",      width: 100, renderCell: (params) => ( <Link
       to={`/staffing/intervista/${params.row.id}`}
-      // state = {{ recruitingData: params.row }}
       state = {{ recruitingData: params.row.id}}
       >
     <PersonInfoButton /> 
@@ -257,7 +281,8 @@ fetchData();
   }}
 >
   <h2>Note</h2>
-  <div>{selectedCandidateNotes}</div>
+  <div style={{ marginTop: "20px"}}>{selectedCandidateNotes}</div>
+  
   <Button
     color="primary"
     onClick={() => setIsNotesPopupOpen(false)}
@@ -298,7 +323,7 @@ fetchData();
   }}
 >
   <h2>Ral</h2>
-  <div>{selectedCandidateNotes}</div>
+  <div style={{marginTop: "20px"}}>{selectedCandidateRal}</div>
   <Button
     color="primary"
     onClick={() => setIsRalPopupOpen(false)}

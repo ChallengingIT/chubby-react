@@ -9,20 +9,17 @@ const AggiungiProgetto = () => {
   const navigate = useNavigate();
   const [ jobTitleOptions,                setJobTitleOptions                  ] = useState([]);
   const [ skillsOptions,                  setSkillsOptions                    ] = useState([]);
-  const [ skillsSelected,                 setSkillsSelected                   ] = useState([]);
   const [ facoltaOptions,                 setFacoltaOptions                   ] = useState([]);
   const [ livelloScolasticoOptions,       setLivelloScolasticoOptions         ] = useState([]);
   const [ contrattoOptions,               setContrattoOptions                 ] = useState([]);
 
-  const handleSkillsChange = (selectedOptions) => {
-    setSkillsSelected(selectedOptions);
-  };
+
 
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
         const responseJobTitle              = await axios.get("http://localhost:8080/aziende/react/tipologia" );
-        const responseNeedSkills            = await axios.get("http://localhost:8080/staffing/react/skill"    );
+        const responseSkill                 = await axios.get("http://localhost:8080/staffing/react/skill");
         const facoltaResponse               = await axios.get("http://localhost:8080/staffing/react/facolta"  );
         const livelloScolasticoResponse     = await axios.get("http://localhost:8080/staffing/react/livello"  );
         const contrattoResponse             = await axios.get("http://localhost:8080/hr/react/tipocontratto"  );
@@ -51,12 +48,12 @@ const AggiungiProgetto = () => {
           setFacoltaOptions(facoltaOptions);
 
 
-        if (Array.isArray(responseNeedSkills.data)) {
-          const skillsOptions = responseNeedSkills.data.map((skills) => ({
-            label: skills.descrizione,
-            value: skills.id,
-          }));
-          setSkillsOptions(skillsOptions);
+          if (Array.isArray(responseSkill.data)) {
+            const skillsOptions = responseSkill.data.map((skill) => ({
+              value: skill.id,
+              label: skill.descrizione
+            }));
+            setSkillsOptions(skillsOptions);
     
           if (Array.isArray(responseJobTitle.data)) {
             const jobTitleOptions = responseJobTitle.data.map((jobTitle) => ({
@@ -91,14 +88,14 @@ const campiObbligatori = [ "nome" ];
     { label: "Data Inizio",                 name: "dataInizio",         type: "date" },
     { label: "Scadenza Contratto",          name: "dataScadenza",       type: "date" },
     { label: "Anni Esperienza",             name: "anniEsperienza",     type: "text" },
-    { label: "Livello Scolastico",          name: "livelloScolastico",  type: "select",          options: livelloScolasticoOptions },
-    { label: "Facoltà",                     name: "facolta",            type: "select",          options: facoltaOptions},
+    { label: "Livello Scolastico",          name: "livelloScolastico",  type: "select",                      options: livelloScolasticoOptions },
+    { label: "Facoltà",                     name: "facolta",            type: "select",                      options: facoltaOptions},
     { label: "IBAN",                        name: "iban",               type:"text"  },
     { label: "Codice Fiscale",              name: "codFiscale",         type:"text"  },
     { label: "RAL/Tariffa",                 name: "ral",                type:"text"  },
-    { label: "Job Title",                   name: "tipologia",          type: "select",          options: jobTitleOptions },
-    { label: "Seleziona le Skills",         name: "skills",             type: "multipleSelect",  options: skillsOptions },
-    { label: "Tipologia Contratto",         name: "tipologiaContratto", type: "select",          options: contrattoOptions },
+    { label: "Job Title",                   name: "tipologia",          type: "select",                       options: jobTitleOptions },
+    { label: "Seleziona le skill",          name: "skills",             type: "multipleSelectSkill",   options: skillsOptions },
+    { label: "Tipologia Contratto",         name: "tipologiaContratto", type: "select",                       options: contrattoOptions },
     { label: "Note",                        name: "note",               type: "note" },
     { label: "Allegati",                    name: "file",               type: "fileMultiple" },
   ];
@@ -367,6 +364,7 @@ const validateFields = (values) => {
           campiObbligatori={campiObbligatori}  
           onSubmit={handleSubmit} 
           title="" 
+          skillsOptions={skillsOptions} 
           />
         </div>
       </div>

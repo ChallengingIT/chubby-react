@@ -49,26 +49,13 @@ import ModificaStaffing                                                from './p
 import ModificaFatturazioneAttiva                                      from './pages/ModificaPagine/ModificaFatturazioneAttiva.jsx';
 import TimesheetPages                                                  from './pages/TimesheetPages.jsx';
 import AggiungiIntervista                                              from './pages/AggiungiPagine/AggiungiIntervista.jsx';
+import EstraiReport                                                    from './pages/DettaglioPagine/EstraiReport.jsx';
+
 
 
 
 
 const App = () => {
-
-
-// //questa parte serve per bloccare l'esecuzione di Prova2 che è il file dove provavo a effettuare il login con la chiamata al back end
-
-  // return (
-  //   <div className='app-container'>
-  //     <BrowserRouter>
-  //       <Routes>
-  //         <Route path="/" element={<Recruiting />} />
-  //         <Route path="/staffing/intervista/:nome/:nomeAzienda"                     element={<Prova                    />} />
-  //       </Routes>
-  //     </BrowserRouter>
-  //   </div>
-  // );
-
 
   return (
     <div className='app-container'>
@@ -88,7 +75,7 @@ const App = () => {
           <Route path="/keyPeople/aggiungi"                           element={<AggiungiContatto            />} />
           <Route path="/need"                                         element={<Need                        />} />
           <Route path="/need/:id"                                     element={<ListaNeed                   />} />
-          <Route path="/need/aggiungi/:id/:nomeAzienda"               element={<AggiungiNeedID              />} />
+          <Route path="/need/aggiungi/:id"                            element={<AggiungiNeedID              />} />
           <Route path="/need/match/:id"                               element={<NeedMatchPages              />} />
           <Route path="/recruiting"                                   element={<Recruiting                  />} />
           <Route path="/progetti"                                     element={<Progetti                    />} />
@@ -120,11 +107,27 @@ const App = () => {
           <Route path="/associazioni/:id/:nome"                       element={<Associazioni                />} />
           <Route path="/staffing/modifica/:id"                        element={<ModificaStaffing            />} />
           <Route path="/hr/staff/timesheet/:id"                       element={<TimesheetPages              />} />
+          <Route path="/hr/report"                                    element={<EstraiReport                />} />
           <Route path="/logout"                                       exact component={LogoutPopUp}             />
         </Routes>
       </BrowserRouter>
     </div>
   );
+
+
+
+  // return (
+  //   <div className='app-container'>
+  //     <BrowserRouter>
+  //       <Routes>
+  //         <Route path="/" element={<Recruiting />} />
+  //         <Route path="/staffing/intervista/:nome/:nomeAzienda"                     element={<Prova                    />} />
+  //       </Routes>
+  //     </BrowserRouter>
+  //   </div>
+  // );
+
+
 };
 
 export default App;

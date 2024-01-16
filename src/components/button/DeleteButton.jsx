@@ -9,14 +9,14 @@ function DeleteButton({ onClick, id }) {
       size="medium"
       startIcon={<DeleteIcon />}
       sx={{
-        backgroundColor: 'red',
-        color: 'black',
+        backgroundColor: 'black',
+        color: '#ECECEC',
         borderRadius: '40px',
         justifyContent: 'end !important',
         "&:hover": {
-          backgroundColor: "red",
+          backgroundColor: "#fc2d2d",
           transform: "scale(1.05)",
-          color: 'white',
+          color: 'black',
         },
       }}
       onClick={() => onClick(id)}

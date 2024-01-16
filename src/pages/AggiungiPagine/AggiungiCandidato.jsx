@@ -42,13 +42,13 @@ const AggiungiCandidato = () => {
     const fetchAziendeOptions = async () => {
       try {
         const responseStato               = await axios.get("http://localhost:8080/staffing/react/stato/candidato");
-        const responseFornitori           = await axios.get("http://localhost:8080/fornitori/react");
-        const responseJobTitle            = await axios.get("http://localhost:8080/aziende/react/tipologia");
-        const responseTipologia           = await axios.get("http://localhost:8080/staffing/react/tipo");
-        const responseNeedSkills          = await axios.get("http://localhost:8080/staffing/react/skill");
-        const ownerResponse               = await axios.get("http://localhost:8080/aziende/react/owner");
-        const facoltaResponse             = await axios.get("http://localhost:8080/staffing/react/facolta");
-        const livelloScolasticoResponse   = await axios.get("http://localhost:8080/staffing/react/livello");
+        const responseFornitori           = await axios.get("http://localhost:8080/fornitori/react"               );
+        const responseJobTitle            = await axios.get("http://localhost:8080/aziende/react/tipologia"       );
+        const responseTipologia           = await axios.get("http://localhost:8080/staffing/react/tipo"           );
+        const responseNeedSkills          = await axios.get("http://localhost:8080/staffing/react/skill"          );
+        const ownerResponse               = await axios.get("http://localhost:8080/aziende/react/owner"           );
+        const facoltaResponse             = await axios.get("http://localhost:8080/staffing/react/facolta"        );
+        const livelloScolasticoResponse   = await axios.get("http://localhost:8080/staffing/react/livello"        );
 
         if (Array.isArray(livelloScolasticoResponse.data)) {
           const livelloScolasticoOptions = livelloScolasticoResponse.data.map((livelloScolastico) => ({
@@ -163,7 +163,7 @@ const AggiungiCandidato = () => {
     { label: "Data Inserimento",              name: "dataUltimoContatto",       type: "date"                                                            },
     { label: "Stato",                         name: "stato",                    type: "select",          options: statoOptions                          },
     { label: "Owner",                         name: "owner",                    type: "select",          options: ownerOptions      },
-    { label: "Seleziona le Skills",           name: "skills",                   type: "multipleSelect",  options: skillsOptions                         },
+    { label: "Seleziona le Skills",           name: "skills",                   type: "multipleSelectSkill",  options: skillsOptions                         },
     { label: "RAL/Tariffa",                   name: "ral",                      type: "text"                                                            },
     { label: "Disponibilità",                 name: "disponibilita",            type: "text"                                                            },
     { label: "Note",                          name: "note",                     type: "note"                                                            },
@@ -187,13 +187,26 @@ const handleSubmit = async (values) => {
     // const idCandidatoGenerato = "1"; 
     // setCandidatoId(idCandidatoGenerato);
 
+//  QUESTO è IL VECCHIO CONTROLLO FUNZIONANTE MA CHE DA ERRORE SE NON SONO CARICATI, QUINDI NON MANDA NULL
+    // if (values.cv) {
+    //   formData.append("cv", values.cv);
+    //   console.log("File CV selezionato:", values.cv);
+    // }
+    // if (values.cf) {
+    //   formData.append("cf", values.cf);
+    //   console.log("File CF selezionato:", values.cf);
+    // }
+
     if (values.cv) {
       formData.append("cv", values.cv);
-      console.log("File CV selezionato:", values.cv);
+    } else {
+      formData.append("cv", new Blob([], { type: 'application/octet-stream' }), 'cv_null');
     }
+    
     if (values.cf) {
       formData.append("cf", values.cf);
-      console.log("File CF selezionato:", values.cf);
+    } else {
+      formData.append("cf", new Blob([], { type: 'application/octet-stream' }), 'cf_null');
     }
 
 
@@ -384,6 +397,7 @@ const handleSubmit = async (values) => {
           campiObbligatori={campiObbligatori}  
           onSubmit={handleSubmit} 
           title=""  
+          skillsOptions={skillsOptions} 
         // onCVChange={handleCVChange}
         // onCFChange={handleCFChange}
         

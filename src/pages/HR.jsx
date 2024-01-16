@@ -66,6 +66,10 @@ const [ selectedCandidateNotes,           setSelectedCandidateNotes       ] = us
     navigate("/hr/staff/aggiungi");
   };
 
+  const navigateToEstraiReport = () => {
+    navigate("/hr/report");
+  };
+
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:8080/hr/react/staff/elimina/${id}`);
@@ -84,7 +88,15 @@ const [ selectedCandidateNotes,           setSelectedCandidateNotes       ] = us
     { field: "nome",      headerName: "Nome",       width: 150 },
     { field: "cognome",   headerName: "Cognome",    width: 150 },
     { field: "email",     headerName: "Email",      width: 200 },
-    { field: "note",      headerName: "Note",       width: 100, renderCell: (params) => ( <NoteButton onClick={() => setIsNotesPopupOpen(true)} /> ), },
+    { field: "note",      headerName: "Note",       width: 100, renderCell: (params) => (
+      <div>
+        <NoteButton onClick={() => {
+          setIsNotesPopupOpen(true);
+          setSelectedCandidateNotes(params.row.note);
+        }} />
+        </div>
+    ),
+      },
     { field: "timesheet", headerName: "Timesheet",  width: 100, renderCell: (params) => (
       <div>
         <Link
@@ -178,6 +190,7 @@ const [ selectedCandidateNotes,           setSelectedCandidateNotes       ] = us
               Aggiungi Dipendente
             </Button>
             <Button
+            onClick={navigateToEstraiReport}
                 className="button-add"
                 variant="contained"
                 size="medium"
@@ -258,7 +271,7 @@ const [ selectedCandidateNotes,           setSelectedCandidateNotes       ] = us
   }}
 >
   <h2>Note</h2>
-  <div>{selectedCandidateNotes}</div>
+  <div style={{ marginTop: "20px"}}>{selectedCandidateNotes}</div>
   <Button
     color="primary"
     onClick={() => setIsNotesPopupOpen(false)}

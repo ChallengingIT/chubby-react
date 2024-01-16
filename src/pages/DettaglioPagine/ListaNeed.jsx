@@ -15,14 +15,20 @@ function ListaNeed() {
   const params                = useParams();
   const location              = useLocation();
   const { id }                = params;
-  const { aziendaData = {} }  = location.state || {};
+  const { aziendaData = {} }  = location.state;
+
   const nomeAzienda           = aziendaData.denominazione;
+  const idAzienda             = aziendaData.id;
+
+ 
 
 
   const [ need,               setNeed               ] = useState([]);
   const [ searchText,         setSearchText         ] = useState("");
   const [ originalListaNeed,  setOriginalListaNeed  ] = useState([]);
-  const [ filteredListaNeed,  setFilteredListaNeed  ] = useState([]);  
+  const [ filteredListaNeed,  setFilteredListaNeed  ] = useState([]);
+  
+  console.log("ORIGINAL LISTA NEED: ", originalListaNeed);
 
 
   const fetchData = async () => {
@@ -65,6 +71,17 @@ function ListaNeed() {
     // fetchData();
   };
 
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await axios.delete(`http://localhost:8080/need/react/elimina/${id}`);
+      console.log("Risposta dalla chiamata delete: ", response);
+      console.log("ID NEED ELIMINATO: ", id)
+      fetchData();
+    } catch (error) {
+      console.error("Errore durante la cancellazione: ", error);
+    }
+  };
 
 
   const columns = [
@@ -117,7 +134,7 @@ function ListaNeed() {
         >
         <EditButton  />
         </Link>
-        <DeleteButton/>
+        <DeleteButton onClick={handleDelete} id={params.row.id}/>
         
       </div>
     ), },
@@ -134,13 +151,26 @@ function ListaNeed() {
                     <h1>{`Visualizzazione ${nomeAzienda}`}</h1>
                 </div>
                 <Link
-        to={`/need/aggiungi/${id}/${nomeAzienda}`}
-        state={{ needData: params.row }}
-        >
+                  to={`/need/aggiungi/${id}`}
+                  state={{ aziendeData: aziendaData }}
+                  >
                 <MyButton>Aggiungi Need</MyButton>
                 </Link>
-                <ListaNeedSearchBox data={need} onSearch={handleSearch} onReset={handleReset} onSearchTextChange={(text) => setSearchText(text)} OriginalListaNeed={originalListaNeed}/>
-                <MyDataGrid         data={need} columns={columns} title={`Needs for ${nomeAzienda}`} getRowId={(row) => row.id} />
+                <ListaNeedSearchBox 
+                data={need} 
+                onSearch={handleSearch} 
+                onReset={handleReset} 
+                onSearchTextChange={(text) => setSearchText(text)} 
+                OriginalListaNeed={originalListaNeed}
+                />
+
+                <MyDataGrid 
+                data={need} 
+                columns={columns} 
+                title={`Needs for ${nomeAzienda}`} 
+                getRowId={(row) => row.id} 
+                />
+
             <Button
           color="primary"
           onClick={handleGoBack}
@@ -169,3 +199,9 @@ function ListaNeed() {
 };
 
 export default ListaNeed;
+
+
+
+
+
+  

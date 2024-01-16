@@ -17,6 +17,7 @@ const ModificaAzienda = () => {
   
   const [ provinceOptions, setProvinceOptions] = useState([]);
   const [ ownerOptions,    setOwnerOptions   ] = useState([]);
+  const [ aziendeOptions,  setAziendeOptions ] = useState([]);
 
 
   // console.log("Dati Arrivati: ", aziendaData);
@@ -27,7 +28,14 @@ const ModificaAzienda = () => {
       try {
         const responseProvince = await axios.get("http://localhost:8080/aziende/react/province");
         const responseOwner    = await axios.get("http://localhost:8080/aziende/react/owner");
-    
+        const responseAziende  = await axios.get("http://localhost:8080/aziende/react");
+
+        if (Array.isArray(responseAziende.data)) {
+          const aziendeOptions = responseAziende.data.map((aziende) => ({
+            label: aziende.denominazione,
+            value: aziende.id,
+          }));
+          setAziendeOptions(aziendeOptions);
 
        
         if (Array.isArray(responseOwner.data)) {
@@ -46,6 +54,7 @@ const ModificaAzienda = () => {
             setProvinceOptions(provinceOptions);
           }
         }
+      }
 
       } catch (error) {
         console.error("Errore durante il recupero delle province:", error);
@@ -58,7 +67,7 @@ const ModificaAzienda = () => {
   const campiObbligatori = ["denominazione", "email", "idOwner", "status"];
 
   const fields = [
-    { label: "Nome Azienda",          name: "denominazione",        type: "text"                                                        },
+    { label: "Nome Azienda",          name: "denominazione",        type: "select",    options: aziendeOptions                          },
     { label: "Email",                 name: "email",                type: "text"                                                        },
     { label: "Partita IVA",           name: "pi",                   type: "text"                                                        },
     { label: "Codice Fiscale",        name: "cf",                   type: "text"                                                        },
@@ -89,7 +98,7 @@ const ModificaAzienda = () => {
 
   const initialValues = {
     id:                           aziendaData.id                              || "",
-    denominazione:                aziendaData.denominazione                   || "",
+    denominazione:                aziendaData.id                   || "",
     email:                        aziendaData.email                           || "",
     pi:                           aziendaData.pi                              || "",
     cf:                           aziendaData.cf                              || "",

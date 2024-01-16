@@ -168,7 +168,7 @@ const initialValues = {
   valutazione:                      rowData.valutazione                       || "",
   descrizioneCandidatoUna:          rowData.descrizioneCandidatoUna           || "",
   teamSiNo:                         rowData.teamSiNo                          || "",
-  note:                             rowData.note                              || "",
+  note:                             rowData.candidato?.note                   || "",
   disponibilita:                    rowData.disponibilita                     || "",
   attuale:                          rowData.attuale                           || "",
   desiderata:                       rowData.desiderata                        || "",

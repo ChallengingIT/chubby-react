@@ -1,0 +1,9 @@
+.disabledInput {
+    background-color: #e0e0e0;
+    color: black;
+  }
+  
+  .disabledInput .MuiInputBase-input.Mui-disabled {
+    color: black;
+  }
+  

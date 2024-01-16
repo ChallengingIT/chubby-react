@@ -50,6 +50,7 @@ const [ isMonthSubmitted,       setIsMonthSubmitted           ] = useState(false
 const [ alert,                  setAlert                      ] = useState({ open: false, message: '' });
 const [ originalTimesheet,      setOriginalTimesheet          ] = useState([]);
 const [ filteredTimesheet,      setFilteredTimesheet          ] = useState([]);
+const [ primoTimesheet,         setPrimoTimesheet             ] = useState([]);
 
 
 
@@ -95,7 +96,6 @@ const fetchData = async () => {
   try {
     const response = await axios.get(`http://localhost:8080/timesheet/react/staff/${id}/${anno}/${mese}`);
     
-    // Verifica che la risposta abbia la struttura prevista
     if (response.data && response.data.mese && Array.isArray(response.data.mese.days)) {
       const timesheetConId = response.data.mese.days.map((timesheet) => ({...timesheet}));
       setOriginalTimesheet(timesheetConId);
@@ -118,6 +118,22 @@ useEffect(() => {
   }
 }, [annoCorrente, meseCorrente]); // Dipendenze: esegui fetchData ogni volta che annoCorrente o meseCorrente cambiano
 
+
+
+useEffect(() => {
+  const fetchDataPrimoTimesheet = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/timesheet/react/staff/primo/${id}`);
+      // Assumendo che la risposta contenga i dati desiderati nel formato "MM-YYYY"
+      const [month, year] = response.data.split('-').map(Number);
+      setPrimoTimesheet(new Date(year, month - 1, 1)); // Month - 1 perché i mesi in JavaScript partono da 0
+      console.log("Primo timesheet: ", response.data);
+    } catch (error) {
+      console.error('Errore durante il recupero dei dati:', error);
+    }
+  };
+  fetchDataPrimoTimesheet();
+}, [id]);
 
 
 
@@ -185,17 +201,16 @@ const handleCloseAlert = (event, reason) => {
 
 
 
-    const today = new Date();
-    const currentYear = today.getFullYear();
-    const currentMonthIndex = today.getMonth(); // Gennaio è 0, Dicembre è 11
+
     const newMonthDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1);
-  
-    // Controlla se il nuovo mese è prima del mese corrente del sistema
-    if (newMonthDate.getFullYear() < currentYear || (newMonthDate.getFullYear() === currentYear && newMonthDate.getMonth() < currentMonthIndex)) {
-      // Se è un mese precedente, non fare nulla (o eventualmente mostra un messaggio)
-      setAlert({ open: true, message: "Non è possibile navigare ai mesi precedenti il mese corrente del sistema" });
-      return; // Esci dalla funzione
-    }
+
+  // Controlla se il nuovo mese è prima del mese in primoTimesheet
+  if (newMonthDate.getFullYear() < primoTimesheet.getFullYear() || 
+    (newMonthDate.getFullYear() === primoTimesheet.getFullYear() && newMonthDate.getMonth() < primoTimesheet.getMonth())) {
+    setAlert({ open: true, message: "Non è possibile navigare ai mesi precedenti il primo timesheet disponibile" });
+    return; // Esci dalla funzione se la nuova data è antecedente al primo timesheet
+  }
+
 
 
 
@@ -281,6 +296,9 @@ const handleCloseAlert = (event, reason) => {
   };
 
 
+  
+
+
 
   
 
@@ -329,7 +347,7 @@ const handleCloseAlert = (event, reason) => {
 const handleDayClick = (day) => {
   const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
   console.log("DATA DEL MODAL: ", date);
-  date.setDate(date.getDate() + 1); // Aggiungi un giorno qui
+  date.setDate(date.getDate() ); // Aggiungi un giorno qui
   const dateString = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T00:00`;
 
   setSelectedDay(date);
@@ -402,7 +420,7 @@ useEffect(() => {
           key={day}
           // onClick={() => handleDayClick(day)}
           sx={{
-            height: "80px",
+            height: "60px",
             backgroundColor: daySquareBgColor,
             display: "flex",
             flexDirection: "column",
@@ -530,7 +548,7 @@ const renderDayBox = () => {
             <Box
               key={dayData.id}
               sx={{
-                height: "80px",
+                height: "45px",
                 backgroundColor: daySquareBgColor,
                 display: "flex",
                 flexDirection: "column",
@@ -615,7 +633,7 @@ return (
 
       <Grid item xs={2} sm={2} >
         <Typography variant="h6" align="left">
-          PROGETTO
+          
         </Typography>
         
       </Grid>
@@ -636,7 +654,7 @@ return (
 
     <Grid container justifyContent="space-between" alignItems="flex-end" paddingLeft="20px" sx={{ borderBottom: '1px solid black', }} spacing={2}>
     <Grid item xs={2} sm={2} >
-        <Typography variant="h6" align="left">
+        <Typography variant="h6" align="left" fontSize="14px"  >
           Ferie, permessi e malattie
         </Typography>
         </Grid>

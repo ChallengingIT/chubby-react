@@ -1,49 +1,37 @@
-import React, { useState, useEffect }     from "react";
-import { useNavigate, useLocation }       from "react-router-dom";
-import axios                              from "axios";
-import Sidebar                            from "../../components/Sidebar";
-import { useParams }                      from "react-router-dom";
+import React, { useState, useEffect }                from "react";
+import { useNavigate, useLocation, useParams }       from "react-router-dom";
+import axios                                         from "axios";
+import Sidebar                                       from "../../components/Sidebar";
 
 
 
 import FieldsBox from "../../components/FieldsBox";
 
 const AggiungiNeedID = () => {
-const { id, nomeAzienda } = useParams();
-const navigate            = useNavigate();
+  const { id }              = useParams();
+  const navigate            = useNavigate();
+  const location = useLocation();
+  const aziendaData = location.state?.aziendaData;
+  console.log("Nome Azienda e id Azienda:", aziendaData);
+  
 
+  const [ aziendeOptions,       setAziendeOptions     ] = useState([]);
+  const [ skillsOptions,        setSkillsOptions      ] = useState([]);
+  const [ skills2Options,       setSkill2sOptions     ] = useState([]);
+  const [ ownerOptions,         setOwnerOptions       ] = useState([]);
+  const [ tipologiaOptions,     setTipologiaOptions   ] = useState([]);
+  const [ statoOptions,         setStatoOptions       ] = useState([]);
 
-  const [ aziendeOptions,     setAziendeOptions       ] = useState([]);
-  const [ skillsOptions,      setSkillsOptions        ] = useState([]);
-  const [ skills2Options,     setSkill2sOptions       ] = useState([]);
-  const [ ownerOptions,       setOwnerOptions         ] = useState([]);
-  const [ tipologiaOptions,   setTipologiaOptions     ] = useState([]);
-  const [ statoOptions,       setStatoOptions         ] = useState([]);
-  const [ aziendeMapping,     setAziendeMapping       ] = useState([]);
-
-
-  const convertStatusStringToNumber = (statusString) => {
-    switch (statusString) {
-      case "Verde":
-        return 1;
-      case "Giallo":
-        return 2;
-      case "Rosso":
-        return 3;
-      default:
-        return ;
-    }
-  };
 
   useEffect(() => {
     const fetchNeedOptions = async () => {
       try {
-        const responseAziende        = await axios.get("http://localhost:8080/aziende/react"       );
-        const responseSkill          = await axios.get("http://localhost:8080/staffing/react/skill");
-        const responseSkill2         = await axios.get("http://localhost:8080/staffing/react/skill");
-        const ownerResponse          = await axios.get("http://localhost:8080/aziende/react/owner" );
-        const tipologiaResponse      = await axios.get("http://localhost:8080/need/react/tipologia");
-        const statoResponse          = await axios.get("http://localhost:8080/need/react/stato"    );
+        const responseAziende       = await axios.get("http://localhost:8080/aziende/react"       );
+        const responseSkill         = await axios.get("http://localhost:8080/staffing/react/skill");
+        const responseSkill2        = await axios.get("http://localhost:8080/staffing/react/skill");
+        const ownerResponse         = await axios.get("http://localhost:8080/aziende/react/owner" );
+        const tipologiaResponse     = await axios.get("http://localhost:8080/need/react/tipologia");
+        const statoResponse         = await axios.get("http://localhost:8080/need/react/stato"    );
 
 
         if (Array.isArray(statoResponse.data)) {
@@ -90,29 +78,20 @@ const navigate            = useNavigate();
 
        
     
-          if (Array.isArray(responseAziende.data)) {
-            const aziendeMapping = {};
-            const aziendeOptions = responseAziende.data.map((aziende) => {
-              aziendeMapping[aziende.denominazione] = aziende.id; // Aggiungi mapping
-              return {
-                label: aziende.denominazione,
-                value: aziende.id,
-              };
-            });
-            setAziendeOptions(aziendeOptions);
-            // Salva il mapping nello stato o in una variabile ref
-            setAziendeMapping(aziendeMapping); // Assumi che hai uno stato o ref per questo
-          }
+        if (Array.isArray(responseAziende.data)) {
+          const ownerOptions = responseAziende.data.map((aziende) => ({
+            label: aziende.denominazione,
+            value: aziende.id,
+          }));
+          setAziendeOptions(ownerOptions);
           
         } else {
-          console.error("I dati ottenuti non sono nel formato Array:", statoResponse.data);
+          console.error("I dati ottenuti non sono nel formato Array:", responseAziende.data);
         }
       }
     }
   }
-
-
-
+}
         }
       } catch (error) {
         console.error("Errore durante il recupero delle aziende:", error);
@@ -122,16 +101,12 @@ const navigate            = useNavigate();
     fetchNeedOptions();
   }, []);
 
-  const convertStringToId = (idAziendaString) => {
-    // Assumi che aziendeMapping sia disponibile qui
-    return aziendeMapping[idAziendaString] || null;
-  };
-  
+  const campiObbligatori = [ "idAzienda", "descrizione", "priorita", "week", "tipo", "idOwner", "stato"]; 
 
   const fields = [
-    { label: "Azienda",           name: "idAzienda",                    type: "text",      },
-    { label: "Descrizione Need",  name: "descrizione",                  type: "text"       },
-    { label: "Priorità",          name: "priorita",                     type: "text"       },
+    { label: "Azienda",           name: "idAzienda",                    type: "select",           options: aziendeOptions },
+    { label: "Descrizione Need",  name: "descrizione",                  type: "text" },
+    { label: "Priorità",          name: "priorita",                     type: "text" },
     { label: "Week",              name: "week",                         type: "weekPicker" },
     { label: "Tipologia",         name: "tipologia",                    type: "select",           options: tipologiaOptions  },
     { label: "Tipologia Azienda", name: "tipo",                         type: "select",           options: [ 
@@ -141,79 +116,102 @@ const navigate            = useNavigate();
   ] },
     { label: "Owner",             name: "idOwner",                      type: "select",           options: ownerOptions },
     { label: "Stato",             name: "stato",                        type: "select",           options: statoOptions },
-    { label: "Headcount",         name: "numeroRisorse",                type: "text"        },
-    { label: "Location",          name: "location",                     type: "text"        },
-    { label: "Skills 1",          name: "skills",                       type: "multipleSelect",   options: skillsOptions },
-    { label: "Skills 2",          name: "skills2",                      type: "multipleSelect",   options: skills2Options },
-    { label: "Seniority",         name: "anniEsperienza",               type: "text"        },
-    { label: "Note",              name: "note",                         type: "note"        },
-
-
+    { label: "Headcount",         name: "numeroRisorse",                type: "text" },
+    { label: "Location",          name: "location",                     type: "text" },
+    { label: "Skills 1",          name: "skills",                       type: "multipleSelectSkill",   options: skillsOptions },
+    { label: "Skills 2",          name: "skills2",                      type: "multipleSelectSkill2",   options: skills2Options },
+    { label: "Seniority",         name: "anniEsperienza",               type: "text" },
+    { label: "Note",              name: "note",                         type: "note" },
   ];
 
+
   const initialValues = {
-    idAzienda: nomeAzienda,
+    idAzienda: aziendaData.id || "",
   };
 
-  const disableFields = {
-    idAzienda: true,
+  // const handleSubmit = async (values) => {
+  //   const errors = validateFields(values);
+  //   const hasErrors = Object.keys(errors).length > 0;
+  
+  //   if (!hasErrors) {
+  //   try {
+  //     let skills = "";
+  //     let skills2 = "";
 
-  };
+  //     if(values.skills && values.skills.length && values.skills2 && values.skills2.length) {
 
-
-
-
-
-  const handleSubmit = async (values) => {
-    try {
-
-      let skills = "";
-      let skills2 = "";
-      if(values.skills && values.skills.length && values.skills2 && values.skills2.length) {
-
-        skills = values.skills.join(',');
-        skills2 = values.skills2.join(',');
+  //       skills = values.skills.join(',');
+  //       skills2 = values.skills2.join(',');
     
-        console.log("DATI DI SOLE SKILLS: ", skills);
-        console.log("DATI DI SOLE SKILLS2: ", skills2);
+  //       console.log("DATI DI SOLE SKILLS: ", skills);
+  //       console.log("DATI DI SOLE SKILLS2: ", skills2);
     
-        delete values.skills;
-        delete values.skills2;
-      
-    }
+  //       delete values.skills;
+  //       delete values.skills2;
+  //   }
+  //   const response = await axios.post("http://localhost:8080/need/react/salva", values, {
+  //     params: { skill1: skills, skill2: skills2 }
+  //   });
 
-      const idAziendaNumerico = convertStringToId(values.idAzienda);
-    if (!idAziendaNumerico) {
-      console.error("Errore: ID Azienda non trovato per la stringa fornita");
-      return;
-    }
+  //   console.log("DATI IN VALUES: ", values);
 
-    // Aggiungi l'ID numerico convertito ai valori da inviare
-    const datiDaInviare = {
-      ...values,
-      idAzienda: idAziendaNumerico,
-    };
-    
-      
-
-      
-    const response = await axios.post(`http://localhost:8080/need/react/salva`, datiDaInviare, {
-      params: { skill1: skills, skill2: skills2 }
-    });
-
-    console.log("DATI DOPO L'INVIO: ", datiDaInviare);
-
-    console.log("Risposta dal server:", response.data);
-    navigate(`/need/${id}/${nomeAzienda}`);
-  } catch (error) {
-    console.error("Errore durante il salvataggio:", error);
-    if (error.response) {
-      console.error("Dettagli dell'errore:", error.response.data);
-    }
+  //   console.log("Risposta dal server:", response.data);
+  //   navigate("/need");
+  // } catch (error) {
+  //   console.error("Errore durante il salvataggio:", error);
+  //   if (error.response) {
+  //     console.error("Dettagli dell'errore:", error.response.data);
+  //   }
   
 
+  //   }
+  // } else {
+  //   // Gestisci qui gli errori di validazione...
+  //   console.log("Errore di validazione:", errors);
+  //   // Potresti voler impostare lo stato degli errori o visualizzare un messaggio all'utente
+  // }
+  // };
+
+  const handleSubmit = async (values) => {
+    const errors = validateFields(values);
+    const hasErrors = Object.keys(errors).length > 0;
+  
+    if (!hasErrors) {
+      try {
+        // Preparazione dei dati delle skills come stringhe separate
+        const skills = values.skills ? values.skills.join(',') : '';
+        const skills2 = values.skills2 ? values.skills2.join(',') : '';
+
+        console.log("Skills selezionate:", values.skills);
+  console.log("Skills2 selezionate:", values.skills2);
+
+  
+        // Rimozione delle proprietà delle skills dall'oggetto values
+        delete values.skills;
+        delete values.skills2;
+  
+        // Invio della richiesta al server con skills e skills2 come parametri di query
+        const response = await axios.post("http://localhost:8080/need/react/salva", values, {
+          params: {
+            skill1: skills,
+            skill2: skills2
+          }
+        });
+  
+        console.log("Risposta dal server:", response.data);
+        navigate("/need");
+      } catch (error) {
+        console.error("Errore durante il salvataggio:", error);
+        if (error.response) {
+          console.error("Dettagli dell'errore:", error.response.data);
+        }
+      }
+    } else {
+      console.log("Errore di validazione:", errors);
+      // Gestisci qui gli errori di validazione
     }
   };
+  
 
 
 
@@ -257,42 +255,13 @@ const navigate            = useNavigate();
   // };
   
 
-  const validate = (values) => {
-    const errors = {};
-    console.log("Dati in validate:", values);
-
-
-    if (!values.azienda) {
-      errors.azienda = "Il campo Azienda è obbligatorio";
-    }
-    
-    if (!values.descrizioneNeed) {
-      errors.descrizioneNeed = "Il campo descrizioneNeed è obbligatorio";
-    }
-
-    if (!values.priorita) {
-      errors.priorita = "Il campo priorita è obbligatorio";
-    }
-
-    if (!values.week) {
-      errors.week = "Il campo week è obbligatorio";
-    }
-
-    if (!values.tipoAzienda) {
-      errors.tipoAzienda = "Il campo tipoAzienda è obbligatorio";
-    }
-
-    if (!values.owner) {
-      errors.owner = "Il campo owner è obbligatorio";
-    }
-
-    if (!values.stato) {
-      errors.stato = "Il campo stato è obbligatorio";
-    }
-
-
-
-
+  const validateFields = (values) => {
+    let errors = {};
+    campiObbligatori.forEach(field => {
+      if (!values[field]) {
+        errors[field] = 'Questo campo è obbligatorio';
+      }
+    });
     return errors;
   };
 
@@ -303,16 +272,16 @@ const navigate            = useNavigate();
           <Sidebar />
         </div>
         <div className="container">
-        <div className="page-name" style={{ margin: "20px", fontSize: "15px"}}>
-        <h1 >{`Aggiungi Need di ${nomeAzienda}`}</h1>
-        </div>
-          <FieldsBox 
-          fields={fields} 
-          initialValues={initialValues} 
-          disableFields={disableFields}  
-          onSubmit={handleSubmit} 
-          title="" 
-          />
+          <div className="page-name">Aggiungi un nuovo Need per {aziendaData.denominazione} </div>
+          <FieldsBox
+          fields={fields}
+          initialValues={initialValues}
+          campiObbligatori={campiObbligatori}
+          onSubmit={handleSubmit}
+          title=""
+          skillsOptions={skillsOptions} 
+          skills2Options={skills2Options}
+   />
         </div>
       </div>
     </div>

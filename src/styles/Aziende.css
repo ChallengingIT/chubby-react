@@ -51,7 +51,7 @@
 .row2-col3-container {
   background-color: white;
   border-radius: 40px;
-  width: 100%;
+  width: 2000px;
   height: 150px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;

@@ -267,15 +267,15 @@ const handleSave = (popupData, tipoAttivita) => {
   ];
 
   const initialValuesInformazioniAzienda = {
-    denominazione:    aziendaData.denominazione                                       || "",
-    settoreMercato:   aziendaData.settoreMercato                                      || "",
-    email:            aziendaData.email                                               || "",
-    pec:              aziendaData.pec                                                 || "",
-    owner:            aziendaData.owner && aziendaData.owner.descrizione              || "",
-    tipologia:        aziendaData.tipologia                                           || "",
-    pi:               aziendaData.pi                                                  || "",
-    paese:            aziendaData.paese                                               || "",
-    citta:            aziendaData.citta                                               || "",
+    denominazione:            aziendaData.denominazione                                       || "",
+    settoreMercato:           aziendaData.settoreMercato                                      || "",
+    email:                    aziendaData.email                                               || "",
+    pec:                      aziendaData.pec                                                 || "",
+    owner:                    aziendaData.owner && aziendaData.owner.descrizione              || "",
+    tipologia:                aziendaData.tipologia                                           || "",
+    pi:                       aziendaData.pi                                                  || "",
+    paese:                    aziendaData.paese                                               || "",
+    citta:                    aziendaData.citta                                               || "",
   };
 
   // console.log("DATI IN INITIAL VALUES:" , initialValuesInformazioniAzienda);
@@ -289,59 +289,59 @@ const handleSave = (popupData, tipoAttivita) => {
   const ultimaData = getUltimaAttivita(attivitaOptions);
 
   const initialValuesComunicazioni = {
-    needAperti:      totalStatus                       || "",
-    needVinti:       totalVinto                        || "",
-    ultimeAttivita:  ultimaData                        || "", 
+    needAperti:                 totalStatus                       || "",
+    needVinti:                  totalVinto                        || "",
+    ultimeAttivita:             ultimaData                        || "", 
   };
 
   // console.log("DATI IN INITIAL VALUES 2: ", initialValuesComunicazioni);
 
 
   const tableNeed = [
-    { label: "Priorità", name: "priorita" },
-    { label: "Nome",     name: "nome"     }
+    { label: "Priorità",        name: "priorita" },
+    { label: "Nome",            name: "nome"     }
   ];
 
   const initialValuesNeed = needOptions.map(need => ({
-    priorita: need.priorita || "",
-    nome: need.descrizione  || ""
+    priorita:                   need.priorita     || "",
+    nome:                       need.descrizione  || ""
   }));
   
 
   // console.log("DATI IN INITIAL VALUES need:" , initialValuesNeed);
 
   const tableAttivita = [
-    { label: "Owner", name: "owner" },
-    { label: "Data" , name: "data"  },
-    { label: "Note",  name: "note"  },
+    { label: "Owner",                 name: "owner" },
+    { label: "Data" ,                 name: "data"  },
+    { label: "Note",                  name: "note"  },
   ];
 
   const intialValuesAttivita = attivitaOptions.map(attivita => ({
-    owner: attivita.owner || "",
-    data:  attivita.data  || "",
-    note:  attivita.note  || ""
+    owner:                            attivita.owner || "",
+    data:                             attivita.data  || "",
+    note:                             attivita.note  || ""
   }));
 
 
   const tableContatti = [
-{ label: "Nome",      name: "nome"      },
-{ label: "Ruolo",     name: "ruolo"     },
-{ label: "Email",     name: "email"     },
-{ label: "Cellulare", name: "cellulare" },
+{ label: "Nome",                      name: "nome"      },
+{ label: "Ruolo",                     name: "ruolo"     },
+{ label: "Email",                     name: "email"     },
+{ label: "Cellulare",                 name: "cellulare" },
   ];
 
 
   const initialValuesContatti = contattoOptions.map(contatto => ({
-    nome:       contatto.nome       || "",
-    ruolo:      contatto.ruolo      || "",
-    email:      contatto.email      || "",
-    cellulare:  contatto.cellulare  || ""
+    nome:                            contatto.nome       || "",
+    ruolo:                           contatto.ruolo      || "",
+    email:                           contatto.email      || "",
+    cellulare:                       contatto.cellulare  || ""
   }));
 
   const popupFields = [
-    { label: 'Owner',    name: 'idOwner',     type: "select", options: ownerOptions    },
-    { label: 'Contatto', name: 'idKeyPeople', type: "select", options: contattoOptions },
-    { label: 'Commento', name: 'note',        type: "note"                             },
+    { label: 'Owner',                 name: 'idOwner',                type: "select",                 options: ownerOptions    },
+    { label: 'Contatto',              name: 'idKeyPeople',            type: "select",                 options: contattoOptions },
+    { label: 'Commento',              name: 'note',                   type: "note"                                             },
   ];
   
 
@@ -488,12 +488,6 @@ const handleSave = (popupData, tipoAttivita) => {
 
             
           </Grid>
-
-
-
-
-
-
 
           </div>
 
