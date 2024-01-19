@@ -11,6 +11,7 @@ import PaperButton                                from "../components/button/Pap
 import Modal                                      from 'react-modal';
 import { Button, Select, MenuItem }               from "@mui/material";
 
+
 import "../styles/Need.css";
 
 //ricordati di togliere queste due righe
@@ -35,8 +36,16 @@ const Need = () => {
 
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/need/react");
-        const responseStato = await axios.get("http://localhost:8080/need/react/stato");
+        // Recupera l'accessToken da localStorage
+     const user = JSON.parse(localStorage.getItem("user"));
+     const accessToken = user?.accessToken;
+ 
+     // Configura gli headers della richiesta con l'Authorization token
+     const headers = {
+       Authorization: `Bearer ${accessToken}`
+     };
+        const response = await axios.get("http://localhost:8080/need/react", { headers});
+        const responseStato = await axios.get("http://localhost:8080/need/react/stato", { headers });
 
         if (Array.isArray(responseStato.data)) {
           const statoConId = responseStato.data.map((stato) => ({ ...stato}));
@@ -76,6 +85,14 @@ const Need = () => {
   };
 
   const handleUpdateStato = async () => {
+    // Recupera l'accessToken da localStorage
+    const user = JSON.parse(localStorage.getItem("user"));
+    const accessToken = user?.accessToken;
+
+    // Configura gli headers della richiesta con l'Authorization token
+    const headers = {
+      Authorization: `Bearer ${accessToken}`
+    };
     try {
       const idStato = newStato;
       
@@ -84,7 +101,7 @@ const Need = () => {
         stato: idStato
       });
   
-      await axios.post(`http://localhost:8080/need/react/salva/stato/${selectedNeed.id}?${params.toString()}`);
+      await axios.post(`http://localhost:8080/need/react/salva/stato/${selectedNeed.id}?${params.toString()}`, { headers });
       
       // Se la chiamata è andata a buon fine, chiudi il modal e aggiorna i dati
       setIsModalOpen(false);
@@ -127,12 +144,39 @@ const Need = () => {
     //   ),
     // },
     { field: "week",              headerNmae: "Week",                width: 100 },
+    // {
+    //   field: "descrizione",
+    //   headerName: "Descrizione",
+    //   width: 360,
+    //   renderCell: (params) => <WrappedTextCell value={params.row.descrizione} />
+    // },
     {
       field: "descrizione",
       headerName: "Descrizione",
       width: 360,
-      renderCell: (params) => <WrappedTextCell value={params.row.descrizione} />
+      renderCell: (params) => (
+        <a 
+          href={"https://esempio.com/" + params.row.id} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          style={{ 
+            textAlign: 'left',
+            whiteSpace: 'normal', 
+            wordWrap: 'break-word',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            display: '-webkit-box',
+            WebkitLineClamp: 2, // Numero di linee massime prima di mostrare '...'
+            WebkitBoxOrient: 'vertical',
+          }}
+        >
+          {params.row.descrizione}
+        </a>
+      )
     },
+    
+    
+    
     { field: "priorita",          headerName: "Priorità",            width: 100 },
     { field: "tipologia",
       headerName: "Tipologia",

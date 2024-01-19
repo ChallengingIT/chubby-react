@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Grid,
   TextField,
@@ -8,37 +8,27 @@ import {
   Select,
   FormControl,
   InputLabel,
+  Typography,
   Input,
-  Typography
-} from "@mui/material";
+} from '@mui/material';
 
-const MyBoxGroups = ({ 
-  fields, 
-  initialValues, 
-  onSubmit, 
-  onSave, 
-  showSaveButton = true, 
-  showBackButton = true, 
-  title = "Form", 
-  disableFields 
+const MyBoxGroups = ({
+  fields,
+  initialValues,
+  onSave,
+  title = 'Form',
+  disableFields,
 }) => {
+  const [currentGroupIndex, setCurrentGroupIndex] = useState(0);
+  const [values, setValues] = useState({ ...initialValues, dateOra: new Date().toISOString().slice(0, 16) });
   const navigate = useNavigate();
-  // const [values, setvalues] = useState(initialValues || {});
-
-  const [values, setValues] = useState({
-    ...initialValues, 
-    dateOra: new Date().toISOString().slice(0, 16), // Aggiunge l'ora corrente nel formato 'YYYY-MM-DDTHH:MM'
-  });
-  
 
   const handleInputChange = (e) => {
     const { name, value, type, options } = e.target;
-
-    if (type === "select") {
+    if (type === 'select') {
       const selectedOptions = Array.from(options)
         .filter((option) => option.selected)
         .map((option) => option.value);
-
       setValues((prevValues) => ({
         ...prevValues,
         [name]: selectedOptions,
@@ -61,30 +51,58 @@ const MyBoxGroups = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (onSubmit) {
-      onSubmit(values);
+    if (onSave) {
+      onSave(values);
     }
+  };
+
+  const handleNext = () => {
+    setCurrentGroupIndex(currentGroupIndex + 1);
+  };
+
+  const handleBack = () => {
+    setCurrentGroupIndex(currentGroupIndex - 1);
   };
 
   const handleGoBack = () => {
     navigate(-1);
   };
 
-  const renderField = (field) => {
+  const groupFields = (fields) => {
+    const groupedFields = [];
+    let currentGroup = [];
+    fields.forEach((field) => {
+      if (field.type === 'titleGroups') {
+        if (currentGroup.length > 0) {
+          groupedFields.push(currentGroup);
+        }
+        currentGroup = [field];
+      } else {
+        currentGroup.push(field);
+      }
+    });
+    if (currentGroup.length > 0) {
+      groupedFields.push(currentGroup);
+    }
+    return groupedFields;
+  };
+
+  const renderField = (field, groupLength) => {
+
+    const gridWidth = groupLength === 2 ? 6 : 4;
+
     const isDisabled = disableFields[field.name];
     switch (field.type) {
-      case "select":
-      case "selectValue":
+      case 'select':
         return (
-          <FormControl fullWidth key={field.name}>
+          <FormControl fullWidth key={field.name} sx={{ marginBottom: '16px', marginTop: '16px' }}>
             <InputLabel>{field.label}</InputLabel>
             <Select
               name={field.name}
-              value={values[field.name] || (field.type === "select" ? [] : "")}
+              value={values[field.name] || []}
               onChange={handleInputChange}
-              // multiple={field.type === "select"}
               disabled={isDisabled}
-              style={{ width: "100%", textAlign: "left" }}
+              style={{ width: '100%', textAlign: 'left' }}
             >
               {field.options.map((option) => (
                 <MenuItem key={option.value || option} value={option.value || option}>
@@ -94,170 +112,180 @@ const MyBoxGroups = ({
             </Select>
           </FormControl>
         );
-
-      case "file":
+      case 'file':
         return (
-          <div style={{ marginBottom: "16px", textAlign: "left" }} key={field.name}>
-            <div style={{ marginBottom: "4px" }}>{field.label}</div>
+          <div style={{ marginBottom: '16px', textAlign: 'left' }} key={field.name}>
+            <div style={{ marginBottom: '4px' }}>{field.label}</div>
             <FormControl fullWidth>
               <Input
                 type="file"
                 name={field.name}
                 onChange={handleFileChange}
-                inputProps={{ accept: field.accept || ".pdf" }}
+                inputProps={{ accept: field.accept || '.pdf' }}
               />
             </FormControl>
           </div>
         );
-
-      case "titleGroups":
+      case 'titleGroups':
         return (
           <Typography
             variant="h6"
             style={{
-              marginBottom: "60px",
-              textAlign: "center",
-              borderBottom: "1px solid #000",
-              paddingBottom: "5px",
-              marginTop: "80px",
-              gridColumn: "1 / -1", // Occupa tutte le colonne
+              marginBottom: '60px',
+              textAlign: 'center',
+              borderBottom: '1px solid #000',
+              paddingBottom: '5px',
+              marginTop: '80px',
+              gridColumn: '1 / -1',
             }}
           >
             {field.label}
           </Typography>
         );
-        case 'dateOra':
-          return (
-            <TextField
-              type="datetime-local"
-              label={field.label}
-              name={field.name}
-              value={values[field.name] || ''}
-              onChange={(e) => handleInputChange(e)}
-              InputLabelProps={{ shrink: true }}
-              disabled={isDisabled}
-              fullWidth
-            />
-          );
-
+      case 'dateOra':
+        return (
+          <TextField
+            
+            type="datetime-local"
+            label={field.label}
+            name={field.name}
+            value={values[field.name] || ''}
+            onChange={handleInputChange}
+            InputLabelProps={{ shrink: true }}
+            disabled={isDisabled}
+            fullWidth
+            style={{ width: '100%', marginBottom: '16px', marginTop: '16px' }}
+          />
+        );
       default:
         return (
           <TextField
             label={field.label}
             name={field.name}
-            value={values[field.name] || ""}
+            value={values[field.name] || ''}
             onChange={handleInputChange}
             disabled={isDisabled}
-            multiline={field.type === "note"}
-            fullWidth={field.type === "note"}
-            InputLabelProps={field.type === "date" ? { shrink: true } : undefined}
-            type={field.type === "date" ? "date" : "text"}
+            multiline={field.type === 'note'}
+            fullWidth={field.type === 'note'}
+            InputLabelProps={field.type === 'date' ? { shrink: true } : undefined}
+            type={field.type === 'date' ? 'date' : 'text'}
             key={field.name}
-            style={{ width: "100%" }}
+            style={{ width: '100%', marginBottom: '16px', marginTop: '16px' }}
           />
         );
     }
   };
 
-  const groupFields = (fields) => {
-    const groupedFields = [];
-    let currentGroup = [];
-
-    fields.forEach(field => {
-      if (field.type === "titleGroups") {
-        if (currentGroup.length > 0) {
-          groupedFields.push(currentGroup);
-          currentGroup = [];
-        }
-        groupedFields.push([field]);
-      } else {
-        currentGroup.push(field);
-      }
-    });
-
-    if (currentGroup.length > 0) {
-      groupedFields.push(currentGroup);
-    }
-
-    return groupedFields;
-  };
-
   const groupedFields = groupFields(fields);
+  const isLastGroup = currentGroupIndex === groupedFields.length - 1;
 
   return (
     <div
       style={{
-        display: "grid",
-        flexDirection: "column",
-        width: "80%",
-        height: "auto",
-        margin: "auto",
-        padding: "30px",
-        backgroundColor: "white",
-        borderRadius: "20px",
-        justifyItems: "center",
-        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.5)",
+        display: 'grid',
+        flexDirection: 'column',
+        width: '80%',
+        height: 'auto',
+        margin: 'auto',
+        padding: '30px',
+        backgroundColor: 'white',
+        borderRadius: '20px',
+        justifyItems: 'center',
+        boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.5)',
       }}
     >
-      <Typography variant="h5" style={{ marginBottom: "20px" }}>
+      <Typography variant="h5" style={{ marginBottom: '20px' }}>
         {title}
       </Typography>
       <form onSubmit={handleSubmit}>
-        {groupedFields.map((group, index) => (
-          <Grid container spacing={3} key={index}>
-            {group.map(field => (
-              <Grid
-                item
-                xs={field.type === "titleGroups" ? 12 : (field.type === "note" ? 12 : 4)}
-                key={field.name}
-              >
+        <Grid container spacing={3}>
+          {groupedFields[currentGroupIndex].map((field, index) =>
+            field.type === 'titleGroups' ? (
+              <Grid item xs={12} key={index} style={{ gridColumn: '1 / -1' }}>
+                <Typography variant="h6" style={{ textAlign: 'center', margin: '20px 0' }}>
+                  {field.label}
+                </Typography>
+              </Grid>
+            ) : (
+              <Grid item xs={12} sm={groupedFields[currentGroupIndex].length === 2 ? 6 : 4} key={field.name}>
                 {renderField(field)}
               </Grid>
-            ))}
-          </Grid>
-        ))}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginBottom: "20px",
-            marginTop: "40px",
-            gap: "40px",
-          }}
-        >
-          {showBackButton && (
-            <Button
-              color="primary"
-              onClick={handleGoBack}
-              style={{
-                backgroundColor: "#6C757D",
-                color: "white",
+            )
+          )}
+        </Grid>
+        <Grid container spacing={3} style={{ marginTop: '20px' }}>
+          
+          {!isLastGroup && (
+            <Grid item xs={12}>
+              <Button onClick={handleNext} fullWidth
+               style={{
+                width: '250px',
+                backgroundColor: "#fbb800",
+                color: "black",
+                fontWeight:"bold",
+                boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
+                borderRadius: '10px',
+                
                 "&:hover": {
-                  backgroundColor: "#6C757D",
+                  backgroundColor: "#fbb800",
+                  color: "black",
                   transform: "scale(1.05)",
+                  boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
+                  borderRadius: '10px',
                 },
               }}
-            >
-              Indietro
-            </Button>
+              >
+                Avanti
+                </Button>
+            </Grid>
           )}
-          {showSaveButton && (
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={() => onSave(values)}
+          {currentGroupIndex > 0 && (
+            <Grid item xs={12}>
+              <Button onClick={handleBack} fullWidth
               style={{
+                width: '250px',
                 backgroundColor: "black",
+                color: "white",
+                fontWeight:"bold",
+                boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
+                borderRadius: '10px',
                 "&:hover": {
                   backgroundColor: "black",
                   transform: "scale(1.05)",
+                  boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
+                  borderRadius: '10px',
                 },
               }}
-            >
-              Salva
-            </Button>
+              >
+                Indietro
+                </Button>
+            </Grid>
           )}
-        </div>
+          {isLastGroup && (
+            <Grid item xs={12}>
+              <Button type="submit" fullWidth
+              style={{
+                width: '250px',
+                backgroundColor: "#fbb800",
+                color: "black",
+                fontWeight:"bold",
+                boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
+                borderRadius: '10px',
+                
+                "&:hover": {
+                  backgroundColor: "#fbb800",
+                  color: "black",
+                  transform: "scale(1.05)",
+                  boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
+                  borderRadius: '10px',
+                },
+              }}
+              >
+                Salva
+                </Button>
+            </Grid>
+          )}
+        </Grid>
       </form>
     </div>
   );

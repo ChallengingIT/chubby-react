@@ -17,16 +17,26 @@ const AggiungiNeed = () => {
   const [ tipologiaOptions,     setTipologiaOptions   ] = useState([]);
   const [ statoOptions,         setStatoOptions       ] = useState([]);
 
+  // Recupera l'accessToken da localStorage
+  const user = JSON.parse(localStorage.getItem("user"));
+  const accessToken = user?.accessToken;
+
+  // Configura gli headers della richiesta con l'Authorization token
+  const headers = {
+    Authorization: `Bearer ${accessToken}`
+  };
+
+
 
   useEffect(() => {
     const fetchNeedOptions = async () => {
       try {
-        const responseAziende       = await axios.get("http://localhost:8080/aziende/react"       );
-        const responseSkill         = await axios.get("http://localhost:8080/staffing/react/skill");
-        const responseSkill2        = await axios.get("http://localhost:8080/staffing/react/skill");
-        const ownerResponse         = await axios.get("http://localhost:8080/aziende/react/owner" );
-        const tipologiaResponse     = await axios.get("http://localhost:8080/need/react/tipologia");
-        const statoResponse         = await axios.get("http://localhost:8080/need/react/stato"    );
+        const responseAziende       = await axios.get("http://localhost:8080/aziende/react"       , { headers });
+        const responseSkill         = await axios.get("http://localhost:8080/staffing/react/skill", { headers });
+        const responseSkill2        = await axios.get("http://localhost:8080/staffing/react/skill", { headers });
+        const ownerResponse         = await axios.get("http://localhost:8080/aziende/react/owner" , { headers });
+        const tipologiaResponse     = await axios.get("http://localhost:8080/need/react/tipologia", { headers });
+        const statoResponse         = await axios.get("http://localhost:8080/need/react/stato"    , { headers });
 
 
         if (Array.isArray(statoResponse.data)) {
@@ -184,7 +194,7 @@ const AggiungiNeed = () => {
         delete values.skills2;
   
         // Invio della richiesta al server con skills e skills2 come parametri di query
-        const response = await axios.post("http://localhost:8080/need/react/salva", values, {
+        const response = await axios.post("http://localhost:8080/need/react/salva", { headers }, values, {
           params: {
             skill1: skills,
             skill2: skills2

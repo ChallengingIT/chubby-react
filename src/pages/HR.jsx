@@ -13,6 +13,13 @@ import VisibilityButton                     from "../components/button/Visibilit
 import EditButton                           from "../components/button/EditButton";
 import DeleteButton                         from "../components/button/DeleteButton";
 import Modal                                from 'react-modal';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from '@mui/material';
 
 import "../styles/HR.css";
 
@@ -30,6 +37,9 @@ const [ filteredHr,                       setFilteredHr                   ] = us
 const [ searchText,                       setSearchText                   ] = useState("");
 const [ isNotesPopupOpen,                 setIsNotesPopupOpen             ] = useState(false);
 const [ selectedCandidateNotes,           setSelectedCandidateNotes       ] = useState("");
+const [ openDialog,                       setOpenDialog                   ] = useState(false);
+const [ deleteId,                         setDeleteId                     ] = useState(null);
+
 
   const handleCloseNotesModal = () => {
     setIsNotesPopupOpen(false);
@@ -38,7 +48,16 @@ const [ selectedCandidateNotes,           setSelectedCandidateNotes       ] = us
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/hr/react");
+      // Recupera l'accessToken da localStorage
+     const user = JSON.parse(localStorage.getItem("user"));
+     const accessToken = user?.accessToken;
+ 
+     // Configura gli headers della richiesta con l'Authorization token
+     const headers = {
+       Authorization: `Bearer ${accessToken}`
+     };
+
+      const response = await axios.get("http://localhost:8080/hr/react", { headers });
       if (Array.isArray(response.data)) {
         const hrConId = response.data.map((hr) => ({ ...hr }));
         setOriginalHr(hrConId);
@@ -57,6 +76,11 @@ const [ selectedCandidateNotes,           setSelectedCandidateNotes       ] = us
   fetchData();
 }, []);
 
+const openDeleteDialog = (id) => {
+  setDeleteId(id);
+  setOpenDialog(true);
+};
+
 
   const navigateToAggiungiUser = () => {
     navigate("/hr/crea/utente");
@@ -72,7 +96,17 @@ const [ selectedCandidateNotes,           setSelectedCandidateNotes       ] = us
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/hr/react/staff/elimina/${id}`);
+      // Recupera l'accessToken da localStorage
+     const user = JSON.parse(localStorage.getItem("user"));
+     const accessToken = user?.accessToken;
+ 
+     // Configura gli headers della richiesta con l'Authorization token
+     const headers = {
+       Authorization: `Bearer ${accessToken}`
+     };
+
+      await axios.delete(`http://localhost:8080/hr/react/staff/elimina/${deleteId}`, { headers });
+      setOpenDialog(false);
       const updatedHr = originalHr.filter((hr) => hr.id !== id);
       setHr(updatedHr);
       setOriginalHr(updatedHr);
@@ -87,8 +121,8 @@ const [ selectedCandidateNotes,           setSelectedCandidateNotes       ] = us
     // { field: "id",        headerName: "ID",         width: 70  },
     { field: "nome",      headerName: "Nome",       width: 150 },
     { field: "cognome",   headerName: "Cognome",    width: 150 },
-    { field: "email",     headerName: "Email",      width: 200 },
-    { field: "note",      headerName: "Note",       width: 100, renderCell: (params) => (
+    { field: "email",     headerName: "Email",      width: 250 },
+    { field: "note",      headerName: "Note",       width: 180, renderCell: (params) => (
       <div>
         <NoteButton onClick={() => {
           setIsNotesPopupOpen(true);
@@ -97,7 +131,7 @@ const [ selectedCandidateNotes,           setSelectedCandidateNotes       ] = us
         </div>
     ),
       },
-    { field: "timesheet", headerName: "Timesheet",  width: 100, renderCell: (params) => (
+    { field: "timesheet", headerName: "Timesheet",  width: 180, renderCell: (params) => (
       <div>
         <Link
         to={`/hr/staff/timesheet/${params.row.id}`}
@@ -121,7 +155,7 @@ const [ selectedCandidateNotes,           setSelectedCandidateNotes       ] = us
         >
         <EditButton  />
         </Link>
-        <DeleteButton onClick={handleDelete} id={params.row.id}/>
+        <DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
       </div>
     ), },
   ];
@@ -150,6 +184,25 @@ const [ selectedCandidateNotes,           setSelectedCandidateNotes       ] = us
     // fetchData();
     setFilteredHr(originalHr);
   };
+
+
+  const handleInviaSollecito = async () => {
+    try {
+      // Recupera l'accessToken da localStorage
+     const user = JSON.parse(localStorage.getItem("user"));
+     const accessToken = user?.accessToken;
+ 
+     // Configura gli headers della richiesta con l'Authorization token
+     const headers = {
+       Authorization: `Bearer ${accessToken}`
+     };
+
+      const response = await axios.post("http://localhost:8080/hr/react/staff/sollecito", { headers });
+      console.log("RISPOSTA DAL SERVER: ",response.data);
+    } catch (error) {
+      console.error("Errore durante la cancellazione:", error);
+    }
+  }
 
 
   return (
@@ -216,6 +269,7 @@ const [ selectedCandidateNotes,           setSelectedCandidateNotes       ] = us
               Estrai report
             </Button>
             <Button
+                onClick={handleInviaSollecito}
                 className="button-add"
                 variant="contained"
                 size="medium"
@@ -292,6 +346,44 @@ const [ selectedCandidateNotes,           setSelectedCandidateNotes       ] = us
 </Modal>
         </div>
       </div>
+      <Dialog
+  open={openDialog}
+  onClose={() => setOpenDialog(false)}
+  aria-labelledby="alert-dialog-title"
+  aria-describedby="alert-dialog-description"
+  
+>
+  <DialogTitle id="alert-dialog-title">{"Conferma Eliminazione"}</DialogTitle>
+  <DialogContent>
+    <DialogContentText id="alert-dialog-description">
+      Sei sicuro di voler eliminare questa azienda?
+    </DialogContentText>
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={() => setOpenDialog(false)} color="primary" style={{
+              backgroundColor: "black",
+              color: "white",
+              "&:hover": {
+                backgroundColor: "black",
+                transform: "scale(1.05)",
+              },
+            }}>
+      Annulla
+    </Button>
+    <Button onClick={handleDelete} color="primary" variant="contained" type="submit"
+              style={{
+                backgroundColor: "#fbb800",
+                color: "black",
+                "&:hover": {
+                  backgroundColor: "#fbb800",
+                  color: "black",
+                  transform: "scale(1.05)",
+                },
+              }}>
+      Conferma
+    </Button>
+  </DialogActions>
+</Dialog>
     </div>
   );
 };

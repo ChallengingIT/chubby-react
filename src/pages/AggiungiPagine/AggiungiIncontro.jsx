@@ -17,6 +17,16 @@ const candidatoID   = location.state?.candidatoID;
 
 console.log("CANDIDATO DATA ARRIVATO: ", candidatoData);
 
+// Recupera l'accessToken da localStorage
+const user = JSON.parse(localStorage.getItem("user"));
+const accessToken = user?.accessToken;
+
+// Configura gli headers della richiesta con l'Authorization token
+const headers = {
+  Authorization: `Bearer ${accessToken}`
+};
+
+
 useEffect(() => {
   // console.log("ID DEL CANDIDATO: ", candidatoID); 
 
@@ -48,11 +58,11 @@ useEffect(() => {
 
 
         //jobtitle = tipologia, tipologiaIncontro = stato, owner = owner
-        const responseTipologia                      = await axios.get("http://localhost:8080/aziende/react/tipologia");
-        const ownerResponse                          = await axios.get("http://localhost:8080/aziende/react/owner");
-        const responseStato                          = await axios.get("http://localhost:8080/staffing/react/stato/candidato");
-        const responseTipoIntervista                 = await axios.get("http://localhost:8080/intervista/react/tipointervista");
-        const responseIntervista                     = await axios.get(`http://localhost:8080/intervista/react/${candidatoID}`);
+        const responseTipologia                      = await axios.get("http://localhost:8080/aziende/react/tipologia"          , { headers });
+        const ownerResponse                          = await axios.get("http://localhost:8080/aziende/react/owner"              , { headers });
+        const responseStato                          = await axios.get("http://localhost:8080/staffing/react/stato/candidato"   , { headers });
+        const responseTipoIntervista                 = await axios.get("http://localhost:8080/intervista/react/tipointervista"  , { headers });
+        const responseIntervista                     = await axios.get(`http://localhost:8080/intervista/react/${candidatoID}`  , { headers });
 
         if (Array.isArray(responseIntervista.data)) {
           const intervisteConId = responseIntervista.data.map((interviste) => ({ ...interviste }));
@@ -279,7 +289,7 @@ console.log("DATI IN INTIAL VALUES: ", initialValues);
       const note = values.note;
       const modifica = 0; 
   
-      const response = await axios.post("http://localhost:8080/intervista/react/salva", values, {
+      const response = await axios.post("http://localhost:8080/intervista/react/salva", { headers }, values, {
           params: {
             idCandidato: idCandidato,
             note: note,

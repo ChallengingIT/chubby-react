@@ -413,7 +413,10 @@ useEffect(() => {
       // Controlla se è sabato o domenica
       const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
       const isHoliday = isPublicHoliday(day, month);
-      const daySquareBgColor = isWeekend ? '#FF4D4D' : (isHoliday ? '#FF4D4D' : 'grey.200');
+      // const daySquareBgColor = isWeekend ? '#FF4D4D' : (isHoliday ? '#FF4D4D' : 'grey.200');
+      const isNonWorkingDay = isWeekend || isHoliday;
+    const daySquareStyle = isNonWorkingDay ? { backgroundColor: '#fbb800', color: 'white' } : { backgroundColor: 'grey.200' };
+
   
       days.push(
         <Box
@@ -421,12 +424,13 @@ useEffect(() => {
           // onClick={() => handleDayClick(day)}
           sx={{
             height: "60px",
-            backgroundColor: daySquareBgColor,
+            // backgroundColor: daySquareBgColor,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
             width: "98%",
+            ...daySquareStyle,
             // minWidth: "30px",
             // flexGrow: 1,
           }}
@@ -542,19 +546,22 @@ const renderDayBox = () => {
         {filteredTimesheet.map((dayData) => {
           const isWeekend = dayData.iniziale === 'S' || dayData.iniziale === 'D'; // Adattalo secondo la logica corretta
           const isHoliday = dayData.festivo;
-          const daySquareBgColor = isWeekend ? '#FF4D4D' : (isHoliday ? '#FF4D4D' : 'grey.200');
+          // const daySquareBgColor = isWeekend ? '#FF4D4D' : (isHoliday ? '#FF4D4D' : 'grey.200');
+          const isNonWorkingDay = isWeekend || isHoliday;
+          const daySquareStyle = isNonWorkingDay ? { backgroundColor: '#fbb800', color: 'white' } : { backgroundColor: 'grey.200' };
 
           return (
             <Box
               key={dayData.id}
               sx={{
                 height: "45px",
-                backgroundColor: daySquareBgColor,
+                // backgroundColor: daySquareBgColor,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
                 width: "98%",
+                ...daySquareStyle,
                 ':hover': {
                   backgroundColor: "#fbb800",
                   cursor: 'pointer',
@@ -654,7 +661,7 @@ return (
 
     <Grid container justifyContent="space-between" alignItems="flex-end" paddingLeft="20px" sx={{ borderBottom: '1px solid black', }} spacing={2}>
     <Grid item xs={2} sm={2} >
-        <Typography variant="h6" align="left" fontSize="14px"  >
+        <Typography variant="h6" align="left" fontSize="17px"  >
           Ferie, permessi e malattie
         </Typography>
         </Grid>

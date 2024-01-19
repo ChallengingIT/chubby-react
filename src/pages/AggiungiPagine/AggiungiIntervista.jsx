@@ -11,6 +11,16 @@ const candidatoID   = location.state?.candidatoID;
 
 console.log("ID Candidato: ", candidatoID);
 
+// Recupera l'accessToken da localStorage
+const user = JSON.parse(localStorage.getItem("user"));
+const accessToken = user?.accessToken;
+
+// Configura gli headers della richiesta con l'Authorization token
+const headers = {
+  Authorization: `Bearer ${accessToken}`
+};
+
+
 
 
 
@@ -32,12 +42,12 @@ const fetchData = async () => {
 
 
       //jobtitle = tipologia, tipologiaIncontro = stato, owner = owner
-    const responseTipologia                      = await axios.get("http://localhost:8080/aziende/react/tipologia");
-    const ownerResponse                          = await axios.get("http://localhost:8080/aziende/react/owner");
-    const responseStato                          = await axios.get("http://localhost:8080/staffing/react/stato/candidato");
-    const responseTipoIntervista                 = await axios.get("http://localhost:8080/intervista/react/tipointervista");
-    const responseIntervista                     = await axios.get(`http://localhost:8080/intervista/react/${candidatoID}`);
-    const responseCandidato                      = await axios.get(`http://localhost:8080/staffing/react/${candidatoID}`); 
+    const responseTipologia                      = await axios.get("http://localhost:8080/aziende/react/tipologia"                  , { headers });
+    const ownerResponse                          = await axios.get("http://localhost:8080/aziende/react/owner"                      , { headers });
+    const responseStato                          = await axios.get("http://localhost:8080/staffing/react/stato/candidato"           , { headers });
+    const responseTipoIntervista                 = await axios.get("http://localhost:8080/intervista/react/tipointervista"          , { headers });
+    const responseIntervista                     = await axios.get(`http://localhost:8080/intervista/react/${candidatoID}`          , { headers });
+    const responseCandidato                      = await axios.get(`http://localhost:8080/staffing/react/${candidatoID}`            , { headers }); 
 
 
 
@@ -108,17 +118,15 @@ fetchData();
 }, []);
 
 const fields = [
-
-    { label: "Tipologia Incontro",        name: "stato",                  type: "select", options: statoOptions, 
-
-},
+    { type: "titleGroups",                label: "Informazioni candidato"             },
+    { label: "Tipologia Incontro",        name: "stato",                  type: "select", options: statoOptions, },
     { label: "Nome",                      name: "nome",                   type: "text"},
     { label: "Cognome",                   name: "cognome",                type: "text"},
     { label: "Data di Nasciata",          name: "dataNascita",            type: "date"},
     { label: "Location",                  name: "location",               type: "text"},
     { label: "Job Title",                 name: "tipologia",              type: "select", options: tipologiaOptions },
     { label: "Anni di Esperienza",        name: "anniEsperienza",         type: "text"},
-    { label: "Data Incontro",             name: "dataColloquio",           type: "date"},
+    { label: "Data Incontro",             name: "dataColloquio",          type: "date"},
     { label: "Recapiti",                  name: "cellulare",              type: "text"},
     { label: "Intervistatore",            name: "owner",                  type: "select", options: ownerOptions },
 
@@ -221,7 +229,7 @@ const handleSubmit = async (values) => {
     // delete values.note;
 
     // const url = `http://localhost:8080/intervista/react/salva?idCandidato=${idCandidato}&note=${encodeURIComponent(note)}&modifica=${modifica}`;
-    const response = await axios.post("http://localhost:8080/intervista/react/salva", values, {
+    const response = await axios.post("http://localhost:8080/intervista/react/salva", { headers }, values, {
       params: {
         idCandidato: candidatoID,
         note: note,

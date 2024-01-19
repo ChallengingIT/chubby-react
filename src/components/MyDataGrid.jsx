@@ -167,6 +167,15 @@ const MyDataGrid = ({ data, columns, title }) => {
             borderTop: "2px solid #dbd9d9",
             width: "100%",
           },
+          "& .MuiDataGrid-cell": {
+            fontSize: "16.5px", // Imposta la dimensione del font delle celle
+            fontFamily: "Roboto",
+          },
+          "& .MuiDataGrid-columnHeaderTitle": {
+            color: '#808080',
+            fontWeight: "bolder",
+            fontSize: "18px", // Imposta la dimensione del font degli header delle colonne
+          },
           
         }}
       />

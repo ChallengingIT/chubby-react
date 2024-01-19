@@ -12,6 +12,7 @@ import ListButton                           from "../components/button/ListButto
 import SmileGreenIcon                       from "../components/button/SmileGreenIcon.jsx";
 import SmileOrangeIcon                      from "../components/button/SmileOrangeIcon.jsx";
 import SmileRedIcon                         from "../components/button/SmileRedIcon.jsx";
+
 import {
   Dialog,
   DialogTitle,
@@ -23,6 +24,7 @@ import {
 
 
 import "../styles/Aziende.css";
+import userService from "../services/user.service.js";
 
 
 const Aziende = () => {
@@ -35,29 +37,41 @@ const Aziende = () => {
   const [ deleteId,                   setDeleteId               ] = useState(null);
 
 
+  const [content, setContent] = useState("");
 
 
-// const fetchData = async () => {
-//   try {
-//     const response = await axios.get("http://localhost:8080/aziende/react");
-//     if (Array.isArray(response.data)) {
-//       const aziendeConId = response.data.map((aziende) => ({ ...aziende }));
 
-//       // const aziendeConOwner = await translateOwnerNames(aziendeConId);
-//       setFilteredAziende(aziendeConId);
-//       setOriginalAziende(aziendeConId);
-//       console.log(aziendeConId);
-//     } else {
-//       console.error("I dati ottenuti non sono nel formato Array:", response.data);
-//     }
-//   } catch (error) {
-//     console.error("Errore durante il recupero dei dati:", error);
-//   }
-// };
 
-// useEffect(() => {
-//   fetchData();
-// }, []);
+const fetchData = async () => {
+  try {
+     // Recupera l'accessToken da localStorage
+     const user = JSON.parse(localStorage.getItem("user"));
+     const accessToken = user?.accessToken;
+ 
+     // Configura gli headers della richiesta con l'Authorization token
+     const headers = {
+       Authorization: `Bearer ${accessToken}`
+     };
+
+    const response = await axios.get("http://localhost:8080/aziende/react", { headers });
+    if (Array.isArray(response.data)) {
+      const aziendeConId = response.data.map((aziende) => ({ ...aziende }));
+
+      // const aziendeConOwner = await translateOwnerNames(aziendeConId);
+      setFilteredAziende(aziendeConId);
+      setOriginalAziende(aziendeConId);
+      console.log(aziendeConId);
+    } else {
+      console.error("I dati ottenuti non sono nel formato Array:", response.data);
+    }
+  } catch (error) {
+    console.error("Errore durante il recupero dei dati:", error);
+  }
+};
+
+useEffect(() => {
+  fetchData();
+}, []);
 
 
 const openDeleteDialog = (id) => {
@@ -66,27 +80,6 @@ const openDeleteDialog = (id) => {
 };
 
 
-
-
-const fetchData = async () => {
-  try {
-    const response = await axios.get("http://localhost:8080/aziende/react");
-    if (Array.isArray(response.data)) {
-      const aziendeConId = response.data.map((aziende) => ({...aziende}));
-      setOriginalAziende(aziendeConId);
-      setFilteredAziende(aziendeConId);
-      console.log("Dati arrivati: ", aziendeConId);
-    } else {
-      console.error("I dati ottenuti non sono nel formato Array:", response.data);
-    } 
-  } catch (error) {
-    console.error("Errore durante il recupero dei dati: ", error);
-  }
-};
-
-useEffect(() => {
-  fetchData();
-}, []);
 
   const navigate = useNavigate();
 
@@ -130,9 +123,18 @@ useEffect(() => {
 
 const handleDelete = async () => {
   try {
-    await axios.delete(`http://localhost:8080/aziende/react/elimina/${deleteId}`);
-    fetchData();
+    // Recupera l'accessToken da localStorage
+    const user = JSON.parse(localStorage.getItem("user"));
+    const accessToken = user?.accessToken;
+
+    // Configura gli headers della richiesta con l'Authorization token
+    const headers = {
+      Authorization: `Bearer ${accessToken}`
+    };
+    const response = await axios.delete(`http://localhost:8080/aziende/react/elimina/${deleteId}`, { headers});
+    // fetchData();
     setOpenDialog(false);
+    console.log("Risposta dalla chiamata delete: ", response);
     console.log("ID AZIENDA ELIMINATA: ", deleteId)
   } catch (error) {
     console.error("Errore durante la cancellazione: ", error);
@@ -157,8 +159,8 @@ const handleDelete = async () => {
 
   const columns = [
     // { field: "id",             headerName: "aziende.id",              width: 70  },
-    { field: "status",         headerName: "Stato",            width: 70,  renderCell: (params) => getSmileIcon(params), },
-    { field: "denominazione",  headerName: "Ragione Sociale", width: 150, renderCell: (params) => (
+    { field: "status",         headerName: "Stato",            width: 100,  renderCell: (params) => getSmileIcon(params), },
+    { field: "denominazione",  headerName: "Ragione Sociale", width: 250, renderCell: (params) => (
       <Link
           to={`/aziende/dettaglio/${params.row.id}`}
           state={{ aziendaData: { ...params.row
@@ -174,10 +176,10 @@ const handleDelete = async () => {
       width: 150,
       valueGetter: (params) => params.row.owner && params.row.owner.descrizione || "N/A",
     },
-    { field: "tipologia",      headerName: "Tipologia",       width: 150 },
+    { field: "tipologia",      headerName: "Tipologia",       width: 200 },
     { field: "citta",          headerName: "Città",           width: 250 },
-    { field: "paese",          headerName: "Paese",           width: 100 },
-    { field: "need",           headerName: "Need",            width: 100, renderCell: (params) => ( 
+    { field: "paese",          headerName: "Paese",           width: 150 },
+    { field: "need",           headerName: "Need",            width: 150, renderCell: (params) => ( 
     <div>
     <Link
   to={`/need/${params.row.id}`}
@@ -186,7 +188,7 @@ const handleDelete = async () => {
   <ListButton />
 </Link>
       </div> ),  },
-    { field: "azioni",         headerName: "Azioni",          width: 300, renderCell: (params) => (
+    { field: "azioni",         headerName: "Azioni",          width: 320, renderCell: (params) => (
       <div>
 <Link
   to={`/aziende/modifica/${params.row.id}`}
@@ -221,13 +223,13 @@ const handleDelete = async () => {
         <div className="container">
           <div className="page-name">Gestione Aziende</div>
           <MyButton onClick={navigateToAggiungiAzienda}>Aggiungi Azienda</MyButton>
-      <AziendeSearchBox 
+      {/* <AziendeSearchBox 
           data={aziende}
           onSearch={handleSearch}
           onReset={handleReset}
           searchText={searchText}
           onSearchTextChange={(text) => setSearchText(text)}
-          OriginalAziende={originalAziende}/>
+          OriginalAziende={originalAziende}/> */}
           <MyDataGrid data={filteredAziende} columns={columns} title="Aziende" getRowId={(row) => row.id} />
 
         </div>

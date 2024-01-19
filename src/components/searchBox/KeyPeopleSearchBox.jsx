@@ -47,10 +47,17 @@ const KeyPeopleSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Origi
   useEffect(() => {
     const fetchData = async () => {
       try {
+// Recupera l'accessToken da localStorage
+const user = JSON.parse(localStorage.getItem("user"));
+const accessToken = user?.accessToken;
 
-        const responseCliente = await axios.get("http://localhost:8080/aziende/react");
-        const responseOwner = await axios.get("http://localhost:8080/aziende/react/owner");
-        const responseStato = await axios.get("http://localhost:8080/aziende/react");
+// Configura gli headers della richiesta con l'Authorization token
+const headers = {
+  Authorization: `Bearer ${accessToken}`
+};
+        const responseCliente = await axios.get("http://localhost:8080/aziende/react", { headers });
+        const responseOwner = await axios.get("http://localhost:8080/aziende/react/owner", { headers });
+        const responseStato = await axios.get("http://localhost:8080/aziende/react", { headers });
     if (Array.isArray(responseStato.data)) {
       const statoOptionsData = responseStato.data.map((status, index) => ({
         label: convertStatus(status),

@@ -11,6 +11,15 @@ import EditButton                                     from "../components/button
 import SmileGreenIcon                                 from "../components/button/SmileGreenIcon.jsx";
 import SmileOrangeIcon                                from "../components/button/SmileOrangeIcon.jsx";
 import SmileRedIcon                                   from "../components/button/SmileRedIcon.jsx";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button
+} from '@mui/material';
+
 
 import "../styles/KeyPeople.css";
 
@@ -21,7 +30,8 @@ const KeyPeople = () => {
   const [ originalKeypeople,    setOriginalKeypeople        ] = useState([]);
   const [ filteredKeypeople,    setFilteredKeypeople        ] = useState([]);
   const [ denominazioneAzienda, setDenominazioneAzienda     ] = useState("");
-
+  const [ openDialog,           setOpenDialog               ] = useState(false);
+  const [ deleteId,             setDeleteId                 ] = useState(null);
   // const translateAziendaNames = async (keypeopleData) => {
   //   try {
   //     const updatedKeypeople = await Promise.all(
@@ -106,7 +116,15 @@ const KeyPeople = () => {
   
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/keypeople/react");
+      // Recupera l'accessToken da localStorage
+     const user = JSON.parse(localStorage.getItem("user"));
+     const accessToken = user?.accessToken;
+ 
+     // Configura gli headers della richiesta con l'Authorization token
+     const headers = {
+       Authorization: `Bearer ${accessToken}`
+     };
+      const response = await axios.get("http://localhost:8080/keypeople/react", { headers});
       if (Array.isArray(response.data)) {
       const keypeopleConId = response.data.map((keypeople) => ({ ...keypeople}));
       setOriginalKeypeople(keypeopleConId);
@@ -123,6 +141,11 @@ const KeyPeople = () => {
   useEffect(() => {
   fetchData();
 }, []);
+
+const openDeleteDialog = (id) => {
+  setDeleteId(id);
+  setOpenDialog(true);
+};
   
   
   
@@ -148,7 +171,16 @@ const KeyPeople = () => {
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8080/keypeople/react/elimina/${id}`);
+      // Recupera l'accessToken da localStorage
+     const user = JSON.parse(localStorage.getItem("user"));
+     const accessToken = user?.accessToken;
+ 
+     // Configura gli headers della richiesta con l'Authorization token
+     const headers = {
+       Authorization: `Bearer ${accessToken}`
+     };
+      const response = await axios.delete(`http://localhost:8080/keypeople/react/elimina/${deleteId}`, {headers});
+      setOpenDialog(false);
 console.log("Risposta dalla chiamata Delete: ", response);
 console.log("ID ELIMINATO: ", id);
 fetchData();
@@ -172,11 +204,11 @@ fetchData();
   };
 
   const columns = [
-    { field: "status", headerName: "Stato", width: 60, renderCell: (params) => getSmileIcon(params) },
+    { field: "status", headerName: "Stato", width: 100, renderCell: (params) => getSmileIcon(params) },
     {
-      field: "nomeEmail",
-      headerName: "Nome/Email",
-      width: 250,
+      field: "nome",
+      headerName: "Nome",
+      width: 200,
       renderCell: (params) => {
         // console.log("Dati passati premendo sul nome:", params.row); 
         return (
@@ -187,11 +219,12 @@ fetchData();
             >
               {params.row.nome}
             </Link>
-            <div style={{ textAlign: "start" }}>{params.row.email}</div>
+            {/* <div style={{ textAlign: "start" }}>{params.row.email}</div> */}
           </div>
         );
       },
     },
+    { field: "email",              headerName: "Email", width: 300 },
     { field: "cellulare",          headerName: "Telefono", width: 150 },
     { field: "Owner",              headerName: "Proprietario",    width: 150,
     valueGetter: (params) => params.row.owner && params.row.owner.descrizione || "N/A",
@@ -203,7 +236,7 @@ fetchData();
   width: 150,
   valueGetter: (params) => params.row.cliente && params.row.cliente.denominazione || "N/A",
   },
-    { field: "ruolo", headerName: "Ruolo", width: 150 },
+    { field: "ruolo", headerName: "Ruolo", width: 200 },
     {
       field: "azioni",
       headerName: "Azioni",
@@ -213,7 +246,7 @@ fetchData();
           <Link to={`/keyPeople/modifica/${params.row.id}`} state={{ keyPeopleData: { ...params.row, descrizioneOwner: params.row.descrizioneOwner, denominazioneAzienda: params.row.denominazioneAzienda } }}>
   <EditButton />
 </Link>
-          <DeleteButton onClick={() => handleDelete(params.row.id)} />
+<DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
         </div>
       ),
     },
@@ -247,6 +280,44 @@ fetchData();
           <MyDataGrid data={filteredKeypeople} columns={columns} title="Key People" getRowId={(row) => row.id} />
         </div>
       </div>
+      <Dialog
+  open={openDialog}
+  onClose={() => setOpenDialog(false)}
+  aria-labelledby="alert-dialog-title"
+  aria-describedby="alert-dialog-description"
+  
+>
+  <DialogTitle id="alert-dialog-title">{"Conferma Eliminazione"}</DialogTitle>
+  <DialogContent>
+    <DialogContentText id="alert-dialog-description">
+      Sei sicuro di voler eliminare questa azienda?
+    </DialogContentText>
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={() => setOpenDialog(false)} color="primary" style={{
+              backgroundColor: "black",
+              color: "white",
+              "&:hover": {
+                backgroundColor: "black",
+                transform: "scale(1.05)",
+              },
+            }}>
+      Annulla
+    </Button>
+    <Button onClick={handleDelete} color="primary" variant="contained" type="submit"
+              style={{
+                backgroundColor: "#fbb800",
+                color: "black",
+                "&:hover": {
+                  backgroundColor: "#fbb800",
+                  color: "black",
+                  transform: "scale(1.05)",
+                },
+              }}>
+      Conferma
+    </Button>
+  </DialogActions>
+</Dialog>
     </div>
   );
 };

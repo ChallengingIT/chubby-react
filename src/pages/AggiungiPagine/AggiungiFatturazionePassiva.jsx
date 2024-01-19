@@ -11,12 +11,22 @@ const AggiungiFatturazioneAttiva = () => {
   const [ fornitoriOptions,   setFornitoriOptions] = useState([]);
   const [ statoOptions,       setStatoOptions    ] = useState([]);
 
+  // Recupera l'accessToken da localStorage
+  const user = JSON.parse(localStorage.getItem("user"));
+  const accessToken = user?.accessToken;
+
+  // Configura gli headers della richiesta con l'Authorization token
+  const headers = {
+    Authorization: `Bearer ${accessToken}`
+  };
+
+
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseClienti   = await axios.get("http://localhost:8080/aziende/react");
-        const responseFornitori = await axios.get("http://localhost:8080/fornitori/react");
-        const responseStato     = await axios.get("http://localhost:8080/fatturazionePassiva/react/stato");
+        const responseClienti   = await axios.get("http://localhost:8080/aziende/react"                   , { headers });
+        const responseFornitori = await axios.get("http://localhost:8080/fornitori/react"                 , { headers });
+        const responseStato     = await axios.get("http://localhost:8080/fatturazione/passiva/react/stato", { headers });
 
 
         if (Array.isArray(responseStato.data)) {
@@ -80,7 +90,7 @@ const AggiungiFatturazioneAttiva = () => {
     try {
       console.log("DATI DI VALUES: ", values);
 
-      const response = await axios.post("http://localhost:8080/fatturazionePassiva/react/salva", values);
+      const response = await axios.post("http://localhost:8080/fatturazione/passiva/react/salva", { headers }, values);
       console.log("Response from server:", response.data);
 
       navigate("/fatturazionePassiva");

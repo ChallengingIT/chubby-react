@@ -14,8 +14,17 @@ const AggiungiContatto = () => {
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const aziendeResponse = await axios.get("http://localhost:8080/aziende/react");
-        const ownerResponse = await axios.get("http://localhost:8080/aziende/react/owner");
+        // Recupera l'accessToken da localStorage
+     const user = JSON.parse(localStorage.getItem("user"));
+     const accessToken = user?.accessToken;
+ 
+     // Configura gli headers della richiesta con l'Authorization token
+     const headers = {
+       Authorization: `Bearer ${accessToken}`
+     };
+
+        const aziendeResponse = await axios.get("http://localhost:8080/aziende/react", { headers });
+        const ownerResponse = await axios.get("http://localhost:8080/aziende/react/owner", { headers });
         if (Array.isArray(ownerResponse.data)) {
           const ownerOptions = ownerResponse.data.map((owner) => ({
             label: owner.descrizione,
@@ -75,9 +84,18 @@ const AggiungiContatto = () => {
     const hasErrors = Object.keys(errors).length > 0;
     if (!hasErrors) {
     try {
+      // Recupera l'accessToken da localStorage
+     const user = JSON.parse(localStorage.getItem("user"));
+     const accessToken = user?.accessToken;
+ 
+     // Configura gli headers della richiesta con l'Authorization token
+     const headers = {
+       Authorization: `Bearer ${accessToken}`
+     };
+
       console.log("DATI PRIMA DELL'INVIO: ", values);
 
-      const response = await axios.post("http://localhost:8080/keypeople/react/salva", values);
+      const response = await axios.post("http://localhost:8080/keypeople/react/salva", { headers }, values);
       console.log("Response from server:", response.data);
 
       navigate("/keyPeople");

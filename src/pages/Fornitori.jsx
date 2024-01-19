@@ -8,6 +8,14 @@ import MyButton                               from '../components/MyButton.jsx';
 import EditButton                             from "../components/button/EditButton.jsx";
 import DeleteButton                           from "../components/button/DeleteButton.jsx";
 import { Link }                               from "react-router-dom";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button
+} from '@mui/material';
 
 import "../styles/Fornitori.css";
 
@@ -17,6 +25,8 @@ const Fornitori = () => {
   const [ originalFornitori,      setOriginalFornitori                ] = useState([]);
   const [ searchText,             setSearchText                       ] = useState("");
   const [ filteredFornitori,      setFilteredFornitori                ] = useState([]);
+  const [ openDialog,             setOpenDialog                       ] = useState(false);
+  const [ deleteId,               setDeleteId                         ] = useState(null);
 
 
   useEffect(() => {
@@ -39,6 +49,14 @@ const Fornitori = () => {
 
     fetchData();
   }, []);
+
+
+
+const openDeleteDialog = (id) => {
+  setDeleteId(id);
+  setOpenDialog(true);
+};
+
   
 
   const navigateToAggiungiFornitori = () => {
@@ -47,8 +65,9 @@ const Fornitori = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/fornitori/react/elimina/${id}`);
+      await axios.delete(`http://localhost:8080/fornitori/react/elimina/${deleteId}`);
       const updatedFornitori = originalFornitori.filter((fornitori) => fornitori.id !== id);
+      setOpenDialog(false);
       setFornitori(updatedFornitori);
       setOriginalFornitori(updatedFornitori);
       setFilteredFornitori(updatedFornitori);
@@ -71,7 +90,7 @@ const Fornitori = () => {
 >
         <EditButton  />
         </Link>
-        <DeleteButton onClick={handleDelete} id={params.row.id}/>
+        <DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
       </div>
     ), },
   ];
@@ -104,6 +123,44 @@ const Fornitori = () => {
             <MyDataGrid data={filteredFornitori} columns={columns} title="Fornitori" getRowId={(row) => row.id}/>
         </div>
       </div>
+      <Dialog
+  open={openDialog}
+  onClose={() => setOpenDialog(false)}
+  aria-labelledby="alert-dialog-title"
+  aria-describedby="alert-dialog-description"
+  
+>
+  <DialogTitle id="alert-dialog-title">{"Conferma Eliminazione"}</DialogTitle>
+  <DialogContent>
+    <DialogContentText id="alert-dialog-description">
+      Sei sicuro di voler eliminare questa azienda?
+    </DialogContentText>
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={() => setOpenDialog(false)} color="primary" style={{
+              backgroundColor: "black",
+              color: "white",
+              "&:hover": {
+                backgroundColor: "black",
+                transform: "scale(1.05)",
+              },
+            }}>
+      Annulla
+    </Button>
+    <Button onClick={handleDelete} color="primary" variant="contained" type="submit"
+              style={{
+                backgroundColor: "#fbb800",
+                color: "black",
+                "&:hover": {
+                  backgroundColor: "#fbb800",
+                  color: "black",
+                  transform: "scale(1.05)",
+                },
+              }}>
+      Conferma
+    </Button>
+  </DialogActions>
+</Dialog>
     </div>
   );
 };

@@ -27,8 +27,16 @@ const AggiungiAziende = () => {
   useEffect(() => {
     const fetchProvinceOptions = async () => {
       try {
-        const provinceResponse = await axios.get("http://localhost:8080/aziende/react/province");
-        const ownerResponse    = await axios.get("http://localhost:8080/aziende/react/owner"   );
+        // Recupera l'accessToken da localStorage
+     const user = JSON.parse(localStorage.getItem("user"));
+     const accessToken = user?.accessToken;
+ 
+     // Configura gli headers della richiesta con l'Authorization token
+     const headers = {
+       Authorization: `Bearer ${accessToken}`
+     };
+        const provinceResponse = await axios.get("http://localhost:8080/aziende/react/province", { headers });
+        const ownerResponse    = await axios.get("http://localhost:8080/aziende/react/owner", { headers }   );
 
         if (Array.isArray(ownerResponse.data)) {
           const ownerOptions = ownerResponse.data.map((owner) => ({
@@ -148,11 +156,35 @@ const AggiungiAziende = () => {
   
     if (!hasErrors) {
       try {
-        const response = await axios.post("http://localhost:8080/aziende/react/salva", values);
+        const userString = localStorage.getItem("user");
+        if (!userString) {
+          console.error("Nessun utente o token trovato in localStorage");
+          // Aggiungi qui la logica per gestire l'assenza di token
+          return;
+        }
+        const user = JSON.parse(userString);
+        const accessToken = user?.accessToken;
+        
+        if (!accessToken) {
+          console.error("Nessun token di accesso disponibile");
+          // Aggiungi qui la logica per gestire l'assenza di token
+          return;
+        }
+  
+        // Configura gli headers della richiesta con l'Authorization token
+        const headers = {
+          Authorization: `Bearer ${accessToken}`
+        };
+        console.log("HEADERS: ", headers);  
+
+        const response = await axios.post("http://localhost:8080/aziende/react/salva", values, {
+          headers: headers
+        });
         console.log("Response from server:", response.data);
         navigate("/aziende");
       } catch (error) {
         console.error("Errore durante il salvataggio:", error);
+
       }
     } else {
       // Gestisci qui gli errori di validazione...

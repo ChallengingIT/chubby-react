@@ -17,9 +17,21 @@ const Progetti = () => {
   const [ filteredProgetti,           setFilteredProgetti       ] = useState([]);
   const [ searchText,                 setSearchText             ] = useState([]);
 
+        
+
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/progetti/react");
+       // Recupera l'accessToken da localStorage
+       const user = JSON.parse(localStorage.getItem("user"));
+       const accessToken = user?.accessToken;
+   
+       // Configura gli headers della richiesta con l'Authorization token
+       const headers = {
+         Authorization: `Bearer ${accessToken}`
+       };
+
+ 
+      const response = await axios.get("http://localhost:8080/progetti/react", { headers });
       if (Array.isArray(response.data)) {
       const progettiConId = response.data.map((progetti) => ({ ...progetti}));
       setOriginalProgetti(progettiConId);
@@ -58,7 +70,15 @@ const Progetti = () => {
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8080/progetti/react/elimina/${id}`);
+       // Recupera l'accessToken da localStorage
+       const user = JSON.parse(localStorage.getItem("user"));
+       const accessToken = user?.accessToken;
+   
+       // Configura gli headers della richiesta con l'Authorization token
+       const headers = {
+         Authorization: `Bearer ${accessToken}`
+       };
+      const response = await axios.delete(`http://localhost:8080/progetti/react/elimina/${id}`, { headers });
 console.log("Risposta dalla chiamata Delete: ", response);
 console.log("ID ELIMINATO: ", id);
 fetchData();

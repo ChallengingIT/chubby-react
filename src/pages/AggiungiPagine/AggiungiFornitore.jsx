@@ -7,6 +7,15 @@ import FieldsBox                      from "../../components/FieldsBox";
 const AggiungiFornitore = () => {
   const navigate = useNavigate();
 
+  // Recupera l'accessToken da localStorage
+  const user = JSON.parse(localStorage.getItem("user"));
+  const accessToken = user?.accessToken;
+
+  // Configura gli headers della richiesta con l'Authorization token
+  const headers = {
+    Authorization: `Bearer ${accessToken}`
+  };
+
 
 const campiObbligatori = [ "denominazione", "referente", "email"];
 
@@ -33,7 +42,7 @@ const campiObbligatori = [ "denominazione", "referente", "email"];
     try {
       console.log("DATI DI VALUES: ", values);
 
-      const response = await axios.post("http://localhost:8080/fornitori/react/salva", values);
+      const response = await axios.post("http://localhost:8080/fornitori/react/salva", { headers }, values);
       console.log("Response from server:", response.data);
 
       navigate("/fornitori");

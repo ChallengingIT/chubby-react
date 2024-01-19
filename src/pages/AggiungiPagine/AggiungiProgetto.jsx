@@ -10,12 +10,22 @@ const AggiungiProgetto = () => {
   const [ clientiOptions,     setClientiOptions   ] = useState([]);
   const [ dipendentiOptions,  setDipendentiOptions] = useState([]);
 
+  // Recupera l'accessToken da localStorage
+  const user = JSON.parse(localStorage.getItem("user"));
+  const accessToken = user?.accessToken;
+
+  // Configura gli headers della richiesta con l'Authorization token
+  const headers = {
+    Authorization: `Bearer ${accessToken}`
+  };
+
+
 
   useEffect(() => {
     const fetchProgettiOptions = async () => {
       try {
-        const responseDipendenti = await axios.get("http://localhost:8080/hr/react");
-        const responseClienti    = await axios.get("http://localhost:8080/aziende/react");
+        const responseDipendenti = await axios.get("http://localhost:8080/hr/react"     , { headers});
+        const responseClienti    = await axios.get("http://localhost:8080/aziende/react", { headers });
 
 
         if (Array.isArray(responseDipendenti.data)) {
@@ -80,7 +90,8 @@ const AggiungiProgetto = () => {
     try {
       console.log("DATI DI VALUES: ", values);
 
-      const response = await axios.post("http://localhost:8080/progetti/react/salva", values);
+      const response = await axios.post("http://localhost:8080/progetti/react/salva", values, 
+      { headers: headers });
       console.log("Response from server:", response.data);
 
       navigate("/progetti");

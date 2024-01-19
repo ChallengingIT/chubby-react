@@ -20,6 +20,8 @@ function ListaNeed() {
   const nomeAzienda           = aziendaData.denominazione;
   const idAzienda             = aziendaData.id;
 
+  console.log("ID: ", id);
+
  
 
 

@@ -41,14 +41,23 @@ const AggiungiCandidato = () => {
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseStato               = await axios.get("http://localhost:8080/staffing/react/stato/candidato");
-        const responseFornitori           = await axios.get("http://localhost:8080/fornitori/react"               );
-        const responseJobTitle            = await axios.get("http://localhost:8080/aziende/react/tipologia"       );
-        const responseTipologia           = await axios.get("http://localhost:8080/staffing/react/tipo"           );
-        const responseNeedSkills          = await axios.get("http://localhost:8080/staffing/react/skill"          );
-        const ownerResponse               = await axios.get("http://localhost:8080/aziende/react/owner"           );
-        const facoltaResponse             = await axios.get("http://localhost:8080/staffing/react/facolta"        );
-        const livelloScolasticoResponse   = await axios.get("http://localhost:8080/staffing/react/livello"        );
+        // Recupera l'accessToken da localStorage
+     const user = JSON.parse(localStorage.getItem("user"));
+     const accessToken = user?.accessToken;
+ 
+     // Configura gli headers della richiesta con l'Authorization token
+     const headers = {
+       Authorization: `Bearer ${accessToken}`
+     };
+
+        const responseStato               = await axios.get("http://localhost:8080/staffing/react/stato/candidato", { headers });
+        const responseFornitori           = await axios.get("http://localhost:8080/fornitori/react"               , { headers });
+        const responseJobTitle            = await axios.get("http://localhost:8080/aziende/react/tipologia"       , { headers });
+        const responseTipologia           = await axios.get("http://localhost:8080/staffing/react/tipo"           , { headers });
+        const responseNeedSkills          = await axios.get("http://localhost:8080/staffing/react/skill"          , { headers });
+        const ownerResponse               = await axios.get("http://localhost:8080/aziende/react/owner"           , { headers });
+        const facoltaResponse             = await axios.get("http://localhost:8080/staffing/react/facolta"        , { headers });
+        const livelloScolasticoResponse   = await axios.get("http://localhost:8080/staffing/react/livello"        , { headers });
 
         if (Array.isArray(livelloScolasticoResponse.data)) {
           const livelloScolasticoOptions = livelloScolasticoResponse.data.map((livelloScolastico) => ({
@@ -180,6 +189,14 @@ const handleSubmit = async (values) => {
     const hasErrors = Object.keys(errors).length > 0;
     if (!hasErrors) {
   try {
+    // Recupera l'accessToken da localStorage
+    const user = JSON.parse(localStorage.getItem("user"));
+    const accessToken = user?.accessToken;
+
+    // Configura gli headers della richiesta con l'Authorization token
+    const headers = {
+      Authorization: `Bearer ${accessToken}`
+    };
 
     console.log("DATI PRIMA DI ESSERE INVIATI: ", values);
     const formData = new FormData();
@@ -241,7 +258,7 @@ const handleSubmit = async (values) => {
     });
 
     // Invia la richiesta al server
-    const response = await axios.post(`http://localhost:8080/staffing/salva`, formData, {
+    const response = await axios.post(`http://localhost:8080/staffing/salva`, { headers }, formData, {
       params: { skill: skills },
       headers: {"Content-Type": "multipart/form-data"},
     });

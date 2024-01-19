@@ -3,6 +3,7 @@ import Sidebar from '../../components/Sidebar';
 import ReportSearchBox from '../../components/searchBox/ReportSearchBox';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import ReportPage from '../ReportPage';
 
 
 
@@ -30,19 +31,13 @@ function EstraiReport() {
         <Sidebar />
       </div>
       <div className="container">
-        <div className="page-name">Report</div>
-       <ReportSearchBox/>
-        </div>
-        
-        <div style={{ 
-    display: 'flex', 
-    justifyContent: 'center', 
-    alignItems: 'center',
-    position: 'fixed', 
-    bottom: 0,         
-    width: '100%',     
-    marginBottom: '20px' 
-}}>
+        {/* <div className="page-name">Report</div> */}
+        <h1 style={{ display: 'flex', justifyContent:'flex-start', marginTop: '35px', marginLeft: '35px' }}>Report</h1>
+          <ReportPage/>
+          
+       
+
+
         <Button
           color="primary"
           onClick={handleGoBack}

@@ -4,6 +4,7 @@ import Button                                 from "@mui/material/Button";
 import Select                                 from "@mui/material/Select";
 
 import "../../styles/Aziende.css";
+import userService from "../../services/user.service.js";
 
 const AziendeSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalAziende }) => {
   const initialSearchTerm = {
@@ -12,6 +13,14 @@ const AziendeSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Origina
     status: '',
     owner:'',
   };
+
+
+  const accessToken = localStorage.getItem("accessToken"); // Ottieni l'accessToken dal localStorage
+// console.log("accessToken: ", accessToken);
+// Configura l'header "Authorization" con l'accessToken
+const headers = {
+  Authorization: `Bearer ${accessToken}`,
+};
 
   const [ searchTerm,          setSearchTerm        ] = useState(initialSearchTerm);
   const [ ownerOptions,        setOwnerOptions      ] = useState([]);
@@ -42,8 +51,12 @@ const AziendeSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Origina
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseOwner = await axios.get("http://localhost:8080/aziende/react/owner");
-        const responseStato = await axios.get("http://localhost:8080/aziende/react");
+        const responseOwner = await userService.get("aziende/react/owner", {
+          headers: headers,
+        });
+        const responseStato = await userService.get("aziende/react", { 
+          headers: headers,
+        });
 
     if (Array.isArray(responseStato.data)) {
       const statoOptionsData = responseStato.data.map((status) => ({

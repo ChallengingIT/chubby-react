@@ -20,6 +20,13 @@ import { Link }                               from "react-router-dom";
 import SmileGreenIcon                         from "../components/button/SmileGreenIcon.jsx";
 import SmileOrangeIcon                        from "../components/button/SmileOrangeIcon.jsx";
 import SmileRedIcon                           from "../components/button/SmileRedIcon.jsx";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from '@mui/material';
 
 import "../styles/Recruiting.css";
 
@@ -40,6 +47,8 @@ const Recruiting = () => {
   const [ isRalPopupOpen,                 setIsRalPopupOpen               ] = useState(false);
   const [ selectedCandidateNotes,         setSelectedCandidateNotes       ] = useState("");
   const [ selectedCandidateRal,           setSelectedCandidateRal         ] = useState("");
+  const [ openDialog,                     setOpenDialog                   ] = useState(false);
+  const [ deleteId,                       setDeleteId                     ] = useState(null);
 
 
   useEffect(() => {
@@ -55,7 +64,15 @@ const Recruiting = () => {
 
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/staffing/react");
+        // Recupera l'accessToken da localStorage
+     const user = JSON.parse(localStorage.getItem("user"));
+     const accessToken = user?.accessToken;
+ 
+     // Configura gli headers della richiesta con l'Authorization token
+     const headers = {
+       Authorization: `Bearer ${accessToken}`
+     };
+        const response = await axios.get("http://localhost:8080/staffing/react", { headers });
         if (Array.isArray(response.data)) {
         const recruitingConId = response.data.map((recruiting) => ({ ...recruiting}));
         setOriginalRecruiting(recruitingConId);
@@ -72,6 +89,12 @@ const Recruiting = () => {
     useEffect(() => {
     fetchData();
   }, []);
+
+
+  const openDeleteDialog = (id) => {
+    setDeleteId(id);
+    setOpenDialog(true);
+  };
   
 
   const navigateToAggiungiCandidato = () => {
@@ -85,7 +108,16 @@ const Recruiting = () => {
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8080/staffing/elimina/${id}`);
+      // Recupera l'accessToken da localStorage
+     const user = JSON.parse(localStorage.getItem("user"));
+     const accessToken = user?.accessToken;
+ 
+     // Configura gli headers della richiesta con l'Authorization token
+     const headers = {
+       Authorization: `Bearer ${accessToken}`
+     };
+      const response = await axios.delete(`http://localhost:8080/staffing/elimina/${deleteId}`, { headers });
+      setOpenDialog(false);
 console.log("Risposta dalla chiamata Delete: ", response);
 console.log("ID ELIMINATO: ", id);
 fetchData();
@@ -192,7 +224,7 @@ fetchData();
       fileDescrizione={params.row.files && params.row.files.length > 0 ? params.row.files[0].descrizione : null}
       />
 
-        <DeleteButton onClick={handleDelete} id={params.row.id}/>
+<DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
       </div>
     ), },
   ];
@@ -211,15 +243,26 @@ fetchData();
 
   const handleDownloadCV = async (fileId, fileDescrizione) => {
     console.log("FILE ID: ", fileId);
+    
 
     const url = `http://localhost:8080/files/react/download/file/${fileId}`;
   
     try {
+      // Recupera l'accessToken da localStorage
+     const user = JSON.parse(localStorage.getItem("user"));
+     const accessToken = user?.accessToken;
+ 
+     // Configura gli headers della richiesta con l'Authorization token
+     const headers = {
+       Authorization: `Bearer ${accessToken}`
+     };
+      
 
       const response = await axios({
         method: 'GET',
         url: url,
         responseType: 'blob', 
+        headers: headers,
       });
   
    
@@ -346,6 +389,44 @@ fetchData();
 
       </div>
     </div>
+    <Dialog
+  open={openDialog}
+  onClose={() => setOpenDialog(false)}
+  aria-labelledby="alert-dialog-title"
+  aria-describedby="alert-dialog-description"
+  
+>
+  <DialogTitle id="alert-dialog-title">{"Conferma Eliminazione"}</DialogTitle>
+  <DialogContent>
+    <DialogContentText id="alert-dialog-description">
+      Sei sicuro di voler eliminare questa azienda?
+    </DialogContentText>
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={() => setOpenDialog(false)} color="primary" style={{
+              backgroundColor: "black",
+              color: "white",
+              "&:hover": {
+                backgroundColor: "black",
+                transform: "scale(1.05)",
+              },
+            }}>
+      Annulla
+    </Button>
+    <Button onClick={handleDelete} color="primary" variant="contained" type="submit"
+              style={{
+                backgroundColor: "#fbb800",
+                color: "black",
+                "&:hover": {
+                  backgroundColor: "#fbb800",
+                  color: "black",
+                  transform: "scale(1.05)",
+                },
+              }}>
+      Conferma
+    </Button>
+  </DialogActions>
+</Dialog>
   </div>
 );
 

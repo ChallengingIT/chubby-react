@@ -40,9 +40,18 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseTipologia = await axios.get("http://localhost:8080/aziende/react/tipologia");
-        const responseTipo      = await axios.get("http://localhost:8080/staffing/react/tipo");
-        const responseStato     = await axios.get("http://localhost:8080/staffing/react/stato/candidato");
+        // Recupera l'accessToken da localStorage
+     const user = JSON.parse(localStorage.getItem("user"));
+     const accessToken = user?.accessToken;
+ 
+     // Configura gli headers della richiesta con l'Authorization token
+     const headers = {
+       Authorization: `Bearer ${accessToken}`
+     };
+
+        const responseTipologia = await axios.get("http://localhost:8080/aziende/react/tipologia", { headers });
+        const responseTipo      = await axios.get("http://localhost:8080/staffing/react/tipo", { headers });
+        const responseStato     = await axios.get("http://localhost:8080/staffing/react/stato/candidato", { headers });
 
 
         if (Array.isArray(responseStato.data)) {
