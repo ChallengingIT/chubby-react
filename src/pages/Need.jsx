@@ -3,7 +3,6 @@ import { Link, useNavigate}                       from "react-router-dom";
 import axios                                      from "axios";
 import Sidebar                                    from "../components/Sidebar";
 import MyDataGrid                                 from "../components/MyDataGrid";
-import NeedSearchBox                              from "../components/searchBox/NeedSearchBox.jsx";
 import MyButton                                   from '../components/MyButton.jsx';
 import EditButton                                 from "../components/button/EditButton.jsx";
 import SearchButton                               from "../components/button/SearchButton.jsx"; 
@@ -17,6 +16,9 @@ import "../styles/Need.css";
 //ricordati di togliere queste due righe
 import { Snackbar } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
+import NeedSearchBox2 from "../components/searchBox/NeedSearchBox2.jsx";
+import NeedSearchBox from "../components/searchBox/NeedSearchBox.jsx";
+
 
 const Need = () => {
   const navigate = useNavigate();
@@ -44,8 +46,8 @@ const Need = () => {
      const headers = {
        Authorization: `Bearer ${accessToken}`
      };
-        const response = await axios.get("http://localhost:8080/need/react", { headers});
-        const responseStato = await axios.get("http://localhost:8080/need/react/stato", { headers });
+        const response = await axios.get("http://localhost:8080/need/react", { headers: headers});
+        const responseStato = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
 
         if (Array.isArray(responseStato.data)) {
           const statoConId = responseStato.data.map((stato) => ({ ...stato}));
@@ -101,7 +103,7 @@ const Need = () => {
         stato: idStato
       });
   
-      await axios.post(`http://localhost:8080/need/react/salva/stato/${selectedNeed.id}?${params.toString()}`, { headers });
+      await axios.post(`http://localhost:8080/need/react/salva/stato/${selectedNeed.id}?${params.toString()}`, { headers: headers });
       
       // Se la chiamata è andata a buon fine, chiudi il modal e aggiorna i dati
       setIsModalOpen(false);
@@ -155,12 +157,25 @@ const Need = () => {
       headerName: "Descrizione",
       width: 360,
       renderCell: (params) => (
-        <a 
-          href={"https://esempio.com/" + params.row.id} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          style={{ 
-            textAlign: 'left',
+        // <a 
+        //   href={"/need/dettaglio/" + params.row.id} 
+        //   target="_blank" 
+        //   rel="noopener noreferrer"
+        //   style={{ 
+        //     textAlign: 'left',
+        //     whiteSpace: 'normal', 
+        //     wordWrap: 'break-word',
+        //     overflow: 'hidden',
+        //     textOverflow: 'ellipsis',
+        //     display: '-webkit-box',
+        //     WebkitLineClamp: 2, // Numero di linee massime prima di mostrare '...'
+        //     WebkitBoxOrient: 'vertical',
+        //   }}
+        // >
+        //   {params.row.descrizione}
+        // </a>
+        <div style={{ 
+          textAlign: "left",
             whiteSpace: 'normal', 
             wordWrap: 'break-word',
             overflow: 'hidden',
@@ -168,10 +183,15 @@ const Need = () => {
             display: '-webkit-box',
             WebkitLineClamp: 2, // Numero di linee massime prima di mostrare '...'
             WebkitBoxOrient: 'vertical',
-          }}
-        >
-          {params.row.descrizione}
-        </a>
+            }}>
+      <Link
+      to={`/need/dettaglio/${params.row.id}`}
+      state={{ needData: params.row }}
+    >
+      {params.row.descrizione} 
+    </Link>
+     
+    </div>
       )
     },
     
@@ -273,14 +293,23 @@ const Need = () => {
         <div className="container">
           <div className="page-name">Need</div>
           <MyButton onClick={navigateToAggiungiNeed}>Aggiungi Need</MyButton>
-          <NeedSearchBox
+          
+          <MyDataGrid 
+          data={filteredNeed} 
+          columns={columns} 
+          title="Need" 
+          getRowId={(row) => row.id}
+          searchBoxComponent={() => (
+            <NeedSearchBox
             data={need}
             onSearch={handleSearch}
             onReset={handleReset}
+            searchText={searchText}
             onSearchTextChange={(text) => setSearchText(text)}
-            OriginalNeed={originalNeed}
+            OriginalNeed={originalNeed}/>
+          )}
+         
           />
-          <MyDataGrid data={filteredNeed} columns={columns} title="Need" getRowId={(row) => row.id} />
         </div>
       </div>
       <Modal

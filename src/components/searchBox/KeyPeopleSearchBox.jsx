@@ -55,9 +55,9 @@ const accessToken = user?.accessToken;
 const headers = {
   Authorization: `Bearer ${accessToken}`
 };
-        const responseCliente = await axios.get("http://localhost:8080/aziende/react", { headers });
-        const responseOwner = await axios.get("http://localhost:8080/aziende/react/owner", { headers });
-        const responseStato = await axios.get("http://localhost:8080/aziende/react", { headers });
+        const responseCliente = await axios.get("http://localhost:8080/aziende/react",            { headers: headers });
+        const responseOwner   = await axios.get("http://localhost:8080/aziende/react/owner",      { headers: headers });
+        const responseStato   = await axios.get("http://localhost:8080/aziende/react",            { headers: headers });
     if (Array.isArray(responseStato.data)) {
       const statoOptionsData = responseStato.data.map((status, index) => ({
         label: convertStatus(status),
@@ -118,9 +118,31 @@ const headers = {
   };
 
   return (
-    <div className="row-container">
+    <div className="gridContainer" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr) auto', gap: '10px', alignItems: 'center', margin: '20px 5px', padding: '0 0 20px 0',  borderBottom: '2px solid #dbd9d9',}}>
     {/* prima colonna */}
-    <div className="col">
+    <Select
+  className="dropdown-menu"
+  value={searchTerm.status}
+  onChange={(e) => setSearchTerm({ ...searchTerm, status: e.target.value })}
+  sx={{
+    borderRadius: "40px",
+    fontSize: "0.8rem",
+    textAlign: "start",
+    color: "#757575",
+  }}
+  native
+>
+  <option value="" disabled>
+    Stato
+  </option>
+  <option value={1}>Verde</option>
+  <option value={2}>Giallo</option>
+  <option value={3}>Rosso</option>
+</Select>
+
+   
+    {/* seconda colonna */}
+
     <Select
                   className="dropdown-menu"
                   value={searchTerm.owner}
@@ -142,10 +164,9 @@ const headers = {
                     </option>
                   ))}
                 </Select>
-    </div>
-    {/* seconda colonna */}
-    <div className="col">
-    <Select
+    
+    {/* terza colonna */}
+   <Select
                   className="dropdown-menu"
                   value={searchTerm.cliente}
                   onChange={e => setSearchTerm({...searchTerm, cliente: e.target.value })}
@@ -166,44 +187,40 @@ const headers = {
                     </option>
                   ))}
                 </Select>
-    </div>
-    {/* terza colonna */}
-    <div className="col">
-    <Select
-  className="dropdown-menu"
-  value={searchTerm.status}
-  onChange={(e) => setSearchTerm({ ...searchTerm, status: e.target.value })}
-  sx={{
-    borderRadius: "40px",
-    fontSize: "0.8rem",
-    textAlign: "start",
-    color: "#757575",
-  }}
-  native
->
-  <option value="" disabled>
-    Stato
-  </option>
-  <option value={1}>Verde</option>
-  <option value={2}>Giallo</option>
-  <option value={3}>Rosso</option>
-</Select>
 
-    </div>
-    {/* quarta colonna */}
-    <div className="col-4">
-    <Button className="ripristina-link" onClick={handleReset}
-        sx={{ 
-          color: 'white', backgroundColor: 'black',
-          width: "100%",
-            maxWidth: "90px",
-            height: "50px",
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+        <Button
+          className="button-search"
+          variant="contained"
+          onClick={handleSearch}
+          sx={{
+            width: '100px',
+            height: "40px",
+            backgroundColor: "#ffb800",
+            color: "black",
             borderRadius: "10px",
             fontSize: "0.8rem",
             fontWeight: "bolder",
-            marginLeft: "20px",
-            marginTop: "5px",
-            padding: "0.5rem 1rem",
+            "&:hover": {
+              backgroundColor: "#ffb800",
+              color: "black",
+              transform: "scale(1.05)",
+            },
+          }}
+        >
+          Cerca
+        </Button>
+        <Button
+          className="ripristina-link"
+          onClick={handleReset}
+          sx={{
+            width: '100px', 
+            color: 'white', 
+            backgroundColor: 'black',
+            height: "40px",
+            borderRadius: "10px",
+            fontSize: "0.8rem",
+            fontWeight: "bolder",
             "&:hover": {
               backgroundColor: "black",
               color: "white",
@@ -212,32 +229,8 @@ const headers = {
           }}>
           Reset
         </Button>
-      <Button
-        // className="button-search"
-        variant="contained"
-        onClick={handleSearch}
-        sx={{
-          width: "100%",
-          height: "50px",
-          backgroundColor: "#ffb800",
-          color: "black",
-          borderRadius: "10px",
-          fontSize: "0.7rem",
-          fontWeight: "bolder",
-          marginLeft: "20px",
-          marginTop: "5px",
-          padding: "0.5rem 1rem",
-          "&:hover": {
-            backgroundColor: "#ffb800",
-            color: "black",
-            transform: "scale(1.05)",
-          },
-        }}
-      >
-        Cerca
-      </Button>
+      </div>
     </div>
-  </div>
   );
 };
 

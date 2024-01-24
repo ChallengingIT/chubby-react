@@ -10,6 +10,15 @@ const ModificaFornitori = () => {
   const location = useLocation();
   const { fornitoriData = {} } = location.state || {};
 
+   // Recupera l'accessToken da localStorage
+   const user = JSON.parse(localStorage.getItem("user"));
+   const accessToken = user?.accessToken;
+
+   // Configura gli headers della richiesta con l'Authorization token
+   const headers = {
+     Authorization: `Bearer ${accessToken}`
+   };
+
   const campiObbligatori = [ "denominazione", "referente", "email"];
   const fields = [
     { label: "Denominazione",           name: "denominazione", type: "text" },
@@ -43,7 +52,9 @@ const ModificaFornitori = () => {
     try {
       console.log("DATI DI VALUES: ", values);
 
-      const response = await axios.post("http://localhost:8080/fornitori/react/salva", values);
+      const response = await axios.post("http://localhost:8080/fornitori/react/salva", values, {
+        headers: headers
+      });
       console.log("Response from server:", response.data);
 
       navigate("/fornitori");

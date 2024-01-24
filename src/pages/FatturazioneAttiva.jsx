@@ -17,11 +17,20 @@ const FatturazioneAttiva = () => {
   const [ searchText,                          setSearchText                        ] = useState("");
   const [ filteredFatturazioneAttiva,          setFilteredFatturazioneAttiva        ] = useState([]);
 
+   // Recupera l'accessToken da localStorage
+   const user = JSON.parse(localStorage.getItem("user"));
+   const accessToken = user?.accessToken;
+
+   // Configura gli headers della richiesta con l'Authorization token
+   const headers = {
+     Authorization: `Bearer ${accessToken}`
+   };
+
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseFatturazioneAttiva = await axios.get("http://localhost:8080/fatturazione/attiva/react");
+        const responseFatturazioneAttiva = await axios.get("http://localhost:8080/fatturazione/attiva/react", { headers: headers});
         if (Array.isArray(responseFatturazioneAttiva.data)) {
           const fatturazioneAttivaConId = responseFatturazioneAttiva.data.map((fatturazioneAttiva) => ({ ...fatturazioneAttiva}));
           setFatturazioneAttiva(fatturazioneAttivaConId);
@@ -101,14 +110,22 @@ const FatturazioneAttiva = () => {
         <div className="container">
           <div className="page-name">Fatturazione Attiva</div>
           <MyButton onClick={navigateToAggiungiFatturazioneAttiva}>Aggiungi una nuova Fattura</MyButton>
-          <FatturazioneAttivaSearchBox 
+          
+            <MyDataGrid 
+            data={fatturazioneAttiva} 
+            columns={columns} 
+            title="Fatture Attive" 
+            getRowId={(row) => row.id} 
+            searchBoxComponent={() => (
+              <FatturazioneAttivaSearchBox 
           data={fatturazioneAttiva} 
           onSearch={handleSearch} 
           onReset={handleReset} 
           searchText={searchText}
           onSearchTextChange={(text) => setSearchText(text)}
           OriginalFatturazioneAttiva={originalFatturazioneAttiva}/>
-            <MyDataGrid data={fatturazioneAttiva} columns={columns} title="Fatture Attive" getRowId={(row) => row.id} />
+            )}
+            />
         </div>
       </div>
     </div>

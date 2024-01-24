@@ -19,6 +19,15 @@ const ModificaAzienda = () => {
   const [ ownerOptions,    setOwnerOptions   ] = useState([]);
   const [ aziendeOptions,  setAziendeOptions ] = useState([]);
 
+   // Recupera l'accessToken da localStorage
+   const user = JSON.parse(localStorage.getItem("user"));
+   const accessToken = user?.accessToken;
+
+   // Configura gli headers della richiesta con l'Authorization token
+   const headers = {
+     Authorization: `Bearer ${accessToken}`
+   };
+
 
   // console.log("Dati Arrivati: ", aziendaData);
 
@@ -26,9 +35,9 @@ const ModificaAzienda = () => {
   useEffect(() => {
     const fetchProvinceOptions = async () => {
       try {
-        const responseProvince = await axios.get("http://localhost:8080/aziende/react/province");
-        const responseOwner    = await axios.get("http://localhost:8080/aziende/react/owner");
-        const responseAziende  = await axios.get("http://localhost:8080/aziende/react");
+        const responseProvince = await axios.get("http://localhost:8080/aziende/react/province", { headers: headers });
+        const responseOwner    = await axios.get("http://localhost:8080/aziende/react/owner", { headers: headers });
+        const responseAziende  = await axios.get("http://localhost:8080/aziende/react", { headers: headers });
 
         if (Array.isArray(responseAziende.data)) {
           const aziendeOptions = responseAziende.data.map((aziende) => ({
@@ -67,7 +76,7 @@ const ModificaAzienda = () => {
   const campiObbligatori = ["denominazione", "email", "idOwner", "status"];
 
   const fields = [
-    { label: "Nome Azienda",          name: "denominazione",        type: "select",    options: aziendeOptions                          },
+    { label: "Nome Azienda",          name: "denominazione",        type: "text",       disabled: true                                  },
     { label: "Email",                 name: "email",                type: "text"                                                        },
     { label: "Partita IVA",           name: "pi",                   type: "text"                                                        },
     { label: "Codice Fiscale",        name: "cf",                   type: "text"                                                        },
@@ -98,7 +107,7 @@ const ModificaAzienda = () => {
 
   const initialValues = {
     id:                           aziendaData.id                              || "",
-    denominazione:                aziendaData.id                   || "",
+    denominazione:                aziendaData.denominazione                   || "",
     email:                        aziendaData.email                           || "",
     pi:                           aziendaData.pi                              || "",
     cf:                           aziendaData.cf                              || "",
@@ -127,12 +136,22 @@ const ModificaAzienda = () => {
   
     if (!hasErrors) {
     try {
+       // Recupera l'accessToken da localStorage
+     const user = JSON.parse(localStorage.getItem("user"));
+     const accessToken = user?.accessToken;
+ 
+     // Configura gli headers della richiesta con l'Authorization token
+     const headers = {
+       Authorization: `Bearer ${accessToken}`
+     };
       
       
       // Log the values and id
       console.log("DATI inseriti con ID: ", values);
 
-      const response = await axios.post("http://localhost:8080/aziende/react/salva", values);
+      const response = await axios.post("http://localhost:8080/aziende/react/salva", values, {
+        headers: headers
+      });
       console.log("Response from server:", response.data);
 
       navigate("/aziende");

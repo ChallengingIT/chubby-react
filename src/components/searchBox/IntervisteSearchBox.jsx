@@ -49,12 +49,20 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
   const [ statoOptions, setStatoOptions ] = useState([]);
   const [ filteredData, setFilteredData ] = useState([]);
 
+
+  const accessToken = localStorage.getItem("accessToken"); // Ottieni l'accessToken dal localStorage
+  // console.log("accessToken: ", accessToken);
+  // Configura l'header "Authorization" con l'accessToken
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseOwner = await axios.get("http://localhost:8080/aziende/react/owner");
+        const responseOwner = await axios.get("http://localhost:8080/aziende/react/owner", { headers: headers});
 
-        const responseStato = await axios.get("http://localhost:8080/staffing/react/stato/candidato");
+        const responseStato = await axios.get("http://localhost:8080/staffing/react/stato/candidato", { headers: headers});
 
                 if (Array.isArray(responseStato.data)) {
                   setStatoOptions(responseStato.data.map((stato) => ({ label: stato.descrizione, value: stato.id })));
@@ -102,12 +110,10 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
   };
 
   return (
-    <div className="row-container">
+    <div className="gridContainer" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr) auto', gap: '10px', alignItems: 'center', margin: '20px 5px', padding: '0 0 20px 0',  borderBottom: '2px solid #dbd9d9',}}>
+
     {/* prima colonna */}
-    <div className="colInterviste" style={{width: '90%',
-  margin: '13px',
-  display: 'flex',
-  flexDirection: 'column',}}>
+    
     <Select
                   className="dropdown-menu"
                   value={searchTerm.stato}
@@ -129,12 +135,8 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
                     </option>
                   ))}
                 </Select>
-    </div>
     {/* seconda colonna */}
-    <div className="colInterviste" style={{width: '90%',
-  margin: '13px',
-  display: 'flex',
-  flexDirection: 'column',}}>
+    
     <Select
                   className="dropdown-menu"
                   value={searchTerm.intervistatore}
@@ -156,12 +158,8 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
                     </option>
                   ))}
                 </Select>
-    </div>
     {/* terza colonna */}
-    <div className="colInterviste" style={{width: '90%',
-  margin: '13px',
-  display: 'flex',
-  flexDirection: 'column',}}>
+    
 
     <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
@@ -196,55 +194,50 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
 
 
 
-    </div>
     {/* quarta colonna */}
-    <div className="col-4">
-    <Button className="ripristina-link" onClick={handleReset}
-                sx={{ 
-                  color: 'white', backgroundColor: 'black',
-                  width: "100%",
-                    maxWidth: "90px",
-                    height: "50px",
-                    borderRadius: "10px",
-                    fontSize: "0.8rem",
-                    fontWeight: "bolder",
-                    marginLeft: "20px",
-                    marginTop: "5px",
-                    padding: "0.5rem 1rem",
-                    "&:hover": {
-                      backgroundColor: "black",
-                      color: "white",
-                      transform: "scale(1.05)",
-                    },
-                  }}>
-                  Reset
-                </Button>
-              <Button
-                className="button-search"
-                variant="contained"
-                onClick={handleSearch}
-                sx={{
-                  width: "100%",
-                  height: "50px",
-                  backgroundColor: "#ffb800",
-                  color: "black",
-                  borderRadius: "10px",
-                  fontSize: "0.8rem",
-                  fontWeight: "bolder",
-                  marginLeft: "20px",
-                  marginTop: "5px",
-                  padding: "0.5rem 1rem",
-                  "&:hover": {
-                    backgroundColor: "#ffb800",
-                    color: "black",
-                    transform: "scale(1.05)",
-                  },
-                }}
-              >
-                Cerca
-              </Button>
-    </div>
+    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+    <Button
+      className="button-search"
+      variant="contained"
+      onClick={handleSearch}
+      sx={{
+        width: '100px',
+        height: "40px",
+        backgroundColor: "#ffb800",
+        color: "black",
+        borderRadius: "10px",
+        fontSize: "0.8rem",
+        fontWeight: "bolder",
+        "&:hover": {
+          backgroundColor: "#ffb800",
+          color: "black",
+          transform: "scale(1.05)",
+        },
+      }}
+    >
+      Cerca
+    </Button>
+    <Button
+      className="ripristina-link"
+      onClick={handleReset}
+      sx={{
+        width: '100px', 
+        color: 'white', 
+        backgroundColor: 'black',
+        height: "40px",
+        borderRadius: "10px",
+        fontSize: "0.8rem",
+        fontWeight: "bolder",
+        "&:hover": {
+          backgroundColor: "black",
+          color: "white",
+          transform: "scale(1.05)",
+        },
+      }}>
+      Reset
+    </Button>
   </div>
+</div>
   );
 };
 

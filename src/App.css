@@ -1,11 +1,32 @@
 *{
-
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   /* font-family: 'Lato', sans-serif; */
   font-family: 'Roboto', sans-serif;
-  
- 
 }
+
+.app-container {
+  display: flex; 
+  background-color: #fbb800;
+  overflow-x: auto;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* .sidebar-container {
+  position: fixed; 
+  top: 0;
+  bottom: 0;
+  width: 250px; 
+  border-radius: 0 20px 20px 0; 
+  overflow-y: auto; 
+  z-index: 100; 
+} */
+
+.main-content {
+  flex-grow: 1; /* Occupa lo spazio restante */
+  
+}
+
 

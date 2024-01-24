@@ -25,19 +25,28 @@ const ModificaStaffing = () => {
   const [cv,                        setCV                        ] = useState(null);
   const [cf,                        setCF                        ] = useState(null);  
 
+  // Recupera l'accessToken da localStorage
+  const user = JSON.parse(localStorage.getItem("user"));
+  const accessToken = user?.accessToken;
+
+  // Configura gli headers della richiesta con l'Authorization token
+  const headers = {
+    Authorization: `Bearer ${accessToken}`
+  };
+
 
 
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseStato               = await axios.get("http://localhost:8080/staffing/react/stato/candidato");
-        const responseFornitore           = await axios.get("http://localhost:8080/fornitori/react");
-        const responseJobTitle            = await axios.get("http://localhost:8080/aziende/react/tipologia");
-        const responseTipologia           = await axios.get("http://localhost:8080/staffing/react/tipo");
-        const responseNeedSkill           = await axios.get("http://localhost:8080/staffing/react/skill");
-        const livelloScolasticoResponse   = await axios.get("http://localhost:8080/staffing/react/livello");
-        const ownerResponse               = await axios.get("http://localhost:8080/aziende/react/owner");
-        const facoltaResponse             = await axios.get("http://localhost:8080/staffing/react/facolta");
+        const responseStato               = await axios.get("http://localhost:8080/staffing/react/stato/candidato", { headers: headers });
+        const responseFornitore           = await axios.get("http://localhost:8080/fornitori/react", { headers: headers });
+        const responseJobTitle            = await axios.get("http://localhost:8080/aziende/react/tipologia", { headers: headers });
+        const responseTipologia           = await axios.get("http://localhost:8080/staffing/react/tipo", { headers: headers });
+        const responseNeedSkill           = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
+        const livelloScolasticoResponse   = await axios.get("http://localhost:8080/staffing/react/livello", { headers: headers });
+        const ownerResponse               = await axios.get("http://localhost:8080/aziende/react/owner", { headers: headers });
+        const facoltaResponse             = await axios.get("http://localhost:8080/staffing/react/facolta", { headers: headers });
 
         if (Array.isArray(facoltaResponse.data)) {
           const facoltaOptions = facoltaResponse.data.map((facolta) => ({
@@ -153,7 +162,7 @@ const ModificaStaffing = () => {
     { label: "Livello Scolastico",                  name: "livelloScolastico",          type: "select",         options: livelloScolasticoOptions },
     { label: "Facoltà",                             name: "facolta",                    type: "select",         options: facoltaOptions },
     { label: "Job Title",                           name: "tipologia",                  type: "select",         options: jobTitleOptions },
-    { label: "Data Inserimento",                    name: "dataUltimoContatto",            type: "date" },
+    { label: "Data Inserimento",                    name: "dataUltimoContatto",         type: "date" },
     { label: "Stato",                               name: "stato",                      type: "select",         options: statoOptions },
     { label: "Owner",                               name: "owner",                      type: "select",         options: ownerOptions },
     { label: "Seleziona le Skills",                 name: "skills",                     type: "multipleSelectSkill", options: skillsOptions },
@@ -196,58 +205,128 @@ const ModificaStaffing = () => {
   console.log("DATI IN VALUES: ", initialValues);
   
 
-  const handleSubmit = async (values) => {
+//   const handleSubmit = async (values) => {
  
-console.log("CV prima dell'invio :", values.cv);
-console.log("CF prima dell''invio :",values.cf);
-    const errors = validateFields(values);
-    const hasErrors = Object.keys(errors).length > 0;
-    if (!hasErrors) {
+// console.log("CV prima dell'invio :", values.cv);
+// console.log("CF prima dell''invio :",values.cf);
+//     const errors = validateFields(values);
+//     const hasErrors = Object.keys(errors).length > 0;
+//     if (!hasErrors) {
  
-    try {
+//     try {
   
-      console.log("DATI PRIMA DI ESSERE INVIATI: ", values);
-      const formData = new FormData();
+//       console.log("DATI PRIMA DI ESSERE INVIATI: ", values);
+//       const formData = new FormData();
   
-      if (cv instanceof File) {
-        formData.append("cv", cv);
-      } else {
-        // Qui potresti aggiungere il riferimento esistente al file CV, se necessario
-         formData.append("cvId", initialValues.cv.id);
-      }
+//       if (cv instanceof File) {
+//         formData.append("cv", cv);
+//       } else {
+//          formData.append("cvId", initialValues.cv.id);
+//       }
       
-      // Fai lo stesso per il file CF
-      if (cf instanceof File) {
-        formData.append("cf", cf);
-      } else {
-        // Qui potresti aggiungere il riferimento esistente al file CF, se necessario
-         formData.append("cfId", initialValues.cf.id);
-      }
+//       if (cf instanceof File) {
+//         formData.append("cf", cf);
+//       } else {
+//          formData.append("cfId", initialValues.cf.id);
+//       }
   
-      let skills = "";
-      if (values.skills && values.skills.length) {
-        skills = values.skills.join(',');
-        console.log("Skills selezionate:", skills);
+//       let skills = "";
+//       if (values.skills && values.skills.length) {
+//         skills = values.skills.join(',');
+//         console.log("Skills selezionate:", skills);
+//       }
+
+//       Object.keys(values).forEach(key => {
+//         if (key !== 'skills' && key !== 'cv' && key !== 'cf') { 
+//           formData.append(key, values[key]);
+//         }
+//       });
+  
+//       console.log("Contenuto di formData:");
+//       formData.forEach((value, key) => {
+//         console.log(`${key}:`, value);
+//       });
+  
+//       const response = await axios.post(`http://localhost:8080/staffing/salva`, formData, {
+//         params: { skill: skills },
+//         headers: { ...headers, "Content-Type": "multipart/form-data"}
+//       });
+  
+//       console.log("Risposta dal server:", response.data);
+//       navigate("/recruiting");
+//     } catch (error) {
+//       console.error("Errore durante il salvataggio:", error);
+//       if (error.response) {
+//         console.error("Dettagli dell'errore:", error.response.data);
+//       }
+//     }
+//   } else {
+//     console.log("Errore di validazione:", errors);
+//   }
+//   };
+
+
+const handleSubmit = async (values) => {
+  const errors = validateFields(values);
+  const hasErrors = Object.keys(errors).length > 0;
+
+  if (!hasErrors) {
+    try {
+      // Preparazione dei dati delle skills come stringhe separate
+      const skills = values.skills ? values.skills.join(',') : '';
+
+
+      console.log("Skills selezionate:", values.skills);
+
+
+
+      // Rimozione delle proprietà delle skills dall'oggetto values
+      delete values.skills;
+
+
+      // Invio della richiesta al server con skills e skills2 come parametri di query
+      const response = await axios.post("http://localhost:8080/staffing/salva", values, {
+        params: {
+          skill1: skills,
+        },
+        headers: headers
+      });
+
+      console.log("Risposta dal server:", response.data);
+
+    // Ottieni l'ID del candidato dalla risposta
+    const candidatoId = response.data;
+    console.log("ID :", candidatoId);
+
+      const formData = new FormData();
+      let tipo;
+      if (values.cv) {
+        formData.append("cv", values.cv);
+        tipo = 1; // Tipo per CV
+      } else {
+        formData.append("cv", new Blob([], { type: 'application/octet-stream' }), 'cv_null');
+      }
+    
+      if (values.cf) {
+        formData.append("cf", values.cf);
+        tipo = 2; // Tipo per CF
+      } else {
+        formData.append("cf", new Blob([], { type: 'application/octet-stream' }), 'cf_null');
       }
 
-      Object.keys(values).forEach(key => {
-        if (key !== 'skills' && key !== 'cv' && key !== 'cf') { 
-          formData.append(key, values[key]);
-        }
+      const responseFile = await axios.post(`http://localhost:8080/staffing/react/staff/salva/file/${candidatoId}`, formData, {
+        params: { tipo: tipo },
+        headers: headers,
       });
-  
-      console.log("Contenuto di formData:");
-      formData.forEach((value, key) => {
-        console.log(`${key}:`, value);
-      });
-  
-      const response = await axios.post(`http://localhost:8080/staffing/salva`, formData, {
-        params: { skill: skills },
-        headers: {"Content-Type": "multipart/form-data"}
-      });
-  
-      console.log("Risposta dal server:", response.data);
-      navigate("/recruiting");
+      console.log("Risposta per salvataggio file: ", responseFile.data);
+
+
+
+
+
+
+
+      navigate("/need");
     } catch (error) {
       console.error("Errore durante il salvataggio:", error);
       if (error.response) {
@@ -256,8 +335,10 @@ console.log("CF prima dell''invio :",values.cf);
     }
   } else {
     console.log("Errore di validazione:", errors);
+    // Gestisci qui gli errori di validazione
   }
-  };
+};
+
 
   const validateFields = (values) => {
     let errors = {};
@@ -280,6 +361,7 @@ console.log("CF prima dell''invio :",values.cf);
         method: 'GET',
         url: url,
         responseType: 'blob', 
+        headers: headers
       });
   
    
@@ -311,6 +393,7 @@ console.log("CF prima dell''invio :",values.cf);
         method: 'GET',
         url: url,
         responseType: 'blob', 
+        headers: headers
       });
   
 
@@ -334,10 +417,10 @@ console.log("CF prima dell''invio :",values.cf);
   const handleDeleteCV  = async (idf) => {
     console.log("ID DEL CV: ", idf);
     const idc = idCandidato;
-    const url = `http://localhost:8080/files/react/elimina/file/candidato/${idf}/${idc}`;
+    // const url = `http://localhost:8080/files/react/elimina/file/candidato/${idf}/${idc}`;
   
     try {
-      const response = await axios.delete(`http://localhost:8080/files/react/elimina/file/candidato/${idf}/${idc}`)
+      const response = await axios.delete(`http://localhost:8080/files/react/elimina/file/candidato/${idf}/${idc}`, { headers: headers })
       
    
       console.log("Risposta del server: ", response.data);
@@ -366,6 +449,7 @@ console.log("CF prima dell''invio :",values.cf);
       const response = await axios({
         method: 'DELETE',
         url: url,
+        headers: headers
       });
       console.log("Risposta del server: ", response);
     } catch (error) {

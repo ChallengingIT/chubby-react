@@ -28,11 +28,40 @@ const Fornitori = () => {
   const [ openDialog,             setOpenDialog                       ] = useState(false);
   const [ deleteId,               setDeleteId                         ] = useState(null);
 
+   // Recupera l'accessToken da localStorage
+   const user = JSON.parse(localStorage.getItem("user"));
+   const accessToken = user?.accessToken;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://localhost:8080/fornitori/react");
+   // Configura gli headers della richiesta con l'Authorization token
+   const headers = {
+     Authorization: `Bearer ${accessToken}`
+   };
+
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get("http://localhost:8080/fornitori/react", { headers: headers});
+  //       if (Array.isArray(response.data)) {
+  //       const fornitoriConId = response.data.map((fornitori) => ({ ...fornitori}));
+  //       setOriginalFornitori(fornitoriConId);
+  //       setFilteredFornitori(fornitoriConId);
+  //       console.log(fornitoriConId);
+  //       } else {
+  //         console.error("I dati ottenuti non sono nel formato Array:", response.data);
+  //       }
+  //     } catch (error) {
+  //       console.error("Errore durante il recupero dei dati:", error);
+  //     }
+  //   };
+
+
+  //   fetchData();
+  // }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/fornitori/react", { headers: headers});
         if (Array.isArray(response.data)) {
         const fornitoriConId = response.data.map((fornitori) => ({ ...fornitori}));
         setOriginalFornitori(fornitoriConId);
@@ -47,8 +76,11 @@ const Fornitori = () => {
     };
 
 
-    fetchData();
-  }, []);
+useEffect(() => {
+  fetchData();
+}, []);
+
+
 
 
 
@@ -63,14 +95,19 @@ const openDeleteDialog = (id) => {
     navigate("/fornitori/aggiungi");
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async () => {
+  
     try {
-      await axios.delete(`http://localhost:8080/fornitori/react/elimina/${deleteId}`);
-      const updatedFornitori = originalFornitori.filter((fornitori) => fornitori.id !== id);
+      const response = await axios.delete(`http://localhost:8080/fornitori/react/elimina/${deleteId}`, { headers: headers});
+      console.log("HO ELIMINATO :", deleteId);
+      console.log("RISPOSTA DEL SERVER: ", response );
+      // const updatedFornitori = originalFornitori.filter((fornitori) => fornitori.id !== id);
       setOpenDialog(false);
-      setFornitori(updatedFornitori);
-      setOriginalFornitori(updatedFornitori);
-      setFilteredFornitori(updatedFornitori);
+      // setFornitori(updatedFornitori);
+      // setOriginalFornitori(updatedFornitori);
+      // setFilteredFornitori(updatedFornitori);
+      fetchData();
+
     } catch (error) {
       console.error("Errore durante la cancellazione:", error);
     }
@@ -114,13 +151,23 @@ const openDeleteDialog = (id) => {
         <div className="container">
           <div className="page-name">Gestione Fornitori</div>
           <MyButton onClick={navigateToAggiungiFornitori}>Gestione Fornitori</MyButton>
-          <FornitoriSearchBox data={fornitori}
+          
+            <MyDataGrid 
+            data={filteredFornitori} 
+            columns={columns} 
+            title="Fornitori" 
+            getRowId={(row) => row.id}
+            searchBoxComponent={() => (
+              <FornitoriSearchBox
+               data={fornitori}
           onSearch={handleSearch} 
           onReset={handleReset}
           searchText={searchText}
           onSearchTextChange={(text) => setSearchText(text)}
           OriginalFornitori={originalFornitori}/>
-            <MyDataGrid data={filteredFornitori} columns={columns} title="Fornitori" getRowId={(row) => row.id}/>
+
+            )}
+            />
         </div>
       </div>
       <Dialog

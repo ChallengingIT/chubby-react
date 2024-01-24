@@ -17,12 +17,21 @@ const ModificaContatto = () => {
 
   console.log("Dati Arrivati: ", keyPeopleData);
 
+   // Recupera l'accessToken da localStorage
+   const user = JSON.parse(localStorage.getItem("user"));
+   const accessToken = user?.accessToken;
+
+   // Configura gli headers della richiesta con l'Authorization token
+   const headers = {
+     Authorization: `Bearer ${accessToken}`
+   };
+
 
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseAziende = await axios.get("http://localhost:8080/aziende/react");
-        const responseOwner   = await axios.get("http://localhost:8080/aziende/react/owner");
+        const responseAziende = await axios.get("http://localhost:8080/aziende/react", { headers: headers});
+        const responseOwner   = await axios.get("http://localhost:8080/aziende/react/owner", { headers: headers});
         
         if (Array.isArray(responseOwner.data)) {
           const ownerOptions = responseOwner.data.map((owner) => ({
@@ -101,7 +110,9 @@ const ModificaContatto = () => {
       // Log the values and id
       console.log("DATI inseriti con ID: ", values);
 
-      const response = await axios.post("http://localhost:8080/keypeople/react/salva", values);
+      const response = await axios.post("http://localhost:8080/keypeople/react/salva", values, {
+        headers: headers
+      });
       console.log("DATI INVIATI DOPO LA MODIFICA :", values);
       console.log("Response from server:", response.data);
 

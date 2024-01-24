@@ -12,6 +12,7 @@
   object-position: center top;
   position: absolute;
   z-index: -1;
+  background-color: black;
 }
 
 .img-container-homepage {
@@ -19,4 +20,5 @@
   position: relative;
   width: 100%;
   display: flex;
+  z-index: 1;
 }

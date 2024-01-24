@@ -23,8 +23,8 @@ const AggiungiContatto = () => {
        Authorization: `Bearer ${accessToken}`
      };
 
-        const aziendeResponse = await axios.get("http://localhost:8080/aziende/react", { headers });
-        const ownerResponse = await axios.get("http://localhost:8080/aziende/react/owner", { headers });
+        const aziendeResponse = await axios.get("http://localhost:8080/aziende/react", { headers: headers });
+        const ownerResponse = await axios.get("http://localhost:8080/aziende/react/owner", { headers: headers });
         if (Array.isArray(ownerResponse.data)) {
           const ownerOptions = ownerResponse.data.map((owner) => ({
             label: owner.descrizione,
@@ -95,7 +95,9 @@ const AggiungiContatto = () => {
 
       console.log("DATI PRIMA DELL'INVIO: ", values);
 
-      const response = await axios.post("http://localhost:8080/keypeople/react/salva", { headers }, values);
+      const response = await axios.post("http://localhost:8080/keypeople/react/salva", values, {
+        headers: headers
+      });
       console.log("Response from server:", response.data);
 
       navigate("/keyPeople");

@@ -24,14 +24,24 @@ function Associazioni() {
   const [originalAssociabili,       setOriginalAssociabili     ] = useState([]);
   const [associatiOptions,          setAssociatiOptions        ] = useState([]);
 
+
+   // Recupera l'accessToken da localStorage
+   const user = JSON.parse(localStorage.getItem("user"));
+   const accessToken = user?.accessToken;
+
+   // Configura gli headers della richiesta con l'Authorization token
+   const headers = {
+     Authorization: `Bearer ${accessToken}`
+   };
+
   const navigateToDettaglioKeyPeople = (nome) => {
     navigate(`/keyPeople/dettaglio/${nome}`);
   };
   
   const fetchData = async () => {
     try {
-      const associabiliResponse = await axios.get(`http://localhost:8080/associazioni/react/match/associabili/${id}`);
-      const associatiResponse   = await axios.get(`http://localhost:8080/need/react/match/associati/${id}`);
+      const associabiliResponse = await axios.get(`http://localhost:8080/associazioni/react/match/associabili/${id}`, { headers });
+      const associatiResponse   = await axios.get(`http://localhost:8080/need/react/match/associati/${id}`, { headers });
 
       if (Array.isArray(associatiResponse.data)) {
         const associatiConId = associatiResponse.data.map((associati) => ({ ...associati }));
@@ -80,7 +90,7 @@ function Associazioni() {
       console.log("URL con parametri di query: ", url);
   
       // Effettua la richiesta POST
-      const response = await axios.post(url);
+      const response = await axios.post(url, { headers });
       console.log(response.data);
   
       // Aggiorna i dati

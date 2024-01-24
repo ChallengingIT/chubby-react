@@ -51,6 +51,11 @@ const [ alert,                  setAlert                      ] = useState({ ope
 const [ originalTimesheet,      setOriginalTimesheet          ] = useState([]);
 const [ filteredTimesheet,      setFilteredTimesheet          ] = useState([]);
 const [ primoTimesheet,         setPrimoTimesheet             ] = useState([]);
+const [ uniqueProjects,         setUniqueProjects             ] = useState({});
+const [ selectedProject,        setSelectedProject            ] = useState(null);
+
+
+
 
 
 
@@ -98,9 +103,26 @@ const fetchData = async () => {
     
     if (response.data && response.data.mese && Array.isArray(response.data.mese.days)) {
       const timesheetConId = response.data.mese.days.map((timesheet) => ({...timesheet}));
+
+      // Crea un oggetto che raggruppa le ore per progetto e giorno
+      const projectsMap = timesheetConId.reduce((acc, current) => {
+        const projectId = current.progetto.id;
+        if (!acc[projectId]) {
+          acc[projectId] = {
+            description: current.progetto.description,
+            id: current.progetto.id,
+            giorni: {}
+          };
+        }
+        acc[projectId].giorni[current.giorno] = current.oreOrdinarie || 0;
+        return acc;
+      }, {});
+
+      setUniqueProjects(projectsMap);
+      console.log("PROGETTO UNICO: ", uniqueProjects);
       setOriginalTimesheet(timesheetConId);
       setFilteredTimesheet(timesheetConId);
-      console.log("Dati arrivati: ", timesheetConId);
+      console.log("DATI ARRIVATI DA TIMESHEET COMPONENT: ", timesheetConId);
     } else {
       console.error("I dati ottenuti non sono nel formato previsto:", response.data);
     } 
@@ -134,6 +156,21 @@ useEffect(() => {
   };
   fetchDataPrimoTimesheet();
 }, [id]);
+
+
+
+const renderProjects = () => {
+  return Object.values(uniqueProjects).map(project => (
+    <Grid container key={project.description} spacing={2}>
+      <Grid item xs={12} sm={6}>
+        <Typography variant="h6">{project.description}</Typography>
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        {renderDayBox(project)}
+      </Grid>
+    </Grid>
+  ));
+};
 
 
 
@@ -222,13 +259,13 @@ const handleCloseAlert = (event, reason) => {
     // console.log("PREV ANNO:", prevYear);
     try {
 
-      const url = `http://localhost:8080/timesheet/react/user/successivo/${id}/${prevYear}/${prevMonth}`;
+      const url = `http://localhost:8080/timesheet/react/staff/precedente/${id}/${prevYear}/${prevMonth}`;
 
 
       const response = await axios.get(url, { timesheetData });
       
 
-      console.log('Risposta dal server:', response.data);
+      // console.log('Risposta dal server:', response.data);
       setIsMonthSubmitted(response.data.meseInviato);
     } catch (error) {
       console.error('Errore durante l\'invio dei dati del timesheet:', error);
@@ -251,7 +288,7 @@ const handleCloseAlert = (event, reason) => {
     console.log("NEXT ANNO:", nextYear);
     try {
 
-      const url = `http://localhost:8080/timesheet/react/user/successivo/${id}/${nextYear}/${nextMonth - 1}`;
+      const url = `http://localhost:8080/timesheet/react/staff/successivo/${id}/${nextYear}/${nextMonth - 1}`;
 
 
       const response = await axios.get(url, { timesheetData });
@@ -344,14 +381,16 @@ const handleCloseAlert = (event, reason) => {
 //   }));
 // };
 
-const handleDayClick = (day) => {
+const handleDayClick = (day, project) => {
   const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
   console.log("DATA DEL MODAL: ", date);
   date.setDate(date.getDate() ); // Aggiungi un giorno qui
   const dateString = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T00:00`;
 
   setSelectedDay(date);
+  setSelectedProject(project);
   setModalOpen(true);
+  console.log("ID del progetto selezionato:", project.id);
 
   // Imposta ore a 8 se non è già definito per quel giorno
   setHours((prevHours) => ({
@@ -462,121 +501,110 @@ useEffect(() => {
       );
 };
 
- // Renderizza i quadrati per i giorni
-//  const renderDayBox = () => {
+
+
+// const renderDayBox = (project) => {
 //   const year = currentMonth.getFullYear();
-//     const month = currentMonth.getMonth();
-//     const totalDays = daysInMonth(month, year);
-//     const firstDay = firstDayOfWeek(month, year);
-//     let dayOfWeek = firstDay;
+//   const month = currentMonth.getMonth();
+//   const totalDays = daysInMonth(month, year);
+  
 
-//     const days = [];
-//     for (let day = 1; day <= totalDays; day++) {
-//       const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-//       const isHoliday = isPublicHoliday(day, month);
-//       const daySquareBgColor = isWeekend ? '#FF4D4D' : (isHoliday ? '#FF4D4D' : 'grey.200');
-//       const dateString = new Date(year, month, day).toISOString().split('T')[0];
-
-//     days.push(
+//   return (
+//     <Grid item xs>
 //       <Box
-//         key={day}
-//         onClick={() => handleDayClick(day)}
 //         sx={{
-//           height: "80px",
-//           backgroundColor: daySquareBgColor,
-//           display: "flex",
-//           flexDirection: "column",
-//           alignItems: "center",
-//           justifyContent: "center",
+//           display: 'flex',
+//           flexDirection: 'row',
+//           flexWrap: 'nowrap', // Impedisce il passaggio a capo
+//           overflowX: 'auto', // Permette lo scorrimento orizzontale se necessario
+//           minWidth: "30px",
 //           width: "98%",
-//           // minWidth: "30px",
-
-//           // flexGrow: 1,
-//           ':hover': {
-//             backgroundColor: "#fbb800",
-//             cursor: 'pointer',
-//           }
 //         }}
 //       >
-   
-//           <Typography>{hours[dateString] || 0}</Typography>
+//         {filteredTimesheet.map((dayData) => {
+//           const isWeekend = dayData.iniziale === 'S' || dayData.iniziale === 'D'; // Adattalo secondo la logica corretta
+//           const isHoliday = dayData.festivo;
+//           // const daySquareBgColor = isWeekend ? '#FF4D4D' : (isHoliday ? '#FF4D4D' : 'grey.200');
+//           const isNonWorkingDay = isWeekend || isHoliday;
+//           const daySquareStyle = isNonWorkingDay ? { backgroundColor: '#fbb800', color: 'white' } : { backgroundColor: 'grey.200' };
+
+//           return (
+//             <Box
+//               key={dayData.id}
+//               sx={{
+//                 height: "45px",
+//                 // backgroundColor: daySquareBgColor,
+//                 display: "flex",
+//                 flexDirection: "column",
+//                 alignItems: "center",
+//                 justifyContent: "center",
+//                 width: "98%",
+//                 ...daySquareStyle,
+//                 ':hover': {
+//                   backgroundColor: "#fbb800",
+//                   cursor: 'pointer',
+//                 }
+//               }}
+//               onClick={() => handleDayClick(dayData.giorno)} // Assicurati che handleDayClick possa gestire questo parametro correttamente
+//             >
+//               <Typography>{dayData.oreOrdinarie || 0}</Typography>
+//             </Box>
+//           );
+//         })}
 //       </Box>
-//     );
-    
-//     // Aggiorna il giorno della settimana
-//     dayOfWeek = (dayOfWeek + 1) % 7;
-//     }
-    
-//     return (
-//       <Grid item xs>
-//         <Box
-//           sx={{
-//             display: 'flex',
-//             flexDirection: 'row',
-//             flexWrap: 'nowrap', // Impedisce il passaggio a capo
-//             overflowX: 'auto', // Permette lo scorrimento orizzontale se necessario
-//             minWidth: "30px",
-//             width: "98%",
-            
-//           }}
-//         >
-//           {days}
-//         </Box>
-//       </Grid>
-//     );
+//     </Grid>
+//   );
 // };
 
-const renderDayBox = () => {
-  const year = currentMonth.getFullYear();
-  const month = currentMonth.getMonth();
-  const totalDays = daysInMonth(month, year);
+
+
+const renderDayBox = (project) => {
+  const totalDays = daysInMonth(currentMonth.getMonth(), currentMonth.getFullYear());
 
   return (
-    <Grid item xs>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          flexWrap: 'nowrap', // Impedisce il passaggio a capo
-          overflowX: 'auto', // Permette lo scorrimento orizzontale se necessario
-          minWidth: "30px",
-          width: "98%",
-        }}
-      >
-        {filteredTimesheet.map((dayData) => {
-          const isWeekend = dayData.iniziale === 'S' || dayData.iniziale === 'D'; // Adattalo secondo la logica corretta
-          const isHoliday = dayData.festivo;
-          // const daySquareBgColor = isWeekend ? '#FF4D4D' : (isHoliday ? '#FF4D4D' : 'grey.200');
-          const isNonWorkingDay = isWeekend || isHoliday;
-          const daySquareStyle = isNonWorkingDay ? { backgroundColor: '#fbb800', color: 'white' } : { backgroundColor: 'grey.200' };
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'nowrap',
+        overflowX: 'auto',
+        minWidth: "30px",
+        width: "98%",
+      }}
+    >
+      {Array.from({ length: totalDays }, (_, i) => i + 1).map(day => {
+        const oreOrdinarie = project.giorni[day] || 0;
+        const dayOfWeek = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day).getDay();
+        const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+        const isHoliday = isPublicHoliday(day, currentMonth.getMonth());
+        const daySquareStyle = isWeekend || isHoliday ? { backgroundColor: '#fbb800', color: 'white' } : { backgroundColor: 'grey.200' };
 
-          return (
-            <Box
-              key={dayData.id}
-              sx={{
-                height: "45px",
-                // backgroundColor: daySquareBgColor,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                width: "98%",
-                ...daySquareStyle,
-                ':hover': {
-                  backgroundColor: "#fbb800",
-                  cursor: 'pointer',
-                }
-              }}
-              onClick={() => handleDayClick(dayData.giorno)} // Assicurati che handleDayClick possa gestire questo parametro correttamente
-            >
-              <Typography>{dayData.oreOrdinarie || 0}</Typography>
-            </Box>
-          );
-        })}
-      </Box>
-    </Grid>
+        return (
+          <Box
+            key={day}
+            sx={{
+              height: "45px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "98%",
+              ...daySquareStyle,
+              ':hover': {
+                backgroundColor: "#fbb800",
+                cursor: 'pointer',
+              }
+            }}
+            onClick={() => handleDayClick(day, project)}
+          >
+            <Typography>{oreOrdinarie}</Typography>
+          </Box>
+        );
+      })}
+    </Box>
   );
 };
+
 
 
 
@@ -584,9 +612,14 @@ const handleSubmitModal = async () => {
   selectedDay.setDate(selectedDay.getDate() + 1);
   const selectedDateString = selectedDay.toISOString().split('T')[0];
   console.log("SELECTEDATESTRING: ", selectedDateString);
+
+  const projectId = selectedProject ? selectedProject.id : null;
+
+  console.log("ID DEL PROGETTO SELEZIONATO :", projectId);
+
     // setHours((prevHours) => ({ ...prevHours, [selectedDateString]: Number(hours[selectedDateString] || 0) }));
     const datiDaInviare = {
-      progetto: idProgetto, 
+      progetto: projectId,
       permesso: permessoChecked,
       malattia: malattiaChecked,
       ferie: ferieChecked,
@@ -596,23 +629,34 @@ const handleSubmitModal = async () => {
       ore: oreOrdinarie
     };
 
+
+
+
     console.log("DATI DA INVITARE :", datiDaInviare );
     try {
       const url = `http://localhost:8080/timesheet/react/staff/aggiorna/${id}/${annoCorrente}/${meseCorrente}`;
       const response = await axios.post(url, datiDaInviare );
-      if (response.data !== "OK") {
-        setAlert({ open: true, message: response.data });
-      } else {
+      if (response.data === "OK") {
+        // Dopo che il server ha confermato il salvataggio dei dati
+    await fetchData(); // attendi il recupero dei dati aggiornati
+    // Potresti dover forzare un re-render del componente, per esempio:
+    setUniqueProjects({}); // resetta lo stato per forzare l'aggiornamento
+    await fetchData(); // poi richiama fetchData per aggiornare lo stato con i nuovi dati
         // Aggiornamento dei dati del timesheet solo se la risposta è "OK"
-        fetchData(); // Richiama la funzione per ottenere i dati aggiornati
+        fetchData(); 
+        console.log("SALVATAGGIO EFFETTUATO CON SUCCESSO");
+        handleCloseModal(); // Chiude il dialog
+
+       
+      } else {
+        setAlert({ open: true, message: response.data });
+        
       }
       console.log('Risposta dal server:', response.data);
-      // console.log("DATI INVIATI: ", timesheetData );
     } catch (error) {
       console.error('Errore durante l\'invio dei dati del timesheet:', error);
+      setAlert({ open: true, message: 'Errore durante il salvataggio.' });
     }
-    
-    handleCloseModal();
   };
 
 
@@ -659,16 +703,50 @@ return (
     </Grid>
 
 
-    <Grid container justifyContent="space-between" alignItems="flex-end" paddingLeft="20px" sx={{ borderBottom: '1px solid black', }} spacing={2}>
+    {/* <Grid container justifyContent="space-between" alignItems="flex-end" paddingLeft="20px" sx={{ borderBottom: '1px solid black', }} spacing={2}>
     <Grid item xs={2} sm={2} >
         <Typography variant="h6" align="left" fontSize="17px"  >
-          Ferie, permessi e malattie
-        </Typography>
+        {filteredTimesheet.map((timesheet) => timesheet.progetto.description).join(', ')}
+</Typography>
         </Grid>
         <Grid item xs={10} sm={10}>
         {renderDayBox()}
       </Grid>
+      </Grid> */}
+
+
+{/* <Grid container justifyContent="space-between" alignItems="flex-end" paddingLeft="20px" sx={{ borderBottom: '1px solid black', }} spacing={2}>
+  {Object.values(uniqueProjects).map((project, index) => (
+    <React.Fragment key={index} >
+      <Grid item xs={2} sm={2}>
+        <Typography variant="h6" align="left" fontSize="17px">
+          {project.description}
+        </Typography>
       </Grid>
+      <Grid item xs={10} sm={10}>
+        {renderDayBox(project)}
+      </Grid>
+    </React.Fragment>
+  ))}
+</Grid> */}
+
+
+<Grid container justifyContent="space-between" alignItems="flex-end" paddingLeft="20px" spacing={2}>
+  {Object.values(uniqueProjects).map((project, index) => (
+    <React.Fragment key={index}>
+      <Grid item xs={2} sm={2} sx={{  borderBottom: '1px solid black', pb: 1, mb: 1 }}>
+        <Typography variant="h6" align="left" fontSize="17px">
+          {project.description}
+        </Typography>
+      </Grid>
+      <Grid item xs={10} sm={10} sx={{ borderBottom: '1px solid black', pb: 1, mb: 1 }}>
+        {renderDayBox(project)}
+      </Grid>
+    </React.Fragment>
+  ))}
+</Grid>
+
+
 
 
         <Grid >
@@ -698,15 +776,15 @@ return (
     <Grid container spacing={2}>
       {/* Prima riga */}
       <Grid item xs={12}> {/* xs={12} significa che occuperà l'intera larghezza */}
-    <TextField
-      fullWidth
-      label="Progetto"
-      value="Ferie, permessi e malattia" 
-      InputLabelProps={{
-        shrink: true, 
-      }}
-      disabled 
-    />
+      <TextField
+  fullWidth
+  label={selectedProject ? selectedProject.description : "Progetto"}
+  value={selectedProject ? selectedProject.description : ""} 
+  InputLabelProps={{
+    shrink: true, 
+  }}
+  disabled 
+/>
   </Grid>
       <Grid item xs={3}>
     <FormControlLabel
@@ -820,10 +898,10 @@ return (
             color="primary"
             onClick={handleCloseModal}
             style={{
-              backgroundColor: "#6C757D",
+              backgroundColor: "black",
               color: "white",
               "&:hover": {
-                backgroundColor: "#6C757D",
+                backgroundColor: "black",
                 transform: "scale(1.05)",
               },
             }}
@@ -837,9 +915,12 @@ return (
               onClick={handleSubmitModal}
 
               style={{
-                backgroundColor: "black",
+                backgroundColor: "#fbb800",
+                color: "black",
+                fontWeight: "bold",
                 "&:hover": {
-                  backgroundColor: "black",
+                  backgroundColor: "#fbb800",
+                  color: "black",
                   transform: "scale(1.05)",
                 },
               }}

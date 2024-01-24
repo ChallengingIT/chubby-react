@@ -18,6 +18,15 @@
     const [ statoOptions,             setStatoOptions          ] = useState([]); //tipologiaIncontro
     const [ tipoIntervistaOptions,    setTipoIntervistaOptions ] = useState([]); //follow up
 
+     // Recupera l'accessToken da localStorage
+     const user = JSON.parse(localStorage.getItem("user"));
+     const accessToken = user?.accessToken;
+ 
+     // Configura gli headers della richiesta con l'Authorization token
+     const headers = {
+       Authorization: `Bearer ${accessToken}`
+     };
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,10 +34,10 @@
 
 
         //jobtitle = tipologia, tipologiaIncontro = stato, owner = owner
-        const responseTipologia                      = await axios.get("http://localhost:8080/aziende/react/tipologia");
-        const ownerResponse                          = await axios.get("http://localhost:8080/aziende/react/owner");
-        const responseStato                          = await axios.get("http://localhost:8080/staffing/react/stato/candidato");
-        const responseTipoIntervista                 = await axios.get("http://localhost:8080/intervista/react/tipointervista");
+        const responseTipologia                      = await axios.get("http://localhost:8080/aziende/react/tipologia", { headers: headers});
+        const ownerResponse                          = await axios.get("http://localhost:8080/aziende/react/owner", { headers: headers});
+        const responseStato                          = await axios.get("http://localhost:8080/staffing/react/stato/candidato", { headers: headers});
+        const responseTipoIntervista                 = await axios.get("http://localhost:8080/intervista/react/tipointervista", { headers: headers});
 
         if (Array.isArray(responseTipoIntervista.data)) {
           const tipoIntervistaOptions = responseTipoIntervista.data.map((tipoIntervista) => ({
@@ -263,7 +272,8 @@ const disableFields = {
             idCandidato: idCandidato,
             note: note,
             modifica: modifica
-          }
+          },
+          headers: headers
         });
         console.log("DATI INVIATI: ", response);
         console.log("Response from server:", response.data);

@@ -18,10 +18,19 @@ const FatturazionePassiva = () => {
   const [ originalFatturazionePassiva,    setOriginalFatturazionePassiva    ] = useState([]);
   const [ filteredFatturazionePassiva,    setFilteredFatturazionePassiva    ] = useState([]);
 
+   // Recupera l'accessToken da localStorage
+   const user = JSON.parse(localStorage.getItem("user"));
+   const accessToken = user?.accessToken;
+
+   // Configura gli headers della richiesta con l'Authorization token
+   const headers = {
+     Authorization: `Bearer ${accessToken}`
+   };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/fatturazione/passiva/react");
+        const response = await axios.get("http://localhost:8080/fatturazione/passiva/react", { headers: headers});
         if (Array.isArray(response.data)) {
         const fatturazionePassivaConId = response.data.map((fatturazionePassiva) => ({ ...fatturazionePassiva}));
         setFatturazionePassiva(fatturazionePassivaConId);
@@ -101,14 +110,23 @@ const FatturazionePassiva = () => {
         <div className="container">
           <div className="page-name">Fatturazione Passiva</div>
           <MyButton onClick={navigateToAggiungiFatturazionePassiva}>Aggiungi una nuova Fattura</MyButton>
-        <FatturazionePassivaSearchBox 
+        
+            <MyDataGrid 
+            data={fatturazionePassiva} 
+            columns={columns} 
+            title="Fatture Passive" 
+            getRowId={(row) => row.id}
+            searchBoxComponent={() => (
+              <FatturazionePassivaSearchBox 
         data={fatturazionePassiva} 
         onSearch={handleSearch} 
         onReset={handleReset}
         searchText={searchText}
         onSearchTextChange={(text) => setSearchText(text)}
         OriginalFatturazionePassiva={originalFatturazionePassiva}/>
-            <MyDataGrid data={fatturazionePassiva} columns={columns} title="Fatture Passive" getRowId={(row) => row.id} />
+
+            )}
+             />
         </div>
       </div>
     </div>

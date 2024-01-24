@@ -34,9 +34,9 @@ const HRSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalHr})
     setFilteredData([]); 
   };
   return (
-    <div className="row-container">
+    <div className="gridContainer" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr) auto', gap: '10px', alignItems: 'center', margin: '20px 5px', padding: '0 0 20px 0',  borderBottom: '2px solid #dbd9d9',}}>
+
     {/* prima colonna */}
-    <div className="col">
       <input style={{border: 'solid 1px #c4c4c4'}}
         type="text"
         id="nome"
@@ -46,10 +46,8 @@ const HRSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalHr})
         value={searchTerm.nome}
         onChange={(e) => setSearchTerm({ ...searchTerm, nome: e.target.value })}
       />
-    </div>
 
     {/* seconda colonna */}
-    <div className="col">
       <input style={{border: 'solid 1px #c4c4c4'}}
         type="text"
         id="cognome"
@@ -59,10 +57,8 @@ const HRSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalHr})
         value={searchTerm.cognome}
         onChange={(e) => setSearchTerm({ ...searchTerm, cognome: e.target.value })}
       />
-    </div>
 
     {/* terza colonna */}
-    <div className="col">
       <input style={{border: 'solid 1px #c4c4c4'}}
         type="email"
         id="email"
@@ -73,21 +69,40 @@ const HRSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalHr})
         value={searchTerm.email}
         onChange={(e) => setSearchTerm({ ...searchTerm, email: e.target.value })}
       />
-    </div>
     {/* quarta colonna */}
-    <div className="col-4">
-    <Button className="ripristina-link" onClick={handleReset}
-        sx={{ 
-          color: 'white', backgroundColor: 'black',
-          width: "100%",
-            maxWidth: "90px",
-            height: "50px",
+    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+        <Button
+          className="button-search"
+          variant="contained"
+          onClick={handleSearch}
+          sx={{
+            width: '100px',
+            height: "40px",
+            backgroundColor: "#ffb800",
+            color: "black",
             borderRadius: "10px",
             fontSize: "0.8rem",
             fontWeight: "bolder",
-            marginLeft: "20px",
-            marginTop: "5px",
-            padding: "0.5rem 1rem",
+            "&:hover": {
+              backgroundColor: "#ffb800",
+              color: "black",
+              transform: "scale(1.05)",
+            },
+          }}
+        >
+          Cerca
+        </Button>
+        <Button
+          className="ripristina-link"
+          onClick={handleReset}
+          sx={{
+            width: '100px', 
+            color: 'white', 
+            backgroundColor: 'black',
+            height: "40px",
+            borderRadius: "10px",
+            fontSize: "0.8rem",
+            fontWeight: "bolder",
             "&:hover": {
               backgroundColor: "black",
               color: "white",
@@ -96,32 +111,8 @@ const HRSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalHr})
           }}>
           Reset
         </Button>
-      <Button
-        className="button-search"
-        variant="contained"
-        onClick={handleSearch}
-        sx={{
-          width: "100%",
-          height: "50px",
-          backgroundColor: "#ffb800",
-          color: "black",
-          borderRadius: "10px",
-          fontSize: "0.8rem",
-          fontWeight: "bolder",
-          marginLeft: "20px",
-          marginTop: "5px",
-          padding: "0.5rem 1rem",
-          "&:hover": {
-            backgroundColor: "#ffb800",
-            color: "black",
-            transform: "scale(1.05)",
-          },
-        }}
-      >
-        Cerca
-      </Button>
+      </div>
     </div>
-  </div>
   );
 };
 

@@ -72,8 +72,27 @@ const ReusablePopup = ({ open, title, onClose, onSave, fields = [], idTipoAttivi
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Annulla</Button>
-        <Button onClick={handleSaveClick}>Salva</Button>
+        <Button onClick={onClose} 
+        sx={{ 
+          backgroundColor: 'black', 
+        color: 'white',
+        "&:hover": {
+          backgroundColor: "black",
+          transform: "scale(1.05)",
+        },
+      }}>Annulla</Button>
+        <Button onClick={handleSaveClick} 
+        sx={{ 
+
+        backgroundColor: '#fbb800', 
+        color: 'black', 
+        fontWeight: 'bold',
+        "&:hover": {
+          backgroundColor: "#fbb800",
+          color: "black",
+          transform: "scale(1.05)",
+        },
+      }}>Salva</Button>
       </DialogActions>
     </Dialog>
   );

@@ -24,7 +24,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   });
   
   const WeekendCell = styled(TableCell)(({ theme }) => ({
-    backgroundColor: '#fc6464', // o qualsiasi altro colore desiderato per i fine settimana
+    backgroundColor: '#fbb800', // o qualsiasi altro colore desiderato per i fine settimana
     borderRight: `1px solid ${theme.palette.divider}`,
   }));
 
@@ -42,6 +42,15 @@ const [ dal,                    setDal                              ] = useState
 const [ al,                     setAl                               ] = useState('');
 const [ page,                   setPage                             ] = useState(0);
 const [ rowsPerPage,            setRowsPerPage                      ] = useState(10);
+
+ // Recupera l'accessToken da localStorage
+ const user = JSON.parse(localStorage.getItem("user"));
+ const accessToken = user?.accessToken;
+
+ // Configura gli headers della richiesta con l'Authorization token
+ const headers = {
+   Authorization: `Bearer ${accessToken}`
+ };
 
 
 const months = [
@@ -76,7 +85,7 @@ useEffect(() => {
     const fetchEmployees = async () => {
     setLoading(true);
     try {
-        const response = await axios.get('http://localhost:8080/hr/react');
+        const response = await axios.get('http://localhost:8080/hr/react', { headers: headers});
         if (Array.isArray(response.data)) {
             const dipendentiData = response.data.map((dipendenti) => ({
             label: `${dipendenti.nome} ${dipendenti.cognome}`,
@@ -108,7 +117,8 @@ const handleSearch = async () => {
   
     try {
       const response = await axios.get('http://localhost:8080/hr/report/estrai', {
-        params: { anno: year, mese: month, dal: dalVal, al: alVal }
+        params: { anno: year, mese: month, dal: dalVal, al: alVal },
+        headers: headers
       });
       // Gestisci la risposta e aggiorna lo stato dei dipendenti
       setShowTable(true);
@@ -130,6 +140,7 @@ const handleEstraiExcel = async () => {
       method: 'GET',
       url: url,
       responseType: 'blob', 
+      headers: headers
     });
 
     const fileURL = window.URL.createObjectURL(new Blob([response.data], { type: 'application/xls' }));

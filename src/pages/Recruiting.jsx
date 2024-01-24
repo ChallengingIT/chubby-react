@@ -2,7 +2,7 @@
 //funzionante al 21 dicembre 2023 9:00
 
 import React, { useEffect, useState }         from "react";
-import { useNavigate, useLocation }                        from "react-router-dom";
+import { useNavigate, useLocation }           from "react-router-dom";
 import axios                                  from "axios";
 import Sidebar                                from "../components/Sidebar";
 import MyDataGrid                             from "../components/MyDataGrid";
@@ -37,7 +37,7 @@ const Recruiting = () => {
   const location = useLocation();
   const [emailFromParams, setEmailFromParams] = useState(location.state?.params?.email || "");
 
-  console.log("EMAIL RICEVUTO: ", location.state?.params?.email);
+
 
   const [ recruiting,                     setRecruiting                   ] = useState([]);
   const [ originalRecruiting,             setOriginalRecruiting           ] = useState([]);
@@ -72,7 +72,7 @@ const Recruiting = () => {
      const headers = {
        Authorization: `Bearer ${accessToken}`
      };
-        const response = await axios.get("http://localhost:8080/staffing/react", { headers });
+        const response = await axios.get("http://localhost:8080/staffing/react", { headers: headers });
         if (Array.isArray(response.data)) {
         const recruitingConId = response.data.map((recruiting) => ({ ...recruiting}));
         setOriginalRecruiting(recruitingConId);
@@ -116,10 +116,9 @@ const Recruiting = () => {
      const headers = {
        Authorization: `Bearer ${accessToken}`
      };
-      const response = await axios.delete(`http://localhost:8080/staffing/elimina/${deleteId}`, { headers });
+      const response = await axios.delete(`http://localhost:8080/staffing/elimina/${deleteId}`, { headers: headers });
       setOpenDialog(false);
-console.log("Risposta dalla chiamata Delete: ", response);
-console.log("ID ELIMINATO: ", id);
+
 fetchData();
     } catch (error) {
       console.error("Errore durante la cancellazione:", error);
@@ -163,7 +162,7 @@ fetchData();
       ),
     },
     { field: "email",          headerName: "Email",          width: 250},
-    { field: "tipologia",      headerName: "Job Title",      width: 150, renderCell: (params) => (
+    { field: "tipologia",      headerName: "Job Title",      width: 200, renderCell: (params) => (
       <div style={{ textAlign: "start" }}>
         {params.row.tipologia && params.row.tipologia.descrizione
           ? params.row.tipologia.descrizione
@@ -172,7 +171,7 @@ fetchData();
     ),
   }, 
     { field: "rating",        headerName: "Rating",         width: 100, renderCell: (params) => getSmileIcon(params), }, //fino a 1.9 è rosso, da 2 a 3 giallo, sopra 3 è verde
-    { field: "nrating",       headerName: "N. Rating",      width: 90  },
+    // { field: "nrating",       headerName: "N. Rating",      width: 90  },
     { field: "owner",         headerName: "Owner",          width: 70, renderCell: (params) => (
         <div style={{ textAlign: "start" }}>
           {params.row.owner && params.row.owner.descrizione
@@ -193,7 +192,7 @@ fetchData();
         </div>
       ),
     },
-    { field: "dataUltimoContatto",      headerName: "Contatto",       width: 100 },
+    { field: "dataUltimoContatto",      headerName: "Contatto",       width: 150 },
     { field: "noteRal",                 headerName: "Note/Ral",       width: 200,  renderCell: (params) => (
       <div>
         <NoteButton onClick={() => {
@@ -242,7 +241,7 @@ fetchData();
 
 
   const handleDownloadCV = async (fileId, fileDescrizione) => {
-    console.log("FILE ID: ", fileId);
+
     
 
     const url = `http://localhost:8080/files/react/download/file/${fileId}`;
@@ -293,7 +292,14 @@ fetchData();
       <div className="container">
         <div className="page-name">Gestione staffing</div>
         <MyButton onClick={navigateToAggiungiCandidato}>Aggiungi Candidato</MyButton>
-        <RecruitingSearchBox 
+        
+        <MyDataGrid 
+        data={filteredRecruiting} 
+        columns={columns} 
+        title="Candidati" 
+        getRowId={(row) => row.id}
+        searchBoxComponent={() => (
+          <RecruitingSearchBox 
         data={recruiting} 
         onSearch={handleSearch} 
         onReset={handleReset} 
@@ -301,7 +307,8 @@ fetchData();
         OriginalRecruiting={originalRecruiting}
         initialEmail={emailFromParams}
         />
-        <MyDataGrid data={filteredRecruiting} columns={columns} title="Candidati" getRowId={(row) => row.id} />
+        )}
+         />
         <Modal
   isOpen={isNotesPopupOpen}
   onRequestClose={() => setIsNotesPopupOpen(false)}

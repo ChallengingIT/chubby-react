@@ -13,25 +13,27 @@ const AggiungiProgetto = () => {
   const [ livelloScolasticoOptions,       setLivelloScolasticoOptions         ] = useState([]);
   const [ contrattoOptions,               setContrattoOptions                 ] = useState([]);
 
+      // Recupera l'accessToken da localStorage
+      const user = JSON.parse(localStorage.getItem("user"));
+      const accessToken = user?.accessToken;
+  
+      // Configura gli headers della richiesta con l'Authorization token
+      const headers = {
+        Authorization: `Bearer ${accessToken}`
+      };
+
 
 
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        // Recupera l'accessToken da localStorage
-     const user = JSON.parse(localStorage.getItem("user"));
-     const accessToken = user?.accessToken;
- 
-     // Configura gli headers della richiesta con l'Authorization token
-     const headers = {
-       Authorization: `Bearer ${accessToken}`
-     };
+    
 
-        const responseJobTitle              = await axios.get("http://localhost:8080/aziende/react/tipologia" , { headers });
-        const responseSkill                 = await axios.get("http://localhost:8080/staffing/react/skill"    , { headers });
-        const facoltaResponse               = await axios.get("http://localhost:8080/staffing/react/facolta"  , { headers });
-        const livelloScolasticoResponse     = await axios.get("http://localhost:8080/staffing/react/livello"  , { headers });
-        const contrattoResponse             = await axios.get("http://localhost:8080/hr/react/tipocontratto"  , { headers });
+        const responseJobTitle              = await axios.get("http://localhost:8080/aziende/react/tipologia" , { headers: headers });
+        const responseSkill                 = await axios.get("http://localhost:8080/staffing/react/skill"    , { headers: headers });
+        const facoltaResponse               = await axios.get("http://localhost:8080/staffing/react/facolta"  , { headers: headers });
+        const livelloScolasticoResponse     = await axios.get("http://localhost:8080/staffing/react/livello"  , { headers: headers });
+        const contrattoResponse             = await axios.get("http://localhost:8080/hr/react/tipocontratto"  , { headers: headers });
 
         if (Array.isArray(contrattoResponse.data)) {
           const contrattoOptions = contrattoResponse.data.map((contratto) => ({
@@ -103,7 +105,7 @@ const campiObbligatori = [ "nome" ];
     { label: "Codice Fiscale",              name: "codFiscale",         type:"text"  },
     { label: "RAL/Tariffa",                 name: "ral",                type:"text"  },
     { label: "Job Title",                   name: "tipologia",          type: "select",                       options: jobTitleOptions },
-    { label: "Seleziona le skill",          name: "skills",             type: "multipleSelectSkill",   options: skillsOptions },
+    { label: "Seleziona le skill",          name: "skills",             type: "multipleSelectSkill",          options: skillsOptions },
     { label: "Tipologia Contratto",         name: "tipologiaContratto", type: "select",                       options: contrattoOptions },
     { label: "Note",                        name: "note",               type: "note" },
     { label: "Allegati",                    name: "file",               type: "fileMultiple" },
@@ -196,46 +198,25 @@ const handleSubmit = async (values) => {
   const errors = validateFields(values);
     const hasErrors = Object.keys(errors).length > 0;
     if (!hasErrors) {
-  try {
-    // Recupera l'accessToken da localStorage
-    const user = JSON.parse(localStorage.getItem("user"));
-    const accessToken = user?.accessToken;
 
-    // Configura gli headers della richiesta con l'Authorization token
-    const headers = {
-      Authorization: `Bearer ${accessToken}`
-    };
+    try {
+      // Preparazione dei dati delle skills come stringhe separate
+      const skills = values.skills ? values.skills.join(',') : '';
 
-    console.log("DATI PRIMA DI ESSERE INVIATI: ", values);
-    const formData = new FormData();
+      console.log("Skills selezionate:", values.skills);
+      console.log("Values: ", values);
 
-    // Prepara i dati e le skills per l'invio
-    let skills = "";
-    if (values.skills && values.skills.length) {
-      skills = values.skills.join(',');
-      console.log("Skills selezionate: ", skills);
-      formData.append('skills', skills);
-    }
+      // Rimozione delle proprietà delle skills dall'oggetto values
+      delete values.skills;
 
-    // Aggiungi tutti gli altri valori al formData escludendo 'skills' e 'file'
-    Object.keys(values).forEach(key => {
-      if (key !== 'skills' && key !== 'file') {
-        formData.append(key, values[key]);
-      }
-    });
+      const allegati = values.file;
+      delete values.file;
 
-    // Verifica il contenuto di formData
-    console.log("Contenuto di formData:");
-    formData.forEach((value, key) => {
-      console.log(`${key}:`, value);
-    });
+      const datiResponse = await axios.post("http://localhost:8080/hr/react/staff/salva", values, {
+        params: { skill: skills },
+        headers: headers,
+      });
 
-
-    // Invia la richiesta al server per i dati e le skills
-    const datiResponse = await axios.post("http://localhost:8080/hr/react/staff/salva", { headers }, formData, {
-      params: { skill: skills },
-      headers: {"Content-Type": "multipart/form-data"},
-    });
     console.log("Risposta dal server: ", datiResponse.data);
 
     // Ottieni l'ID dello staff dalla risposta
@@ -244,17 +225,15 @@ const handleSubmit = async (values) => {
   
 
     // Controlla se ci sono file da inviare
-    if (values.file && values.file.length) {
-      for (const file of values.file) {
-        let fileFormData = new FormData();
+    if (allegati && allegati.length) {
+      for (const file of allegati) {
+        const fileFormData = new FormData();
         fileFormData.append("file", file);
 
         // Invia ogni file separatamente utilizzando l'ID dello staff
-        const fileResponse = await axios.post(`http://localhost:8080/hr/react/staff/salva/file/${staffId}`, { headers }, fileFormData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
+        const fileResponse = await axios.post(`http://localhost:8080/hr/react/staff/salva/file/${staffId}`, fileFormData, 
+        {headers: headers});
+        
         console.log("Risposta dal server per il file: ", fileResponse.data);
       }
     }

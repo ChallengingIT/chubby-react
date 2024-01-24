@@ -14,11 +14,11 @@ return(
     color="primary"
     onClick={handleGoBack}
     style={{
-      backgroundColor: "#6C757D",
+      backgroundColor: "black",
       color: "white",
       marginBottom: "20px",
       "&:hover": {
-        backgroundColor: "#6C757D",
+        backgroundColor: "black",
         transform: "scale(1.05)",
       },
     }}

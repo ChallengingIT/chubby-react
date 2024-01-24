@@ -24,8 +24,8 @@ const AggiungiProgetto = () => {
   useEffect(() => {
     const fetchProgettiOptions = async () => {
       try {
-        const responseDipendenti = await axios.get("http://localhost:8080/hr/react"     , { headers});
-        const responseClienti    = await axios.get("http://localhost:8080/aziende/react", { headers });
+        const responseDipendenti = await axios.get("http://localhost:8080/hr/react"     , { headers: headers});
+        const responseClienti    = await axios.get("http://localhost:8080/aziende/react", { headers: headers });
 
 
         if (Array.isArray(responseDipendenti.data)) {
@@ -60,12 +60,12 @@ const AggiungiProgetto = () => {
 
   // const campiObbligatori = [ "descrizione", "idCliente", "idStaff", "inzio", "scadenza" ];
 
-  const campiObbligatori = [ "descrizione", "idCliente", "idStaff", "inizio", "scadenza" ];
+  const campiObbligatori = [ "description", "idAzienda", "idStaff", "inizio", "scadenza" ];
 
 
   const fields = [
-    { label: "Descrizione",     name: "descrizione",              type: "text" },
-    { label: "Cliente",         name: "idCliente",                type: "select", options: clientiOptions },
+    { label: "Descrizione",     name: "description",              type: "text" },
+    { label: "Cliente",         name: "idAzienda",                type: "select", options: clientiOptions },
     { label: "Dipendente",      name: "idStaff",                  type: "select", options: dipendentiOptions },
     { label: "Data Inizio",     name: "inizio",                   type: "date" },
     { label: "Scadenza",        name: "scadenza",                 type: "date" },

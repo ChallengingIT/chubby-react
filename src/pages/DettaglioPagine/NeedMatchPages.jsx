@@ -36,6 +36,15 @@ function NeedMatchPages() {
   const [ isModalOpen,                 setIsModalOpen               ] = useState(false);
   const [ initialValuesAggiorna,       setInitialValuesAggiorna     ] = useState([]);
 
+  // Recupera l'accessToken da localStorage
+  const user = JSON.parse(localStorage.getItem("user"));
+  const accessToken = user?.accessToken;
+
+  // Configura gli headers della richiesta con l'Authorization token
+  const headers = {
+    Authorization: `Bearer ${accessToken}`
+  };
+
   
 
   const navigateToCercaCandidato = (params) => {
@@ -45,11 +54,11 @@ function NeedMatchPages() {
   
   const fetchData = async () => {
     try {
-      const associatiResponse   = await axios.get(`http://localhost:8080/need/react/match/associati/${id}`);
-      const storicoResponse     = await axios.get(`http://localhost:8080/need/react/storico/${id}`);
-      const associabiliResponse = await axios.get(`http://localhost:8080/need/react/match/associabili/${id}`);
-      const ownerResponse       = await axios.get("http://localhost:8080/aziende/react/owner");
-      const statoResponse       = await axios.get("http://localhost:8080/associazioni/react/stati");
+      const associatiResponse   = await axios.get(`http://localhost:8080/need/react/match/associati/${id}`, { headers: headers});
+      const storicoResponse     = await axios.get(`http://localhost:8080/need/react/storico/${id}`, { headers: headers});
+      const associabiliResponse = await axios.get(`http://localhost:8080/need/react/match/associabili/${id}`, { headers: headers});
+      const ownerResponse       = await axios.get("http://localhost:8080/aziende/react/owner", { headers: headers});
+      const statoResponse       = await axios.get("http://localhost:8080/associazioni/react/stati", { headers: headers});
 
       if (Array.isArray(ownerResponse.data)) {
         const ownerOptions = ownerResponse.data.map((owner) => ({
@@ -134,7 +143,7 @@ function NeedMatchPages() {
 
       const url = `http://localhost:8080/associazioni/react/rimuovi/candidato/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
       console.log("URL con parametri di query: ", url);
-      const response = await axios.delete(url);
+      const response = await axios.delete(url, { headers: headers});;
       console.log(response.data);
   
       fetchData();
@@ -157,7 +166,7 @@ function NeedMatchPages() {
       const url = `http://localhost:8080/associazioni/react/rimuovi/associa/${idAssociazione}`;
 
     
-      const response = await axios.delete(url);
+      const response = await axios.delete(url, { headers: headers});;;
       console.log(response.data);
   
       fetchData();
@@ -176,7 +185,7 @@ function NeedMatchPages() {
   
       console.log("URL con parametri di query: ", url);
   
-      const response = await axios.post(url);
+      const response = await axios.post(url, { headers: headers});
       console.log(response.data);
   
       fetchData();
@@ -240,7 +249,7 @@ function NeedMatchPages() {
   
       console.log("Dati da inviare in aggiorna : ", updatedValues);
   
-      const response = await axios.post(`http://localhost:8080/associazioni/salva`, updatedValues);
+      const response = await axios.post(`http://localhost:8080/associazioni/salva`, updatedValues, { headers: headers });;
       console.log(response.data);
       fetchData();
     } catch (error) {
@@ -443,13 +452,13 @@ const tableAssociati = [
         <div className="containerTitle">
                     <h1>{`${descrizione} ${nomeAzienda} Staffing`}</h1>
                 </div>
-                <NeedMatchSearchBox data={needMatch}
+                
+                <MyDataGrid data={filteredAssociabili} columns={tableAssociabili} title="Candidati"             getRowId={(row) => row.id} searchBoxComponent={() => (<NeedMatchSearchBox data={needMatch}
           onSearch={handleSearch}
           onReset={handleReset}
           searchText={searchText}
           onSearchTextChange={(text) => setSearchText(text)}
-          OriginalAssociabili={originalAssociabili}/>
-                <MyDataGrid data={filteredAssociabili} columns={tableAssociabili} title="Candidati"             getRowId={(row) => row.id} />
+          OriginalAssociabili={originalAssociabili}/>)} />
                 <MyDataGrid data={storicoOptions}      columns={tableStorico}   title="Storico"               getRowId={(row) => row.id} />
                 <MyDataGrid data={associatiOptions}    columns={tableAssociati} title="Candidati Associati"   getRowId={(row) => row.id} />
             <Button

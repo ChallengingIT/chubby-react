@@ -37,12 +37,12 @@ const AggiungiNeedID = () => {
   useEffect(() => {
     const fetchNeedOptions = async () => {
       try {
-        const responseAziende       = await axios.get("http://localhost:8080/aziende/react"       , { headers });
-        const responseSkill         = await axios.get("http://localhost:8080/staffing/react/skill", { headers });
-        const responseSkill2        = await axios.get("http://localhost:8080/staffing/react/skill", { headers });
-        const ownerResponse         = await axios.get("http://localhost:8080/aziende/react/owner" , { headers });
-        const tipologiaResponse     = await axios.get("http://localhost:8080/need/react/tipologia", { headers });
-        const statoResponse         = await axios.get("http://localhost:8080/need/react/stato"    , { headers });
+        const responseAziende       = await axios.get("http://localhost:8080/aziende/react"       , { headers: headers });
+        const responseSkill         = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
+        const responseSkill2        = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
+        const ownerResponse         = await axios.get("http://localhost:8080/aziende/react/owner" , { headers: headers });
+        const tipologiaResponse     = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
+        const statoResponse         = await axios.get("http://localhost:8080/need/react/stato"    , { headers: headers });
 
 
         if (Array.isArray(statoResponse.data)) {
@@ -115,7 +115,7 @@ const AggiungiNeedID = () => {
   const campiObbligatori = [ "idAzienda", "descrizione", "priorita", "week", "tipo", "idOwner", "stato"]; 
 
   const fields = [
-    { label: "Azienda",           name: "idAzienda",                    type: "select",           options: aziendeOptions },
+    { label: "Azienda",           name: "idAzienda",                    type: "text",           disabled:true },
     { label: "Descrizione Need",  name: "descrizione",                  type: "text" },
     { label: "Priorità",          name: "priorita",                     type: "text" },
     { label: "Week",              name: "week",                         type: "weekPicker" },
@@ -137,7 +137,8 @@ const AggiungiNeedID = () => {
 
 
   const initialValues = {
-    idAzienda: aziendaData.id || "",
+    id:        aziendaData?.id          || "",
+    idAzienda: aziendaData?.denominazione || "",
   };
 
   // const handleSubmit = async (values) => {
@@ -202,11 +203,12 @@ const AggiungiNeedID = () => {
         delete values.skills2;
   
         // Invio della richiesta al server con skills e skills2 come parametri di query
-        const response = await axios.post("http://localhost:8080/need/react/salva", { headers }, values, {
+        const response = await axios.post("http://localhost:8080/need/react/salva", values, {
           params: {
             skill1: skills,
             skill2: skills2
-          }
+          },
+          headers: headers
         });
   
         console.log("Risposta dal server:", response.data);

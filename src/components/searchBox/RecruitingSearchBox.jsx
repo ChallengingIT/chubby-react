@@ -63,7 +63,7 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
 
         if (Array.isArray(responseTipologia.data)) {
           setTipologiaOptions(responseTipologia.data.map((tipologia, index) => ({ label: tipologia.descrizione, value: tipologia.id })));
-          console.log("Tipologia Options:", tipologiaOptions);
+  
         } else {
           console.error("I dati ottenuti non sono nel formato Array:", responseTipologia.data);
         } 
@@ -84,8 +84,7 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
   }, []);
 
   const handleSearch = () => {
-    console.log("Valori di ricerca:", searchTerm);
-    console.log("Contenuto di OriginalAziende:", OriginalRecruiting);
+
     const filteredData = OriginalRecruiting.filter((item) =>
       Object.keys(searchTerm).every((key) =>
         searchTerm[key] === '' ||
@@ -95,7 +94,7 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
         String(item[key]).toLowerCase().includes(String(searchTerm[key]).toLowerCase())
       )
     );
-    console.log("Dati filtrati:", filteredData);
+
     onSearch(filteredData);
     setFilteredData(filteredData);
   };
@@ -110,11 +109,10 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
 
   
   return (
-    <div className="row2-container">
+    <div className="gridContainer" style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr) auto', gap: '10px', alignItems: 'center', margin: '20px 5px', padding: '0 0 20px 0',  borderBottom: '2px solid #dbd9d9',}}>
+
     {/* Prima colonna */}
-    <div className="col">
-      <div className="row">
-        <input style={{border: 'solid 1px #c4c4c4'}}
+        <input style={{border: 'solid 1px #c4c4c4', marginTop: '10px'}}
           type="text"
           placeholder="Nome Candidato"
           id="ricercaNome"
@@ -123,9 +121,7 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
           value={searchTerm.nome}
           onChange={(e) => setSearchTerm({ ...searchTerm, nome: e.target.value })}
           />
-      </div>
-      <div className="row">
-        <input style={{border: 'solid 1px #c4c4c4'}}
+        <input style={{border: 'solid 1px #c4c4c4', marginTop: '10px'}}
           type="text"
           placeholder="Cognome Candidato"
           id="ricercaCognome"
@@ -134,12 +130,8 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
           value={searchTerm.cognome}
           onChange={(e) => setSearchTerm({ ...searchTerm, cognome: e.target.value })}
           />
-      </div>
-    </div>
     {/* Seconda colonna */}
-    <div className="col">
-      <div className="row">
-        <input style={{border: 'solid 1px #c4c4c4'}}
+        <input style={{border: 'solid 1px #c4c4c4', marginTop: '10px'}}
           type="text"
           placeholder="Email Candidato"
           id="ricercaCognome"
@@ -148,13 +140,12 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
           value={searchTerm.email}
           onChange={(e) => setSearchTerm({ ...searchTerm, email: e.target.value })}
         />
-      </div>
-      <div className="row">
       <Select
                   className="dropdown-menu"
                   value={searchTerm.tipologia}
                   onChange={e => setSearchTerm({...searchTerm, tipologia: e.target.value })}
                   sx={{
+                    marginTop: '10px',
                     borderRadius: "40px",
                     fontSize: "0.8rem",
                     textAlign: "start",
@@ -171,16 +162,13 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
                     </option>
                   ))}
                 </Select>
-      </div>
-    </div>
     {/* Terza colonna */}
-    <div className="col">
-      <div className="row">
       <Select
   className="dropdown-menu"
   value={searchTerm.tipo}
   onChange={(e) => setSearchTerm({ ...searchTerm, tipo: e.target.value })}
   sx={{
+    marginTop: '10px',
     borderRadius: "40px",
     fontSize: "0.8rem",
     textAlign: "start",
@@ -198,13 +186,12 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
   ))}
 </Select>
 
-      </div>
-      <div className="row">
       <Select
   className="dropdown-menu"
   value={searchTerm.stato}
   onChange={(e) => setSearchTerm({ ...searchTerm, stato: e.target.value })}
   sx={{
+    marginTop: '10px',
     borderRadius: "40px",
     fontSize: "0.8rem",
     textAlign: "start",
@@ -222,61 +209,50 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
   ))}
 </Select>
 
-      </div>
-    </div>
     {/* Quarta colonna */}
-    <div className="col">
-      <div className="row">
-        <Button
-          className="button-search"
-          variant="contained"
-          onClick={handleSearch}
-          sx={{
-            width: "100%",
-            maxWidth: "90px",
-            height: "40px",
-            backgroundColor: "#ffb800",
-            color: "black",
-            borderRadius: "10px",
-            fontSize: "0.8rem",
-            fontWeight: "bolder",
-            marginLeft: "20px",
-            marginTop: "5px",
-            padding: "0.5rem 1rem",
-            "&:hover": {
-              backgroundColor: "#ffb800",
-              color: "black",
-              transform: "scale(1.05)",
-            },
-          }}
-        >
-          Cerca
-        </Button>
-      </div>
-      <div className="row">
-      <Button className="ripristina-link" onClick={handleReset}
-        sx={{ 
-          color: 'white', backgroundColor: 'black',
-          width: "100%",
-            maxWidth: "90px",
-            height: "40px",
-            borderRadius: "10px",
-            fontSize: "0.8rem",
-            fontWeight: "bolder",
-            marginLeft: "20px",
-            marginTop: "5px",
-            padding: "0.5rem 1rem",
-            "&:hover": {
-              backgroundColor: "black",
-              color: "white",
-              transform: "scale(1.05)",
-            },
-          }}>
-          Reset
-        </Button>
-      </div>
-    </div>
+    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+    <Button
+      className="button-search"
+      variant="contained"
+      onClick={handleSearch}
+      sx={{
+        width: '100px',
+        height: "40px",
+        backgroundColor: "#ffb800",
+        color: "black",
+        borderRadius: "10px",
+        fontSize: "0.8rem",
+        fontWeight: "bolder",
+        "&:hover": {
+          backgroundColor: "#ffb800",
+          color: "black",
+          transform: "scale(1.05)",
+        },
+      }}
+    >
+      Cerca
+    </Button>
+    <Button
+      className="ripristina-link"
+      onClick={handleReset}
+      sx={{
+        width: '100px', 
+        color: 'white', 
+        backgroundColor: 'black',
+        height: "40px",
+        borderRadius: "10px",
+        fontSize: "0.8rem",
+        fontWeight: "bolder",
+        "&:hover": {
+          backgroundColor: "black",
+          color: "white",
+          transform: "scale(1.05)",
+        },
+      }}>
+      Reset
+    </Button>
   </div>
+</div>
   );
 };
 

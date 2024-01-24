@@ -10,6 +10,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import Button     from "@mui/material/Button";
 import Logo       from "../images/innotek.svg";
 import Dialog     from "@mui/material/Dialog";
+import axios from "axios";
+import authService from "../services/auth.service";
 
 
 
@@ -148,7 +150,7 @@ const SubmenuItem = styled.div`
   margin-left: 20px;
 `;
 
-const Sidebar = () => {
+const Sidebar = ({ handleLogout }) => {
   const [sidebarcollapsed, setSidebarcollapsed] = useState(true);
   const [submenuOpen, setSubMenuOpen] = useState({});
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -156,18 +158,100 @@ const Sidebar = () => {
   const [activeLink, setActiveLink] = useState(null);
 
   const [isLogoutPopupOpen, setLogoutPopupOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogoutClick = () => {
     setLogoutPopupOpen(true);
   };
 
+
+  useEffect(() => {
+    setActiveLink(location.pathname);
+  }, [location]);
+
+
+
+  const closeLogoutPopup = () => {
+    setLogoutPopupOpen(false);
+  };
+
+  const confirmLogout = () => {
+    navigate('/login', { replace: true });
+    window.location.reload();
+    closeLogoutPopup();
+  };
+
+
+
+  useEffect(() => {
+    setActiveLink(location.pathname);
+    setSidebarcollapsed(true);
+    // if (sidebarcollapsed) {
+    //   setSubMenuOpen({});
+    // }
+    setSubMenuOpen({});
+  }, [location.pathname]);
+  // }, [location, sidebarcollapsed]);
+
+
+
+  const toggleSidebar = () => {
+    const newSidebarcollapsed = !sidebarcollapsed;
+    setSidebarcollapsed(newSidebarcollapsed);
+    setIsSidebarOpen(!isSidebarOpen);
+    if (newSidebarcollapsed) {
+      setSubMenuOpen({});
+    }
+  };
+
+  const toggleSubMenu = (index) => {
+    if (sidebarcollapsed) {
+      setSidebarcollapsed(false);
+    }
+    setSubMenuOpen((prevState) => ({
+      ...prevState,
+      [index]: !prevState[index],
+    }));
+  };
+
+
   const MyLogoutPopup = ({ open, onClose, onConfirm }) => {
     const navigate = useNavigate();
-    const handleConfirmLogout = () => {
-      navigate("/login");
+  //   const handleConfirmLogout = async () => {
 
-      onConfirm();
-    };
+  //     // Recupera l'accessToken da localStorage
+  //  const user = JSON.parse(localStorage.getItem("user"));
+  //  const accessToken = user?.accessToken;
+
+  //  // Configura gli headers della richiesta con l'Authorization token
+  //  const headers = {
+  //    Authorization: `Bearer ${accessToken}`
+  //  };
+  //     try {
+  //       const response = await axios.post("http://localhost:8080/logout", { headers: headers });
+  //       console.log("LOGOUT EFFETTUATO: ", response);
+  //     } catch(error) {
+  //       console.error("Errore durante il logout");
+  //     }
+  //     navigate("/login");
+
+  //     onConfirm();
+  //   };
+  const handleConfirmLogout = async () => {
+    try {
+      await authService.logout(); 
+      navigate('/login', { replace: true });
+    window.location.reload();
+      closeLogoutPopup();        
+      console.log("Logout effettuato");
+    } catch (error) {
+      console.error('Errore durante il logout:', error);
+
+    }
+    onConfirm();
+  };
+    
 
     return (
       <Dialog
@@ -241,43 +325,8 @@ const Sidebar = () => {
     );
   };
 
-  const closeLogoutPopup = () => {
-    setLogoutPopupOpen(false);
-  };
-
-  const confirmLogout = () => {
-    closeLogoutPopup();
-  };
-
-  const location = useLocation();
-
-  useEffect(() => {
-    setActiveLink(location.pathname);
-    if (sidebarcollapsed) {
-      setSubMenuOpen({});
-    }
-  }, [location, sidebarcollapsed]);
 
 
-
-  const toggleSidebar = () => {
-    const newSidebarcollapsed = !sidebarcollapsed;
-    setSidebarcollapsed(newSidebarcollapsed);
-    setIsSidebarOpen(!isSidebarOpen);
-    if (!newSidebarcollapsed) {
-      setSubMenuOpen({});
-    }
-  };
-
-  const toggleSubMenu = (index) => {
-    if (sidebarcollapsed) {
-      setSidebarcollapsed(false);
-    }
-    setSubMenuOpen((prevState) => ({
-      ...prevState,
-      [index]: !prevState[index],
-    }));
-  };
 
   const SidebarData = [
     {
@@ -359,7 +408,7 @@ const Sidebar = () => {
         },
         {
           title: "Fatturazione Passiva",
-          path: "/fatturazionePassiva",
+          path: "/fatturazione/passiva",
           icon: <FaIcons.FaIdBadge className="active-icon" />,
         },
         {
@@ -548,11 +597,63 @@ const Sidebar = () => {
         ></Button>
       )}
 
-      <MyLogoutPopup
+
+<Dialog open={isLogoutPopupOpen} onClose={closeLogoutPopup}>
+        <div
+          style={{
+            backgroundColor: 'black',
+            color: 'white',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: '40px',
+            fontSize: '20px',
+          }}
+        >
+          <h2>Conferma Logout</h2>
+          <p>Sei sicuro di voler uscire?</p>
+          <div>
+            <Button
+              variant="outlined"
+              onClick={closeLogoutPopup}
+              sx={{
+                borderColor: '#ffb900',
+                color: '#ffb900',
+                marginRight: '5px',
+                marginTop: '20px',
+                '&:hover': {
+                  transform: 'scale(1.05)',
+                  borderColor: '#ffb900',
+                },
+              }}
+            >
+              Annulla
+            </Button>
+            <Button
+              variant="contained"
+              onClick={confirmLogout}
+              sx={{
+                backgroundColor: '#ffb900',
+                marginLeft: '5px',
+                marginTop: '20px',
+                color: 'black',
+                '&:hover': {
+                  backgroundColor: '#ffb900',
+                  transform: 'scale(1.05)',
+                },
+              }}
+            >
+              Logout
+            </Button>
+          </div>
+        </div>
+      </Dialog>
+
+      {/* <MyLogoutPopup
         open={isLogoutPopupOpen}
         onClose={closeLogoutPopup}
         onConfirm={confirmLogout}
-      />
+      /> */}
 
       <SidebarTitle3 $sidebarcollapsed={sidebarcollapsed}>
         Copyright © 2022 All rights reserved

@@ -8,10 +8,13 @@ function SaveButton({ onSubmit, buttonText }) {
             variant="contained"
             onClick={onSubmit}
             style={{
-                backgroundColor: "black",
+                backgroundColor: "#fbb800",
+                color: "black",
+                fontWeight: "bold",
                 marginBottom: "20px",
                 "&:hover": {
-                    backgroundColor: "black",
+                    backgroundColor: "#fb800",
+                    color: "black",
                     transform: "scale(1.05)",
                 },
             }}

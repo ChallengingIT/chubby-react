@@ -12,7 +12,7 @@ import {
 
 import "../../styles/Need.css";
 
-const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalAssociabili}) => {
+const NeedMatchSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalAssociabili}) => {
 
   const initialSearchTerm = {
     nome: '',
@@ -22,6 +22,17 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalAs
     seniority: '',
 
   };
+
+
+  
+
+  const accessToken = localStorage.getItem("accessToken"); // Ottieni l'accessToken dal localStorage
+// console.log("accessToken: ", accessToken);
+// Configura l'header "Authorization" con l'accessToken
+const headers = {
+  Authorization: `Bearer ${accessToken}`,
+};
+
 
   const [ searchTerm,                     setSearchTerm                 ] = useState(initialSearchTerm);
   const [ tipoOptions,                    setTipoOptions                ] = useState([]);
@@ -38,8 +49,8 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalAs
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseJobTitle = await axios.get("http://localhost:8080/aziende/react/tipologia");
-        const responseTipo     = await axios.get("http://localhost:8080/staffing/react/tipo"); 
+        const responseJobTitle = await axios.get("http://localhost:8080/aziende/react/tipologia", { headers: headers});
+        const responseTipo     = await axios.get("http://localhost:8080/staffing/react/tipo"    , { headers: headers}); 
 
         if (Array.isArray(responseJobTitle.data)) {
           setJobTitleOptions(responseJobTitle.data.map((jobTitle) => ({ label: jobTitle.descrizione, value: jobTitle.id })));
@@ -92,10 +103,9 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalAs
   };
       
   return (
-    <div className="row2-container">
+    <div className="gridContainer" style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr) auto', gap: '10px', alignItems: 'center', margin: '20px 5px', padding: '0 0 20px 0',  borderBottom: '2px solid #dbd9d9',}}>
+
         {/* Prima colonna */}
-        <div className="col">
-          <div className="row">
           <input style={{border: 'solid 1px #c4c4c4'}}
                   type="text"
                   placeholder="Nome"
@@ -105,8 +115,6 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalAs
                   value={searchTerm.nome}
                   onChange={(e) => setSearchTerm({ ...searchTerm, nome: e.target.value })}
                 />
-          </div>
-          <div className="row">
           <input style={{border: 'solid 1px #c4c4c4'}}
                   type="text"
                   placeholder="Cognome"
@@ -117,11 +125,7 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalAs
                   onChange={(e) => setSearchTerm({ ...searchTerm, cognome: e.target.value })}
                 />
 
-          </div>
-        </div>
         {/* Seconda colonna */}
-        <div className="col">
-          <div className="row">
           <Select
               className="dropdown-menu"
               value={searchTerm.tipologia}
@@ -143,8 +147,6 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalAs
                 </option>
               ))}
             </Select>
-          </div>
-          <div className="row">
           <Select
               className="dropdown-menu"
               value={searchTerm.tipo}
@@ -166,11 +168,7 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalAs
                 </option>
               ))}
             </Select>
-          </div>
-        </div>
         {/* Terza colonna */}
-        <div className="col">
-          <div className="row">
           <Select
               className="dropdown-menu"
               value={searchTerm.seniority}
@@ -192,66 +190,53 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalAs
                 </option>
               ))}
             </Select>
-          </div>
-          <div className="row-calendar">
           
-          </div>
-        </div>
         {/* Quarta colonna */}
-        <div className="col">
-          <div className="row">
             
-            <Button
-              className="button-search"
-              variant="contained"
-              onClick={handleSearch}
-              sx={{
-                width: "100%",
-                maxWidth: "90px",
-                height: "40px",
-                backgroundColor: "#ffb800",
-                color: "black",
-                borderRadius: "10px",
-                fontSize: "0.8rem",
-                fontWeight: "bolder",
-                marginLeft: "20px",
-                marginTop: "5px",
-                padding: "0.5rem 1rem",
-                "&:hover": {
-                  backgroundColor: "#ffb800",
-                  color: "black",
-                  transform: "scale(1.05)",
-                },
-              }}
-            >
-              Cerca
-            </Button>
-          </div>
-          <div className="row">
-          <Button className="ripristina-link" onClick={handleReset}
-            sx={{ 
-              color: 'white', backgroundColor: 'black',
-              width: "100%",
-                maxWidth: "90px",
-                height: "40px",
-                borderRadius: "10px",
-                fontSize: "0.8rem",
-                fontWeight: "bolder",
-                marginLeft: "20px",
-                marginTop: "5px",
-                padding: "0.5rem 1rem",
-                "&:hover": {
-                  backgroundColor: "black",
-                  color: "white",
-                  transform: "scale(1.05)",
-                },
-              }}>
-              Reset
-            </Button>
-          </div>
-        </div>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+        <Button
+          className="button-search"
+          variant="contained"
+          onClick={handleSearch}
+          sx={{
+            width: '100px',
+            height: "40px",
+            backgroundColor: "#ffb800",
+            color: "black",
+            borderRadius: "10px",
+            fontSize: "0.8rem",
+            fontWeight: "bolder",
+            "&:hover": {
+              backgroundColor: "#ffb800",
+              color: "black",
+              transform: "scale(1.05)",
+            },
+          }}
+        >
+          Cerca
+        </Button>
+        <Button
+          className="ripristina-link"
+          onClick={handleReset}
+          sx={{
+            width: '100px', 
+            color: 'white', 
+            backgroundColor: 'black',
+            height: "40px",
+            borderRadius: "10px",
+            fontSize: "0.8rem",
+            fontWeight: "bolder",
+            "&:hover": {
+              backgroundColor: "black",
+              color: "white",
+              transform: "scale(1.05)",
+            },
+          }}>
+          Reset
+        </Button>
       </div>
+    </div>
 );
 };
 
-export default NeedSearchBox;
+export default NeedMatchSearchBox;

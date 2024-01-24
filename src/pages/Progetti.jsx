@@ -8,6 +8,14 @@ import ProgettiSearchBox             from "../components/searchBox/ProgettiSearc
 import MyButton                      from '../components/MyButton.jsx';
 import EditButton                    from "../components/button/EditButton.jsx";
 import DeleteButton                  from "../components/button/DeleteButton.jsx";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button
+} from '@mui/material';
 
 import "../styles/Progetti.css";
 
@@ -16,6 +24,8 @@ const Progetti = () => {
   const [ originalProgetti,           setOriginalProgetti       ] = useState([]);
   const [ filteredProgetti,           setFilteredProgetti       ] = useState([]);
   const [ searchText,                 setSearchText             ] = useState([]);
+  const [ deleteId,                   setDeleteId               ] = useState(null);
+  const [ openDialog,                 setOpenDialog             ] = useState(false);
 
         
 
@@ -31,12 +41,13 @@ const Progetti = () => {
        };
 
  
-      const response = await axios.get("http://localhost:8080/progetti/react", { headers });
+      const response = await axios.get("http://localhost:8080/progetti/react", { headers: headers });
+      console.log("Risposta completa:", response);
       if (Array.isArray(response.data)) {
       const progettiConId = response.data.map((progetti) => ({ ...progetti}));
       setOriginalProgetti(progettiConId);
       setFilteredProgetti(progettiConId);
-      console.log(progettiConId);
+      // console.log(progettiConId);
       } else {
         console.error("I dati ottenuti non sono nel formato Array:", response.data);
       }
@@ -48,6 +59,12 @@ const Progetti = () => {
   useEffect(() => {
   fetchData();
 }, []);
+
+const openDeleteDialog = (id) => {
+  setDeleteId(id);
+  setOpenDialog(true);
+};
+
 
   const navigate = useNavigate();
 
@@ -78,9 +95,9 @@ const Progetti = () => {
        const headers = {
          Authorization: `Bearer ${accessToken}`
        };
-      const response = await axios.delete(`http://localhost:8080/progetti/react/elimina/${id}`, { headers });
+      const response = await axios.delete(`http://localhost:8080/progetti/react/elimina/${id}`, { headers: headers });
 console.log("Risposta dalla chiamata Delete: ", response);
-console.log("ID ELIMINATO: ", id);
+// console.log("ID ELIMINATO: ", id);
 fetchData();
     } catch (error) {
       console.error("Errore durante la cancellazione:", error);
@@ -123,7 +140,7 @@ fetchData();
           >
             <EditButton />
           </Link>
-          <DeleteButton onClick={handleDelete} id={params.row.id} />
+          <DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
         </div>
       ),
     },
@@ -159,12 +176,63 @@ fetchData();
         <div className="container">
           <div className="page-name">Progetti</div>
             <MyButton onClick={navigateToAggiungiProgetti}>Aggiungi Progetto</MyButton>
-            <ProgettiSearchBox data={progetti} onSearch={handleSearch} onReset={handleReset} OriginalProgetti={originalProgetti} searchText={searchText} onSearchTextChange={(text) => setSearchText(text)}/>
           {/* <div className="table-container"> */}
-            <MyDataGrid data={originalProgetti} columns={columns} title="Progetti" getRowId={(row) => row.id}/>
+            <MyDataGrid 
+            data={originalProgetti} 
+            columns={columns} 
+            title="Progetti" 
+            getRowId={(row) => row.id}
+            searchBoxComponent={() => (
+              <ProgettiSearchBox 
+              data={progetti} 
+              onSearch={handleSearch} 
+              onReset={handleReset} 
+              OriginalProgetti={originalProgetti} 
+              searchText={searchText} 
+              onSearchTextChange={(text) => setSearchText(text)}/>
+
+            )}
+            />
           {/* </div> */}
         </div>
       </div>
+      <Dialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+  <DialogTitle id="alert-dialog-title">{"Conferma Eliminazione"}</DialogTitle>
+  <DialogContent>
+    <DialogContentText id="alert-dialog-description">
+      Sei sicuro di voler eliminare questa azienda?
+    </DialogContentText>
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={() => setOpenDialog(false)} color="primary" style={{
+              backgroundColor: "black",
+              color: "white",
+              "&:hover": {
+                backgroundColor: "black",
+                transform: "scale(1.05)",
+              },
+            }}>
+      Annulla
+    </Button>
+    <Button onClick={handleDelete} color="primary" variant="contained" type="submit"
+              style={{
+                backgroundColor: "#fbb800",
+                color: "black",
+                "&:hover": {
+                  backgroundColor: "#fbb800",
+                  color: "black",
+                  transform: "scale(1.05)",
+                },
+              }}>
+      Conferma
+    </Button>
+  </DialogActions>
+</Dialog>
     </div>
   );
 };

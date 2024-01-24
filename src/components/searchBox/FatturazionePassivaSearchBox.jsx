@@ -17,12 +17,19 @@ const FatturazionePassivaSearchBox = ({ data, onSearch, onReset, onSearchTextCha
   const [ statoOptions,         setStatoOptions         ] = useState([]);
   const [ filteredData,         setFilteredData         ] = useState([]);
 
+  const accessToken = localStorage.getItem("accessToken"); // Ottieni l'accessToken dal localStorage
+// console.log("accessToken: ", accessToken);
+// Configura l'header "Authorization" con l'accessToken
+const headers = {
+  Authorization: `Bearer ${accessToken}`,
+};
+
   useEffect(() => {
     const fetchData = async () => {
       try {
 
-        const responseFornitori = await axios.get("http://localhost:8080/fornitori/react");
-        const responseStato     = await axios.get("http://localhost:8080/fatturazionePassiva/react/stato");
+        const responseFornitori = await axios.get("http://localhost:8080/fornitori/react", { headers: headers});
+        const responseStato     = await axios.get("http://localhost:8080/fatturazionePassiva/react/stato", { headers: headers});
         
         if (Array.isArray(responseStato.data)) {
           setStatoOptions(responseStato.data.map((stato, index) => ({ label: stato.descrizione, value: stato.id })));
@@ -68,9 +75,9 @@ const FatturazionePassivaSearchBox = ({ data, onSearch, onReset, onSearchTextCha
 
 
   return (
-    <div className="row1-col3-container">
+    <div className="gridContainer" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr) auto', gap: '10px', alignItems: 'center', margin: '20px 5px', padding: '0 0 20px 0',  borderBottom: '2px solid #dbd9d9',}}>
+
             {/* prima colonna */}
-            <div className="col">
             <Select
                   className="dropdown-menu"
                   value={searchTerm.fornitore}
@@ -92,9 +99,7 @@ const FatturazionePassivaSearchBox = ({ data, onSearch, onReset, onSearchTextCha
                     </option>
                   ))}
                 </Select>
-            </div>
-            {/* seconda colonna */}
-            <div className="col">
+              {/* seconda colonna */}
             <Select
                   className="dropdown-menu"
                   value={searchTerm.stato}
@@ -116,55 +121,50 @@ const FatturazionePassivaSearchBox = ({ data, onSearch, onReset, onSearchTextCha
                     </option>
                   ))}
                 </Select>
-            </div>
             {/* terza colonna */}
-            <div className="col-4">
-            <Button className="ripristina-link" onClick={handleReset}
-                sx={{ 
-                  color: 'white', backgroundColor: 'black',
-                  width: "100%",
-                    maxWidth: "90px",
-                    height: "50px",
-                    borderRadius: "10px",
-                    fontSize: "0.8rem",
-                    fontWeight: "bolder",
-                    marginLeft: "20px",
-                    marginTop: "5px",
-                    padding: "0.5rem 1rem",
-                    "&:hover": {
-                      backgroundColor: "black",
-                      color: "white",
-                      transform: "scale(1.05)",
-                    },
-                  }}>
-                  Reset
-                </Button>
-              <Button
-                className="button-search"
-                variant="contained"
-                onClick={handleSearch}
-                sx={{
-                  width: "90px",
-                  height: "50px",
-                  backgroundColor: "#ffb800",
-                  color: "black",
-                  borderRadius: "10px",
-                  fontSize: "0.8rem",
-                  fontWeight: "bolder",
-                  marginLeft: "20px",
-                  marginTop: "5px",
-                  padding: "0.5rem 1rem",
-                  "&:hover": {
-                    backgroundColor: "#ffb800",
-                    color: "black",
-                    transform: "scale(1.05)",
-                  },
-                }}
-              >
-                Cerca
-              </Button>
-            </div>
-          </div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+        <Button
+          className="button-search"
+          variant="contained"
+          onClick={handleSearch}
+          sx={{
+            width: '100px',
+            height: "40px",
+            backgroundColor: "#ffb800",
+            color: "black",
+            borderRadius: "10px",
+            fontSize: "0.8rem",
+            fontWeight: "bolder",
+            "&:hover": {
+              backgroundColor: "#ffb800",
+              color: "black",
+              transform: "scale(1.05)",
+            },
+          }}
+        >
+          Cerca
+        </Button>
+        <Button
+          className="ripristina-link"
+          onClick={handleReset}
+          sx={{
+            width: '100px', 
+            color: 'white', 
+            backgroundColor: 'black',
+            height: "40px",
+            borderRadius: "10px",
+            fontSize: "0.8rem",
+            fontWeight: "bolder",
+            "&:hover": {
+              backgroundColor: "black",
+              color: "white",
+              transform: "scale(1.05)",
+            },
+          }}>
+          Reset
+        </Button>
+      </div>
+    </div>
   );
 };
 

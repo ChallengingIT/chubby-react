@@ -57,7 +57,7 @@ const [ deleteId,                         setDeleteId                     ] = us
        Authorization: `Bearer ${accessToken}`
      };
 
-      const response = await axios.get("http://localhost:8080/hr/react", { headers });
+      const response = await axios.get("http://localhost:8080/hr/react", { headers: headers });
       if (Array.isArray(response.data)) {
         const hrConId = response.data.map((hr) => ({ ...hr }));
         setOriginalHr(hrConId);
@@ -105,7 +105,7 @@ const openDeleteDialog = (id) => {
        Authorization: `Bearer ${accessToken}`
      };
 
-      await axios.delete(`http://localhost:8080/hr/react/staff/elimina/${deleteId}`, { headers });
+      await axios.delete(`http://localhost:8080/hr/react/staff/elimina/${deleteId}`, { headers: headers });
       setOpenDialog(false);
       const updatedHr = originalHr.filter((hr) => hr.id !== id);
       setHr(updatedHr);
@@ -141,7 +141,7 @@ const openDeleteDialog = (id) => {
           </Link>
       </div> 
        ), },
-    { field: "azioni",    headerName: "Azioni",     width: 615, renderCell: (params) => (
+    { field: "azioni",    headerName: "Azioni",     width: 700, renderCell: (params) => (
       <div>
         <Link
         to={`/hr/staff/visualizza/${params.row.id}`}
@@ -197,7 +197,7 @@ const openDeleteDialog = (id) => {
        Authorization: `Bearer ${accessToken}`
      };
 
-      const response = await axios.post("http://localhost:8080/hr/react/staff/sollecito", { headers });
+      const response = await axios.post("http://localhost:8080/hr/react/staff/sollecito", { headers: headers });
       console.log("RISPOSTA DAL SERVER: ",response.data);
     } catch (error) {
       console.error("Errore durante la cancellazione:", error);
@@ -296,13 +296,22 @@ const openDeleteDialog = (id) => {
             </Button>
           </div>
          
-          <HRSearchBox data={hr}
+          
+            <MyDataGrid 
+            data={filteredHr} 
+            columns={columns} 
+            title="Staff" 
+            getRowId={(row) => row.id}
+            searchBoxComponent={() => (
+              <HRSearchBox data={hr}
           onSearch={handleSearch} 
           onReset={handleReset}
           searchText={searchText}
           onSearchTextChange={(text) => setSearchText(text)}
           OriginalHr={originalHr}/>
-            <MyDataGrid data={filteredHr} columns={columns} title="Staff" getRowId={(row) => row.id}/>
+
+            )}
+            />
           <Modal
   isOpen={isNotesPopupOpen}
   onRequestClose={() => setIsNotesPopupOpen(false)}

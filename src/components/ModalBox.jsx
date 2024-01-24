@@ -165,10 +165,10 @@ const ModalBox = ({
             color="primary"
             onClick={onClose}
             style={{
-              backgroundColor: "#6C757D",
+              backgroundColor: "black",
               color: "white",
               "&:hover": {
-                backgroundColor: "#6C757D",
+                backgroundColor: "black",
                 transform: "scale(1.05)",
               },
             }}
@@ -183,9 +183,12 @@ const ModalBox = ({
               // onClick={() => onSubmit(values)}
               type="submit"
               style={{
-                backgroundColor: "black",
+                fontWeight: "bold",
+                backgroundColor: "#fbb800",
+                color: "black",
                 "&:hover": {
-                  backgroundColor: "black",
+                  backgroundColor: "#fbb800",
+                  color: "black",
                   transform: "scale(1.05)",
                 },
               }}

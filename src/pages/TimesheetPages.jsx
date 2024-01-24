@@ -12,7 +12,7 @@ function TimesheetPages() {
   const location                = useLocation();
   const { dipendentiData = {} } = location.state || {};
 
-console.log("DATI ARRIVATI: ", dipendentiData);
+console.log("DATI ARRIVATI TIMESHEET PAGES: ", dipendentiData);
 
 const idProgetti = dipendentiData.progetti?.map(progetto => progetto.id);
 // console.log("IDPROGETTI: ", idProgetti);
@@ -21,6 +21,9 @@ const idProgetti = dipendentiData.progetti?.map(progetto => progetto.id);
   const [ anno,          setAnno         ] = useState(new Date().getFullYear()); 
   const [ mese,          setMese         ] = useState(new Date().getMonth() + 1); 
   const [ timesheetData, setTimesheetData] = useState({}); 
+
+
+  
 
   // useEffect(() => {
   //   const loadTimesheetData = async () => {

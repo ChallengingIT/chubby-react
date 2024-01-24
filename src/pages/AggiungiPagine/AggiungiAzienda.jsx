@@ -35,8 +35,8 @@ const AggiungiAziende = () => {
      const headers = {
        Authorization: `Bearer ${accessToken}`
      };
-        const provinceResponse = await axios.get("http://localhost:8080/aziende/react/province", { headers });
-        const ownerResponse    = await axios.get("http://localhost:8080/aziende/react/owner", { headers }   );
+        const provinceResponse = await axios.get("http://localhost:8080/aziende/react/province", { headers: headers });
+        const ownerResponse    = await axios.get("http://localhost:8080/aziende/react/owner", { headers: headers }   );
 
         if (Array.isArray(ownerResponse.data)) {
           const ownerOptions = ownerResponse.data.map((owner) => ({

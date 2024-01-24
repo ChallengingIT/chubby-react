@@ -6,7 +6,7 @@ import { useParams }                            from "react-router-dom";
 import AttivitaCard                             from "../../components/card/AttivitaCard";
 import axios                                    from "axios";
 import InformazioniKeypeopleCard                from "../../components/card/InformazioniKeypeopleCard";
-import "../../styles/DettaglioAziende.css";
+import "../../styles/DettaglioKeyPeople.css";
 
 
 
@@ -106,12 +106,13 @@ console.log("Dati in keypeopleData: ", keypeopleData);
   console.log("DATI IN INITIAL VALUES: ", initialValues1);
 
   return (
-    <div className="containerDettaglioAziende">
-      <div className="contentDettaglioAziende">
-        <div className="sidebar-container">
-          <Sidebar />
-        </div>
-        <div className="flex-container" style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+    <div className="dettaglioContainerKeyPeople" >
+    <div className="bar" style={{ height: '100vh', overflowY: 'hidden'}}>
+    <Sidebar />
+    </div>
+      <div className="contentDettaglioKeyPeople">
+       
+        {/* <div className="flex-container" style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}> */}
           <div className="containerTitle">
             <h1>{`Visualizzazione ${nomeKeypeople}`}</h1>
           </div>
@@ -147,7 +148,7 @@ console.log("Dati in keypeopleData: ", keypeopleData);
           </Button>
         </div>
       </div>
-    </div>
+    // </div>
   );
 
 };

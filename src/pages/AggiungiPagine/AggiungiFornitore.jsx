@@ -42,7 +42,7 @@ const campiObbligatori = [ "denominazione", "referente", "email"];
     try {
       console.log("DATI DI VALUES: ", values);
 
-      const response = await axios.post("http://localhost:8080/fornitori/react/salva", { headers }, values);
+      const response = await axios.post("http://localhost:8080/fornitori/react/salva",  values, { headers: headers });
       console.log("Response from server:", response.data);
 
       navigate("/fornitori");

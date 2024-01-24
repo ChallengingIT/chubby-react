@@ -3,7 +3,6 @@
 
 import React, { useEffect, useState}          from 'react'
 import MyDataGrid                             from '../../components/MyDataGrid';
-import { Button }                             from '@mui/material';
 import Sidebar                                from '../../components/Sidebar';
 import { Link, useParams }                    from 'react-router-dom';
 import { useNavigate, useLocation }           from "react-router-dom";
@@ -13,6 +12,14 @@ import EditButton                             from '../../components/button/Edit
 import VisibilityButton                       from '../../components/button/VisibilityButton.jsx';
 import IntervisteSearchBox                    from '../../components/searchBox/IntervisteSearchBox.jsx';
 import MyButton                               from '../../components/MyButton.jsx';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button
+} from '@mui/material';
 
 function Interviste() {
   const navigate                = useNavigate();
@@ -30,11 +37,23 @@ function Interviste() {
   const [ originalInterviste,       setOriginalInterviste   ] = useState([]);
   const [ filteredInterviste,       setFilteredInterviste   ] = useState([]);
   const [ candidatoData,            setCandidatoData        ] = useState([]);
+  const [ openDialog,               setOpenDialog           ] = useState(false);
+  const [ deleteId,                 setDeleteId             ] = useState(null);
+
+
+   // Recupera l'accessToken da localStorage
+   const user = JSON.parse(localStorage.getItem("user"));
+   const accessToken = user?.accessToken;
+
+   // Configura gli headers della richiesta con l'Authorization token
+   const headers = {
+     Authorization: `Bearer ${accessToken}`
+   };
 
   const fetchData = async () => {
     try {
-      const response                = await axios.get(`http://localhost:8080/intervista/react/${id}`       );
-      const candidatoResponse       = await axios.get(`http://localhost:8080/staffing/react/${candidatoID}`);
+      const response                = await axios.get(`http://localhost:8080/intervista/react/${id}`       , { headers: headers});
+      const candidatoResponse       = await axios.get(`http://localhost:8080/staffing/react/${candidatoID}`, { headers: headers});
 
       if (typeof candidatoResponse.data === 'object') {
         setCandidatoData([candidatoResponse.data]); 
@@ -67,6 +86,12 @@ function Interviste() {
 navigate("/recruiting");
   };
 
+  const openDeleteDialog = (id) => {
+    setDeleteId(id);
+    setOpenDialog(true);
+  };
+  
+
 
 // console.log("ID INSERITO: ", candidatoID);
 
@@ -88,7 +113,7 @@ navigate("/recruiting");
   const handleDelete = async (id) => {
     try {
 
-        const response = await axios.delete(`http://localhost:8080/intervista/react/elimina/${id}`);
+        const response = await axios.delete(`http://localhost:8080/intervista/react/elimina/${deleteId}`, { headers: headers});
         console.log("DELETE A ID: ", id);
         console.log("Risposta dalla chiamata DELETE:", response);
   
@@ -163,7 +188,7 @@ state={params.row}
 <EditButton />
 </Link>
       
-      <DeleteButton onClick={handleDelete} id={params.row.id}/>
+<DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
     </div>
   ), },
 ];
@@ -180,13 +205,21 @@ state={params.row}
         <h1>{`Lista ITW di ${candidatoNome} ${candidatoCognome}`}</h1>
                 </div>
                 <MyButton onClick={navigateToAggiungiIntervista}>Aggiungi Intervista</MyButton>
-                <IntervisteSearchBox data={interviste}
-          onSearch={handleSearch}
-          onReset={handleReset}
-          searchText={searchText}
-          onSearchTextChange={(text) => setSearchText(text)}
-          OriginalInterviste={originalInterviste}/>
-                <MyDataGrid data={filteredInterviste} columns={table1} title="Interviste" getRowId={(row) => row.id} />
+               
+                <MyDataGrid 
+                data={filteredInterviste} 
+                columns={table1} 
+                title="Interviste" 
+                getRowId={(row) => row.id}
+                searchBoxComponent={() => (
+                  <IntervisteSearchBox data={interviste}
+                  onSearch={handleSearch}
+                  onReset={handleReset}
+                  searchText={searchText}
+                  onSearchTextChange={(text) => setSearchText(text)}
+                  OriginalInterviste={originalInterviste}/>
+                )}
+                 />
             <Button
           color="primary"
           onClick={handleGoBack}
@@ -210,6 +243,44 @@ state={params.row}
             </div>
 
         </div>
+        <Dialog
+  open={openDialog}
+  onClose={() => setOpenDialog(false)}
+  aria-labelledby="alert-dialog-title"
+  aria-describedby="alert-dialog-description"
+  
+>
+  <DialogTitle id="alert-dialog-title">{"Conferma Eliminazione"}</DialogTitle>
+  <DialogContent>
+    <DialogContentText id="alert-dialog-description">
+      Sei sicuro di voler eliminare questa azienda?
+    </DialogContentText>
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={() => setOpenDialog(false)} color="primary" style={{
+              backgroundColor: "black",
+              color: "white",
+              "&:hover": {
+                backgroundColor: "black",
+                transform: "scale(1.05)",
+              },
+            }}>
+      Annulla
+    </Button>
+    <Button onClick={handleDelete} color="primary" variant="contained" type="submit"
+              style={{
+                backgroundColor: "#fbb800",
+                color: "black",
+                "&:hover": {
+                  backgroundColor: "#fbb800",
+                  color: "black",
+                  transform: "scale(1.05)",
+                },
+              }}>
+      Conferma
+    </Button>
+  </DialogActions>
+</Dialog>
     </div>
   );
 };

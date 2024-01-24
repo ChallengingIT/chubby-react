@@ -14,7 +14,7 @@ import InformazioniAziendaCard            from "../../components/card/Informazio
 import ComunicazioniCard                  from "../../components/card/ComunicazioniCard";
 import NeedCard                           from "../../components/card/NeedCard";
 import ContattiCard                       from "../../components/card/ContattiCard";
-import "../../styles/DettaglioAziende.css";
+import "../../styles/DettaglioAziende.css"
 
 const DettaglioAziende = () => {
   const navigate = useNavigate();
@@ -44,17 +44,26 @@ const DettaglioAziende = () => {
   const [ attivitaOptions,    setAttivitaOptions    ] = useState([]);
   const [ statoNeedOptions,   setStatoNeedOptions   ] = useState([]);
 
+   // Recupera l'accessToken da localStorage
+   const user = JSON.parse(localStorage.getItem("user"));
+   const accessToken = user?.accessToken;
+
+   // Configura gli headers della richiesta con l'Authorization token
+   const headers = {
+     Authorization: `Bearer ${accessToken}`
+   };
+
   // console.log("DATI IN Contatto: ", contattoOptions);
 
 
   useEffect(() => {
     const fetchOptions = async () => {
       try {
-        const responseOwner           = await axios.get("http://localhost:8080/aziende/react/owner"             );
-        const responseContatto        = await axios.get(`http://localhost:8080/aziende/react/keypeople/${id}`   );
-        const responseNeed            = await axios.get(`http://localhost:8080/need/react/cliente/${id}`        );
-        const responseAttivita        = await axios.get(`http://localhost:8080/aziende/react/attivita/${id}`    );
-        const responseStatoNeed       = await axios.get(`http://localhost:8080/need/react/cliente/${id}`        );
+        const responseOwner           = await axios.get("http://localhost:8080/aziende/react/owner"             , { headers: headers });
+        const responseContatto        = await axios.get(`http://localhost:8080/aziende/react/keypeople/${id}`   , { headers: headers });
+        const responseNeed            = await axios.get(`http://localhost:8080/need/react/cliente/${id}`        , { headers: headers });
+        // const responseAttivita        = await axios.get(`http://localhost:8080/aziende/react/attivita/${id}`    , { headers: headers });
+        const responseStatoNeed       = await axios.get(`http://localhost:8080/need/react/cliente/${id}`        , { headers: headers });
 
         if (Array.isArray(responseStatoNeed.data)) {
           const statoNeedOptions = responseStatoNeed.data.map((statoNeed) => ({
@@ -71,18 +80,7 @@ const DettaglioAziende = () => {
           // console.log("DATI RECUPERATI PER STATO VINTO: ", statoNeedOptions);
         }
 
-        if (Array.isArray(responseAttivita.data)) {
-          const attivitaOptions = responseAttivita.data.map((attivita) => ({
-
-            note:     attivita.note,
-            owner: `${attivita.owner.nome} ${attivita.owner.cognome}`,
-            data:     attivita.data
-
-          }));
-
-          setAttivitaOptions(attivitaOptions);
-          // console.log("DATI RECUPERATI PER ATTIVITA: ", attivitaOptions);
-        }
+       
   
         if (Array.isArray(responseNeed.data)) {
           const needOptions = responseNeed.data.map((need) => ({
@@ -121,7 +119,24 @@ const DettaglioAziende = () => {
       }
     };
     fetchOptions();
+    fetchAttivita();
   }, []);
+
+  const fetchAttivita = async () => {
+    try {
+      const responseAttivita = await axios.get(`http://localhost:8080/aziende/react/attivita/${id}`, { headers: headers });
+      if (Array.isArray(responseAttivita.data)) {
+        const attivitaOptions = responseAttivita.data.map((attivita) => ({
+          note: attivita.note,
+          owner: `${attivita.owner.nome} ${attivita.owner.cognome}`,
+          data: attivita.data
+        }));
+        setAttivitaOptions(attivitaOptions);
+      }
+    } catch (error) {
+      console.error("Errore durante il recupero delle attività:", error);
+    }
+  };
   
 
   const countVintoStatus = (statoNeedOptions) => {
@@ -346,21 +361,19 @@ const handleSave = (popupData, tipoAttivita) => {
   
 
   return (
-    <div className="containerDettaglioAziende">
-      <div className="contentDettaglioAziende">
-        <div className="sidebar-container">
-          <Sidebar />
-        </div>
-        <div className="flex-container" style={{
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start", 
-  }}>
-          <div className="containerTitle">
+    <div className="containerDettaglioAziende" >
+      <div className="bar" style={{ height: '100vh', overflowY: 'hidden'}}>
+      <Sidebar />
+      </div>
+      
+      <div className="contentDettaglioAziende" >
+          <div className="Title" style={{ display: 'flex', justifyContent: 'flex-start', width: '100%', height: '50px', margin: '35px'}}>
             <h1>{`Visualizzazione ${nomeAzienda}`}</h1>
-          </div>
-          <div className="containerTable">
-            <div className="columnMenu">
+            </div>
+       
+          {/* <div className="containerTable">
+            <div className="columnMenu"> */}
+            <div className="Menu" style={{ display: 'flex', justifyContent: 'flex-start', marginLeft: '35px', width: '100%', height: '50px' }}>
               <Button
                 variant="contained"
                 startIcon={<FeedIcon />}
@@ -489,7 +502,8 @@ const handleSave = (popupData, tipoAttivita) => {
             
           </Grid>
 
-          </div>
+          {/* </div>
+          </div> */}
 
           <Button
             color="primary"
@@ -511,9 +525,11 @@ const handleSave = (popupData, tipoAttivita) => {
           >
             Indietro
           </Button>
+          </div>
         </div>
-      </div>
-    </div>
+
+
+
   );
 };
 

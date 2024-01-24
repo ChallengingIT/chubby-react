@@ -4,7 +4,6 @@ import { Link }                                       from "react-router-dom";
 import axios                                          from "axios";
 import Sidebar                                        from "../components/Sidebar";
 import MyDataGrid                                     from "../components/MyDataGrid";
-import KeyPeopleSearchBox                             from "../components/searchBox/KeyPeopleSearchBox.jsx";
 import MyButton                                       from '../components/MyButton.jsx';
 import DeleteButton                                   from "../components/button/DeleteButton.jsx";
 import EditButton                                     from "../components/button/EditButton.jsx";
@@ -22,6 +21,7 @@ import {
 
 
 import "../styles/KeyPeople.css";
+import KeyPeopleSearchBox from "../components/searchBox/KeyPeopleSearchBox.jsx";
 
 const KeyPeople = () => {
   const navigate = useNavigate();
@@ -124,7 +124,7 @@ const KeyPeople = () => {
      const headers = {
        Authorization: `Bearer ${accessToken}`
      };
-      const response = await axios.get("http://localhost:8080/keypeople/react", { headers});
+      const response = await axios.get("http://localhost:8080/keypeople/react", { headers: headers});
       if (Array.isArray(response.data)) {
       const keypeopleConId = response.data.map((keypeople) => ({ ...keypeople}));
       setOriginalKeypeople(keypeopleConId);
@@ -179,7 +179,7 @@ const openDeleteDialog = (id) => {
      const headers = {
        Authorization: `Bearer ${accessToken}`
      };
-      const response = await axios.delete(`http://localhost:8080/keypeople/react/elimina/${deleteId}`, {headers});
+      const response = await axios.delete(`http://localhost:8080/keypeople/react/elimina/${deleteId}`, {headers: headers});
       setOpenDialog(false);
 console.log("Risposta dalla chiamata Delete: ", response);
 console.log("ID ELIMINATO: ", id);
@@ -270,6 +270,13 @@ fetchData();
         <div className="container">
           <div className="page-name">Gestione Contatti</div>
           <MyButton onClick={navigateToAggiungiContatto}>Aggiungi Contatto</MyButton>
+          
+          <MyDataGrid 
+          data={filteredKeypeople} 
+          columns={columns} 
+          title="Key People" 
+          getRowId={(row) => row.id}
+          searchBoxComponent={() => (
           <KeyPeopleSearchBox
             data={keypeople}
             onSearch={handleSearch}
@@ -277,7 +284,9 @@ fetchData();
             onSearchTextChange={(text) => setSearchText(text)}
             OriginalKeypeople={originalKeypeople}
           />
-          <MyDataGrid data={filteredKeypeople} columns={columns} title="Key People" getRowId={(row) => row.id} />
+          )}
+
+           />
         </div>
       </div>
       <Dialog

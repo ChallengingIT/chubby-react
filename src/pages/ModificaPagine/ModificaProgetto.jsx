@@ -16,11 +16,20 @@ const ModificaProgetto = () => {
   const [clienteOptions,    setClienteOptions]    = useState([]);
   const [dipendenteOptions, setDipendenteOptions] = useState([]);
 
+   // Recupera l'accessToken da localStorage
+   const user = JSON.parse(localStorage.getItem("user"));
+   const accessToken = user?.accessToken;
+
+   // Configura gli headers della richiesta con l'Authorization token
+   const headers = {
+     Authorization: `Bearer ${accessToken}`
+   };
+
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseCliente    = await axios.get("http://localhost:8080/aziende/react");
-        const responseDipendente = await axios.get("http://localhost:8080/hr/react");
+        const responseCliente    = await axios.get("http://localhost:8080/aziende/react", { headers: headers });
+        const responseDipendente = await axios.get("http://localhost:8080/hr/react", { headers: headers });
 
         if (Array.isArray(responseCliente.data)) {
           const clienteOptions = responseCliente.data.map((cliente) => ({
@@ -82,7 +91,9 @@ const ModificaProgetto = () => {
     try {
       console.log("DATI DI VALUES: ", values);
 
-      const response = await axios.post("http://localhost:8080/progetti/react/salva", values);
+      const response = await axios.post("http://localhost:8080/progetti/react/salva", values, {
+        headers: headers 
+      });
       console.log("Response from server:", response.data);
 
       navigate("/progetti");

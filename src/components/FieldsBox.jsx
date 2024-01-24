@@ -455,6 +455,7 @@ const getDisabledStyles = (isDisabled) => {
     name="skills2"
     value={values.skills || []}
     onChange={handleChangeSkills}
+    disabled={field.disabled}
     style={{ width: "100%", textAlign: "left" }}
     renderValue={selected =>
       selected.map(skillId => {
@@ -484,6 +485,7 @@ case 'multipleSelectSkill2':
     name="skills2"
     value={values.skills2 || []}
     onChange={handleChangeSkills2}
+    disabled={field.disabled}
     style={{ width: "100%", textAlign: "left" }}
     renderValue={selected =>
       selected.map(skillId => {

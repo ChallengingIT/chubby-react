@@ -24,9 +24,9 @@ const AggiungiFatturazioneAttiva = () => {
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseClienti   = await axios.get("http://localhost:8080/aziende/react"                   , { headers });
-        const responseFornitori = await axios.get("http://localhost:8080/fornitori/react"                 , { headers });
-        const responseStato     = await axios.get("http://localhost:8080/fatturazione/passiva/react/stato", { headers });
+        const responseClienti   = await axios.get("http://localhost:8080/aziende/react"                   , { headers: headers });
+        const responseFornitori = await axios.get("http://localhost:8080/fornitori/react"                 , { headers: headers });
+        const responseStato     = await axios.get("http://localhost:8080/fatturazione/passiva/react/stato", { headers: headers });
 
 
         if (Array.isArray(responseStato.data)) {
@@ -90,10 +90,10 @@ const AggiungiFatturazioneAttiva = () => {
     try {
       console.log("DATI DI VALUES: ", values);
 
-      const response = await axios.post("http://localhost:8080/fatturazione/passiva/react/salva", { headers }, values);
+      const response = await axios.post("http://localhost:8080/fatturazione/passiva/react/salva", values, { headers: headers });;
       console.log("Response from server:", response.data);
 
-      navigate("/fatturazionePassiva");
+      navigate("/fatturazione/passiva");
     } catch (error) {
       console.error("Errore durante il salvataggio:", error);
     }

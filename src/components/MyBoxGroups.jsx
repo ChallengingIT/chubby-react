@@ -92,9 +92,11 @@ const MyBoxGroups = ({
     const gridWidth = groupLength === 2 ? 6 : 4;
 
     const isDisabled = disableFields[field.name];
+    
     switch (field.type) {
       case 'select':
         return (
+          
           <FormControl fullWidth key={field.name} sx={{ marginBottom: '16px', marginTop: '16px' }}>
             <InputLabel>{field.label}</InputLabel>
             <Select
@@ -159,19 +161,20 @@ const MyBoxGroups = ({
         );
       default:
         return (
-          <TextField
-            label={field.label}
-            name={field.name}
-            value={values[field.name] || ''}
-            onChange={handleInputChange}
-            disabled={isDisabled}
-            multiline={field.type === 'note'}
-            fullWidth={field.type === 'note'}
-            InputLabelProps={field.type === 'date' ? { shrink: true } : undefined}
-            type={field.type === 'date' ? 'date' : 'text'}
-            key={field.name}
-            style={{ width: '100%', marginBottom: '16px', marginTop: '16px' }}
-          />
+          <Grid item xs={12} key={field.name}>
+            <TextField
+              label={field.label}
+              name={field.name}
+              value={values[field.name] || ''}
+              onChange={handleInputChange}
+              disabled={isDisabled}
+              multiline={field.type === 'note'}
+              fullWidth
+              InputLabelProps={field.type === 'date' ? { shrink: true } : undefined}
+              type={field.type === 'date' ? 'date' : 'text'}
+              style={{ width: '100%', marginBottom: '16px', marginTop: '16px' }}
+            />
+          </Grid>
         );
     }
   };

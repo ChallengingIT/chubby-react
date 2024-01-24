@@ -1,7 +1,6 @@
 import React, { useEffect, useState}              from 'react'
 import MyButton                                   from '../../components/MyButton';
 import MyDataGrid                                 from '../../components/MyDataGrid';
-import { Button }                                 from '@mui/material';
 import Sidebar                                    from '../../components/Sidebar';
 import { useParams }                              from 'react-router-dom';
 import { Link, useNavigate, useLocation}          from "react-router-dom";
@@ -9,6 +8,15 @@ import EditButton                                 from "../../components/button/
 import DeleteButton                               from '../../components/button/DeleteButton';
 import axios                                      from 'axios';
 import ListaNeedSearchBox                         from '../../components/searchBox/ListaNeedSearchBox.jsx';
+
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button
+} from '@mui/material';
 
 function ListaNeed() {
   const navigate              = useNavigate();
@@ -21,6 +29,7 @@ function ListaNeed() {
   const idAzienda             = aziendaData.id;
 
   console.log("ID: ", id);
+  console.log("DATI ARRIVATI :", aziendaData);
 
  
 
@@ -29,13 +38,25 @@ function ListaNeed() {
   const [ searchText,         setSearchText         ] = useState("");
   const [ originalListaNeed,  setOriginalListaNeed  ] = useState([]);
   const [ filteredListaNeed,  setFilteredListaNeed  ] = useState([]);
+  const [ openDialog,         setOpenDialog         ] = useState(false);
+  const [ deleteId,           setDeleteId           ] = useState(null);
+
+
+  // Recupera l'accessToken da localStorage
+  const user = JSON.parse(localStorage.getItem("user"));
+  const accessToken = user?.accessToken;
+
+  // Configura gli headers della richiesta con l'Authorization token
+  const headers = {
+    Authorization: `Bearer ${accessToken}`
+  };
   
   console.log("ORIGINAL LISTA NEED: ", originalListaNeed);
 
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/need/react/cliente/${id}`);
+      const response = await axios.get(`http://localhost:8080/need/react/cliente/${id}`, { headers: headers });;
       if (Array.isArray(response.data)) {
         const needConId = response.data.map((need) => ({ ...need }));
         setNeed(needConId);
@@ -59,6 +80,11 @@ function ListaNeed() {
     window.history.back(); 
   };
 
+  const openDeleteDialog = (id) => {
+    setDeleteId(id);
+    setOpenDialog(true);
+  };
+
   const navigateToAggiungiNeedID = () => {
     navigate(`/need/aggiungi/${id}/${nomeAzienda}`);
   };
@@ -76,7 +102,7 @@ function ListaNeed() {
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8080/need/react/elimina/${id}`);
+      const response = await axios.delete(`http://localhost:8080/need/react/elimina/${deleteId}`);
       console.log("Risposta dalla chiamata delete: ", response);
       console.log("ID NEED ELIMINATO: ", id)
       fetchData();
@@ -88,13 +114,14 @@ function ListaNeed() {
 
   const columns = [
     { field: "id" , headerName: "#", width: 70},
-    { field: "weekDescrizione",  headerName: "Week/Descrizione",    width: 200, renderCell: (params) => (
+    { field: "week",             headerName: "Week",    width: 200, renderCell: (params) => (
       <div style={{ textAlign: "left" }}>
       <div style={{ textAlign: "start" }}>{params.row.week}</div>
-      <div style={{ textAlign: "start" }}>{params.row.descrizione}</div>
+
     </div>
       ),
     },
+    { field: "descrizione",       headerName: "Descrizione",         width: 350 },
     { field: "priorita",          headerName: "Priorità",            width: 100 },
     {
       field: "tipologia",
@@ -136,7 +163,7 @@ function ListaNeed() {
         >
         <EditButton  />
         </Link>
-        <DeleteButton onClick={handleDelete} id={params.row.id}/>
+        <DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
         
       </div>
     ), },
@@ -154,23 +181,26 @@ function ListaNeed() {
                 </div>
                 <Link
                   to={`/need/aggiungi/${id}`}
-                  state={{ aziendeData: aziendaData }}
+                  state={{ aziendaData: aziendaData }}
                   >
                 <MyButton>Aggiungi Need</MyButton>
                 </Link>
-                <ListaNeedSearchBox 
-                data={need} 
-                onSearch={handleSearch} 
-                onReset={handleReset} 
-                onSearchTextChange={(text) => setSearchText(text)} 
-                OriginalListaNeed={originalListaNeed}
-                />
+               
 
                 <MyDataGrid 
                 data={need} 
                 columns={columns} 
                 title={`Needs for ${nomeAzienda}`} 
                 getRowId={(row) => row.id} 
+                searchBoxComponent={() => (
+                  <ListaNeedSearchBox 
+                  data={need} 
+                  onSearch={handleSearch} 
+                  onReset={handleReset} 
+                  onSearchTextChange={(text) => setSearchText(text)} 
+                  OriginalListaNeed={originalListaNeed}
+                  />
+                )}
                 />
 
             <Button
@@ -196,6 +226,44 @@ function ListaNeed() {
             </div>
 
         </div>
+        <Dialog
+  open={openDialog}
+  onClose={() => setOpenDialog(false)}
+  aria-labelledby="alert-dialog-title"
+  aria-describedby="alert-dialog-description"
+  
+>
+  <DialogTitle id="alert-dialog-title">{"Conferma Eliminazione"}</DialogTitle>
+  <DialogContent>
+    <DialogContentText id="alert-dialog-description">
+      Sei sicuro di voler eliminare questa azienda?
+    </DialogContentText>
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={() => setOpenDialog(false)} color="primary" style={{
+              backgroundColor: "black",
+              color: "white",
+              "&:hover": {
+                backgroundColor: "black",
+                transform: "scale(1.05)",
+              },
+            }}>
+      Annulla
+    </Button>
+    <Button onClick={handleDelete} color="primary" variant="contained" type="submit"
+              style={{
+                backgroundColor: "#fbb800",
+                color: "black",
+                "&:hover": {
+                  backgroundColor: "#fbb800",
+                  color: "black",
+                  transform: "scale(1.05)",
+                },
+              }}>
+      Conferma
+    </Button>
+  </DialogActions>
+</Dialog>
     </div>
   );
 };

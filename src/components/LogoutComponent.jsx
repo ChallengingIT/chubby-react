@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import authService                              from "../services/auth.service";
 
 const ModalBackground = styled.div`
   display: ${({ isOpen }) => (isOpen ? "block" : "none")};
@@ -43,6 +44,13 @@ const LogoutComponent = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+
+    // Chiamare il metodo logout per rimuovere l'utente dallo storage locale
+  authService.logout();
+
+  // Aggiornare lo stato dell'applicazione, ad esempio, impostando l'utente corrente su null
+  setCurrentUser(null);
+  
     console.log("User logged out");
 
     navigate("/login");

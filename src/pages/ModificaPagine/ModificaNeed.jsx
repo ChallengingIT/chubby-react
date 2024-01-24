@@ -22,16 +22,25 @@ const ModificaNeed = () => {
 
   console.log("Dati Arrivati: ", needData);
 
+  // Recupera l'accessToken da localStorage
+  const user = JSON.parse(localStorage.getItem("user"));
+  const accessToken = user?.accessToken;
+
+  // Configura gli headers della richiesta con l'Authorization token
+  const headers = {
+    Authorization: `Bearer ${accessToken}`
+  };
+
 
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseAziende      = await axios.get("http://localhost:8080/aziende/react");
-        const responseSkill        = await axios.get("http://localhost:8080/staffing/react/skill");
-        const responseSkill2       = await axios.get("http://localhost:8080/staffing/react/skill");
-        const ownerResponse        = await axios.get("http://localhost:8080/aziende/react/owner");
-        const tipologiaResponse    = await axios.get("http://localhost:8080/need/react/tipologia");
-        const statoResponse        = await axios.get("http://localhost:8080/need/react/stato");
+        const responseAziende      = await axios.get("http://localhost:8080/aziende/react", { headers: headers });
+        const responseSkill        = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
+        const responseSkill2       = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
+        const ownerResponse        = await axios.get("http://localhost:8080/aziende/react/owner", { headers: headers });
+        const tipologiaResponse    = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
+        const statoResponse        = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
 
 
         if (Array.isArray(statoResponse.data)) {
@@ -106,18 +115,18 @@ const ModificaNeed = () => {
     { label: "Descrizione",         name: "descrizione",            type: "text" },
     { label: "Priorità",            name: "priorita",               type: "text" },
     { label: "Week",                name: "week",                   type: "weekPicker" },
-    { label: "Tipologia",           name: "tipologia",              type: "select",          options: tipologiaOptions },
-    { label: "Tipologia Azienda",   name: "tipo",                   type: "select",          options: [ 
+    { label: "Tipologia",           name: "tipologia",              type: "select",               options: tipologiaOptions },
+    { label: "Tipologia Azienda",   name: "tipo",                   type: "select",               options: [ 
       { value: 1, label: "Cliente"},
       { value: 2, label: "Consulenza"}, 
-      {value: 3, label: "Prospect" },
+      { value: 3, label: "Prospect" },
       ] },
-    { label: "Owner",               name: "owner",                  type: "select",          options: ownerOptions },
-    { label: "Stato",               name: "stato",                  type: "select",          options: statoOptions },
+    { label: "Owner",               name: "owner",                  type: "select",               options: ownerOptions },
+    { label: "Stato",               name: "stato",                  type: "select",               options: statoOptions },
     { label: "Headcount",           name: "numeroRisorse",          type: "text" },
     { label: "Location",            name: "location",               type: "text" },
     { label: "Skills 1",            name: "skills",                 type: "multipleSelectSkill",  options: skillsOptions },
-    { label: "Skills 2",            name: "skills2",                type: "multipleSelectSkill2",  options: skillsOptions },
+    { label: "Skills 2",            name: "skills2",                type: "multipleSelectSkill2", options: skillsOptions },
     { label: "Seniority",           name: "anniEsperienza",         type: "text" },
     { label: "Note",                name: "note",                   type: "note" },
   ];
@@ -167,7 +176,8 @@ const ModificaNeed = () => {
         delete values.skills2;
     }
     const response = await axios.post("http://localhost:8080/need/react/salva", values, {
-      params: { skill1: skills, skill2: skills2 }
+      params: { skill1: skills, skill2: skills2 },
+      headers: headers
     });
 
     console.log("DATI IN VALUES: ", values);

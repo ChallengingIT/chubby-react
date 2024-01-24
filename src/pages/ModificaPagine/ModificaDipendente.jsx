@@ -22,14 +22,23 @@ const ModificaDipendente = () => {
 
   console.log("Dati Arrivati: ", dipendentiData);
 
+   // Recupera l'accessToken da localStorage
+   const user = JSON.parse(localStorage.getItem("user"));
+   const accessToken = user?.accessToken;
+
+   // Configura gli headers della richiesta con l'Authorization token
+   const headers = {
+     Authorization: `Bearer ${accessToken}`
+   };
+
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseTipologia                      = await axios.get("http://localhost:8080/aziende/react/tipologia" );
-        const skillsResponse                         = await axios.get("http://localhost:8080/staffing/react/skill"    );
-        const facoltaResponse                        = await axios.get("http://localhost:8080/staffing/react/facolta"  );
-        const livelloScolasticoResponse              = await axios.get("http://localhost:8080/staffing/react/livello"  );
-        const tipologiaContrattoResponse             = await axios.get("http://localhost:8080/hr/react/tipocontratto"  );
+        const responseTipologia                      = await axios.get("http://localhost:8080/aziende/react/tipologia" , { headers: headers });
+        const skillsResponse                         = await axios.get("http://localhost:8080/staffing/react/skill"    , { headers: headers });
+        const facoltaResponse                        = await axios.get("http://localhost:8080/staffing/react/facolta"  , { headers: headers });
+        const livelloScolasticoResponse              = await axios.get("http://localhost:8080/staffing/react/livello"  , { headers: headers });
+        const tipologiaContrattoResponse             = await axios.get("http://localhost:8080/hr/react/tipocontratto"  , { headers: headers });
 
         if (Array.isArray(tipologiaContrattoResponse.data)) {
           const tipologiaContrattoOptions = tipologiaContrattoResponse.data.map((tipologiaContratto) => ({
@@ -133,83 +142,140 @@ const ModificaDipendente = () => {
     })) || [],
   };
 
-  const handleSubmit = async (values) => {
-    const errors = validateFields(values);
-    const hasErrors = Object.keys(errors).length > 0;
+//   const handleSubmit = async (values) => {
+//     const errors = validateFields(values);
+//     const hasErrors = Object.keys(errors).length > 0;
   
-    if (!hasErrors) {
-    try {
-      console.log("DATI PRIMA DI ESSERE INVIATI: ", values);
-      const formData = new FormData();
+//     if (!hasErrors) {
+//     try {
+//       console.log("DATI PRIMA DI ESSERE INVIATI: ", values);
+//       const formData = new FormData();
   
-    //  if (values.file) {
-    //   formData.append("file", values.file);
-    //   console.log("File selezionato:", values.file);
-    // }
+//     //  if (values.file) {
+//     //   formData.append("file", values.file);
+//     //   console.log("File selezionato:", values.file);
+//     // }
 
-     // Aggiungi tutti i file a formData
-  if (values.file && values.file.length) {
-    values.file.forEach((file) => {
-      formData.append("file", file); // Utilizza lo stesso nome 'file' per tutti i file
-    });
-  }
-  // Stampa i file aggiunti a formData
-console.log("Files aggiunti a formData:");
-for (let key of formData.keys()) {
-  const fileData = formData.getAll(key);
-  fileData.forEach((file, index) => {
-    console.log(`File ${index + 1} con chiave "${key}":`, file.name);
-  });
-}
+//      // Aggiungi tutti i file a formData
+//   if (values.file && values.file.length) {
+//     values.file.forEach((file) => {
+//       formData.append("file", file); // Utilizza lo stesso nome 'file' per tutti i file
+//     });
+//   }
+//   // Stampa i file aggiunti a formData
+// console.log("Files aggiunti a formData:");
+// for (let key of formData.keys()) {
+//   const fileData = formData.getAll(key);
+//   fileData.forEach((file, index) => {
+//     console.log(`File ${index + 1} con chiave "${key}":`, file.name);
+//   });
+// }
   
-      // Aggiungi le skills se presenti, come stringa separata da virgole
-      if (values.skills && values.skills.length) {
-        const skills = values.skills.join(',');
-        console.log("Skills selezionate:", skills);
-        formData.append('skills', skills);
-      }
+//       // Aggiungi le skills se presenti, come stringa separata da virgole
+//       if (values.skills && values.skills.length) {
+//         const skills = values.skills.join(',');
+//         console.log("Skills selezionate:", skills);
+//         formData.append('skills', skills);
+//       }
   
-      // Aggiungi tutti gli altri valori al formData escludendo 'skills' e 'file'
-      Object.keys(values).forEach(key => {
-        if (key !== 'skills' && key !== 'file') { 
-          formData.append(key, values[key]);
-        }
-      });
+//       // Aggiungi tutti gli altri valori al formData escludendo 'skills' e 'file'
+//       Object.keys(values).forEach(key => {
+//         if (key !== 'skills' && key !== 'file') { 
+//           formData.append(key, values[key]);
+//         }
+//       });
 
-      // if (values.file && values.file.length) {
-      //   // Assicurati che 'file' sia un array e non un singolo file
-      //   Array.from(values.file).forEach((file) => {
-      //     formData.append("file", file); // Utilizza lo stesso nome 'file' per tutti i file
-      //   });
-      // }
+//       // if (values.file && values.file.length) {
+//       //   // Assicurati che 'file' sia un array e non un singolo file
+//       //   Array.from(values.file).forEach((file) => {
+//       //     formData.append("file", file); // Utilizza lo stesso nome 'file' per tutti i file
+//       //   });
+//       // }
     
   
-      // Verifica il contenuto di formData
-      console.log("Contenuto di formData:");
-      formData.forEach((value, key) => {
-        console.log(`${key}:`, value);
-      });
+//       // Verifica il contenuto di formData
+//       console.log("Contenuto di formData:");
+//       formData.forEach((value, key) => {
+//         console.log(`${key}:`, value);
+//       });
   
-      // Invia la richiesta al server
-      const response = await axios.post(`http://localhost:8080/hr/react/staff/salva`, formData, {
-        headers: {"Content-Type": "multipart/form-data"},
-      });
+//       // Invia la richiesta al server
+//       const response = await axios.post(`http://localhost:8080/hr/react/staff/salva`, formData, {
+//         headers: { ...headers, "Content-Type": "multipart/form-data"},
+//       });
   
-      console.log("Risposta dal server:", response.data);
-      navigate("/hr"); // Assicurati che 'navigate' sia definito e disponibile in questo contesto
-    } catch (error) {
-      console.error("Errore durante il salvataggio:", error);
-      if (error.response) {
-        // Mostra i dettagli dell'errore ritornati dal server
-        console.error("Dettagli dell'errore:", error.response.data);
+//       console.log("Risposta dal server:", response.data);
+//       navigate("/hr"); // Assicurati che 'navigate' sia definito e disponibile in questo contesto
+//     } catch (error) {
+//       console.error("Errore durante il salvataggio:", error);
+//       if (error.response) {
+//         // Mostra i dettagli dell'errore ritornati dal server
+//         console.error("Dettagli dell'errore:", error.response.data);
+//       }
+//     }
+//   } else {
+//     // Gestisci qui gli errori di validazione...
+//     console.log("Errore di validazione:", errors);
+//     // Potresti voler impostare lo stato degli errori o visualizzare un messaggio all'utente
+//   }
+//   };
+
+
+
+const handleSubmit = async (values) => {
+  const errors = validateFields(values);
+    const hasErrors = Object.keys(errors).length > 0;
+    if (!hasErrors) {
+
+    try {
+      // Preparazione dei dati delle skills come stringhe separate
+      const skills = values.skills ? values.skills.join(',') : '';
+
+      console.log("Skills selezionate:", values.skills);
+      console.log("Values: ", values);
+
+      // Rimozione delle proprietà delle skills dall'oggetto values
+      delete values.skills;
+
+      const allegati = values.file;
+      delete values.file;
+
+      const datiResponse = await axios.post("http://localhost:8080/hr/react/staff/salva", values, {
+        params: { skill: skills },
+        headers: headers,
+      });
+
+    console.log("Risposta dal server: ", datiResponse.data);
+
+    // Ottieni l'ID dello staff dalla risposta
+    const staffId = datiResponse.data;
+    console.log("ID :", staffId);
+  
+
+    // Controlla se ci sono file da inviare
+    if (allegati && allegati.length) {
+      for (const file of allegati) {
+        const fileFormData = new FormData();
+        fileFormData.append("file", file);
+
+        // Invia ogni file separatamente utilizzando l'ID dello staff
+        const fileResponse = await axios.post(`http://localhost:8080/hr/react/staff/salva/file/${staffId}`, fileFormData, 
+        {headers: headers});
+        
+        console.log("Risposta dal server per il file: ", fileResponse.data);
       }
     }
-  } else {
-    // Gestisci qui gli errori di validazione...
-    console.log("Errore di validazione:", errors);
-    // Potresti voler impostare lo stato degli errori o visualizzare un messaggio all'utente
+  navigate("/hr");
+
+  } catch (error) {
+    console.error("Errore nell'invio dei dati: ", error);
   }
-  };
+}else {
+  // Gestisci qui gli errori di validazione...
+  console.log("Errore di validazione:", errors);
+  // Potresti voler impostare lo stato degli errori o visualizzare un messaggio all'utente
+}
+};
 
   const validateFields = (values) => {
     let errors = {};
@@ -237,6 +303,7 @@ for (let key of formData.keys()) {
           method: 'GET',
           url: url,
           responseType: 'blob', 
+          headers: headers
         });
   
         const fileURL = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
@@ -260,7 +327,7 @@ for (let key of formData.keys()) {
       const ids = idStaff; // L'id dello staff è già noto qui.
       const url = `http://localhost:8080/files/react/elimina/file/${fileID}/${ids}`;
   
-      const response = await axios.delete(url);
+      const response = await axios.delete(url, {headers: headers});
       console.log("Risposta del server: ", response);
   
       // Dopo l'eliminazione, potresti voler aggiornare lo stato per rimuovere il file dall'elenco.

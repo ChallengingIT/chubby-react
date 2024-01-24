@@ -2,10 +2,11 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 import CircularProgress from '@mui/material/CircularProgress';
+import AziendeSearchBox3 from "./searchBox/AziendeSearchBox";
 
 
 
-const MyDataGrid = ({ data, columns, title }) => {
+const MyDataGrid = ({ data, columns, title, searchBoxComponent: SearchBox }) => {
 
   const [ rowsPerPage,                setRowsPerPage ] = React.useState(25);
   const [ page,                       setPage        ] = React.useState(0);
@@ -39,8 +40,8 @@ const MyDataGrid = ({ data, columns, title }) => {
   return (
     <Box
       sx={{
-        width: "95%",
-        height: "57%",
+        width: "97%",
+        height: "77%",
         backgroundColor: "white",
         borderRadius: "40px",
         display: "flex",
@@ -84,6 +85,8 @@ const MyDataGrid = ({ data, columns, title }) => {
           </div>
         )}
       </div>
+     {/* Renderizza il componente Search Box passato come prop */}
+     {SearchBox && <SearchBox />}
 
       <DataGrid
         // rows={data}

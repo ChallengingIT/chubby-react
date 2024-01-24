@@ -3,8 +3,32 @@ import linea                                    from "../images/linea.png";
 import { useNavigate }                          from "react-router-dom";
 import authService                              from "../services/auth.service";
 import "../styles/LoginComponent.css";
+import eventBus from "../common/EventBus";
 
 export const LoginComponent = (props) => {
+
+
+
+
+  // Aggiungi una prop al tuo componente per poter impostare l'utente corrente da App
+  const { onLoginSuccess } = props;
+
+
+
+  useEffect(() => {
+    // Aggiungi un event listener per 'beforeunload'
+    const handleBeforeUnload = (e) => {
+      // Rimuove i dati dell'utente dal localStorage
+      localStorage.removeItem("user");
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      // Rimuovi l'event listener quando il componente viene smontato
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
 
   const initialValues = { username: "", password: "" };
   const navigate = useNavigate();
@@ -29,16 +53,30 @@ export const LoginComponent = (props) => {
   try {
     const response = await authService.login(username, password);
     console.log("DATI INVIATI: ", username, password);
-    console.log("Risposta del login:", response);
+
     if (response && response && response.accessToken) {
       localStorage.setItem("accessToken", response.accessToken);
       localStorage.setItem("user", JSON.stringify(response));
-      navigate("/homepage"); 
-    }
-  } catch (error) {
-    console.error("Errore di login:", error);
-    setLoginError(true); 
-  }
+      // onLoginSuccess(response);
+      console.log("UTENTE LOGGATO DA LOGIN: ", response);
+      // Emesso un evento di login riuscito
+  eventBus.dispatch("loginSuccess");
+      // console.log("Dati utente in localStorage:", JSON.parse(localStorage.getItem("user")));
+
+     // Ottieni il ruolo dell'utente dalla risposta
+     const userRole = response.roles[0];
+
+     // Utilizza il ruolo per determinare la destinazione del reindirizzamento
+     if (userRole === "ROLE_ADMIN") {
+       navigate("/homepage");
+     } else if (userRole === "ROLE_USER") {
+       navigate("/userHomepage");
+     }
+   }
+ } catch (error) {
+   console.error("Errore di login:", error);
+   setLoginError(true);
+ }
 };
 
   return (

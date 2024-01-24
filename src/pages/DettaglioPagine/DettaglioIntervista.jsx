@@ -21,88 +21,86 @@ const DettaglioIntervista = () => {
 
 
 
-  const [ tipologiaOptions,        setTipologiaOptions      ] = useState([]); //jobtile
-  const [ ownerOptions,            setOwnerOptions          ] = useState([]);
-  const [ statoOptions,            setStatoOptions          ] = useState([]); //tipologiaIncontro
-  const [ tipoIntervistaOptions,   setTipoIntervistaOptions ] = useState([]); //follow up
+  // const [ tipologiaOptions,        setTipologiaOptions      ] = useState([]); //jobtile
+  // const [ ownerOptions,            setOwnerOptions          ] = useState([]);
+  // const [ statoOptions,            setStatoOptions          ] = useState([]); //tipologiaIncontro
+  // const [ tipoIntervistaOptions,   setTipoIntervistaOptions ] = useState([]); //follow up
   // const [ candidatoOptions, setCandidatoOptions ] = useState([]);
   // const [ intervistaData, setIntervistaData ] = useState([]);
   // const [rowData, setrowData] = useState(null);
 
 
 
-useEffect(() => {
-  const fetchData = async () => {
-    try {
+// useEffect(() => {
+//   const fetchData = async () => {
+//     try {
 
 
-      //jobtitle = tipologia, tipologiaIncontro = stato, owner = owner
-      const responseTipologia                      = await axios.get("http://localhost:8080/aziende/react/tipologia");
-      const ownerResponse                          = await axios.get("http://localhost:8080/aziende/react/owner");
-      const responseStato                          = await axios.get("http://localhost:8080/staffing/react/stato/candidato");
-      const responseTipoIntervista                 = await axios.get("http://localhost:8080/intervista/react/tipointervista");
+//       //jobtitle = tipologia, tipologiaIncontro = stato, owner = owner
+//       const responseTipologia                      = await axios.get("http://localhost:8080/aziende/react/tipologia");
+//       const ownerResponse                          = await axios.get("http://localhost:8080/aziende/react/owner");
+//       const responseStato                          = await axios.get("http://localhost:8080/staffing/react/stato/candidato");
+//       const responseTipoIntervista                 = await axios.get("http://localhost:8080/intervista/react/tipointervista");
 
 
-      if (Array.isArray(responseTipoIntervista.data)) {
-        const tipoIntervistaOptions = responseTipoIntervista.data.map((tipoIntervista) => ({
-          label: tipoIntervista.descrizione,
-          value: tipoIntervista.id,
-        }));
-        setTipoIntervistaOptions(tipoIntervistaOptions);
+//       if (Array.isArray(responseTipoIntervista.data)) {
+//         const tipoIntervistaOptions = responseTipoIntervista.data.map((tipoIntervista) => ({
+//           label: tipoIntervista.descrizione,
+//           value: tipoIntervista.id,
+//         }));
+//         setTipoIntervistaOptions(tipoIntervistaOptions);
 
 
-      if (Array.isArray(responseStato.data)) {
-        const statoOptions = responseStato.data.map((stato) => ({
-          label: stato.descrizione,
-          value: stato.id,
-        }));
-        setStatoOptions(statoOptions);
+//       if (Array.isArray(responseStato.data)) {
+//         const statoOptions = responseStato.data.map((stato) => ({
+//           label: stato.descrizione,
+//           value: stato.id,
+//         }));
+//         setStatoOptions(statoOptions);
 
-      if (Array.isArray(ownerResponse.data)) {
-        const ownerOptions = ownerResponse.data.map((owner) => ({
-          label: owner.descrizione,
-          value: owner.id,
-        }));
-        setOwnerOptions(ownerOptions);
+//       if (Array.isArray(ownerResponse.data)) {
+//         const ownerOptions = ownerResponse.data.map((owner) => ({
+//           label: owner.descrizione,
+//           value: owner.id,
+//         }));
+//         setOwnerOptions(ownerOptions);
 
-      if (Array.isArray(responseTipologia.data)) {
-        const tipologiaOptions = responseTipologia.data.map((tipologia) => ({
-          label: tipologia.descrizione,
-          value: tipologia.id,
-        }));
-        setTipologiaOptions(tipologiaOptions);
-        // console.log("DATI DI JOBTILEOPTIONS: ", tipologiaOptions);
-      }
-    }
-  }
-}
+//       if (Array.isArray(responseTipologia.data)) {
+//         const tipologiaOptions = responseTipologia.data.map((tipologia) => ({
+//           label: tipologia.descrizione,
+//           value: tipologia.id,
+//         }));
+//         setTipologiaOptions(tipologiaOptions);
+//         // console.log("DATI DI JOBTILEOPTIONS: ", tipologiaOptions);
+//       }
+//     }
+//   }
+// }
 
 
-    } catch (error) {
-      console.error("Errore durante il recupero delle province:", error);
-    }
-  };
+//     } catch (error) {
+//       console.error("Errore durante il recupero delle province:", error);
+//     }
+//   };
 
-  fetchData();
-}, []);
+//   fetchData();
+// }, []);
 
 
 
 
 const fields = [
 
-  { label: "Tipologia Incontro",        name: "stato",                  type: "select", options: statoOptions, 
-
-},
+  { label: "Tipologia Incontro",        name: "stato",                  type: "text"},
   { label: "Nome",                      name: "nome",                   type: "text"},
   { label: "Cognome",                   name: "cognome",                type: "text"},
-  { label: "Data di Nasciata",          name: "dataNascita",            type: "date"},
+  { label: "Data di Nasciata",          name: "dataNascita",            type: "text"},
   { label: "Location",                  name: "location",               type: "text"},
-  { label: "Job Title",                 name: "tipologia",              type: "select", options: tipologiaOptions },
+  { label: "Job Title",                 name: "tipologia",              type: "text"},
   { label: "Anni di Esperienza",        name: "anniEsperienza",         type: "text"},
-  { label: "Data Incontro",             name: "dataColloquio",          type: "date"},
+  { label: "Data Incontro",             name: "dataColloquio",          type: "text"},
   { label: "Recapiti",                  name: "cellulare",              type: "text"},
-  { label: "Intervistatore",            name: "owner",                  type: "select", options: ownerOptions },
+  { label: "Intervistatore",            name: "owner",                  type: "text"},
 
 
 
@@ -136,10 +134,10 @@ const fields = [
   { label: "RAL Attuale",               name: "attuale",                 type: "text"},
   { label: "RAL Desiderata",            name: "desiderata",              type: "text"},
   { label: "Proposta economica",        name: "proposta",                type: "text"},
-  { label: "Follow Up",                 name: "idTipo",                  type: "select", options: tipoIntervistaOptions },
+  { label: "Follow Up",                 name: "idTipo",                  type: "text"},
   { label: "Preavviso",                 name: "preavviso",               type: "text"},
-  { label: "Next Deadline",             name: "dataAggiornamento",       type: "dateOra"},
-  { label: "Owner next Deadline",       name: "idNextOwner",             type: "select", options: ownerOptions },
+  { label: "Next Deadline",             name: "dataAggiornamento",       type: "text"},
+  { label: "Owner next Deadline",       name: "idNextOwner",             type: "text"},
 
 ];
 
