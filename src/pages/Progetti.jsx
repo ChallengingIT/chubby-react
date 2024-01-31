@@ -26,6 +26,7 @@ const Progetti = () => {
   const [ searchText,                 setSearchText             ] = useState([]);
   const [ deleteId,                   setDeleteId               ] = useState(null);
   const [ openDialog,                 setOpenDialog             ] = useState(false);
+ 
 
         
 
@@ -39,15 +40,14 @@ const Progetti = () => {
        const headers = {
          Authorization: `Bearer ${accessToken}`
        };
-
  
       const response = await axios.get("http://localhost:8080/progetti/react", { headers: headers });
-      console.log("Risposta completa:", response);
+       console.log("DATI ARRIVATI IN PROGETTI: ", response.data);
       if (Array.isArray(response.data)) {
       const progettiConId = response.data.map((progetti) => ({ ...progetti}));
       setOriginalProgetti(progettiConId);
       setFilteredProgetti(progettiConId);
-      // console.log(progettiConId);
+
       } else {
         console.error("I dati ottenuti non sono nel formato Array:", response.data);
       }
@@ -59,6 +59,8 @@ const Progetti = () => {
   useEffect(() => {
   fetchData();
 }, []);
+
+
 
 const openDeleteDialog = (id) => {
   setDeleteId(id);
@@ -95,9 +97,11 @@ const openDeleteDialog = (id) => {
        const headers = {
          Authorization: `Bearer ${accessToken}`
        };
-      const response = await axios.delete(`http://localhost:8080/progetti/react/elimina/${id}`, { headers: headers });
-console.log("Risposta dalla chiamata Delete: ", response);
-// console.log("ID ELIMINATO: ", id);
+      const response = await axios.delete(`http://localhost:8080/progetti/react/elimina/${deleteId}`, { headers: headers });
+      console.log("risposta del server: ", response);
+
+      setOpenDialog(false);
+
 fetchData();
     } catch (error) {
       console.error("Errore durante la cancellazione:", error);

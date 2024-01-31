@@ -82,7 +82,12 @@ const Need = () => {
 
   const handleOpenModal = (selectedRow) => {
     setSelectedNeed(selectedRow);
-    setNewStato(selectedRow.stato.id);
+    if (!selectedRow.stato || selectedRow.stato === null) {
+      setNewStato("");
+    } else {
+      setNewStato(selectedRow.stato.id);
+    }
+  
     setIsModalOpen(true);
   };
 

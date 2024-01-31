@@ -169,10 +169,10 @@ const DettaglioNeed = () => {
     descrizione:                needData.descrizione                                        || "",
     priorita:                   needData.priorita                                           || "",
     week:                       needData.week                                               || "",
-    tipologia:                  needData.tipologia && needData.tipologia.id                 || "",
+    tipologia:                  needData.tipologia && needData.tipologia.descrizione                 || "",
     tipo:                       needData.tipo                                               || "",
-    owner:                      needData.owner     && needData.owner.id                     || "",
-    stato:                      needData.stato     && needData.stato.id                     || "",
+    owner:                      needData.owner     && needData.owner.descrizione                     || "",
+    stato:                      needData.stato     && needData.stato.descrizione                     || "",
     numeroRisorse:              needData.numeroRisorse                                      || "",
     location:                   needData.location                                           || "",
     skills:                    (needData.skills?.map(skill => skill?.id))                   || [],
@@ -195,7 +195,7 @@ const DettaglioNeed = () => {
         </div>
         <div className="container">
           <div className="page-name" style={{ margin: "20px", fontSize: "15px"}}>
-            <h1>{`Modifica Need di ${needData.cliente.denominazione}`}
+            <h1>{`Dettaglio Need di ${needData.cliente.denominazione}`}
             </h1>
           </div>
           <FieldsBox

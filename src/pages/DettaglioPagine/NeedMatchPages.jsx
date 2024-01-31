@@ -263,7 +263,7 @@ function NeedMatchPages() {
   const fieldsAggiorna = [
     { label: "Cliente",                 name: "cliente",               type: "text" },
     { label: "Need",                    name: "idNeed",                type: "text" },
-    { label: "Candidato",               name: "idCandidato",           type: "text" },
+    { label: "Candidato",               name: "candidato",             type: "text" },
     { label: "Stato",                   name: "stato",                 type: "select", options: statoOptions || [] },
     { label: "Data Aggiornamento",      name: "dataModifica",          type: "date" },
     { label: "Owner",                   name: "idOwner",               type: "select", options: ownerOptions || [] },
@@ -277,7 +277,7 @@ function NeedMatchPages() {
   const disableFields = {
     cliente:      true,
     idNeed:       true,
-    idCandidato:  true,
+    candidato:  true,
   };
 
 const tableStorico = [
@@ -287,11 +287,11 @@ const tableStorico = [
       {params.row.candidato && params.row.candidato.tipo ? params.row.candidato.tipo.descrizione : "N/A"}
     </div>
   )},
-  { field: "nome",                    headerName: "Nome",         width: 250, renderCell: (params) => (
+  { field: "candidato",                    headerName: "Nome",         width: 250, renderCell: (params) => (
     <div style={{ textAlign: "left"  }}>
          <div onClick={() => navigateToCercaCandidato(params.row)}>
             
-            {params.row.nome} {params.row.cognome}
+         {params.row.candidato ? `${params.row.candidato.nome} ${params.row.candidato.cognome}` : ""}
           </div>
     
   </div>

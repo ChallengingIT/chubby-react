@@ -3,6 +3,8 @@
   import axios                                    from "axios";
   import Sidebar                                  from "../../components/Sidebar";
   import MyBoxGroups                              from "../../components/MyBoxGroups";
+  import { Button }                               from "@mui/material";
+
 
   const ModificaIntervista = () => {
     const navigate = useNavigate();
@@ -82,6 +84,13 @@
     fetchData();
   }, []);
 
+
+
+  const handleGoBack = () => {
+    navigate(-1); 
+  };
+
+
   const fields = [
 
     { label: "Tipologia Incontro",        name: "stato",                  type: "select", options: statoOptions, 
@@ -92,10 +101,10 @@
     { label: "Data di Nasciata",          name: "dataNascita",            type: "date"},
     { label: "Location",                  name: "location",               type: "text"},
     { label: "Job Title",                 name: "tipologia",              type: "select", options: tipologiaOptions },
-    { label: "Anni di Esperienza",        name: "anniEsperienza",         type: "text"},
+    { label: "Anni di Esperienza",        name: "anniEsperienzaRuolo",         type: "text"},
     { label: "Data Incontro",             name: "dataColloquio",          type: "date"},
     { label: "Recapiti",                  name: "cellulare",              type: "text"},
-    { label: "Intervistatore",            name: "owner",                  type: "select", options: ownerOptions },
+    { label: "Intervistatore",            name: "idOwner",                type: "select", options: ownerOptions },
 
 
 
@@ -129,7 +138,7 @@
     { label: "RAL Attuale",               name: "attuale",                 type: "text"},
     { label: "RAL Desiderata",            name: "desiderata",              type: "text"},
     { label: "Proposta economica",        name: "proposta",                type: "text"},
-    { label: "Follow Up",                 name: "idTipo",                  type: "select", options: tipoIntervistaOptions },
+    { label: "Follow Up",                 name: "tipo",                    type: "select", options: tipoIntervistaOptions },
     { label: "Preavviso",                 name: "preavviso",               type: "text"},
     { label: "Next Deadline",             name: "dataAggiornamento",       type: "dateOra"},
     { label: "Owner next Deadline",       name: "idNextOwner",             type: "select", options: ownerOptions },
@@ -139,36 +148,37 @@
  
 
     const initialValues = {
-      stato:                            rowData.stato?.id                           || "",
-      nome:                             rowData.candidato?.nome                     || "",
-      cognome:                          rowData.candidato?.cognome                  || "",
-      dataNascita:                      rowData.candidato?.dataNascita              || "",
-      location:                         rowData.candidato?.citta                    || "", 
-      tipologia:                        rowData.candidato?.tipologia?.id            || "",
-      anniEsperienza:                   rowData.candidato?.anniEsperienza           || "",
-      dataColloquio:                     rowData.dataColloquio                       || "",
-      cellulare:                        rowData.candidato?.cellulare                || "",
-      owner:                            rowData.owner?.id                           || "",
-      aderenza:                         rowData.aderenza                            || "",
-      coerenza:                         rowData.coerenza                            || "",
-      motivazione:                      rowData.motivazione                         || "",
-      standing:                         rowData.standing?.toString()                || "",
-      energia:                          rowData.energia?.toString()                 || "",
-      comunicazione:                    rowData.comunicazione?.toString()           || "",
-      inglese:                          rowData.inglese?.toString()                 || "",
-      competenze:                       rowData.competenze                          || "",
-      valutazione:                      rowData.valutazione                         || "",
-      descrizioneCandidatoUna:          rowData.descrizioneCandidatoUna             || "",
-      teamSiNo:                         rowData.teamSiNo                            || "",
-      note:                             rowData.candidato?.note                     || "",
-      disponibilita:                    rowData.disponibilita                       || "",
-      attuale:                          rowData.attuale                             || "",
-      desiderata:                       rowData.desiderata                          || "",
-      proposta:                         rowData.proposta                            || "",
-      idTipo:                           rowData.tipo?.id                            || "",
-      preavviso:                        rowData.preavviso                           || "",
-      dataAggiornamento:                rowData.dataAggiornamento                   || "", 
-      idNextOwner:                      rowData.owner?.id                           || ""
+      id:                               rowData.id                                  ,  
+      stato:                            rowData.candidato.stato?.id                 || null,
+      nome:                             rowData.candidato?.nome                     || null,
+      cognome:                          rowData.candidato?.cognome                  || null,
+      dataNascita:                      rowData.candidato?.dataNascita              || null,
+      location:                         rowData.candidato?.citta                    || null, 
+      tipologia:                        rowData.candidato?.tipologia?.id            || null,
+      anniEsperienzaRuolo:              rowData.candidato?.anniEsperienzaRuolo      || null,
+      dataColloquio:                    rowData.dataColloquio                       || null,
+      cellulare:                        rowData.candidato?.cellulare                || null,
+      idOwner:                          rowData.owner?.id                           || null,
+      aderenza:                         rowData.aderenza                            || null,
+      coerenza:                         rowData.coerenza                            || null,
+      motivazione:                      rowData.motivazione                         || null,
+      standing:                         rowData.standing                            || null,
+      energia:                          rowData.energia                             || null,
+      comunicazione:                    rowData.comunicazione                       || null,
+      inglese:                          rowData.inglese                             || null,
+      competenze:                       rowData.competenze                          || null,
+      valutazione:                      rowData.valutazione                         || null,
+      descrizioneCandidatoUna:          rowData.descrizioneCandidatoUna             || null,
+      teamSiNo:                         rowData.teamSiNo                            || null,
+      note:                             rowData.candidato?.note                     || null,
+      disponibilita:                    rowData.disponibilita                       || null,
+      attuale:                          rowData.attuale                             || null,
+      desiderata:                       rowData.desiderata                          || null,
+      proposta:                         rowData.proposta                            || null,
+      tipo:                             rowData.tipo?.id                            || null,
+      preavviso:                        rowData.preavviso                           || null,
+      dataAggiornamento:                rowData.dataAggiornamento                   || null, 
+      idNextOwner:                      rowData.nextOwner?.id                       || null
     };
 
   //   tipologiaIncontro:                    rowData.stato?.descrizione || "",
@@ -302,6 +312,26 @@ const disableFields = {
             onSave={handleSubmit} 
             title="" 
             />
+            <Button
+              color="primary"
+              onClick={handleGoBack}
+              sx={{
+                backgroundColor: "black",
+                borderRadius: '40px',
+                color: "white",
+                width: '250px',
+                height: '30px', 
+                margin: 'auto',
+                marginBottom: '20px',
+                marginTop: 'auto',
+                "&:hover": {
+                  backgroundColor: "black",
+                  transform: "scale(1.05)",
+                },
+              }}
+            >
+              Torna ad Interviste
+            </Button>
           </div>
         </div>
       </div>

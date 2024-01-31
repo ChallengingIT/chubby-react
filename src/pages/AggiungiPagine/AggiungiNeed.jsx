@@ -106,13 +106,13 @@ const AggiungiNeed = () => {
     fetchNeedOptions();
   }, []);
 
-  const campiObbligatori = [ "idAzienda", "descrizione", "priorita", "week", "tipo", "idOwner", "stato"]; 
+  const campiObbligatori = [ "idAzienda", "descrizione", "priorita", "week"]; 
 
   const fields = [
-    { label: "Azienda",           name: "idAzienda",                    type: "select",           options: aziendeOptions },
-    { label: "Descrizione Need",  name: "descrizione",                  type: "text" },
-    { label: "Priorità",          name: "priorita",                     type: "text" },
-    { label: "Week",              name: "week",                         type: "weekPicker" },
+    { label: "* Azienda",           name: "idAzienda",                    type: "select",           options: aziendeOptions },
+    { label: "* Descrizione Need",  name: "descrizione",                  type: "text" },
+    { label: "* Priorità",          name: "priorita",                     type: "text" },
+    { label: "* Week",              name: "week",                         type: "weekPicker" },
     { label: "Tipologia",         name: "tipologia",                    type: "select",           options: tipologiaOptions  },
     { label: "Tipologia Azienda", name: "tipo",                         type: "select",           options: [ 
     { value: 1,                   label: "Cliente" },
@@ -186,7 +186,7 @@ const AggiungiNeed = () => {
         const skills2 = values.skills2 ? values.skills2.join(',') : '';
 
         console.log("Skills selezionate:", values.skills);
-  console.log("Skills2 selezionate:", values.skills2);
+        console.log("Skills2 selezionate:", values.skills2);
 
   
         // Rimozione delle proprietà delle skills dall'oggetto values

@@ -1,59 +1,55 @@
 import React, { useState, useEffect }                       from 'react';
 import axios                                                from 'axios';
-import { getDaysInMonth, isWeekend, format }                from 'date-fns';
-import { TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, FormControl, InputLabel, Select, MenuItem, CircularProgress } from '@mui/material';
-import { styled }                                           from '@mui/material/styles';
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    backgroundColor: 'black',
-    color: 'white',
-    borderRight: '1px solid white',
-  }));
-  
-  const FirstRowTableCell = styled(StyledTableCell)({
-    backgroundColor: 'black',
-    color: 'white',
-  });
-  
-  const OddRow = styled(TableRow)({
-    backgroundColor: 'white',
-  });
-  
-  const EvenRow = styled(TableRow)({
-    backgroundColor: '#e2e0e0',
-  });
-  
-  const WeekendCell = styled(TableCell)(({ theme }) => ({
-    backgroundColor: '#fbb800', // o qualsiasi altro colore desiderato per i fine settimana
-    borderRight: `1px solid ${theme.palette.divider}`,
-  }));
+import { 
+    TextField, 
+    Button, 
+    Table, 
+    TableBody, 
+    TableCell, 
+    TableContainer, 
+    TableHead, 
+    TableRow, 
+    Paper, 
+    TablePagination, 
+    FormControl, 
+    InputLabel, 
+    Select, 
+    MenuItem, 
+    CircularProgress,
+    Box,
+    Grid,
+    Typography,
+    TableFooter
+ } from '@mui/material';
+import { set } from 'date-fns';
 
 
 const ReportPage = () => {
-//   const [year, setYear] = useState(format(new Date(), 'yyyy'));
-//   const [month, setMonth] = useState(format(new Date(), 'MM'));
 
 const [ showTable,              setShowTable                        ] = useState(false);
 const [ dipendenti,             setDipendenti                       ] = useState([]);
 const [ loading,                setLoading                          ] = useState(false);
-const [ year,                   setYear                             ] = useState('');
-const [ month,                  setMonth                            ] = useState('');
+const [ annoSelezionato,        setAnnoSelezionato                  ] = useState('');
+const [ meseSelezionato,        setMeseSelezionato                  ] = useState('');
 const [ dal,                    setDal                              ] = useState('');
 const [ al,                     setAl                               ] = useState('');
 const [ page,                   setPage                             ] = useState(0);
 const [ rowsPerPage,            setRowsPerPage                      ] = useState(10);
+const [ dipendenteUnivoco,      setDipendenteUnivoco                ] = useState({});
+const [ giorniTotali,           setGiorniTotali                     ] = useState(0);
+const [ selectDisabled,         setSelectDisabled                   ] = useState(false);
 
- // Recupera l'accessToken da localStorage
- const user = JSON.parse(localStorage.getItem("user"));
- const accessToken = user?.accessToken;
+// Recupera l'accessToken da localStorage
+const user = JSON.parse(localStorage.getItem("user"));
+const accessToken = user?.accessToken;
 
- // Configura gli headers della richiesta con l'Authorization token
- const headers = {
-   Authorization: `Bearer ${accessToken}`
- };
+// Configura gli headers della richiesta con l'Authorization token
+const headers = {
+  Authorization: `Bearer ${accessToken}`
+};
 
 
-const months = [
+const mesi = [
     { value: '01', label: 'Gennaio' },
     { value: '02', label: 'Febbraio' },
     { value: '03', label: 'Marzo' },
@@ -68,8 +64,7 @@ const months = [
     { value: '12', label: 'Dicembre' },
 ];
 
-const years = Array.from({ length: 2051 - 2021 + 1 }, (_, i) => i + 2021);
-
+const anni = Array.from({ length: 2051 - 2021 + 1 }, (_, i) => i + 2021);
 
 const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -81,316 +76,367 @@ const handleChangeRowsPerPage = (event) => {
 };
 
 
-useEffect(() => {
-    const fetchEmployees = async () => {
-    setLoading(true);
-    try {
-        const response = await axios.get('http://localhost:8080/hr/react', { headers: headers});
-        if (Array.isArray(response.data)) {
-            const dipendentiData = response.data.map((dipendenti) => ({
-            label: `${dipendenti.nome} ${dipendenti.cognome}`,
-            id:dipendenti.id,
-            }));
-            setDipendenti(dipendentiData);
-        }
-        console.log("DIPENDENTI CARICATI: ", response.data);
-    } catch (error) {
-        console.error('Error fetching employees:', error);
-    }
-    setLoading(false);
-    };
 
-    fetchEmployees();
-}, []);
+const toLocalISOString = (date) => {
+    const tzOffset = date.getTimezoneOffset() * 60000; // offset in millisecondi
+    return new Date(date - tzOffset).toISOString().split('T')[0];
+};
 
 const handleSearch = async () => {
-    if (!year || !month) {
-      alert("Per favore, selezionare sia l'anno che il mese.");
-      return;
+    if (!annoSelezionato || !meseSelezionato) {
+        alert("Per favore, selezionare sia l'anno che il mese");
+        return;
     }
-  
+
     setLoading(true);
     setShowTable(false);
-  
-    const dalVal = dal || format(new Date(year, month - 1, 1), 'yyyy-MM-dd');
-    const alVal = al || format(new Date(year, month - 1, daysInMonth), 'yyyy-MM-dd');
-  
+
+    const primoGiornoDelMese = new Date(annoSelezionato, meseSelezionato - 1, 1);
+    const ultimoGiornoDelMese = new Date(annoSelezionato, meseSelezionato, 0);
+
+    const dalVal = dal || toLocalISOString(primoGiornoDelMese);
+    const alVal = al || toLocalISOString(ultimoGiornoDelMese);
+
+    const params = {
+        anno: annoSelezionato,
+        mese: meseSelezionato,
+        dal: dalVal,
+        al: alVal
+    };
+
     try {
-      const response = await axios.get('http://localhost:8080/hr/report/estrai', {
-        params: { anno: year, mese: month, dal: dalVal, al: alVal },
-        headers: headers
-      });
-      // Gestisci la risposta e aggiorna lo stato dei dipendenti
-      setShowTable(true);
-      console.log("RISPOSTA DAL SERVER PER: ", response.data);
-    } catch (error) {
-      console.error('Errore nella chiamata axios:', error);
-    } finally {
-      setLoading(false);
+        const responseReport = await axios.get("http://localhost:8080/hr/report/estrai", params, {
+            headers: headers
+        });
+        setShowTable(true);
+        setLoading(false);
+        setDipendenti(responseReport.data);
+        console.log("dipendenti: ", dipendenti);
+        console.log("DATI DI ESTRAI REPORT: ", responseReport.data);
+    } catch(error) {
+        console.error("Errore nella chiamata per recuperare il report: ", error);
     }
 };
 
-const handleEstraiExcel = async () => {
-  const giornoInizio = dal || format(new Date(year, month - 1, 1), 'dd');
-  const giornoFine = al || format(new Date(year, month - 1, getDaysInMonth(new Date(year, month - 1))), 'dd');
-  const url = `http://localhost:8080/hr/report/excel/${year}/${month}/${giornoInizio}/${giornoFine}`
 
-  try {
-    const response = await axios({
-      method: 'GET',
-      url: url,
-      responseType: 'blob', 
-      headers: headers
-    });
-
-    const fileURL = window.URL.createObjectURL(new Blob([response.data], { type: 'application/xls' }));
-
-    const link = document.createElement('a');
-      link.href = fileURL;
-      link.setAttribute('download', "report.xls"); 
-      document.body.appendChild(link);
-  
-      link.click();
-      document.body.removeChild(link);
-    } catch (error) {
-      console.error('Si è verificato un errore durante il download del file:', error);
-
+// Quando la tabella viene visualizzata, disabilito i select e li posso riabilitare solo dopo aver premuto reset
+useEffect(() => { 
+    if (showTable) {
+      setSelectDisabled(true);
     }
+  }, [showTable]);
+
+
+
+
+
+const handleEstraiExcel = async () => {
+
+    const primoGiornoDelMese = new Date(annoSelezionato, meseSelezionato -1 , 1);
+    const ultimoGiornoDelMese = new Date(annoSelezionato, meseSelezionato, 0);
+    console.log("primoGiornoDelMese: ", primoGiornoDelMese);
+
+    const giornoInizio = dal || toLocalISOString(primoGiornoDelMese);
+    console.log("giornoInizio: ", giornoInizio);
+    const giornoFine = al || toLocalISOString(ultimoGiornoDelMese);
+    const url = `http://localhost:8080/hr/report/excel/${annoSelezionato}/${meseSelezionato}/${giornoInizio}/${giornoFine}`
+
+
+    try {
+        const responseEstraiExcel = await axios({
+            method: 'GET',
+            url: url,
+            responseType: 'blob',
+            headers: headers
+        });
+        console.log("URL EXCEL:", url);
+        console.log("ESTRAI EXCEL: ", responseEstraiExcel);
+
+        const fileURL = window.URL.createObjectURL(new Blob([responseEstraiExcel.data], { type: 'application/xls' }));
+
+        const link = document.createElement('a');
+        link.href = fileURL;
+        link.setAttribute('download', `report-${annoSelezionato}-${meseSelezionato}.xls`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } catch (error) {
+        console.error("Errore nella chiamata per estrarre il report in formato Excel: ", error);
+    }   
+};
+
+
+const handleReset = () => {
+    setAnnoSelezionato('');
+    setMeseSelezionato('');
+    setDal('');
+    setAl('');
+    setShowTable(false);
+    setSelectDisabled(false);
+}
+
+const getDaysInMonth = (annoSelezionato, meseSelezionato) => {
+    return new Date(annoSelezionato, meseSelezionato, 0).getDate();
+};
+
+
+const handleChangeMese = (e) => {
+    setMeseSelezionato(e.target.value);
+    const giorniTotaliNuovoMese = getDaysInMonth(annoSelezionato, e.target.value);
+    setGiorniTotali(giorniTotaliNuovoMese);
   };
 
 
 
 
+const giorniFestivi = ['01-01', '01-06', '04-01', '04-25', '05-01', '06-02', '08-15', '11-01', '12-08', '12-25', '12-26'];
+const lunediPasqua = [ "2025-04-21", "2026-04-06", "2027-03-29", "2028-04-17", "2029-04-02", "2030-04-22", "2031-04-14", "2032-03-29", "2033-04-18", "2034-04-10" ]; 
 
 
+const festivi = (giorno, mese) => {
+    const dataFormattata = `${mese.toString().padStart(2, '0')}-${giorno.toString().padStart(2, '0')}`;
+    return giorniFestivi.includes(dataFormattata);
+};
 
-const handleReset = () => {
-    setYear('');
-    setMonth('');
-    setDal('');
-    setAl('');
-    setShowTable(false);
+const isLunediPasqua = (giorno, mese, anno) => {
+    const dataFormattata = `${anno}-${mese.toString().padStart(2, '0')}-${giorno.toString().padStart(2, '0')}`;
+    return lunediPasqua.includes(dataFormattata);
 };
 
 
+const renderDayBox = (dipendente, giorniTotali) => {
+    return (
+        <React.Fragment>
+            {Array.from({ length: giorniTotali }, (_, i) => {
+            const giorno = i + 1;
+            const giornoSettimana = new Date(annoSelezionato, meseSelezionato - 1, giorno).getDay();
+            const isSabatoODomenica = giornoSettimana === 0 || giornoSettimana === 6;
+            const isGiornoFestivo = festivi(giorno, meseSelezionato) || isLunediPasqua(giorno, meseSelezionato, annoSelezionato);
+            
+            const oreTotaliGiorno = dipendente.giorni[i] && dipendente.giorni[i].oreTotali ? dipendente.giorni[i].oreTotali : "0";
+            
+            let colore = 'black';
+            if (isSabatoODomenica || isGiornoFestivo) {
+                colore = 'white';
+            } else if (dipendente.giorni[i] && dipendente.giorni[i].ferie) {
+                colore = 'red';
+            } else if (dipendente.giorni[i] && dipendente.giorni[i].malattia) {
+                colore = 'blue';
+            } else if (dipendente.giorni[i] && dipendente.giorni[i].permesso) {
+                colore = 'green';
+            }
+            
+            const giornoStyle = isSabatoODomenica || isGiornoFestivo
+                ? { backgroundColor: '#fbb800', color: 'white' }
+                : { backgroundColor: 'grey.200', color: colore };
+    
+            return (
+                <TableCell key={i} style={giornoStyle}>
+                <Typography variant="body2" style={{ fontWeight: 'bold' }}>
+                    {oreTotaliGiorno}
+                </Typography>
+                </TableCell>
+            );
+            })}
+        </React.Fragment>
+        );
+    };
+    
 
 
 
-const daysInMonth = getDaysInMonth(new Date(parseInt(year), parseInt(month) - 1));
-const publicHolidays = ['01-01', '01-06', '04-25', '05-01', '06-02', '08-15', '11-01', '12-08', '12-25', '12-26'];
 
-const isPublicHoliday = (date) => {
-    const formattedDate = format(date, 'MM-dd');
-    return publicHolidays.includes(formattedDate);
-};
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 return (
-    <div>
-        <div style={{margin: '20px', backgroundColor: 'white', borderRadius: '20px', width: '50%',   boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.5)'}}>
-        
-        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '20px', gap: '20px', alignItems: 'center' }}>
-        {/* Search Box */}
-        <FormControl variant="outlined" margin="normal" style={{ width: '45%' }}>
-  <InputLabel id="year-select-label">Anno</InputLabel>
-  <Select
-    labelId="year-select-label"
-    id="year-select"
-    value={year}
-    onChange={(e) => setYear(e.target.value)}
-    label="Anno"
-    displayEmpty
-  >
-    {/* <MenuItem value="" disabled>Anno</MenuItem> */}
-    {years.map((yearOption) => (
-      <MenuItem key={yearOption} value={yearOption}>
-        {yearOption}
-      </MenuItem>
-    ))}
-  </Select>
-</FormControl>
+<Box>
 
-<FormControl variant="outlined" margin="normal" style={{ width: '45%' }}>
-  <InputLabel id="month-select-label">Mese</InputLabel>
-  <Select
-    labelId="month-select-label"
-    id="month-select"
-    value={month}
-    onChange={(e) => setMonth(e.target.value)}
-    label="Mese"
-    displayEmpty
-  >
-    {/* <MenuItem value="" disabled>Mese</MenuItem> */}
-    {months.map((monthOption) => (
-      <MenuItem key={monthOption.value} value={monthOption.value}>
-        {monthOption.label}
-      </MenuItem>
-    ))}
-  </Select>
-</FormControl>
-<Button
-            className="button-search"
-            variant="contained"
-            onClick={handleSearch}
-            sx={{
-            width: '90px',
-            height: "40px",
-            backgroundColor: "#ffb800",
-            color: "black",
-            borderRadius: "10px",
-            fontSize: "0.8rem",
-            fontWeight: "bolder",
-                    // marginLeft: "20px",
-                    // padding: "0.5rem 1rem",
-                    // marginBottom: '10px',
-            "&:hover": {
-                backgroundColor: "#ffb800",
-                color: "black",
-                transform: "scale(1.05)",
-            },
-            }}
-        >
-            Cerca
-        </Button>
-
-        
-
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '20px', gap: '20px', alignItems: 'center' }}>
-        {/* Search Box */}
-        <TextField
+    
+    <Box sx={{ width: '40%', margin: '20px', backgroundColor: 'white', borderRadius: '20px', boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.4)' }}>
+        <Grid container spacing={3} justifyContent="center" alignItems="center" padding={3}>
+        <Grid item xs={6}>
+            <FormControl fullWidth>
+            <InputLabel>Anno</InputLabel>
+            <Select
+                label="Anno"
+                value={annoSelezionato}
+                onChange={(e) => setAnnoSelezionato(e.target.value)}
+                disabled={selectDisabled}
+            >
+                {anni.map((anno) => (
+                <MenuItem key={anno} value={anno}>
+                    {anno}
+                </MenuItem>
+                ))}
+            </Select>
+            </FormControl>
+        </Grid>
+        <Grid item xs={6}>
+            <FormControl fullWidth>
+            <InputLabel>Mese</InputLabel>
+            <Select
+                label="Mese"
+                value={meseSelezionato}
+                // onChange={(e) => setMeseSelezionato(e.target.value)}
+                onChange={handleChangeMese}
+                disabled={selectDisabled}
+            >
+                {mesi.map((mese) => (
+                <MenuItem key={mese.value} value={mese.value}>
+                    {mese.label}
+                </MenuItem>
+                ))}
+            </Select>
+            </FormControl>
+        </Grid>
+        <Grid item xs={6}>
+            <TextField
+            fullWidth
             label="Dal"
             type="number"
+            InputLabelProps={{ shrink: true }}
             value={dal}
             onChange={(e) => setDal(e.target.value)}
-            variant="outlined"
-            margin="normal"
-            style={{ width: '45%' }}
+            disabled={selectDisabled}
+
             />
+        </Grid>
+        <Grid item xs={6}>
             <TextField
+            fullWidth
             label="Al"
             type="number"
+            InputLabelProps={{ shrink: true }}
             value={al}
             onChange={(e) => setAl(e.target.value)}
-            variant="outlined"
-            margin="normal"
-            style={{ width: '45%' }}
+            disabled={selectDisabled}
+
             />
-            <Button className="ripristina-link"
-            onClick={handleReset}
-                sx={{ 
-                    color: 'white', backgroundColor: 'black',
-                    width: "90px",
-                    height: "40px",
-                    borderRadius: "10px",
-                    fontSize: "0.8rem",
-                    fontWeight: "bolder",
-                    // marginLeft: "20px",
-                    // marginTop: "5px",
-                    // padding: "0.5rem 1rem",
-                    "&:hover": {
-                        backgroundColor: "black",
-                        color: "white",
-                        transform: "scale(1.05)",
-                    },
-                    }}>
-                    Reset
-                </Button>
-        
-        </div>
-      </div>
+        </Grid>
+        <Grid item xs={12} sx={{display: 'flex', justifyContent: 'center', gap: '20px'}}>
+            <Button variant="contained" color="primary" onClick={handleReset} sx={{
+            backgroundColor: 'black',
+            color: 'white',
+            borderRadius: '10px',
+            '&:hover': {
+                backgroundColor: 'black',
+                color: 'white',
+            },
+            }}>
+            Reset
+            </Button>
+            <Button variant="contained" color="primary" onClick={handleSearch} sx={{
+            backgroundColor: '#fbb800',
+            color: 'black',
+            borderRadius: '10px',
+            '&:hover': {
+                backgroundColor: '#fbb800',
+                color: 'black',
+            }
+            }}>
+            Cerca
+            </Button>
+        </Grid>
+        </Grid>
+    </Box>
 
-      {loading && (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100px' }}>
-    <CircularProgress style={{ color: 'black' }} />
 
-      </div>
+
+    {loading && (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
+        <CircularProgress sx={{ color: 'white'}}/>
+      </Box>
     )}
 
-{!loading && showTable && (
-      <TableContainer component={Paper} sx={{padding: '20px', backgroundColor: '#fbb800', boxShadow:'none'}}>
-      <Table aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <FirstRowTableCell>Dipendenti</FirstRowTableCell>
-            {[...Array(daysInMonth).keys()].map(day => (
-              <FirstRowTableCell key={day}>
-                {day + 1}
-              </FirstRowTableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-  {dipendenti
-    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-    .map((dipendente, index) => (
-      <TableRow key={dipendente.id} component={index % 2 === 0 ? OddRow : EvenRow}>
-        <StyledTableCell component="th" scope="row">
-          {dipendente.label}
-        </StyledTableCell>
-        {[...Array(daysInMonth).keys()].map(day => {
-          const date = new Date(year, month - 1, day + 1);
-          const isWeekendDay = isWeekend(date);
-          const isHoliday = isPublicHoliday(date);
-          const isSpecialDay = isWeekendDay || isHoliday;
 
-          // Trova il record corrispondente per questo giorno
-          const dayRecord = dipendente.giorni && Array.isArray(dipendente.giorni)
-            ? dipendente.giorni.find(g => g.giorno === day + 1)
-            : null;
+        {!loading && showTable && (
+            
+        <React.Fragment>
+            <TableContainer component={Paper} sx={{ 
+            margin: '20px',
+            width: 'auto', // La larghezza si adatta al contenuto
+            backgroundColor: 'white', 
+            borderRadius: '20px',
+            boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.4)'
+            }}>
+            <Table aria-label="customized table">
+                <TableHead>
+                <TableRow>
+                    <TableCell>Dipendente</TableCell>
+                    {[...Array(giorniTotali)].map((_, i) => (
+                    <TableCell key={i}>{i + 1}</TableCell>
+                    ))}
+                </TableRow>
+                </TableHead>
+                <TableBody>
+                {dipendenti
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((dipendente) => (
+                    <TableRow key={dipendente.nome}>
+                        <TableCell component="th" scope="row">
+                        {dipendente.nome}
+                        </TableCell>
+                        {renderDayBox(dipendente, giorniTotali)}
+                    </TableRow>
+                    ))}
+                     <TablePagination
+                count={dipendenti.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                labelRowsPerPage="Dipendenti per pagina:"
+            />
+                </TableBody>
+            </Table>
+            {/* box per la leggenda */}
+        <Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center', margin: '20px' }}>
+        <Box sx={{ display: 'flex', gap: '8px', alignItems: 'center', marginLeft: '20px' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <Box sx={{ width: '15px', height: '15px', backgroundColor: 'blue' }} />
+            <Typography variant="body2">Malattia</Typography>
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <Box sx={{ width: '15px', height: '15px', backgroundColor: 'green' }} />
+            <Typography variant="body2">Permesso</Typography>
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <Box sx={{ width: '15px', height: '15px', backgroundColor: 'red' }} />
+            <Typography variant="body2">Ferie</Typography>
+            </Box>
+        </Box>
+        </Box>
+            </TableContainer> 
+            <Button variant="contained" color="primary" onClick={handleEstraiExcel} sx={{
+            backgroundColor: 'black',
+            color: 'white',
+            borderRadius: '10px',
+            '&:hover': {
+                backgroundColor: 'black',
+                color: 'white',
+            },
+            }}>
+            Estrai Report
+            </Button>
+        </React.Fragment>
+        )}
 
-          return (
-            <TableCell
-              key={day}
-              component={isSpecialDay ? WeekendCell : TableCell}
-            >
-              {dayRecord ? dayRecord.oreTotali : ""}
-            </TableCell>
-          );
-        })}
-      </TableRow>
-    ))}
-</TableBody>
+        
 
+    </Box>
+    );
+    };
 
-      </Table>
-      <TablePagination
-        rowsPerPageOptions={[10, 20, 30]}
-        component="div"
-        count={dipendenti.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-      <div style={{display: 'flex', justifyContent:'center', alignItems:'center', marginTop: '20px'}}>
-    <Button
-            color="primary"
-            onClick={handleEstraiExcel}
-            style={{
-              // backgroundColor: "#6C757D",
-              marginBottom: '20px',
-              backgroundColor: "black",
-              color: "white",
-              fontWeight:"bold",
-              "&:hover": {
-                backgroundColor: "black",
-                transform: "scale(1.05)",
-              },
-            }}
-          >
-            Esporta in Excel
-          </Button>
-         
-  </div>
-      
-    </TableContainer>
-    
-     )}
-
-  
-    </div>
-  );
-};
-
-export default ReportPage;
+    export default ReportPage;

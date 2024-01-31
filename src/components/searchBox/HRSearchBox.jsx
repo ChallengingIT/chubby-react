@@ -42,7 +42,7 @@ const HRSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalHr})
         id="nome"
         className="text-form"
         placeholder="Nome"
-        maxlength="90"
+        maxLength="90"
         value={searchTerm.nome}
         onChange={(e) => setSearchTerm({ ...searchTerm, nome: e.target.value })}
       />
@@ -53,7 +53,7 @@ const HRSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalHr})
         id="cognome"
         className="text-form"
         placeholder="Cognome"
-        maxlength="45"
+        maxLength="45"
         value={searchTerm.cognome}
         onChange={(e) => setSearchTerm({ ...searchTerm, cognome: e.target.value })}
       />
@@ -64,7 +64,7 @@ const HRSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalHr})
         id="email"
         className="text-form"
         pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
-        maxlength="45"
+        maxLength="45"
         placeholder="Email"
         value={searchTerm.email}
         onChange={(e) => setSearchTerm({ ...searchTerm, email: e.target.value })}

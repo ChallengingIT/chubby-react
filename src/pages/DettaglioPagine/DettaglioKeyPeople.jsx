@@ -29,7 +29,6 @@ useEffect(() => {
   }
 }, [location.state]);
 
-console.log("Dati in keypeopleData: ", keypeopleData);
 
   const SimpleData = ({ fields, initialValues, tableTitle }) => (
     <div>
@@ -54,7 +53,6 @@ console.log("Dati in keypeopleData: ", keypeopleData);
             data: attivita.data
           }));
           setAttivitaOptions(attivitaOptions);
-          // console.log("DATI RECUPERATI PER ATTIVITA: ", attivitaOptions);
         }
 
 

@@ -64,7 +64,7 @@ function TesoreriaSearchBox() {
         class="text-form"
         placeholder="Anno di Riferimento"
         id="anno"
-        maxlength="10"
+        maxLength="10"
         value={initialState.annoRiferimento}
           onChange={(e) => setInitialState({ ...initialState, annoRiferimento: e.target.value })}
       />

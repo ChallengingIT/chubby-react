@@ -114,6 +114,7 @@ navigate("/recruiting");
     try {
 
         const response = await axios.delete(`http://localhost:8080/intervista/react/elimina/${deleteId}`, { headers: headers});
+        setOpenDialog(false);
         console.log("DELETE A ID: ", id);
         console.log("Risposta dalla chiamata DELETE:", response);
   
@@ -141,7 +142,7 @@ const candidatoCognome = candidatoData.length > 0 ? candidatoData[0].cognome : '
   
 const table1 = [
   // { field: "id", headerName: "Id", width: 70},
-  { field: "stato",               headerName: "Stato",          width: 70,
+  { field: "stato",               headerName: "Stato",          width: 100,
     renderCell: (params) => (
       <div style={{ textAlign: "start" }}>
         {params.row.stato && params.row.stato.descrizione
@@ -150,8 +151,8 @@ const table1 = [
       </div>
     ),
   },
-  { field: "dataColloquio",       headerName: "Data Colloquio", width: 150},
-  { field: "candidato",           headerName: "Intervistatore", width: 150,
+  { field: "dataColloquio",       headerName: "Data Colloquio", width: 250},
+  { field: "candidato",           headerName: "Intervistatore", width: 250,
 renderCell: (params) => (
   <div style={{ textAlign: "start" }}>
         {params.row.candidato?.owner?.descrizione || "N/A"}
@@ -163,7 +164,7 @@ renderCell: (params) => (
         Follow Up <br /> Data Aggiornamento
       </div>
     ),
-    width: 150,
+    width: 350,
     renderCell: (params) => (
       <div style={{ textAlign: "start" }}>
         {params.row.tipo?.descrizione || "N/A"}

@@ -43,17 +43,17 @@ const ModificaFatturazionePassiva = () => {
   }, []);
 
   // const campiObbligatori = ["idFornitore", "stato", "dataFattura", "scadenza", "tipologia", "importo"];
-  const campiObbligatori = ["importo"];
+  const campiObbligatori = ["idFornitore", "stato", "dataFattura", "scadenza", "importo"];
 
 
   const fields = [
-    // { label: "Fornitore", name: "fornitore", type: "select" },
-    { label: "Stato",                   name: "stato",            type: "select", options: statoOptions },
-    { label: "Data Scadenza",           name: "scadenza",         type: "date" },
-    { label: "Data Fattura",            name: "dataFattura",      type: "date" },
+    { label: "* Fornitore",             name: "idFornitore",      type: "select", disabled:true},
+    { label: "* Stato",                   name: "stato",            type: "select", options: statoOptions },
+    { label: "* Data Scadenza",           name: "scadenza",         type: "date" },
+    { label: "* Data Fattura",            name: "dataFattura",      type: "date" },
     { label: "Tipologia",               name: "tipologia",        type: "text" },
     { label: "Descrizione",             name: "descrizione",      type: "text" },
-    { label: "Importo",                 name: "importo",          type: "text" },
+    { label: "* Importo",                 name: "importo",          type: "text" },
     { label: "Imponibile",              name: "imponibile",       type: "text" },
     { label: "Iva",                     name: "iva",              type: "text" },
     { label: "Riferimenti",             name: "riferimenti",      type: "text" },

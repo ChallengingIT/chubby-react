@@ -14,11 +14,11 @@ Checkbox,
 Alert,
 Snackbar,
 } from '@mui/material';
-import BackButton from './button/BackButton';
-import SaveButton from './button/SaveButton';
+import BackButton from '../../components/button/BackButton';
+import SaveButton from '../../components/button/SaveButton';
 import axios from 'axios';
 
-const TimesheetComponent = ({ timesheetData, id }) => {
+const UserTimesheetComponent2 = ({ timesheetData }) => {
 
     const [ meseCorrente,           setMeseCorrente               ] = useState(new Date()); //con new Date() me lo crea come anno/mese/giorno e l'ora per intero
     const [ annoCorrente,           setAnnoCorrente               ] = useState('');
@@ -48,14 +48,20 @@ const TimesheetComponent = ({ timesheetData, id }) => {
     const [ ore,                    setOre                        ] = useState('');
 
 
-      // Recupera l'accessToken da localStorage
-      const user = JSON.parse(localStorage.getItem("user"));
-      const accessToken = user?.accessToken;
-  
-      // Configura gli headers della richiesta con l'Authorization token
-      const headers = {
-        Authorization: `Bearer ${accessToken}`
-      };
+     // Recupera l'accessToken da localStorage
+    const user = JSON.parse(localStorage.getItem("user"));
+    const accessToken = user?.accessToken;
+    const username = user?.username;
+
+
+    const headers = {
+    Authorization: `Bearer ${accessToken}`
+    };
+
+    const requestParams = {
+        username: username
+    };
+
 
 
 
@@ -77,13 +83,12 @@ const TimesheetComponent = ({ timesheetData, id }) => {
         setAnnoCorrente(anno);
         setMeseNumero(mese.toString());
         setAnnoNumero(anno.toString());
-        console.log("headers passato: ", headers);
 
-
-        axios.get(`http://localhost:8080/timesheet/react/staff/${id}/${anno}/${mese}`, { headers: headers})
+        axios.get(`http://localhost:8080/timesheet/react/user/${anno}/${mese}`, {
+            headers: headers,
+            params: requestParams
+        })
             .then(response => {
-                console.log("dati arrivati dal server: ", response.data);   
-
             const timesheetConId = response.data.mese.days.map((timesheet) => ({...timesheet}));
                 // Crea un oggetto che raggruppa le ore per progetto e giorno
                 const projectsMap = timesheetConId.reduce((acc, current) => {
@@ -113,7 +118,6 @@ const TimesheetComponent = ({ timesheetData, id }) => {
                     return acc;
                 }, {});
                 setProgettoUnivoco(projectsMap);
-                console.log("PROGETTO UNIVOCO: ", projectsMap);
                 
                 setDatiTimesheet(response.data);
             })
@@ -131,7 +135,10 @@ const TimesheetComponent = ({ timesheetData, id }) => {
     useEffect(() => {
         const fetchPrimoTimesheet = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/timesheet/react/staff/primo/${id}`, { headers: headers });;
+                const response = await axios.get(`http://localhost:8080/timesheet/react/user/primo`, {
+                    headers: headers,
+                    params: requestParams
+                });
                 const [mese, anno] = response.data.split('-').map(Number);
                 setPrimoTimesheet(new Date(anno, mese -1, 1)); // -1 perchè i mesi in javascript iniziano da 0
             } catch(error) {
@@ -139,7 +146,7 @@ const TimesheetComponent = ({ timesheetData, id }) => {
             }
         };
         fetchPrimoTimesheet();
-    }, [id]);
+    });
 
 
 
@@ -167,7 +174,10 @@ const TimesheetComponent = ({ timesheetData, id }) => {
             return;
         }
     
-        axios.get(`http://localhost:8080/timesheet/react/staff/precedente/${id}/${annoNumero}/${meseNumero}`)
+        axios.get(`http://localhost:8080/timesheet/react/user/precedente/${annoNumero}/${meseNumero}`, {
+            headers: headers,
+            params: requestParams
+        })
             .then(response => {
                 const timesheetConId = response.data.mese.days.map((timesheet) => ({...timesheet}));
                 // Crea un oggetto che raggruppa le ore per progetto e giorno
@@ -206,7 +216,7 @@ const TimesheetComponent = ({ timesheetData, id }) => {
                 setDatiTimesheet(response.data);
                 setAnnoNumero(nuovoAnno.toString());
                 setMeseNumero(nuovoMese.toString());
-                if (response.data.mese.inviato) {
+                if (response.data.meseInviato) {
                     setMeseInviato(true);
                 } else {
                     setMeseInviato(false);
@@ -227,7 +237,10 @@ const TimesheetComponent = ({ timesheetData, id }) => {
             nuovoAnno += 1;
         }
     
-        axios.get(`http://localhost:8080/timesheet/react/staff/successivo/${id}/${annoNumero}/${meseNumero}`)
+        axios.get(`http://localhost:8080/timesheet/react/user/successivo/${annoNumero}/${meseNumero}`, {
+            headers: headers,
+            params: requestParams
+        })
             .then(response => {
                 const timesheetConId = response.data.mese.days.map((timesheet) => ({...timesheet}));
                 // Crea un oggetto che raggruppa le ore per progetto e giorno
@@ -394,12 +407,15 @@ const TimesheetComponent = ({ timesheetData, id }) => {
             };
 
             try {
-            const response = await axios.post(`http://localhost:8080/timesheet/react/staff/aggiorna/${id}/${annoNumero}/${meseNumero}`, datiDaInviare);
-            console.log("RISPOSTA DAL SERVER PER IL MODAL: ", response);
+            const response = await axios.post(`http://localhost:8080/timesheet/react/user/aggiorna/${annoNumero}/${meseNumero}`, datiDaInviare, {
+                headers: headers,
+                params: requestParams
+            });
             if (response.data === "OK") {
             setModalOpen(false); 
-            fetchTimesheetData(); 
-
+            // setDatiTimesheet(response.data);
+            // Aggiorna i dati del timesheet
+            fetchTimesheetData();
             } else {
                 setAlert({ open: true, message: response.data });
             }
@@ -413,7 +429,10 @@ const TimesheetComponent = ({ timesheetData, id }) => {
         // Funzione per richiedere i dati aggiornati del timesheet
         const fetchTimesheetData = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/timesheet/react/staff/${id}/${annoNumero}/${meseNumero}`);
+                const response = await axios.get(`http://localhost:8080/timesheet/react/user/${annoNumero}/${meseNumero}`, {
+                    headers: headers,
+                    params: requestParams
+                });
                 const timesheetConId = response.data.mese.days.map((timesheet) => ({...timesheet}));
                 // Crea un oggetto che raggruppa le ore per progetto e giorno
                 const projectsMap = timesheetConId.reduce((acc, current) => {
@@ -444,7 +463,6 @@ const TimesheetComponent = ({ timesheetData, id }) => {
                 }, {});
                 setProgettoUnivoco(projectsMap);
                 setDatiTimesheet(response.data);
-                console.log("CHIAMATA DI FETCHTIMESHEETDATA ESEGUITA CORRETTAMENTE: ", response.data);
             } catch (error) {
                 console.error('Errore durante il fetch dei dati aggiornati:', error);
             }
@@ -472,7 +490,10 @@ const TimesheetComponent = ({ timesheetData, id }) => {
             
         
             try {
-                const response = await axios.post(`http://localhost:8080/timesheet/react/staff/cancella/${id}/${annoNumero}/${meseNumero}`, datiDaInviare);
+                const response = await axios.post(`http://localhost:8080/timesheet/react/user/cancella/${annoNumero}/${meseNumero}`, datiDaInviare, {
+                    headers: headers,
+                    params: requestParams
+                });
                 setModalOpen(false); 
                 setDatiTimesheet(response.data);
                 fetchTimesheetData();
@@ -511,13 +532,11 @@ const TimesheetComponent = ({ timesheetData, id }) => {
         //chiamata per inviare tutto il timesheet
         const handleSubmit = async () => {
             try {
-                const responseSubmitTimesheet = await axios.post(`http://localhost:8080/timesheet/react/staff/salva/${id}/${annoNumero}/${meseNumero}`, { headers: headers });
-                if (responseSubmitTimesheet.data.message !== "OK") {
-                setAlert({ open: true, message: responseSubmitTimesheet.data });
-                }
+                const url = `http://localhost:8080/timesheet/react/user/salva/${annoNumero}/${meseNumero}`;
+                const response = await axios.post(url, { timesheetData });
+                setAlert({ open: true, message: response.data });
             } catch (error) {
                 console.error("Errore durante l'invio dei dati del timesheet: ", error);
-                
             }
         };
 
@@ -1061,4 +1080,4 @@ InputLabelProps={{
 };
 
 
-export default TimesheetComponent;
+export default UserTimesheetComponent2;

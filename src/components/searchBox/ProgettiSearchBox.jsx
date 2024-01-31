@@ -16,7 +16,7 @@ const ProgettiSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Origin
   };
 
   const accessToken = localStorage.getItem("accessToken"); // Ottieni l'accessToken dal localStorage
-// console.log("accessToken: ", accessToken);
+
 // Configura l'header "Authorization" con l'accessToken
 const headers = {
   Authorization: `Bearer ${accessToken}`,
@@ -43,7 +43,7 @@ const headers = {
         } 
 
         if (Array.isArray(responseDipendenti.data)) {
-          console.log("Dati dipendenti:", responseDipendenti.data);
+     
           setDipendentiOptions(responseDipendenti.data.map((dipendente) => ({
             label: dipendente.nome,
             value: dipendente.id
@@ -56,7 +56,7 @@ const headers = {
         
       } catch (error) {
         console.error("Errore durante il recupero dei dati:", error);
-        console.log("Errore nella richiesta axios:", error.response);
+
       }
     };
 
@@ -65,8 +65,8 @@ const headers = {
 
 
   const handleSearch = () => {
-    console.log("Valori di ricerca:", searchTerm);
-    console.log("Contenuto di Originale:", OriginalProgetti);
+
+
     const filteredData = data.filter(item =>
       Object.keys(searchTerm).every(key =>
         (key === 'cliente' && item[key]?.denominazione?.toLowerCase().includes(String(searchTerm[key]).toLowerCase())) ||
@@ -74,7 +74,7 @@ const headers = {
         
       )
     );
-    console.log("Dati filtrati:", filteredData);
+
     onSearch(filteredData);
     setFilteredData(filteredData);
   };

@@ -1,7 +1,7 @@
 import React, { useEffect, useState }               from 'react';
-import UserTimeSheetComponent                       from './UserTimesheetComponent';
 import { useLocation, useParams }                   from "react-router-dom";
 import UserSidebar                                  from './UserSidebar';
+import UserTimesheetComponent2                      from './UserTimesheetComponent2';
 
 
 function UserTimesheet() {
@@ -75,7 +75,7 @@ const idProgetti = dipendentiData.progetti?.map(progetto => progetto.id);
               {/* <div className="page-name">Timesheet </div> */}
               <div className='page-name' style={{ marginBottom: "20px", marginTop: "30px"}}>{`Timesheet`}</div>
               <div style={{ borderRadius: '40px'}}>
-                <UserTimeSheetComponent
+                <UserTimesheetComponent2
                 anno={anno}
                 setAnno={setAnno}
                 mese={mese}

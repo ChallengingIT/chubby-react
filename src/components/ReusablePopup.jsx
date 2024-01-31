@@ -1,13 +1,43 @@
 import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Grid, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 
-const ReusablePopup = ({ open, title, onClose, onSave, fields = [], idTipoAttivita, idAzienda, idOwner, idKeyPeople }) => {
-  const [popupData, setPopupData] = React.useState({});
+const ReusablePopup = ({ 
+  open, 
+  title, 
+  onClose, 
+  onSave, 
+  inizialValues = {},
+  fields = [], 
+  idTipoAttivita, 
+  idAzienda, 
+  idOwner, 
+  idKeyPeople
+ }) => {
+  const [ values, setValues ] = useState(inizialValues || {});
 
 
-  const handleChange = (e) => {
-    setPopupData({ ...popupData, [e.target.name]: e.target.value });
-  };
+  // const handleChange = (e) => {
+  //   // setPopupData({ ...popupData, [e.target.name]: e.target.value });
+  // };
+
+
+
+  // const handleChangePopup = (name) => (event) => {
+  //   const { popupData } = event.target;
+  //   setPopupData({...popupData, [name]: popupData });
+  //   console.log("VALORI DENTRO POPUPDATA: ", popupData);
+  //   if (errors[name]) {
+  //     setErrors({...errors, [name]: null });
+  //   }
+  // }
+
+  const handleChangePopup = (name) => (event) => {
+    const { value } = event.target;
+    setValues({ ...values, [name]: value });
+
+  }
+
+
   const handleSaveClick = () => {
     const tipoAttivitaMap = {
       1: 'feed',
@@ -15,7 +45,7 @@ const ReusablePopup = ({ open, title, onClose, onSave, fields = [], idTipoAttivi
       3: 'phone'
     };
     const tipoAttivita = tipoAttivitaMap[idTipoAttivita] || 'non riconosciuto';
-    onSave(popupData, tipoAttivita);
+    onSave(values, tipoAttivita);
     onClose();
   };
   
@@ -29,8 +59,8 @@ const ReusablePopup = ({ open, title, onClose, onSave, fields = [], idTipoAttivi
             <Select
               style={{ width: "100%", textAlign: "left" }}
               name={field.name}
-              value={popupData[field.name] || ''}
-              onChange={handleChange}
+              value={values[field.name] || ''}
+              onChange={handleChangePopup(field.name)}
             >
               {field.options?.map(option => (
                 <MenuItem key={option.value} value={option.value}>
@@ -40,16 +70,17 @@ const ReusablePopup = ({ open, title, onClose, onSave, fields = [], idTipoAttivi
             </Select>
           </FormControl>
         );
+
       case 'note':
         return (
           <TextField
-            name={field.name}
-            label={field.label}
-            value={popupData[field.name] || ''}
-            onChange={handleChange}
-            margin="dense"
-            fullWidth
-            multiline
+          name={field.name}
+          label={field.label}
+          value={values[field.name] || null }
+          onChange={handleChangePopup(field.name)}
+          margin="dense"
+          fullWidth
+          multiline
           />
         );
       default:

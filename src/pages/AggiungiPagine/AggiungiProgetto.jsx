@@ -24,7 +24,7 @@ const AggiungiProgetto = () => {
   useEffect(() => {
     const fetchProgettiOptions = async () => {
       try {
-        const responseDipendenti = await axios.get("http://localhost:8080/hr/react"     , { headers: headers});
+        const responseDipendenti = await axios.get("http://localhost:8080/hr/react/modificato"     , { headers: headers});
         const responseClienti    = await axios.get("http://localhost:8080/aziende/react", { headers: headers });
 
 
@@ -64,11 +64,11 @@ const AggiungiProgetto = () => {
 
 
   const fields = [
-    { label: "Descrizione",     name: "description",              type: "text" },
-    { label: "Cliente",         name: "idAzienda",                type: "select", options: clientiOptions },
-    { label: "Dipendente",      name: "idStaff",                  type: "select", options: dipendentiOptions },
-    { label: "Data Inizio",     name: "inizio",                   type: "date" },
-    { label: "Scadenza",        name: "scadenza",                 type: "date" },
+    { label: "* Descrizione",     name: "description",              type: "text" },
+    { label: "* Cliente",         name: "idAzienda",                type: "select", options: clientiOptions },
+    { label: "* Dipendente",      name: "idStaff",                  type: "select", options: dipendentiOptions },
+    { label: "* Data Inizio",     name: "inizio",                   type: "date" },
+    { label: "* Scadenza",        name: "scadenza",                 type: "date" },
     { label: "Durata Stimata",  name: "durataStimata",            type: "text" },
     { label: "Rate",            name: "rate",                     type: "text" },
     { label: "Costo",           name: "costo",                    type: "text" },

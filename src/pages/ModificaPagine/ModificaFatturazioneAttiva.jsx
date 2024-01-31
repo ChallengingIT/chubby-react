@@ -57,12 +57,12 @@ const AggiungiFatturazioneAttiva = () => {
 
   const fields = [
  
-    { label: "Cliente",               name: "idCliente",            type: "select", options: clienteOptions,  disabled: true},
-    { label: "Stato",                 name: "stato",                type: "select", options: statoOptions},
-    { label: "Data Emissione",        name: "dataEmissione",        type: "date" },
-    { label: "Data Scadenza",         name: "dataScadenza",         type: "date" },
+    { label: "* Cliente",               name: "idCliente",            type: "select", options: clienteOptions,  disabled: true},
+    { label: "* Stato",                 name: "stato",                type: "select", options: statoOptions},
+    { label: "* Data Emissione",        name: "dataEmissione",        type: "date" },
+    { label: "* Data Scadenza",         name: "dataScadenza",         type: "date" },
     { label: "Termine",               name: "termine",              type: "text" },
-    { label: "Tariffa",               name: "tariffa",              type: "text" },
+    { label: "* Tariffa",               name: "tariffa",              type: "text" },
     { label: "Giorni Lavorati",       name: "giorniLavorati",       type: "text" },
     { label: "Imponibile",            name: "imponibile",           type: "text" },
     { label: "Totale con Iva",        name: "totaleConIva",         type: "text" },
@@ -76,7 +76,7 @@ const AggiungiFatturazioneAttiva = () => {
 
   const initialValues = {
     id:                               fatturazioneAttivaData.id,
-    idCliente:                        fatturazioneAttivaData.cliente && fatturazioneAttivaData.cliente.id || "",
+    idCliente:                        fatturazioneAttivaData.cliente && fatturazioneAttivaData.cliente.id ,
     stato:                            fatturazioneAttivaData.stato && fatturazioneAttivaData.stato.id     || "",
     dataEmissione:                    fatturazioneAttivaData.dataEmissione                                || "",
     dataScadenza:                     fatturazioneAttivaData.dataScadenza                                 || "",

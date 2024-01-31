@@ -1,8 +1,7 @@
 import React, { useEffect, useState }               from 'react';
 import Sidebar                                      from '../components/Sidebar';
-import TimeSheetComponent                           from '../components/TimesheetComponent';
 import { useLocation, useParams }                   from "react-router-dom";
-import axios                                        from 'axios';
+import TimesheetComponent                           from '../components/TimesheetComponent';
 
 
 function TimesheetPages() {
@@ -12,10 +11,9 @@ function TimesheetPages() {
   const location                = useLocation();
   const { dipendentiData = {} } = location.state || {};
 
-console.log("DATI ARRIVATI TIMESHEET PAGES: ", dipendentiData);
+
 
 const idProgetti = dipendentiData.progetti?.map(progetto => progetto.id);
-// console.log("IDPROGETTI: ", idProgetti);
 
 
   const [ anno,          setAnno         ] = useState(new Date().getFullYear()); 
@@ -35,7 +33,6 @@ const idProgetti = dipendentiData.progetti?.map(progetto => progetto.id);
   
   //       const response = await axios.get(url);
     
-  //       console.log('Dati del timesheet caricati:', response.data);
     
   
   //       setTimesheetData(response.data);
@@ -76,7 +73,7 @@ const idProgetti = dipendentiData.progetti?.map(progetto => progetto.id);
               {/* <div className="page-name">Timesheet </div> */}
               <div className='page-name' style={{ marginBottom: "20px", marginTop: "30px"}}>{`Timesheet di ${dipendentiData.nome} ${dipendentiData.cognome}`}</div>
               <div style={{ borderRadius: '40px'}}>
-                <TimeSheetComponent
+                <TimesheetComponent
                 anno={anno}
                 setAnno={setAnno}
                 mese={mese}

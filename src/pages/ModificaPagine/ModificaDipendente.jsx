@@ -3,6 +3,7 @@ import { useNavigate, useLocation }         from "react-router-dom";
 import axios                                from "axios";
 import Sidebar                              from "../../components/Sidebar";
 import FieldsBox                            from "../../components/FieldsBox";
+import FieldBoxFile from "../../components/FieldBoxFile";
 
 const ModificaDipendente = () => {
 
@@ -20,7 +21,7 @@ const ModificaDipendente = () => {
   const [ livelloScolasticoOptions,       setLivelloScolasticoOptions         ] = useState([]);
   const [ tipologiaContrattoOptions,      setTipologiaContrattoOptions        ] = useState([]);
 
-  console.log("Dati Arrivati: ", dipendentiData);
+  console.log("Dati Arrivati da dipendenteData: ", dipendentiData);
 
    // Recupera l'accessToken da localStorage
    const user = JSON.parse(localStorage.getItem("user"));
@@ -89,32 +90,33 @@ const ModificaDipendente = () => {
     fetchAziendeOptions();
   }, []);
 
-  const campiObbligatori = [ "nome", "cognome", "dataNasciata", "luogoNascita", "email", "cellulare", "dataInizio", "scadenza", "anniEsperienza", "idTipologia" ];
+  const campiObbligatori = [ "nome", "cognome", "email", "anniEsperienza", "livelloScolastico", "tipologia", "tipologiaContratto", "citta", "dataNascita" ];
 
   const fields = [
-      { label: "Nome",                                name: "nome",                                           type: "text" },
-      { label: "Cognome",                             name: "cognome",                                        type: "text" },
-      { label: "Data di Nascita",                     name: "dataNascita",                                    type: "date" },
+      { label: "* Nome",                                name: "nome",                                           type: "text" },
+      { label: "* Cognome",                             name: "cognome",                                        type: "text" },
+      { label: "* Data di Nascita",                     name: "dataNascita",                                    type: "date" },
       { label: "Luogo di Nascita",                    name: "luogoNascita",                                   type: "text" },
-      { label: "Email",                               name: "email",                                          type: "text" },
+      { label: "* Email",                               name: "email",                                          type: "text" },
       { label: "Cellulare",                           name: "cellulare",                                      type: "text" },
-      { label: "Residenza",                           name: "citta",                                          type: "text" },
+      { label: "* Residenza",                           name: "citta",                                          type: "text" },
       { label: "Data Inizio",                         name: "dataInizio",                                     type: "date" },
       { label: "Scadenza Contratto",                  name: "dataScadenza",                                   type: "date" },
-      { label: "Anni Esperienza",                     name: "anniEsperienza",                                 type: "text" },
-      { label: "Livello Scolastico",                  name: "livelloScolastico",                              type: "select",          options: livelloScolasticoOptions },
+      { label: "* Anni Esperienza",                     name: "anniEsperienza",                                 type: "text" },
+      { label: "* Livello Scolastico",                  name: "livelloScolastico",                              type: "select",          options: livelloScolasticoOptions },
       { label: "Facoltà",                             name: "facolta",                                        type: "select",          options: facoltaOptions},
       { label: "IBAN",                                name: "iban",                                           type:"text"   },
       { label: "Codice Fiscale",                      name: "codFiscale",                                     type:"text"   },
       { label: "RAL/Tariffa",                         name: "ral",                                            type:"text"   },
-      { label: "Job Title",                           name: "tipologia",                                      type: "select",          options: tipologiaOptions },
+      { label: "* Job Title",                           name: "tipologia",                                      type: "select",          options: tipologiaOptions },
       { label: "Seleziona le Skills",                 name: "skills",                                         type: "multipleSelectSkill",  options: skillsOptions },
-      { label: "Tipologia Contratto",                 name: "tipologiaContratto",                             type: "select",          options: tipologiaContrattoOptions },
+      { label: "* Tipologia Contratto",                 name: "tipologiaContratto",                             type: "select",          options: tipologiaContrattoOptions },
       { label: "Note",                                name: "note",                                           type: "note"  },
       { lavel: "Allegati",                            name: "files",                                          type: "mofificaAllegati"},
   ];
 
   const initialValues = {
+    id:                                               dipendentiData.id                                                                     ,
     nome:                                             dipendentiData.nome                                                                   || "",
     cognome:                                          dipendentiData.cognome                                                                || "",
     dataNascita:                                      dipendentiData.dataNascita                                                            || "",
@@ -350,11 +352,11 @@ const handleSubmit = async (values) => {
         </div>
         <div className="container">
           <div className="page-name">Modifica Staff {nomeDipendente} {cognomeDipendente} </div>
-          <FieldsBox
+          <FieldBoxFile
           fields={fields}
           initialValues={initialValues}
           campiObbligatori={campiObbligatori}
-          onSubmit={handleSubmit}
+          onSubmit        ={handleSubmit} 
           title=""
           onDownloadAllegati = {handleDownloadAllegati}
           onDeleteAllegati = {handleDeleteAllegati}

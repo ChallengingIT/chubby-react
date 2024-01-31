@@ -127,6 +127,7 @@ const handleDelete = async () => {
     setOpenDialog(false);
     console.log("Risposta dalla chiamata delete: ", response);
     console.log("ID AZIENDA ELIMINATA: ", deleteId);
+    
     fetchData();
   } catch (error) {
     console.error("Errore durante la cancellazione: ", error);

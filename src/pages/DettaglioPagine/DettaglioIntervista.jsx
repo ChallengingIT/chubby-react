@@ -3,6 +3,7 @@ import { useNavigate, useLocation, useParams }      from "react-router-dom";
 import axios                                        from "axios";
 import Sidebar                                      from "../../components/Sidebar";
 import MyBoxGroups                                  from "../../components/MyBoxGroups";
+import { Button } from "@mui/material";
 
 const DettaglioIntervista = () => {
   const navigate = useNavigate();
@@ -10,6 +11,14 @@ const DettaglioIntervista = () => {
   const rowData  = location.state;
   console.log("Dati ricevuti:", rowData);
   const params   = useParams();
+
+
+
+  const handleGoBack = () => {
+    navigate(-1); 
+  };
+
+
 
 
 
@@ -150,11 +159,11 @@ const initialValues = {
   cognome:                          rowData.candidato?.cognome                || "",
   dataNascita:                      rowData.candidato?.dataNascita            || "",
   location:                         rowData.candidato?.citta                  || "", 
-  tipologia:                        rowData.candidato?.tipologia?.id          || "",
+  tipologia:                        rowData.candidato?.tipologia?.descrizione          || "",
   anniEsperienza:                   rowData.candidato?.anniEsperienza         || "",
   dataColloquio:                    rowData.dataColloquio                     || "",
   cellulare:                        rowData.candidato?.cellulare              || "",
-  owner:                            rowData.owner?.id                         || "",
+  owner:                            rowData.owner?.descrizione                         || "",
   aderenza:                         rowData.aderenza                          || "",
   coerenza:                         rowData.coerenza                          || "",
   motivazione:                      rowData.motivazione                       || "",
@@ -171,10 +180,10 @@ const initialValues = {
   attuale:                          rowData.attuale                           || "",
   desiderata:                       rowData.desiderata                        || "",
   proposta:                         rowData.proposta                          || "",
-  idTipo:                           rowData.tipo?.id                          || "",
+  idTipo:                           rowData.tipo?.descrizione                          || "",
   preavviso:                        rowData.preavviso                         || "",
   dataAggiornamento:                rowData.dataAggiornamento                 || "", // Assicurati che questo sia il campo corretto
-  idNextOwner:                      rowData.candidato?.owner?.id              || ""
+  idNextOwner:                      rowData.candidato?.owner?.descrizione              || ""
 };
 
 
@@ -260,6 +269,26 @@ const disableFields = {
           <h1>{`Gestisci Incontro `}</h1>
           </div>
           <MyBoxGroups fields={fields} initialValues={initialValues} disableFields={disableFields} title="" showSaveButton={false} />
+          <Button
+          color="primary"
+          onClick={handleGoBack}
+          sx={{
+            backgroundColor: "black",
+            borderRadius: '40px',
+            color: "white",
+            width: '250px',
+            height: '30px', 
+            margin: 'auto',
+            marginBottom: '20px',
+            marginTop: 'auto',
+            "&:hover": {
+              backgroundColor: "black",
+              transform: "scale(1.05)",
+            },
+          }}
+        >
+          Torna ad Interviste
+        </Button>
         </div>
       </div>
     </div>

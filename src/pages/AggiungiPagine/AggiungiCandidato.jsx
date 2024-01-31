@@ -3,9 +3,10 @@ import { useNavigate }                from "react-router-dom";
 import axios                          from "axios";
 import Sidebar                        from "../../components/Sidebar";
 import FieldsBox                      from "../../components/FieldsBox";
+import FieldBoxFile from "../../components/FieldBoxFile";
 
 
-const AggiungiCandidato2 = () => {
+const AggiungiCandidato = () => {
 const navigate = useNavigate();
 
 const [ statoOptions,             setStatoOptions             ] = useState([]);
@@ -117,7 +118,7 @@ useEffect(() => {
 }, []);
 
 
-const campiObbligatori = ["nome", "cognome", "email", "anniEsperienza", "tipologia" ];
+const campiObbligatori = ["nome", "cognome", "email", "anniEsperienzaRuolo", "tipologia", "dataUltimoContatto" ];
 
 const fields = [
     { label: "Tipologia",                     name: "tipo",                     type: "select",          options: tipologiaOptions                      },
@@ -127,10 +128,10 @@ const fields = [
         { value: "R", label: "R" },
         { value: "C-R", label: "C-R" },
     ]},
-    { label: "Nome",                          name: "nome",                     type: "text"                                                            },
-    { label: "Cognome",                       name: "cognome",                  type: "text"                                                            },
+    { label: "* Nome",                          name: "nome",                     type: "text"                                                            },
+    { label: "* Cognome",                       name: "cognome",                  type: "text"                                                            },
     { label: "Data di Nascita",               name: "dataNascita",              type: "date"                                                            },
-    { label: "Email",                         name: "email",                    type: "text"                                                            },
+    { label: "* Email",                         name: "email",                    type: "text"                                                            },
     { label: "Cellulare",                     name: "cellulare",                type: "text"                                                            },
     { label: "Anni di Esperienza",            name: "anniEsperienza",           type: "text"                                                            },
     { label: "Residenza",                     name: "citta",                    type: "text"                                                            },
@@ -139,28 +140,33 @@ const fields = [
         { value: 2, label: "Ibrido" },
         { value: 3, label: "On Site"},
     ] },
-    { label: "Anni di Esperienza nel Ruolo",  name: "anniEsperienzaRuolo",      type: "text"                                                            },
-    { label: "Livello Scolastico",            name: "livelloScolastico",        type: "select",          options: livelloScolasticoOptions },
-    { label: "Facoltà",                       name: "facolta",                  type: "select",          options: facoltaOptions},
-    { label: "Job Title",                     name: "tipologia",                type: "select",          options: jobTitleOptions                       },
-    { label: "Data Inserimento",              name: "dataUltimoContatto",       type: "date"                                                            },
-    { label: "Stato",                         name: "stato",                    type: "select",          options: statoOptions                          },
-    { label: "Owner",                         name: "owner",                    type: "select",          options: ownerOptions      },
+    { label: "* Anni di Esperienza nel Ruolo",  name: "anniEsperienzaRuolo",      type: "text"                                                            },
+    { label: "Livello Scolastico",            name: "livelloScolastico",        type: "select",               options: livelloScolasticoOptions },
+    { label: "Facoltà",                       name: "facolta",                  type: "select",               options: facoltaOptions},
+    { label: "* Job Title",                     name: "tipologia",                type: "select",               options: jobTitleOptions                       },
+    { label: "* Data Inserimento",              name: "dataUltimoContatto",       type: "date"                                                            },
+    { label: "Stato",                         name: "stato",                    type: "select",               options: statoOptions                          },
+    { label: "Owner",                         name: "owner",                    type: "select",               options: ownerOptions      },
     { label: "Seleziona le Skills",           name: "skills",                   type: "multipleSelectSkill",  options: skillsOptions                    },
     { label: "RAL/Tariffa",                   name: "ral",                      type: "text"                                                            },
     { label: "Disponibilità",                 name: "disponibilita",            type: "text"                                                            },
     { label: "Note",                          name: "note",                     type: "note"                                                            },
-    { label: "Curriculim Vitae",              name: "cv",                       type: "file"                                                            },
-    { label: "Consultant File",               name: "cf",                       type: "file"                                                            },
+    { label: "Curriculim Vitae",              name: "cv",                       type: "modificaFileCV"                                                            },
+    { label: "Consultant File",               name: "cf",                       type: "modificaFileCF"                                                            },
 ];
 
 
-const handleSubmit = async (values) => {
+const handleSubmit = async (values, fileCV, fileCF, fileMultipli, fileAllegati) => {
     const errors = validateFields(values);
     const hasErrors = Object.keys(errors).length > 0;
 
     if (!hasErrors) {
         try {
+            Object.keys(values).forEach(key => {
+                if (!campiObbligatori.includes(key) && !values[key]) {
+                values[key] = null;
+                }
+            });
         // Preparazione dei dati delle skills come stringhe separate
         const skills = values.skills ? values.skills.join(',') : '';
 
@@ -170,8 +176,8 @@ const handleSubmit = async (values) => {
         // Rimozione delle proprietà delle skills dall'oggetto values
         delete values.skills;
 
-        const cv = values.cv;
-        const cf = values.cf;
+        // const cv = values.cv;
+        // const cf = values.cf;
 
         delete values.cv;
         delete values.cf;
@@ -182,7 +188,7 @@ const handleSubmit = async (values) => {
         headers: headers,
         });
 
-        console.log("Risposta della prima chiamata:", datiResponse.data);
+        console.log("Risposta della prima chiamata di aggiungiCandidato:", datiResponse.data);
               // Ottieni l'ID del candidato dalla risposta
     const candidatoId = datiResponse.data;
     console.log("ID DEL CANDIDATO: ", candidatoId);
@@ -207,9 +213,9 @@ const handleSubmit = async (values) => {
 try{
 
       // Invio del file "cv", se presente
-    if (cv) {
+    if (fileCV) {
         const formDataCV = new FormData();
-        formDataCV.append('file', cv);
+        formDataCV.append('file', fileCV);
         formDataCV.append('tipo', 1);
 
         const responseCV = await axios.post(`http://localhost:8080/staffing/react/staff/salva/file/${candidatoId}`, formDataCV, 
@@ -223,9 +229,9 @@ try{
     try{
 
       // Invio del file "cf", se presente
-    if (cf) {
+    if (fileCF) {
         const formDataCF = new FormData();
-        formDataCF.append('file', cf);
+        formDataCF.append('file', fileCF);
         formDataCF.append('tipo', 2);
         const responseCF = await axios.post(`http://localhost:8080/staffing/react/staff/salva/file/${candidatoId}`, formDataCF, {headers: headers});
         console.log("Invio corretto del CF", responseCF);
@@ -268,7 +274,7 @@ return (
         </div>
         <div className="container">
         <div className="page-name">Aggiungi Candidato</div>
-        <FieldsBox 
+        <FieldBoxFile 
         fields={fields} 
         campiObbligatori={campiObbligatori}  
         onSubmit={handleSubmit} 
@@ -284,4 +290,4 @@ return (
 );
 };
 
-export default AggiungiCandidato2;
+export default AggiungiCandidato;

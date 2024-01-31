@@ -44,7 +44,7 @@ const FornitoriSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Origi
         id="ragione"
         className="text-form"
         placeholder="Ragione Sociale"
-        maxlength="90"
+        maxLength="90"
         value={searchTerm.denominazione}
         onChange={(e) => setSearchTerm({ ...searchTerm, denominazione: e.target.value })}
       />
@@ -55,7 +55,7 @@ const FornitoriSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Origi
         id="referente"
         className="text-form"
         placeholder="Referente"
-        maxlength="45"
+        maxLength="45"
         value={searchTerm.referente}
         onChange={(e) => setSearchTerm({ ...searchTerm, referente: e.target.value })}
       />
@@ -66,7 +66,7 @@ const FornitoriSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Origi
         id="email"
         className="text-form"
         pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
-        maxlength="45"
+        maxLength="45"
         placeholder="Email Fornitore"
         value={searchTerm.email}
         onChange={(e) => setSearchTerm({ ...searchTerm, email: e.target.value })}

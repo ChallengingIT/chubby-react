@@ -126,7 +126,7 @@ const UserSidebar = ({ handleLogout }) => {
 
   const confirmLogout = () => {
     navigate('/login', { replace: true });
-    window.location.reload();
+    // window.location.reload();
     closeLogoutPopup();
   };
 
@@ -161,7 +161,7 @@ const UserSidebar = ({ handleLogout }) => {
     try {
       await authService.logout(); 
       navigate('/login', { replace: true });
-      window.location.reload();
+      // window.location.reload();
       closeLogoutPopup();        
       console.log("Logout effettuato");
     } catch (error) {

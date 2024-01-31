@@ -20,9 +20,9 @@ const AggiungiFornitore = () => {
 const campiObbligatori = [ "denominazione", "referente", "email"];
 
   const fields = [
-    { label: "Ragione Sociale",     name: "denominazione",  type: "text" },
-    { label: "Referente",           name: "referente",      type: "text" },
-    { label: "Email",               name: "email",          type: "text"},
+    { label: "* Ragione Sociale",     name: "denominazione",  type: "text" },
+    { label: "* Referente",           name: "referente",      type: "text" },
+    { label: "* Email",               name: "email",          type: "text"},
     { label: "PI",                  name: "pi",             type: "text" },
     { label: "Codice",              name: "codice",         type: "text"},
     { label: "Città",               name: "citta",          type: "text" },

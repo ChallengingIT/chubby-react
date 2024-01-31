@@ -64,27 +64,27 @@ const ModificaContatto = () => {
   const campiObbligatori = [ "nome", "idAzienda", "email", "idOwner", "status", "ruolo", "dataCreazione", "dataUltimaAttivita" ];
 
   const fields = [
-    { label: "Nome Contatto",           name: "nome",                         type: "text" },
-    { label: "Azienda",                 name: "idAzienda",                    type: "select", options: aziendeOptions },
-    { label: "Email",                   name: "email",                        type: "text" },
+    { label: "* Nome Contatto",           name: "nome",                         type: "text" },
+    { label: "* Azienda",                 name: "idAzienda",                    type: "select", options: aziendeOptions },
+    { label: "* Email",                   name: "email",                        type: "text" },
     { label: "Cellulare",               name: "cellulare",                    type: "text" },
-    { label: "Proprietario",            name: "idOwner",                      type: "select", options: ownerOptions},
-    { label: "Stato",                   name: "status",                       type: "selectValue", options: [
+    { label: "* Proprietario",            name: "idOwner",                      type: "select", options: ownerOptions},
+    { label: "* Stato",                   name: "status",                       type: "selectValue", options: [
       { value: "1", label: "Verde" },
       { value: "2", label: "Giallo" },
       { value: "3", label: "Rosso" },
     ] },
     
-    { label: "Ruolo",                   name: "ruolo",                        type: "text" },
-    { label: "Data di Creazione",       name: "dataCreazione",                type: "date" },
-    { label: "Ultima Attività",         name: "dataUltimaAttivita",           type: "date" },
+    { label: "* Ruolo",                   name: "ruolo",                        type: "text" },
+    { label: "* Data di Creazione",       name: "dataCreazione",                type: "date" },
+    { label: "* Ultima Attività",         name: "dataUltimaAttivita",           type: "date" },
     { label: "Note",                    name: "note",                         type: "note" },
 
 
   ];
 
   const initialValues = {
-    id:                 keyPeopleData.id                                                  || "",
+    id:                 keyPeopleData.id                                                  ,
     nome:               keyPeopleData.nome                                                || "",
     idAzienda:          keyPeopleData.cliente && keyPeopleData.cliente.id                 || "",
     idOwner:            keyPeopleData.owner   && keyPeopleData.owner.id                   || "",

@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation }   from "react-router-dom";
 import axios                          from "axios";
 import Sidebar                        from "../../components/Sidebar";
-import FieldsBox                      from "../../components/FieldsBox";
-import FieldBoxFunzionanteFile from "../../components/componentiBackup/FieldBoxFunzionanteFile";
+import FieldBoxFile from "../../components/FieldBoxFile";
+import FieldsBox from "../../components/FieldsBox";
 
-const AggiungiProgetto = () => {
+const AggiungiDipendente = () => {
   const navigate = useNavigate();
   const [ jobTitleOptions,                setJobTitleOptions                  ] = useState([]);
   const [ skillsOptions,                  setSkillsOptions                    ] = useState([]);
@@ -87,28 +87,28 @@ const AggiungiProgetto = () => {
   }, []);
 
   // const campiObbligatori = [ "nome", "cognome", "dataNasciata", "luogoNascita", "email", "cellulare", "dataInizio", "scadenza", "anniEsperienza", "idTipologia" ];
-const campiObbligatori = [ "nome" ];
+const campiObbligatori = [ "nome", "cognome", "email", "anniEsperienza", "livelloScolastico", "tipologia", "tipologiaContratto", "citta", "dataNascita" ];
   const fields = [
-    { label: "Nome",                        name: "nome",               type: "text" },
-    { label: "Cognome",                     name: "cognome",            type: "text" },
-    { label: "Data di Nascita",             name: "dataNascita",        type: "date" },
-    { label: "Luogo di Nascita",            name: "luogoNascita",       type: "text" },
-    { label: "Email",                       name: "email",              type: "text" },
-    { label: "Cellulare",                   name: "cellulare",          type: "text" },
-    { label: "Residenza",                   name: "citta",              type: "text" },
-    { label: "Data Inizio",                 name: "dataInizio",         type: "date" },
-    { label: "Scadenza Contratto",          name: "dataScadenza",       type: "date" },
-    { label: "Anni Esperienza",             name: "anniEsperienza",     type: "text" },
-    { label: "Livello Scolastico",          name: "livelloScolastico",  type: "select",                      options: livelloScolasticoOptions },
-    { label: "Facoltà",                     name: "facolta",            type: "select",                      options: facoltaOptions},
-    { label: "IBAN",                        name: "iban",               type:"text"  },
-    { label: "Codice Fiscale",              name: "codFiscale",         type:"text"  },
-    { label: "RAL/Tariffa",                 name: "ral",                type:"text"  },
-    { label: "Job Title",                   name: "tipologia",          type: "select",                       options: jobTitleOptions },
-    { label: "Seleziona le skill",          name: "skills",             type: "multipleSelectSkill",          options: skillsOptions },
-    { label: "Tipologia Contratto",         name: "tipologiaContratto", type: "select",                       options: contrattoOptions },
-    { label: "Note",                        name: "note",               type: "note" },
-    { label: "Allegati",                    name: "file",               type: "fileMultiple" },
+    { label: "* Nome",                        name: "nome",               type: "text" },
+    { label: "* Cognome",                     name: "cognome",            type: "text" },
+    { label: "* Data di Nascita",             name: "dataNascita",        type: "date" },
+    { label: "Luogo di Nascita",              name: "luogoNascita",       type: "text" },
+    { label: "* Email",                       name: "email",              type: "text" },
+    { label: "Cellulare",                     name: "cellulare",          type: "text" },
+    { label: "* Residenza",                   name: "citta",              type: "text" },
+    { label: "Data Inizio",                   name: "dataInizio",         type: "date" },
+    { label: "Scadenza Contratto",            name: "dataScadenza",       type: "date" },
+    { label: "* Anni Esperienza",             name: "anniEsperienza",     type: "text" },
+    { label: "* Livello Scolastico",          name: "livelloScolastico",  type: "select",                      options: livelloScolasticoOptions },
+    { label: "Facoltà",                       name: "facolta",            type: "select",                      options: facoltaOptions},
+    { label: "IBAN",                          name: "iban",               type:"text"  },
+    { label: "Codice Fiscale",                name: "codFiscale",         type:"text"  },
+    { label: "RAL/Tariffa",                   name: "ral",                type:"text"  },
+    { label: "* Job Title",                   name: "tipologia",          type: "select",                       options: jobTitleOptions },
+    { label: "Seleziona le skill",            name: "skills",             type: "multipleSelectSkill",          options: skillsOptions },
+    { label: "* Tipologia Contratto",         name: "tipologiaContratto", type: "select",                       options: contrattoOptions },
+    { label: "Note",                          name: "note",               type: "note" },
+    { label: "Allegati",                      name: "file",               type: "modificaAllegati" },
   ];
 
 
@@ -194,12 +194,18 @@ const campiObbligatori = [ "nome" ];
 
 
 
-const handleSubmit = async (values) => {
+const handleSubmit = async (values, fileCV, fileCF, fileMultipli, fileAllegati) => {
   const errors = validateFields(values);
     const hasErrors = Object.keys(errors).length > 0;
     if (!hasErrors) {
 
     try {
+
+      Object.keys(values).forEach(key => {
+        if (!campiObbligatori.includes(key) && !values[key]) {
+          values[key] = null;
+        }
+      });
       // Preparazione dei dati delle skills come stringhe separate
       const skills = values.skills ? values.skills.join(',') : '';
 
@@ -209,43 +215,69 @@ const handleSubmit = async (values) => {
       // Rimozione delle proprietà delle skills dall'oggetto values
       delete values.skills;
 
-      const allegati = values.file;
-      delete values.file;
+      // const allegati = values.file;
+      // delete values.file;
 
       const datiResponse = await axios.post("http://localhost:8080/hr/react/staff/salva", values, {
         params: { skill: skills },
         headers: headers,
       });
 
-    console.log("Risposta dal server: ", datiResponse.data);
+    console.log("Risposta dal server senza file: ", datiResponse.data);
 
-    // Ottieni l'ID dello staff dalla risposta
     const staffId = datiResponse.data;
     console.log("ID :", staffId);
   
 
-    // Controlla se ci sono file da inviare
-    if (allegati && allegati.length) {
-      for (const file of allegati) {
-        const fileFormData = new FormData();
-        fileFormData.append("file", file);
+    // if (fileAllegati && fileAllegati.length > 0) {
+      
+    //   fileAllegati.forEach(file => {
+    //       // formData.append("file", file);
+    //       const formData = new FormData();
+    //       for (let [key, value] of formData.entries()) {
+    //         if (value instanceof File) {
+    //             console.log(key, `File Name: ${value.name}, File Type: ${value.type}, File Size: ${value.size} bytes`);
+    //         } else {
+    //             console.log(key, value);
+    //         }
+    //     }
+    //       formData.append("file", file);
+    //       const fileResponse = axios.post(`http://localhost:8080/hr/react/staff/salva/file/${staffId}`, FormData, 
+    //       {headers: headers});
+    //       console.log("Risposta dal server per il file: ", fileResponse.data);
+    //   });
+    // }
+
+
+    if (fileAllegati && fileAllegati.length > 0) {
+      fileAllegati.forEach(async (file) => {
+        const formData = new FormData();
+        formData.append("file", file.file);
+        console.log("Sto inviando il file: ", file.file.name);
+    
+        try {
+          const fileResponse = await axios.post(`http://localhost:8080/hr/react/staff/salva/file/${staffId}`, formData, { headers: headers });
+          console.log("Risposta dal server per il file: ", fileResponse.data);
+        } catch (error) {
+          console.error("Errore nell'invio del file: ", error);
+        }
+      });
+    }
+    
+
 
         // Invia ogni file separatamente utilizzando l'ID dello staff
-        const fileResponse = await axios.post(`http://localhost:8080/hr/react/staff/salva/file/${staffId}`, fileFormData, 
-        {headers: headers});
-        
-        console.log("Risposta dal server per il file: ", fileResponse.data);
-      }
-    }
-  navigate("/hr");
+
+      
+      navigate("/hr");
+    
+
 
   } catch (error) {
     console.error("Errore nell'invio dei dati: ", error);
   }
 }else {
-  // Gestisci qui gli errori di validazione...
   console.log("Errore di validazione:", errors);
-  // Potresti voler impostare lo stato degli errori o visualizzare un messaggio all'utente
 }
 };
 
@@ -356,7 +388,7 @@ const validateFields = (values) => {
         </div>
         <div className="container">
           <div className="page-name">Aggiungi un nuovo Dipendente</div>
-          <FieldsBox 
+          <FieldBoxFile 
           fields={fields} 
           campiObbligatori={campiObbligatori}  
           onSubmit={handleSubmit} 
@@ -369,4 +401,4 @@ const validateFields = (values) => {
   );
 };
 
-export default AggiungiProgetto;
+export default AggiungiDipendente;

@@ -2,8 +2,7 @@ import React, { useState, useEffect }         from "react";
 import { useNavigate, useLocation }           from "react-router-dom";
 import axios                                  from "axios";
 import Sidebar                                from "../../components/Sidebar";
-import FieldsBox                              from "../../components/FieldsBox";
-
+import FieldBoxFile from "../../components/FieldBoxFile";
 const ModificaStaffing = () => {
 
   const navigate = useNavigate();
@@ -24,6 +23,8 @@ const ModificaStaffing = () => {
   const [facoltaOptions,            setFacoltaOptions            ] = useState([]);
   const [cv,                        setCV                        ] = useState(null);
   const [cf,                        setCF                        ] = useState(null);  
+  const [newCVUploaded,             setNewCVUploaded             ] = useState(false);
+  const [newCFUploaded,             setNewCFUploaded             ] = useState(false);    
 
   // Recupera l'accessToken da localStorage
   const user = JSON.parse(localStorage.getItem("user"));
@@ -137,7 +138,7 @@ const ModificaStaffing = () => {
 
   console.log("DATI CHE ARRIVANO: ", recruitingData);
 
-  const campiObbligatori = ["nome", "cognome", "email", "anniEsperienza", "tipologia" ];
+  const campiObbligatori = ["nome", "cognome", "email", "anniEsperienzaRuolo", "tipologia", "dataUltimoContatto" ];
 
   const fields = [
     { label: "Tipologia",                           name: "tipo",                  type: "select",         options: tipologiaOptions },
@@ -169,176 +170,140 @@ const ModificaStaffing = () => {
     { label: "RAL/Tariffa",                         name: "ral",                        type: "text" },
     { label: "Disponibilità",                       name: "disponibilita",              type: "text" },
     { label: "Note",                                name: "note",                       type: "note" },
-    { label: "Curriculim Vitae",                    name: "cv",                         type: "downloadFileCV" },
-    { label: "Consultant File",                     name: "cf",                         type: "downloadFileCF" },
+    { label: "Curriculim Vitae",                    name: "cv",                         type: "modificaFileCV" },
+    { label: "Consultant File",                     name: "cf",                         type: "modificaFileCF" },
 
 
   ];
   const initialValues = {
-    tipo:                               recruitingData.tipo                      && recruitingData.tipo.id                  || "",
-    fornitore:                          recruitingData.fornitore                 && recruitingData.fornitore.id             || "", 
-    ricerca:                            recruitingData.ricerca                                                              || "", 
-    nome:                               recruitingData.nome                                                                 || "",
-    cognome:                            recruitingData.cognome                                                              || "",
-    dataNascita:                        recruitingData.dataNascita                                                          || "",
-    email:                              recruitingData.email                                                                || "",
-    cellulare:                          recruitingData.cellulare                                                            || "",
-    anniEsperienza:                     recruitingData.anniEsperienza                                                       || "",
-    citta:                              recruitingData.citta                                                                || "",
-    modalita:                           recruitingData.modalita                                                             || "", 
-    anniEsperienzaRuolo:                recruitingData.anniEsperienzaRuolo                                                  || "",
-    livelloScolastico:                  recruitingData.livelloScolastico          && recruitingData.livelloScolastico.id    || "",
-    facolta:                            recruitingData.facolta                    && recruitingData.facolta.id              || "",
-    tipologia:                          recruitingData.tipologia                  && recruitingData.tipologia.id            || "",
-    dataUltimoContatto:                 recruitingData.dataUltimoContatto                                                   || "", 
-    stato:                              recruitingData.stato                      && recruitingData.stato.id                || "",
-    owner:                              recruitingData.owner                      && recruitingData.owner.id                || "", 
-    skills:                            (recruitingData.skills?.map(skill => skill?.id))                                     || [],
-    ral:                                recruitingData.ral                                                                  || "",
-    disponibilita:                      recruitingData.disponibilita                                                        || "",
-    cv:                                 recruitingData.files?.find(file => file.tipologia.descrizione === 'CV')             || '',
-    cf:                                 recruitingData.files?.find(file => file.tipologia.descrizione === 'CF')             || '',
-    note:                               recruitingData.note                                                                 || "",
+    id:                                 recruitingData.id                                                                   ,
+    tipo:                               recruitingData.tipo                      && recruitingData.tipo.id                  || null,
+    fornitore:                          recruitingData.fornitore                 && recruitingData.fornitore.id             || null, 
+    ricerca:                            recruitingData.ricerca                                                              || null, 
+    nome:                               recruitingData.nome                                                                 || null,
+    cognome:                            recruitingData.cognome                                                              || null,
+    dataNascita:                        recruitingData.dataNascita                                                          || null,
+    email:                              recruitingData.email                                                                || null,
+    cellulare:                          recruitingData.cellulare                                                            || null,
+    anniEsperienza:                     recruitingData.anniEsperienza                                                       || null,
+    citta:                              recruitingData.citta                                                                || null,
+    modalita:                           recruitingData.modalita                                                             || null, 
+    anniEsperienzaRuolo:                recruitingData.anniEsperienzaRuolo                                                  || null,
+    livelloScolastico:                  recruitingData.livelloScolastico          && recruitingData.livelloScolastico.id    || null,
+    facolta:                            recruitingData.facolta                    && recruitingData.facolta.id              || null,
+    tipologia:                          recruitingData.tipologia                  && recruitingData.tipologia.id            || null,
+    dataUltimoContatto:                 recruitingData.dataUltimoContatto                                                   || null, 
+    stato:                              recruitingData.stato                      && recruitingData.stato.id                || null,
+    owner:                              recruitingData.owner                      && recruitingData.owner.id                || null, 
+    skills:                            (recruitingData.skills?.map(skill => skill?.id))                                     || null,
+    ral:                                recruitingData.ral                                                                  || null,
+    disponibilita:                      recruitingData.disponibilita                                                        || null,
+    cv:                                 recruitingData.files?.find(file => file.tipologia.descrizione === 'CV')             || null,
+    cf:                                 recruitingData.files?.find(file => file.tipologia.descrizione === 'CF')             || null,
+    note:                               recruitingData.note                                                                 || null,
 
   };
 
   console.log("DATI IN VALUES: ", initialValues);
-  
-
-//   const handleSubmit = async (values) => {
- 
-// console.log("CV prima dell'invio :", values.cv);
-// console.log("CF prima dell''invio :",values.cf);
-//     const errors = validateFields(values);
-//     const hasErrors = Object.keys(errors).length > 0;
-//     if (!hasErrors) {
- 
-//     try {
-  
-//       console.log("DATI PRIMA DI ESSERE INVIATI: ", values);
-//       const formData = new FormData();
-  
-//       if (cv instanceof File) {
-//         formData.append("cv", cv);
-//       } else {
-//          formData.append("cvId", initialValues.cv.id);
-//       }
-      
-//       if (cf instanceof File) {
-//         formData.append("cf", cf);
-//       } else {
-//          formData.append("cfId", initialValues.cf.id);
-//       }
-  
-//       let skills = "";
-//       if (values.skills && values.skills.length) {
-//         skills = values.skills.join(',');
-//         console.log("Skills selezionate:", skills);
-//       }
-
-//       Object.keys(values).forEach(key => {
-//         if (key !== 'skills' && key !== 'cv' && key !== 'cf') { 
-//           formData.append(key, values[key]);
-//         }
-//       });
-  
-//       console.log("Contenuto di formData:");
-//       formData.forEach((value, key) => {
-//         console.log(`${key}:`, value);
-//       });
-  
-//       const response = await axios.post(`http://localhost:8080/staffing/salva`, formData, {
-//         params: { skill: skills },
-//         headers: { ...headers, "Content-Type": "multipart/form-data"}
-//       });
-  
-//       console.log("Risposta dal server:", response.data);
-//       navigate("/recruiting");
-//     } catch (error) {
-//       console.error("Errore durante il salvataggio:", error);
-//       if (error.response) {
-//         console.error("Dettagli dell'errore:", error.response.data);
-//       }
-//     }
-//   } else {
-//     console.log("Errore di validazione:", errors);
-//   }
-//   };
 
 
-const handleSubmit = async (values) => {
+const handleSubmit = async (values, fileCV, fileCF) => {
   const errors = validateFields(values);
   const hasErrors = Object.keys(errors).length > 0;
 
   if (!hasErrors) {
-    try {
+      try {
       // Preparazione dei dati delle skills come stringhe separate
       const skills = values.skills ? values.skills.join(',') : '';
 
-
       console.log("Skills selezionate:", values.skills);
-
-
+      console.log("Values: ", values);
 
       // Rimozione delle proprietà delle skills dall'oggetto values
       delete values.skills;
 
+      const cv = values.cv;
+      const cf = values.cf;
+
+      delete values.cv;
+      delete values.cf;
 
       // Invio della richiesta al server con skills e skills2 come parametri di query
-      const response = await axios.post("http://localhost:8080/staffing/salva", values, {
-        params: {
-          skill1: skills,
-        },
-        headers: headers
+      const datiResponse = await axios.post("http://localhost:8080/staffing/salva", values, {
+      params: { skill: skills },
+      headers: headers,
       });
 
-      console.log("Risposta dal server:", response.data);
+      console.log("Risposta della prima chiamata:", datiResponse.data);
+            // Ottieni l'ID del candidato dalla risposta
+  const candidatoId = datiResponse.data;
+  console.log("ID DEL CANDIDATO: ", candidatoId);
 
-    // Ottieni l'ID del candidato dalla risposta
-    const candidatoId = response.data;
-    console.log("ID :", candidatoId);
 
-      const formData = new FormData();
-      let tipo;
-      if (values.cv) {
-        formData.append("cv", values.cv);
-        tipo = 1; // Tipo per CV
-      } else {
-        formData.append("cv", new Blob([], { type: 'application/octet-stream' }), 'cv_null');
+  
+
+
+
+  
+
+    // Preparazione dei dati per le chiamate Axios dei file
+  const config = {
+      headers: {
+      Authorization: `Bearer ${accessToken}`,
       }
-    
-      if (values.cf) {
-        formData.append("cf", values.cf);
-        tipo = 2; // Tipo per CF
-      } else {
-        formData.append("cf", new Blob([], { type: 'application/octet-stream' }), 'cf_null');
-      }
+  };
 
-      const responseFile = await axios.post(`http://localhost:8080/staffing/react/staff/salva/file/${candidatoId}`, formData, {
-        params: { tipo: tipo },
-        headers: headers,
-      });
-      console.log("Risposta per salvataggio file: ", responseFile.data);
+  console.log("PRIMA DI INVIO FILE DENTRO CONFIG: ", config);
 
 
+try{
 
-
-
-
-
-      navigate("/need");
-    } catch (error) {
-      console.error("Errore durante il salvataggio:", error);
-      if (error.response) {
-        console.error("Dettagli dell'errore:", error.response.data);
-      }
+  Object.keys(values).forEach(key => {
+    if (!campiObbligatori.includes(key) && !values[key]) {
+    values[key] = null;
     }
-  } else {
-    console.log("Errore di validazione:", errors);
-    // Gestisci qui gli errori di validazione
+});
+
+    // Invio del file "cv", se presente
+    if (fileCV) {
+
+    if( fileCV instanceof File) {
+      const formDataCV = new FormData();
+      formDataCV.append('file', fileCV);
+      formDataCV.append('tipo', 1);
+
+      const responseCV = await axios.post(`http://localhost:8080/staffing/react/staff/salva/file/${candidatoId}`, formDataCV, 
+      {headers: headers});
+      console.log("invio corretto del CV", responseCV);
+  } 
+}
+} catch(error) {
+      console.error("Errore nell'invio del CV", error);
+  }
+
+  try{
+
+    // Invio del file "cf", se presente
+if(fileCF) {
+  if( fileCF instanceof File) {
+      const formDataCF = new FormData();
+      formDataCF.append('file', fileCF);
+      formDataCF.append('tipo', 2);
+      const responseCF = await axios.post(`http://localhost:8080/staffing/react/staff/salva/file/${candidatoId}`, formDataCF, {headers: headers});
+      console.log("Invio corretto del CF", responseCF);
+  }
+}
+} catch(error) {
+  console.error("errore nell'invio del CF", error);
+}
+
+  navigate("/recruiting");
+
+} catch(error) {
+  console.error("Errore nella chiamata axios: ", error);
+}
   }
 };
-
 
   const validateFields = (values) => {
     let errors = {};
@@ -350,128 +315,6 @@ const handleSubmit = async (values) => {
     return errors;
   };
 
-  const handleDownloadCV = async (fileId, fileDescrizione) => {
-    console.log("FILE ID: ", fileId);
-
-    const url = `http://localhost:8080/files/react/download/file/${fileId}`;
-  
-    try {
-
-      const response = await axios({
-        method: 'GET',
-        url: url,
-        responseType: 'blob', 
-        headers: headers
-      });
-  
-   
-      const fileURL = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
-  
-
-      const link = document.createElement('a');
-      link.href = fileURL;
-      link.setAttribute('download', `${fileDescrizione}.pdf`); 
-      document.body.appendChild(link);
-  
-      link.click();
-      document.body.removeChild(link);
-    } catch (error) {
-      console.error('Si è verificato un errore durante il download del file:', error);
-
-    }
-  };
-
-  
-  const handleDownloadCF = async (fileId, fileDescrizione) => {
-    console.log("FILE ID: ", fileId);
-
-    const url = `http://localhost:8080/files/react/download/file/${fileId}`;
-  
-    try {
-
-      const response = await axios({
-        method: 'GET',
-        url: url,
-        responseType: 'blob', 
-        headers: headers
-      });
-  
-
-      const fileURL = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
-  
-
-      const link = document.createElement('a');
-      link.href = fileURL;
-      link.setAttribute('download', `${fileDescrizione}.pdf`); 
-      document.body.appendChild(link);
-  
-      link.click();
-      document.body.removeChild(link);
-    } catch (error) {
-      console.error('Si è verificato un errore durante il download del file:', error);
-
-    }
-  };
-
-
-  const handleDeleteCV  = async (idf) => {
-    console.log("ID DEL CV: ", idf);
-    const idc = idCandidato;
-    // const url = `http://localhost:8080/files/react/elimina/file/candidato/${idf}/${idc}`;
-  
-    try {
-      const response = await axios.delete(`http://localhost:8080/files/react/elimina/file/candidato/${idf}/${idc}`, { headers: headers })
-      
-   
-      console.log("Risposta del server: ", response.data);
-  
-      // Gestisci la risposta positiva
-      if(response.data === "OK") {
-        console.log("File eliminato con successo!");
-        // Aggiorna lo stato o l'interfaccia utente se necessario
-      } else {
-        console.error("Errore dal server: ", response.data);
-      }
-  
-    } catch (error) {
-      console.error("Si è verificato un errore durante l'eliminazione del file:", error);
-      // Gestisci eventuali errori di rete o di risposta
-    }
-  };
-  
-
-  const handleDeleteCF  = async (idf) => {
-    console.log("ID DEL CV: ", idf);
-    const idc = idCandidato;
-    const url = `http://localhost:8080/files/react/elimina/file/candidato/${idf}/${idc}`;
-
-    try {
-      const response = await axios({
-        method: 'DELETE',
-        url: url,
-        headers: headers
-      });
-      console.log("Risposta del server: ", response);
-    } catch (error) {
-      console.error('Si è verificato un errore durante il download del file:', error);
-    }
-  };
-
-  const handleUploadCV = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setCV(file);
-    }
-  };
-  
-  // Funzione per gestire l'upload di nuovi file CF
-  const handleUploadCF = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setCF(file);
-    }
-  };
-
   return (
     <div className="container">
       <div className="content">
@@ -480,19 +323,15 @@ const handleSubmit = async (values) => {
         </div>
         <div className="container">
           <div className="page-name">Modifica Staffing {nomeCandidato} {cognomeCandidato} </div>
-          <FieldsBox 
+          <FieldBoxFile 
           fields          ={fields} 
           initialValues   ={initialValues}
           onSubmit        ={handleSubmit} 
           title           =""
-          onDownloadCV    ={handleDownloadCV}
-          onDownloadCF    ={handleDownloadCF}
-          onDeleteCV      ={handleDeleteCV}
-          onDeleteCF      ={handleDeleteCF} 
-          onUploadCV      ={handleUploadCV}
-          onUploadCF      ={handleUploadCF}
           campiObbligatori={campiObbligatori}
           skillsOptions={skillsOptions} 
+          idCandidato={idCandidato}
+          
         
           />
         </div>

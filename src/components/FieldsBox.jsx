@@ -65,20 +65,42 @@ const getDisabledStyles = (isDisabled) => {
 
 
   
+// handleChangeMultiple FUNZIONANTE!!!!!
+  // const handleChangeMultiple = (name) => (event) => {
+  //   if (event.target.type === 'file') {
+  //     // Prendi tutti i file dall'input
+  //     const files = Array.from(event.target.files);
+  //     console.log(`File caricati per ${name}:`, files);
+
+  //     // Aggiorna il valore del form con l'array di file
+  //     setValues({ ...values, [name]: files });
+  //   } else {
+  //     // Per altri tipi di input, imposta il valore come al solito
+  //     setValues({ ...values, [name]: event.target.value });
+  //   }
+  // };
+
 
   const handleChangeMultiple = (name) => (event) => {
     if (event.target.type === 'file') {
       // Prendi tutti i file dall'input
-      const files = Array.from(event.target.files);
-      console.log(`File caricati per ${name}:`, files);
-
-      // Aggiorna il valore del form con l'array di file
-      setValues({ ...values, [name]: files });
+      const newFiles = Array.from(event.target.files);
+      console.log(`File caricati per ${name}:`, newFiles);
+  
+      // Accedi ai file esistenti nel tuo stato (se presenti)
+      const existingFiles = values[name] || [];
+  
+      // Combina i file esistenti con i nuovi file
+      const combinedFiles = existingFiles.concat(newFiles);
+  
+      // Aggiorna il valore del form con l'array combinato di file
+      setValues({ ...values, [name]: combinedFiles });
     } else {
       // Per altri tipi di input, imposta il valore come al solito
       setValues({ ...values, [name]: event.target.value });
     }
   };
+  
 
 
 
@@ -239,53 +261,69 @@ const getDisabledStyles = (isDisabled) => {
   };
 
 
-  const handleChangeCV = (name) => (event) => {
-  const { type, value, files } = event.target;
-  let fileValue = value;
-    if ( type === 'file' && name === 'cv') {
-      fileValue = files[0];
-    if (fileValue) {
+  // const handleChangeCV = (name) => (event) => {
+  // const { type, value, files } = event.target;
+  // let fileValue = value;
+  //   if ( type === 'file' && name === 'cv') {
+  //     fileValue = files[0];
+  //   if (fileValue) {
 
+  //     setValues(prevValues => ({
+  //       ...prevValues,
+  //       cv: {
+  //         file: fileValue,
+  //         descrizione: fileValue.name
+  //         }
+  //     }));
+  //     console.log(`File ${name} sostituisce il vecchio:`, fileValue);
+  //   }
+  // }  
+  //   }
+
+  //   const handleChangeCF = (name) => (event) => {
+  //     const { type, value, files } = event.target;
+  //     let fileValue = value;
+  //       if ( type === 'file' && name === 'cf') {
+  //         fileValue = files[0];
+  //       if (fileValue) {
+    
+  //         setValues(prevValues => ({
+  //           ...prevValues,
+  //           cf: {
+  //             file: fileValue,
+  //             descrizione: fileValue.name
+  //             }
+  //         }));
+  //         console.log(`File ${name} sostituisce il vecchio:`, fileValue);
+  //       }
+  //     }  
+  //       }
+  
+
+
+  
+
+  const handleChangeCF = (name) => (event) => {
+    const { type, value, files } = event.target;
+    if (type === 'file' && files.length > 0) {
+      const file = files[0];
       setValues(prevValues => ({
         ...prevValues,
-        cv: {
-          file: fileValue,
-          descrizione: fileValue.name
-          }
+        [name]: {
+          file,
+          descrizione: file.name,
+        },
       }));
-      console.log(`File ${name} sostituisce il vecchio:`, fileValue);
+    } else {
+      setValues({ ...values, [name]: value });
     }
-  }  
-    }
-
-    const handleChangeCF = (name) => (event) => {
-      const { type, value, files } = event.target;
-      let fileValue = value;
-        if ( type === 'file' && name === 'cf') {
-          fileValue = files[0];
-        if (fileValue) {
-    
-          setValues(prevValues => ({
-            ...prevValues,
-            cf: {
-              file: fileValue,
-              descrizione: fileValue.name
-              }
-          }));
-          console.log(`File ${name} sostituisce il vecchio:`, fileValue);
-        }
-      }  
-        }
+  };
   
-
-
-  
-
-
 
   const handleChange = (name) => (event) => {
     const { type, value, files } = event.target;
     let fileValue = value;
+    // const fileName = value.name;
   
     if (type === 'file') {
       fileValue = files[0];
@@ -515,6 +553,9 @@ case 'multipleSelectSkill2':
                         <Box style={{ display: 'flex', flexDirection: "column", alignItems: 'center', margin: '10px 0' }}>
                         <Typography variant="body2" style={{ marginRight: '10px' }}>
                           {values.cf?.descrizione || 'Nessun file selezionato'}
+                          {/* <Typography variant="body2" style={{ marginRight: '10px' }}>
+                          {fileName ? fileName : (values.cf?.descrizione || 'Nessun file selezionato')}
+                      </Typography> */}
                         </Typography>
 
                           <Button
@@ -541,7 +582,7 @@ case 'multipleSelectSkill2':
                               type="file"
                               hidden
                               // onChange={(event) => handleFileCVCF('cf', event)}
-                              onChange={handleChangeCF(field.name)}
+                              onChange={handleChange(field.name)}
                             />
                           </Button>
 
@@ -629,12 +670,32 @@ case 'multipleSelectSkill2':
                               
                             </Box>
                           ))}
-                          <input
+
+                          <Button
+                            variant="contained"
+                            component="label"
+                            startIcon={<CloudUploadIcon />}
+                            style={{ display:"flex", justifyContent:"flex-end", marginLeft: '10px', backgroundColor: "green", color: "white",  marginBottom: "10px", width: '70%'}}
+                          >
+
+                            <input
+                              type="file"
+                              hidden
+                              multiple
+                              name={field.name}
+                              // onChange={(event) => handleFileCVCF('cf', event)}
+                              onChange={handleChangeMultiple(field.name)}
+                              
+                            />
+                            inserisci nuovi allegati
+                          </Button>
+
+                          {/* <input
                             type="file"
                             name={field.name}
                             multiple
                             onChange={handleChangeMultiple(field.name)}
-                            />
+                            /> */}
                         </Box>
 
                       );
@@ -678,7 +739,7 @@ case 'multipleSelectSkill2':
                             <input
                               type="file"
                               hidden
-                              onChange={handleChangeCV(field.name)}
+                              onChange={handleChange(field.name)}
                               // onChange={(event) => handleFileCVCF('cv', event)}
                             />
                           </Button>
@@ -909,7 +970,6 @@ case 'multipleSelectSkill2':
             <Button
               color="primary"
               variant="contained"
-              // onClick={() => onSubmit(values)}
               type="submit"
               style={{
                 backgroundColor: "#fbb800",

@@ -32,7 +32,7 @@ function EstraiReport() {
       </div>
       <div className="container">
         {/* <div className="page-name">Report</div> */}
-        <h1 style={{ display: 'flex', justifyContent:'flex-start', marginTop: '35px', marginLeft: '35px' }}>Report</h1>
+        <h1 style={{ display: 'flex', justifyContent:'flex-start', marginTop: '35px', marginBottom: '20px', marginLeft: '35px' }}>Report</h1>
           <ReportPage/>
           
        

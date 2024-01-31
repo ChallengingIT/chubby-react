@@ -43,6 +43,17 @@ const DettaglioAziende = () => {
   const [ needOptions,        setNeedOptions        ] = useState([]);
   const [ attivitaOptions,    setAttivitaOptions    ] = useState([]);
   const [ statoNeedOptions,   setStatoNeedOptions   ] = useState([]);
+  const initialState = {
+    idOwner: '',
+    idKeyPeople: '',
+    note: ''
+  };
+  const [ popupData,          setPopupData          ] = useState(initialState);
+
+  
+
+
+
 
    // Recupera l'accessToken da localStorage
    const user = JSON.parse(localStorage.getItem("user"));
@@ -53,7 +64,6 @@ const DettaglioAziende = () => {
      Authorization: `Bearer ${accessToken}`
    };
 
-  // console.log("DATI IN Contatto: ", contattoOptions);
 
 
   useEffect(() => {
@@ -68,19 +78,18 @@ const DettaglioAziende = () => {
         if (Array.isArray(responseStatoNeed.data)) {
           const statoNeedOptions = responseStatoNeed.data.map((statoNeed) => ({
 
-           label:         statoNeed.descrizione,
-           statoNeed:     statoNeed.stato && statoNeed.stato.descrizione,
-           data:          statoNeed.data,
-           ownerNome:     statoNeed.owner && statoNeed.owner.nome,
-           ownerCognome:  statoNeed.owner && statoNeed.owner.cognome,
-
+          label:         statoNeed.descrizione,
+          statoNeed:     statoNeed.stato && statoNeed.stato.descrizione,
+          data:          statoNeed.data,
+          ownerNome:     statoNeed.owner && statoNeed.owner.nome,
+          ownerCognome:  statoNeed.owner && statoNeed.owner.cognome,
           }));
 
           setStatoNeedOptions(statoNeedOptions);
           // console.log("DATI RECUPERATI PER STATO VINTO: ", statoNeedOptions);
         }
 
-       
+
   
         if (Array.isArray(responseNeed.data)) {
           const needOptions = responseNeed.data.map((need) => ({
@@ -120,7 +129,11 @@ const DettaglioAziende = () => {
     };
     fetchOptions();
     fetchAttivita();
-  }, []);
+  }, [fetchAttivita, headers, id]);
+
+
+
+
 
   const fetchAttivita = async () => {
     try {
@@ -153,7 +166,6 @@ const getUltimaAttivita = (attivitaOptions) => {
   let ultimaData = "";
 
   attivitaOptions.forEach(attivita => {
-    // Assicurati che la data dell'attività esista e sia in un formato valido
     if (attivita.data && dayjs(attivita.data).isValid()) {
       if (ultimaData === "" || dayjs(attivita.data).isAfter(dayjs(ultimaData))) {
         ultimaData = attivita.data;
@@ -161,38 +173,14 @@ const getUltimaAttivita = (attivitaOptions) => {
     }
   });
 
-  return ultimaData; // Questo sarà una stringa vuota se non ci sono date valide
+  return ultimaData; 
 };
 
 // console.log("ATTIVITA OPTIONS: ", attivitaOptions);
 
   
-
-const handleSave = (popupData, tipoAttivita) => {
-  switch (tipoAttivita) {
-
-    case 'feed':
-      handleSaveFeedPopup(popupData);
-      break;
-
-    case 'email':
-      handleSaveEmailPopup(popupData);
-      break;
-
-    case 'phone':
-      handleSavePhonePopup(popupData);
-      break;
-
-    default:
-      console.error('Tipo di attività non riconosciuto:', tipoAttivita);
-  }
-};
-
-
-
   const handleFeedIconClick = () => {
     setFeedPopupOpen(true);
-
     setEmailPopupOpen(false);
     setPhonePopupOpen(false);
   };
@@ -203,7 +191,6 @@ const handleSave = (popupData, tipoAttivita) => {
 
   const handleEmailIconClick = () => {
     setEmailPopupOpen(true);
-
     setFeedPopupOpen(false);
     setPhonePopupOpen(false);
   };
@@ -214,7 +201,6 @@ const handleSave = (popupData, tipoAttivita) => {
 
   const handlePhoneIconClick = () => {
     setPhonePopupOpen(true);
-
     setFeedPopupOpen(false);
     setEmailPopupOpen(false);
   };
@@ -223,48 +209,67 @@ const handleSave = (popupData, tipoAttivita) => {
     setPhonePopupOpen(false);
   };
 
-  const handleSaveFeedPopup = (popupData) => {
+
+  //in requestParam inviare idTipoAttivita, idAzienda, idOwner, idKeypeople
+  //come valori inserire solo le note
+  //passare anche gli header a tutto
+
+
+
+
+  const handleSaveFeedPopup = async (popupData) => {
     const { idOwner, idKeyPeople, ...attivitaMap } = popupData;
-    const params = {
+    const params = new URLSearchParams({
       idTipoAttivita: 1, 
       idAzienda,
       idOwner,
-      idKeyPeople,
-      data: new Date()
-    };
-    
-    // console.log("Dati salvati (Feed):", { attivitaMap, params });
-    // Logica per inviare i dati al server, esempio:
-     axios.post('http://localhost:8080/aziende/react/attivita/salva', attivitaMap, { params });
+      idKeyPeople: idKeyPeople !== undefined && idKeyPeople !== null ? idKeyPeople : '', // Converte null in stringa vuota
+    }).toString();
+  
+    try {
+      const responseFeed = await axios.post(`http://localhost:8080/aziende/react/attivita/salva?${params}`, attivitaMap, { headers });
+      console.log("Attività salvata correttamente", responseFeed);
+      setPopupData(initialState);
+      setTimeout(fetchAttivita, 500); 
+    } catch (error) {
+      console.error("Errore durante il salvataggio dell'email:", error);
+    }
   };
   
   
-  const handleSaveEmailPopup = (popupData) => {
+  
+  const handleSaveEmailPopup = async (popupData) => {
     const { idOwner, idKeyPeople, ...attivitaMap } = popupData;
     const params = {
       idTipoAttivita: 2, 
       idAzienda,
       idOwner,
-      idKeyPeople
+      idKeyPeople: idKeyPeople || null,
     };
     
-    console.log("Dati salvati (email):", { attivitaMap, params });
-    // Logica per inviare i dati al server, esempio:
-     axios.post('http://localhost:8080/aziende/react/attivita/salva', attivitaMap, { params });
-  };
+    try {
+     await axios.post('http://localhost:8080/aziende/react/attivita/salva', attivitaMap, { params });
+     setTimeout(fetchAttivita, 500); 
+    } catch (error) {
+      console.error("Errore durante il salvataggio dell'email:", error);
+    }
+    };
   
-  const handleSavePhonePopup = (popupData) => {
+  const handleSavePhonePopup = async (popupData) => {
     const { idOwner, idKeyPeople, ...attivitaMap } = popupData;
     const params = {
       idTipoAttivita: 3, 
       idAzienda,
       idOwner,
-      idKeyPeople
+      idKeyPeople: idKeyPeople || null,
     };
     
-    // console.log("Dati salvati (phone):", { attivitaMap, params });
-    // Logica per inviare i dati al server, esempio:
-     axios.post('http://localhost:8080/aziende/react/attivita/salva', attivitaMap, { params });
+   try{
+     await axios.post('http://localhost:8080/aziende/react/attivita/salva', attivitaMap, { params });
+     setTimeout(fetchAttivita, 500); 
+    } catch (error) {
+      console.error("Errore durante il salvataggio dell'email:", error);
+    }
   };
   
 
@@ -329,12 +334,14 @@ const handleSave = (popupData, tipoAttivita) => {
     { label: "Owner",                 name: "owner" },
     { label: "Data" ,                 name: "data"  },
     { label: "Note",                  name: "note"  },
+    { lavel: 'Contatto',              name: 'contatto' },
   ];
 
   const intialValuesAttivita = attivitaOptions.map(attivita => ({
     owner:                            attivita.owner || "",
     data:                             attivita.data  || "",
-    note:                             attivita.note  || ""
+    note:                             attivita.note  || "",
+    contatto:                         attivita.contatto || "",
   }));
 
 
@@ -394,10 +401,12 @@ const handleSave = (popupData, tipoAttivita) => {
                   fields={popupFields}
                   open={isFeedPopupOpen}
                   onClose={handleCloseFeedPopup}
-                  onSave={handleSave}
+                  onSave={handleSaveFeedPopup}
                   title="Inserimento nota Attività"
                   idTipoAttivita={1}
                   idAzienda={idAzienda}
+                  popupData={popupData}
+                  setPopupData={setPopupData}
                 />
 
               {/* <ReusablePopup fields={popupFields} open={isFeedPopupOpen} onClose={handleCloseFeedPopup} onSave={handleSaveFeedPopup} title="Inserimento nota Attività"  idTipoAttivita={1} idAzienda={idAzienda}   /> */}
@@ -421,7 +430,7 @@ const handleSave = (popupData, tipoAttivita) => {
                   fields={popupFields}
                   open={isEmailPopupOpen}
                   onClose={handleCloseEmailPopup}
-                  onSave={handleSave}
+                  onSave={handleSaveEmailPopup}
                   title="Registrazione Email inviata"
                   idTipoAttivita={2}
                   idAzienda={idAzienda}
@@ -447,7 +456,7 @@ const handleSave = (popupData, tipoAttivita) => {
                   fields={popupFields}
                   open={isPhonePopupOpen}
                   onClose={handleClosePhonePopup}
-                  onSave={handleSave}
+                  onSave={handleSavePhonePopup}
                   title="Registrazione Chiamata effettuata"
                   idTipoAttivita={3}
                   idAzienda={idAzienda}
@@ -501,9 +510,6 @@ const handleSave = (popupData, tipoAttivita) => {
 
             
           </Grid>
-
-          {/* </div>
-          </div> */}
 
           <Button
             color="primary"

@@ -29,7 +29,7 @@ const ModificaProgetto = () => {
     const fetchAziendeOptions = async () => {
       try {
         const responseCliente    = await axios.get("http://localhost:8080/aziende/react", { headers: headers });
-        const responseDipendente = await axios.get("http://localhost:8080/hr/react", { headers: headers });
+        const responseDipendente = await axios.get("http://localhost:8080/hr/react/modificato", { headers: headers });
 
         if (Array.isArray(responseCliente.data)) {
           const clienteOptions = responseCliente.data.map((cliente) => ({
@@ -39,9 +39,9 @@ const ModificaProgetto = () => {
           setClienteOptions(clienteOptions);
 
           if (Array.isArray(responseDipendente.data)) {
-            const dipendenteOptions = responseDipendente.data.map((dipendente) => ({
-              label: dipendente.denominazione,
-              value: dipendente.id,
+            const dipendenteOptions = responseDipendente.data.map((dipendenti) => ({
+              label: `${dipendenti.nome} ${dipendenti.cognome}`,
+              value: dipendenti.id,
             }));
             setDipendenteOptions(dipendenteOptions);
           }
@@ -54,6 +54,9 @@ const ModificaProgetto = () => {
 
     fetchAziendeOptions();
   }, []);
+
+  const campiObbligatori = ["descrizione", "idCliente", "idStaff", "inizio", "scadenza"];
+
 
   const fields = [
     { label: "Descrizione",             name: "descrizione",            type: "text" },
@@ -70,10 +73,11 @@ const ModificaProgetto = () => {
     { label: "Note",                    name: "note",                   type: "note" },
   ];
   const initialValues = {
+    id:               progettiData.id               ,
     descrizione:      progettiData.description      || "",
     idCliente:        progettiData.cliente && progettiData.cliente.id || "",
-    dipendente:       progettiData.dipendente       || "",
-    dataInizio:       progettiData.inizio           || "",
+    idStaff:          progettiData.idStaff          || "",
+    inizio:           progettiData.inizio           || "",
     scadenza:         progettiData.scadenza         || "",
     durataStimata:    progettiData.durataStimata    || "",
     rate:             progettiData.rate             || "",
@@ -88,6 +92,10 @@ const ModificaProgetto = () => {
 
 
   const handleSubmit = async (values) => {
+    const errors = validateFields(values);
+    const hasErrors = Object.keys(errors).length > 0;
+  
+    if (!hasErrors) {
     try {
       console.log("DATI DI VALUES: ", values);
 
@@ -100,6 +108,18 @@ const ModificaProgetto = () => {
     } catch (error) {
       console.error("Errore durante il salvataggio:", error);
     }
+  }
+};
+
+
+  const validateFields = (values) => {
+    let errors = {};
+    campiObbligatori.forEach(field => {
+      if (!values[field]) {
+        errors[field] = 'Questo campo è obbligatorio';
+      }
+    });
+    return errors;
   };
 
   return (
@@ -115,6 +135,8 @@ const ModificaProgetto = () => {
           initialValues={initialValues} 
           onSubmit={handleSubmit} 
           title="" 
+          campiObbligatori={campiObbligatori}
+
           />
         </div>
       </div>

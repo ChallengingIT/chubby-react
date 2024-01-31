@@ -18,10 +18,33 @@ const MyBoxGroups = ({
   onSave,
   title = 'Form',
   disableFields,
+  campiObbligatori
 }) => {
   const [currentGroupIndex, setCurrentGroupIndex] = useState(0);
+  const [errors, setErrors] = useState({});
   const [values, setValues] = useState({ ...initialValues, dateOra: new Date().toISOString().slice(0, 16) });
   const navigate = useNavigate();
+
+
+
+//stile campi disabilitati
+const getDisabledStyles = (isDisabled) => {
+  return isDisabled ? { color: 'black' } : {};
+};
+
+
+const validate = () => {
+  let tempErrors = {};
+  campiObbligatori.forEach(field => {
+    if (!values[field]) {
+      tempErrors[field] = 'Campo obbligatorio';
+    }
+  });
+  setErrors(tempErrors);
+  // console.log('Validating: ', tempErrors);
+  return !Object.keys(tempErrors).length;
+};
+
 
   const handleInputChange = (e) => {
     const { name, value, type, options } = e.target;
@@ -38,16 +61,14 @@ const MyBoxGroups = ({
         ...prevValues,
         [name]: value,
       }));
+
+    }
+    // Rimuovi l'errore quando un utente modifica il campo
+    if (errors[name]) {
+      setErrors({ ...errors, [name]: '' });
     }
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setValues((prevValues) => ({
-      ...prevValues,
-      file,
-    }));
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -64,9 +85,6 @@ const MyBoxGroups = ({
     setCurrentGroupIndex(currentGroupIndex - 1);
   };
 
-  const handleGoBack = () => {
-    navigate(-1);
-  };
 
   const groupFields = (fields) => {
     const groupedFields = [];
@@ -114,20 +132,7 @@ const MyBoxGroups = ({
             </Select>
           </FormControl>
         );
-      case 'file':
-        return (
-          <div style={{ marginBottom: '16px', textAlign: 'left' }} key={field.name}>
-            <div style={{ marginBottom: '4px' }}>{field.label}</div>
-            <FormControl fullWidth>
-              <Input
-                type="file"
-                name={field.name}
-                onChange={handleFileChange}
-                inputProps={{ accept: field.accept || '.pdf' }}
-              />
-            </FormControl>
-          </div>
-        );
+    
       case 'titleGroups':
         return (
           <Typography

@@ -73,17 +73,17 @@ const ModificaAzienda = () => {
     fetchProvinceOptions();
   }, []);
 
-  const campiObbligatori = ["denominazione", "email", "idOwner", "status"];
+  const campiObbligatori = [ "denominazione", "email", "idOwner", "status", "citta", "provincia" ];
 
   const fields = [
-    { label: "Nome Azienda",          name: "denominazione",        type: "text",       disabled: true                                  },
-    { label: "Email",                 name: "email",                type: "text"                                                        },
+    { label: "* Nome Azienda",          name: "denominazione",        type: "text",       disabled: true                                  },
+    { label: "* Email",                 name: "email",                type: "text"                                                        },
     { label: "Partita IVA",           name: "pi",                   type: "text"                                                        },
     { label: "Codice Fiscale",        name: "cf",                   type: "text"                                                        },
-    { label: "Città",                 name: "citta",                type: "text"                                                        },
+    { label: "* Città",                 name: "citta",                type: "text"                                                        },
     { label: "CAP",                   name: "cap",                  type: "text"                                                        },
     { label: "Paese",                 name: "paese",                type: "text"                                                        },
-    { label: "Provincia",             name: "provincia",            type: "select",     options: provinceOptions                        },
+    { label: "* Provincia",             name: "provincia",            type: "select",     options: provinceOptions                        },
     { label: "Pec",                   name: "pec",                  type: "text"                                                        },
     { label: "Sede Operativa",        name: "sedeOperativa",        type: "text"                                                        },
     { label: "Sede Legale",           name: "sedeLegale",           type: "text"                                                        },
@@ -91,13 +91,13 @@ const ModificaAzienda = () => {
     { label: "Codice Destinatario",   name: "codiceDestinatario",   type: "text"                                                        },
     { label: "Sito Web",              name: "sito",                 type: "text"                                                        },
     { label: "Settore di mercato",    name: "settoreMercato",       type: "text"                                                        },
-    { label: "Owner",                 name: "idOwner",              type: "select",      options: ownerOptions                          },
+    { label: "* Owner",                 name: "idOwner",              type: "select",      options: ownerOptions                          },
     { label: "Tipologia",             name: "tipologia",            type: "select",      options: [ 
       { label: "Cliente", value: "Cliente" },
       { label: "Prospect", value: "Prospect" },
       { label: "Consulenza", value: "Consulenza" },
     ] },
-    { label: "Stato",                 name: "status",               type: "selectValue", options: [
+    { label: "* Stato",                 name: "status",               type: "selectValue", options: [
       { value: 1, label: "Verde" },
       { value: 2, label: "Giallo" },
       { value: 3, label: "Rosso" },
@@ -106,7 +106,7 @@ const ModificaAzienda = () => {
   ];
 
   const initialValues = {
-    id:                           aziendaData.id                              || "",
+    id:                           aziendaData.id                              ,
     denominazione:                aziendaData.denominazione                   || "",
     email:                        aziendaData.email                           || "",
     pi:                           aziendaData.pi                              || "",
@@ -136,6 +136,13 @@ const ModificaAzienda = () => {
   
     if (!hasErrors) {
     try {
+
+      Object.keys(values).forEach(key => {
+        if (!campiObbligatori.includes(key) && !values[key]) {
+          values[key] = null;
+        }
+      });
+
        // Recupera l'accessToken da localStorage
      const user = JSON.parse(localStorage.getItem("user"));
      const accessToken = user?.accessToken;

@@ -57,21 +57,21 @@ const AggiungiContatto = () => {
 
 
 
-  const campiObbligatori = ["nome", "idAzienda", "email", "idOwner", "status", "ruolo", "dataCreazione", "dataUltimaAttivita"];
+  const campiObbligatori = ["nome", "idAzienda", "email", "idOwner", "status", "ruolo", "dataCreazione"];
   const fields = [
-    { label: "Nome Contatto",       name: "nome",                 type: "text" },
-    { label: "Azienda",             name: "idAzienda",            type: "select",      options: aziendeOptions },
-    { label: "Email",               name: "email",                type: "text" },
+    { label: "* Nome Contatto",       name: "nome",                 type: "text" },
+    { label: "* Azienda",             name: "idAzienda",            type: "select",      options: aziendeOptions },
+    { label: "* Email",               name: "email",                type: "text" },
     { label: "Cellulare",           name: "cellulare",            type: "text" },
-    { label: "Proprietario",        name: "idOwner",              type: "select",      options: ownerOptions},
-    { label: "Stato",               name: "status",               type: "select",      options: [
+    { label: "* Proprietario",        name: "idOwner",              type: "select",      options: ownerOptions},
+    { label: "* Stato",               name: "status",               type: "select",      options: [
       { value: 1, label: "Verde" },
       { value: 2, label: "Giallo" },
       { value: 3, label: "Rosso" },
     ] },
     
-    { label: "Ruolo",                name: "ruolo",               type: "text" },
-    { label: "Data di Creazione",    name: "dataCreazione",       type: "date" },
+    { label: "* Ruolo",                name: "ruolo",               type: "text" },
+    { label: "* Data di Creazione",    name: "dataCreazione",       type: "date" },
     { label: "Ultima Attività",      name: "dataUltimaAttivita",  type: "date" },
     { label: "Note",                 name: "note",                type: "note" },
 

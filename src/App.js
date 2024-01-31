@@ -2,6 +2,7 @@ import './App.css';
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect }             from 'react';
 import eventBus from './common/EventBus.js';
+import PrivateRoute from './components/PrivateRoute.jsx';
 
 
 
@@ -56,12 +57,25 @@ import authService                                                     from './s
 import UserHomepage                                                    from './pages/UserPagine/UserHomepage.jsx';
 import UserTimesheet                                                   from './pages/UserPagine/UserTimesheet.jsx';
 import DettaglioNeed                                                   from './pages/DettaglioPagine/DettaglioNeed.jsx';
-import Sidebar                                                         from './components/Sidebar.jsx';
-import UserSidebar                                                     from './pages/UserPagine/UserSidebar.jsx';
-import AggiungiCandidato2 from './components/componentiBackup/AggiungiCandidato2.jsx';
+import ModificaDipendente2 from './components/componentiBackup/ModificaDipendente2.jsx';
+import DettaglioAziende2 from './pages/DettaglioPagine/DettaglioAziende2.jsx';
+
 
 
 const App = () => {
+//   return (
+//     <BrowserRouter>
+//     <Routes>
+//     <Route path="/" element={<TimesheetPages />} />
+      
+//         </Routes>
+//         </BrowserRouter>
+//   )
+
+
+
+
+
   const [currentUser, setCurrentUser] = useState(undefined);
 
 
@@ -106,52 +120,52 @@ const App = () => {
 
         {isAdmin && (
           <>
-   
-            <Route path="/homepage" element={<Homepage />} />
-            <Route path="/home"                                         element={         <Home                        />   } />
-          <Route path="/aziende"                                      element={         <Aziende                     />   } />
-          <Route path="/aziende/dettaglio/:id"                        element={         <DettaglioAziende            />   } />
-          <Route path="/aziende/modifica/:id"                         element={         <ModificaAzienda             />   } />
-          <Route path="/keyPeople/modifica/:id"                       element={         <ModificaContatto            />   } />
-          <Route path="/keyPeople/dettaglio/:id"                      element={         <DettaglioKeyPeople          />   } />
-          <Route path="/keyPeople"                                    element={         <KeyPeople                   />   } />
-          <Route path="/keyPeople/aggiungi"                           element={         <AggiungiContatto            />   } />
-          <Route path="/need"                                         element={         <Need                        />   } />
-          <Route path="/need/:id"                                     element={         <ListaNeed                   />   } />
-          <Route path="/need/aggiungi/:id"                            element={         <AggiungiNeedID              />   } />
-          <Route path="/need/match/:id"                               element={         <NeedMatchPages              />   } />
-          <Route path="/recruiting"                                   element={         <Recruiting                  />   } />
-          <Route path="/progetti"                                     element={         <Progetti                    />   } />
-          <Route path="/progetti/modifica/:id"                        element={         <ModificaProgetto            />   } />
-          <Route path="/fatturazioneAttiva"                           element={         <FatturazioneAttiva          />   } />
-          <Route path="/fatturazione/passiva"                         element={         <FatturazionePassiva         />   } />
-          <Route path="/fatturazione/passiva/modifica/:id"            element={         <ModificaFatturazionePassiva />   } />
-          <Route path="/fornitori"                                    element={         <Fornitori                   />   } />
-          <Route path="/fornitori/modifica/:id"                       element={         <ModificaFornitori           />   } />
-          <Route path="/tesoreria"                                    element={         <Tesoreria                   />   } />
-          <Route path="/hr"                                           element={         <HR                          />   } />
-          <Route path="/hr/staff/modifica/:id"                        element={         <ModificaDipendente          />   } />
-          <Route path="/hr/staff/visualizza/:id"                      element={         <DettaglioDipendente         />   } />
-          <Route path="/aziende/aggiungi"                             element={         <AggiungiAzienda             />   } />
-          <Route path="/need/aggiungi"                                element={         <AggiungiNeed                />   } />
-          <Route path="/need/modifica/:id"                            element={         <ModificaNeed                />   } />
-          <Route path="/need/dettaglio/:id"                           element={         <DettaglioNeed               />   } />
-          <Route path="/recruiting/aggiungi"                          element={         <AggiungiCandidato           />   } />
-          <Route path="/progetti/aggiungi"                            element={         <AggiungiProgetto            />   } />
-          <Route path="/fatturazioneAttiva/aggiungi"                  element={         <AggiungiFatturazioneAttiva  />   } />
-          <Route path="/fatturazioneAttiva/modifica/:id"              element={         <ModificaFatturazioneAttiva  />   } />
-          <Route path="/fatturazione/passiva/aggiungi"                element={         <AggiungiFatturazionePassiva />   } />
-          <Route path="/fornitori/aggiungi"                           element={         <AggiungiFornitore           />   } />
-          <Route path="/hr/staff/aggiungi"                            element={         <AggiungiDipendente          />   } />
-          <Route path="/hr/crea/utente"                               element={         <AggiungiUser                />   } />
-          <Route path="/staffing/intervista/:id"                      element={         <Interviste                  />   } />
-          <Route path="/intervista/visualizza/:id"                    element={         <DettaglioIntervista         />   } />
-          <Route path="/intervista/modifica/:id"                      element={         <ModificaIntervista          />   } />
-          <Route path="/intervista/aggiungi"                          element={         <AggiungiIntervista          />   } />
-          <Route path="/associazioni/:id/:nome"                       element={         <Associazioni                />   } />
-          <Route path="/staffing/modifica/:id"                        element={         <ModificaStaffing            />   } />
-          <Route path="/hr/staff/timesheet/:id"                       element={         <TimesheetPages              />   } />
-          <Route path="/hr/report"                                    element={         <EstraiReport                />   } />
+          
+          <Route path="/homepage"                                     element={<PrivateRoute>         <Homepage                    />   </PrivateRoute>} />
+          <Route path="/home"                                         element={<PrivateRoute>         <Home                        />   </PrivateRoute>} />
+          <Route path="/aziende"                                      element={<PrivateRoute>         <Aziende                     />   </PrivateRoute>} />
+          <Route path="/aziende/dettaglio/:id"                        element={<PrivateRoute>         <DettaglioAziende2            />   </PrivateRoute>} />
+          <Route path="/aziende/modifica/:id"                         element={<PrivateRoute>         <ModificaAzienda             />   </PrivateRoute>} />
+          <Route path="/keyPeople/modifica/:id"                       element={<PrivateRoute>         <ModificaContatto            />   </PrivateRoute>} />
+          <Route path="/keyPeople/dettaglio/:id"                      element={<PrivateRoute>         <DettaglioKeyPeople          />   </PrivateRoute>} />
+          <Route path="/keyPeople"                                    element={<PrivateRoute>         <KeyPeople                   />   </PrivateRoute>} />
+          <Route path="/keyPeople/aggiungi"                           element={<PrivateRoute>         <AggiungiContatto            />   </PrivateRoute>} />
+          <Route path="/need"                                         element={<PrivateRoute>         <Need                        />   </PrivateRoute>} />
+          <Route path="/need/:id"                                     element={<PrivateRoute>         <ListaNeed                   />   </PrivateRoute>} />
+          <Route path="/need/aggiungi/:id"                            element={<PrivateRoute>         <AggiungiNeedID              />   </PrivateRoute>} />
+          <Route path="/need/match/:id"                               element={<PrivateRoute>         <NeedMatchPages              />   </PrivateRoute>} />
+          <Route path="/recruiting"                                   element={<PrivateRoute>         <Recruiting                  />   </PrivateRoute>} />
+          <Route path="/progetti"                                     element={<PrivateRoute>         <Progetti                    />   </PrivateRoute>} />
+          <Route path="/progetti/modifica/:id"                        element={<PrivateRoute>         <ModificaProgetto            />   </PrivateRoute>} />
+          <Route path="/fatturazioneAttiva"                           element={<PrivateRoute>         <FatturazioneAttiva          />   </PrivateRoute>} />
+          <Route path="/fatturazione/passiva"                         element={<PrivateRoute>         <FatturazionePassiva         />   </PrivateRoute>} />
+          <Route path="/fatturazione/passiva/modifica/:id"            element={<PrivateRoute>         <ModificaFatturazionePassiva />   </PrivateRoute>} />
+          <Route path="/fornitori"                                    element={<PrivateRoute>         <Fornitori                   />   </PrivateRoute>} />
+          <Route path="/fornitori/modifica/:id"                       element={<PrivateRoute>         <ModificaFornitori           />   </PrivateRoute>} />
+          <Route path="/tesoreria"                                    element={<PrivateRoute>         <Tesoreria                   />   </PrivateRoute>} />
+          <Route path="/hr"                                           element={<PrivateRoute>         <HR                          />   </PrivateRoute>} />
+          <Route path="/hr/staff/modifica/:id"                        element={<PrivateRoute>         <ModificaDipendente2          />  </PrivateRoute>} />
+          <Route path="/hr/staff/visualizza/:id"                      element={<PrivateRoute>         <DettaglioDipendente         />   </PrivateRoute>} />
+          <Route path="/aziende/aggiungi"                             element={<PrivateRoute>         <AggiungiAzienda             />   </PrivateRoute>} />
+          <Route path="/need/aggiungi"                                element={<PrivateRoute>         <AggiungiNeed                />   </PrivateRoute>} />
+          <Route path="/need/modifica/:id"                            element={<PrivateRoute>         <ModificaNeed                />   </PrivateRoute>} />
+          <Route path="/need/dettaglio/:id"                           element={<PrivateRoute>         <DettaglioNeed               />   </PrivateRoute>} />
+          <Route path="/recruiting/aggiungi"                          element={<PrivateRoute>         <AggiungiCandidato           />   </PrivateRoute>} />
+          <Route path="/progetti/aggiungi"                            element={<PrivateRoute>         <AggiungiProgetto            />   </PrivateRoute>} />
+          <Route path="/fatturazioneAttiva/aggiungi"                  element={<PrivateRoute>         <AggiungiFatturazioneAttiva  />   </PrivateRoute>} />
+          <Route path="/fatturazioneAttiva/modifica/:id"              element={<PrivateRoute>         <ModificaFatturazioneAttiva  />   </PrivateRoute>} />
+          <Route path="/fatturazione/passiva/aggiungi"                element={<PrivateRoute>         <AggiungiFatturazionePassiva />   </PrivateRoute>} />
+          <Route path="/fornitori/aggiungi"                           element={<PrivateRoute>         <AggiungiFornitore           />   </PrivateRoute>} />
+          <Route path="/hr/staff/aggiungi"                            element={<PrivateRoute>         <AggiungiDipendente          />   </PrivateRoute>} />
+          <Route path="/hr/crea/utente"                               element={<PrivateRoute>         <AggiungiUser                />   </PrivateRoute>} />
+          <Route path="/staffing/intervista/:id"                      element={<PrivateRoute>         <Interviste                  />   </PrivateRoute>} />
+          <Route path="/intervista/visualizza/:id"                    element={<PrivateRoute>         <DettaglioIntervista         />   </PrivateRoute>} />
+          <Route path="/intervista/modifica/:id"                      element={<PrivateRoute>         <ModificaIntervista          />   </PrivateRoute>} />
+          <Route path="/intervista/aggiungi"                          element={<PrivateRoute>         <AggiungiIntervista          />   </PrivateRoute>} />
+          <Route path="/associazioni/:id/:nome"                       element={<PrivateRoute>         <Associazioni                />   </PrivateRoute>} />
+          <Route path="/staffing/modifica/:id"                        element={<PrivateRoute>         <ModificaStaffing            />   </PrivateRoute>} />
+          <Route path="/hr/staff/timesheet/:id"                       element={<PrivateRoute>         <TimesheetPages              />   </PrivateRoute>} />
+          <Route path="/hr/report"                                    element={<PrivateRoute>         <EstraiReport                />   </PrivateRoute>} />
           {/* <Route path="/logout"                                       exact component={LogoutPopUp}                                /> */}
 
           </>
@@ -160,9 +174,9 @@ const App = () => {
         {isUser && (
           <>
   
-            <Route path="/userHomepage" element={<UserHomepage />} />
+            <Route path="/userHomepage" element={<PrivateRoute><UserHomepage /></PrivateRoute>} />
             
-        <Route path="/userTimesheet" element={<UserTimesheet />} />
+        <Route path="/userTimesheet" element={<PrivateRoute><UserTimesheet /></PrivateRoute>} />
           </>
         )}
 

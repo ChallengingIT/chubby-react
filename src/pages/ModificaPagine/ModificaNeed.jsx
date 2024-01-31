@@ -32,6 +32,12 @@ const ModificaNeed = () => {
   };
 
 
+  const navigateBack = () => {
+    navigate(-1); 
+  };
+
+
+
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
@@ -109,7 +115,7 @@ const ModificaNeed = () => {
     fetchAziendeOptions();
   }, []);
 
-  const campiObbligatori = [ "descrizione", "priorita", "week", "tipo", "owner", "stato"]; 
+  const campiObbligatori = [ "descrizione", "priorita", "week"]; 
 
   const fields = [
     { label: "Descrizione",         name: "descrizione",            type: "text" },
@@ -136,20 +142,20 @@ const ModificaNeed = () => {
 
 
   const initialValues = {
-    id:                         needData.id                                                 || "",
-    descrizione:                needData.descrizione                                        || "",
-    priorita:                   needData.priorita                                           || "",
-    week:                       needData.week                                               || "",
-    tipologia:                  needData.tipologia && needData.tipologia.id                 || "",
-    tipo:                       needData.tipo                                               || "",
-    owner:                      needData.owner     && needData.owner.id                     || "",
-    stato:                      needData.stato     && needData.stato.id                     || "",
-    numeroRisorse:              needData.numeroRisorse                                      || "",
-    location:                   needData.location                                           || "",
-    skills:                    (needData.skills?.map(skill => skill?.id))                   || [],
-    skills2:                   (needData.skills2?.map(skill => skill?.id))                  || [],
-    anniEsperienza:             needData.anniEsperienza                                     || "",
-    note:                       needData.note                                               || "",          
+    id:                         needData.id                                                 ,
+    descrizione:                needData.descrizione                                        || null,
+    priorita:                   needData.priorita                                           || null,
+    week:                       needData.week                                               || null,
+    tipologia:                  needData.tipologia && needData.tipologia.id                 || null,
+    tipo:                       needData.tipo                                               || null,
+    owner:                      needData.owner     && needData.owner.id                     || null,
+    stato:                      needData.stato     && needData.stato.id                     || null,
+    numeroRisorse:              needData.numeroRisorse                                      || null,
+    location:                   needData.location                                           || null,
+    skills:                    (needData.skills?.map(skill => skill?.id))                   || null,
+    skills2:                   (needData.skills2?.map(skill => skill?.id))                  || null,
+    anniEsperienza:             needData.anniEsperienza                                     || null,
+    note:                       needData.note                                               || null,          
   };
 
 
@@ -161,29 +167,40 @@ const ModificaNeed = () => {
   
     if (!hasErrors) {
     try {
-      let skills = "";
-      let skills2 = "";
 
-      if(values.skills && values.skills.length && values.skills2 && values.skills2.length) {
 
-        skills = values.skills.join(',');
-        skills2 = values.skills2.join(',');
+      // let skills = "";
+      // let skills2 = "";
+
+    //   if(values.skills && values.skills.length && values.skills2 && values.skills2.length) {
+
+    //     skills = values.skills.join(',');
+    //     skills2 = values.skills2.join(',');
     
-        console.log("DATI DI SOLE SKILLS: ", skills);
-        console.log("DATI DI SOLE SKILLS2: ", skills2);
+    //     console.log("DATI DI SOLE SKILLS: ", skills);
+    //     console.log("DATI DI SOLE SKILLS2: ", skills2);
     
-        delete values.skills;
-        delete values.skills2;
-    }
+    //     delete values.skills;
+    //     delete values.skills2;
+    // }
+
+    const skills = values.skills ? values.skills.join(',') : null;
+    const skills2 = values.skills2 ? values.skills2.join(',') : null;
+    delete values.skills;
+    delete values.skills2;
+
+
+    console.log("DATI IN VALUES: ", values);
+
     const response = await axios.post("http://localhost:8080/need/react/salva", values, {
       params: { skill1: skills, skill2: skills2 },
       headers: headers
     });
 
-    console.log("DATI IN VALUES: ", values);
+   
 
     console.log("Risposta dal server:", response.data);
-    navigate("/need");
+    navigateBack();
   } catch (error) {
     console.error("Errore durante il salvataggio:", error);
     if (error.response) {

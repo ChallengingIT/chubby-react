@@ -12,7 +12,8 @@ const AggiungiNeedID = () => {
   const navigate            = useNavigate();
   const location = useLocation();
   const aziendaData = location.state?.aziendaData;
-  console.log("Nome Azienda e id Azienda:", aziendaData);
+
+  console.log("ID ARRIVATO: ", id);
   
 
   const [ aziendeOptions,       setAziendeOptions     ] = useState([]);
@@ -21,6 +22,7 @@ const AggiungiNeedID = () => {
   const [ ownerOptions,         setOwnerOptions       ] = useState([]);
   const [ tipologiaOptions,     setTipologiaOptions   ] = useState([]);
   const [ statoOptions,         setStatoOptions       ] = useState([]);
+  
 
 
   // Recupera l'accessToken da localStorage
@@ -30,6 +32,10 @@ const AggiungiNeedID = () => {
   // Configura gli headers della richiesta con l'Authorization token
   const headers = {
     Authorization: `Bearer ${accessToken}`
+  };
+
+  const navigateBack = () => {
+    navigate(-1); 
   };
 
 
@@ -112,13 +118,13 @@ const AggiungiNeedID = () => {
     fetchNeedOptions();
   }, []);
 
-  const campiObbligatori = [ "idAzienda", "descrizione", "priorita", "week", "tipo", "idOwner", "stato"]; 
+  const campiObbligatori = [ "descrizione", "priorita", "week"]; 
 
   const fields = [
-    { label: "Azienda",           name: "idAzienda",                    type: "text",           disabled:true },
-    { label: "Descrizione Need",  name: "descrizione",                  type: "text" },
-    { label: "Priorità",          name: "priorita",                     type: "text" },
-    { label: "Week",              name: "week",                         type: "weekPicker" },
+    { label: "Azienda",           name: "denominazione",                type: "text",            disabled:true },
+    { label: "* Descrizione Need",  name: "descrizione",                  type: "text" },
+    { label: "* Priorità",          name: "priorita",                     type: "text" },
+    { label: "* Week",              name: "week",                         type: "weekPicker" },
     { label: "Tipologia",         name: "tipologia",                    type: "select",           options: tipologiaOptions  },
     { label: "Tipologia Azienda", name: "tipo",                         type: "select",           options: [ 
     { value: 1,                   label: "Cliente" },
@@ -137,8 +143,8 @@ const AggiungiNeedID = () => {
 
 
   const initialValues = {
-    id:        aziendaData?.id          || "",
-    idAzienda: aziendaData?.denominazione || "",
+    idAzienda:            aziendaData?.id            || "",
+    denominazione: aziendaData?.denominazione || "",
   };
 
   // const handleSubmit = async (values) => {
@@ -190,17 +196,27 @@ const AggiungiNeedID = () => {
   
     if (!hasErrors) {
       try {
+
+        Object.keys(values).forEach(key => {
+          if (!campiObbligatori.includes(key) && !values[key]) {
+            values[key] = null;
+          }
+        });
+
+
         // Preparazione dei dati delle skills come stringhe separate
         const skills = values.skills ? values.skills.join(',') : '';
         const skills2 = values.skills2 ? values.skills2.join(',') : '';
 
-        console.log("Skills selezionate:", values.skills);
-  console.log("Skills2 selezionate:", values.skills2);
+
 
   
         // Rimozione delle proprietà delle skills dall'oggetto values
         delete values.skills;
         delete values.skills2;
+
+
+        console.log("DATI INVIATI DA AGGIIUNGI NEED ID:", values);
   
         // Invio della richiesta al server con skills e skills2 come parametri di query
         const response = await axios.post("http://localhost:8080/need/react/salva", values, {
@@ -210,9 +226,9 @@ const AggiungiNeedID = () => {
           },
           headers: headers
         });
-  
+        navigateBack();
         console.log("Risposta dal server:", response.data);
-        navigate("/need");
+
       } catch (error) {
         console.error("Errore durante il salvataggio:", error);
         if (error.response) {

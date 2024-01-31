@@ -3,6 +3,7 @@ import { useNavigate, useLocation }     from "react-router-dom";
 import axios                            from "axios";
 import Sidebar                          from "../../components/Sidebar";
 import MyBoxGroups                      from "../../components/MyBoxGroups";
+import { Button } from "@mui/material";
 
 const AggiungiIntervista = () => {
 const navigate      = useNavigate();
@@ -117,6 +118,13 @@ setIsDataLoaded(true);
 fetchData();
 }, []);
 
+const handleGoBack = () => {
+    navigate(-1); 
+  };
+
+
+const campiObbligatori = [ "dataColloquio"];
+
 const fields = [
     { type: "titleGroups",                label: "Informazioni candidato"             },
     { label: "Tipologia Incontro",        name: "stato",                  type: "select", options: statoOptions, },
@@ -126,9 +134,9 @@ const fields = [
     { label: "Location",                  name: "location",               type: "text"},
     { label: "Job Title",                 name: "tipologia",              type: "select", options: tipologiaOptions },
     { label: "Anni di Esperienza",        name: "anniEsperienza",         type: "text"},
-    { label: "Data Incontro",             name: "dataColloquio",          type: "date"},
+    { label: "* Data Incontro",           name: "dataColloquio",          type: "date"},
     { label: "Recapiti",                  name: "cellulare",              type: "text"},
-    { label: "Intervistatore",            name: "owner",                  type: "select", options: ownerOptions },
+    { label: "Intervistatore",            name: "idOwner",                type: "select", options: ownerOptions },
 
 
 
@@ -162,7 +170,7 @@ const fields = [
     { label: "RAL Attuale",               name: "attuale",                 type: "text"},
     { label: "RAL Desiderata",            name: "desiderata",              type: "text"},
     { label: "Proposta economica",        name: "proposta",                type: "text"},
-    { label: "Follow Up",                 name: "idTipo",                  type: "select", options: tipoIntervistaOptions },
+    { label: "Follow Up",                 name: "tipo",                    type: "select", options: tipoIntervistaOptions },
     { label: "Preavviso",                 name: "preavviso",               type: "text"},
     { label: "Next Deadline",             name: "dataAggiornamento",       type: "dateOra"},
     { label: "Owner next Deadline",       name: "idNextOwner",             type: "select", options: ownerOptions },
@@ -172,36 +180,36 @@ const fields = [
 
 
 const initialValues = {
-    stato:                            candidato.stato?.id                           || "",
-    nome:                             candidato?.nome                               || "",
-    cognome:                          candidato.cognome                             || "",
-    dataNascita:                      candidato.dataNascita                         || "",
-    location:                         candidato.citta                               || "", 
-    tipologia:                        candidato.tipologia?.id                       || "",
-    anniEsperienza:                   candidato.anniEsperienza                      || "",
-    dataColloquio:                    candidato.dataColloquio                       || "",
-    cellulare:                        candidato.cellulare                           || "",
-    owner:                            candidato.owner?.id                           || "",
-    aderenza:                         interviste.aderenza                           || "",
-    coerenza:                         interviste.coerenza                           || "",
-    motivazione:                      interviste.motivazione                        || "",
-    standing:                         interviste.standing?.toString()               || "",
-    energia:                          interviste.energia?.toString()                || "",
-    comunicazione:                    interviste.comunicazione?.toString()          || "",
-    inglese:                          interviste.inglese?.toString()                || "",
-    competenze:                       interviste.competenze                         || "",
-    valutazione:                      interviste.valutazione                        || "",
-    descrizioneCandidatoUna:          interviste.descrizioneCandidatoUna            || "",
-    teamSiNo:                         interviste.teamSiNo                           || "",
-    note:                             interviste.note                               || "",
-    disponibilita:                    interviste.disponibilita                      || "",
-    attuale:                          interviste.attuale                            || "",
-    desiderata:                       interviste.desiderata                         || "",
-    proposta:                         interviste.proposta                           || "",
-    idTipo:                           interviste.tipo?.id                           || "",
-    preavviso:                        interviste.preavviso                          || "",
-    dataAggiornamento:                interviste.dataAggiornamento                  || "",
-    idNextOwner:                      interviste.owner?.id                          || ""
+    stato:                            candidato.stato?.id                           || null,
+    nome:                             candidato?.nome                               || null,
+    cognome:                          candidato.cognome                             || null,
+    dataNascita:                      candidato.dataNascita                         || null,
+    location:                         candidato.citta                               || null, 
+    tipologia:                        candidato.tipologia?.id                       || null,
+    anniEsperienza:                   candidato.anniEsperienza                      || null,
+    dataColloquio:                    interviste.dataColloquio                      || null,
+    cellulare:                        candidato.cellulare                           || null,
+    idOwner:                          interviste.owner?.id                          || null,
+    aderenza:                         interviste.aderenza                           || null,
+    coerenza:                         interviste.coerenza                           || null,
+    motivazione:                      interviste.motivazione                        || null,
+    standing:                         interviste.standing                           || null,
+    energia:                          interviste.energia                            || null,
+    comunicazione:                    interviste.comunicazione                      || null,
+    inglese:                          interviste.inglese                            || null,
+    competenze:                       interviste.competenze                         || null,
+    valutazione:                      interviste.valutazione                        || null,
+    descrizioneCandidatoUna:          interviste.descrizioneCandidatoUna            || null,
+    teamSiNo:                         interviste.teamSiNo                           || null,
+    note:                             interviste.note                               || null,
+    disponibilita:                    interviste.disponibilita                      || null,
+    attuale:                          interviste.attuale                            || null,
+    desiderata:                       interviste.desiderata                         || null,
+    proposta:                         interviste.proposta                           || null,
+    tipo:                             interviste.tipo?.id                           || null,
+    preavviso:                        interviste.preavviso                          || null,
+    dataAggiornamento:                interviste.dataAggiornamento                  || null,
+    idNextOwner:                      interviste.nextOwner?.id                      || null
 };
 
 console.log("DATI INITIAL: ", initialValues);
@@ -219,6 +227,7 @@ cellulare:          true,
 const handleSubmit = async (values) => {
     try {
       // console.log("DATI DI VALUES: ", values);
+
 
 
     //   const idCandidato = rowData.candidato?.id;
@@ -256,7 +265,7 @@ return (
         </div>
         <div className="container">
         <div className="page-name" style={{ margin: '20px',fontSize: "15px" }}>
-        <h1>{`Modifica Incontro `}</h1>
+        <h1>{`Aggiungi Intervista `}</h1>
         </div>
         {isDataLoaded ? (
         <MyBoxGroups 
@@ -265,10 +274,31 @@ return (
         disableFields={disableFields} 
         onSave={handleSubmit} 
         title="" 
+        campiObbligatori={campiObbligatori}
         />
         ) : (
             <div>Caricamento in corso...</div> // Puoi sostituirlo con un componente di spinner o simili
           )}
+          <Button
+              color="primary"
+              onClick={handleGoBack}
+              sx={{
+                backgroundColor: "black",
+                borderRadius: '40px',
+                color: "white",
+                width: '250px',
+                height: '30px', 
+                margin: 'auto',
+                marginBottom: '20px',
+                marginTop: 'auto',
+                "&:hover": {
+                  backgroundColor: "black",
+                  transform: "scale(1.05)",
+                },
+              }}
+            >
+              Torna ad Interviste
+            </Button>
         </div>
     </div>
     </div>

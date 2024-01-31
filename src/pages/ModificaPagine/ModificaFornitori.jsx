@@ -21,9 +21,9 @@ const ModificaFornitori = () => {
 
   const campiObbligatori = [ "denominazione", "referente", "email"];
   const fields = [
-    { label: "Denominazione",           name: "denominazione", type: "text" },
-    { label: "Referente",               name: "referente",     type: "text" },
-    { label: "Email",                   name: "email",         type: "text" },
+    { label: "* Denominazione",           name: "denominazione", type: "text" },
+    { label: "* Referente",               name: "referente",     type: "text" },
+    { label: "* Email",                   name: "email",         type: "text" },
     { label: "Pi",                      name: "pi",            type: "text" },
     { label: "Codice",                  name: "codice",        type: "text" },
     { label: "Città",                   name: "citta",         type: "text" },
@@ -31,6 +31,7 @@ const ModificaFornitori = () => {
   ];
 
   const initialValues = {
+    id:            fornitoriData.id            , 
     denominazione: fornitoriData.denominazione || "",
     referente:     fornitoriData.referente     || "",
     email:         fornitoriData.email         || "",
@@ -50,6 +51,11 @@ const ModificaFornitori = () => {
   
     if (!hasErrors) {
     try {
+      Object.keys(values).forEach(key => {
+        if (!campiObbligatori.includes(key) && !values[key]) {
+          values[key] = null;
+        }
+      });
       console.log("DATI DI VALUES: ", values);
 
       const response = await axios.post("http://localhost:8080/fornitori/react/salva", values, {
