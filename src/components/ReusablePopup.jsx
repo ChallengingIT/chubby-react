@@ -15,22 +15,6 @@ const ReusablePopup = ({
  }) => {
   const [ values, setValues ] = useState(inizialValues || {});
 
-
-  // const handleChange = (e) => {
-  //   // setPopupData({ ...popupData, [e.target.name]: e.target.value });
-  // };
-
-
-
-  // const handleChangePopup = (name) => (event) => {
-  //   const { popupData } = event.target;
-  //   setPopupData({...popupData, [name]: popupData });
-  //   console.log("VALORI DENTRO POPUPDATA: ", popupData);
-  //   if (errors[name]) {
-  //     setErrors({...errors, [name]: null });
-  //   }
-  // }
-
   const handleChangePopup = (name) => (event) => {
     const { value } = event.target;
     setValues({ ...values, [name]: value });

@@ -29,7 +29,6 @@ const DettaglioNeed = () => {
 
 
 
-  console.log("Dati Arrivati: ", needData);
 
 
     useEffect(() => {
@@ -65,85 +64,6 @@ const DettaglioNeed = () => {
 
 
 
-//   useEffect(() => {
-//     const fetchAziendeOptions = async () => {
-//       try {
-//         const responseAziende      = await axios.get("http://localhost:8080/aziende/react", { headers: headers });
-//         const responseSkill        = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
-//         const responseSkill2       = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
-//         const ownerResponse        = await axios.get("http://localhost:8080/aziende/react/owner", { headers: headers });
-//         const tipologiaResponse    = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
-//         const statoResponse        = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
-
-
-//         if (Array.isArray(statoResponse.data)) {
-//           const statoOptions = statoResponse.data.map((stato) => ({
-//             label: stato.descrizione,
-//             value: stato.id,
-//           }));
-//           setStatoOptions(statoOptions);
-
-
-
-//         if (Array.isArray(tipologiaResponse.data)) {
-//           const tipologiaOptions = tipologiaResponse.data.map((tipologia) => ({
-//             label: tipologia.descrizione,
-//             value: tipologia.id,
-//           }));
-//           setTipologiaOptions(tipologiaOptions);
-
-
-
-//         if (Array.isArray(ownerResponse.data)) {
-//           const ownerOptions = ownerResponse.data.map((owner) => ({
-//             label: owner.descrizione,
-//             value: owner.id,
-//           }));
-//           setOwnerOptions(ownerOptions);
-
-       
-//       if (Array.isArray(responseSkill.data)) {
-//         const skillsOptions = responseSkill.data.map((skill) => ({
-//           value: skill.id,
-//           label: skill.descrizione
-//         }));
-//         setSkillsOptions(skillsOptions);
-
-//         if (Array.isArray(responseSkill2.data)) {
-//           const skills2Options = responseSkill2.data.map((skill2) => ({
-//             value: skill2.id,
-//             label: skill2.descrizione
-//           }));
-//           setSkill2sOptions(skills2Options);
-  
-
-
-       
-    
-//         if (Array.isArray(responseAziende.data)) {
-//           const ownerOptions = responseAziende.data.map((aziende) => ({
-//             label: aziende.denominazione,
-//             value: aziende.id,
-//           }));
-//           setAziendeOptions(ownerOptions);
-          
-//         } else {
-//           console.error("I dati ottenuti non sono nel formato Array:", responseAziende.data);
-//         }
-//       }
-//     }
-//   }
-// }
-//         }
-//       } catch (error) {
-//         console.error("Errore durante il recupero delle province:", error);
-//       }
-//     };
-//     fetchAziendeOptions();
-//   }, []);
-
-
-
   const fields = [
     { label: "Descrizione",         name: "descrizione",            type: "text",  disabled: true },
     { label: "Priorità",            name: "priorita",               type: "text",  disabled: true },
@@ -161,7 +81,6 @@ const DettaglioNeed = () => {
   ];
 
 
-  // console.log("Valore di week:", needData.week);
 
 
   const initialValues = {

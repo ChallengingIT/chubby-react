@@ -69,7 +69,6 @@ const ProvaComponente = ({ fields, initialValues, onSubmit, onCVChange, onCFChan
 
 
   useEffect(() => {
-    // console.log("Stato attuale di formValues:", formValues);
   }, [formValues]);
 
   const handleInputChange = (e) => {
@@ -78,7 +77,6 @@ const ProvaComponente = ({ fields, initialValues, onSubmit, onCVChange, onCFChan
 
     if (type === "multipleSelect") {
       const currentField = fields.find(field => field.name === name);
-      console.log("Current field and options: ", currentField, currentField?.options);
       const selectedOptions = Array.from(options)
         .filter(option => option.selected)
         .map(option => {

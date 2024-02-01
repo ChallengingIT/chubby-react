@@ -36,7 +36,6 @@ const FatturazionePassiva = () => {
         setFatturazionePassiva(fatturazionePassivaConId);
         setFilteredFatturazionePassiva(fatturazionePassivaConId);
         setOriginalFatturazionePassiva(fatturazionePassivaConId);
-        console.log(fatturazionePassivaConId);
         } else {
           console.error("I dati ottenuti non sono nel formato Array:", response.data);
         }

@@ -13,7 +13,6 @@ const ModificaAzienda = () => {
   const { aziendaData = {} } = location.state || {};
 
 
-  console.log("DATI ARRIVATI DA AZIENDE: ", aziendaData);
   
   const [ provinceOptions, setProvinceOptions] = useState([]);
   const [ ownerOptions,    setOwnerOptions   ] = useState([]);
@@ -29,7 +28,6 @@ const ModificaAzienda = () => {
    };
 
 
-  // console.log("Dati Arrivati: ", aziendaData);
 
 
   useEffect(() => {
@@ -128,7 +126,6 @@ const ModificaAzienda = () => {
     note:                         aziendaData.note                            || "",
   };
 
-  // console.log("Valore iniziale di status:", initialValues.status);
 
   const handleSubmit = async (values) => {
     const errors = validateFields(values);
@@ -147,28 +144,21 @@ const ModificaAzienda = () => {
      const user = JSON.parse(localStorage.getItem("user"));
      const accessToken = user?.accessToken;
  
-     // Configura gli headers della richiesta con l'Authorization token
      const headers = {
        Authorization: `Bearer ${accessToken}`
      };
       
       
-      // Log the values and id
-      console.log("DATI inseriti con ID: ", values);
-
+      
       const response = await axios.post("http://localhost:8080/aziende/react/salva", values, {
         headers: headers
       });
-      console.log("Response from server:", response.data);
 
       navigate("/aziende");
     } catch (error) {
       console.error("Errore durante il salvataggio:", error);
     }
-  } else {
-    // Gestisci qui gli errori di validazione...
-    console.log("Errore di validazione:", errors);
-    // Potresti voler impostare lo stato degli errori o visualizzare un messaggio all'utente
+
   }
   };
 

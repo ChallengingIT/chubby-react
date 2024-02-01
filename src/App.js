@@ -6,6 +6,7 @@ import PrivateRoute from './components/PrivateRoute.jsx';
 
 
 
+
 import Homepage                                                        from './pages/Homepage';
 import Home                                                            from './pages/Home.jsx';
 import Aziende                                                         from './pages/Aziende.jsx';
@@ -29,10 +30,8 @@ import AggiungiFornitore                                               from './p
 import AggiungiNeed                                                    from './pages/AggiungiPagine/AggiungiNeed';
 import AggiungiNeedID                                                  from './pages/AggiungiPagine/AggiungiNeedID.jsx';
 import AggiungiProgetto                                                from './pages/AggiungiPagine/AggiungiProgetto';
-import LogoutPopUp                                                     from './components/LogoutPopUp';
 import AggiungiDipendente                                              from './pages/AggiungiPagine/AggiungiDipendente';
 import AggiungiUser                                                    from './pages/AggiungiPagine/AggiungiUser.jsx';
-import DettaglioAziende                                                from './pages/DettaglioPagine/DettaglioAziende.jsx';
 import ModificaAzienda                                                 from './pages/ModificaPagine/ModificaAzienda.jsx';
 import DettaglioKeyPeople                                              from './pages/DettaglioPagine/DettaglioKeyPeople.jsx';
 import ModificaContatto                                                from './pages/ModificaPagine/ModificaContatto.jsx';
@@ -45,7 +44,6 @@ import ModificaIntervista                                              from './p
 import ModificaProgetto                                                from './pages/ModificaPagine/ModificaProgetto.jsx';
 import ModificaFatturazionePassiva                                     from './pages/ModificaPagine/ModificaFatturazionePassiva.jsx';
 import ModificaFornitori                                               from './pages/ModificaPagine/ModificaFornitori.jsx';
-import ModificaDipendente                                              from './pages/ModificaPagine/ModificaDipendente.jsx';
 import DettaglioDipendente                                             from './pages/DettaglioPagine/DettaglioDipendente.jsx';
 import Associazioni                                                    from './pages/DettaglioPagine/Associazioni.jsx';
 import ModificaStaffing                                                from './pages/ModificaPagine/ModificaStaffing.jsx';
@@ -57,20 +55,15 @@ import authService                                                     from './s
 import UserHomepage                                                    from './pages/UserPagine/UserHomepage.jsx';
 import UserTimesheet                                                   from './pages/UserPagine/UserTimesheet.jsx';
 import DettaglioNeed                                                   from './pages/DettaglioPagine/DettaglioNeed.jsx';
-import ModificaDipendente2 from './components/componentiBackup/ModificaDipendente2.jsx';
-import DettaglioAziende2 from './pages/DettaglioPagine/DettaglioAziende2.jsx';
+import ModificaDipendente                                              from './pages/ModificaPagine/ModificaDipendente.jsx';
+
+
+import DettaglioAziende2                                               from './pages/DettaglioPagine/DettaglioAziende2.jsx';
+
 
 
 
 const App = () => {
-//   return (
-//     <BrowserRouter>
-//     <Routes>
-//     <Route path="/" element={<TimesheetPages />} />
-      
-//         </Routes>
-//         </BrowserRouter>
-//   )
 
 
 
@@ -144,7 +137,7 @@ const App = () => {
           <Route path="/fornitori/modifica/:id"                       element={<PrivateRoute>         <ModificaFornitori           />   </PrivateRoute>} />
           <Route path="/tesoreria"                                    element={<PrivateRoute>         <Tesoreria                   />   </PrivateRoute>} />
           <Route path="/hr"                                           element={<PrivateRoute>         <HR                          />   </PrivateRoute>} />
-          <Route path="/hr/staff/modifica/:id"                        element={<PrivateRoute>         <ModificaDipendente2          />  </PrivateRoute>} />
+          <Route path="/hr/staff/modifica/:id"                        element={<PrivateRoute>         <ModificaDipendente          />  </PrivateRoute>} />
           <Route path="/hr/staff/visualizza/:id"                      element={<PrivateRoute>         <DettaglioDipendente         />   </PrivateRoute>} />
           <Route path="/aziende/aggiungi"                             element={<PrivateRoute>         <AggiungiAzienda             />   </PrivateRoute>} />
           <Route path="/need/aggiungi"                                element={<PrivateRoute>         <AggiungiNeed                />   </PrivateRoute>} />

@@ -136,7 +136,6 @@ const ModificaStaffing = () => {
     fetchAziendeOptions();
   }, []);
 
-  console.log("DATI CHE ARRIVANO: ", recruitingData);
 
   const campiObbligatori = ["nome", "cognome", "email", "anniEsperienzaRuolo", "tipologia", "dataUltimoContatto" ];
 
@@ -204,7 +203,6 @@ const ModificaStaffing = () => {
 
   };
 
-  console.log("DATI IN VALUES: ", initialValues);
 
 
 const handleSubmit = async (values, fileCV, fileCF) => {
@@ -216,8 +214,6 @@ const handleSubmit = async (values, fileCV, fileCF) => {
       // Preparazione dei dati delle skills come stringhe separate
       const skills = values.skills ? values.skills.join(',') : '';
 
-      console.log("Skills selezionate:", values.skills);
-      console.log("Values: ", values);
 
       // Rimozione delle proprietà delle skills dall'oggetto values
       delete values.skills;
@@ -234,10 +230,8 @@ const handleSubmit = async (values, fileCV, fileCF) => {
       headers: headers,
       });
 
-      console.log("Risposta della prima chiamata:", datiResponse.data);
             // Ottieni l'ID del candidato dalla risposta
   const candidatoId = datiResponse.data;
-  console.log("ID DEL CANDIDATO: ", candidatoId);
 
 
   
@@ -253,7 +247,6 @@ const handleSubmit = async (values, fileCV, fileCF) => {
       }
   };
 
-  console.log("PRIMA DI INVIO FILE DENTRO CONFIG: ", config);
 
 
 try{
@@ -274,7 +267,6 @@ try{
 
       const responseCV = await axios.post(`http://localhost:8080/staffing/react/staff/salva/file/${candidatoId}`, formDataCV, 
       {headers: headers});
-      console.log("invio corretto del CV", responseCV);
   } 
 }
 } catch(error) {
@@ -290,7 +282,6 @@ if(fileCF) {
       formDataCF.append('file', fileCF);
       formDataCF.append('tipo', 2);
       const responseCF = await axios.post(`http://localhost:8080/staffing/react/staff/salva/file/${candidatoId}`, formDataCF, {headers: headers});
-      console.log("Invio corretto del CF", responseCF);
   }
 }
 } catch(error) {

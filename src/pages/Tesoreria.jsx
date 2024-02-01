@@ -39,48 +39,7 @@ const Tesoreria = () => {
     setTableData(initialData);
   };
 
-  // return (
-  //   <div className="container">
-  //     <div className="content">
-  //       <div className="sidebar-container">
-  //         <Sidebar />
-  //       </div>
-  //       <div className="container">
-  //         <div className="page-name">Tesoreria</div>
-  //           <TesoreriaSearchBox data={initialData} onSearch={handleSearch} onReset={handleReset}/>
-  //         {/* <div className="table-container">
-  //           <MyDataGrid data={tableData} columns={columns}/>
-  //         </div>
-  //         <div className="table-container" style={{marginBottom: '20px',}}>
-  //           <MyDataGrid data={tableData} columns={columns}/>
-  //         </div> */}
-  //         <div className="row-container2">
-  //           <Button
-  //               className="button-add"
-  //               variant="contained"
-  //               size="medium"
-  //               sx={{
-  //               width: "100%",
-  //               maxWidth: "210px",
-  //               backgroundColor: "black",
-  //               color: "white",
-  //               borderRadius: "10px",
-  //               fontSize: "0.6rem",
-  //               fontWeight: "bolder",
-  //               padding: "0.5rem 1rem",
-  //               "&:hover": {
-  //                 backgroundColor: "#ffb800",
-  //                 transform: "scale(1.05)",
-  //               },
-  //             }}
-  //           >
-  //             Salva
-  //           </Button>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   </div>
-  // );
+
 
 
 

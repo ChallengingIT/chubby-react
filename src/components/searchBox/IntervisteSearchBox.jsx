@@ -9,12 +9,6 @@ import { AdapterDateFns }                     from '@mui/x-date-pickers/AdapterD
 import "../../styles/HR.css";
 
 
-
-
-
-
-
-
 const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalInterviste }) => {
   const initialSearchTerm = {
     stato: '',
@@ -23,24 +17,24 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
   };
 
   const commonFieldStyles = {
-    width: "100%", // Assicurati che sia la stessa per tutti i campi
-    maxWidth: "200px", // o qualsiasi altra larghezza desideri
-    height: "56px", // l'altezza di default per il TextField di MUI
+    width: "100%", 
+    maxWidth: "200px", 
+    height: "56px", 
     borderRadius: "40px",
     fontSize: "0.8rem",
     textAlign: "start",
     color: "#757575",
     "& .MuiInputBase-root": {
-      borderRadius: "40px", // Arrotonda gli angoli della base dell'input
+      borderRadius: "40px",
     },
     "& .MuiOutlinedInput-notchedOutline": {
-      borderColor: "#757575", // Colore del bordo
+      borderColor: "#757575", 
     },
     "&:hover .MuiOutlinedInput-notchedOutline": {
-      borderColor: "#000", // Colore del bordo al passaggio del mouse
+      borderColor: "#000", 
     },
     "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-      borderColor: "#757575", // Colore del bordo quando è focalizzato
+      borderColor: "#757575", 
     },
   };
 
@@ -50,11 +44,16 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
   const [ filteredData, setFilteredData ] = useState([]);
 
 
-  const accessToken = localStorage.getItem("accessToken"); // Ottieni l'accessToken dal localStorage
-  // console.log("accessToken: ", accessToken);
-  // Configura l'header "Authorization" con l'accessToken
+  const accessToken = localStorage.getItem("accessToken"); 
+
   const headers = {
     Authorization: `Bearer ${accessToken}`,
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) { 
+      handleSearch();     
+    }
   };
 
   useEffect(() => {
@@ -85,8 +84,7 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
 
 
   const handleSearch = () => {
-    console.log("Valori di ricerca:", searchTerm);
-    console.log("Contenuto di Originale:", OriginalInterviste);
+
     const filteredData = OriginalInterviste.filter(item =>
       Object.keys(searchTerm).every(key =>
         searchTerm[key] === '' ||
@@ -96,7 +94,6 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
         String(item[key]).toLowerCase().includes(String(searchTerm[key]).toLowerCase())
       )
     );
-    console.log("Dati filtrati:", filteredData);
     onSearch(filteredData);
     setFilteredData(filteredData);
   };
@@ -119,12 +116,9 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
                   value={searchTerm.stato}
                   onChange={e => setSearchTerm({...searchTerm, stato: e.target.value })}
                   sx={commonFieldStyles
-                    // borderRadius: "40px",
-                    // fontSize: "0.8rem",
-                    // textAlign: "start",
-                    // color: "#757575",
                   }
                   native
+                  onKeyDown={handleKeyDown}
                 >
                   <option value="" disabled>
                     Stato
@@ -142,12 +136,9 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
                   value={searchTerm.intervistatore}
                   onChange={e => setSearchTerm({...searchTerm, intervistatore: e.target.value })}
                   sx={commonFieldStyles
-                    // borderRadius: "40px",
-                    // fontSize: "0.8rem",
-                    // textAlign: "start",
-                    // color: "#757575",
                   }
                   native
+                  onKeyDown={handleKeyDown}
                 >
                   <option value="" disabled>
                     Intervistatore
@@ -165,6 +156,7 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
           <DatePicker
             label="data"
             value={searchTerm.data}
+            onKeyDown={handleKeyDown}
             onChange={(newValue) => {
               setSearchTerm({ ...searchTerm, data: newValue });
             }}
@@ -178,20 +170,6 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
           
           />
         </LocalizationProvider>
-
-
-
-        {/* <input style={{border: 'solid 1px #c4c4c4'}}
-                  type="date"
-                  placeholder="Data"
-                  className="text-form"
-                  value={searchTerm.data}
-                  onChange={(newValue) => {
-                    setSearchTerm({ ...searchTerm, data: newValue });
-                  }}
-                /> */}
-  
-
 
 
     {/* quarta colonna */}

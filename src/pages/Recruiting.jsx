@@ -77,7 +77,6 @@ const Recruiting = () => {
         const recruitingConId = response.data.map((recruiting) => ({ ...recruiting}));
         setOriginalRecruiting(recruitingConId);
         setFilteredRecruiting(recruitingConId);
-        console.log(recruitingConId);
         } else {
           console.error("I dati ottenuti non sono nel formato Array:", response.data);
         }
@@ -140,7 +139,7 @@ fetchData();
     } else if (rating >= 3) {
       return <SmileGreenIcon />;
     } else {
-      return rating; // o un altro valore di default se necessario
+      return rating; 
     }
   };
   

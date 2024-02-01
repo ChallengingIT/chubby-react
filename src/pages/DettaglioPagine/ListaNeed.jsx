@@ -28,8 +28,6 @@ function ListaNeed() {
   const nomeAzienda           = aziendaData.denominazione;
   const idAzienda             = aziendaData.id;
 
-  // console.log("ID: ", id);
-  console.log("DATI ARRIVATI :", aziendaData);
 
  
 
@@ -61,7 +59,6 @@ function ListaNeed() {
         setNeed(needConId);
         setFilteredListaNeed(needConId);
         setOriginalListaNeed(needConId);
-        console.log("DATI DI LISTA NEED:", needConId);
       } else {
         console.error("I dati ottenuti non sono nel formato Array:", response.data);
       }
@@ -102,8 +99,6 @@ function ListaNeed() {
   const handleDelete = async (id) => {
     try {
       const response = await axios.delete(`http://localhost:8080/need/react/elimina/${deleteId}`);
-      console.log("Risposta dalla chiamata delete: ", response);
-      console.log("ID NEED ELIMINATO: ", id)
       fetchData();
       setOpenDialog(false);
     } catch (error) {

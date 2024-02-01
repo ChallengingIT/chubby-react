@@ -6,10 +6,6 @@ import { useParams }                            from 'react-router-dom';
 import { useNavigate}                           from "react-router-dom";
 import { Link }                                 from "react-router-dom";
 import axios                                    from 'axios';
-// import EditButton from '../../components/button/EditButton.jsx';
-// import VisibilityButton from '../../components/button/VisibilityButton.jsx';
-// import IntervisteSearchBox from '../../components/searchBox/IntervisteSearchBox.jsx';
-// import MyButton from '../../components/MyButton.jsx';
 import AssociazioniSearchBox                    from '../../components/searchBox/AssociazioniSearchBox.jsx';
 
 function Associazioni() {
@@ -46,8 +42,6 @@ function Associazioni() {
       if (Array.isArray(associatiResponse.data)) {
         const associatiConId = associatiResponse.data.map((associati) => ({ ...associati }));
         setAssociatiOptions(associatiConId);
-        // setFilteredAssociabili(associatiConId);
-        console.log("DATI DA ASSOCIATI: ", associatiOptions);
       } else {
         console.error("I dati ottenuti non sono nel formato Array:", associatiResponse.data);
       }
@@ -58,7 +52,6 @@ function Associazioni() {
         const associabiliConId = associabiliResponse.data.map((associabili) => ({ ...associabili }));
         setFilteredAssociabili(associabiliConId);
         setOriginalAssociabili(associabiliConId);
-        console.log("DATI DA ASSOCIABILI: ",associabiliConId);
       } else {
         console.error("I dati ottenuti non sono nel formato Array:", associabiliResponse.data);
       }
@@ -84,16 +77,11 @@ function Associazioni() {
       const idNeed = parseInt(id); 
       const idCandidato = row.id;
   
-      // Costruisci l'URL con i parametri
       const url = `http://localhost:8080/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
   
-      console.log("URL con parametri di query: ", url);
   
-      // Effettua la richiesta POST
       const response = await axios.post(url, { headers });
-      console.log(response.data);
   
-      // Aggiorna i dati
       fetchData();
     } catch (error) {
       console.error("Errore durante il recupero dei dati:", error);

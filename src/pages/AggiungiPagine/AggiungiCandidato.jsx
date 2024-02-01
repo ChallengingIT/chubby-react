@@ -170,8 +170,7 @@ const handleSubmit = async (values, fileCV, fileCF, fileMultipli, fileAllegati) 
         // Preparazione dei dati delle skills come stringhe separate
         const skills = values.skills ? values.skills.join(',') : '';
 
-        console.log("Skills selezionate:", values.skills);
-        console.log("Values: ", values);
+
 
         // Rimozione delle proprietà delle skills dall'oggetto values
         delete values.skills;
@@ -188,10 +187,8 @@ const handleSubmit = async (values, fileCV, fileCF, fileMultipli, fileAllegati) 
         headers: headers,
         });
 
-        console.log("Risposta della prima chiamata di aggiungiCandidato:", datiResponse.data);
               // Ottieni l'ID del candidato dalla risposta
     const candidatoId = datiResponse.data;
-    console.log("ID DEL CANDIDATO: ", candidatoId);
 
 
     
@@ -207,7 +204,6 @@ const handleSubmit = async (values, fileCV, fileCF, fileMultipli, fileAllegati) 
         }
     };
 
-    console.log("PRIMA DI INVIO FILE DENTRO CONFIG: ", config);
 
 
 try{
@@ -220,7 +216,6 @@ try{
 
         const responseCV = await axios.post(`http://localhost:8080/staffing/react/staff/salva/file/${candidatoId}`, formDataCV, 
         {headers: headers});
-        console.log("invio corretto del CV", responseCV);
     } 
 } catch(error) {
         console.error("Errore nell'invio del CV", error);
@@ -234,7 +229,6 @@ try{
         formDataCF.append('file', fileCF);
         formDataCF.append('tipo', 2);
         const responseCF = await axios.post(`http://localhost:8080/staffing/react/staff/salva/file/${candidatoId}`, formDataCF, {headers: headers});
-        console.log("Invio corretto del CF", responseCF);
     }
 } catch(error) {
     console.error("errore nell'invio del CF", error);

@@ -15,9 +15,9 @@ const ProgettiSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Origin
     cliente: '',
   };
 
-  const accessToken = localStorage.getItem("accessToken"); // Ottieni l'accessToken dal localStorage
+  const accessToken = localStorage.getItem("accessToken"); 
 
-// Configura l'header "Authorization" con l'accessToken
+
 const headers = {
   Authorization: `Bearer ${accessToken}`,
 };
@@ -87,6 +87,13 @@ const headers = {
   };
 
 
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) { // Verifica se è stato premuto il tasto "Invio"
+      handleSearch();     
+    }
+  };
+
+
   return (
     <div className="gridContainer" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr) auto', gap: '10px', alignItems: 'center', margin: '20px 5px', padding: '0 0 20px 0',  borderBottom: '2px solid #dbd9d9',}}>
 
@@ -102,6 +109,7 @@ const headers = {
                     color: "#757575",
                   }}
                   native
+                  onKeyDown={handleKeyDown}
                 >
                   <option value="" disabled>
                     Dipendenti
@@ -124,6 +132,7 @@ const headers = {
                     color: "#757575",
                   }}
                   native
+                  onKeyDown={handleKeyDown}
                 >
                   <option value="" disabled>
                     Azienda

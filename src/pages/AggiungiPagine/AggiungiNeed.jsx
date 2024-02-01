@@ -132,48 +132,6 @@ const AggiungiNeed = () => {
   ];
 
 
-  // const handleSubmit = async (values) => {
-  //   const errors = validateFields(values);
-  //   const hasErrors = Object.keys(errors).length > 0;
-  
-  //   if (!hasErrors) {
-  //   try {
-  //     let skills = "";
-  //     let skills2 = "";
-
-  //     if(values.skills && values.skills.length && values.skills2 && values.skills2.length) {
-
-  //       skills = values.skills.join(',');
-  //       skills2 = values.skills2.join(',');
-    
-  //       console.log("DATI DI SOLE SKILLS: ", skills);
-  //       console.log("DATI DI SOLE SKILLS2: ", skills2);
-    
-  //       delete values.skills;
-  //       delete values.skills2;
-  //   }
-  //   const response = await axios.post("http://localhost:8080/need/react/salva", values, {
-  //     params: { skill1: skills, skill2: skills2 }
-  //   });
-
-  //   console.log("DATI IN VALUES: ", values);
-
-  //   console.log("Risposta dal server:", response.data);
-  //   navigate("/need");
-  // } catch (error) {
-  //   console.error("Errore durante il salvataggio:", error);
-  //   if (error.response) {
-  //     console.error("Dettagli dell'errore:", error.response.data);
-  //   }
-  
-
-  //   }
-  // } else {
-  //   // Gestisci qui gli errori di validazione...
-  //   console.log("Errore di validazione:", errors);
-  //   // Potresti voler impostare lo stato degli errori o visualizzare un messaggio all'utente
-  // }
-  // };
 
   const handleSubmit = async (values) => {
     const errors = validateFields(values);
@@ -185,8 +143,6 @@ const AggiungiNeed = () => {
         const skills = values.skills ? values.skills.join(',') : '';
         const skills2 = values.skills2 ? values.skills2.join(',') : '';
 
-        console.log("Skills selezionate:", values.skills);
-        console.log("Skills2 selezionate:", values.skills2);
 
   
         // Rimozione delle proprietà delle skills dall'oggetto values
@@ -202,7 +158,6 @@ const AggiungiNeed = () => {
           headers: headers
         });
   
-        console.log("Risposta dal server:", response.data);
         navigate("/need");
       } catch (error) {
         console.error("Errore durante il salvataggio:", error);
@@ -210,53 +165,12 @@ const AggiungiNeed = () => {
           console.error("Dettagli dell'errore:", error.response.data);
         }
       }
-    } else {
-      console.log("Errore di validazione:", errors);
-      // Gestisci qui gli errori di validazione
+
     }
   };
   
 
 
-
-
-
-  // const handleSubmit = async (values) => {
-  //   try {
-
-  //     const skillsWithDescriptions = values.skills.map(skillId => {
-  //       const skill = skillsOptions.find(option => option.value === skillId);
-  //       return { id: skillId, descrizione: skill ? skill.label : 'Descrizione non trovata' };
-  //     });
-
-  //     console.log("DATI IN SKILLS: ", skillsWithDescriptions);
-
-  //     const skills2WithDescriptions = values.skills2.map(skill2Id => {
-  //       const skill2 = skills2Options.find(option => option.value === skill2Id);
-  //       return { id: skill2Id, descrizione: skill2 ? skill2.label : 'Descrizione non trovata' };
-  //     });
-      
-
-  //     console.log("DATI IN SKILLS2: ", skills2WithDescriptions);
-  
-
-  //     const dataToSubmit = {
-  //       ...values,
-  //       skills: skillsWithDescriptions,
-  //       skills2: skills2WithDescriptions,
-  //     };
-  
-  //     console.log("Dati inviati al server:", dataToSubmit);
-  
-
-  //     const response = await axios.post("http://localhost:8080/need/react/salva", dataToSubmit);
-  //     console.log("Response from server:", response.data);
-  
-  //     navigate("/need");
-  //   } catch (error) {
-  //     console.error("Errore durante il salvataggio:", error);
-  //   }
-  // };
   
 
   const validateFields = (values) => {

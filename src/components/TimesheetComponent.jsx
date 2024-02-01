@@ -33,6 +33,10 @@ const TimesheetComponent = ({ timesheetData, id }) => {
     const [ datiProgetti,           setDatiProgetti               ] = useState({ progetti: [] });
     const [ progettoSelezionato,    setProgettoSelezionato        ] = useState(null);
     const [ meseInviato,            setMeseInviato                ] = useState(false);
+    const [ confirmDialogOpen,      setConfirmDialogOpen          ] = useState(false);
+
+
+
 
 
     //dati da inviare
@@ -77,12 +81,10 @@ const TimesheetComponent = ({ timesheetData, id }) => {
         setAnnoCorrente(anno);
         setMeseNumero(mese.toString());
         setAnnoNumero(anno.toString());
-        console.log("headers passato: ", headers);
 
 
         axios.get(`http://localhost:8080/timesheet/react/staff/${id}/${anno}/${mese}`, { headers: headers})
             .then(response => {
-                console.log("dati arrivati dal server: ", response.data);   
 
             const timesheetConId = response.data.mese.days.map((timesheet) => ({...timesheet}));
                 // Crea un oggetto che raggruppa le ore per progetto e giorno
@@ -113,9 +115,13 @@ const TimesheetComponent = ({ timesheetData, id }) => {
                     return acc;
                 }, {});
                 setProgettoUnivoco(projectsMap);
-                console.log("PROGETTO UNIVOCO: ", projectsMap);
                 
                 setDatiTimesheet(response.data);
+                if (response.data.mese.inviato) {
+                    setMeseInviato(true);
+                } else {
+                    setMeseInviato(false);
+                }
             })
             .catch(error => {
                 console.error('Errore durante la richiesta Axios:', error);
@@ -395,7 +401,6 @@ const TimesheetComponent = ({ timesheetData, id }) => {
 
             try {
             const response = await axios.post(`http://localhost:8080/timesheet/react/staff/aggiorna/${id}/${annoNumero}/${meseNumero}`, datiDaInviare);
-            console.log("RISPOSTA DAL SERVER PER IL MODAL: ", response);
             if (response.data === "OK") {
             setModalOpen(false); 
             fetchTimesheetData(); 
@@ -444,7 +449,6 @@ const TimesheetComponent = ({ timesheetData, id }) => {
                 }, {});
                 setProgettoUnivoco(projectsMap);
                 setDatiTimesheet(response.data);
-                console.log("CHIAMATA DI FETCHTIMESHEETDATA ESEGUITA CORRETTAMENTE: ", response.data);
             } catch (error) {
                 console.error('Errore durante il fetch dei dati aggiornati:', error);
             }
@@ -482,6 +486,19 @@ const TimesheetComponent = ({ timesheetData, id }) => {
         };
 
 
+        //gestione del popup di conferma invio
+        const handleOpenConfirmDialog = () => {
+            setConfirmDialogOpen(true);
+        };
+
+        const handleConfirmSubmit = () => {
+            setConfirmDialogOpen(false);
+            handleSubmit();
+        };
+        
+        
+
+
         const giorniSettimana = ['D', 'L', 'M', 'M', 'G', 'V', 'S'];
         const giorniFestivi = ['01-01', '01-06', '04-01', '04-25', '05-01', '06-02', '08-15', '11-01', '12-08', '12-25', '12-26'];
         const lunediPasqua = [ "2025-04-21", "2026-04-06", "2027-03-29", "2028-04-17", "2029-04-02", "2030-04-22", "2031-04-14", "2032-03-29", "2033-04-18", "2034-04-10" ]; 
@@ -514,6 +531,7 @@ const TimesheetComponent = ({ timesheetData, id }) => {
                 const responseSubmitTimesheet = await axios.post(`http://localhost:8080/timesheet/react/staff/salva/${id}/${annoNumero}/${meseNumero}`, { headers: headers });
                 if (responseSubmitTimesheet.data.message !== "OK") {
                 setAlert({ open: true, message: responseSubmitTimesheet.data });
+                setMeseInviato(true);
                 }
             } catch (error) {
                 console.error("Errore durante l'invio dei dati del timesheet: ", error);
@@ -571,44 +589,32 @@ const renderDaySquares = () => {
 
 //render per i rettangoli dei progetti
 const renderDayBox = (progetto) => {
-    // Calcola il numero di giorni nel mese corrente
     const giorniTotali = new Date(annoNumero, meseNumero, 0).getDate();
 
-    // Crea un array di elementi JSX per ogni giorno del mese
     const giorni = Array.from({ length: giorniTotali }, (_, i) => {
-        // Calcola il giorno della settimana per ogni giorno del mese
         const giorno = i + 1;
-        const giornoSettimana = new Date(annoNumero, meseNumero - 1, i + 1).getDay();
+        const giornoSettimana = new Date(annoNumero, meseNumero - 1, giorno).getDay();
         const isSabatoODomenica = giornoSettimana === 0 || giornoSettimana === 6;
-        const isGiornoFestivo = festivi(i + 1, meseNumero) || isLunediPasqua(i + 1, meseNumero, annoNumero);
-        
-        const oreTotaliGiorno = progetto.giorni[giorno] ? progetto.giorni[giorno].oreTotali : 0;
+        const isGiornoFestivo = festivi(giorno, meseNumero) || isLunediPasqua(giorno, meseNumero, annoNumero);
         const datiGiorno = progetto.giorni[giorno];
-        // Determina il colore in base allo stato del giorno
-        let colore;
-        if (isSabatoODomenica || isGiornoFestivo) {
-            colore = 'white';
-        } else {
-        if (datiGiorno && datiGiorno.ferie) {
-            colore = 'red';
-        } else if (datiGiorno && datiGiorno.malattia) {
-            colore = 'blue';
-        } else if (datiGiorno && datiGiorno.permesso) {
-            colore = 'green';
-        } else {
-            colore = 'black';
+
+        let backgroundColor = isSabatoODomenica || isGiornoFestivo ? '#fbb800' : 'grey.200';
+        let coloreTesto = isSabatoODomenica || isGiornoFestivo ? 'white' : 'black'; 
+
+        if (progetto.description === "Ferie, Permessi e Malattia" && datiGiorno) {
+            if (datiGiorno.ferie) {
+                coloreTesto = 'red';
+            } else if (datiGiorno.malattia) {
+                coloreTesto = 'blue';
+            } else if (datiGiorno.permesso) {
+                coloreTesto = 'green';
+            }
+        } else if (isSabatoODomenica || isGiornoFestivo) {
+            coloreTesto = 'white';
         }
-    }
-        
-
-
-        const giornoStyle = isSabatoODomenica || isGiornoFestivo
-            ? { backgroundColor: '#fbb800', color: 'white' }
-            : { backgroundColor: 'grey.200', color: 'black' };
-            
 
         return (
-            <Grid item key={i} sx={{ padding: 0, margin: 0,  width: '35px', height: '45px' }}>
+            <Grid item key={i} sx={{ padding: 0, margin: 0, width: '35px', height: '45px' }}>
                 <Box
                     sx={{
                         display: 'flex',
@@ -619,7 +625,8 @@ const renderDayBox = (progetto) => {
                         width: '100%',
                         height: '100%',
                         borderBottom: '0.1px solid black',
-                        ...giornoStyle,
+                        backgroundColor: backgroundColor,
+                        color: coloreTesto,
                         ':hover': {
                             backgroundColor: "#fbb800",
                             cursor: 'pointer',
@@ -627,7 +634,7 @@ const renderDayBox = (progetto) => {
                     }}
                     onClick={() => handleDayClick(giorno, progetto)}
                 >
-                    <Typography variant="body2" style={{ color: colore, fontWeight: 'bold' }}>{oreTotaliGiorno}</Typography>
+                    <Typography variant="body2" style={{ fontWeight: 'bold' }}>{datiGiorno ? datiGiorno.oreTotali : ''}</Typography>
                 </Box>
             </Grid>
         );
@@ -715,7 +722,8 @@ const progettiArray = Object.values(progettoUnivoco);
                 <BackButton />
                 {
                 !meseInviato && (
-                <SaveButton onSubmit={handleSubmit} buttonText="Invia" />
+                // <SaveButton onSubmit={handleSubmit} buttonText="Invia" />
+                <SaveButton onSubmit={handleOpenConfirmDialog} buttonText="Invia" />
                 )
                 }
             </Grid>
@@ -757,6 +765,8 @@ disabled
         checked={ferieChecked}
         onChange={handleFerieChange}
         name="ferie"
+        disabled={meseInviato}
+
         sx={{
             '&.Mui-checked': {
             color: '#ffb800',
@@ -774,6 +784,8 @@ disabled
         checked={malattiaChecked}
         onChange={handleMalattiaChange}
         name="malattia"
+        disabled={meseInviato}
+
         sx={{
             '&.Mui-checked': {
             color: '#ffb800', 
@@ -791,6 +803,8 @@ disabled
         checked={permessoChecked}
         onChange={handlePermessoChange}
         name="permesso"
+        disabled={meseInviato}
+
         sx={{
             '&.Mui-checked': {
             color: '#ffb800', 
@@ -807,6 +821,8 @@ disabled
         label="Ore Permesso"
         name="orePermesso"
         value={orePermesso}
+        disabled={meseInviato}
+
         onChange={(e) => setOrePermesso(e.target.value)} 
         />
     </Grid>
@@ -836,6 +852,8 @@ disabled
         label="Data Fine"
         name="dataFinePeriodo"
         onChange={(e) => setDataFinePeriodo(e.target.value)}
+        disabled={meseInviato}
+
         InputLabelProps={{
             shrink: true,
         }}
@@ -849,15 +867,19 @@ disabled
     label="Ore"
     name="ore"
     type="number"
-    value={oreOrdinarie}  
+    value={oreOrdinarie} 
+    disabled={meseInviato}
+ 
 onChange={(e) => setOreOrdinarie(e.target.value)}
 />
     </Grid>
     </Grid>
+
+
 </DialogContent>
 <DialogActions>
 <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-start' }}>
-
+{!meseInviato && (
 <Button
             color="primary"
             onClick={handleResetModalFPM}
@@ -875,6 +897,7 @@ onChange={(e) => setOreOrdinarie(e.target.value)}
         >
             Cancella
         </Button>
+         )}
         </Box>
 <Button
             color="primary"
@@ -916,13 +939,7 @@ onChange={(e) => setOreOrdinarie(e.target.value)}
 
 
 
-
-
-
 ) : (
-
-
-
 
 
 
@@ -945,7 +962,8 @@ value={progettoSelezionato ? progettoSelezionato.description : ""}
 InputLabelProps={{
     shrink: true, 
 }}
-disabled 
+disabled
+ 
 />
 </Grid>
 
@@ -964,6 +982,7 @@ InputLabelProps={{
     ? `${giornoSelezionato.getFullYear()}-${(giornoSelezionato.getMonth() + 1).toString().padStart(2, '0')}-${giornoSelezionato.getDate().toString().padStart(2, '0')}T00:00`
     : ''}
     onChange={(e) => setDate(e.target.value)}
+    
 />
 
     </Grid>
@@ -974,6 +993,8 @@ InputLabelProps={{
         label="Data Fine"
         name="dataFinePeriodo"
         onChange={(e) => setDataFinePeriodo(e.target.value)}
+        disabled={meseInviato}
+
         InputLabelProps={{
             shrink: true,
         }}
@@ -992,6 +1013,8 @@ InputLabelProps={{
     // onChange={(e) => handleHoursChange(selectedDay, e.target.value)}
     value={oreOrdinarie}  
     onChange={(e) => setOreOrdinarie(e.target.value)}
+    disabled={meseInviato}
+
     />
     </Grid>
 
@@ -1002,7 +1025,9 @@ InputLabelProps={{
         label="Straordinario (18:00 - 22:00)"
         name="oreStraordinario"
         value={oreStraordinario}
-        onChange={(e) => setOreStraordinario(e.target.value)} 
+        onChange={(e) => setOreStraordinario(e.target.value)}
+        disabled={meseInviato}
+ 
         />
     </Grid>
 
@@ -1012,7 +1037,9 @@ InputLabelProps={{
         label="Straord. Nott. (22:00 - 06:00)"
         name="oreNotturno"
         value={oreNotturno}
-        onChange={(e) => setOreNotturno(e.target.value)} 
+        onChange={(e) => setOreNotturno(e.target.value)}
+        disabled={meseInviato}
+ 
         />
     </Grid>
 
@@ -1034,6 +1061,8 @@ InputLabelProps={{
         >
             Indietro
         </Button>
+        {
+    !meseInviato && (
             <Button
             color="primary"
             variant="contained"
@@ -1052,9 +1081,53 @@ InputLabelProps={{
             >
             Salva
             </Button>
+    )}
 </DialogActions>
 </Dialog>
 )}
+
+<Dialog open={confirmDialogOpen} onClose={() => setConfirmDialogOpen(false)}>
+    <DialogContent>
+        <Typography>Sei sicuro di voler inviare il timesheet?</Typography>
+        <Typography>Successivamente non si potranno apportare modifiche</Typography>
+    </DialogContent>
+    <DialogActions>
+        <Button
+            color="primary"
+            onClick={() => setConfirmDialogOpen(false)}
+            style={{
+            backgroundColor: "black",
+            color: "white",
+            "&:hover": {
+                backgroundColor: "black",
+                transform: "scale(1.05)",
+        },
+            }}
+        >
+            Indietro
+        </Button>
+        
+        <Button
+            color="primary"
+            onClick={handleConfirmSubmit}
+            style={{
+            backgroundColor: "#fbb800",
+            color: "black",
+            fontWeight: 'bold',
+            "&:hover": {
+                backgroundColor: "#fbb800",
+                transform: "scale(1.05)",
+        },
+            }}
+        >
+            Conferma
+        </Button>
+    </DialogActions>
+</Dialog>
+
+
+
+
 
         </Box>
     );

@@ -10,7 +10,7 @@ function ClipButton({ onClick, idFile, fileDescrizione }) {
       console.log("ID File:", idFile);
       console.log("Descrizione File:", fileDescrizione);
       if (onClick && idFile && fileDescrizione) {
-        onClick(idFile, fileDescrizione);  // Chiama la funzione handleDownloadCV passata come onClick con l'id del file.
+        onClick(idFile, fileDescrizione);  
       } else {
         console.warn("L'azione di download o l'ID del file non sono definiti");
       }
@@ -21,7 +21,7 @@ function ClipButton({ onClick, idFile, fileDescrizione }) {
             variant="contained" 
             size="medium" 
             startIcon={<AttachmentIcon />} 
-            onClick={handleDownload}  // Usa handleDownload quando il bottone viene cliccato.
+            onClick={handleDownload} 
             sx={{
                 backgroundColor: '#ffb800',
                 color: 'black',

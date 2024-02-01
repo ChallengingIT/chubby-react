@@ -60,7 +60,6 @@ const FieldBoxFile = ({
     const handleChangeSkills = (event) => {
         const selectedSkills = event.target.value; 
         setValues({ ...values, skills: selectedSkills }); 
-        console.log(selectedSkills);
     };
     
 
@@ -98,10 +97,7 @@ const FieldBoxFile = ({
         const isValid = validate();
 
         if (isValid) {
-            console.log("onsubmit, ", fileAllegati);
             onSubmit(values, fileCV, fileCF, fileMultipli, fileAllegati);
-            // onSubmit({values});
-            //sarebbe più corretto passare un oggetto con solo quello che mi serve, quindi ad esempio values.fileAllegati
         }
     };
 
@@ -132,7 +128,6 @@ const FieldBoxFile = ({
 
 
     const handleDownloadCVCF = async (fileId, fileDescrizione) => {
-        console.log("FILE ID: ", fileId);
         const url = `http://localhost:8080/files/react/download/file/${fileId}`;
         try {
             const response = await axios({
@@ -150,7 +145,6 @@ const FieldBoxFile = ({
         
             link.click();
             document.body.removeChild(link);
-            console.log("è stato chiamato handleDownloadCVCF", response.data);
             } catch (error) {
             console.error('Si è verificato un errore durante il download del file:', error);
             }
@@ -158,14 +152,10 @@ const FieldBoxFile = ({
 
 
         const handleDeleteCVCF = async (fileId, idCandidato, fileType) => {
-            console.log("ID DEL FILE: ", fileId);
             const idc = idCandidato;
-            console.log("ID DEL CANDIDATO :", idc)
             try {
             const response = await axios.delete(`http://localhost:8080/files/react/elimina/file/candidato/${fileId}/${idc}`, { headers: headers })
-            console.log("Risposta del server: ", response.data);
             if(response.data === "OK") {
-                console.log("File eliminato con successo!");
             } else {
                 console.error("Errore dal server: ", response.data);
             }
@@ -222,11 +212,9 @@ const FieldBoxFile = ({
         const handleDeleteAllegati = async (fileId, idStaff) => {
             try {
                 const ids = idStaff; 
-                console.log("ID STAFF: ", idStaff);
                 const url = `http://localhost:8080/files/react/elimina/file/${fileId}/${ids}`;
         
                 const response = await axios.delete(url, { headers: headers });
-                console.log("Risposta del server: ", response.data);
                 setValues(prevValues => ({
                     ...prevValues,
                     files: prevValues.files.filter(file => file.id !== fileId)
@@ -247,11 +235,10 @@ const FieldBoxFile = ({
                     };
                 })];
                 setFileAllegati(updatedFileList);
-                console.log("file aggiunti: ", updatedFileList);
             }
         };
 
-        //funzione per cancellare i file appena caricati e non salvati nel db
+
         const handleDeleteFileCaricato = (fileIndex) => {
             const updatedFileList = fileAllegati.filter((_, index) => index !== fileIndex);
             setFileAllegati(updatedFileList);
@@ -466,14 +453,6 @@ const FieldBoxFile = ({
             />
             );
 
-            // return (
-            // <input
-            //     type="file"
-            //     name={field.name}
-            //     // onChange={field.name === 'cv' ? onCVChange : onCFChange}
-            //     onChange={handleChange(field.name)}
-            // />
-            // );
 
         case "number":
             return (

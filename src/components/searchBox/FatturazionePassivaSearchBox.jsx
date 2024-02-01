@@ -17,11 +17,15 @@ const FatturazionePassivaSearchBox = ({ data, onSearch, onReset, onSearchTextCha
   const [ statoOptions,         setStatoOptions         ] = useState([]);
   const [ filteredData,         setFilteredData         ] = useState([]);
 
-  const accessToken = localStorage.getItem("accessToken"); // Ottieni l'accessToken dal localStorage
-// console.log("accessToken: ", accessToken);
-// Configura l'header "Authorization" con l'accessToken
+  const accessToken = localStorage.getItem("accessToken"); 
 const headers = {
   Authorization: `Bearer ${accessToken}`,
+};
+
+const handleKeyDown = (e) => {
+  if (e.keyCode === 13) { 
+    handleSearch();     
+  }
 };
 
   useEffect(() => {
@@ -51,8 +55,6 @@ const headers = {
   }, []);
 
   const handleSearch = () => {
-    console.log("Valori di ricerca:", searchTerm);
-    console.log("Contenuto di Originale:", OriginalFatturazionePassiva);
     const filteredData = data.filter(item =>
       Object.keys(searchTerm).every(key =>
         (key === 'fornitori' && item[key]?.denominazione?.toLowerCase().includes(String(searchTerm[key]).toLowerCase())) ||
@@ -60,7 +62,6 @@ const headers = {
         String(item[key]).toLowerCase().includes(String(searchTerm[key]).toLowerCase())
       )
     );
-    console.log("Dati filtrati:", filteredData);
     onSearch(filteredData);
     setFilteredData(filteredData);
   };
@@ -89,6 +90,7 @@ const headers = {
                     color: "#757575",
                   }}
                   native
+                  onKeyDown={handleKeyDown}
                 >
                   <option value="" disabled>
                     Fornitori
@@ -111,6 +113,7 @@ const headers = {
                     color: "#757575",
                   }}
                   native
+                  onKeyDown={handleKeyDown}
                 >
                   <option value="" disabled>
                     Stato

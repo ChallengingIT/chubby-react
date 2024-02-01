@@ -38,26 +38,7 @@ const Fornitori = () => {
    };
 
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get("http://localhost:8080/fornitori/react", { headers: headers});
-  //       if (Array.isArray(response.data)) {
-  //       const fornitoriConId = response.data.map((fornitori) => ({ ...fornitori}));
-  //       setOriginalFornitori(fornitoriConId);
-  //       setFilteredFornitori(fornitoriConId);
-  //       console.log(fornitoriConId);
-  //       } else {
-  //         console.error("I dati ottenuti non sono nel formato Array:", response.data);
-  //       }
-  //     } catch (error) {
-  //       console.error("Errore durante il recupero dei dati:", error);
-  //     }
-  //   };
-
-
-  //   fetchData();
-  // }, []);
+  
 
   const fetchData = async () => {
     try {
@@ -66,7 +47,6 @@ const Fornitori = () => {
         const fornitoriConId = response.data.map((fornitori) => ({ ...fornitori}));
         setOriginalFornitori(fornitoriConId);
         setFilteredFornitori(fornitoriConId);
-        console.log(fornitoriConId);
         } else {
           console.error("I dati ottenuti non sono nel formato Array:", response.data);
         }
@@ -99,13 +79,9 @@ const openDeleteDialog = (id) => {
   
     try {
       const response = await axios.delete(`http://localhost:8080/fornitori/react/elimina/${deleteId}`, { headers: headers});
-      console.log("HO ELIMINATO :", deleteId);
-      console.log("RISPOSTA DEL SERVER: ", response );
-      // const updatedFornitori = originalFornitori.filter((fornitori) => fornitori.id !== id);
+
       setOpenDialog(false);
-      // setFornitori(updatedFornitori);
-      // setOriginalFornitori(updatedFornitori);
-      // setFilteredFornitori(updatedFornitori);
+
       fetchData();
 
     } catch (error) {

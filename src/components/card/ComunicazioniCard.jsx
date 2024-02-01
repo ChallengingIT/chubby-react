@@ -27,7 +27,7 @@ const ComunicazioniCard = ({ fields, initialValues, tableTitle }) => {
         </Typography>
         {fields.map((field) => (
           <div key={field.name} style={{ display: "flex", alignItems: "center", marginBottom: "8px" }}>
-            <Typography variant="subtitle1" sx={{ fontWeight: 'bold', marginRight: "8px" }}>
+            <Typography variant="subtitle1" sx={{ fontWeight: 'bold', marginLeft: "20px" }}>
               {field.label}:
             </Typography>
             <Typography variant="body1">

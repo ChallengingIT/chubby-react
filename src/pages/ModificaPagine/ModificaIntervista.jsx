@@ -11,8 +11,7 @@
     const location = useLocation();
     const rowData  = location.state;
 
-    console.log("Dati ricevuti:", rowData);
-    console.log("ID Candidato: ", rowData.candidato?.id);
+
 
 
     const [ tipologiaOptions,         setTipologiaOptions      ] = useState([]); //jobtile
@@ -69,7 +68,6 @@
             value: tipologia.id,
           }));
           setTipologiaOptions(tipologiaOptions);
-          // console.log("DATI DI JOBTILEOPTIONS: ", tipologiaOptions);
         }
       }
     }
@@ -265,18 +263,13 @@ const disableFields = {
 
     const handleSubmit = async (values) => {
       try {
-        // console.log("DATI DI VALUES: ", values);
     
   
         const idCandidato = rowData.candidato?.id;
         const note        = values.note;
         const modifica    = 1; 
 
-        // delete values.idCandidato;
-        // delete values.modifica;
-        // delete values.note;
-    
-        // const url = `http://localhost:8080/intervista/react/salva?idCandidato=${idCandidato}&note=${encodeURIComponent(note)}&modifica=${modifica}`;
+   
         const response = await axios.post("http://localhost:8080/intervista/react/salva", values, {
           params: {
             idCandidato: idCandidato,
@@ -285,8 +278,7 @@ const disableFields = {
           },
           headers: headers
         });
-        console.log("DATI INVIATI: ", response);
-        console.log("Response from server:", response.data);
+
     
   
         navigate(`/staffing/intervista/${idCandidato}`);
@@ -311,6 +303,8 @@ const disableFields = {
             disableFields={disableFields} 
             onSave={handleSubmit} 
             title="" 
+            showSaveButton={false}
+
             />
             <Button
               color="primary"

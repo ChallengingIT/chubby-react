@@ -10,22 +10,18 @@ export const LoginComponent = (props) => {
 
 
 
-  // Aggiungi una prop al tuo componente per poter impostare l'utente corrente da App
   const { onLoginSuccess } = props;
 
 
 
   useEffect(() => {
-    // Aggiungi un event listener per 'beforeunload'
     const handleBeforeUnload = (e) => {
-      // Rimuove i dati dell'utente dal localStorage
       localStorage.removeItem("user");
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
 
     return () => {
-      // Rimuovi l'event listener quando il componente viene smontato
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, []);
@@ -57,16 +53,11 @@ export const LoginComponent = (props) => {
     if (response && response && response.accessToken) {
       localStorage.setItem("accessToken", response.accessToken);
       localStorage.setItem("user", JSON.stringify(response));
-      // onLoginSuccess(response);
       console.log("UTENTE LOGGATO DA LOGIN: ", response);
-      // Emesso un evento di login riuscito
   eventBus.dispatch("loginSuccess");
-      // console.log("Dati utente in localStorage:", JSON.parse(localStorage.getItem("user")));
 
-     // Ottieni il ruolo dell'utente dalla risposta
      const userRole = response.roles[0];
 
-     // Utilizza il ruolo per determinare la destinazione del reindirizzamento
      if (userRole === "ROLE_ADMIN") {
        navigate("/homepage");
      } else if (userRole === "ROLE_USER") {

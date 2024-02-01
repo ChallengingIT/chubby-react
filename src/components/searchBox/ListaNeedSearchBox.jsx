@@ -29,7 +29,6 @@ const ListaNeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Origi
   const handleWeekChange = (event) => {
     const newWeek = event.target.value;
     setSelectedWeek(newWeek);
-    // Aggiorna anche searchTerm per la ricerca, se necessario
     setSearchTerm({ ...searchTerm, week: newWeek });
   };
 
@@ -46,12 +45,19 @@ const ListaNeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Origi
   const [ filteredData,             setFilteredData             ] = useState([]);
 
 
-  const accessToken = localStorage.getItem("accessToken"); // Ottieni l'accessToken dal localStorage
-// console.log("accessToken: ", accessToken);
-// Configura l'header "Authorization" con l'accessToken
+  const accessToken = localStorage.getItem("accessToken"); 
+
 const headers = {
   Authorization: `Bearer ${accessToken}`,
 };
+
+
+const handleKeyDown = (e) => {
+  if (e.keyCode === 13) { // Verifica se è stato premuto il tasto "Invio"
+    handleSearch();     
+  }
+};
+
 
 
 
@@ -93,8 +99,6 @@ const headers = {
 
 
   const handleSearch = () => {
-    console.log("Valori di ricerca:", searchTerm);
-    console.log("Contenuto originale: ", OriginalListaNeed);
     if (Array.isArray(OriginalListaNeed)) {
     const filteredData = OriginalListaNeed.filter((item) =>
       Object.keys(searchTerm).every((key) =>
@@ -105,7 +109,7 @@ const headers = {
         String(item[key]).toLowerCase().includes(String(searchTerm[key]).toLowerCase())
       )
     );
-    console.log("Dati filtrati:", filteredData);
+
     onSearch(filteredData);
     setFilteredData(filteredData);
   } else {
@@ -129,7 +133,7 @@ const headers = {
     fontSize: '0.8rem',
     textAlign: 'start',
     color: '#757575',
-    width: '100%', // Assicurati che questo si adatti al layout del tuo form
+    width: '100%', 
   };
   
       
@@ -149,6 +153,7 @@ const headers = {
                     color: "#757575",
                   }}
                   native
+                  onKeyDown={handleKeyDown}
                 >
                   <option value="" disabled>
                     Owner
@@ -171,6 +176,7 @@ const headers = {
                     color: "#757575",
                   }}
                   native
+                  onKeyDown={handleKeyDown}
                 >
                   <option value="" disabled>
                     Tipologia
@@ -204,6 +210,7 @@ const headers = {
                     color: "#757575",
                   }}
                   native
+                  onKeyDown={handleKeyDown}
                 >
                   <option value="" disabled>
                     Stato
@@ -224,12 +231,11 @@ const headers = {
   onChange={handleWeekChange}
   InputLabelProps={{ shrink: true}}
   variant="outlined"
+  onKeyDown={handleKeyDown}
   InputProps={{
     style: {
         height: "40px",
-        // marginBottom: "15px",
-      borderRadius: "40px", // Imposta i bordi arrotondati
-    //   fontSize: "0.8rem",
+      borderRadius: "40px", 
       textAlign: "start",
       color: "#757575",
     }

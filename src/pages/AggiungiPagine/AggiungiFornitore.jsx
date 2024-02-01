@@ -40,19 +40,14 @@ const campiObbligatori = [ "denominazione", "referente", "email"];
   
     if (!hasErrors) {
     try {
-      console.log("DATI DI VALUES: ", values);
 
       const response = await axios.post("http://localhost:8080/fornitori/react/salva",  values, { headers: headers });
-      console.log("Response from server:", response.data);
 
       navigate("/fornitori");
     } catch (error) {
       console.error("Errore durante il salvataggio:", error);
     }
-  } else {
-    // Gestisci qui gli errori di validazione...
-    console.log("Errore di validazione:", errors);
-    // Potresti voler impostare lo stato degli errori o visualizzare un messaggio all'utente
+
   }
   };
 

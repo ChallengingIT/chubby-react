@@ -218,33 +218,13 @@ const Sidebar = ({ handleLogout }) => {
 
   const MyLogoutPopup = ({ open, onClose, onConfirm }) => {
     const navigate = useNavigate();
-  //   const handleConfirmLogout = async () => {
 
-  //     // Recupera l'accessToken da localStorage
-  //  const user = JSON.parse(localStorage.getItem("user"));
-  //  const accessToken = user?.accessToken;
-
-  //  // Configura gli headers della richiesta con l'Authorization token
-  //  const headers = {
-  //    Authorization: `Bearer ${accessToken}`
-  //  };
-  //     try {
-  //       const response = await axios.post("http://localhost:8080/logout", { headers: headers });
-  //       console.log("LOGOUT EFFETTUATO: ", response);
-  //     } catch(error) {
-  //       console.error("Errore durante il logout");
-  //     }
-  //     navigate("/login");
-
-  //     onConfirm();
-  //   };
   const handleConfirmLogout = async () => {
     try {
       await authService.logout(); 
       navigate('/login', { replace: true });
     // window.location.reload();
       closeLogoutPopup();        
-      console.log("Logout effettuato");
     } catch (error) {
       console.error('Errore durante il logout:', error);
 

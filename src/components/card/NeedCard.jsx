@@ -45,7 +45,7 @@ const NeedCard = ({ columns, initialValues }) => {
                 {columns.map((column) => (
                   <TableCell 
                     key={column.name} 
-                    style={{ fontWeight: 'bold', padding: "6px 16px" }} // Removed borderBottom: "none"
+                    style={{ fontWeight: 'bold', padding: "6px 16px" }} 
                   >
                     {column.label}
                   </TableCell>
@@ -55,7 +55,7 @@ const NeedCard = ({ columns, initialValues }) => {
             <TableBody>
               {initialValues.map((row, index) => (
                 <TableRow key={index}>
-                  <TableCell component="th" scope="row" style={{ padding: "6px 16px" }}> {/* Removed borderBottom: "none" */}
+                  <TableCell component="th" scope="row" style={{ padding: "6px 16px" }}> 
                     {row.priorita}
                   </TableCell>
                   <TableCell style={{ padding: "6px 16px" }}>{row.nome}</TableCell>

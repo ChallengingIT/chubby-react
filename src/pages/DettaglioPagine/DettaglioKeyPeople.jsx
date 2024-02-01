@@ -101,7 +101,6 @@ useEffect(() => {
     note:   attivita.note || ""
   }));
 
-  console.log("DATI IN INITIAL VALUES: ", initialValues1);
 
   return (
     <div className="dettaglioContainerKeyPeople" >
@@ -122,7 +121,6 @@ useEffect(() => {
             <Grid item xs={12} md={6}>
               <AttivitaCard columns={tableAttivita} initialValues={intialValuesAttivita} />
             </Grid>
-            {/* Qui puoi aggiungere altre card, che saranno automaticamente disposte in altre righe della griglia */}
           </Grid>
 
           <Button
@@ -135,7 +133,7 @@ useEffect(() => {
               width: "250px",
               height: "30px",
               margin: "auto",
-              marginTop: "20px", // aggiunto un margine superiore
+              marginTop: "20px", 
               "&:hover": {
                 backgroundColor: "black",
                 transform: "scale(1.05)",

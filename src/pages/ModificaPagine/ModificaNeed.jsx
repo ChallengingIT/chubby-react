@@ -20,7 +20,6 @@ const ModificaNeed = () => {
   const [ tipologiaOptions,       setTipologiaOptions ] = useState([]);
   const [ statoOptions,           setStatoOptions     ] = useState([]);
 
-  console.log("Dati Arrivati: ", needData);
 
   // Recupera l'accessToken da localStorage
   const user = JSON.parse(localStorage.getItem("user"));
@@ -138,7 +137,6 @@ const ModificaNeed = () => {
   ];
 
 
-  // console.log("Valore di week:", needData.week);
 
 
   const initialValues = {
@@ -168,29 +166,12 @@ const ModificaNeed = () => {
     if (!hasErrors) {
     try {
 
-
-      // let skills = "";
-      // let skills2 = "";
-
-    //   if(values.skills && values.skills.length && values.skills2 && values.skills2.length) {
-
-    //     skills = values.skills.join(',');
-    //     skills2 = values.skills2.join(',');
-    
-    //     console.log("DATI DI SOLE SKILLS: ", skills);
-    //     console.log("DATI DI SOLE SKILLS2: ", skills2);
-    
-    //     delete values.skills;
-    //     delete values.skills2;
-    // }
-
     const skills = values.skills ? values.skills.join(',') : null;
     const skills2 = values.skills2 ? values.skills2.join(',') : null;
     delete values.skills;
     delete values.skills2;
 
 
-    console.log("DATI IN VALUES: ", values);
 
     const response = await axios.post("http://localhost:8080/need/react/salva", values, {
       params: { skill1: skills, skill2: skills2 },
@@ -199,7 +180,6 @@ const ModificaNeed = () => {
 
    
 
-    console.log("Risposta dal server:", response.data);
     navigateBack();
   } catch (error) {
     console.error("Errore durante il salvataggio:", error);
@@ -209,10 +189,7 @@ const ModificaNeed = () => {
   
 
     }
-  } else {
-    // Gestisci qui gli errori di validazione...
-    console.log("Errore di validazione:", errors);
-    // Potresti voler impostare lo stato degli errori o visualizzare un messaggio all'utente
+
   }
   };
 

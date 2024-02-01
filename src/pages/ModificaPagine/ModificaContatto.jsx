@@ -15,7 +15,6 @@ const ModificaContatto = () => {
   const [ aziendeOptions, setAziendeOptions] = useState([]);
   const [ ownerOptions,   setOwnerOptions  ] = useState([]);
 
-  console.log("Dati Arrivati: ", keyPeopleData);
 
    // Recupera l'accessToken da localStorage
    const user = JSON.parse(localStorage.getItem("user"));
@@ -97,7 +96,6 @@ const ModificaContatto = () => {
     note:               keyPeopleData.note                                                || "",
   };
 
-  console.log("Initial Values:", initialValues);
 
 
   const handleSubmit = async (values) => {
@@ -107,23 +105,18 @@ const ModificaContatto = () => {
     try {
       
       
-      // Log the values and id
-      console.log("DATI inseriti con ID: ", values);
+ 
 
       const response = await axios.post("http://localhost:8080/keypeople/react/salva", values, {
         headers: headers
       });
-      console.log("DATI INVIATI DOPO LA MODIFICA :", values);
-      console.log("Response from server:", response.data);
+
 
       navigate("/keypeople");
     } catch (error) {
       console.error("Errore durante il salvataggio:", error);
     }
-  }else {
-    // Gestisci qui gli errori di validazione...
-    console.log("Errore di validazione:", errors);
-    // Potresti voler impostare lo stato degli errori o visualizzare un messaggio all'utente
+
   }
   };
 

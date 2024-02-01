@@ -10,12 +10,10 @@ import MyBoxGroups                      from "../../components/MyBoxGroups";
 const AggiungiIncontro = () => {
   const navigate = useNavigate();
   const location = useLocation();
-// const candidatoData = location.state.candidatoData;
-// const candidatoID = candidatoData.id;
+
 const candidatoData = location.state?.candidatoData;
 const candidatoID   = location.state?.candidatoID; 
 
-console.log("CANDIDATO DATA ARRIVATO: ", candidatoData);
 
 // Recupera l'accessToken da localStorage
 const user = JSON.parse(localStorage.getItem("user"));
@@ -28,15 +26,12 @@ const headers = {
 
 
 useEffect(() => {
-  // console.log("ID DEL CANDIDATO: ", candidatoID); 
 
 }, [candidatoID]); 
 
-// console.log("DATI ARRIVATI DA INTERVISTE: ", candidatoData);
 
   const handleCancel = () => {
 
-    // console.log("Operazione annullata");
   };
 
 
@@ -67,7 +62,6 @@ useEffect(() => {
         if (Array.isArray(responseIntervista.data)) {
           const intervisteConId = responseIntervista.data.map((interviste) => ({ ...interviste }));
           setInterviste(intervisteConId);
-          // console.log("ARRAY DI INTERVISTE DEL CANDIDATO: ", intervisteConId);
         } else {
           console.error("I dati ottenuti non sono nel formato Array:", responseIntervista.data);
         }
@@ -102,7 +96,6 @@ useEffect(() => {
             value: tipologia.id,
           }));
           setTipologiaOptions(tipologiaOptions);
-          // console.log("DATI DI JOBTILEOPTIONS: ", tipologiaOptions);
         }
       }
     }
@@ -192,9 +185,7 @@ useEffect(() => {
   ];
   // const intervistaData = intervisteData.intervista && intervisteData.intervista[0];
   const candidatoDataObject = candidatoData[0];
-  console.log("CANDIDATO OBJECT: ", candidatoDataObject);
   const ultimaIntervista = getUltimaIntervista();
-  console.log("ULTIMA INTERVISTA: ", ultimaIntervista);
   
 
 const initialValues = {
@@ -230,43 +221,7 @@ const initialValues = {
     idNextOwner:                      ultimaIntervista?.nextOwner?.id                                                 || ""
 };
 
-console.log("DATI IN INTIAL VALUES: ", initialValues);
 
-
-  //   tipologiaIncontro:                    intervisteData.stato?.descrizione || "",
-  //   nome:                                 intervisteData.nome                                         || "",
-  //   cognome:                              intervisteData.cognome                                      || "",
-  //   dataNascita:                          intervisteData.dataNascita                                  || "",
-  //   location:                             intervisteData.location                                     || "",
-  //   jobTitle:                             intervisteData.jobTitle                                     || "",
-  //   anniEsperienza:                       intervisteData.intervista.anniEsperienza                    || "",
-  //   dataIncontro:                         intervisteData.intervista.dataColloquio                     || "",
-  //   recapiti:                             intervisteData.intervista.recapiti                          || "",
-  //   intervistatore:                       intervisteData.owner.descrizione                            || "",
-  //   aderenzaPosizione:                    intervisteData.intervista.aderenza                          || "",
-  //   coerenzaPercorso:                     intervisteData.intervista.coerenza                          || "",
-  //   motivazionePosizione:                 intervisteData.intervista.motivazione                       || "",
-  //   standing:                             intervisteData.intervista.standing                          || "",
-  //   energia:                              intervisteData.intervista.energia                           || "",
-  //   comunicazione:                        intervisteData.intervista.comunicazione                     || "",
-  //   livelloInglese:                       intervisteData.intervista.inglese                           || "",
-  //   competenzeRuolo:                      intervisteData.intervista.competenze                        || "",
-  //   valutazione:                          intervisteData.intervista.valutazione                       || "",
-  //   oneWord:                              intervisteData.intervista.descrizioneCandidatoUna           || "",
-  //   loVorrestiNelTuoTeam:                 intervisteData.intervista.teamSiNo                          || "",
-  //   descrizione:                          intervisteData.note                                         || "",
-  //   disponibilita:                        intervisteData.intervista.disponibilita                     || "",
-  //   ralAttuale:                           intervisteData.intervista.attuale                           || "",
-  //   ralDesiderata:                        intervisteData.intervista.desiderata                        || "",
-  //   propostaEconomica:                    intervisteData.intervista.proposta                          || "",
-  //   followUp:                             intervisteData.followUp                                     || "",
-  //   preavviso:                            intervisteData.intervista.preavviso                         || "",
-  //   nextDeadline:                         intervisteData.nextDeadline                                 || "",
-  //   ownerNextDeadline:                    intervisteData.intervista.nextOwner                         || "",
-  // };
-
-
-  // console.log("DATI IN INITIAL VALUES: ", initialValues); 
 
   const disableFields = {
     stato:                      true,
@@ -282,7 +237,6 @@ console.log("DATI IN INTIAL VALUES: ", initialValues);
 
   const handleSubmit = async (values) => {
     try {
-      // console.log("DATI DI VALUES: ", values);
   
 
       const idCandidato = candidatoID;
@@ -297,8 +251,7 @@ console.log("DATI IN INTIAL VALUES: ", initialValues);
           },
           header: headers
         });
-      console.log("DATI INVIATI: ", values);
-      console.log("Response from server:", response.data);
+
   
 
       navigate(`/staffing/intervista/${candidatoID}`);
@@ -308,24 +261,7 @@ console.log("DATI IN INTIAL VALUES: ", initialValues);
   };
   
 
-  // const handleSubmit = async (values) => {
-  //   try {
-  //     console.log("DATI DI VALUES: ", values);
-
-  //     const idCandidato = intervistaData.id;
-  //     const modifica = 0;
-  //     const note = values.descrizione;
-  //     // values.modifica = modifica;
-  //     // console.log("DATI DI IDCANDIDATO IN SUBMIT: ", idCandidato);
-
-  //     const response = await axios.post("http://localhost:8080/intervista/react/salva", values);
-  //     console.log("Response from server:", response.data);
-
-  //     navigate("/interviste"); //poi dove si va?
-  //   } catch (error) {
-  //     console.error("Errore durante il salvataggio:", error);
-  //   }
-  // };
+ 
 
   return (
     <div className="container">

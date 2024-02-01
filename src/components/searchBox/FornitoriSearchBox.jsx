@@ -13,17 +13,21 @@ const FornitoriSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Origi
   const [ searchTerm,    setSearchTerm    ] = useState(initialSearchTerm);
   const [ filteredData,  setFilteredData  ] = useState([]);
 
+
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) { 
+      handleSearch();     
+    }
+  };
+
   
 
   const handleSearch = () => {
-    console.log("Valori di ricerca:", searchTerm);
-    console.log("Contenuto di OriginalAziende:", OriginalFornitori);
     const filteredData = OriginalFornitori.filter(item =>
       Object.keys(searchTerm).every(key =>
         String(item[key]).toLowerCase().includes(String(searchTerm[key]).toLowerCase())
       )
     );
-    console.log("Dati filtrati:", filteredData);
     onSearch(filteredData);
     setFilteredData(filteredData);
   };
@@ -46,6 +50,7 @@ const FornitoriSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Origi
         placeholder="Ragione Sociale"
         maxLength="90"
         value={searchTerm.denominazione}
+        onKeyDown={handleKeyDown}
         onChange={(e) => setSearchTerm({ ...searchTerm, denominazione: e.target.value })}
       />
 
@@ -57,6 +62,7 @@ const FornitoriSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Origi
         placeholder="Referente"
         maxLength="45"
         value={searchTerm.referente}
+        onKeyDown={handleKeyDown}
         onChange={(e) => setSearchTerm({ ...searchTerm, referente: e.target.value })}
       />
 
@@ -69,6 +75,7 @@ const FornitoriSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Origi
         maxLength="45"
         placeholder="Email Fornitore"
         value={searchTerm.email}
+        onKeyDown={handleKeyDown}
         onChange={(e) => setSearchTerm({ ...searchTerm, email: e.target.value })}
       />
     {/* quarta colonna */}

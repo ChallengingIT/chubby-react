@@ -11,9 +11,7 @@ const UserHomepage = () => {
         // Recupera i dati dell'utente dal localStorage
         const userData = localStorage.getItem('user');
         const user = userData ? JSON.parse(userData) : null;
-    
-        // Stampa nella console i dati dell'utente
-        // console.log("Utente loggato:", user);
+
       }, []);
 
 

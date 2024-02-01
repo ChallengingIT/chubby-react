@@ -93,7 +93,6 @@ const AggiungiFatturazioneAttiva = () => {
     note:                             fatturazioneAttivaData.note                                         || "",
   }
 
-  console.log("DATI IN INITIALVALUES: ", initialValues);
 
   const handleSubmit = async (initialValues) => {
     const errors = validateFields(initialValues);
@@ -101,21 +100,16 @@ const AggiungiFatturazioneAttiva = () => {
   
     if (!hasErrors) {
     try {
-      console.log("DATI DI VALUES: ", initialValues);
 
       const response = await axios.post("http://localhost:8080/fatturazione/attiva/react/salva", initialValues, {
         headers: headers
       });
-      console.log("Response from server:", response.data);
 
       navigate("/fatturazioneAttiva");
     } catch (error) {
       console.error("Errore durante il salvataggio:", error);
     }
-  } else {
-    // Gestisci qui gli errori di validazione...
-    console.log("Errore di validazione:", errors);
-    // Potresti voler impostare lo stato degli errori o visualizzare un messaggio all'utente
+
   }
   };
 

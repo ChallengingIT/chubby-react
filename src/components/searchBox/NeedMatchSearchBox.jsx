@@ -26,9 +26,8 @@ const NeedMatchSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Origi
 
   
 
-  const accessToken = localStorage.getItem("accessToken"); // Ottieni l'accessToken dal localStorage
-// console.log("accessToken: ", accessToken);
-// Configura l'header "Authorization" con l'accessToken
+  const accessToken = localStorage.getItem("accessToken"); 
+
 const headers = {
   Authorization: `Bearer ${accessToken}`,
 };
@@ -74,8 +73,7 @@ const headers = {
 
   
   const handleSearch = () => {
-    console.log("Valori di ricerca:", searchTerm);
-    console.log("Contenuto originale: ", OriginalAssociabili);
+
     if (Array.isArray(OriginalAssociabili)) {
     const filteredData = OriginalAssociabili.filter((item) =>
       Object.keys(searchTerm).every((key) =>
@@ -86,7 +84,7 @@ const headers = {
         String(item[key]).toLowerCase().includes(String(searchTerm[key]).toLowerCase())
       )
     );
-    console.log("Dati filtrati:", filteredData);
+  
     onSearch(filteredData);
     setFilteredData(filteredData);
   } else {
@@ -101,6 +99,13 @@ const headers = {
     onReset();
     setFilteredData([]);
   };
+
+
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) { // Verifica se è stato premuto il tasto "Invio"
+      handleSearch();     
+    }
+  };
       
   return (
     <div className="gridContainer" style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr) auto', gap: '10px', alignItems: 'center', margin: '20px 5px', padding: '0 0 20px 0',  borderBottom: '2px solid #dbd9d9',}}>
@@ -113,6 +118,7 @@ const headers = {
                   id="nome"
                   max="4"
                   value={searchTerm.nome}
+                  onKeyDown={handleKeyDown}
                   onChange={(e) => setSearchTerm({ ...searchTerm, nome: e.target.value })}
                 />
           <input style={{border: 'solid 1px #c4c4c4'}}
@@ -122,6 +128,7 @@ const headers = {
                   id="cognome"
                   max="4"
                   value={searchTerm.cognome}
+                  onKeyDown={handleKeyDown}
                   onChange={(e) => setSearchTerm({ ...searchTerm, cognome: e.target.value })}
                 />
 
@@ -137,6 +144,7 @@ const headers = {
                 color: "#757575",
               }}
               native
+              onKeyDown={handleKeyDown}
             >
               <option value="" disabled>
                  Job Title
@@ -158,6 +166,7 @@ const headers = {
                 color: "#757575",
               }}
               native
+              onKeyDown={handleKeyDown}
             >
               <option value="" disabled>
                 Tipologia
@@ -180,6 +189,7 @@ const headers = {
                 color: "#757575",
               }}
               native
+              onKeyDown={handleKeyDown}
             >
               <option value="" disabled>
                 Seniority

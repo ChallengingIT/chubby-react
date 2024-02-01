@@ -16,11 +16,15 @@ const FatturazioneAttivaSearchBox = ({ data, onSearch, onReset, onSearchTextChan
   const [ aziendeOptions,     setAziendeOptions     ] = useState([]);
   const [ filteredData,       setFilteredData       ] = useState([]);
 
-  const accessToken = localStorage.getItem("accessToken"); // Ottieni l'accessToken dal localStorage
-  // console.log("accessToken: ", accessToken);
-  // Configura l'header "Authorization" con l'accessToken
+  const accessToken = localStorage.getItem("accessToken"); 
   const headers = {
     Authorization: `Bearer ${accessToken}`,
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) { 
+      handleSearch();     
+    }
   };
 
 
@@ -51,7 +55,6 @@ const FatturazioneAttivaSearchBox = ({ data, onSearch, onReset, onSearchTextChan
   }, []);
 
   const handleSearch = () => {
-    console.log("Valori di ricerca:", searchTerm);
     const filteredData = OriginalFatturazioneAttiva.filter(item =>
       Object.keys(searchTerm).every(key =>
         (key === 'cliente' && item[key]?.denominazione?.toLowerCase().includes(String(searchTerm[key]).toLowerCase())) ||
@@ -59,7 +62,6 @@ const FatturazioneAttivaSearchBox = ({ data, onSearch, onReset, onSearchTextChan
         String(item[key]).toLowerCase().includes(String(searchTerm[key]).toLowerCase())
       )
     );
-    console.log("Dati filtrati:", filteredData);
     onSearch(filteredData);
     setFilteredData(filteredData);
   };
@@ -88,6 +90,7 @@ const FatturazioneAttivaSearchBox = ({ data, onSearch, onReset, onSearchTextChan
                     color: "#757575",
                   }}
                   native
+                  onKeyDown={handleKeyDown}
                 >
                   <option value="" disabled>
                     Azienda
@@ -110,6 +113,7 @@ const FatturazioneAttivaSearchBox = ({ data, onSearch, onReset, onSearchTextChan
                     color: "#757575",
                   }}
                   native
+                  onKeyDown={handleKeyDown}
                 >
                   <option value="" disabled>
                     Stato

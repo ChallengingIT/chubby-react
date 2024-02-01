@@ -9,7 +9,6 @@ const DettaglioIntervista = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const rowData  = location.state;
-  console.log("Dati ricevuti:", rowData);
   const params   = useParams();
 
 
@@ -17,83 +16,6 @@ const DettaglioIntervista = () => {
   const handleGoBack = () => {
     navigate(-1); 
   };
-
-
-
-
-
-  // const idIntervista = params.id;
-
-
-  // console.log("ID INTERVISTA ARRIVATO: ", idIntervista);
-
-
-
-
-  // const [ tipologiaOptions,        setTipologiaOptions      ] = useState([]); //jobtile
-  // const [ ownerOptions,            setOwnerOptions          ] = useState([]);
-  // const [ statoOptions,            setStatoOptions          ] = useState([]); //tipologiaIncontro
-  // const [ tipoIntervistaOptions,   setTipoIntervistaOptions ] = useState([]); //follow up
-  // const [ candidatoOptions, setCandidatoOptions ] = useState([]);
-  // const [ intervistaData, setIntervistaData ] = useState([]);
-  // const [rowData, setrowData] = useState(null);
-
-
-
-// useEffect(() => {
-//   const fetchData = async () => {
-//     try {
-
-
-//       //jobtitle = tipologia, tipologiaIncontro = stato, owner = owner
-//       const responseTipologia                      = await axios.get("http://localhost:8080/aziende/react/tipologia");
-//       const ownerResponse                          = await axios.get("http://localhost:8080/aziende/react/owner");
-//       const responseStato                          = await axios.get("http://localhost:8080/staffing/react/stato/candidato");
-//       const responseTipoIntervista                 = await axios.get("http://localhost:8080/intervista/react/tipointervista");
-
-
-//       if (Array.isArray(responseTipoIntervista.data)) {
-//         const tipoIntervistaOptions = responseTipoIntervista.data.map((tipoIntervista) => ({
-//           label: tipoIntervista.descrizione,
-//           value: tipoIntervista.id,
-//         }));
-//         setTipoIntervistaOptions(tipoIntervistaOptions);
-
-
-//       if (Array.isArray(responseStato.data)) {
-//         const statoOptions = responseStato.data.map((stato) => ({
-//           label: stato.descrizione,
-//           value: stato.id,
-//         }));
-//         setStatoOptions(statoOptions);
-
-//       if (Array.isArray(ownerResponse.data)) {
-//         const ownerOptions = ownerResponse.data.map((owner) => ({
-//           label: owner.descrizione,
-//           value: owner.id,
-//         }));
-//         setOwnerOptions(ownerOptions);
-
-//       if (Array.isArray(responseTipologia.data)) {
-//         const tipologiaOptions = responseTipologia.data.map((tipologia) => ({
-//           label: tipologia.descrizione,
-//           value: tipologia.id,
-//         }));
-//         setTipologiaOptions(tipologiaOptions);
-//         // console.log("DATI DI JOBTILEOPTIONS: ", tipologiaOptions);
-//       }
-//     }
-//   }
-// }
-
-
-//     } catch (error) {
-//       console.error("Errore durante il recupero delle province:", error);
-//     }
-//   };
-
-//   fetchData();
-// }, []);
 
 
 
@@ -186,40 +108,6 @@ const initialValues = {
   idNextOwner:                      rowData.candidato?.owner?.descrizione              || ""
 };
 
-
-// const initialValues = {
-//   stato:                            rowData.stato?.id                                                  || "",
-//   nome:                             rowData.candidato?.nome                                                       || "",
-//   cognome:                          rowData.candidato?.cognome                                                    || "",
-//   dataNascita:                      rowData.candidato?.dataNascita                                                || "",
-//   location:                         rowData.candidato?.citta                                                      || "", 
-//   tipologia:                        rowData.candidato?.tipologia?.id                                              || "",
-//   anniEsperienza:                   rowData.anniEsperienza                                             || "",
-//   dataIncontro:                     rowData.dataColloquio                                             || "",
-//   recapiti:                         rowData.candidato?.cellulare                                                  || "",
-//   owner:                            rowData.owner?.id                                                 || "",
-//   aderenzaPosizione:                rowData.aderenza                                                  || "",
-//   coerenzaPercorso:                 rowData.coerenza                                                  || "",
-//   motivazionePosizione:             rowData.motivazione                                               || "",
-//   standing:                         rowData.standing                                                  || "",
-//   energia:                          rowData.energia                                                   || "",
-//   comunicazione:                    rowData.comunicazione                                             || "",
-//   livelloInglese:                   rowData.inglese                                                   || "",
-//   competenzeRuolo:                  rowData.competenze                                                || "",
-//   valutazione:                      rowData.valutazione                                               || "",
-//   oneWord:                          rowData.descrizioneCandidatoUna                                   || "",
-//   loVorrestiNelTuoTeam:             rowData.teamSiNo                                                  || "",
-//   descrizione:                      rowData.descrizioneCandidato                                                       || "",
-//   disponibilita:                    rowData.disponibilita                                             || "",
-//   ralAttuale:                       rowData.attuale                                                   || "",
-//   ralDesiderata:                    rowData.desiderata                                                || "",
-//   propostaEconomica:                rowData.proposta                                                  || "",
-//   followUp:                         rowData.tipo?.id                                                  || "",
-//   preavviso:                        rowData.preavviso                                                 || "",
-//   nextDeadline:                     rowData.nextDeadline                                              || "",
-//   ownerNextDeadline:                rowData.candidato?.owner?.id                                             || ""
-// };
-// console.log("INITIAL: ", initialValues);
 
 
 

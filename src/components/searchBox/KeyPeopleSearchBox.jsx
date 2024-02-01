@@ -21,11 +21,11 @@ const KeyPeopleSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Origi
   const [filteredData, setFilteredData] = useState([]);
 
   const convertStatus = (data) => {
-    // console.log("Dati per la conversione dello status:", data);
+
   
     if (data && data.status) {
       const numericalStatus = data.status;
-      // console.log("Valore numerico dello status:", numericalStatus);
+
   
       switch (numericalStatus) {
         case 1:
@@ -41,6 +41,15 @@ const KeyPeopleSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Origi
   
     return 'Sconosciuto';
   };
+
+
+
+const handleKeyDown = (e) => {
+  if (e.keyCode === 13) { // Verifica se è stato premuto il tasto "Invio"
+    handleSearch();     
+  }
+};
+
 
 
 
@@ -93,8 +102,6 @@ const headers = {
 
 
   const handleSearch = () => {
-    console.log("Valori di ricerca:", searchTerm);
-    console.log("Contenuto originale: ", OriginalKeypeople);
     const filteredData = OriginalKeypeople.filter(item =>
       Object.keys(searchTerm).every(key =>
         searchTerm[key] === '' ||
@@ -104,7 +111,6 @@ const headers = {
         String(item[key]).toLowerCase().includes(String(searchTerm[key]).toLowerCase())
       )
     );
-    console.log("Dati filtrati:", filteredData);
     onSearch(filteredData);
     setFilteredData(filteredData);
   };
@@ -131,6 +137,7 @@ const headers = {
     color: "#757575",
   }}
   native
+  onKeyDown={handleKeyDown}
 >
   <option value="" disabled>
     Stato
@@ -154,6 +161,7 @@ const headers = {
                     color: "#757575",
                   }}
                   native
+                  onKeyDown={handleKeyDown}
                 >
                   <option value="" disabled>
                     Owner
@@ -177,6 +185,7 @@ const headers = {
                     color: "#757575",
                   }}
                   native
+                  onKeyDown={handleKeyDown}
                 >
                   <option value="" disabled>
                     Azienda

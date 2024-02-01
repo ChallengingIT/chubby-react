@@ -40,11 +40,11 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Recupera l'accessToken da localStorage
+
      const user = JSON.parse(localStorage.getItem("user"));
      const accessToken = user?.accessToken;
  
-     // Configura gli headers della richiesta con l'Authorization token
+   
      const headers = {
        Authorization: `Bearer ${accessToken}`
      };
@@ -107,6 +107,13 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
     setFilteredData([]);
   };
 
+
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) { // Verifica se è stato premuto il tasto "Invio"
+      handleSearch();     
+    }
+  };
+
   
   return (
     <div className="gridContainer" style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr) auto', gap: '10px', alignItems: 'center', margin: '20px 5px', padding: '0 0 20px 0',  borderBottom: '2px solid #dbd9d9',}}>
@@ -119,6 +126,7 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
           className="text-form"
           maxLength="45"
           value={searchTerm.nome}
+          onKeyDown={handleKeyDown}
           onChange={(e) => setSearchTerm({ ...searchTerm, nome: e.target.value })}
           />
         <input style={{border: 'solid 1px #c4c4c4', marginTop: '10px'}}
@@ -128,6 +136,7 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
           className="text-form"
           maxLength="45"
           value={searchTerm.cognome}
+          onKeyDown={handleKeyDown}
           onChange={(e) => setSearchTerm({ ...searchTerm, cognome: e.target.value })}
           />
     {/* Seconda colonna */}
@@ -138,6 +147,7 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
           className="text-form"
           maxLength="45"
           value={searchTerm.email}
+          onKeyDown={handleKeyDown}
           onChange={(e) => setSearchTerm({ ...searchTerm, email: e.target.value })}
         />
       <Select
@@ -152,6 +162,7 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
                     color: "#757575",
                   }}
                   native
+                  onKeyDown={handleKeyDown}
                 >
                   <option value="" disabled>
                     Tipologia
@@ -175,6 +186,7 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
     color: "#757575",
   }}
   native
+  onKeyDown={handleKeyDown}
 >
   <option value="" disabled>
     Tipo
@@ -198,6 +210,7 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
     color: "#757575",
   }}
   native
+  onKeyDown={handleKeyDown}
 >
   <option value="" disabled>
     Stato

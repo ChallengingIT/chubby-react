@@ -37,7 +37,6 @@ const FatturazioneAttiva = () => {
           setFilteredFatturazioneAttiva(fatturazioneAttivaConId);
           setOriginalFatturazioneAttiva(fatturazioneAttivaConId);
  
-          console.log(fatturazioneAttivaConId);
           } else {
             console.error("I dati ottenuti non sono nel formato Array:", responseFatturazioneAttiva.data);
           }

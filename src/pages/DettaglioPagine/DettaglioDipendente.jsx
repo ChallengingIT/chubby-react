@@ -20,7 +20,6 @@ const DettaglioDipendente = () => {
   const [ livelloScolasticoOptions,       setLivelloScolasticoOptions         ] = useState([]);
   const [ tipologiaContrattoOptions,      setTipologiaContrattoOptions                 ] = useState([]);
 
-  console.log("Dati Arrivati: ", dipendentiData);
 
 
   useEffect(() => {
@@ -139,15 +138,13 @@ const DettaglioDipendente = () => {
 
 
 
-  console.log("Valore iniziale di status:", initialValues.status);
 
 
   const handleDownloadAllegati = async () => {
     for (const file of dipendentiData.files) {
       try {
         const fileID = file.id;
-        const fileDescrizione = file.descrizione; // Assicurati che ogni file abbia una descrizione.
-        console.log("File ID: ", fileID);
+        const fileDescrizione = file.descrizione; 
   
         const url = `http://localhost:8080/files/react/download/file/${fileID}`;
         const response = await axios({

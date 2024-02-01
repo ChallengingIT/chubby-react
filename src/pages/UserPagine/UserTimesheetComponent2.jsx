@@ -100,7 +100,6 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
                             giorni: {}
                         };
                     }
-                    // Assicurati che ogni giorno sia un oggetto con tutti i dati necessari
                     acc[idProgetto].giorni[current.giorno] = {
                         data: current.data,
                         oreOrdinarie: current.oreOrdinarie || 0,
@@ -113,7 +112,6 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
                         festivo: current.festivo,
                         id: current.id,
                         oreTotali: current.oreTotali || 0,
-                        // Aggiungi qui altri campi se necessario
                     };
                     return acc;
                 }, {});
@@ -183,7 +181,6 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
                 // Crea un oggetto che raggruppa le ore per progetto e giorno
                 const projectsMap = timesheetConId.reduce((acc, current) => {
                     if (!current.progetto) {
-                        // Gestisci il caso in cui l'oggetto progetto è null o mancante
                         return acc;
                     }
                     const idProgetto = current.progetto.id;
@@ -194,7 +191,6 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
                             giorni: {}
                         };
                     }
-                    // Assicurati che ogni giorno sia un oggetto con tutti i dati necessari
                     acc[idProgetto].giorni[current.giorno] = {
                         data: current.data,
                         oreOrdinarie: current.oreOrdinarie || 0,
@@ -207,7 +203,6 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
                         festivo: current.festivo,
                         id: current.id,
                         oreTotali: current.oreTotali || 0,
-                        // Aggiungi qui altri campi se necessario
                     };
                     return acc;
                 }, {});
@@ -246,7 +241,6 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
                 // Crea un oggetto che raggruppa le ore per progetto e giorno
                 const projectsMap = timesheetConId.reduce((acc, current) => {
                     if (!current.progetto) {
-                        // Gestisci il caso in cui l'oggetto progetto è null o mancante
                         return acc;
                     }
                     const idProgetto = current.progetto.id;
@@ -257,7 +251,6 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
                             giorni: {}
                         };
                     }
-                    // Assicurati che ogni giorno sia un oggetto con tutti i dati necessari
                     acc[idProgetto].giorni[current.giorno] = {
                         data: current.data,
                         oreOrdinarie: current.oreOrdinarie || 0,
@@ -270,7 +263,6 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
                         festivo: current.festivo,
                         id: current.id,
                         oreTotali: current.oreTotali || 0,
-                        // Aggiungi qui altri campi se necessario
                     };
                     return acc;
                 }, {});
@@ -293,17 +285,13 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
 
 
 
-    //useEffetch per verificare se ferie, permesso o malattia
     useEffect(() => {
-        // Se "ferie" o "malattia" sono selezionati, imposta "ore" a 8
         if (ferieChecked || malattiaChecked) {
             setOreOrdinarie('8');
         }
-        // Se "permesso" è selezionato, imposta "ore" a 0
         else if (permessoChecked) {
             setOreOrdinarie('0');
         }
-        // Se nessuno è selezionato, potresti voler resettare il campo "ore" o lasciarlo come sta
         else {
             setOreOrdinarie('0'); 
         }
@@ -348,7 +336,6 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
             setGiornoSelezionato(new Date(annoNumero, meseNumero - 1, giorno)); 
             setProgettoSelezionato(progetto); 
             setModalOpen(true); 
-             // Recupera i dati dal giorno selezionato
         const datiGiorno = progetto.giorni[giorno];
         if (datiGiorno) {
             setOrePermesso(datiGiorno.orePermesso || '');
@@ -358,9 +345,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
             setFerieChecked(datiGiorno.ferie || false);
             setMalattiaChecked(datiGiorno.malattia || false);
             setPermessoChecked(datiGiorno.permesso || false);
-            // Aggiungi qui altri campi se necessario
         } else {
-            // Resetta i valori se non ci sono dati per il giorno selezionato
             setOrePermesso('');
             setOreOrdinarie('');
             setOreStraordinario('');
@@ -434,7 +419,6 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
                     params: requestParams
                 });
                 const timesheetConId = response.data.mese.days.map((timesheet) => ({...timesheet}));
-                // Crea un oggetto che raggruppa le ore per progetto e giorno
                 const projectsMap = timesheetConId.reduce((acc, current) => {
                     const idProgetto = current.progetto.id;
                     if (!acc[idProgetto]) {
@@ -444,7 +428,6 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
                             giorni: {}
                         };
                     }
-                    // Assicurati che ogni giorno sia un oggetto con tutti i dati necessari
                     acc[idProgetto].giorni[current.giorno] = {
                         data: current.data,
                         oreOrdinarie: current.oreOrdinarie || 0,
@@ -457,7 +440,6 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
                         festivo: current.festivo,
                         id: current.id,
                         oreTotali: current.oreTotali || 0,
-                        // Aggiungi qui altri campi se necessario
                     };
                     return acc;
                 }, {});

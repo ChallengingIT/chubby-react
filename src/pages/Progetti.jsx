@@ -42,7 +42,6 @@ const Progetti = () => {
        };
  
       const response = await axios.get("http://localhost:8080/progetti/react", { headers: headers });
-       console.log("DATI ARRIVATI IN PROGETTI: ", response.data);
       if (Array.isArray(response.data)) {
       const progettiConId = response.data.map((progetti) => ({ ...progetti}));
       setOriginalProgetti(progettiConId);
@@ -98,7 +97,6 @@ const openDeleteDialog = (id) => {
          Authorization: `Bearer ${accessToken}`
        };
       const response = await axios.delete(`http://localhost:8080/progetti/react/elimina/${deleteId}`, { headers: headers });
-      console.log("risposta del server: ", response);
 
       setOpenDialog(false);
 
@@ -150,17 +148,6 @@ fetchData();
     },
   ];
 
-
-
-  // const initialData = [
-  //   { id: 1, cliente: "AON",   consulente: "",                    ruolo: "",      inizio: "2023-01-30", fine: "2023-04-02",  rate: "", costo: "",    margine: "",    margineP: "",   durata: "",   dStimata: "", dEffettiva: "", molTot: "0", valoreTot: "0" },
-  //   { id: 2, cliente: "AON",   consulente: "",                    ruolo: "",      inizio: "",           fine: "2023-01-30",  rate: "", costo: "21",  margine: "31",  margineP: "43", durata: "10", dStimata: "4",dEffettiva: "0",molTot: "0", valoreTot: "0" },
-  //   { id: 3, cliente: "Sisal", consulente: "Ngo Ndjock Angelica", ruolo: "PM",    inizio: "2023-01-30", fine: "2023-04-02	", rate: "", costo: "340", margine: "",    margineP: "",   durata: "",   dStimata: "", dEffettiva: "", molTot: "0", valoreTot: "0" },
-
-  // ];
-
-
-  // const [tableData, setTableData] = React.useState(initialData);
 
   const handleSearch = (filteredData) => {
     setFilteredProgetti(filteredData);

@@ -1,7 +1,10 @@
 import axios from "axios";
 
+
+
 const API_URL = "http://localhost:8080/api/auth/";
 const API_LOGOUT = "http://localhost:8080/logout";
+
 
 
 // Recupera l'accessToken da localStorage
@@ -34,9 +37,10 @@ class AuthService {
     return axios
     .post(API_LOGOUT, { headers: headers })
     .then(response => {
+      console.log("logout effettutato");
       if (response.data) {
         localStorage.removeItem("user");
-        console.log("logout effettutato");
+        
       }
       return response.data;
     })

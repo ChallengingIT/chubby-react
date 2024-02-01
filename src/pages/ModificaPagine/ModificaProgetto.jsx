@@ -11,7 +11,6 @@ const ModificaProgetto = () => {
 
   const { progettiData = {} } = location.state || {};
 
-  console.log("DATI ARRIVATI DA PROGETTI: ", progettiData);
 
   const [clienteOptions,    setClienteOptions]    = useState([]);
   const [dipendenteOptions, setDipendenteOptions] = useState([]);
@@ -88,7 +87,6 @@ const ModificaProgetto = () => {
     note:             progettiData.note             || "",
   };
 
-  console.log("VALORE TOTALE: ", progettiData.valoreTotale);
 
 
   const handleSubmit = async (values) => {
@@ -97,12 +95,10 @@ const ModificaProgetto = () => {
   
     if (!hasErrors) {
     try {
-      console.log("DATI DI VALUES: ", values);
 
       const response = await axios.post("http://localhost:8080/progetti/react/salva", values, {
         headers: headers 
       });
-      console.log("Response from server:", response.data);
 
       navigate("/progetti");
     } catch (error) {

@@ -14,17 +14,17 @@ export default function CustomCalendar2() {
               {...params} 
               InputProps={{...params.InputProps, disableUnderline: true}}
               sx={{ 
-                svg: { color: "#000000" }, // icon color
+                svg: { color: "#000000" },
                 input: { 
-                  borderRadius: '40px', // borderRadius for the text field
-                  backgroundColor: 'white', // background color for the text field
-                  padding: '10px', // padding inside the text field
-                  "&::placeholder": { // styles the placeholder
+                  borderRadius: '40px', 
+                  backgroundColor: 'white', 
+                  padding: '10px', 
+                  "&::placeholder": { 
                     fontSize: '1rem',
                   },
                 },
                 '& .MuiOutlinedInput-root': {
-                  borderRadius: '40px', // borderRadius for the outline
+                  borderRadius: '40px', 
                 }
               }}
             />

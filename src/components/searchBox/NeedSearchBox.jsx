@@ -34,7 +34,6 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalNe
   const handleWeekChange = (event) => {
     const newWeek = event.target.value;
     setSelectedWeek(newWeek);
-    // Aggiorna anche searchTerm per la ricerca, se necessario
     setSearchTerm({ ...searchTerm, week: newWeek });
   };
 
@@ -44,14 +43,18 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalNe
     return `${year}-W${String(weekNumber).padStart(2, '0')}`;
   };
 
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) { // Verifica se è stato premuto il tasto "Invio"
+      handleSearch();     
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Recupera l'accessToken da localStorage
      const user = JSON.parse(localStorage.getItem("user"));
      const accessToken = user?.accessToken;
  
-     // Configura gli headers della richiesta con l'Authorization token
      const headers = {
        Authorization: `Bearer ${accessToken}`
      };
@@ -94,8 +97,6 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalNe
   }, []);
 
   const handleSearch = () => {
-    console.log("Valori di ricerca:", searchTerm);
-    console.log("Contenuto originale: ", OriginalNeed);
     const filteredData = OriginalNeed.filter((item) =>
       Object.keys(searchTerm).every((key) =>
         searchTerm[key] === '' ||
@@ -106,7 +107,6 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalNe
         String(item[key]).toLowerCase().includes(String(searchTerm[key]).toLowerCase())
       )
     );
-    console.log("Dati filtrati:", filteredData);
     onSearch(filteredData);
     setFilteredData(filteredData);
   };
@@ -126,7 +126,7 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalNe
     fontSize: '0.8rem',
     textAlign: 'start',
     color: '#757575',
-    width: '100%', // Assicurati che questo si adatti al layout del tuo form
+    width: '100%', 
   };
   
       
@@ -147,6 +147,7 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalNe
                     color: "#757575",
                   }}
                   native
+                  onKeyDown={handleKeyDown}
                 >
                   <option value="" disabled>
                     Azienda
@@ -170,6 +171,7 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalNe
                     color: "#757575",
                   }}
                   native
+                  onKeyDown={handleKeyDown}
                 >
                   <option value="" disabled>
                     Tipologia
@@ -190,6 +192,7 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalNe
                   id="ricercaPriorita"
                   max="4"
                   value={searchTerm.priorita}
+                  onKeyDown={handleKeyDown}
                   onChange={(e) => setSearchTerm({ ...searchTerm, priorita: e.target.value })}
                 />
               <Select
@@ -204,6 +207,7 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalNe
                     color: "#757575",
                   }}
                   native
+                  onKeyDown={handleKeyDown}
                 >
                   <option value="" disabled>
                     Stato
@@ -227,6 +231,7 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalNe
                     color: "#757575",
                   }}
                   native
+                  onKeyDown={handleKeyDown}
                 >
                   <option value="" disabled>
                     Owner
@@ -245,12 +250,11 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalNe
   onChange={handleWeekChange}
   InputLabelProps={{ shrink: true}}
   variant="outlined"
+  onKeyDown={handleKeyDown}
   InputProps={{
     style: {
         height: "40px",
-        // marginBottom: "15px",
-      borderRadius: "40px", // Imposta i bordi arrotondati
-    //   fontSize: "0.8rem",
+      borderRadius: "40px", 
       textAlign: "start",
       color: "#757575",
     }

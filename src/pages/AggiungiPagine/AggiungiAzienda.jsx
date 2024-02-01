@@ -100,55 +100,6 @@ const AggiungiAziende = () => {
   ];
 
 
-
-
-
-  // const handleSubmit = async (values) => {
-  //   try {
-  //     console.log("DATI DI VALUES: ", values);
-
-  //     // Effettua la validazione prima di inviare la richiesta al server
-  //     const validationErrors = validate(values);
-
-  //     if (Object.keys(validationErrors).length === 0) {
-  //       const response = await axios.post("http://localhost:8080/aziende/react/salva", values);
-  //       console.log("Response from server:", response.data);
-
-  //       navigate("/aziende");
-  //     } else {
-  //       console.log("Errore di validazione:", validationErrors);
-  //     }
-  //   } catch (error) {
-  //     console.error("Errore durante il salvataggio:", error);
-  //   }
-  // };
-
-  // const validate = (values) => {
-  //   const errors = {};
-  //   console.log("Dati in validate:", values);
-  //   const campoObbligatorioErrors = {};
-
-  //   // Esempio: verifica se il campo denominazione è vuoto
-  //   if (!values.denominazione) {
-  //     errors.denominazione = "Il campo Nome Azienda è obbligatorio";
-  //   }
-    
-  //   if (!values.email) {
-  //     errors.email = "Il campo Email è obbligatorio";
-  //   }
-
-  //   if (!values.idOwner) {
-  //     errors.idOwner = "Il campo Owner è obbligatorio";
-  //   }
-
-  //   if (!values.status) {
-  //     errors.status = "Il campo Stato è obbligatorio";
-  //   }
-
-
-  //   return { errors, campoObbligatorioErrors };
-  // };
-
   const handleSubmit = async (values) => {
     const errors    = validateFields(values);
     const hasErrors = Object.keys(errors).length > 0;
@@ -182,21 +133,16 @@ const AggiungiAziende = () => {
         const headers = {
           Authorization: `Bearer ${accessToken}`
         };
-        console.log("HEADERS: ", headers);  
 
         const response = await axios.post("http://localhost:8080/aziende/react/salva", values, {
           headers: headers
         });
-        console.log("Response from server:", response.data);
         navigate("/aziende");
       } catch (error) {
         console.error("Errore durante il salvataggio:", error);
 
       }
-    } else {
-      // Gestisci qui gli errori di validazione...
-      console.log("Errore di validazione:", errors);
-      // Potresti voler impostare lo stato degli errori o visualizzare un messaggio all'utente
+    
     }
   };
   

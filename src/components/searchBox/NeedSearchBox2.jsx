@@ -34,7 +34,6 @@ const NeedSearchBox2 = ({ data, onSearch, onReset, onSearchTextChange, OriginalN
   const handleWeekChange = (event) => {
     const newWeek = event.target.value;
     setSelectedWeek(newWeek);
-    // Aggiorna anche searchTerm per la ricerca, se necessario
     setSearchTerm({ ...searchTerm, week: newWeek });
   };
 
@@ -47,11 +46,9 @@ const NeedSearchBox2 = ({ data, onSearch, onReset, onSearchTextChange, OriginalN
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Recupera l'accessToken da localStorage
      const user = JSON.parse(localStorage.getItem("user"));
      const accessToken = user?.accessToken;
  
-     // Configura gli headers della richiesta con l'Authorization token
      const headers = {
        Authorization: `Bearer ${accessToken}`
      };
@@ -94,8 +91,7 @@ const NeedSearchBox2 = ({ data, onSearch, onReset, onSearchTextChange, OriginalN
   }, []);
 
   const handleSearch = () => {
-    console.log("Valori di ricerca:", searchTerm);
-    console.log("Contenuto originale: ", OriginalNeed);
+
     const filteredData = OriginalNeed.filter((item) =>
       Object.keys(searchTerm).every((key) =>
         searchTerm[key] === '' ||
@@ -106,7 +102,6 @@ const NeedSearchBox2 = ({ data, onSearch, onReset, onSearchTextChange, OriginalN
         String(item[key]).toLowerCase().includes(String(searchTerm[key]).toLowerCase())
       )
     );
-    console.log("Dati filtrati:", filteredData);
     onSearch(filteredData);
     setFilteredData(filteredData);
   };
@@ -244,7 +239,7 @@ const NeedSearchBox2 = ({ data, onSearch, onReset, onSearchTextChange, OriginalN
   InputProps={{
     style: {
         marginBottom: "15px",
-      borderRadius: "40px", // Imposta i bordi arrotondati
+      borderRadius: "40px", 
       fontSize: "0.8rem",
       textAlign: "start",
       color: "#757575",

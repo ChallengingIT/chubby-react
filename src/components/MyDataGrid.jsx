@@ -2,25 +2,30 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 import CircularProgress from '@mui/material/CircularProgress';
-import AziendeSearchBox3 from "./searchBox/AziendeSearchBox";
 
 
 
 const MyDataGrid = ({ data, columns, title, searchBoxComponent: SearchBox }) => {
 
-  const [ rowsPerPage,                setRowsPerPage ] = React.useState(25);
-  const [ page,                       setPage        ] = React.useState(0);
-  const [ loading,                    setLoading     ] = React.useState(false);
+  const [ rowsPerPage,                setRowsPerPage        ] = React.useState(25);
+  const [ page,                       setPage               ] = React.useState(0);
+  const [ loading,                    setLoading            ] = React.useState(false);
+  const [ showNoDataMessage,          setShowNoDataMessage  ] = React.useState(false); 
+
 
 
   React.useEffect(() => {
-    const timer = setTimeout(() => {
-      if (data.length === 0) {
-        setLoading(true);
-      }
-    }, 100);
-
-    return () => clearTimeout(timer);
+    if (data.length === 0) {
+      setLoading(true);
+      const timer = setTimeout(() => {
+        setLoading(false);
+        setShowNoDataMessage(true);
+      }, 600);
+      return () => clearTimeout(timer);
+    } else {
+      setLoading(false);
+      setShowNoDataMessage(false);
+    }
   }, [data]);
 
 
@@ -48,7 +53,6 @@ const MyDataGrid = ({ data, columns, title, searchBoxComponent: SearchBox }) => 
         flexDirection: "column",
         margin: '20px',
         marginRight: '20px',
-        // marginTop: "20px",
         borderWidth: "0",
         boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.6)",
         fontSize: "25px",
@@ -113,10 +117,10 @@ const MyDataGrid = ({ data, columns, title, searchBoxComponent: SearchBox }) => 
         onRowsPerPageChange={handleChangeRowsPerPage}
         loading={data.length === 0 && loading}
         noRowsOverlay={
-          loading ? (
-            <div>Caricamento dei dati in corso...</div>
+          showNoDataMessage ? ( 
+            <div>Nessun dato</div>
           ) : (
-            <div>No rows</div>
+            <CircularProgress style={{ color: '#fbb800' }} />
           )
         }
         components={{
@@ -135,12 +139,6 @@ const MyDataGrid = ({ data, columns, title, searchBoxComponent: SearchBox }) => 
         sx={{
           height: `${5 * 52}px`,
           borderStyle: "none",
-          // marginLeft: "5px",
-          // "& .MuiDataGrid-columnHeader": {
-          //   borderBottom: "2px solid #ffb800 !important",
-          //   width: "100%",
-          //   border: 'hidden'
-          // },
 
           "& .MuiDataGrid-columnHeaderTitle": {
             fontWeight: "bolder",
@@ -171,13 +169,13 @@ const MyDataGrid = ({ data, columns, title, searchBoxComponent: SearchBox }) => 
             width: "100%",
           },
           "& .MuiDataGrid-cell": {
-            fontSize: "16.5px", // Imposta la dimensione del font delle celle
+            fontSize: "16.5px",
             fontFamily: "Roboto",
           },
           "& .MuiDataGrid-columnHeaderTitle": {
             color: '#808080',
             fontWeight: "bolder",
-            fontSize: "18px", // Imposta la dimensione del font degli header delle colonne
+            fontSize: "18px", 
           },
           
         }}

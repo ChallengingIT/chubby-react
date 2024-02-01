@@ -39,6 +39,7 @@ const [ dipendenteUnivoco,      setDipendenteUnivoco                ] = useState
 const [ giorniTotali,           setGiorniTotali                     ] = useState(0);
 const [ selectDisabled,         setSelectDisabled                   ] = useState(false);
 
+
 // Recupera l'accessToken da localStorage
 const user = JSON.parse(localStorage.getItem("user"));
 const accessToken = user?.accessToken;
@@ -104,15 +105,17 @@ const handleSearch = async () => {
         al: alVal
     };
 
+
     try {
-        const responseReport = await axios.get("http://localhost:8080/hr/report/estrai", params, {
-            headers: headers
+        const responseReport = await axios.get("http://localhost:8080/hr/report/estrai", {
+            headers: headers,
+            params: params
         });
+
         setShowTable(true);
         setLoading(false);
         setDipendenti(responseReport.data);
-        console.log("dipendenti: ", dipendenti);
-        console.log("DATI DI ESTRAI REPORT: ", responseReport.data);
+ 
     } catch(error) {
         console.error("Errore nella chiamata per recuperare il report: ", error);
     }
@@ -134,11 +137,9 @@ const handleEstraiExcel = async () => {
 
     const primoGiornoDelMese = new Date(annoSelezionato, meseSelezionato -1 , 1);
     const ultimoGiornoDelMese = new Date(annoSelezionato, meseSelezionato, 0);
-    console.log("primoGiornoDelMese: ", primoGiornoDelMese);
 
-    const giornoInizio = dal || toLocalISOString(primoGiornoDelMese);
-    console.log("giornoInizio: ", giornoInizio);
-    const giornoFine = al || toLocalISOString(ultimoGiornoDelMese);
+    const giornoInizio = dal || primoGiornoDelMese.getDate().toString();
+    const giornoFine = al || ultimoGiornoDelMese.getDate().toString();
     const url = `http://localhost:8080/hr/report/excel/${annoSelezionato}/${meseSelezionato}/${giornoInizio}/${giornoFine}`
 
 
@@ -149,17 +150,16 @@ const handleEstraiExcel = async () => {
             responseType: 'blob',
             headers: headers
         });
-        console.log("URL EXCEL:", url);
-        console.log("ESTRAI EXCEL: ", responseEstraiExcel);
+  
 
-        const fileURL = window.URL.createObjectURL(new Blob([responseEstraiExcel.data], { type: 'application/xls' }));
+        const fileURL = window.URL.createObjectURL(new Blob([responseEstraiExcel.data]));
 
         const link = document.createElement('a');
         link.href = fileURL;
         link.setAttribute('download', `report-${annoSelezionato}-${meseSelezionato}.xls`);
         document.body.appendChild(link);
         link.click();
-        document.body.removeChild(link);
+        
     } catch (error) {
         console.error("Errore nella chiamata per estrarre il report in formato Excel: ", error);
     }   
@@ -391,7 +391,9 @@ return (
                         {renderDayBox(dipendente, giorniTotali)}
                     </TableRow>
                     ))}
-                     <TablePagination
+                    
+                </TableBody>
+                <TablePagination
                 count={dipendenti.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
@@ -399,7 +401,6 @@ return (
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 labelRowsPerPage="Dipendenti per pagina:"
             />
-                </TableBody>
             </Table>
             {/* box per la leggenda */}
         <Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center', margin: '20px' }}>

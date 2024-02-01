@@ -36,18 +36,15 @@ const LoginForm = () => {
         throw new Error('Errore durante il login');
       }
 
-      // Gestisci la risposta JSON o esegui altre azioni necessarie
       const data = await response.json();
 
-      // Esegui la tua richiesta successiva qui
       await fetch('https://localhost:8080/home', {
-        method: 'GET', // o 'POST' o qualsiasi altro metodo
+        method: 'GET', 
         headers: {
           'XSRF-TOKEN': csrfToken,
         },
       });
 
-      // Puoi anche navigare a una nuova pagina dopo il login
       navigate('/login');
     } catch (error) {
       console.error('Errore durante il login', error);

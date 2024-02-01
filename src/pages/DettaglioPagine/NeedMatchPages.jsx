@@ -48,7 +48,6 @@ function NeedMatchPages() {
   
 
   const navigateToCercaCandidato = (params) => {
-    console.log("Navigating with email:", params.email);
     navigate('/recruiting', { state: { params } });
   };
   
@@ -80,7 +79,6 @@ function NeedMatchPages() {
         const associatiConId = associatiResponse.data.map((associati) => ({ ...associati }));
         setAssociatiOptions(associatiConId);
         // setFilteredAssociabili(associatiConId);
-        console.log("DATI DA ASSOCIATI: ", associatiOptions);
       } else {
         console.error("I dati ottenuti non sono nel formato Array:", associatiResponse.data);
       }
@@ -89,7 +87,6 @@ function NeedMatchPages() {
         const storicoConId = storicoResponse.data.map((storico) => ({ ...storico }));
         setStoricoOptions(storicoConId);
         // setFilteredAssociabili(storicoConId);
-        console.log("DATI DA STORICO: ",storicoConId);
       } else {
         console.error("I dati ottenuti non sono nel formato Array:", storicoResponse.data);
       }
@@ -99,7 +96,6 @@ function NeedMatchPages() {
         const associabiliConId = associabiliResponse.data.map((associabili) => ({ ...associabili }));
         setFilteredAssociabili(associabiliConId);
         setOriginalAssociabili(associabiliConId);
-        console.log("DATI DA ASSOCIABILI: ",associabiliConId);
       } else {
         console.error("I dati ottenuti non sono nel formato Array:", associabiliResponse.data);
       }
@@ -111,9 +107,7 @@ function NeedMatchPages() {
     }
   };
 
-  // console.log("VALORE DI ID: ", id);
-  // console.log("ID DI ASSOCIATO: ", associatiOptions);
-  
+ 
 
   useEffect(() => {
     fetchData();
@@ -134,17 +128,13 @@ function NeedMatchPages() {
   const handleDeleteAssociati = async (row) => {
     try {
 
-      // console.log("ID CANDIDATO ASSOCIATO: ", row);
 
       const idNeed = parseInt(id); 
       const idCandidato = row;
 
-      console.log("idCandidato in handle associati delete: ", idCandidato);
 
       const url = `http://localhost:8080/associazioni/react/rimuovi/candidato/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
-      console.log("URL con parametri di query: ", url);
       const response = await axios.delete(url, { headers: headers});;
-      console.log(response.data);
   
       fetchData();
     } catch (error) {
@@ -167,7 +157,6 @@ function NeedMatchPages() {
 
     
       const response = await axios.delete(url, { headers: headers});;;
-      console.log(response.data);
   
       fetchData();
     } catch (error) {
@@ -183,10 +172,8 @@ function NeedMatchPages() {
 
       const url = `http://localhost:8080/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
   
-      console.log("URL con parametri di query: ", url);
   
       const response = await axios.post(url, { headers: headers});
-      console.log(response.data);
   
       fetchData();
     } catch (error) {
@@ -218,7 +205,6 @@ function NeedMatchPages() {
   };
 
 
-  // console.log("DATI CHE ARRIVANO AL MODAL: ", initialValuesAggiorna);
 
 
   
@@ -232,7 +218,6 @@ function NeedMatchPages() {
   const handleSaveModal = async (selectedRow) => {
     try {
 
-      console.log("DATI IN ROW: ", selectedRow);
 
       const idNeedNum = parseInt(id); 
       const idCandidatoNum = parseInt(selectedRow.idCandidato); 
@@ -247,10 +232,8 @@ function NeedMatchPages() {
       delete updatedValues.candidato;
       delete updatedValues.cliente;
   
-      console.log("Dati da inviare in aggiorna : ", updatedValues);
   
       const response = await axios.post(`http://localhost:8080/associazioni/salva`, updatedValues, { headers: headers });;
-      console.log(response.data);
       fetchData();
     } catch (error) {
       console.error("Errore durante il recupero dei dati:", error);

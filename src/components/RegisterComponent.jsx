@@ -34,7 +34,6 @@ export const RegisterComponent = (props) => {
       localStorage.setItem("userData", JSON.stringify(formValues));
       setIsSubmit(true);
       localStorage.setItem("lastRegisteredEmail", formValues.email);
-      console.log(localStorage.getItem("userData"));
       navigate("/login");
     } else {
  

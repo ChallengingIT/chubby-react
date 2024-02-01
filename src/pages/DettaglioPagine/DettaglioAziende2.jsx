@@ -40,7 +40,7 @@ function DettaglioAziende2() {
         const [ isEmailPopupOpen,   setEmailPopupOpen     ] = useState(false);
         const [ isPhonePopupOpen,   setPhonePopupOpen     ] = useState(false);
         const [ ownerOptions,       setOwnerOptions       ] = useState([]);
-        const [ contattoOptions,    setContattoOptions    ] = useState([]);
+        const [ keyPeopleOptions,   setKeyPeopleOptions    ] = useState([]);
         const [ needOptions,        setNeedOptions        ] = useState([]);
         const [ attivitaOptions,    setAttivitaOptions    ] = useState([]);
         const [ statoNeedOptions,   setStatoNeedOptions   ] = useState([]);
@@ -67,13 +67,16 @@ function DettaglioAziende2() {
     const fetchAttivita = async () => {
         try {
         const responseAttivita = await axios.get(`http://localhost:8080/aziende/react/attivita/${id}`, { headers: headers });
+
         if (Array.isArray(responseAttivita.data)) {
             const attivitaOptions = responseAttivita.data.map((attivita) => ({
             note: attivita.note,
             owner: `${attivita.owner.nome} ${attivita.owner.cognome}`,
-            data: attivita.data
+            data: attivita.data,
+            keyPeople: attivita.keyPeople ? attivita.keyPeople.nome : '' 
             }));
             setAttivitaOptions(attivitaOptions);
+           
         }
         } catch (error) {
         console.error("Errore durante il recupero delle attività:", error);
@@ -86,7 +89,7 @@ function DettaglioAziende2() {
     const fetchOptions = async () => {
         try {
         const responseOwner           = await axios.get("http://localhost:8080/aziende/react/owner"             , { headers: headers });
-        const responseContatto        = await axios.get(`http://localhost:8080/aziende/react/keypeople/${id}`   , { headers: headers });
+        const responseKeyPeople        = await axios.get(`http://localhost:8080/aziende/react/keypeople/${id}`   , { headers: headers });
         const responseNeed            = await axios.get(`http://localhost:8080/need/react/cliente/${id}`        , { headers: headers });
         // const responseAttivita        = await axios.get(`http://localhost:8080/aziende/react/attivita/${id}`    , { headers: headers });
         const responseStatoNeed       = await axios.get(`http://localhost:8080/need/react/cliente/${id}`        , { headers: headers });
@@ -102,7 +105,6 @@ function DettaglioAziende2() {
             }));
 
             setStatoNeedOptions(statoNeedOptions);
-            // console.log("DATI RECUPERATI PER STATO VINTO: ", statoNeedOptions);
         }
 
 
@@ -117,18 +119,18 @@ function DettaglioAziende2() {
             setNeedOptions(needOptions);
         }
 
-        if (Array.isArray(responseContatto.data)) {
-            const contattoOptions = responseContatto.data.map((contatto) => ({
+        if (Array.isArray(responseKeyPeople.data)) {
+            const keyPeopleOptions = responseKeyPeople.data.map((keyPeople) => ({
 
-            nome:       contatto.nome,
-            ruolo:      contatto.ruolo,
-            email:      contatto.email,
-            cellulare:  contatto.cellulare,
-            value:      contatto.id,
-            label:      contatto.nome
+            nome:       keyPeople.nome,
+            ruolo:      keyPeople.ruolo,
+            email:      keyPeople.email,
+            cellulare:  keyPeople.cellulare,
+            value:      keyPeople.id,
+            // label:      keyPeople.nome
 
             }));
-            setContattoOptions(contattoOptions);
+            setKeyPeopleOptions(keyPeopleOptions);
         }
 
         if (Array.isArray(responseOwner.data)) {
@@ -155,10 +157,8 @@ function DettaglioAziende2() {
     };
     
     const totalVinto = countVintoStatus(statoNeedOptions);
-    // console.log('Numero totale di stati "Vinto":', totalVinto);
 
     const totalStatus = statoNeedOptions.length;
-    // console.log('Numero totale di stati:', totalStatus);
 
     const getUltimaAttivita = (attivitaOptions) => {
     let ultimaData = "";
@@ -218,7 +218,6 @@ function DettaglioAziende2() {
             
                 try {
                 const responseFeed = await axios.post(`http://localhost:8080/aziende/react/attivita/salva?${params}`, attivitaMap, { headers });
-                console.log("Attività salvata correttamente", responseFeed);
                 setPopupData(initialState);
                 setTimeout(fetchAttivita, 500); 
                 } catch (error) {
@@ -289,20 +288,35 @@ function DettaglioAziende2() {
                 };
 
 
-                //dati di "Attività"
-                    const tableAttivita = [
-                        { label: "Owner",                 name: "owner" },
-                        { label: "Data" ,                 name: "data"  },
-                        { label: "Note",                  name: "note"  },
-                        { label: 'Contatto',              name: 'contatto' },
-                    ];
+                // //dati di "Attività"
+                //     const tableAttivita = [
+                //         { label: "Owner",                 name: "owner" },
+                //         { label: "Data" ,                 name: "data"  },
+                //         { label: "Note",                  name: "note"  },
+                //         { label: 'Contatto',              name: 'keyPeople' },
+                //     ];
                     
-                    const intialValuesAttivita = attivitaOptions.map(attivita => ({
-                        owner:                            attivita.owner || "",
-                        data:                             attivita.data  || "",
-                        note:                             attivita.note  || "",
-                        contatto:                         attivita.contatto || "",
-                    }));
+                //     const intialValuesAttivita = attivitaOptions.map(attivita => ({
+                //         owner:                            attivita.owner || "",
+                //         data:                             attivita.data  || "",
+                //         note:                             attivita.note  || "",
+                //         keyPeople:                        attivita.keyPeople || ""
+                //     }));
+
+                //dati di "Attività"
+                const tableAttivita = [
+                    { label: "Owner", name: "owner"},
+                    { label: "Data", name: "data"},
+                    { label: "Note", name: "note"},
+                    { label: "Contatto", name: "keyPeople"}
+                ];
+
+                const initialValuesAttivita = attivitaOptions.map(attivita => ({
+                    owner: attivita.owner || "",
+                    data: attivita.data || "",
+                    note: attivita.note || "",
+                    keyPeople: attivita.keyPeople || ""
+                }));
 
 
                     //dati di "Need"
@@ -340,17 +354,17 @@ function DettaglioAziende2() {
                                     ];
                                     
                                     
-                                    const initialValuesContatti = contattoOptions.map(contatto => ({
-                                        nome:                            contatto.nome       || "",
-                                        ruolo:                           contatto.ruolo      || "",
-                                        email:                           contatto.email      || "",
-                                        cellulare:                       contatto.cellulare  || ""
+                                    const initialValuesContatti = keyPeopleOptions.map(keyPeople => ({
+                                        nome:                            keyPeople.nome       || "",
+                                        ruolo:                           keyPeople.ruolo      || "",
+                                        email:                           keyPeople.email      || "",
+                                        cellulare:                       keyPeople.cellulare  || ""
                                     }));
 
                                     //dati dentro i popup
                                     const popupFields = [
                                         { label: 'Owner',                 name: 'idOwner',                type: "select",                 options: ownerOptions    },
-                                        { label: 'Contatto',              name: 'idKeyPeople',            type: "select",                 options: contattoOptions },
+                                        { label: 'Contatto',              name: 'idKeyPeople',            type: "select",                 options: keyPeopleOptions },
                                         { label: 'Commento',              name: 'note',                   type: "note"                                             },
                                         ];
 
@@ -467,7 +481,7 @@ function DettaglioAziende2() {
                 <Grid item xs={12} md={6}>
                 <AttivitaCard
                     columns={tableAttivita}
-                    initialValues={intialValuesAttivita}
+                    initialValues={initialValuesAttivita}
                 />
                 </Grid>
 

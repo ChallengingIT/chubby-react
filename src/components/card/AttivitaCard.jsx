@@ -45,7 +45,7 @@ const AttivitaCard = ({ columns, initialValues }) => {
                 {columns.map((column) => (
                   <TableCell 
                     key={column.name} 
-                    style={{ fontWeight: 'bold', padding: "6px 16px" }} // Removed borderBottom: "none"
+                    style={{ fontWeight: 'bold', padding: "6px 16px" }} 
                   >
                     {column.label}
                   </TableCell>
@@ -55,11 +55,12 @@ const AttivitaCard = ({ columns, initialValues }) => {
             <TableBody>
               {initialValues.map((row, index) => (
                 <TableRow key={index}>
-                  <TableCell component="th" scope="row" style={{ padding: "6px 16px" }}> {/* Removed borderBottom: "none" */}
+                  <TableCell component="th" scope="row" style={{ padding: "6px 16px" }}> 
                     {row.owner}
                   </TableCell>
                   <TableCell style={{ padding: "6px 16px" }}>{row.data}</TableCell>
                   <TableCell style={{ padding: "6px 16px" }}>{row.note}</TableCell>
+                  <TableCell style={{ padding: "6px 16 px"}}>{row.keyPeople}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

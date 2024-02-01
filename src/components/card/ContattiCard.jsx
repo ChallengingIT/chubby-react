@@ -46,7 +46,7 @@ const ContattiCard = ({ fields, initialValues, tableTitle }) => {
           initialValues.map((contact, index) => (
             <div key={index} style={{ marginBottom: "16px" }}>
               {fields.map((field) => (
-                <Typography key={field.name} variant="subtitle1" sx={{ display: 'block', fontWeight: field.name === 'label' ? 'bold' : 'normal' }}>
+                <Typography key={field.name} variant="subtitle1" sx={{ display: 'block', fontSize: '1.2rem', fontWeight: field.name === 'label' ? 'bold' : 'normal', marginLeft: '20px' }}>
                   {field.label}: {renderContactField(field, contact[field.name])}
                 </Typography>
               ))}

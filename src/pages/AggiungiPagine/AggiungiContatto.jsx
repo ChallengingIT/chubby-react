@@ -30,7 +30,6 @@ const AggiungiContatto = () => {
             label: owner.descrizione,
             value: owner.id,
           }));
-          // console.log("Aziende options. ", aziendeOptions);
           setOwnerOptions(ownerOptions);
         } else {
           console.error("I dati ottenuti non sono nel formato Array:", ownerResponse.data);
@@ -42,7 +41,6 @@ const AggiungiContatto = () => {
             label: aziende.denominazione,
             value: aziende.id,
           }));
-          // console.log("Aziende options. ", aziendeOptions);
           setAziendeOptions(aziendeOptions);
         } else {
           console.error("I dati ottenuti non sono nel formato Array:", aziendeResponse.data);
@@ -93,21 +91,17 @@ const AggiungiContatto = () => {
        Authorization: `Bearer ${accessToken}`
      };
 
-      console.log("DATI PRIMA DELL'INVIO: ", values);
 
       const response = await axios.post("http://localhost:8080/keypeople/react/salva", values, {
         headers: headers
       });
-      console.log("Response from server:", response.data);
 
       navigate("/keyPeople");
     } catch (error) {
       console.error("Errore durante il salvataggio:", error);
     }
   }else {
-    // Gestisci qui gli errori di validazione...
     console.log("Errore di validazione:", errors);
-    // Potresti voler impostare lo stato degli errori o visualizzare un messaggio all'utente
   }
   };
 

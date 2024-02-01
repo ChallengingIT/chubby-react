@@ -15,8 +15,7 @@ import {
   ListItemText, 
   FormHelperText 
 } from '@mui/material';
-// import WeekPickers from "./WeekPickers";
-// import dayjs from 'dayjs';
+
 import CloudDownloadIcon  from '@mui/icons-material/CloudDownload';
 import CloudUploadIcon    from '@mui/icons-material/CloudUpload';
 import DeleteIcon         from '@mui/icons-material/Delete';
@@ -52,9 +51,7 @@ const FieldsBox = ({
   
 
 
-  // const handleChange = (name) => (event) => {
-  //   setValues({ ...values, [name]: event.target.value });
-  // };
+
 
 
 //stile campi disabilitati
@@ -64,28 +61,12 @@ const getDisabledStyles = (isDisabled) => {
 
 
 
-  
-// handleChangeMultiple FUNZIONANTE!!!!!
-  // const handleChangeMultiple = (name) => (event) => {
-  //   if (event.target.type === 'file') {
-  //     // Prendi tutti i file dall'input
-  //     const files = Array.from(event.target.files);
-  //     console.log(`File caricati per ${name}:`, files);
-
-  //     // Aggiorna il valore del form con l'array di file
-  //     setValues({ ...values, [name]: files });
-  //   } else {
-  //     // Per altri tipi di input, imposta il valore come al solito
-  //     setValues({ ...values, [name]: event.target.value });
-  //   }
-  // };
 
 
   const handleChangeMultiple = (name) => (event) => {
     if (event.target.type === 'file') {
       // Prendi tutti i file dall'input
       const newFiles = Array.from(event.target.files);
-      console.log(`File caricati per ${name}:`, newFiles);
   
       // Accedi ai file esistenti nel tuo stato (se presenti)
       const existingFiles = values[name] || [];
@@ -130,97 +111,6 @@ const getDisabledStyles = (isDisabled) => {
 
 
 
-// const handleDownload = async (fileId) => {
-//   console.log("FILE ID: ", fileId);
-//   // URL dell'endpoint per il download del file
-//   const url = `http://localhost:8080/files/react/download/file/${fileId}`;
-
-//   try {
-//     // Esegui la richiesta POST usando Axios
-//     const response = await axios({
-//       method: 'POST',
-//       url: url,
-//       responseType: 'blob', // Importante per gestire il download di file binari
-//     });
-
-//     // Crea un URL temporaneo per il file scaricato
-//     const fileURL = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
-
-//     // Crea un elemento link per scaricare il file
-//     const link = document.createElement('a');
-//     link.href = fileURL;
-//     link.setAttribute('download', `file-${fileId}.pdf`); // Imposta un nome file per il download con estensione .pdf
-//     document.body.appendChild(link);
-
-//     // Simula il click e rimuovi l'elemento link
-//     link.click();
-//     document.body.removeChild(link);
-//   } catch (error) {
-//     console.error('Si è verificato un errore durante il download del file:', error);
-//     // Gestisci qui l'errore come preferisci
-//   }
-// };
-
-
-
-
-
-  // const handleDownload = (fileUrl, fileName) => {
-  //   const link = document.createElement('a');
-  //   link.href = fileUrl;
-  //   link.download = fileName;
-  //   document.body.appendChild(link);
-  //   link.click();
-  //   document.body.removeChild(link);
-  // };
-  
-  // const handleDeleteFile = (fieldName, fileName) => {
-  //   // Aggiorna lo stato per rimuovere il file dall'elenco
-  //   setValues({
-  //     ...values,
-  //     [fieldName]: values[fieldName].filter(file => file.name !== fileName)
-  //   });
-  // };
-
-  // const handleDeleteFile = (fieldName, fileId) => {
-  //   // Verifica che il campo esista e che sia un oggetto
-  //   if (values[fieldName] && typeof values[fieldName] === 'object') {
-  //     // Verifica che l'oggetto rappresenti il file che vuoi eliminare
-  //     if (values[fieldName].id === fileId) {
-  //       // Rimuovi il file dall'oggetto values
-  //       const {[fieldName]: _, ...newvalues} = values;
-  
-  //       // Aggiorna lo stato per riflettere la rimozione del file
-  //       setValues(newvalues);
-  //     } else {
-  //       console.error("Il file da eliminare non corrisponde all'ID fornito.");
-  //     }
-  //   } else {
-  //     console.error(`Expected an object for ${fieldName}, but received:`, values[fieldName]);
-  //     // Gestisci l'errore come preferisci...
-  //   }
-  // };
-  
-  
-
-  // const handleChangeMultiple = (name) => (event) => {
-  //   if (event.target.type === 'file') {
-  //     // Crea un array dai file selezionati
-  //     const filesArray = Array.from(event.target.files);
-  //     console.log(`File caricati per ${name}:`, filesArray);
-  
-  //     // Crea un nuovo oggetto FormData
-  //     const formData = new FormData();
-  //     // Aggiungi ogni file a formData
-  //     filesArray.forEach((file, index) => {
-  //       formData.append(`${name}${index}`, file);
-  //     });
-  
-  //     // Aggiorna il valore del form con l'oggetto FormData
-  //     setValues({ ...values, [name]: formData });
-  //   }
-  // };
-
   const handleFileChange = (name, event) => {
     const file = event.target.files[0];
     if (file) {
@@ -229,79 +119,28 @@ const getDisabledStyles = (isDisabled) => {
         [name]: {
           file,
           name: file.name,
-          url: URL.createObjectURL(file), // Crea un URL temporaneo per il download del file
+          url: URL.createObjectURL(file),
         }
       }));
     }
   };
 
-  // const handleFileCVCF = (name, event) => {
-  //   const file = event.target.files[0];
-  //   if (file) {
-  //     if (name === "cv") {
-  //       onUploadCV(file);  // Chiama handleUploadCV con il file selezionato
-  //     } else if (name === "cf") {
-  //       onUploadCF(file);  // Chiama handleUploadCF con il file selezionato
-  //     }
-  //   }
-  // };
+
   
   
   
   const handleChangeSkills = (event) => {
-    // Assicurati che event.target sia definito
     const selectedSkills = event.target ? event.target.value : [];
     setValues({ ...values, skills: selectedSkills });
   };
   
   const handleChangeSkills2 = (event) => {
-    // Assicurati che event.target sia definito
     const selectedSkills2 = event.target ? event.target.value : [];
     setValues({ ...values, skills2: selectedSkills2 });
   };
 
 
-  // const handleChangeCV = (name) => (event) => {
-  // const { type, value, files } = event.target;
-  // let fileValue = value;
-  //   if ( type === 'file' && name === 'cv') {
-  //     fileValue = files[0];
-  //   if (fileValue) {
 
-  //     setValues(prevValues => ({
-  //       ...prevValues,
-  //       cv: {
-  //         file: fileValue,
-  //         descrizione: fileValue.name
-  //         }
-  //     }));
-  //     console.log(`File ${name} sostituisce il vecchio:`, fileValue);
-  //   }
-  // }  
-  //   }
-
-  //   const handleChangeCF = (name) => (event) => {
-  //     const { type, value, files } = event.target;
-  //     let fileValue = value;
-  //       if ( type === 'file' && name === 'cf') {
-  //         fileValue = files[0];
-  //       if (fileValue) {
-    
-  //         setValues(prevValues => ({
-  //           ...prevValues,
-  //           cf: {
-  //             file: fileValue,
-  //             descrizione: fileValue.name
-  //             }
-  //         }));
-  //         console.log(`File ${name} sostituisce il vecchio:`, fileValue);
-  //       }
-  //     }  
-  //       }
-  
-
-
-  
 
   const handleChangeCF = (name) => (event) => {
     const { type, value, files } = event.target;
@@ -323,16 +162,13 @@ const getDisabledStyles = (isDisabled) => {
   const handleChange = (name) => (event) => {
     const { type, value, files } = event.target;
     let fileValue = value;
-    // const fileName = value.name;
   
     if (type === 'file') {
       fileValue = files[0];
-      console.log(`File caricato per ${name}:`, fileValue);
     }
   
     setValues({ ...values, [name]: fileValue });
   
-    // Rimuovi l'errore quando un utente modifica il campo
     if (errors[name]) {
       setErrors({ ...errors, [name]: '' });
     }
@@ -346,7 +182,6 @@ const getDisabledStyles = (isDisabled) => {
       }
     });
     setErrors(tempErrors);
-    // console.log('Validating: ', tempErrors);
     return !Object.keys(tempErrors).length;
   };
   
@@ -380,16 +215,14 @@ const getDisabledStyles = (isDisabled) => {
       }
     };
   
-    // Aggiungi l'ascoltatore quando il WeekPicker è visibile
     if (isWeekPickerVisible) {
       document.addEventListener('mousedown', handleClickOutside);
     }
   
-    // Rimuovi l'ascoltatore quando il componente viene smontato o il WeekPicker è nascosto
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isWeekPickerVisible]); // Assicurati di aggiungere le dipendenze corrette per useEffect
+  }, [isWeekPickerVisible]); 
   
 
   function getWeekNumberAndYear(date) {
@@ -418,8 +251,8 @@ const getDisabledStyles = (isDisabled) => {
           onChange={handleChange(field.name)}
           value={values[field.name] || ''}
           fullWidth
-          error={!!errors[field.name]} // Il campo diventa rosso se c'è un errore
-          helperText={errors[field.name]} // Mostra il messaggio di errore se c'è un errore
+          error={!!errors[field.name]} 
+          helperText={errors[field.name]} 
           disabled={field.disabled}
 
         />
@@ -434,7 +267,7 @@ const getDisabledStyles = (isDisabled) => {
 
       case 'select':
         return (
-          <FormControl fullWidth error={!!errorMessage} disabled={isDisabled}> {/* Aggiungi error qui */}
+          <FormControl fullWidth error={!!errorMessage} disabled={isDisabled}> 
   <InputLabel style={getDisabledStyles(isDisabled)} >{field.label}</InputLabel>
   <Select
     style={{ width: "100%", textAlign: "left" }}
@@ -451,7 +284,7 @@ const getDisabledStyles = (isDisabled) => {
       </MenuItem>
     ))}
   </Select>
-  <FormHelperText>{errorMessage || ''}</FormHelperText> {/* Aggiungi helperText sotto al Select */}
+  <FormHelperText>{errorMessage || ''}</FormHelperText> 
 </FormControl>
 
         );
@@ -465,9 +298,9 @@ const getDisabledStyles = (isDisabled) => {
                 value={values[field.name] || []}
                 onChange={handleChange(field.name)}
                 renderValue={(selected) => (
-                  selected.map(value => ( // Mappa ciascun ID alla sua etichetta
-                    field.options.find(option => option.value === value)?.label || value // Trova l'etichetta corrispondente o restituisce l'ID se non viene trovata nessuna corrispondenza
-                  )).join(', ') // Unisci le etichette in una stringa
+                  selected.map(value => ( 
+                    field.options.find(option => option.value === value)?.label || value 
+                  )).join(', ') 
                 )}
                 
                 multiple
@@ -609,7 +442,7 @@ case 'multipleSelectSkill2':
     {values[field.name] && values[field.name].length > 0 ? (
       values[field.name].map((file, index) => (
         <Box key={file.id} style={{ display: 'flex', flexDirection: "row", alignItems: 'center', margin: '10px 0', justifyContent: 'space-between', }}>
-          <Typography variant="body1" style={{ marginRight: '10px' }}>{file}</Typography> {/* Qui viene visualizzato il nome del file */}
+          <Typography variant="body1" style={{ marginRight: '10px' }}>{file}</Typography> 
           <Button
             variant="contained"
             color="primary"
@@ -617,7 +450,6 @@ case 'multipleSelectSkill2':
             startIcon={<CloudDownloadIcon style={{justifyContent:"flex-end", marginLeft: "10px"}} />}
 
             onClick={() => {
-              console.log(`Scaricando file con id: ${file.id} e descrizione: ${file}`); // Verifica quali dati vengono passati alla funzione di download
               onDownloadAllegati(file.id, file.descrizione);
             }}
           >
@@ -648,7 +480,7 @@ case 'multipleSelectSkill2':
                               <Typography variant="body1" style={{ marginRight: '10px' }}>
                                 {file.descrizione}
                               </Typography>
-                              <div style={{ display: 'flex', gap: '10px' }}> {/* Contenitore per i bottoni */}
+                              <div style={{ display: 'flex', gap: '10px' }}> 
                                 <Button
                                   variant="contained"
                                   color="primary"
@@ -757,36 +589,6 @@ case 'multipleSelectSkill2':
                           </Box>
                         </Box>
                     );
-
-                    // case 'downloadAllegati':
-                    //   return (
-                    //     <Box>
-                    //       <Typography variant="subtitle1" gutterBottom>{field.label}</Typography>
-                    //       <Box style={{ display: 'flex', flexDirection: "column", alignItems: 'center', margin: '10px 0' }}>
-                    //         {values[field.name] && values[field.name].length > 0 ? (
-                    //           values[field.name].map((file, index) => (
-                    //             <Box key={file.id || index} style={{ display: 'flex', alignItems: 'center', marginBottom: "10px" }}>
-                    //               <Typography variant="body2" style={{ marginRight: '10px', flexGrow: 1 }}>
-                    //                 {file.descrizione || 'Nessun file selezionato'}  
-                    //               </Typography>
-                          
-                    //               <Button
-                    //                 variant="contained"
-                    //                 color="primary"
-                    //                 startIcon={<CloudDownloadIcon />}
-                    //                 onClick={() => onDownloadAllegati(file.id, file.descrizione)}  
-                    //                 disabled={!file}
-                    //               >
-                                    
-                    //               </Button>
-                    //             </Box>
-                    //           ))
-                    //         ) : (
-                    //           <Typography variant="body2">Nessun file disponibile</Typography>
-                    //         )}
-                    //       </Box>
-                    //     </Box>
-                    //   );
                     
                     
         case 'selectValue':
@@ -841,10 +643,8 @@ case 'multipleSelectSkill2':
       label={field.label}
       name={field.name}
       onChange={(e) => {
-        // Verifica se il valore inserito è un intero prima di chiamare handleChange
         const value = e.target.value;
         if (value === '' || (/^-?\d+$/.test(value) && parseInt(value) >= 0)) {
-          // Chiama handleChange solo se il valore è un intero non negativo
           handleChange(field.name)(e);
         }
       }}
@@ -853,8 +653,8 @@ case 'multipleSelectSkill2':
       disabled={isDisabled}
       InputProps={{
         inputProps: { 
-          min: 0, // Imposta il minimo a 0
-          step: 1 // Assicura che i cambiamenti siano di 1, per mantenere i valori interi
+          min: 0, 
+          step: 1 
         }
       }}
     />
@@ -953,7 +753,6 @@ case 'multipleSelectSkill2':
             color="primary"
             onClick={handleGoBack}
             style={{
-              // backgroundColor: "#6C757D",
               backgroundColor: "black",
               color: "white",
               fontWeight:"bold",

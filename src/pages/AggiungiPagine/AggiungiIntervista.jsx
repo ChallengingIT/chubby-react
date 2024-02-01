@@ -10,7 +10,6 @@ const navigate      = useNavigate();
 const location      = useLocation();
 const candidatoID   = location.state?.candidatoID;
 
-console.log("ID Candidato: ", candidatoID);
 
 // Recupera l'accessToken da localStorage
 const user = JSON.parse(localStorage.getItem("user"));
@@ -56,11 +55,8 @@ const fetchData = async () => {
         // Prendi l'ultima intervista (supponendo che l'array sia ordinato in base alla data)
         const ultimaIntervista = responseIntervista.data[responseIntervista.data.length - 1];
         setInterviste(ultimaIntervista); // Aggiorna lo stato con l'ultima intervista
-        console.log("Ultima intervista caricata da axios: ", ultimaIntervista);
     } else if (responseIntervista.data.length === 0) {
-        // Gestisci il caso in cui non ci sono interviste
-        console.log("Non ci sono interviste disponibili per questo candidato.");
-        // Potresti anche voler impostare uno stato di default o eseguire altre azioni qui
+
     } else {
         console.error("I dati ottenuti non sono nel formato Array:", responseIntervista.data);
         // Gestisci altri potenziali errori
@@ -69,7 +65,6 @@ const fetchData = async () => {
     if (responseCandidato.data && typeof responseCandidato.data === 'object' && !Array.isArray(responseCandidato.data)) {
         // Supponendo che setCandidato sia il metodo per impostare lo stato del candidato nel tuo componente
         setCandidato(responseCandidato.data);
-        console.log("Candidato caricato da axios: ", responseCandidato.data);
     } else {
         console.error("I dati ottenuti non sono in formato oggetto:", responseCandidato.data);
     }
@@ -103,7 +98,6 @@ const fetchData = async () => {
         value: tipologia.id,
         }));
         setTipologiaOptions(tipologiaOptions);
-        // console.log("DATI DI JOBTILEOPTIONS: ", tipologiaOptions);
     }
     }
 }
@@ -212,7 +206,6 @@ const initialValues = {
     idNextOwner:                      interviste.nextOwner?.id                      || null
 };
 
-console.log("DATI INITIAL: ", initialValues);
 
 const disableFields = {
 nome:               true,
@@ -226,7 +219,6 @@ cellulare:          true,
 
 const handleSubmit = async (values) => {
     try {
-      // console.log("DATI DI VALUES: ", values);
 
 
 
@@ -247,8 +239,7 @@ const handleSubmit = async (values) => {
       },
       headers: headers
     });
-    console.log("DATI INVIATI: ", values);
-    console.log("Response from server:", response.data);
+
 
 
     navigate(`/staffing/intervista/${candidatoID}`);

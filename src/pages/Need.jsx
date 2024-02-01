@@ -13,7 +13,6 @@ import { Button, Select, MenuItem }               from "@mui/material";
 
 import "../styles/Need.css";
 
-//ricordati di togliere queste due righe
 import { Snackbar } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import NeedSearchBox2 from "../components/searchBox/NeedSearchBox2.jsx";
@@ -52,7 +51,6 @@ const Need = () => {
         if (Array.isArray(responseStato.data)) {
           const statoConId = responseStato.data.map((stato) => ({ ...stato}));
           setStatoOptions(statoConId);
-          console.log(statoConId);
           } else {
             console.error("I dati ottenuti non sono nel formato Array:", responseStato.data);
           }
@@ -62,7 +60,6 @@ const Need = () => {
         const needConId = response.data.map((need) => ({ ...need}));
         setOriginalNeed(needConId);
         setFilteredNeed(needConId);
-        console.log(needConId);
         } else {
           console.error("I dati ottenuti non sono nel formato Array:", response.data);
         }
@@ -103,14 +100,12 @@ const Need = () => {
     try {
       const idStato = newStato;
       
-      // Nota: Axios accetterà automaticamente questo oggetto e lo convertirà in una stringa di query.
       const params = new URLSearchParams({
         stato: idStato
       });
   
       await axios.post(`http://localhost:8080/need/react/salva/stato/${selectedNeed.id}?${params.toString()}`, { headers: headers });
       
-      // Se la chiamata è andata a buon fine, chiudi il modal e aggiorna i dati
       setIsModalOpen(false);
       fetchData();
     } catch (error) {
@@ -126,7 +121,7 @@ const Need = () => {
         overflowWrap: 'break-word',
         textAlign:"left",
         fontWeight:"bold",
-        maxWidth: '250px', // Imposta la larghezza massima della cella
+        maxWidth: '250px', 
       }}>
         {props.value}
       </div>
@@ -143,42 +138,15 @@ const Need = () => {
       </div>
     ),
   }, 
-    // { field: "weekDescrizione",  headerName: "Week/Descrizione",    width: 200, renderCell: (params) => (
-    //   <div style={{ textAlign: "left" }}>
-    //   <div style={{ textAlign: "start" }}>{params.row.week}</div>
-    //   <div style={{ textAlign: "start" }}>{params.row.descrizione}</div>
-    // </div>
-    //   ),
-    // },
+
     { field: "week",              headerNmae: "Week",                width: 100 },
-    // {
-    //   field: "descrizione",
-    //   headerName: "Descrizione",
-    //   width: 360,
-    //   renderCell: (params) => <WrappedTextCell value={params.row.descrizione} />
-    // },
+
     {
       field: "descrizione",
       headerName: "Descrizione",
       width: 360,
       renderCell: (params) => (
-        // <a 
-        //   href={"/need/dettaglio/" + params.row.id} 
-        //   target="_blank" 
-        //   rel="noopener noreferrer"
-        //   style={{ 
-        //     textAlign: 'left',
-        //     whiteSpace: 'normal', 
-        //     wordWrap: 'break-word',
-        //     overflow: 'hidden',
-        //     textOverflow: 'ellipsis',
-        //     display: '-webkit-box',
-        //     WebkitLineClamp: 2, // Numero di linee massime prima di mostrare '...'
-        //     WebkitBoxOrient: 'vertical',
-        //   }}
-        // >
-        //   {params.row.descrizione}
-        // </a>
+  
         <div style={{ 
           textAlign: "left",
             whiteSpace: 'normal', 
@@ -186,7 +154,7 @@ const Need = () => {
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             display: '-webkit-box',
-            WebkitLineClamp: 2, // Numero di linee massime prima di mostrare '...'
+            WebkitLineClamp: 2, 
             WebkitBoxOrient: 'vertical',
             }}>
       <Link
@@ -264,19 +232,7 @@ const Need = () => {
     ),
     }, 
   ];
-  // const initialData = [
-  //   { id: 1, priorità: "1", Azienda: "AON",         week: "2023-W03", descrizione: "Linux",                             azienda: "AON",                        headcount: "1",    stato: "Chiuso",      owner: "RM", tipologia: "Consulenza" },
-  //   { id: 2, priorità: "1", Azienda: "Eurobet",     week: "2023-W37", descrizione: "Data modeler",                      azienda: "Gruppo Mutui Online",        headcount: "1",    stato: "Perso",       owner: "RT", tipologia: "Consulenza" },
-  //   { id: 3, priorità: "1", Azienda: "Lottomatica", week: "2023-W37", descrizione: "Data modeler",                      azienda: "Gruppo Mutui Online",        headcount: "1",    stato: "Anticipato",  owner: "MS", tipologia: "Recruiting" },
-  //   { id: 4, priorità: "1", Azienda: "Fendi",       week: "2023-W37", descrizione: "Sviluppatore Senior JAVA",          azienda: "AOGruppo Mutui Online",      headcount: "1",    stato: "Perso",       owner: "EU", tipologia: "Recruiting" },
-  //   { id: 5, priorità: "1", Azienda: "Kering",      week: "2023-W37", descrizione: "Sviluppatore Medium Frontend",      azienda: "TAS Group",                  headcount: "1",    stato: "Attivo",      owner: "RM", tipologia: "Consulenza" },
-  //   { id: 6, priorità: "1", Azienda: "Hotels.com",  week: "2023-W37", descrizione: "Sistemista Unix- Roma presenza",    azienda: "TAS Group",                  headcount: "1",    stato: "Chiuso",      owner: "RM", tipologia: "Recruiting" },
-  //   { id: 7, priorità: "1", Azienda: "Sisal",       week: "2023-W37", descrizione: "PM Mid-Sen",                        azienda: "TAS Group",                  headcount: "1",    stato: "Attivo",      owner: "RT", tipologia: "Consulenza" },
 
-  // ];
-
-
-  // const [tableData, setTableData] = React.useState(initialData);
 
   const handleSearch = (filteredData) => {
    setFilteredNeed(filteredData);

@@ -8,7 +8,7 @@ import Select                                 from "@mui/material/Select";
 import "../../styles/Aziende.css";
 import userService from "../../services/user.service.js";
 
-const AziendeSearchBox3 = ({ data, onSearch, onReset, onSearchTextChange, OriginalAziende }) => {
+const AziendeSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalAziende }) => {
   const initialSearchTerm = {
     denominazione: '',
     tipologia: '',
@@ -17,9 +17,8 @@ const AziendeSearchBox3 = ({ data, onSearch, onReset, onSearchTextChange, Origin
   };
 
 
-  const accessToken = localStorage.getItem("accessToken"); // Ottieni l'accessToken dal localStorage
-// console.log("accessToken: ", accessToken);
-// Configura l'header "Authorization" con l'accessToken
+  const accessToken = localStorage.getItem("accessToken"); 
+
 const headers = {
   Authorization: `Bearer ${accessToken}`,
 };
@@ -47,6 +46,14 @@ const headers = {
 
   return 'Sconosciuto';
 };
+
+
+const handleKeyDown = (e) => {
+  if (e.keyCode === 13) { // Verifica se è stato premuto il tasto "Invio"
+    handleSearch();     
+  }
+};
+
 
   
 
@@ -90,7 +97,6 @@ const headers = {
   }, []);
 
   const handleSearch = () => {
-    console.log("Valori di ricerca:", searchTerm);
     const filteredData = OriginalAziende.filter((item) =>
       Object.keys(searchTerm).every((key) =>
         searchTerm[key] === '' ||
@@ -100,7 +106,6 @@ const headers = {
         String(item[key]).toLowerCase().includes(String(searchTerm[key]).toLowerCase())
       )
     );
-    console.log("Dati filtrati:", filteredData);
     onSearch(filteredData);
     setFilteredData(filteredData);
   };
@@ -128,6 +133,7 @@ const headers = {
     color: "#757575",
   }}
   native
+  onKeyDown={handleKeyDown}
 >
   <option value="" disabled>
     Stato
@@ -146,6 +152,7 @@ const headers = {
         className="text-form"
         value={searchTerm.denominazione}
         onChange={(e) => setSearchTerm({ ...searchTerm, denominazione: e.target.value })}
+        onKeyDown={handleKeyDown}
       />
       
   
@@ -162,6 +169,7 @@ const headers = {
                     color: "#757575",
                   }}
                   native
+                  onKeyDown={handleKeyDown}
                 >
                   <option value="" disabled>
                   Owner
@@ -187,6 +195,7 @@ const headers = {
                     color: "#757575",
                   }}
                   native
+                  onKeyDown={handleKeyDown}
                 >
                   <option value="" disabled>
                     Tipologia
@@ -246,4 +255,4 @@ const headers = {
   
 };
 
-export default AziendeSearchBox3;
+export default AziendeSearchBox;

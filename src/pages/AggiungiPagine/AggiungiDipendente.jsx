@@ -114,86 +114,6 @@ const campiObbligatori = [ "nome", "cognome", "email", "anniEsperienza", "livell
 
 
 
-//   const handleSubmit = async (values) => {
-//     const errors = validateFields(values);
-//     const hasErrors = Object.keys(errors).length > 0;
-  
-//     if (!hasErrors) {
-//     try {
-//       console.log("DATI PRIMA DI ESSERE INVIATI: ", values);
-//       const formData = new FormData();
-  
-//     //  if (values.file) {
-//     //   formData.append("file", values.file);
-//     //   console.log("File selezionato:", values.file);
-//     // }
-
-//      // Aggiungi tutti i file a formData
-//   if (values.file && values.file.length) {
-//     values.file.forEach((file) => {
-//       formData.append("file", file); // Utilizza lo stesso nome 'file' per tutti i file
-//     });
-//   }
-//   // Stampa i file aggiunti a formData
-// console.log("Files aggiunti a formData:");
-// for (let key of formData.keys()) {
-//   const fileData = formData.getAll(key);
-//   fileData.forEach((file, index) => {
-//     console.log(`File ${index + 1} con chiave "${key}":`, file.name);
-//   });
-// }
-  
-//       // Aggiungi le skills se presenti, come stringa separata da virgole
-//       if (values.skills && values.skills.length) {
-//         const skills = values.skills.join(',');
-//         console.log("Skills selezionate:", skills);
-//         formData.append('skills', skills);
-//       }
-  
-//       // Aggiungi tutti gli altri valori al formData escludendo 'skills' e 'file'
-//       Object.keys(values).forEach(key => {
-//         if (key !== 'skills' && key !== 'file') { 
-//           formData.append(key, values[key]);
-//         }
-//       });
-
-//       // if (values.file && values.file.length) {
-//       //   // Assicurati che 'file' sia un array e non un singolo file
-//       //   Array.from(values.file).forEach((file) => {
-//       //     formData.append("file", file); // Utilizza lo stesso nome 'file' per tutti i file
-//       //   });
-//       // }
-    
-  
-//       // Verifica il contenuto di formData
-//       console.log("Contenuto di formData:");
-//       formData.forEach((value, key) => {
-//         console.log(`${key}:`, value);
-//       });
-  
-//       // Invia la richiesta al server
-//       const response = await axios.post(`http://localhost:8080/hr/react/staff/salva`, formData, {
-//         headers: {"Content-Type": "multipart/form-data"},
-//       });
-  
-//       console.log("Risposta dal server:", response.data);
-//       navigate("/hr"); // Assicurati che 'navigate' sia definito e disponibile in questo contesto
-//     } catch (error) {
-//       console.error("Errore durante il salvataggio:", error);
-//       if (error.response) {
-//         // Mostra i dettagli dell'errore ritornati dal server
-//         console.error("Dettagli dell'errore:", error.response.data);
-//       }
-//     }
-//   } else {
-//     // Gestisci qui gli errori di validazione...
-//     console.log("Errore di validazione:", errors);
-//     // Potresti voler impostare lo stato degli errori o visualizzare un messaggio all'utente
-//   }
-//   };
-
-
-
 const handleSubmit = async (values, fileCV, fileCF, fileMultipli, fileAllegati) => {
   const errors = validateFields(values);
     const hasErrors = Object.keys(errors).length > 0;
@@ -206,58 +126,31 @@ const handleSubmit = async (values, fileCV, fileCF, fileMultipli, fileAllegati) 
           values[key] = null;
         }
       });
-      // Preparazione dei dati delle skills come stringhe separate
       const skills = values.skills ? values.skills.join(',') : '';
 
-      console.log("Skills selezionate:", values.skills);
-      console.log("Values: ", values);
-
-      // Rimozione delle proprietà delle skills dall'oggetto values
       delete values.skills;
 
-      // const allegati = values.file;
-      // delete values.file;
+
 
       const datiResponse = await axios.post("http://localhost:8080/hr/react/staff/salva", values, {
         params: { skill: skills },
         headers: headers,
       });
 
-    console.log("Risposta dal server senza file: ", datiResponse.data);
 
     const staffId = datiResponse.data;
-    console.log("ID :", staffId);
   
 
-    // if (fileAllegati && fileAllegati.length > 0) {
-      
-    //   fileAllegati.forEach(file => {
-    //       // formData.append("file", file);
-    //       const formData = new FormData();
-    //       for (let [key, value] of formData.entries()) {
-    //         if (value instanceof File) {
-    //             console.log(key, `File Name: ${value.name}, File Type: ${value.type}, File Size: ${value.size} bytes`);
-    //         } else {
-    //             console.log(key, value);
-    //         }
-    //     }
-    //       formData.append("file", file);
-    //       const fileResponse = axios.post(`http://localhost:8080/hr/react/staff/salva/file/${staffId}`, FormData, 
-    //       {headers: headers});
-    //       console.log("Risposta dal server per il file: ", fileResponse.data);
-    //   });
-    // }
+
 
 
     if (fileAllegati && fileAllegati.length > 0) {
       fileAllegati.forEach(async (file) => {
         const formData = new FormData();
         formData.append("file", file.file);
-        console.log("Sto inviando il file: ", file.file.name);
     
         try {
           const fileResponse = await axios.post(`http://localhost:8080/hr/react/staff/salva/file/${staffId}`, formData, { headers: headers });
-          console.log("Risposta dal server per il file: ", fileResponse.data);
         } catch (error) {
           console.error("Errore nell'invio del file: ", error);
         }
@@ -266,7 +159,7 @@ const handleSubmit = async (values, fileCV, fileCF, fileMultipli, fileAllegati) 
     
 
 
-        // Invia ogni file separatamente utilizzando l'ID dello staff
+
 
       
       navigate("/hr");
@@ -277,7 +170,6 @@ const handleSubmit = async (values, fileCV, fileCF, fileMultipli, fileAllegati) 
     console.error("Errore nell'invio dei dati: ", error);
   }
 }else {
-  console.log("Errore di validazione:", errors);
 }
 };
 
@@ -290,91 +182,6 @@ const validateFields = (values) => {
   });
   return errors;
 };
-
-
-  
-
-
-
-  
-
- 
-// const handleSubmit = async (values) => {
-//   try {
-
-//     console.log("DATI PRIMA DI ESSERE INVIATI: ", values);
-//     const formData = new FormData();
-
- 
-
-//     // if (Array.isArray(values.file)) {
-//     //   // Itera ogni file e aggiungilo a formData
-//     //   values.file.forEach((file, index) => {
-//     //     formData.append(`file${index}`, file);
-//     //     console.log(`File ${index} selezionato:`, file.name);
-//     //   });
-//     // } else if (values.file) {
-//     //   // Se `values.file` è un singolo file, aggiungilo come prima
-//     //   formData.append("file", values.file);
-//     //   console.log("File selezionato:", values.file.name);
-//     // }
-
-//     //con singolo file
-//     if (values.file) {
-//       formData.append("file", values.file);
-//       console.log("File selezionato:", values.file);
-//     }
-
-//     //prima prova di file multiple
-//     // if (values.file && values.file.length) {
-//     //   Array.from(values.file).forEach((file, index) => {
-//     //     formData.append(`file${index}`, file);
-//     //     console.log(`File ${index} selezionato:`, file);
-//     //   });
-//     // }
-
-//     let skills = "";
-//     if (values.skills && values.skills.length) {
-//       // Trasforma l'array delle skills in una stringa
-//       skills = values.skills.join(',');
-//       console.log("Skills selezionate:", skills);
-//     }
-
-//     // Aggiungi tutti gli altri valori al formData
-//     Object.keys(values).forEach(key => {
-//       if (key !== 'skills' && key !== 'file') { 
-//         formData.append(key, values[key]);
-//       }
-//     });
-
-//     if (values.file instanceof FormData) {
-//       values.file.forEach((value, key) => {
-//         formData.append(key, value);
-//       });
-//     }
-
-//     // Verifica il contenuto di formData
-//     console.log("Contenuto di formData:");
-//     formData.forEach((value, key) => {
-//       console.log(`${key}:`, value);
-//     });
-
-//     // Invia la richiesta al server
-//     const response = await axios.post(`http://localhost:8080/hr/react/staff/salva`, formData, {
-//       params: { skill: skills },
-//       headers: {"Content-Type": "multipart/form-data"},
-//     });
-
-//     console.log("Risposta dal server:", response.data);
-//     navigate("/hr");
-//   } catch (error) {
-//     console.error("Errore durante il salvataggio:", error);
-//     if (error.response) {
-//       console.error("Dettagli dell'errore:", error.response.data);
-//     }
-//   }
-// };
-
 
 
 

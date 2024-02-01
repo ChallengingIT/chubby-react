@@ -60,7 +60,6 @@ const fetchData = async () => {
       // const aziendeConOwner = await translateOwnerNames(aziendeConId);
       setFilteredAziende(aziendeConId);
       setOriginalAziende(aziendeConId);
-      console.log(aziendeConId);
     } else {
       console.error("I dati ottenuti non sono nel formato Array:", response.data);
     }
@@ -87,46 +86,13 @@ const openDeleteDialog = (id) => {
     navigate("/aziende/aggiungi");
   };
 
-  // const navigateToDettaglioAzienda = ( id, nomeAzienda) => {
-  //   navigate(`/aziende/dettaglio/${id}`);
-  // };
-
-
-
-  // const handleDelete = async (id) => {
-  //   try {
-  //     await axios.delete(`http://localhost:8080/aziende/react/elimina/${id}`);
-  //     // const updatedAziende = originalAziende.filter((azienda) => azienda.id !== id);
-  //     // setAziende(updatedAziende);
-  //     // setOriginalAziende(updatedAziende);
-  //     // setFilteredAziende(updatedAziende);
-  //     fetchData();
-  //     console.log("ELIMINATA AZIENDA: ", id);
-  //   } catch (error) {
-  //     console.error("Errore durante la cancellazione:", error);
-  //   }
-  // };
-
-
-
-// const handleDelete = async (id) => {
-//   try {
-// const response = await axios.delete(`http://localhost:8080/aziende/react/elimina/${id}`);
-// console.log("Risposta dalla chiamata delete: ", response);
-// console.log("ID AZIENDA ELIMINATA: ", id)
-// fetchData();
-//   } catch (error) {
-//     console.error("Errore durante la cancellazione: ", error);
-//   }
-//   };
 
 
 const handleDelete = async () => {
   try {
     const response = await axios.delete(`http://localhost:8080/aziende/react/elimina/${deleteId}`, { headers: headers});
     setOpenDialog(false);
-    console.log("Risposta dalla chiamata delete: ", response);
-    console.log("ID AZIENDA ELIMINATA: ", deleteId);
+
     
     fetchData();
   } catch (error) {
@@ -216,13 +182,7 @@ const handleDelete = async () => {
         <div className="container">
           <div className="page-name">Gestione Aziende</div>
           <MyButton onClick={navigateToAggiungiAzienda}>Aggiungi Azienda</MyButton>
-      {/* <AziendeSearchBox 
-          data={aziende}
-          onSearch={handleSearch}
-          onReset={handleReset}
-          searchText={searchText}
-          onSearchTextChange={(text) => setSearchText(text)}
-          OriginalAziende={originalAziende}/> */}
+
 
           <MyDataGrid 
           data={filteredAziende} 

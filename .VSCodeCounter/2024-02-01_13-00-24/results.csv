@@ -1,0 +1,183 @@
+"filename", "language", "JavaScript", "JavaScript JSX", "CSS", "XML", "comment", "blank", "total"
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/App.css", "CSS", 0, 0, 16, 0, 10, 7, 33
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/App.js", "JavaScript", 148, 0, 0, 0, 0, 36, 184
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/App.test.js", "JavaScript", 7, 0, 0, 0, 0, 2, 9
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/RegisterComponent.jsx", "JavaScript JSX", 0, 38, 0, 0, 0, 3, 41
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/common/EventBus.js", "JavaScript", 12, 0, 0, 0, 0, 1, 13
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/common/auth-verify.js", "JavaScript", 23, 0, 0, 0, 0, 7, 30
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/common/with-router.js", "JavaScript", 10, 0, 0, 0, 0, 1, 11
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/BasicDataPicker.jsx", "JavaScript JSX", 0, 48, 0, 0, 0, 3, 51
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/BoxUser.jsx", "JavaScript JSX", 0, 147, 0, 0, 0, 6, 153
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/ConfirmationDialog.jsx", "JavaScript JSX", 0, 33, 0, 0, 0, 3, 36
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/CustomCalendar.jsx", "JavaScript JSX", 0, 34, 0, 0, 0, 6, 40
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/CustomCalendar2.jsx", "JavaScript JSX", 0, 36, 0, 0, 0, 2, 38
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/DynamicForm.jsx", "JavaScript JSX", 0, 181, 0, 0, 0, 10, 191
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/FieldBoxFile.jsx", "JavaScript JSX", 0, 784, 0, 0, 6, 86, 876
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/FieldsBox.jsx", "JavaScript JSX", 0, 628, 0, 0, 25, 142, 795
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/LoginComponent.jsx", "JavaScript JSX", 0, 100, 0, 0, 3, 26, 129
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/LogoutComponent.jsx", "JavaScript JSX", 0, 0, 0, 0, 59, 15, 74
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/LogoutPopUp.jsx", "JavaScript JSX", 0, 59, 0, 0, 0, 3, 62
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/ModalBox.jsx", "JavaScript JSX", 0, 180, 0, 0, 1, 24, 205
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/MyBox.jsx", "JavaScript JSX", 0, 207, 0, 0, 0, 8, 215
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/MyBox2.jsx", "JavaScript JSX", 0, 0, 0, 0, 150, 6, 156
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/MyBoxGroups.jsx", "JavaScript JSX", 0, 291, 0, 0, 2, 36, 329
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/MyBoxMIU.jsx", "JavaScript JSX", 0, 0, 0, 0, 290, 26, 316
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/MyButton.jsx", "JavaScript JSX", 0, 37, 0, 0, 0, 3, 40
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/MyDataGrid.jsx", "JavaScript JSX", 0, 149, 0, 0, 10, 29, 188
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/MyPopUp.jsx", "JavaScript JSX", 0, 99, 0, 0, 4, 6, 109
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/PrivateRoute.jsx", "JavaScript JSX", 0, 8, 0, 0, 1, 3, 12
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/ProvaComponente.jsx", "JavaScript JSX", 0, 321, 0, 0, 14, 62, 397
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/RegisterComponent.jsx", "JavaScript JSX", 0, 139, 0, 0, 3, 23, 165
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/ReportComponent.jsx", "JavaScript JSX", 0, 157, 0, 0, 9, 42, 208
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/ReusablePopup.jsx", "JavaScript JSX", 0, 103, 0, 0, 0, 14, 117
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/RoleBasedRedirect.jsx", "JavaScript JSX", 0, 23, 0, 0, 4, 6, 33
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/SearchFieldsBox.jsx", "JavaScript JSX", 0, 0, 0, 0, 143, 14, 157
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/Sidebar.jsx", "JavaScript JSX", 0, 576, 0, 0, 17, 53, 646
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/SimpleData.jsx", "JavaScript JSX", 0, 29, 0, 0, 0, 4, 33
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/SimpleTable.jsx", "JavaScript JSX", 0, 25, 0, 0, 0, 3, 28
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/TimesheetComponent.jsx", "JavaScript JSX", 0, 914, 0, 0, 55, 168, 1137
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/WeekPicker.js", "JavaScript", 78, 0, 0, 0, 0, 10, 88
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/WeekPickers.jsx", "JavaScript JSX", 0, 82, 0, 0, 0, 12, 94
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/authenticate.jsx", "JavaScript JSX", 0, 18, 0, 0, 0, 13, 31
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/button/BackButton.jsx", "JavaScript JSX", 0, 26, 0, 0, 0, 5, 31
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/button/BagButton.jsx", "JavaScript JSX", 0, 34, 0, 0, 0, 5, 39
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/button/ClipButton.jsx", "JavaScript JSX", 0, 37, 0, 0, 0, 5, 42
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/button/DeleteButton.jsx", "JavaScript JSX", 0, 25, 0, 0, 0, 3, 28
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/button/EditButton.jsx", "JavaScript JSX", 0, 37, 0, 0, 0, 5, 42
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/button/EuroButton.jsx", "JavaScript JSX", 0, 25, 0, 0, 0, 4, 29
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/button/ListButton.jsx", "JavaScript JSX", 0, 37, 0, 0, 0, 5, 42
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/button/NoteButton.jsx", "JavaScript JSX", 0, 25, 0, 0, 0, 4, 29
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/button/PaperButton.jsx", "JavaScript JSX", 0, 26, 0, 0, 0, 7, 33
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/button/PersonInfoButton.jsx", "JavaScript JSX", 0, 34, 0, 0, 0, 5, 39
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/button/SaveButton.jsx", "JavaScript JSX", 0, 25, 0, 0, 0, 3, 28
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/button/SearchButton.jsx", "JavaScript JSX", 0, 35, 0, 0, 0, 5, 40
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/button/SmileGreenIcon.jsx", "JavaScript JSX", 0, 10, 0, 0, 0, 3, 13
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/button/SmileOrangeIcon.jsx", "JavaScript JSX", 0, 10, 0, 0, 0, 2, 12
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/button/SmileRedIcon.jsx", "JavaScript JSX", 0, 10, 0, 0, 0, 2, 12
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/button/TimesheetButton.jsx", "JavaScript JSX", 0, 29, 0, 0, 0, 3, 32
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/button/VisibilityButton.jsx", "JavaScript JSX", 0, 35, 0, 0, 0, 6, 41
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/card/AttivitaCard.jsx", "JavaScript JSX", 0, 72, 0, 0, 0, 4, 76
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/card/ComunicazioniCard.jsx", "JavaScript JSX", 0, 41, 0, 0, 0, 3, 44
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/card/ContattiCard.jsx", "JavaScript JSX", 0, 58, 0, 0, 0, 5, 63
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/card/InformazioniAziendaCard.jsx", "JavaScript JSX", 0, 41, 0, 0, 0, 3, 44
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/card/InformazioniKeypeopleCard.jsx", "JavaScript JSX", 0, 41, 0, 0, 0, 3, 44
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/card/NeedCard.jsx", "JavaScript JSX", 0, 70, 0, 0, 0, 5, 75
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/componentiReduxProva/AggiungiIncontroRedux.jsx", "JavaScript JSX", 0, 183, 0, 0, 52, 73, 308
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/componentiReduxProva/AggiungiNeedRedux.jsx", "JavaScript JSX", 0, 0, 0, 0, 0, 1, 1
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/componentiReduxProva/IntervisteRedux.jsx", "JavaScript JSX", 0, 167, 0, 0, 5, 22, 194
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/componentiReduxProva/RecruitingRedux.jsx", "JavaScript JSX", 0, 242, 0, 0, 6, 41, 289
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/searchBox/AssociazioniSearchBox.jsx", "JavaScript JSX", 0, 150, 0, 0, 4, 19, 173
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/searchBox/AttivitaTable.jsx", "JavaScript JSX", 0, 28, 0, 0, 0, 3, 31
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/searchBox/AziendeSearchBox.jsx", "JavaScript JSX", 0, 216, 0, 0, 5, 38, 259
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/searchBox/FatturazioneAttivaSearchBox.jsx", "JavaScript JSX", 0, 153, 0, 0, 3, 18, 174
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/searchBox/FatturazionePassivaSearchBox.jsx", "JavaScript JSX", 0, 153, 0, 0, 3, 18, 174
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/searchBox/FornitoriSearchBox.jsx", "JavaScript JSX", 0, 110, 0, 0, 4, 15, 129
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/searchBox/HRSearchBox.jsx", "JavaScript JSX", 0, 110, 0, 0, 4, 12, 126
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/searchBox/IntervisteSearchBox.jsx", "JavaScript JSX", 0, 187, 0, 0, 4, 32, 223
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/searchBox/KeyPeopleSearchBox.jsx", "JavaScript JSX", 0, 207, 0, 0, 5, 35, 247
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/searchBox/ListaNeedSearchBox.jsx", "JavaScript JSX", 0, 243, 0, 0, 6, 44, 293
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/searchBox/NeedMatchSearchBox.jsx", "JavaScript JSX", 0, 218, 0, 0, 4, 30, 252
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/searchBox/NeedSearchBox.jsx", "JavaScript JSX", 0, 277, 0, 0, 6, 29, 312
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/searchBox/NeedSearchBox2.jsx", "JavaScript JSX", 0, 278, 0, 0, 6, 24, 308
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/searchBox/ProgettiSearchBox.jsx", "JavaScript JSX", 0, 155, 0, 0, 3, 35, 193
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/searchBox/RecruitingSearchBox.jsx", "JavaScript JSX", 0, 233, 0, 0, 4, 35, 272
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/searchBox/ReportSearchBox.jsx", "JavaScript JSX", 0, 164, 0, 0, 3, 19, 186
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/components/searchBox/TesoreriaSearchBox.jsx", "JavaScript JSX", 0, 112, 0, 0, 3, 7, 122
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/images/innotek.svg", "XML", 0, 0, 0, 3, 0, 1, 4
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/index.css", "CSS", 0, 0, 12, 0, 0, 2, 14
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/index.js", "JavaScript", 16, 0, 0, 0, 1, 3, 20
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/AggiungiPagine/AggiungiAzienda.jsx", "JavaScript JSX", 0, 144, 0, 0, 5, 31, 180
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/AggiungiPagine/AggiungiCandidato.jsx", "JavaScript JSX", 0, 212, 0, 0, 13, 62, 287
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/AggiungiPagine/AggiungiContatto.jsx", "JavaScript JSX", 0, 110, 0, 0, 4, 29, 143
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/AggiungiPagine/AggiungiDipendente.jsx", "JavaScript JSX", 0, 155, 0, 0, 3, 54, 212
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/AggiungiPagine/AggiungiFatturazioneAttiva.jsx", "JavaScript JSX", 0, 98, 0, 0, 2, 26, 126
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/AggiungiPagine/AggiungiFatturazionePassiva.jsx", "JavaScript JSX", 0, 103, 0, 0, 2, 31, 136
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/AggiungiPagine/AggiungiFornitore.jsx", "JavaScript JSX", 0, 63, 0, 0, 2, 21, 86
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/AggiungiPagine/AggiungiIncontro.jsx", "JavaScript JSX", 0, 206, 0, 0, 7, 77, 290
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/AggiungiPagine/AggiungiIntervista.jsx", "JavaScript JSX", 0, 225, 0, 0, 11, 64, 300
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/AggiungiPagine/AggiungiNeed.jsx", "JavaScript JSX", 0, 154, 0, 0, 5, 50, 209
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/AggiungiPagine/AggiungiNeedID.jsx", "JavaScript JSX", 0, 170, 0, 0, 5, 64, 239
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/AggiungiPagine/AggiungiProgetto.jsx", "JavaScript JSX", 0, 96, 0, 0, 3, 36, 135
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/AggiungiPagine/AggiungiUser.jsx", "JavaScript JSX", 0, 37, 0, 0, 0, 8, 45
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/Aziende.jsx", "JavaScript JSX", 0, 196, 0, 0, 5, 47, 248
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/DettaglioPagine/Associazioni.jsx", "JavaScript JSX", 0, 172, 0, 0, 3, 35, 210
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/DettaglioPagine/DettaglioAziende2.jsx", "JavaScript JSX", 0, 413, 0, 0, 25, 105, 543
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/DettaglioPagine/DettaglioDipendente.jsx", "JavaScript JSX", 0, 159, 0, 0, 0, 37, 196
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/DettaglioPagine/DettaglioIntervista.jsx", "JavaScript JSX", 0, 151, 0, 0, 0, 36, 187
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/DettaglioPagine/DettaglioKeyPeople.jsx", "JavaScript JSX", 0, 121, 0, 0, 2, 30, 153
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/DettaglioPagine/DettaglioNeed.jsx", "JavaScript JSX", 0, 97, 0, 0, 2, 36, 135
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/DettaglioPagine/EstraiReport.jsx", "JavaScript JSX", 0, 46, 0, 0, 1, 21, 68
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/DettaglioPagine/Interviste.jsx", "JavaScript JSX", 0, 231, 0, 0, 5, 47, 283
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/DettaglioPagine/ListaNeed.jsx", "JavaScript JSX", 0, 229, 0, 0, 3, 40, 272
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/DettaglioPagine/NeedMatchPages.jsx", "JavaScript JSX", 0, 358, 0, 0, 6, 111, 475
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/FatturazioneAttiva.jsx", "JavaScript JSX", 0, 114, 0, 0, 3, 18, 135
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/FatturazionePassiva.jsx", "JavaScript JSX", 0, 116, 0, 0, 3, 17, 136
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/Fornitori.jsx", "JavaScript JSX", 0, 156, 0, 0, 3, 33, 192
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/HR.jsx", "JavaScript JSX", 0, 332, 0, 0, 18, 54, 404
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/Home.jsx", "JavaScript JSX", 0, 86, 0, 0, 1, 16, 103
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/Homepage.jsx", "JavaScript JSX", 0, 25, 0, 0, 1, 13, 39
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/KeyPeople.jsx", "JavaScript JSX", 0, 205, 0, 0, 15, 32, 252
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/Login.jsx", "JavaScript JSX", 0, 29, 0, 0, 0, 5, 34
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/LoginForm.jsx", "JavaScript JSX", 0, 63, 0, 0, 0, 11, 74
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/ModificaPagine/ModificaAzienda.jsx", "JavaScript JSX", 0, 158, 0, 0, 3, 38, 199
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/ModificaPagine/ModificaContatto.jsx", "JavaScript JSX", 0, 115, 0, 0, 2, 39, 156
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/ModificaPagine/ModificaDipendente.jsx", "JavaScript JSX", 0, 193, 0, 0, 4, 57, 254
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/ModificaPagine/ModificaFatturazioneAttiva.jsx", "JavaScript JSX", 0, 121, 0, 0, 2, 25, 148
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/ModificaPagine/ModificaFatturazionePassiva.jsx", "JavaScript JSX", 0, 103, 0, 0, 4, 26, 133
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/ModificaPagine/ModificaFornitori.jsx", "JavaScript JSX", 0, 86, 0, 0, 2, 19, 107
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/ModificaPagine/ModificaIntervista.jsx", "JavaScript JSX", 0, 203, 0, 0, 66, 67, 336
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/ModificaPagine/ModificaNeed.jsx", "JavaScript JSX", 0, 175, 0, 0, 2, 57, 234
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/ModificaPagine/ModificaProgetto.jsx", "JavaScript JSX", 0, 115, 0, 0, 2, 27, 144
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/ModificaPagine/ModificaStaffing.jsx", "JavaScript JSX", 0, 252, 0, 0, 9, 74, 335
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/Need.jsx", "JavaScript JSX", 0, 308, 0, 0, 5, 47, 360
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/Progetti.jsx", "JavaScript JSX", 0, 182, 0, 0, 17, 33, 232
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/Recruiting.jsx", "JavaScript JSX", 0, 364, 0, 0, 11, 67, 442
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/Register.jsx", "JavaScript JSX", 0, 27, 0, 0, 0, 5, 32
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/ReportPage.jsx", "JavaScript JSX", 0, 348, 0, 0, 5, 90, 443
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/ReportPage2.jsx", "JavaScript JSX", 0, 0, 0, 0, 345, 78, 423
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/Tesoreria.jsx", "JavaScript JSX", 0, 71, 0, 0, 1, 16, 88
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/TimesheetPages.jsx", "JavaScript JSX", 0, 38, 0, 0, 1, 14, 53
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/UserPagine/UserHomepage.jsx", "JavaScript JSX", 0, 23, 0, 0, 1, 9, 33
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/UserPagine/UserSidebar.jsx", "JavaScript JSX", 0, 354, 0, 0, 8, 28, 390
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/UserPagine/UserTimesheet.jsx", "JavaScript JSX", 0, 38, 0, 0, 1, 14, 53
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/pages/UserPagine/UserTimesheetComponent2.jsx", "JavaScript JSX", 0, 876, 0, 0, 40, 149, 1065
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/reportWebVitals.js", "JavaScript", 12, 0, 0, 0, 0, 2, 14
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/services/auth-header.js", "JavaScript", 8, 0, 0, 0, 0, 1, 9
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/services/auth-servicesAziende.js", "JavaScript", 10, 0, 0, 0, 0, 4, 14
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/services/auth.service.js", "JavaScript", 50, 0, 0, 0, 4, 20, 74
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/services/user.service.js", "JavaScript", 22, 0, 0, 0, 0, 9, 31
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/setupProxy.js", "JavaScript", 10, 0, 0, 0, 0, 2, 12
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/setupTests.js", "JavaScript", 1, 0, 0, 0, 4, 1, 6
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/store/slices/intervisteSlice.js", "JavaScript", 34, 0, 0, 0, 4, 4, 42
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/store/slices/recruitingSlice.js", "JavaScript", 28, 0, 0, 0, 2, 6, 36
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/store/store.js", "JavaScript", 11, 0, 0, 0, 2, 3, 16
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/AutoHeightGrid.css", "CSS", 0, 0, 16, 0, 0, 3, 19
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/Aziende.css", "CSS", 0, 0, 88, 0, 0, 22, 110
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/BasicDatePicker.css", "CSS", 0, 0, 12, 0, 0, 0, 12
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/BoxUser.css", "CSS", 0, 0, 33, 0, 0, 7, 40
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/DettaglioAziende.css", "CSS", 0, 0, 40, 0, 0, 10, 50
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/DettaglioAziende.module.css", "CSS", 0, 0, 10, 0, 2, 4, 16
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/DettaglioKeyPeople.css", "CSS", 0, 0, 34, 0, 0, 6, 40
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/FatturazioneAttiva.css", "CSS", 0, 0, 88, 0, 0, 18, 106
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/FatturazionePassiva.css", "CSS", 0, 0, 88, 0, 0, 15, 103
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/Fornitori.css", "CSS", 0, 0, 88, 0, 0, 15, 103
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/HR.css", "CSS", 0, 0, 99, 0, 0, 15, 114
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/Home.css", "CSS", 0, 0, 50, 0, 0, 11, 61
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/Homepage.css", "CSS", 0, 0, 22, 0, 0, 2, 24
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/KeyPeople.css", "CSS", 0, 0, 87, 0, 2, 16, 105
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/Login.css", "CSS", 0, 0, 73, 0, 0, 12, 85
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/LoginComponent.css", "CSS", 0, 0, 166, 0, 0, 18, 184
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/MyBox.css", "CSS", 0, 0, 30, 0, 0, 6, 36
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/Need.css", "CSS", 0, 0, 98, 0, 3, 18, 119
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/Progetti.css", "CSS", 0, 0, 91, 0, 0, 15, 106
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/Prova.css", "CSS", 0, 0, 104, 0, 0, 35, 139
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/Recruiting.css", "CSS", 0, 0, 97, 0, 0, 18, 115
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/Register.css", "CSS", 0, 0, 74, 0, 0, 12, 86
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/RegisterComponent.css", "CSS", 0, 0, 129, 0, 0, 14, 143
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/SearchBox.css", "CSS", 0, 0, 12, 0, 0, 1, 13
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/SearchComponent.css", "CSS", 0, 0, 86, 0, 0, 23, 109
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/Sidebar.css", "CSS", 0, 0, 137, 0, 2, 22, 161
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/Tesoreria.css", "CSS", 0, 0, 105, 0, 0, 18, 123
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/Timesheet.css", "CSS", 0, 0, 25, 0, 1, 8, 34
+"/Users/andrearizza/Desktop/react/gitreact/we-hub-react/src/styles/disabilitato.css", "CSS", 0, 0, 7, 0, 0, 2, 9
+"Total", "-", 480, 19037, 2017, 3, 1652, 4269, 27458

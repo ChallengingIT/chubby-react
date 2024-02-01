@@ -11,10 +11,8 @@ function UserTimesheet() {
   const location                = useLocation();
   const { dipendentiData = {} } = location.state || {};
 
-console.log("DATI ARRIVATI TIMESHEET PAGES: ", dipendentiData);
 
 const idProgetti = dipendentiData.progetti?.map(progetto => progetto.id);
-// console.log("IDPROGETTI: ", idProgetti);
 
 
   const [ anno,          setAnno         ] = useState(new Date().getFullYear()); 
@@ -22,46 +20,6 @@ const idProgetti = dipendentiData.progetti?.map(progetto => progetto.id);
   const [ timesheetData, setTimesheetData] = useState({}); 
 
 
-  
-
-  // useEffect(() => {
-  //   const loadTimesheetData = async () => {
-  
-  //     try {
-  
-  //       const url = `http://localhost:8080/react/user${dipendentiData.id}/${anno}/${mese}`;
-    
-  
-  //       const response = await axios.get(url);
-    
-  //       console.log('Dati del timesheet caricati:', response.data);
-    
-  
-  //       setTimesheetData(response.data);
-  //     } catch (error) {
-  //       console.error('Errore durante il caricamento dei dati del timesheet:', error);
-  //     }
-  //   };
-  //   loadTimesheetData();
-  // }, []);
-
-
-
-
-  // const handleSubmitTot = async (timesheetData) => {
-  //   try {
-
-  //     const url = `http://localhost:8080/react/user/precedente/${dipendenteID}/${timesheetData.anno}/${timesheetData.mese}`;
-
-
-  //     const response = await axios.get(url, { timesheetData });
-      
-
-  //     console.log('Risposta dal server:', response.data);
-  //   } catch (error) {
-  //     console.error('Errore durante l\'invio dei dati del timesheet:', error);
-  //   }
-  // };
 
 
 

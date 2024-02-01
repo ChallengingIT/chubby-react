@@ -8,7 +8,7 @@ function ListButton({ onClick, to, rowData }) {
 
   const handleEditAction = () => {
     if (onClick) {
-      onClick(rowData.id); // Passa l'ID o i dati necessari all'azione di modifica
+      onClick(rowData.id);
     } else if (to) {
       navigate(to);
     } else {

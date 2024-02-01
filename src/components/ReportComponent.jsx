@@ -34,7 +34,6 @@ function ReportComponent() {
     axios.get('http://localhost:8080/hr/react')
       .then(response => {
         setDipendenti(response.data);
-        console.log("DIPENDENTI CARICATI: ", response.data);
       })
       .catch(error => {
         console.error('errore durante il recupero dei dipendenti!', error);
@@ -103,8 +102,8 @@ function ReportComponent() {
             sx={{
               display: 'flex',
               flexDirection: 'row',
-              flexWrap: 'nowrap', // Impedisce il passaggio a capo
-              overflowX: 'auto', // Permette lo scorrimento orizzontale se necessario
+              flexWrap: 'nowrap',
+              overflowX: 'auto', 
               minWidth: "30px",
               width: "98%",
             }}
@@ -136,7 +135,7 @@ function ReportComponent() {
           }}
         >
           {filteredTimesheet.map((dayData) => {
-            const isWeekend = dayData.iniziale === 'S' || dayData.iniziale === 'D'; // Adattalo secondo la logica corretta
+            const isWeekend = dayData.iniziale === 'S' || dayData.iniziale === 'D'; 
             const isHoliday = dayData.festivo;
             const daySquareBgColor = isWeekend || isHoliday ? '#b7b5b5' : 'grey.200';
   

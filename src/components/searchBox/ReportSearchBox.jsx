@@ -17,41 +17,6 @@ const [ searchTerm,          setSearchTerm        ] = useState(initialSearchTerm
 const [ filteredData,        setFilteredData      ] = useState([]);
 
 
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const responseOwner = await axios.get("http://localhost:8080/aziende/react/owner");
-//         const responseStato = await axios.get("http://localhost:8080/aziende/react");
-
-//     if (Array.isArray(responseStato.data)) {
-//       const statoOptionsData = responseStato.data.map((status) => ({
-//         label: convertStatus(status),
-//         value: status,
-//       }));
-  
-//       setStatoOptions(statoOptionsData);
-//       if (!searchTerm.status && searchTerm.status !== "") {
-//         setSearchTerm({ ...searchTerm, status: "" });
-//       }
-//     } else {
-//       console.error("I dati ottenuti non sono nel formato Array:", responseStato.data);
-//     }
-        
-  
-
-//         if (Array.isArray(responseOwner.data)) {
-//           setOwnerOptions(responseOwner.data.map((owner, index) => ({ label: owner.descrizione, value: owner.id })));
-//         } else {
-//           console.error("I dati ottenuti non sono nel formato Array:", responseOwner.data);
-//         } 
-//       } catch (error) {
-//         console.error("Errore durante il recupero dei dati:", error);
-//       }
-//     };
-
-//     fetchData();
-//   }, []);
-
 const handleSearch = () => {
     console.log("Valori di ricerca:", searchTerm);
     const filteredData = OriginalAziende.filter((item) =>
@@ -183,9 +148,6 @@ return (
                     borderRadius: "10px",
                     fontSize: "0.8rem",
                     fontWeight: "bolder",
-                    // marginLeft: "20px",
-                    // padding: "0.5rem 1rem",
-                    // marginBottom: '10px',
                     "&:hover": {
                     backgroundColor: "#ffb800",
                     color: "black",
@@ -206,9 +168,6 @@ return (
                 borderRadius: "10px",
                 fontSize: "0.8rem",
                 fontWeight: "bolder",
-                // marginLeft: "20px",
-                // marginTop: "5px",
-                // padding: "0.5rem 1rem",
                 "&:hover": {
                     backgroundColor: "black",
                     color: "white",

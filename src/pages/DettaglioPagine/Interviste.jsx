@@ -29,7 +29,6 @@ function Interviste() {
   const { recruitingData = {} } = location.state || {};
   const candidatoID             = id;
 
-  // console.log("DATI ARRIVATI DA RECRUITING:", recruitingData);
 
 
   const [ interviste,               setInterviste           ] = useState([]);
@@ -64,7 +63,6 @@ function Interviste() {
         const intervisteConId = response.data.map((interviste) => ({ ...interviste }));
         setOriginalInterviste(intervisteConId);
         setFilteredInterviste(intervisteConId);
-        console.log(intervisteConId);
       } else {
         console.error("I dati ottenuti non sono nel formato Array:", response.data);
       }
@@ -79,7 +77,6 @@ function Interviste() {
   }, []);
 
   useEffect(() => {
-    // console.log("DATI DI CANDIDATO AGGIORNATI: ", candidatoData);
   }, [candidatoData]); 
 
   const handleGoBack = () => {
@@ -93,11 +90,9 @@ navigate("/recruiting");
   
 
 
-// console.log("ID INSERITO: ", candidatoID);
 
   const navigateToAggiungiIntervista = () => {
     navigate("/intervista/aggiungi", { state: {  candidatoID  }});
-    // console.log("DATI INVIATI AD AGGIUNGI INCONTRO: ", candidatoData, candidatoID);
   };
 
 
@@ -115,8 +110,7 @@ navigate("/recruiting");
 
         const response = await axios.delete(`http://localhost:8080/intervista/react/elimina/${deleteId}`, { headers: headers});
         setOpenDialog(false);
-        console.log("DELETE A ID: ", id);
-        console.log("Risposta dalla chiamata DELETE:", response);
+
   
   
         fetchData();

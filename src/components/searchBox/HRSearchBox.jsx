@@ -13,15 +13,19 @@ const HRSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalHr})
   const [ searchTerm,    setSearchTerm    ] = useState(initialSearchTerm);
   const [ filteredData,  setFilteredData  ] = useState([]);
 
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) { 
+      handleSearch();     
+    }
+  };
+
   const handleSearch = () => {
-    console.log("Valori di ricerca:", searchTerm);
-    console.log("Contenuto di OriginalHr:", OriginalHr);
+
     const filteredData = OriginalHr.filter(item =>
       Object.keys(searchTerm).every(key =>
         String(item[key]).toLowerCase().includes(String(searchTerm[key]).toLowerCase())
       )
     );
-    console.log("Dati filtrati:", filteredData);
     onSearch(filteredData);
     setFilteredData(filteredData);
   };
@@ -44,6 +48,7 @@ const HRSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalHr})
         placeholder="Nome"
         maxLength="90"
         value={searchTerm.nome}
+        onKeyDown={handleKeyDown}
         onChange={(e) => setSearchTerm({ ...searchTerm, nome: e.target.value })}
       />
 
@@ -55,6 +60,7 @@ const HRSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalHr})
         placeholder="Cognome"
         maxLength="45"
         value={searchTerm.cognome}
+        onKeyDown={handleKeyDown}
         onChange={(e) => setSearchTerm({ ...searchTerm, cognome: e.target.value })}
       />
 
@@ -67,6 +73,7 @@ const HRSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalHr})
         maxLength="45"
         placeholder="Email"
         value={searchTerm.email}
+        onKeyDown={handleKeyDown}
         onChange={(e) => setSearchTerm({ ...searchTerm, email: e.target.value })}
       />
     {/* quarta colonna */}

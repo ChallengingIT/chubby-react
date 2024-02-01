@@ -72,7 +72,6 @@ const [ deleteId,                         setDeleteId                     ] = us
      };
 
       const response = await axios.get("http://localhost:8080/hr/react/modificato", { headers: headers });
-      console.log("DATI IN HR: ", response.data);
       if (Array.isArray(response.data)) {
         const hrConId = response.data.map((hr) => ({ ...hr }));
         setOriginalHr(hrConId);
@@ -109,34 +108,12 @@ const openDeleteDialog = (id) => {
     navigate("/hr/report");
   };
 
-  // const handleDelete = async (id) => {
-  //   try {
-  //     // Recupera l'accessToken da localStorage
-  //    const user = JSON.parse(localStorage.getItem("user"));
-  //    const accessToken = user?.accessToken;
- 
-  //    // Configura gli headers della richiesta con l'Authorization token
-  //    const headers = {
-  //      Authorization: `Bearer ${accessToken}`
-  //    };
 
-  //     await axios.delete(`http://localhost:8080/hr/react/staff/elimina/${deleteId}`, { headers: headers });
-  //     console.log("Cancellazione avvenuta con successo", respon);
-  //     setOpenDialog(false);
-  //     const updatedHr = originalHr.filter((hr) => hr.id !== id);
-  //     setHr(updatedHr);
-  //     setOriginalHr(updatedHr);
-  //     setFilteredHr(updatedHr);
-  //   } catch (error) {
-  //     console.error("Errore durante la cancellazione:", error);
-  //   }
-  // };
 
   const handleDelete = async () => {
     try {
       const response = await axios.delete(`http://localhost:8080/hr/react/staff/elimina/${deleteId}`, { headers: headers});
-      console.log("Cancellazione avvenuta con successo", response);
-      console.log("id eliminato: ", deleteId);
+
       setOpenDialog(false);
       fetchData();
     } catch (error) {
@@ -225,7 +202,6 @@ const openDeleteDialog = (id) => {
      };
 
       const response = await axios.post("http://localhost:8080/hr/react/staff/sollecito", { headers: headers });
-      console.log("RISPOSTA DAL SERVER: ",response.data);
     } catch (error) {
       console.error("Errore durante la cancellazione:", error);
     }

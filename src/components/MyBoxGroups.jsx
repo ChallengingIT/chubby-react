@@ -18,7 +18,8 @@ const MyBoxGroups = ({
   onSave,
   title = 'Form',
   disableFields,
-  campiObbligatori
+  campiObbligatori,
+  showSaveButton = true,
 }) => {
   const [currentGroupIndex, setCurrentGroupIndex] = useState(0);
   const [errors, setErrors] = useState({});
@@ -41,7 +42,6 @@ const validate = () => {
     }
   });
   setErrors(tempErrors);
-  // console.log('Validating: ', tempErrors);
   return !Object.keys(tempErrors).length;
 };
 
@@ -107,7 +107,9 @@ const validate = () => {
 
   const renderField = (field, groupLength) => {
 
-    const gridWidth = groupLength === 2 ? 6 : 4;
+
+    const gridWidth = field.type === 'note' ? 12 : groupLength === 2 ? 6 : 4;
+
 
     const isDisabled = disableFields[field.name];
     
@@ -164,6 +166,27 @@ const validate = () => {
             style={{ width: '100%', marginBottom: '16px', marginTop: '16px' }}
           />
         );
+
+        case 'note':
+          return (
+            <Grid item xs={gridWidth} key={field.name} style={{ width: '100%' }}>
+              <TextField
+                label={field.label}
+                name={field.name}
+                value={values[field.name] || ''}
+                onChange={handleInputChange}
+                disabled={isDisabled}
+                multiline
+                fullWidth
+                InputLabelProps={field.type === 'date' ? { shrink: true } : undefined}
+                type={field.type === 'date' ? 'date' : 'text'}
+                style={{ width: '100%', marginBottom: '16px', marginTop: '16px' }}
+              />
+            </Grid>
+          );
+
+
+ 
       default:
         return (
           <Grid item xs={12} key={field.name}>
@@ -180,6 +203,7 @@ const validate = () => {
               style={{ width: '100%', marginBottom: '16px', marginTop: '16px' }}
             />
           </Grid>
+          
         );
     }
   };
@@ -271,6 +295,7 @@ const validate = () => {
           )}
           {isLastGroup && (
             <Grid item xs={12}>
+              {showSaveButton && (
               <Button type="submit" fullWidth
               style={{
                 width: '250px',
@@ -291,6 +316,7 @@ const validate = () => {
               >
                 Salva
                 </Button>
+                 )}
             </Grid>
           )}
         </Grid>
