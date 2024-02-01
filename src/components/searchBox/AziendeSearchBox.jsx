@@ -60,10 +60,10 @@ const handleKeyDown = (e) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseOwner = await axios.get("http://89.46.67.198/aziende/react/owner", {
+        const responseOwner = await axios.get("https://89.46.67.198:8443/aziende/react/owner", {
           headers: headers,
         });
-        const responseStato = await axios.get("http://89.46.67.198/aziende/react", { 
+        const responseStato = await axios.get("https://89.46.67.198:8443/aziende/react", { 
           headers: headers,
         });
 

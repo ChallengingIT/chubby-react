@@ -54,10 +54,10 @@ useEffect(() => {
 
 
         //jobtitle = tipologia, tipologiaIncontro = stato, owner = owner
-        const responseTipologia                      = await axios.get("http://89.46.67.198/aziende/react/tipologia");
-        const ownerResponse                          = await axios.get("http://89.46.67.198/aziende/react/owner");
-        const responseStato                          = await axios.get("http://89.46.67.198/staffing/react/stato/candidato");
-        const responseTipoIntervista                 = await axios.get("http://89.46.67.198/intervista/react/tipointervista");
+        const responseTipologia                      = await axios.get("https://89.46.67.198:8443/aziende/react/tipologia");
+        const ownerResponse                          = await axios.get("https://89.46.67.198:8443/aziende/react/owner");
+        const responseStato                          = await axios.get("https://89.46.67.198:8443/staffing/react/stato/candidato");
+        const responseTipoIntervista                 = await axios.get("https://89.46.67.198:8443/intervista/react/tipointervista");
 
         if (Array.isArray(responseTipoIntervista.data)) {
           const tipoIntervistaOptions = responseTipoIntervista.data.map((tipoIntervista) => ({
@@ -246,7 +246,7 @@ const initialValues = {
       const idCandidato = specificRecruitingData.id;
       const note = values.descrizione;
       const modifica = 0; 
-      const url = `http://89.46.67.198/intervista/react/salva?idCandidato=${idCandidato}&note=${encodeURIComponent(note)}&modifica=${modifica}`;
+      const url = `https://89.46.67.198:8443/intervista/react/salva?idCandidato=${idCandidato}&note=${encodeURIComponent(note)}&modifica=${modifica}`;
       
       const response = await axios.post(url, values);
       dispatch(addNewIntervista(response.data));
@@ -269,7 +269,7 @@ const initialValues = {
   //     // values.modifica = modifica;
   //     // console.log("DATI DI IDCANDIDATO IN SUBMIT: ", idCandidato);
 
-  //     const response = await axios.post("http://89.46.67.198/intervista/react/salva", values);
+  //     const response = await axios.post("https://89.46.67.198:8443/intervista/react/salva", values);
   //     console.log("Response from server:", response.data);
 
   //     navigate("/interviste"); //poi dove si va?

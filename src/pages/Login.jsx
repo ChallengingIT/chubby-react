@@ -3,12 +3,10 @@ import "../styles/Login.css";
 import { useNavigate } from "react-router-dom";
 import LoginComponent from "../components/LoginComponent";
 import loginimg from "../images/loginimg.jpeg";
-
-
 export const Login = () => {
   const navigate = useNavigate();
-
   return (
+    <div className="container" style={{ backgroundColor: 'black'}}>
     <div className="login">
       <div className="div-2">
         <p className="WE-HUB">
@@ -27,7 +25,7 @@ export const Login = () => {
         </div>
       </div>
     </div>
+    </div>
   );
 };
-
 export default Login;

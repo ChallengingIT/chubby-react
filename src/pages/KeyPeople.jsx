@@ -45,7 +45,7 @@ const KeyPeople = () => {
      const headers = {
        Authorization: `Bearer ${accessToken}`
      };
-      const response = await axios.get("http://89.46.67.198/keypeople/react", { headers: headers});
+      const response = await axios.get("https://89.46.67.198:8443/keypeople/react", { headers: headers});
       if (Array.isArray(response.data)) {
       const keypeopleConId = response.data.map((keypeople) => ({ ...keypeople}));
       setOriginalKeypeople(keypeopleConId);
@@ -78,7 +78,7 @@ const openDeleteDialog = (id) => {
 
   // const handleDelete = async (id) => {
   //   try {
-  //     await axios.delete(`http://89.46.67.198/keypeople/react/elimina/${id}`);
+  //     await axios.delete(`https://89.46.67.198:8443/keypeople/react/elimina/${id}`);
 
   //     const updatedKeypeople = originalKeypeople.filter((keypeople) => keypeople.id !== id);
   //     setKeypeople(updatedKeypeople);
@@ -99,7 +99,7 @@ const openDeleteDialog = (id) => {
      const headers = {
        Authorization: `Bearer ${accessToken}`
      };
-      const response = await axios.delete(`http://89.46.67.198/keypeople/react/elimina/${deleteId}`, {headers: headers});
+      const response = await axios.delete(`https://89.46.67.198:8443/keypeople/react/elimina/${deleteId}`, {headers: headers});
       setOpenDialog(false);
 
 fetchData();

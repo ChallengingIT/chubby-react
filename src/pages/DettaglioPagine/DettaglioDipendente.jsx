@@ -25,11 +25,11 @@ const DettaglioDipendente = () => {
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseJobTitle              = await axios.get("http://89.46.67.198/aziende/react/tipologia");
-        const responseNeed                  = await axios.get("http://89.46.67.198/staffing/react/skill");
-        const facoltaResponse               = await axios.get("http://89.46.67.198/staffing/react/facolta");
-        const livelloScolasticoResponse     = await axios.get("http://89.46.67.198/staffing/react/livello");
-        const tipologiaContrattoResponse    = await axios.get("http://89.46.67.198/hr/react/tipocontratto");
+        const responseJobTitle              = await axios.get("https://89.46.67.198:8443/aziende/react/tipologia");
+        const responseNeed                  = await axios.get("https://89.46.67.198:8443/staffing/react/skill");
+        const facoltaResponse               = await axios.get("https://89.46.67.198:8443/staffing/react/facolta");
+        const livelloScolasticoResponse     = await axios.get("https://89.46.67.198:8443/staffing/react/livello");
+        const tipologiaContrattoResponse    = await axios.get("https://89.46.67.198:8443/hr/react/tipocontratto");
 
         if (Array.isArray(tipologiaContrattoResponse.data)) {
           const tipologiaContrattoOptions = tipologiaContrattoResponse.data.map((tipologiaContratto) => ({
@@ -146,7 +146,7 @@ const DettaglioDipendente = () => {
         const fileID = file.id;
         const fileDescrizione = file.descrizione; 
   
-        const url = `http://89.46.67.198/files/react/download/file/${fileID}`;
+        const url = `https://89.46.67.198:8443/files/react/download/file/${fileID}`;
         const response = await axios({
           method: 'GET',
           url: url,

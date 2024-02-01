@@ -100,6 +100,8 @@ const App = () => {
 
   const isAdmin = getUserRole() === "ROLE_ADMIN";
   const isUser = getUserRole() === "ROLE_USER";
+  const isBm = getUserRole() === "ROLE_BM";
+  const isRecruiter = getUserRole() === "ROLE_RECRUITER";
 
 
 
@@ -110,7 +112,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {isAdmin && (
+        {(isAdmin || isBm || isRecruiter ) && (
           <>
           
           <Route path="/homepage"                                     element={<PrivateRoute>         <Homepage                    />   </PrivateRoute>} />

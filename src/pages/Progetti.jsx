@@ -41,7 +41,7 @@ const Progetti = () => {
          Authorization: `Bearer ${accessToken}`
        };
  
-      const response = await axios.get("http://89.46.67.198/progetti/react", { headers: headers });
+      const response = await axios.get("https://89.46.67.198:8443/progetti/react", { headers: headers });
       if (Array.isArray(response.data)) {
       const progettiConId = response.data.map((progetti) => ({ ...progetti}));
       setOriginalProgetti(progettiConId);
@@ -76,7 +76,7 @@ const openDeleteDialog = (id) => {
 
   // const handleDelete = async (id) => {
   //   try {
-  //     await axios.delete(`http://89.46.67.198/progetti/react/elimina/${id}`);
+  //     await axios.delete(`https://89.46.67.198:8443/progetti/react/elimina/${id}`);
   //     const updatedProgetti = originalProgetti.filter((progetti) => progetti.id !== id);
   //     setProgetti(updatedProgetti);
   //     setOriginalProgetti(updatedProgetti);
@@ -96,7 +96,7 @@ const openDeleteDialog = (id) => {
        const headers = {
          Authorization: `Bearer ${accessToken}`
        };
-      const response = await axios.delete(`http://89.46.67.198/progetti/react/elimina/${deleteId}`, { headers: headers });
+      const response = await axios.delete(`https://89.46.67.198:8443/progetti/react/elimina/${deleteId}`, { headers: headers });
 
       setOpenDialog(false);
 

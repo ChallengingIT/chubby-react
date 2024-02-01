@@ -45,8 +45,8 @@ const Need = () => {
      const headers = {
        Authorization: `Bearer ${accessToken}`
      };
-        const response = await axios.get("http://89.46.67.198/need/react", { headers: headers});
-        const responseStato = await axios.get("http://89.46.67.198/need/react/stato", { headers: headers });
+        const response = await axios.get("https://89.46.67.198:8443/need/react", { headers: headers});
+        const responseStato = await axios.get("https://89.46.67.198:8443/need/react/stato", { headers: headers });
 
         if (Array.isArray(responseStato.data)) {
           const statoConId = responseStato.data.map((stato) => ({ ...stato}));
@@ -104,7 +104,7 @@ const Need = () => {
         stato: idStato
       });
   
-      await axios.post(`http://89.46.67.198/need/react/salva/stato/${selectedNeed.id}?${params.toString()}`, { headers: headers });
+      await axios.post(`https://89.46.67.198:8443/need/react/salva/stato/${selectedNeed.id}?${params.toString()}`, { headers: headers });
       
       setIsModalOpen(false);
       fetchData();

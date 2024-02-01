@@ -66,7 +66,7 @@ function DettaglioAziende2() {
 
     const fetchAttivita = async () => {
         try {
-        const responseAttivita = await axios.get(`http://89.46.67.198/aziende/react/attivita/${id}`, { headers: headers });
+        const responseAttivita = await axios.get(`https://89.46.67.198:8443/aziende/react/attivita/${id}`, { headers: headers });
 
         if (Array.isArray(responseAttivita.data)) {
             const attivitaOptions = responseAttivita.data.map((attivita) => ({
@@ -88,11 +88,11 @@ function DettaglioAziende2() {
     useEffect(() => {
     const fetchOptions = async () => {
         try {
-        const responseOwner           = await axios.get("http://89.46.67.198/aziende/react/owner"             , { headers: headers });
-        const responseKeyPeople        = await axios.get(`http://89.46.67.198/aziende/react/keypeople/${id}`   , { headers: headers });
-        const responseNeed            = await axios.get(`http://89.46.67.198/need/react/cliente/${id}`        , { headers: headers });
-        // const responseAttivita        = await axios.get(`http://89.46.67.198/aziende/react/attivita/${id}`    , { headers: headers });
-        const responseStatoNeed       = await axios.get(`http://89.46.67.198/need/react/cliente/${id}`        , { headers: headers });
+        const responseOwner           = await axios.get("https://89.46.67.198:8443/aziende/react/owner"             , { headers: headers });
+        const responseKeyPeople        = await axios.get(`https://89.46.67.198:8443/aziende/react/keypeople/${id}`   , { headers: headers });
+        const responseNeed            = await axios.get(`https://89.46.67.198:8443/need/react/cliente/${id}`        , { headers: headers });
+        // const responseAttivita        = await axios.get(`https://89.46.67.198:8443/aziende/react/attivita/${id}`    , { headers: headers });
+        const responseStatoNeed       = await axios.get(`https://89.46.67.198:8443/need/react/cliente/${id}`        , { headers: headers });
 
         if (Array.isArray(responseStatoNeed.data)) {
             const statoNeedOptions = responseStatoNeed.data.map((statoNeed) => ({
@@ -217,7 +217,7 @@ function DettaglioAziende2() {
                 }).toString();
             
                 try {
-                const responseFeed = await axios.post(`http://89.46.67.198/aziende/react/attivita/salva?${params}`, attivitaMap, { headers });
+                const responseFeed = await axios.post(`https://89.46.67.198:8443/aziende/react/attivita/salva?${params}`, attivitaMap, { headers });
                 setPopupData(initialState);
                 setTimeout(fetchAttivita, 500); 
                 } catch (error) {
@@ -237,7 +237,7 @@ function DettaglioAziende2() {
                 };
                 
                 try {
-                await axios.post('http://89.46.67.198/aziende/react/attivita/salva', attivitaMap, { params });
+                await axios.post('https://89.46.67.198:8443/aziende/react/attivita/salva', attivitaMap, { params });
                 setTimeout(fetchAttivita, 500); 
                 } catch (error) {
                 console.error("Errore durante il salvataggio dell'email:", error);
@@ -254,7 +254,7 @@ function DettaglioAziende2() {
                 };
                 
             try{
-                await axios.post('http://89.46.67.198/aziende/react/attivita/salva', attivitaMap, { params });
+                await axios.post('https://89.46.67.198:8443/aziende/react/attivita/salva', attivitaMap, { params });
                 setTimeout(fetchAttivita, 500); 
                 } catch (error) {
                 console.error("Errore durante il salvataggio dell'email:", error);

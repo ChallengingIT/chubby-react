@@ -35,8 +35,8 @@ const AggiungiAziende = () => {
      const headers = {
        Authorization: `Bearer ${accessToken}`
      };
-        const provinceResponse = await axios.get("http://89.46.67.198/aziende/react/province", { headers: headers });
-        const ownerResponse    = await axios.get("http://89.46.67.198/aziende/react/owner", { headers: headers }   );
+        const provinceResponse = await axios.get("https://89.46.67.198:8443/aziende/react/province", { headers: headers });
+        const ownerResponse    = await axios.get("https://89.46.67.198:8443/aziende/react/owner", { headers: headers }   );
 
         if (Array.isArray(ownerResponse.data)) {
           const ownerOptions = ownerResponse.data.map((owner) => ({
@@ -134,7 +134,7 @@ const AggiungiAziende = () => {
           Authorization: `Bearer ${accessToken}`
         };
 
-        const response = await axios.post("http://89.46.67.198/aziende/react/salva", values, {
+        const response = await axios.post("https://89.46.67.198:8443/aziende/react/salva", values, {
           headers: headers
         });
         navigate("/aziende");
