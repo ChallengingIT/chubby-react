@@ -84,7 +84,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
         setMeseNumero(mese.toString());
         setAnnoNumero(anno.toString());
 
-        axios.get(`http://localhost:8080/timesheet/react/user/${anno}/${mese}`, {
+        axios.get(`http://89.46.67.198/timesheet/react/user/${anno}/${mese}`, {
             headers: headers,
             params: requestParams
         })
@@ -133,7 +133,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
     useEffect(() => {
         const fetchPrimoTimesheet = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/timesheet/react/user/primo`, {
+                const response = await axios.get(`http://89.46.67.198/timesheet/react/user/primo`, {
                     headers: headers,
                     params: requestParams
                 });
@@ -172,7 +172,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
             return;
         }
     
-        axios.get(`http://localhost:8080/timesheet/react/user/precedente/${annoNumero}/${meseNumero}`, {
+        axios.get(`http://89.46.67.198/timesheet/react/user/precedente/${annoNumero}/${meseNumero}`, {
             headers: headers,
             params: requestParams
         })
@@ -232,7 +232,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
             nuovoAnno += 1;
         }
     
-        axios.get(`http://localhost:8080/timesheet/react/user/successivo/${annoNumero}/${meseNumero}`, {
+        axios.get(`http://89.46.67.198/timesheet/react/user/successivo/${annoNumero}/${meseNumero}`, {
             headers: headers,
             params: requestParams
         })
@@ -392,7 +392,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
             };
 
             try {
-            const response = await axios.post(`http://localhost:8080/timesheet/react/user/aggiorna/${annoNumero}/${meseNumero}`, datiDaInviare, {
+            const response = await axios.post(`http://89.46.67.198/timesheet/react/user/aggiorna/${annoNumero}/${meseNumero}`, datiDaInviare, {
                 headers: headers,
                 params: requestParams
             });
@@ -414,7 +414,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
         // Funzione per richiedere i dati aggiornati del timesheet
         const fetchTimesheetData = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/timesheet/react/user/${annoNumero}/${meseNumero}`, {
+                const response = await axios.get(`http://89.46.67.198/timesheet/react/user/${annoNumero}/${meseNumero}`, {
                     headers: headers,
                     params: requestParams
                 });
@@ -472,7 +472,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
             
         
             try {
-                const response = await axios.post(`http://localhost:8080/timesheet/react/user/cancella/${annoNumero}/${meseNumero}`, datiDaInviare, {
+                const response = await axios.post(`http://89.46.67.198/timesheet/react/user/cancella/${annoNumero}/${meseNumero}`, datiDaInviare, {
                     headers: headers,
                     params: requestParams
                 });
@@ -514,7 +514,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
         //chiamata per inviare tutto il timesheet
         const handleSubmit = async () => {
             try {
-                const url = `http://localhost:8080/timesheet/react/user/salva/${annoNumero}/${meseNumero}`;
+                const url = `http://89.46.67.198/timesheet/react/user/salva/${annoNumero}/${meseNumero}`;
                 const response = await axios.post(url, { timesheetData });
                 setAlert({ open: true, message: response.data });
             } catch (error) {

@@ -57,7 +57,7 @@ const ModificaFornitori = () => {
         }
       });
 
-      const response = await axios.post("http://localhost:8080/fornitori/react/salva", values, {
+      const response = await axios.post("http://89.46.67.198/fornitori/react/salva", values, {
         headers: headers
       });
 

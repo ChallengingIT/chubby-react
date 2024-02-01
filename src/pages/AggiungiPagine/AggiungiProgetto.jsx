@@ -24,8 +24,8 @@ const AggiungiProgetto = () => {
   useEffect(() => {
     const fetchProgettiOptions = async () => {
       try {
-        const responseDipendenti = await axios.get("http://localhost:8080/hr/react/modificato"     , { headers: headers});
-        const responseClienti    = await axios.get("http://localhost:8080/aziende/react", { headers: headers });
+        const responseDipendenti = await axios.get("http://89.46.67.198/hr/react/modificato"     , { headers: headers});
+        const responseClienti    = await axios.get("http://89.46.67.198/aziende/react", { headers: headers });
 
 
         if (Array.isArray(responseDipendenti.data)) {
@@ -89,7 +89,7 @@ const AggiungiProgetto = () => {
     if (!hasErrors) {
     try {
 
-      const response = await axios.post("http://localhost:8080/progetti/react/salva", values, 
+      const response = await axios.post("http://89.46.67.198/progetti/react/salva", values, 
       { headers: headers });
 
       navigate("/progetti");

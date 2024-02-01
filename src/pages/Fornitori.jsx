@@ -42,7 +42,7 @@ const Fornitori = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/fornitori/react", { headers: headers});
+      const response = await axios.get("http://89.46.67.198/fornitori/react", { headers: headers});
         if (Array.isArray(response.data)) {
         const fornitoriConId = response.data.map((fornitori) => ({ ...fornitori}));
         setOriginalFornitori(fornitoriConId);
@@ -78,7 +78,7 @@ const openDeleteDialog = (id) => {
   const handleDelete = async () => {
   
     try {
-      const response = await axios.delete(`http://localhost:8080/fornitori/react/elimina/${deleteId}`, { headers: headers});
+      const response = await axios.delete(`http://89.46.67.198/fornitori/react/elimina/${deleteId}`, { headers: headers});
 
       setOpenDialog(false);
 

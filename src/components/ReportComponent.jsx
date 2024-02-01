@@ -31,7 +31,7 @@ function ReportComponent() {
 
 
   useEffect(() => {
-    axios.get('http://localhost:8080/hr/react')
+    axios.get('http://89.46.67.198/hr/react')
       .then(response => {
         setDipendenti(response.data);
       })

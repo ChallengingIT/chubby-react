@@ -23,8 +23,8 @@ const AssociazioniSearchBox = ({ data, onSearch, onReset, onSearchTextChange }) 
     const fetchData = async () => {
       try {
 
-        const responseAziende  = await axios.get("http://localhost:8080/aziende/react");
-        const responseStato    = await axios.get("http://localhost:8080/fatturazionePassiva/react/stato");
+        const responseAziende  = await axios.get("http://89.46.67.198/aziende/react");
+        const responseStato    = await axios.get("http://89.46.67.198/fatturazionePassiva/react/stato");
 
 
         if (Array.isArray(responseStato.data)) {

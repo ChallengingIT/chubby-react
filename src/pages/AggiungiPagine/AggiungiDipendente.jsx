@@ -29,11 +29,11 @@ const AggiungiDipendente = () => {
       try {
     
 
-        const responseJobTitle              = await axios.get("http://localhost:8080/aziende/react/tipologia" , { headers: headers });
-        const responseSkill                 = await axios.get("http://localhost:8080/staffing/react/skill"    , { headers: headers });
-        const facoltaResponse               = await axios.get("http://localhost:8080/staffing/react/facolta"  , { headers: headers });
-        const livelloScolasticoResponse     = await axios.get("http://localhost:8080/staffing/react/livello"  , { headers: headers });
-        const contrattoResponse             = await axios.get("http://localhost:8080/hr/react/tipocontratto"  , { headers: headers });
+        const responseJobTitle              = await axios.get("http://89.46.67.198/aziende/react/tipologia" , { headers: headers });
+        const responseSkill                 = await axios.get("http://89.46.67.198/staffing/react/skill"    , { headers: headers });
+        const facoltaResponse               = await axios.get("http://89.46.67.198/staffing/react/facolta"  , { headers: headers });
+        const livelloScolasticoResponse     = await axios.get("http://89.46.67.198/staffing/react/livello"  , { headers: headers });
+        const contrattoResponse             = await axios.get("http://89.46.67.198/hr/react/tipocontratto"  , { headers: headers });
 
         if (Array.isArray(contrattoResponse.data)) {
           const contrattoOptions = contrattoResponse.data.map((contratto) => ({
@@ -132,7 +132,7 @@ const handleSubmit = async (values, fileCV, fileCF, fileMultipli, fileAllegati) 
 
 
 
-      const datiResponse = await axios.post("http://localhost:8080/hr/react/staff/salva", values, {
+      const datiResponse = await axios.post("http://89.46.67.198/hr/react/staff/salva", values, {
         params: { skill: skills },
         headers: headers,
       });
@@ -150,7 +150,7 @@ const handleSubmit = async (values, fileCV, fileCF, fileMultipli, fileAllegati) 
         formData.append("file", file.file);
     
         try {
-          const fileResponse = await axios.post(`http://localhost:8080/hr/react/staff/salva/file/${staffId}`, formData, { headers: headers });
+          const fileResponse = await axios.post(`http://89.46.67.198/hr/react/staff/salva/file/${staffId}`, formData, { headers: headers });
         } catch (error) {
           console.error("Errore nell'invio del file: ", error);
         }

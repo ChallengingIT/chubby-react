@@ -42,12 +42,12 @@ const AggiungiNeedID = () => {
   useEffect(() => {
     const fetchNeedOptions = async () => {
       try {
-        const responseAziende       = await axios.get("http://localhost:8080/aziende/react"       , { headers: headers });
-        const responseSkill         = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
-        const responseSkill2        = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
-        const ownerResponse         = await axios.get("http://localhost:8080/aziende/react/owner" , { headers: headers });
-        const tipologiaResponse     = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
-        const statoResponse         = await axios.get("http://localhost:8080/need/react/stato"    , { headers: headers });
+        const responseAziende       = await axios.get("http://89.46.67.198/aziende/react"       , { headers: headers });
+        const responseSkill         = await axios.get("http://89.46.67.198/staffing/react/skill", { headers: headers });
+        const responseSkill2        = await axios.get("http://89.46.67.198/staffing/react/skill", { headers: headers });
+        const ownerResponse         = await axios.get("http://89.46.67.198/aziende/react/owner" , { headers: headers });
+        const tipologiaResponse     = await axios.get("http://89.46.67.198/need/react/tipologia", { headers: headers });
+        const statoResponse         = await axios.get("http://89.46.67.198/need/react/stato"    , { headers: headers });
 
 
         if (Array.isArray(statoResponse.data)) {
@@ -178,7 +178,7 @@ const AggiungiNeedID = () => {
 
       
         // Invio della richiesta al server con skills e skills2 come parametri di query
-        const response = await axios.post("http://localhost:8080/need/react/salva", values, {
+        const response = await axios.post("http://89.46.67.198/need/react/salva", values, {
           params: {
             skill1: skills,
             skill2: skills2

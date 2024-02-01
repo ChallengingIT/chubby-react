@@ -33,8 +33,8 @@ const headers = {
     const fetchData = async () => {
       try {
 
-        const responseCliente    = await axios.get("http://localhost:8080/aziende/react", { headers: headers});
-        const responseDipendenti = await axios.get("http://localhost:8080/hr/react"     , { headers: headers});
+        const responseCliente    = await axios.get("http://89.46.67.198/aziende/react", { headers: headers});
+        const responseDipendenti = await axios.get("http://89.46.67.198/hr/react"     , { headers: headers});
 
         if (Array.isArray(responseCliente.data)) {
           setClienteOptions(responseCliente.data.map((cliente) => ({ label: cliente.denominazione, value: cliente.id })));

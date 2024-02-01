@@ -66,9 +66,9 @@ const handleKeyDown = (e) => {
     const fetchData = async () => {
       try {
 
-        const responseOwner             = await axios.get("http://localhost:8080/aziende/react/owner", { headers: headers});
-        const responseTipologia         = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers});
-        const responseStato             = await axios.get("http://localhost:8080/need/react/stato", { headers: headers});
+        const responseOwner             = await axios.get("http://89.46.67.198/aziende/react/owner", { headers: headers});
+        const responseTipologia         = await axios.get("http://89.46.67.198/need/react/tipologia", { headers: headers});
+        const responseStato             = await axios.get("http://89.46.67.198/need/react/stato", { headers: headers});
 
         if (Array.isArray(responseStato.data)) {
             setStatoOptions(responseStato.data.map((stato, index) => ({ label: stato.descrizione, value: stato.id })));

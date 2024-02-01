@@ -25,7 +25,7 @@ const ModificaFatturazionePassiva = () => {
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseStato = await axios.get("http://localhost:8080/fatturazione/passiva/react/stato", { headers: headers});
+        const responseStato = await axios.get("http://89.46.67.198/fatturazione/passiva/react/stato", { headers: headers});
         if (Array.isArray(responseStato.data)) {
           const statoOptions = responseStato.data.map((stato) => ({
             label: stato.descrizione,
@@ -84,7 +84,7 @@ const handleSubmit = async (initialValues) => {
   if (!hasErrors) {
   try {
 
-    const response = await axios.post("http://localhost:8080/fatturazione/passiva/react/salva", initialValues, {
+    const response = await axios.post("http://89.46.67.198/fatturazione/passiva/react/salva", initialValues, {
       headers: headers
     });
 

@@ -2,19 +2,12 @@ import axios from "axios";
 
 
 
-const API_URL = "http://localhost:8080/api/auth/";
-const API_LOGOUT = "http://localhost:8080/logout";
+const API_URL = "http://89.46.67.198/api/auth/";
+const API_LOGOUT = "http://89.46.67.198/logout";
 
-
-
-// Recupera l'accessToken da localStorage
-const user = JSON.parse(localStorage.getItem("user"));
-const accessToken = user?.accessToken;
 
 // Configura gli headers della richiesta con l'Authorization token
-const headers = {
-  Authorization: `Bearer ${accessToken}`
-};
+
 
 class AuthService {
   login(username, password) {
@@ -33,6 +26,14 @@ class AuthService {
   }
 
   logout() {
+    
+    // Recupera l'accessToken da localStorage
+    const user = JSON.parse(localStorage.getItem("user"));
+    const accessToken = user?.accessToken;
+
+    const headers = {
+      Authorization: `Bearer ${accessToken}`
+    };
     
     return axios
     .post(API_LOGOUT, { headers: headers })

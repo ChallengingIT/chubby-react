@@ -51,8 +51,8 @@ function Interviste() {
 
   const fetchData = async () => {
     try {
-      const response                = await axios.get(`http://localhost:8080/intervista/react/${id}`       , { headers: headers});
-      const candidatoResponse       = await axios.get(`http://localhost:8080/staffing/react/${candidatoID}`, { headers: headers});
+      const response                = await axios.get(`http://89.46.67.198/intervista/react/${id}`       , { headers: headers});
+      const candidatoResponse       = await axios.get(`http://89.46.67.198/staffing/react/${candidatoID}`, { headers: headers});
 
       if (typeof candidatoResponse.data === 'object') {
         setCandidatoData([candidatoResponse.data]); 
@@ -108,7 +108,7 @@ navigate("/recruiting");
   const handleDelete = async (id) => {
     try {
 
-        const response = await axios.delete(`http://localhost:8080/intervista/react/elimina/${deleteId}`, { headers: headers});
+        const response = await axios.delete(`http://89.46.67.198/intervista/react/elimina/${deleteId}`, { headers: headers});
         setOpenDialog(false);
 
   

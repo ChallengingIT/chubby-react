@@ -72,7 +72,7 @@ const Recruiting = () => {
      const headers = {
        Authorization: `Bearer ${accessToken}`
      };
-        const response = await axios.get("http://localhost:8080/staffing/react", { headers: headers });
+        const response = await axios.get("http://89.46.67.198/staffing/react", { headers: headers });
         if (Array.isArray(response.data)) {
         const recruitingConId = response.data.map((recruiting) => ({ ...recruiting}));
         setOriginalRecruiting(recruitingConId);
@@ -115,7 +115,7 @@ const Recruiting = () => {
      const headers = {
        Authorization: `Bearer ${accessToken}`
      };
-      const response = await axios.delete(`http://localhost:8080/staffing/elimina/${deleteId}`, { headers: headers });
+      const response = await axios.delete(`http://89.46.67.198/staffing/elimina/${deleteId}`, { headers: headers });
       setOpenDialog(false);
 
 fetchData();
@@ -243,7 +243,7 @@ fetchData();
 
     
 
-    const url = `http://localhost:8080/files/react/download/file/${fileId}`;
+    const url = `http://89.46.67.198/files/react/download/file/${fileId}`;
   
     try {
       // Recupera l'accessToken da localStorage

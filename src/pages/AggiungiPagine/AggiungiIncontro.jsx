@@ -53,11 +53,11 @@ useEffect(() => {
 
 
         //jobtitle = tipologia, tipologiaIncontro = stato, owner = owner
-        const responseTipologia                      = await axios.get("http://localhost:8080/aziende/react/tipologia"          , { headers: headers });
-        const ownerResponse                          = await axios.get("http://localhost:8080/aziende/react/owner"              , { headers: headers });
-        const responseStato                          = await axios.get("http://localhost:8080/staffing/react/stato/candidato"   , { headers: headers });
-        const responseTipoIntervista                 = await axios.get("http://localhost:8080/intervista/react/tipointervista"  , { headers: headers });
-        const responseIntervista                     = await axios.get(`http://localhost:8080/intervista/react/${candidatoID}`  , { headers: headers });
+        const responseTipologia                      = await axios.get("http://89.46.67.198/aziende/react/tipologia"          , { headers: headers });
+        const ownerResponse                          = await axios.get("http://89.46.67.198/aziende/react/owner"              , { headers: headers });
+        const responseStato                          = await axios.get("http://89.46.67.198/staffing/react/stato/candidato"   , { headers: headers });
+        const responseTipoIntervista                 = await axios.get("http://89.46.67.198/intervista/react/tipointervista"  , { headers: headers });
+        const responseIntervista                     = await axios.get(`http://89.46.67.198/intervista/react/${candidatoID}`  , { headers: headers });
 
         if (Array.isArray(responseIntervista.data)) {
           const intervisteConId = responseIntervista.data.map((interviste) => ({ ...interviste }));
@@ -243,7 +243,7 @@ const initialValues = {
       const note = values.note;
       const modifica = 0; 
   
-      const response = await axios.post("http://localhost:8080/intervista/react/salva", values, {
+      const response = await axios.post("http://89.46.67.198/intervista/react/salva", values, {
           params: {
             idCandidato: idCandidato,
             note: note,

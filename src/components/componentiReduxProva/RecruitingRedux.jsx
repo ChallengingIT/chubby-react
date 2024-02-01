@@ -42,7 +42,7 @@ const Recruiting = () => {const dispatch = useDispatch();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/staffing/react");
+        const response = await axios.get("http://89.46.67.198/staffing/react");
         if (Array.isArray(response.data)) {
           dispatch(setOriginalRecruiting(response.data));
           dispatch(setFilteredRecruiting(response.data));
@@ -69,7 +69,7 @@ const Recruiting = () => {const dispatch = useDispatch();
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8080/staffing/elimina/${id}`);
+      const response = await axios.delete(`http://89.46.67.198/staffing/elimina/${id}`);
 
       dispatch(deleteRecruiting(id));
       
@@ -166,7 +166,7 @@ const Recruiting = () => {const dispatch = useDispatch();
     
     // Opzionale: Riesegui il fetch dei dati invece di usare quelli memorizzati
     try {
-        const response = await axios.get("http://localhost:8080/staffing/react");
+        const response = await axios.get("http://89.46.67.198/staffing/react");
         if (Array.isArray(response.data)) {
             dispatch(setOriginalRecruiting(response.data));
             dispatch(setFilteredRecruiting(response.data));

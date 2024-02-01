@@ -30,7 +30,7 @@ const FatturazioneAttiva = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseFatturazioneAttiva = await axios.get("http://localhost:8080/fatturazione/attiva/react", { headers: headers});
+        const responseFatturazioneAttiva = await axios.get("http://89.46.67.198/fatturazione/attiva/react", { headers: headers});
         if (Array.isArray(responseFatturazioneAttiva.data)) {
           const fatturazioneAttivaConId = responseFatturazioneAttiva.data.map((fatturazioneAttiva) => ({ ...fatturazioneAttiva}));
           setFatturazioneAttiva(fatturazioneAttivaConId);

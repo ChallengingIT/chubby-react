@@ -59,9 +59,9 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseOwner = await axios.get("http://localhost:8080/aziende/react/owner", { headers: headers});
+        const responseOwner = await axios.get("http://89.46.67.198/aziende/react/owner", { headers: headers});
 
-        const responseStato = await axios.get("http://localhost:8080/staffing/react/stato/candidato", { headers: headers});
+        const responseStato = await axios.get("http://89.46.67.198/staffing/react/stato/candidato", { headers: headers});
 
                 if (Array.isArray(responseStato.data)) {
                   setStatoOptions(responseStato.data.map((stato) => ({ label: stato.descrizione, value: stato.id })));
