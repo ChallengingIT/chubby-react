@@ -32,7 +32,7 @@
     "react-modal": "^3.16.1",
     "react-redux": "^9.0.4",
     "react-router-dom": "^6.16.0",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
     "react-validation": "^3.0.7",
     "redux": "^5.0.0",
     "styled-components": "^6.1.0",
@@ -40,7 +40,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "HTTPS=true SSL_CRT_FILE=cert/certificate.crt SSL_KEY_FILE=cert/private.key react-scripts start",
+    "start": "set HTTPS=true&&set port=443&&set SSL_CRT_FILE=cert/certificate.crt&&set SSL_KEY_FILE=cert/private.key&&react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -62,7 +62,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",

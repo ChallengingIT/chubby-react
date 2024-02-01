@@ -31,7 +31,6 @@ import AggiungiNeed                                                    from './p
 import AggiungiNeedID                                                  from './pages/AggiungiPagine/AggiungiNeedID.jsx';
 import AggiungiProgetto                                                from './pages/AggiungiPagine/AggiungiProgetto';
 import AggiungiDipendente                                              from './pages/AggiungiPagine/AggiungiDipendente';
-import AggiungiUser                                                    from './pages/AggiungiPagine/AggiungiUser.jsx';
 import ModificaAzienda                                                 from './pages/ModificaPagine/ModificaAzienda.jsx';
 import DettaglioKeyPeople                                              from './pages/DettaglioPagine/DettaglioKeyPeople.jsx';
 import ModificaContatto                                                from './pages/ModificaPagine/ModificaContatto.jsx';
@@ -150,7 +149,6 @@ const App = () => {
           <Route path="/fatturazione/passiva/aggiungi"                element={<PrivateRoute>         <AggiungiFatturazionePassiva />   </PrivateRoute>} />
           <Route path="/fornitori/aggiungi"                           element={<PrivateRoute>         <AggiungiFornitore           />   </PrivateRoute>} />
           <Route path="/hr/staff/aggiungi"                            element={<PrivateRoute>         <AggiungiDipendente          />   </PrivateRoute>} />
-          <Route path="/hr/crea/utente"                               element={<PrivateRoute>         <AggiungiUser                />   </PrivateRoute>} />
           <Route path="/staffing/intervista/:id"                      element={<PrivateRoute>         <Interviste                  />   </PrivateRoute>} />
           <Route path="/intervista/visualizza/:id"                    element={<PrivateRoute>         <DettaglioIntervista         />   </PrivateRoute>} />
           <Route path="/intervista/modifica/:id"                      element={<PrivateRoute>         <ModificaIntervista          />   </PrivateRoute>} />
