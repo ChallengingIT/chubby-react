@@ -23,13 +23,13 @@ function EditButton({ onClick, to, rowData }) {
       startIcon={<EditIcon />} 
       onClick={handleEditAction}
       sx={{
-        backgroundColor: '#ffb800',
+        backgroundColor: '#14D928',
         color: 'black',
         borderRadius: '40px',
         justifyContent: 'end !important',
         marginRight: '15px',
         "&:hover": {
-          backgroundColor: "#ffb800",
+          backgroundColor: "#14D928",
           transform: "scale(1.05)",
           color: 'white',
         },

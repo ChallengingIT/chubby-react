@@ -124,10 +124,10 @@ function Associazioni() {
       <div>
         <Button
          onClick={() => handleAssocia(params.row)}
-         sx={{ backgroundColor: '#FFB800',
+         sx={{ backgroundColor: '#14D928',
         color: 'white',
         "&:hover": {
-          backgroundColor: "#ffb800",
+          backgroundColor: "#14D928",
           transform: "scale(1.05)",
           color: 'white',
         },

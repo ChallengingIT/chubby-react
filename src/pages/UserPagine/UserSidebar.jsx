@@ -184,15 +184,15 @@ const UserSidebar = ({ handleLogout }) => {
               variant="outlined"
               onClick={onClose}
               sx={{
-                borderColor: "#ffb900",
-                color: "#ffb900",
+                borderColor: "#14D928",
+                color: "#14D928",
                 marginRight: "5px",
                 marginTop: "20px",
                 "&:hover": {
                   transform: "scale(1.05)",
                   // variant: "filled",
-                  // backgroundColor: "#ffb900",
-                  borderColor: "#ffb900",
+                  // backgroundColor: "#14D928",
+                  borderColor: "#14D928",
                   // color: "black",
                 },
               }}
@@ -203,16 +203,16 @@ const UserSidebar = ({ handleLogout }) => {
               variant="contained"
               onClick={handleConfirmLogout}
               sx={{
-                backgroundColor: "#ffb900",
+                backgroundColor: "#14D928",
                 marginLeft: "5px",
                 marginTop: "20px",
                 color: "black",
                 "&:hover": {
                   // variant: "outlined",
-                  // borderColor: "#ffb900",
-                  backgroundColor: "#ffb900",
+                  // borderColor: "#14D928",
+                  backgroundColor: "#14D928",
                   transform: "scale(1.05)",
-                  // color: "#ffb900",
+                  // color: "#14D928",
                 },
               }}
             >
@@ -288,7 +288,7 @@ const UserSidebar = ({ handleLogout }) => {
             justifyContent: 'space-between',
             height: '60px',
             minWidth: '60px !important',
-            color: '#ffb800',
+            color: '#14D928',
             backgroundColor: 'black',
             borderStyle: 'none',
             padding: '23px',
@@ -316,13 +316,13 @@ const UserSidebar = ({ handleLogout }) => {
             display: 'flex',
             width: '100%',
             maxWidth: '120px',
-            color: '#FFB900',
-            borderColor: '#FFB900',
+            color: '#14D928',
+            borderColor: '#14D928',
             margin: '15px',
             '&:hover': {
               variant: 'filled',
-              borderColor: '#ffb900',
-              backgroundColor: '#ffb800',
+              borderColor: '#14D928',
+              backgroundColor: '#14D928',
               color: 'black',
               padding: '0.55rem 0.55rem',
             },
@@ -351,13 +351,13 @@ const UserSidebar = ({ handleLogout }) => {
               variant="outlined"
               onClick={closeLogoutPopup}
               sx={{
-                borderColor: '#ffb900',
-                color: '#ffb900',
+                borderColor: '#14D928',
+                color: '#14D928',
                 marginRight: '5px',
                 marginTop: '20px',
                 '&:hover': {
                   transform: 'scale(1.05)',
-                  borderColor: '#ffb900',
+                  borderColor: '#14D928',
                 },
               }}
             >
@@ -367,12 +367,12 @@ const UserSidebar = ({ handleLogout }) => {
               variant="contained"
               onClick={confirmLogout}
               sx={{
-                backgroundColor: '#ffb900',
+                backgroundColor: '#14D928',
                 marginLeft: '5px',
                 marginTop: '20px',
                 color: 'black',
                 '&:hover': {
-                  backgroundColor: '#ffb900',
+                  backgroundColor: '#14D928',
                   transform: 'scale(1.05)',
                 },
               }}
