@@ -5,7 +5,6 @@ import Button from "@mui/material/Button";
 function TimesheetButton() {
 
     const handleEditAction = (id) => {
-    console.log(`Editing item with id ${id}`);
     };
 return (
     <Button 

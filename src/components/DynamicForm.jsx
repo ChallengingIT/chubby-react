@@ -32,8 +32,6 @@ const DynamicForm = ({ fields }) => {
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-    } else {
-      console.log('Dati salvati:', formData);
     }
   };
 

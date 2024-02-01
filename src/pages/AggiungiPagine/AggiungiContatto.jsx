@@ -100,8 +100,6 @@ const AggiungiContatto = () => {
     } catch (error) {
       console.error("Errore durante il salvataggio:", error);
     }
-  }else {
-    console.log("Errore di validazione:", errors);
   }
   };
 

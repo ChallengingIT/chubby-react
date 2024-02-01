@@ -14,11 +14,9 @@ export const intervisteSlice = createSlice({
       state.interviste = action.payload;
     },
     setOriginalInterviste: (state, action) => {
-      console.log("setOriginalInterviste:", action);
       state.originalInterviste = action.payload;
     },
     setFilteredInterviste: (state, action) => {
-      console.log("setFilteredInterviste:", action.payload);
       state.filteredInterviste = action.payload;
     },
     deleteIntervista: (state, action) => {

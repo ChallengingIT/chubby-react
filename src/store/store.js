@@ -10,6 +10,5 @@ const store = configureStore({
     // Qui potresti aggiungere altri slice del reducer se necessario
   },
 });
-console.log(store.getState());
 
 export default store;

@@ -3,9 +3,7 @@ import BoxUser from "../../components/BoxUser";
 import Sidebar from "../../components/Sidebar";
 
 const AggiungiUser = () => {
-  const handleSave = (data) => {
-    console.log("Dati salvati:", data);
-  };
+  
 
   const handleCancel = () => {
     console.log("Operazione annullata");

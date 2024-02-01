@@ -17,8 +17,6 @@ const AggiungiIncontro = () => {
   const { recruiting, originalRecruiting, filteredRecruiting } = useSelector(state => state.recruiting);
   const { interviste, originalInterviste, filteredInterviste } = useSelector(state => state.interviste);
 
-  console.log("Recruiting dallo store:", recruiting);
-console.log("Interviste dallo store:", interviste);
 
 useEffect(() => {
   if (originalRecruiting && originalRecruiting.length > 0) {
@@ -29,16 +27,12 @@ useEffect(() => {
 }, [recruiting, id]);
 
 
-console.log("ID presunto: ", id);
-console.log("DATI DELL'ID: ", specificRecruitingData);
 
   
 
-  // console.log("DATI ARRIVATI IN PAGINA: ", intervisteData);
 
   const handleCancel = () => {
 
-    // console.log("Operazione annullata");
   };
 
 
@@ -93,7 +87,6 @@ console.log("DATI DELL'ID: ", specificRecruitingData);
             value: tipologia.id,
           }));
           setTipologiaOptions(tipologiaOptions);
-          // console.log("DATI DI JOBTILEOPTIONS: ", tipologiaOptions);
         }
       }
     }
@@ -253,12 +246,9 @@ const initialValues = {
       const idCandidato = specificRecruitingData.id;
       const note = values.descrizione;
       const modifica = 0; 
-  console.log("IDCANDIDATO: ", idCandidato);
       const url = `http://localhost:8080/intervista/react/salva?idCandidato=${idCandidato}&note=${encodeURIComponent(note)}&modifica=${modifica}`;
       
       const response = await axios.post(url, values);
-      console.log("DATI INVIATI: ", response);
-      console.log("Response from server:", response.data);
       dispatch(addNewIntervista(response.data));
   
 

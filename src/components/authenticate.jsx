@@ -20,8 +20,6 @@ const authenticate = async (username, password) => {
       return;
     }
 
-    console.log('Autenticato con Token:', csrfToken);
-
   } catch (error) {
     throw error;
   }

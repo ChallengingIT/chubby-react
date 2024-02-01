@@ -21,7 +21,6 @@ class UserService {
   }
 
   getAziende() {
-    console.log("HEADER: ", authHeader());
     return axios.get(API_URL + 'aziende/react', { headers: authHeader() });
 
 

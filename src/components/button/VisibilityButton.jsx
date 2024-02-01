@@ -7,7 +7,6 @@ function VisibilityButton({onClick, to, recruitingData}) {
     const navigate = useNavigate();
 
     const handleEditAction = () => {
-      console.log("recruitingData:", recruitingData);
       if (to) {
         navigate(to);
       } else {

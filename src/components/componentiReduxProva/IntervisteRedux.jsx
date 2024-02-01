@@ -33,7 +33,6 @@ function Interviste() {
     }
   }, [recruiting, id]);
 
-  console.log("DATI DELL'ID: ", specificRecruitingData);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,7 +58,6 @@ function Interviste() {
   };
 
   const navigateToAggiungiIntervista = () => {
-    console.log("Navigating with ID:", id);
     navigate("/intervista/aggiungi", { state: { specificRecruitingData, id } });
   };
 

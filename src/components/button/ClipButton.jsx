@@ -7,8 +7,6 @@ function ClipButton({ onClick, idFile, fileDescrizione }) {
     const navigate = useNavigate();
 
     const handleDownload = () => {
-      console.log("ID File:", idFile);
-      console.log("Descrizione File:", fileDescrizione);
       if (onClick && idFile && fileDescrizione) {
         onClick(idFile, fileDescrizione);  
       } else {

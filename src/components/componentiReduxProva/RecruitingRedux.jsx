@@ -44,8 +44,6 @@ const Recruiting = () => {const dispatch = useDispatch();
       try {
         const response = await axios.get("http://localhost:8080/staffing/react");
         if (Array.isArray(response.data)) {
-          console.log("Dati ricevuti:", response.data); // Log specifico dei dati
-          console.log("Numero di elementi ricevuti:", response.data.length); // Log del numero di elementi
           dispatch(setOriginalRecruiting(response.data));
           dispatch(setFilteredRecruiting(response.data));
     
@@ -72,7 +70,6 @@ const Recruiting = () => {const dispatch = useDispatch();
   const handleDelete = async (id) => {
     try {
       const response = await axios.delete(`http://localhost:8080/staffing/elimina/${id}`);
-      console.log("Risposta della chiamata DELETE: ", response);
 
       dispatch(deleteRecruiting(id));
       

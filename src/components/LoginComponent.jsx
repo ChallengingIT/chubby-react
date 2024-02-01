@@ -48,12 +48,10 @@ export const LoginComponent = (props) => {
 
   try {
     const response = await authService.login(username, password);
-    console.log("DATI INVIATI: ", username, password);
 
     if (response && response && response.accessToken) {
       localStorage.setItem("accessToken", response.accessToken);
       localStorage.setItem("user", JSON.stringify(response));
-      console.log("UTENTE LOGGATO DA LOGIN: ", response);
   eventBus.dispatch("loginSuccess");
 
      const userRole = response.roles[0];

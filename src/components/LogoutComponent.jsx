@@ -51,7 +51,6 @@
 //   // Aggiornare lo stato dell'applicazione, ad esempio, impostando l'utente corrente su null
 //   setCurrentUser(null);
   
-//     console.log("User logged out");
 
 //     navigate("/login");
 //   };

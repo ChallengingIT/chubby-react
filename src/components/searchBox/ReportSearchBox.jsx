@@ -18,7 +18,6 @@ const [ filteredData,        setFilteredData      ] = useState([]);
 
 
 const handleSearch = () => {
-    console.log("Valori di ricerca:", searchTerm);
     const filteredData = OriginalAziende.filter((item) =>
     Object.keys(searchTerm).every((key) =>
         searchTerm[key] === '' ||
@@ -27,7 +26,6 @@ const handleSearch = () => {
         String(item[key]).toLowerCase().includes(String(searchTerm[key]).toLowerCase())
     )
     );
-    console.log("Dati filtrati:", filteredData);
     onSearch(filteredData);
     setFilteredData(filteredData);
 };
