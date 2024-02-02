@@ -23,8 +23,8 @@ const AggiungiContatto = () => {
        Authorization: `Bearer ${accessToken}`
      };
 
-        const aziendeResponse = await axios.get("https://89.46.67.198:8443/aziende/react", { headers: headers });
-        const ownerResponse = await axios.get("https://89.46.67.198:8443/aziende/react/owner", { headers: headers });
+        const aziendeResponse = await axios.get("https://localhost:8443/aziende/react", { headers: headers });
+        const ownerResponse = await axios.get("https://localhost:8443/aziende/react/owner", { headers: headers });
         if (Array.isArray(ownerResponse.data)) {
           const ownerOptions = ownerResponse.data.map((owner) => ({
             label: owner.descrizione,
@@ -92,7 +92,7 @@ const AggiungiContatto = () => {
      };
 
 
-      const response = await axios.post("https://89.46.67.198:8443/keypeople/react/salva", values, {
+      const response = await axios.post("https://localhost:8443/keypeople/react/salva", values, {
         headers: headers
       });
 

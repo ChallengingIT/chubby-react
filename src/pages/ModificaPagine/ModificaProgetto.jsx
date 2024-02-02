@@ -27,8 +27,8 @@ const ModificaProgetto = () => {
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseCliente    = await axios.get("https://89.46.67.198:8443/aziende/react", { headers: headers });
-        const responseDipendente = await axios.get("https://89.46.67.198:8443/hr/react/modificato", { headers: headers });
+        const responseCliente    = await axios.get("https://localhost:8443/aziende/react", { headers: headers });
+        const responseDipendente = await axios.get("https://localhost:8443/hr/react/modificato", { headers: headers });
 
         if (Array.isArray(responseCliente.data)) {
           const clienteOptions = responseCliente.data.map((cliente) => ({
@@ -96,7 +96,7 @@ const ModificaProgetto = () => {
     if (!hasErrors) {
     try {
 
-      const response = await axios.post("https://89.46.67.198:8443/progetti/react/salva", values, {
+      const response = await axios.post("https://localhost:8443/progetti/react/salva", values, {
         headers: headers 
       });
 

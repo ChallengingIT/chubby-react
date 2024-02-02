@@ -84,7 +84,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
         setMeseNumero(mese.toString());
         setAnnoNumero(anno.toString());
 
-        axios.get(`https://89.46.67.198:8443/timesheet/react/user/${anno}/${mese}`, {
+        axios.get(`https://localhost:8443/timesheet/react/user/${anno}/${mese}`, {
             headers: headers,
             params: requestParams
         })
@@ -133,7 +133,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
     useEffect(() => {
         const fetchPrimoTimesheet = async () => {
             try {
-                const response = await axios.get(`https://89.46.67.198:8443/timesheet/react/user/primo`, {
+                const response = await axios.get(`https://localhost:8443/timesheet/react/user/primo`, {
                     headers: headers,
                     params: requestParams
                 });
@@ -172,7 +172,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
             return;
         }
     
-        axios.get(`https://89.46.67.198:8443/timesheet/react/user/precedente/${annoNumero}/${meseNumero}`, {
+        axios.get(`https://localhost:8443/timesheet/react/user/precedente/${annoNumero}/${meseNumero}`, {
             headers: headers,
             params: requestParams
         })
@@ -232,7 +232,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
             nuovoAnno += 1;
         }
     
-        axios.get(`https://89.46.67.198:8443/timesheet/react/user/successivo/${annoNumero}/${meseNumero}`, {
+        axios.get(`https://localhost:8443/timesheet/react/user/successivo/${annoNumero}/${meseNumero}`, {
             headers: headers,
             params: requestParams
         })
@@ -392,7 +392,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
             };
 
             try {
-            const response = await axios.post(`https://89.46.67.198:8443/timesheet/react/user/aggiorna/${annoNumero}/${meseNumero}`, datiDaInviare, {
+            const response = await axios.post(`https://localhost:8443/timesheet/react/user/aggiorna/${annoNumero}/${meseNumero}`, datiDaInviare, {
                 headers: headers,
                 params: requestParams
             });
@@ -414,7 +414,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
         // Funzione per richiedere i dati aggiornati del timesheet
         const fetchTimesheetData = async () => {
             try {
-                const response = await axios.get(`https://89.46.67.198:8443/timesheet/react/user/${annoNumero}/${meseNumero}`, {
+                const response = await axios.get(`https://localhost:8443/timesheet/react/user/${annoNumero}/${meseNumero}`, {
                     headers: headers,
                     params: requestParams
                 });
@@ -472,7 +472,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
             
         
             try {
-                const response = await axios.post(`https://89.46.67.198:8443/timesheet/react/user/cancella/${annoNumero}/${meseNumero}`, datiDaInviare, {
+                const response = await axios.post(`https://localhost:8443/timesheet/react/user/cancella/${annoNumero}/${meseNumero}`, datiDaInviare, {
                     headers: headers,
                     params: requestParams
                 });
@@ -514,7 +514,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
         //chiamata per inviare tutto il timesheet
         const handleSubmit = async () => {
             try {
-                const url = `https://89.46.67.198:8443/timesheet/react/user/salva/${annoNumero}/${meseNumero}`;
+                const url = `https://localhost:8443/timesheet/react/user/salva/${annoNumero}/${meseNumero}`;
                 const response = await axios.post(url, { timesheetData });
                 setAlert({ open: true, message: response.data });
             } catch (error) {
@@ -541,7 +541,7 @@ const renderDaySquares = () => {
         
 
         const giornoStyle = isSabatoODomenica || isGiornoFestivo
-            ? { backgroundColor: '#fbb800', color: 'white' }
+            ? { backgroundColor: '#14D928', color: 'white' }
             : { backgroundColor: 'grey.200', color: 'black' };
 
         return (
@@ -604,7 +604,7 @@ const renderDayBox = (progetto) => {
 
 
         const giornoStyle = isSabatoODomenica || isGiornoFestivo
-            ? { backgroundColor: '#fbb800', color: 'white' }
+            ? { backgroundColor: '#14D928', color: 'white' }
             : { backgroundColor: 'grey.200', color: 'black' };
             
 
@@ -622,7 +622,7 @@ const renderDayBox = (progetto) => {
                         borderBottom: '0.1px solid black',
                         ...giornoStyle,
                         ':hover': {
-                            backgroundColor: "#fbb800",
+                            backgroundColor: "#14D928",
                             cursor: 'pointer',
                         }
                     }}
@@ -899,11 +899,11 @@ onChange={(e) => setOreOrdinarie(e.target.value)}
             onClick={handleSubmitModal}
 
             sx={{
-                backgroundColor: "#fbb800",
+                backgroundColor: "#14D928",
                 color: "black",
                 fontWeight: "bold",
                 "&:hover": {
-                backgroundColor: "#fbb800",
+                backgroundColor: "#14D928",
                 color: "black",
                 transform: "scale(1.05)",
                 },
@@ -1041,11 +1041,11 @@ InputLabelProps={{
             onClick={handleSubmitModal}
 
             style={{
-                backgroundColor: "#fbb800",
+                backgroundColor: "#14D928",
                 color: "black",
                 fontWeight: "bold",
                 "&:hover": {
-                backgroundColor: "#fbb800",
+                backgroundColor: "#14D928",
                 color: "black",
                 transform: "scale(1.05)",
                 },

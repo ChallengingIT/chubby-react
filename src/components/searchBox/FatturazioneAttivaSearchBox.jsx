@@ -33,8 +33,8 @@ const FatturazioneAttivaSearchBox = ({ data, onSearch, onReset, onSearchTextChan
     const fetchData = async () => {
       try {
 
-        const responseAziende    = await axios.get("https://89.46.67.198:8443/aziende/react"                    , { headers: headers });
-        const responseStato      = await axios.get("https://89.46.67.198:8443/fatturazione/attiva/react/stato"  , { headers: headers });
+        const responseAziende    = await axios.get("https://localhost:8443/aziende/react"                    , { headers: headers });
+        const responseStato      = await axios.get("https://localhost:8443/fatturazione/attiva/react/stato"  , { headers: headers });
         if (Array.isArray(responseStato.data)) {
           setStatoOptions(responseStato.data.map((stato, index) => ({ label: stato.descrizione, value: stato.id })));
         } else {

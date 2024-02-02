@@ -31,7 +31,7 @@ function ReportComponent() {
 
 
   useEffect(() => {
-    axios.get('https://89.46.67.198:8443/hr/react')
+    axios.get('https://localhost:8443/hr/react')
       .then(response => {
         setDipendenti(response.data);
       })
@@ -151,7 +151,7 @@ function ReportComponent() {
                   justifyContent: "center",
                   width: "98%",
                   ':hover': {
-                    backgroundColor: "#fbb800",
+                    backgroundColor: "#14D928",
                     cursor: 'pointer',
                   }
                 }}

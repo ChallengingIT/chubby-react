@@ -53,7 +53,7 @@ const Aziende = () => {
 const fetchData = async () => {
   try {
     
-    const response = await axios.get("https://89.46.67.198:8443/aziende/react", { headers: headers });
+    const response = await axios.get("https://localhost:8443/aziende/react", { headers: headers });
     if (Array.isArray(response.data)) {
       const aziendeConId = response.data.map((aziende) => ({ ...aziende }));
 
@@ -90,7 +90,7 @@ const openDeleteDialog = (id) => {
 
 const handleDelete = async () => {
   try {
-    const response = await axios.delete(`https://89.46.67.198:8443/aziende/react/elimina/${deleteId}`, { headers: headers});
+    const response = await axios.delete(`https://localhost:8443/aziende/react/elimina/${deleteId}`, { headers: headers});
     setOpenDialog(false);
 
     
@@ -225,10 +225,10 @@ const handleDelete = async () => {
     </Button>
     <Button onClick={handleDelete} color="primary" variant="contained" type="submit"
               style={{
-                backgroundColor: "#fbb800",
+                backgroundColor: "#14D928",
                 color: "black",
                 "&:hover": {
-                  backgroundColor: "#fbb800",
+                  backgroundColor: "#14D928",
                   color: "black",
                   transform: "scale(1.05)",
                 },

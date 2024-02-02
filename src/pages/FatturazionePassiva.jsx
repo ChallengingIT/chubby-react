@@ -30,7 +30,7 @@ const FatturazionePassiva = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://89.46.67.198:8443/fatturazione/passiva/react", { headers: headers});
+        const response = await axios.get("https://localhost:8443/fatturazione/passiva/react", { headers: headers});
         if (Array.isArray(response.data)) {
         const fatturazionePassivaConId = response.data.map((fatturazionePassiva) => ({ ...fatturazionePassiva}));
         setFatturazionePassiva(fatturazionePassivaConId);

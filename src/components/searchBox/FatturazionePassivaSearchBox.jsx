@@ -32,8 +32,8 @@ const handleKeyDown = (e) => {
     const fetchData = async () => {
       try {
 
-        const responseFornitori = await axios.get("https://89.46.67.198:8443/fornitori/react", { headers: headers});
-        const responseStato     = await axios.get("https://89.46.67.198:8443/fatturazionePassiva/react/stato", { headers: headers});
+        const responseFornitori = await axios.get("https://localhost:8443/fornitori/react", { headers: headers});
+        const responseStato     = await axios.get("https://localhost:8443/fatturazionePassiva/react/stato", { headers: headers});
         
         if (Array.isArray(responseStato.data)) {
           setStatoOptions(responseStato.data.map((stato, index) => ({ label: stato.descrizione, value: stato.id })));

@@ -128,7 +128,7 @@ const FieldBoxFile = ({
 
 
     const handleDownloadCVCF = async (fileId, fileDescrizione) => {
-        const url = `https://89.46.67.198:8443/files/react/download/file/${fileId}`;
+        const url = `https://localhost:8443/files/react/download/file/${fileId}`;
         try {
             const response = await axios({
                 method: 'GET',
@@ -154,7 +154,7 @@ const FieldBoxFile = ({
         const handleDeleteCVCF = async (fileId, idCandidato, fileType) => {
             const idc = idCandidato;
             try {
-            const response = await axios.delete(`https://89.46.67.198:8443/files/react/elimina/file/candidato/${fileId}/${idc}`, { headers: headers })
+            const response = await axios.delete(`https://localhost:8443/files/react/elimina/file/candidato/${fileId}/${idc}`, { headers: headers })
             if(response.data === "OK") {
             } else {
                 console.error("Errore dal server: ", response.data);
@@ -188,7 +188,7 @@ const FieldBoxFile = ({
 
 
         const handleDownloadAllegati = async (fileID, fileDescrizione) => {
-            const url = `https://89.46.67.198:8443/files/react/download/file/${fileID}`;
+            const url = `https://localhost:8443/files/react/download/file/${fileID}`;
             try {
                 const response = await axios({
                     method: 'GET',
@@ -212,7 +212,7 @@ const FieldBoxFile = ({
         const handleDeleteAllegati = async (fileId, idStaff) => {
             try {
                 const ids = idStaff; 
-                const url = `https://89.46.67.198:8443/files/react/elimina/file/${fileId}/${ids}`;
+                const url = `https://localhost:8443/files/react/elimina/file/${fileId}/${ids}`;
         
                 const response = await axios.delete(url, { headers: headers });
                 setValues(prevValues => ({
@@ -852,12 +852,12 @@ const FieldBoxFile = ({
                 variant="contained"
                 type="submit"
                 style={{
-                    backgroundColor: "#fbb800",
+                    backgroundColor: "#14D928",
                     color: "black",
                     fontWeight: "bold",
 
                     "&:hover": {
-                    backgroundColor: "#fbb800",
+                    backgroundColor: "#14D928",
                     color: "black",
                     transform: "scale(1.05)",
                     },

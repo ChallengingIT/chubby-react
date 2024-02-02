@@ -771,12 +771,12 @@ case 'multipleSelectSkill2':
               variant="contained"
               type="submit"
               style={{
-                backgroundColor: "#fbb800",
+                backgroundColor: "#14D928",
                 color: "black",
                 fontWeight:"bold",
                 
                 "&:hover": {
-                  backgroundColor: "#fbb800",
+                  backgroundColor: "#14D928",
                   color: "black",
                   transform: "scale(1.05)",
                 },

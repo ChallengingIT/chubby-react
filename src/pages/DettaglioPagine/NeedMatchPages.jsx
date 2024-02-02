@@ -53,11 +53,11 @@ function NeedMatchPages() {
   
   const fetchData = async () => {
     try {
-      const associatiResponse   = await axios.get(`https://89.46.67.198:8443/need/react/match/associati/${id}`, { headers: headers});
-      const storicoResponse     = await axios.get(`https://89.46.67.198:8443/need/react/storico/${id}`, { headers: headers});
-      const associabiliResponse = await axios.get(`https://89.46.67.198:8443/need/react/match/associabili/${id}`, { headers: headers});
-      const ownerResponse       = await axios.get("https://89.46.67.198:8443/aziende/react/owner", { headers: headers});
-      const statoResponse       = await axios.get("https://89.46.67.198:8443/associazioni/react/stati", { headers: headers});
+      const associatiResponse   = await axios.get(`https://localhost:8443/need/react/match/associati/${id}`, { headers: headers});
+      const storicoResponse     = await axios.get(`https://localhost:8443/need/react/storico/${id}`, { headers: headers});
+      const associabiliResponse = await axios.get(`https://localhost:8443/need/react/match/associabili/${id}`, { headers: headers});
+      const ownerResponse       = await axios.get("https://localhost:8443/aziende/react/owner", { headers: headers});
+      const statoResponse       = await axios.get("https://localhost:8443/associazioni/react/stati", { headers: headers});
 
       if (Array.isArray(ownerResponse.data)) {
         const ownerOptions = ownerResponse.data.map((owner) => ({
@@ -133,7 +133,7 @@ function NeedMatchPages() {
       const idCandidato = row;
 
 
-      const url = `https://89.46.67.198:8443/associazioni/react/rimuovi/candidato/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
+      const url = `https://localhost:8443/associazioni/react/rimuovi/candidato/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
       const response = await axios.delete(url, { headers: headers});;
   
       fetchData();
@@ -153,7 +153,7 @@ function NeedMatchPages() {
   
       const idAssociazione = row;
 
-      const url = `https://89.46.67.198:8443/associazioni/react/rimuovi/associa/${idAssociazione}`;
+      const url = `https://localhost:8443/associazioni/react/rimuovi/associa/${idAssociazione}`;
 
     
       const response = await axios.delete(url, { headers: headers});;;
@@ -170,7 +170,7 @@ function NeedMatchPages() {
       const idNeed = parseInt(id); 
       const idCandidato = row.id;
 
-      const url = `https://89.46.67.198:8443/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
+      const url = `https://localhost:8443/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
   
   
       const response = await axios.post(url, { headers: headers});
@@ -233,7 +233,7 @@ function NeedMatchPages() {
       delete updatedValues.cliente;
   
   
-      const response = await axios.post(`https://89.46.67.198:8443/associazioni/salva`, updatedValues, { headers: headers });;
+      const response = await axios.post(`https://localhost:8443/associazioni/salva`, updatedValues, { headers: headers });;
       fetchData();
     } catch (error) {
       console.error("Errore durante il recupero dei dati:", error);

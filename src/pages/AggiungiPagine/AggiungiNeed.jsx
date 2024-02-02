@@ -31,12 +31,12 @@ const AggiungiNeed = () => {
   useEffect(() => {
     const fetchNeedOptions = async () => {
       try {
-        const responseAziende       = await axios.get("https://89.46.67.198:8443/aziende/react"       , { headers: headers });
-        const responseSkill         = await axios.get("https://89.46.67.198:8443/staffing/react/skill", { headers: headers });
-        const responseSkill2        = await axios.get("https://89.46.67.198:8443/staffing/react/skill", { headers: headers });
-        const ownerResponse         = await axios.get("https://89.46.67.198:8443/aziende/react/owner" , { headers: headers });
-        const tipologiaResponse     = await axios.get("https://89.46.67.198:8443/need/react/tipologia", { headers: headers });
-        const statoResponse         = await axios.get("https://89.46.67.198:8443/need/react/stato"    , { headers: headers});
+        const responseAziende       = await axios.get("https://localhost:8443/aziende/react"       , { headers: headers });
+        const responseSkill         = await axios.get("https://localhost:8443/staffing/react/skill", { headers: headers });
+        const responseSkill2        = await axios.get("https://localhost:8443/staffing/react/skill", { headers: headers });
+        const ownerResponse         = await axios.get("https://localhost:8443/aziende/react/owner" , { headers: headers });
+        const tipologiaResponse     = await axios.get("https://localhost:8443/need/react/tipologia", { headers: headers });
+        const statoResponse         = await axios.get("https://localhost:8443/need/react/stato"    , { headers: headers});
 
 
         if (Array.isArray(statoResponse.data)) {
@@ -150,7 +150,7 @@ const AggiungiNeed = () => {
         delete values.skills2;
   
         // Invio della richiesta al server con skills e skills2 come parametri di query
-        const response = await axios.post("https://89.46.67.198:8443/need/react/salva", values, {
+        const response = await axios.post("https://localhost:8443/need/react/salva", values, {
           params: {
             skill1: skills,
             skill2: skills2

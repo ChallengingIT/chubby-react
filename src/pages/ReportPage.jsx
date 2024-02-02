@@ -107,7 +107,7 @@ const handleSearch = async () => {
 
 
     try {
-        const responseReport = await axios.get("https://89.46.67.198:8443/hr/report/estrai", {
+        const responseReport = await axios.get("https://localhost:8443/hr/report/estrai", {
             headers: headers,
             params: params
         });
@@ -140,7 +140,7 @@ const handleEstraiExcel = async () => {
 
     const giornoInizio = dal || primoGiornoDelMese.getDate().toString();
     const giornoFine = al || ultimoGiornoDelMese.getDate().toString();
-    const url = `https://89.46.67.198:8443/hr/report/excel/${annoSelezionato}/${meseSelezionato}/${giornoInizio}/${giornoFine}`
+    const url = `https://localhost:8443/hr/report/excel/${annoSelezionato}/${meseSelezionato}/${giornoInizio}/${giornoFine}`
 
 
     try {
@@ -227,7 +227,7 @@ const renderDayBox = (dipendente, giorniTotali) => {
             }
             
             const giornoStyle = isSabatoODomenica || isGiornoFestivo
-                ? { backgroundColor: '#fbb800', color: 'white' }
+                ? { backgroundColor: '#14D928', color: 'white' }
                 : { backgroundColor: 'grey.200', color: colore };
     
             return (
@@ -338,11 +338,11 @@ return (
             Reset
             </Button>
             <Button variant="contained" color="primary" onClick={handleSearch} sx={{
-            backgroundColor: '#fbb800',
+            backgroundColor: '#14D928',
             color: 'black',
             borderRadius: '10px',
             '&:hover': {
-                backgroundColor: '#fbb800',
+                backgroundColor: '#14D928',
                 color: 'black',
             }
             }}>

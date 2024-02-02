@@ -53,7 +53,7 @@ function ListaNeed() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`https://89.46.67.198:8443/need/react/cliente/${id}`, { headers: headers });;
+      const response = await axios.get(`https://localhost:8443/need/react/cliente/${id}`, { headers: headers });;
       if (Array.isArray(response.data)) {
         const needConId = response.data.map((need) => ({ ...need }));
         setNeed(needConId);
@@ -98,7 +98,7 @@ function ListaNeed() {
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`https://89.46.67.198:8443/need/react/elimina/${deleteId}`);
+      const response = await axios.delete(`https://localhost:8443/need/react/elimina/${deleteId}`);
       fetchData();
       setOpenDialog(false);
     } catch (error) {
@@ -247,10 +247,10 @@ function ListaNeed() {
     </Button>
     <Button onClick={handleDelete} color="primary" variant="contained" type="submit"
               style={{
-                backgroundColor: "#fbb800",
+                backgroundColor: "#14D928",
                 color: "black",
                 "&:hover": {
-                  backgroundColor: "#fbb800",
+                  backgroundColor: "#14D928",
                   color: "black",
                   transform: "scale(1.05)",
                 },

@@ -66,7 +66,7 @@ const ImgContainer = styled.div`
 `;
 
 const NavIcon = styled(NavLink)`
-  color: #dfa330;
+  color: #14D928;
   margin-right: 0rem;
   font-size: 2rem;
   margin-top: 15px;
@@ -100,14 +100,14 @@ const SidebarLink = styled(NavLink)`
   &:active,
   &:focus {
     background: #252831;
-    border-left: 4px solid #dfa330;
+    border-left: 4px solid #14D928;
     cursor: pointer;
     border-radius: 40px;
   }
 `;
 
 const SidebarIcon = styled.span`
-  color: #dfa330;
+  color: #14D928;
 `;
 
 const DropdownLink = styled(NavLink)`
@@ -127,7 +127,7 @@ const DropdownLink = styled(NavLink)`
   &:focus {
     background: #252831;
     border-radius: 40px;
-    border-left: 4px solid #dfa330;
+    border-left: 4px solid #14D928;
     cursor: pointer;
   }
 
@@ -320,12 +320,12 @@ const Sidebar = ({ handleLogout }) => {
       icon: <FaIcons.FaAddressBook />,
       iconClosed: (
         <RiIcons.RiArrowDownSFill
-          style={{ color: "#dfa330", marginRight: "20px" }}
+          style={{ color: "#14D928", marginRight: "20px" }}
         />
       ),
       iconOpened: (
         <RiIcons.RiArrowUpSFill
-          style={{ color: "#dfa330", marginRight: "20px" }}
+          style={{ color: "#14D928", marginRight: "20px" }}
         />
       ),
       sidebarcollapsed: false,
@@ -357,59 +357,7 @@ const Sidebar = ({ handleLogout }) => {
       path: "/recruiting",
       icon: <FaIcons.FaUser className="active-icon" />,
       sidebarcollapsed: false,
-    },
-    {
-      title: "Progetti",
-      path: "/progetti",
-      icon: <Fa6Icons.FaListCheck className="active-icon" />,
-      sidebarcollapsed: false,
-    },
-    {
-      title: "Amministrazione",
-      icon: <FaIcons.FaSitemap />,
-      iconClosed: (
-        <RiIcons.RiArrowDownSFill
-          className="active-icon"
-          style={{ color: "#dfa330", marginRight: "20px", }}
-        />
-      ),
-      iconOpened: (
-        <RiIcons.RiArrowUpSFill
-          className="active-icon"
-          style={{ color: "#dfa330", marginRight: "20px" }}
-        />
-      ),
-      sidebarcollapsed: false,
-      subNav: [
-        {
-          title: "Fatturazione Attiva",
-          path: "/FatturazioneAttiva",
-          icon: <FaIcons.FaMoneyCheck className="active-icon" />,
-        },
-        {
-          title: "Fatturazione Passiva",
-          path: "/fatturazione/passiva",
-          icon: <FaIcons.FaIdBadge className="active-icon" />,
-        },
-        {
-          title: "Fornitori",
-          path: "/fornitori",
-          icon: <FaIcons.FaIndustry className="active-icon" />,
-        },
-        {
-          title: "Tesoreria",
-          path: "/tesoreria",
-          icon: <Fa6Icons.FaCreditCard className="active-icon" />,
-          sidebarcollapsed: false,
-        },
-      ],
-    },
-    {
-      title: "HR",
-      path: "/hr",
-      icon: <FaIcons.FaUsers className="active-icon" />,
-      sidebarcollapsed: false,
-    },
+    }
   ];
 
   return (
@@ -425,7 +373,7 @@ const Sidebar = ({ handleLogout }) => {
                 fontSize: "33px",
               }}
             >
-              WE-HUB
+              CHUBBY
             </span>
             <ImgContainer>
               <img src={Logo} alt="Logo" style={{ marginLeft: "5%" }} />

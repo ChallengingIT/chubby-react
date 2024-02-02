@@ -41,7 +41,7 @@ const campiObbligatori = [ "denominazione", "referente", "email"];
     if (!hasErrors) {
     try {
 
-      const response = await axios.post("https://89.46.67.198:8443/fornitori/react/salva",  values, { headers: headers });
+      const response = await axios.post("https://localhost:8443/fornitori/react/salva",  values, { headers: headers });
 
       navigate("/fornitori");
     } catch (error) {

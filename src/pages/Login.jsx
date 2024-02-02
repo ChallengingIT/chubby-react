@@ -9,9 +9,10 @@ export const Login = () => {
     <div className="container" style={{ backgroundColor: 'black'}}>
     <div className="login">
       <div className="div-2">
-        <p className="WE-HUB">
-          <span className="span">WE-</span>
+        <p className="chubby">
+          <span className="span">C-</span>
           <span className="text-wrapper-6">HUB</span>
+          <span className="span">BY-</span>
         </p>
         <div className="overlap-group">
           <LoginComponent

@@ -45,7 +45,7 @@ const ImgContainer = styled.div`
 `;
 
 const NavIcon = styled(NavLink)`
-  color: #dfa330;
+  color: #14D928;
   margin-right: 0rem;
   font-size: 2rem;
   margin-top: 15px;
@@ -77,14 +77,14 @@ const SidebarLink = styled(NavLink)`
   &:active,
   &:focus {
     background: #252831;
-    border-left: 4px solid #dfa330;
+    border-left: 4px solid #14D928;
     cursor: pointer;
     border-radius: 40px;
   }
 `;
 
 const SidebarIcon = styled.span`
-  color: #dfa330;
+  color: #14D928;
 `;
 
 const LinkText = styled.div`
@@ -246,7 +246,7 @@ const UserSidebar = ({ handleLogout }) => {
                 fontSize: "33px",
               }}
             >
-              WE-HUB
+              CHUBBY
             </span>
             <ImgContainer>
               <img src={Logo} alt="Logo" style={{ marginLeft: "5%" }} />

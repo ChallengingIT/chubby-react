@@ -36,8 +36,8 @@ function Associazioni() {
   
   const fetchData = async () => {
     try {
-      const associabiliResponse = await axios.get(`https://89.46.67.198:8443/associazioni/react/match/associabili/${id}`, { headers });
-      const associatiResponse   = await axios.get(`https://89.46.67.198:8443/need/react/match/associati/${id}`, { headers });
+      const associabiliResponse = await axios.get(`https://localhost:8443/associazioni/react/match/associabili/${id}`, { headers });
+      const associatiResponse   = await axios.get(`https://localhost:8443/need/react/match/associati/${id}`, { headers });
 
       if (Array.isArray(associatiResponse.data)) {
         const associatiConId = associatiResponse.data.map((associati) => ({ ...associati }));
@@ -77,7 +77,7 @@ function Associazioni() {
       const idNeed = parseInt(id); 
       const idCandidato = row.id;
   
-      const url = `https://89.46.67.198:8443/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
+      const url = `https://localhost:8443/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
   
   
       const response = await axios.post(url, { headers });

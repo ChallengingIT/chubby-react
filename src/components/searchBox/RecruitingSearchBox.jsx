@@ -49,9 +49,9 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
        Authorization: `Bearer ${accessToken}`
      };
 
-        const responseTipologia = await axios.get("https://89.46.67.198:8443/aziende/react/tipologia", { headers });
-        const responseTipo      = await axios.get("https://89.46.67.198:8443/staffing/react/tipo", { headers });
-        const responseStato     = await axios.get("https://89.46.67.198:8443/staffing/react/stato/candidato", { headers });
+        const responseTipologia = await axios.get("https://localhost:8443/aziende/react/tipologia", { headers });
+        const responseTipo      = await axios.get("https://localhost:8443/staffing/react/tipo", { headers });
+        const responseStato     = await axios.get("https://localhost:8443/staffing/react/stato/candidato", { headers });
 
 
         if (Array.isArray(responseStato.data)) {

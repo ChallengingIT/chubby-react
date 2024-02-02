@@ -71,7 +71,7 @@ const [ deleteId,                         setDeleteId                     ] = us
        Authorization: `Bearer ${accessToken}`
      };
 
-      const response = await axios.get("https://89.46.67.198:8443/hr/react/modificato", { headers: headers });
+      const response = await axios.get("https://localhost:8443/hr/react/modificato", { headers: headers });
       if (Array.isArray(response.data)) {
         const hrConId = response.data.map((hr) => ({ ...hr }));
         setOriginalHr(hrConId);
@@ -112,7 +112,7 @@ const openDeleteDialog = (id) => {
 
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`https://89.46.67.198:8443/hr/react/staff/elimina/${deleteId}`, { headers: headers});
+      const response = await axios.delete(`https://localhost:8443/hr/react/staff/elimina/${deleteId}`, { headers: headers});
 
       setOpenDialog(false);
       fetchData();
@@ -201,7 +201,7 @@ const openDeleteDialog = (id) => {
        Authorization: `Bearer ${accessToken}`
      };
 
-      const response = await axios.post("https://89.46.67.198:8443/hr/react/staff/sollecito", { headers: headers });
+      const response = await axios.post("https://localhost:8443/hr/react/staff/sollecito", { headers: headers });
     } catch (error) {
       console.error("Errore durante la cancellazione:", error);
     }
@@ -384,10 +384,10 @@ const openDeleteDialog = (id) => {
     </Button>
     <Button onClick={handleDelete} color="primary" variant="contained" type="submit"
               style={{
-                backgroundColor: "#fbb800",
+                backgroundColor: "#14D928",
                 color: "black",
                 "&:hover": {
-                  backgroundColor: "#fbb800",
+                  backgroundColor: "#14D928",
                   color: "black",
                   transform: "scale(1.05)",
                 },

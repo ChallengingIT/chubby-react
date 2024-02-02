@@ -35,10 +35,10 @@
 
 
         //jobtitle = tipologia, tipologiaIncontro = stato, owner = owner
-        const responseTipologia                      = await axios.get("https://89.46.67.198:8443/aziende/react/tipologia", { headers: headers});
-        const ownerResponse                          = await axios.get("https://89.46.67.198:8443/aziende/react/owner", { headers: headers});
-        const responseStato                          = await axios.get("https://89.46.67.198:8443/staffing/react/stato/candidato", { headers: headers});
-        const responseTipoIntervista                 = await axios.get("https://89.46.67.198:8443/intervista/react/tipointervista", { headers: headers});
+        const responseTipologia                      = await axios.get("https://localhost:8443/aziende/react/tipologia", { headers: headers});
+        const ownerResponse                          = await axios.get("https://localhost:8443/aziende/react/owner", { headers: headers});
+        const responseStato                          = await axios.get("https://localhost:8443/staffing/react/stato/candidato", { headers: headers});
+        const responseTipoIntervista                 = await axios.get("https://localhost:8443/intervista/react/tipointervista", { headers: headers});
 
         if (Array.isArray(responseTipoIntervista.data)) {
           const tipoIntervistaOptions = responseTipoIntervista.data.map((tipoIntervista) => ({
@@ -270,7 +270,7 @@ const disableFields = {
         const modifica    = 1; 
 
    
-        const response = await axios.post("https://89.46.67.198:8443/intervista/react/salva", values, {
+        const response = await axios.post("https://localhost:8443/intervista/react/salva", values, {
           params: {
             idCandidato: idCandidato,
             note: note,

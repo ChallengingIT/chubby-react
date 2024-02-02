@@ -29,8 +29,8 @@ const ModificaContatto = () => {
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseAziende = await axios.get("https://89.46.67.198:8443/aziende/react", { headers: headers});
-        const responseOwner   = await axios.get("https://89.46.67.198:8443/aziende/react/owner", { headers: headers});
+        const responseAziende = await axios.get("https://localhost:8443/aziende/react", { headers: headers});
+        const responseOwner   = await axios.get("https://localhost:8443/aziende/react/owner", { headers: headers});
         
         if (Array.isArray(responseOwner.data)) {
           const ownerOptions = responseOwner.data.map((owner) => ({
@@ -107,7 +107,7 @@ const ModificaContatto = () => {
       
  
 
-      const response = await axios.post("https://89.46.67.198:8443/keypeople/react/salva", values, {
+      const response = await axios.post("https://localhost:8443/keypeople/react/salva", values, {
         headers: headers
       });
 

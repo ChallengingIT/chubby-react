@@ -48,8 +48,8 @@ const headers = {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseJobTitle = await axios.get("https://89.46.67.198:8443/aziende/react/tipologia", { headers: headers});
-        const responseTipo     = await axios.get("https://89.46.67.198:8443/staffing/react/tipo"    , { headers: headers}); 
+        const responseJobTitle = await axios.get("https://localhost:8443/aziende/react/tipologia", { headers: headers});
+        const responseTipo     = await axios.get("https://localhost:8443/staffing/react/tipo"    , { headers: headers}); 
 
         if (Array.isArray(responseJobTitle.data)) {
           setJobTitleOptions(responseJobTitle.data.map((jobTitle) => ({ label: jobTitle.descrizione, value: jobTitle.id })));
