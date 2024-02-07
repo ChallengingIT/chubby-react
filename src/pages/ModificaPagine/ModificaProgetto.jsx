@@ -26,8 +26,8 @@ const ModificaProgetto = () => {
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseCliente    = await axios.get("http://89.46.67.198:8443/aziende/react/select",{ headers: headers });
-        const responseDipendente = await axios.get("http://89.46.67.198:8443/hr/react/modificato", { headers: headers });
+        const responseCliente    = await axios.get("http://89.46.196.60:8443/aziende/react/select",{ headers: headers });
+        const responseDipendente = await axios.get("http://89.46.196.60:8443/hr/react/modificato", { headers: headers });
 
         if (Array.isArray(responseCliente.data)) {
           const clienteOptions = responseCliente.data.map((cliente) => ({
@@ -94,7 +94,7 @@ const ModificaProgetto = () => {
   
     if (!hasErrors) {
     try {
-      const response = await axios.post("http://89.46.67.198:8443/progetti/react/salva", values, {
+      const response = await axios.post("http://89.46.196.60:8443/progetti/react/salva", values, {
         headers: headers 
       });
       navigate("/progetti");

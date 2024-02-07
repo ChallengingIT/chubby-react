@@ -23,8 +23,8 @@ const AggiungiFatturazioneAttiva = () => {
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseCliente   = await axios.get("http://89.46.67.198:8443/aziende/react/select", { headers: headers });
-        const responseStato     = await axios.get("http://89.46.67.198:8443/fatturazione/attiva/react/stato", { headers: headers });
+        const responseCliente   = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers: headers });
+        const responseStato     = await axios.get("http://89.46.196.60:8443/fatturazione/attiva/react/stato", { headers: headers });
 
         if (Array.isArray(responseStato.data)) {
           const statoOptions = responseStato.data.map((stato) => ({
@@ -99,7 +99,7 @@ const AggiungiFatturazioneAttiva = () => {
     if (!hasErrors) {
     try {
 
-      const response = await axios.post("http://89.46.67.198:8443/fatturazione/attiva/react/salva", initialValues, {
+      const response = await axios.post("http://89.46.196.60:8443/fatturazione/attiva/react/salva", initialValues, {
         headers: headers
       });
 

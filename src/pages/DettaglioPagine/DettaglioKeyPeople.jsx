@@ -45,7 +45,7 @@ useEffect(() => {
   useEffect(() => {
     const fetchOptions = async () => {
       try { 
-        const responseAttivita = await axios.get(`http://89.46.67.198:8443/keypeople/react/attivita/${id}`);
+        const responseAttivita = await axios.get(`http://89.46.196.60:8443/keypeople/react/attivita/${id}`);
         if (Array.isArray(responseAttivita.data)) {
           const attivitaOptions = responseAttivita.data.map((attivita) => ({
             note: attivita.note,

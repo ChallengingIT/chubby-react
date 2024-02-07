@@ -91,9 +91,9 @@ const Aziende2 = () => {
         const fetchData = async () => {
             try {
         
-            const responseAziende = await axios.get("http://89.46.67.198:8443/aziende/react/mod",   { headers: headers });
-            const responseOwner   = await axios.get("http://89.46.67.198:8443/aziende/react/owner", { headers: headers });
-            const responseStato   = await axios.get("http://89.46.67.198:8443/aziende/react/mod",   { headers: headers });
+            const responseAziende = await axios.get("http://89.46.196.60:8443/aziende/react/mod",   { headers: headers });
+            const responseOwner   = await axios.get("http://89.46.196.60:8443/aziende/react/owner", { headers: headers });
+            const responseStato   = await axios.get("http://89.46.196.60:8443/aziende/react/mod",   { headers: headers });
         
             if (Array.isArray(responseAziende.data)) {
                 const aziendeConId = responseAziende.data.map((aziende) => ({ ...aziende }));
@@ -152,7 +152,7 @@ const Aziende2 = () => {
             
                 const handleDelete = async () => {
                 try {
-                    const response = await axios.delete(`http://89.46.67.198:8443/aziende/react/elimina/${deleteId}`, { headers: headers});
+                    const response = await axios.delete(`http://89.46.196.60:8443/aziende/react/elimina/${deleteId}`, { headers: headers});
                     setOpenDialog(false);
                     fetchData();
                 } catch (error) {

@@ -32,9 +32,9 @@ const ModificaAzienda = () => {
   useEffect(() => {
     const fetchProvinceOptions = async () => {
       try {
-        const responseProvince = await axios.get("http://89.46.67.198:8443/aziende/react/province", { headers: headers });
-        const responseOwner    = await axios.get("http://89.46.67.198:8443/aziende/react/owner", { headers: headers });
-        const responseAziende  = await axios.get("http://89.46.67.198:8443/aziende/react/select", { headers: headers });
+        const responseProvince = await axios.get("http://89.46.196.60:8443/aziende/react/province", { headers: headers });
+        const responseOwner    = await axios.get("http://89.46.196.60:8443/aziende/react/owner", { headers: headers });
+        const responseAziende  = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers: headers });
 
         if (Array.isArray(responseAziende.data)) {
           const aziendeOptions = responseAziende.data.map((aziende) => ({
@@ -139,7 +139,7 @@ const ModificaAzienda = () => {
         }
       });
 
-      const response = await axios.post("http://89.46.67.198:8443/aziende/react/salva", values, {
+      const response = await axios.post("http://89.46.196.60:8443/aziende/react/salva", values, {
         headers: headers
       });
       navigate("/aziende");

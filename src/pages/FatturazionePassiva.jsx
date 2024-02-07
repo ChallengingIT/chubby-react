@@ -29,7 +29,7 @@ const FatturazionePassiva = () => {
     const fetchData = async () => {
       try {
 
-        const response = await axios.get("http://89.46.67.198:8443/fatturazione/passiva/react", { headers: headers});
+        const response = await axios.get("http://89.46.196.60:8443/fatturazione/passiva/react", { headers: headers});
 
         if (Array.isArray(response.data)) {
 

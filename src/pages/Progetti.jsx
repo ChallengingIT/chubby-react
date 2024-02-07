@@ -38,7 +38,7 @@ const Progetti = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://89.46.67.198:8443/progetti/react", { headers: headers });
+      const response = await axios.get("http://89.46.196.60:8443/progetti/react", { headers: headers });
       console.log("dati in arrivo: ", response.data);
       if (Array.isArray(response.data)) {
       const progettiConId = response.data.map((progetti) => ({ ...progetti}));
@@ -73,7 +73,7 @@ const openDeleteDialog = (id) => {
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`http://89.46.67.198:8443/progetti/react/elimina/${deleteId}`, { headers: headers });
+      const response = await axios.delete(`http://89.46.196.60:8443/progetti/react/elimina/${deleteId}`, { headers: headers });
       setOpenDialog(false);
       fetchData();
     } catch (error) {

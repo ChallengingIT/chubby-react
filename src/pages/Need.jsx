@@ -35,8 +35,8 @@ const Need = () => {
     const fetchData = async () => {
       try {
 
-        const response      = await axios.get("http://89.46.67.198:8443/need/react/modificato",       { headers: headers});
-        const responseStato = await axios.get("http://89.46.67.198:8443/need/react/stato", { headers: headers });
+        const response      = await axios.get("http://89.46.196.60:8443/need/react/modificato",       { headers: headers});
+        const responseStato = await axios.get("http://89.46.196.60:8443/need/react/stato", { headers: headers });
 
         if (Array.isArray(responseStato.data)) {
           const statoConId = responseStato.data.map((stato) => ({ ...stato}));
@@ -83,7 +83,7 @@ const Need = () => {
       const idStato = newStato;
       const params = new URLSearchParams({ stato: idStato });
   
-      await axios.post(`http://89.46.67.198:8443/need/react/salva/stato/${selectedNeed.id}?${params.toString()}`, { headers: headers });
+      await axios.post(`http://89.46.196.60:8443/need/react/salva/stato/${selectedNeed.id}?${params.toString()}`, { headers: headers });
       setIsModalOpen(false);
       fetchData();
     } catch (error) {

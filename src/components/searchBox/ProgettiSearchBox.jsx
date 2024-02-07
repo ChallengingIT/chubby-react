@@ -33,8 +33,8 @@ const headers = {
     const fetchData = async () => {
       try {
 
-        const responseCliente    = await axios.get("http://89.46.67.198:8443/aziende/react/select", { headers: headers});
-        const responseDipendenti = await axios.get("http://89.46.67.198:8443/hr/react"     , { headers: headers});
+        const responseCliente    = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers: headers});
+        const responseDipendenti = await axios.get("http://89.46.196.60:8443/hr/react"     , { headers: headers});
 
         if (Array.isArray(responseCliente.data)) {
           setClienteOptions(responseCliente.data.map((cliente) => ({ label: cliente.denominazione, value: cliente.id })));

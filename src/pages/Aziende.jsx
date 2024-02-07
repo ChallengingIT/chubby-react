@@ -49,7 +49,7 @@ const Aziende = () => {
 const fetchData = async () => {
   try {
 
-    const response = await axios.get("http://89.46.67.198:8443/aziende/react/mod", { headers: headers });
+    const response = await axios.get("http://89.46.196.60:8443/aziende/react/mod", { headers: headers });
 
     if (Array.isArray(response.data)) {
       const aziendeConId = response.data.map((aziende) => ({ ...aziende }));
@@ -83,7 +83,7 @@ useEffect(() => {
 
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`http://89.46.67.198:8443/aziende/react/elimina/${deleteId}`, { headers: headers});
+      const response = await axios.delete(`http://89.46.196.60:8443/aziende/react/elimina/${deleteId}`, { headers: headers});
       setOpenDialog(false);
       fetchData();
     } catch (error) {

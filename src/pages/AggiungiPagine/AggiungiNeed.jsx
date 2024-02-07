@@ -30,12 +30,12 @@ const AggiungiNeed = () => {
   useEffect(() => {
     const fetchNeedOptions = async () => {
       try {
-        const responseAziende       = await axios.get("http://89.46.67.198:8443/aziende/react/select", { headers: headers });
-        const responseSkill         = await axios.get("http://89.46.67.198:8443/staffing/react/skill", { headers: headers });
-        const responseSkill2        = await axios.get("http://89.46.67.198:8443/staffing/react/skill", { headers: headers });
-        const ownerResponse         = await axios.get("http://89.46.67.198:8443/aziende/react/owner" , { headers: headers });
-        const tipologiaResponse     = await axios.get("http://89.46.67.198:8443/need/react/tipologia", { headers: headers });
-        const statoResponse         = await axios.get("http://89.46.67.198:8443/need/react/stato"    , { headers: headers});
+        const responseAziende       = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers: headers });
+        const responseSkill         = await axios.get("http://89.46.196.60:8443/staffing/react/skill", { headers: headers });
+        const responseSkill2        = await axios.get("http://89.46.196.60:8443/staffing/react/skill", { headers: headers });
+        const ownerResponse         = await axios.get("http://89.46.196.60:8443/aziende/react/owner" , { headers: headers });
+        const tipologiaResponse     = await axios.get("http://89.46.196.60:8443/need/react/tipologia", { headers: headers });
+        const statoResponse         = await axios.get("http://89.46.196.60:8443/need/react/stato"    , { headers: headers});
 
 
         if (Array.isArray(statoResponse.data)) {
@@ -138,7 +138,7 @@ const AggiungiNeed = () => {
         delete values.skills;
         delete values.skills2;
   
-        const response = await axios.post("http://89.46.67.198:8443/need/react/salva", values, {
+        const response = await axios.post("http://89.46.196.60:8443/need/react/salva", values, {
           params: {
             skill1: skills,
             skill2: skills2

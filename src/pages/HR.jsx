@@ -52,7 +52,7 @@ const HR = () => {
   const fetchData = async () => {
     try {
 
-      const response = await axios.get("http://89.46.67.198:8443/hr/react/modificato", { headers: headers });
+      const response = await axios.get("http://89.46.196.60:8443/hr/react/modificato", { headers: headers });
 
       if (Array.isArray(response.data)) {
         const hrConId = response.data.map((hr) => ({ ...hr }));
@@ -91,7 +91,7 @@ const HR = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`http://89.46.67.198:8443/hr/react/staff/elimina/${deleteId}`, { headers: headers});
+      const response = await axios.delete(`http://89.46.196.60:8443/hr/react/staff/elimina/${deleteId}`, { headers: headers});
       setOpenDialog(false);
       fetchData();
     } catch (error) {
@@ -155,7 +155,7 @@ const HR = () => {
 
   const handleInviaSollecito = async () => {
     try {
-      const response = await axios.post("http://89.46.67.198:8443/hr/react/staff/sollecito", { headers: headers });
+      const response = await axios.post("http://89.46.196.60:8443/hr/react/staff/sollecito", { headers: headers });
     } catch (error) {
       console.error("Errore durante la cancellazione:", error);
     }

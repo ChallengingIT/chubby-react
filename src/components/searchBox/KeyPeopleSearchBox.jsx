@@ -64,9 +64,9 @@ const accessToken = user?.accessToken;
 const headers = {
   Authorization: `Bearer ${accessToken}`
 };
-        const responseCliente = await axios.get("http://89.46.67.198:8443/aziende/react/select",            { headers: headers });
-        const responseOwner   = await axios.get("http://89.46.67.198:8443/aziende/react/owner",      { headers: headers });
-        const responseStato   = await axios.get("http://89.46.67.198:8443/aziende/react/mod",            { headers: headers });
+        const responseCliente = await axios.get("http://89.46.196.60:8443/aziende/react/select",            { headers: headers });
+        const responseOwner   = await axios.get("http://89.46.196.60:8443/aziende/react/owner",      { headers: headers });
+        const responseStato   = await axios.get("http://89.46.196.60:8443/aziende/react/mod",            { headers: headers });
     if (Array.isArray(responseStato.data)) {
       const statoOptionsData = responseStato.data.map((status, index) => ({
         label: convertStatus(status),

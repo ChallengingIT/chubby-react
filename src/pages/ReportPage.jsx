@@ -104,7 +104,7 @@ const handleSearch = async () => {
 
 
     try {
-        const responseReport = await axios.get("http://89.46.67.198:8443/hr/report/estrai", {
+        const responseReport = await axios.get("http://89.46.196.60:8443/hr/report/estrai", {
             headers: headers,
             params: params
         });
@@ -135,7 +135,7 @@ const handleEstraiExcel = async () => {
 
     const giornoInizio = dal || primoGiornoDelMese.getDate().toString();
     const giornoFine = al || ultimoGiornoDelMese.getDate().toString();
-    const url = `http://89.46.67.198:8443/hr/report/excel/${annoSelezionato}/${meseSelezionato}/${giornoInizio}/${giornoFine}`
+    const url = `http://89.46.196.60:8443/hr/report/excel/${annoSelezionato}/${meseSelezionato}/${giornoInizio}/${giornoFine}`
 
 
     try {

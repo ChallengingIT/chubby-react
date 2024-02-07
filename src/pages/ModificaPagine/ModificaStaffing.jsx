@@ -45,15 +45,15 @@ const ModificaStaffing = () => {
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseStaffing            = await axios.get(`http://89.46.67.198:8443/staffing/react/${id}`, { headers: headers });
-        const responseStato               = await axios.get("http://89.46.67.198:8443/staffing/react/stato/candidato", { headers: headers });
-        const responseFornitore           = await axios.get("http://89.46.67.198:8443/fornitori/react", { headers: headers });
-        const responseJobTitle            = await axios.get("http://89.46.67.198:8443/aziende/react/tipologia", { headers: headers });
-        const responseTipologia           = await axios.get("http://89.46.67.198:8443/staffing/react/tipo", { headers: headers });
-        const responseNeedSkill           = await axios.get("http://89.46.67.198:8443/staffing/react/skill", { headers: headers });
-        const livelloScolasticoResponse   = await axios.get("http://89.46.67.198:8443/staffing/react/livello", { headers: headers });
-        const ownerResponse               = await axios.get("http://89.46.67.198:8443/aziende/react/owner", { headers: headers });
-        const facoltaResponse             = await axios.get("http://89.46.67.198:8443/staffing/react/facolta", { headers: headers });
+        const responseStaffing            = await axios.get(`http://89.46.196.60:8443/staffing/react/${id}`, { headers: headers });
+        const responseStato               = await axios.get("http://89.46.196.60:8443/staffing/react/stato/candidato", { headers: headers });
+        const responseFornitore           = await axios.get("http://89.46.196.60:8443/fornitori/react", { headers: headers });
+        const responseJobTitle            = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia", { headers: headers });
+        const responseTipologia           = await axios.get("http://89.46.196.60:8443/staffing/react/tipo", { headers: headers });
+        const responseNeedSkill           = await axios.get("http://89.46.196.60:8443/staffing/react/skill", { headers: headers });
+        const livelloScolasticoResponse   = await axios.get("http://89.46.196.60:8443/staffing/react/livello", { headers: headers });
+        const ownerResponse               = await axios.get("http://89.46.196.60:8443/aziende/react/owner", { headers: headers });
+        const facoltaResponse             = await axios.get("http://89.46.196.60:8443/staffing/react/facolta", { headers: headers });
 
         setStaffing(responseStaffing.data);
 
@@ -222,7 +222,7 @@ const handleSubmit = async (values, fileCV, fileCF) => {
       delete values.cv;
       delete values.cf;
 
-      const datiResponse = await axios.post("http://89.46.67.198:8443/staffing/salva", values, {
+      const datiResponse = await axios.post("http://89.46.196.60:8443/staffing/salva", values, {
       params: { skill: skills },
       headers: headers,
       });
@@ -248,7 +248,7 @@ try{
       const formDataCV = new FormData();
       formDataCV.append('file', fileCV);
       formDataCV.append('tipo', 1);
-      const responseCV = await axios.post(`http://89.46.67.198:8443/staffing/react/staff/salva/file/${candidatoId}`, formDataCV,
+      const responseCV = await axios.post(`http://89.46.196.60:8443/staffing/react/staff/salva/file/${candidatoId}`, formDataCV,
       {headers: headers});
   } 
 }
@@ -264,7 +264,7 @@ if(fileCF) {
       const formDataCF = new FormData();
       formDataCF.append('file', fileCF);
       formDataCF.append('tipo', 2);
-      const responseCF = await axios.post(`http://89.46.67.198:8443/staffing/react/staff/salva/file/${candidatoId}`, formDataCF, {headers: headers});
+      const responseCF = await axios.post(`http://89.46.196.60:8443/staffing/react/staff/salva/file/${candidatoId}`, formDataCF, {headers: headers});
   }
 }
 } catch(error) {

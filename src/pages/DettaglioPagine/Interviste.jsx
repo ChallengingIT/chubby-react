@@ -49,8 +49,8 @@ function Interviste() {
 
   const fetchData = async () => {
     try {
-      const response                = await axios.get(`http://89.46.67.198:8443/intervista/react/mod/${id}`       , { headers: headers});
-      const candidatoResponse       = await axios.get(`http://89.46.67.198:8443/staffing/react/${candidatoID}`, { headers: headers});
+      const response                = await axios.get(`http://89.46.196.60:8443/intervista/react/mod/${id}`       , { headers: headers});
+      const candidatoResponse       = await axios.get(`http://89.46.196.60:8443/staffing/react/${candidatoID}`, { headers: headers});
 
       if (typeof candidatoResponse.data === 'object') {
         setCandidatoData([candidatoResponse.data]); 
@@ -106,7 +106,7 @@ navigate("/recruiting");
   const handleDelete = async (id) => {
     try {
 
-        const response = await axios.delete(`http://89.46.67.198:8443/intervista/react/elimina/${deleteId}`, { headers: headers});
+        const response = await axios.delete(`http://89.46.196.60:8443/intervista/react/elimina/${deleteId}`, { headers: headers});
         setOpenDialog(false);
 
   

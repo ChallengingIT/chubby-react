@@ -32,8 +32,8 @@ const DettaglioNeed = () => {
     useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseSkill        = await axios.get("http://89.46.67.198:8443/staffing/react/skill", { headers: headers });
-        const responseSkill2       = await axios.get("http://89.46.67.198:8443/staffing/react/skill", { headers: headers });
+        const responseSkill        = await axios.get("http://89.46.196.60:8443/staffing/react/skill", { headers: headers });
+        const responseSkill2       = await axios.get("http://89.46.196.60:8443/staffing/react/skill", { headers: headers });
 
 
       if (Array.isArray(responseSkill.data)) {

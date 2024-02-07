@@ -67,7 +67,7 @@ const Recruiting = () => {
 
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://89.46.67.198:8443/staffing/react/mod", { headers: headers });
+        const response = await axios.get("http://89.46.196.60:8443/staffing/react/mod", { headers: headers });
         if (Array.isArray(response.data)) {
         const recruitingConId = response.data.map((recruiting) => ({ ...recruiting}));
         setOriginalRecruiting(recruitingConId);
@@ -102,7 +102,7 @@ const Recruiting = () => {
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`http://89.46.67.198:8443/staffing/elimina/${deleteId}`, { headers: headers });
+      const response = await axios.delete(`http://89.46.196.60:8443/staffing/elimina/${deleteId}`, { headers: headers });
       setOpenDialog(false);
       fetchData();
     } catch (error) {
@@ -221,7 +221,7 @@ const Recruiting = () => {
 
 
   const handleDownloadCV = async (fileId, fileDescrizione) => {
-    const url = `http://89.46.67.198:8443/files/react/download/file/${fileId}`;
+    const url = `http://89.46.196.60:8443/files/react/download/file/${fileId}`;
     try {
       const response = await axios({
         method: 'GET',

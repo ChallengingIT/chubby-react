@@ -47,7 +47,7 @@ const KeyPeople = () => {
   const fetchData = async () => {
     try {
 
-      const response = await axios.get("http://89.46.67.198:8443/keypeople/react/mod", { headers: headers});
+      const response = await axios.get("http://89.46.196.60:8443/keypeople/react/mod", { headers: headers});
 
       if (Array.isArray(response.data)) {
       const keypeopleConId = response.data.map((keypeople) => ({ ...keypeople}));
@@ -76,7 +76,7 @@ const KeyPeople = () => {
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`http://89.46.67.198:8443/keypeople/react/elimina/${deleteId}`, {headers: headers});
+      const response = await axios.delete(`http://89.46.196.60:8443/keypeople/react/elimina/${deleteId}`, {headers: headers});
       setOpenDialog(false);
       fetchData();
     } catch (error) {
