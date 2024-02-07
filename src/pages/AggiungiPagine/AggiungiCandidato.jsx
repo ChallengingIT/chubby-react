@@ -4,6 +4,7 @@ import axios                          from "axios";
 import Sidebar                        from "../../components/Sidebar";
 import FieldsBox                      from "../../components/FieldsBox";
 import FieldBoxFile from "../../components/FieldBoxFile";
+import { Box,Typography, Alert, Snackbar } from "@mui/material";
 
 
 const AggiungiCandidato = () => {
@@ -17,11 +18,11 @@ const [ skillsOptions,            setSkillsOptions            ] = useState([]);
 const [ ownerOptions,             setOwnerOptions             ] = useState([]);
 const [ facoltaOptions,           setFacoltaOptions           ] = useState([]);
 const [ livelloScolasticoOptions, setLivelloScolasticoOptions ] = useState([]);
+const [ alert,                    setAlert                    ] = useState(false);
 
-// Recupera l'accessToken da localStorage
+
 const user = JSON.parse(localStorage.getItem("user"));
 const accessToken = user?.accessToken;
-// Configura gli headers della richiesta con l'Authorization token
 const headers = {
     Authorization: `Bearer ${accessToken}`
 };
@@ -29,14 +30,14 @@ const headers = {
 useEffect(() => {
     const fetchAziendeOptions = async () => {
     try {
-        const responseStato               = await axios.get("https://localhost:8443/staffing/react/stato/candidato", { headers: headers });
-        const responseFornitori           = await axios.get("https://localhost:8443/fornitori/react"               , { headers: headers });
-        const responseJobTitle            = await axios.get("https://localhost:8443/aziende/react/tipologia"       , { headers: headers });
-        const responseTipologia           = await axios.get("https://localhost:8443/staffing/react/tipo"           , { headers: headers });
-        const responseNeedSkills          = await axios.get("https://localhost:8443/staffing/react/skill"          , { headers: headers });
-        const ownerResponse               = await axios.get("https://localhost:8443/aziende/react/owner"           , { headers: headers });
-        const facoltaResponse             = await axios.get("https://localhost:8443/staffing/react/facolta"        , { headers: headers });
-        const livelloScolasticoResponse   = await axios.get("https://localhost:8443/staffing/react/livello"        , { headers: headers });
+        const responseStato               = await axios.get("http://89.46.67.198:8443/staffing/react/stato/candidato", { headers: headers });
+        const responseFornitori           = await axios.get("http://89.46.67.198:8443/fornitori/react"               , { headers: headers });
+        const responseJobTitle            = await axios.get("http://89.46.67.198:8443/aziende/react/tipologia"       , { headers: headers });
+        const responseTipologia           = await axios.get("http://89.46.67.198:8443/staffing/react/tipo"           , { headers: headers });
+        const responseNeedSkills          = await axios.get("http://89.46.67.198:8443/staffing/react/skill"          , { headers: headers });
+        const ownerResponse               = await axios.get("http://89.46.67.198:8443/aziende/react/owner"           , { headers: headers });
+        const facoltaResponse             = await axios.get("http://89.46.67.198:8443/staffing/react/facolta"        , { headers: headers });
+        const livelloScolasticoResponse   = await axios.get("http://89.46.67.198:8443/staffing/react/livello"        , { headers: headers });
 
         if (Array.isArray(livelloScolasticoResponse.data)) {
         const livelloScolasticoOptions = livelloScolasticoResponse.data.map((livelloScolastico) => ({
@@ -44,6 +45,7 @@ useEffect(() => {
             value: livelloScolastico.id,
         }));
         setLivelloScolasticoOptions(livelloScolasticoOptions);
+    }
 
 
         if (Array.isArray(facoltaResponse.data)) {
@@ -52,6 +54,7 @@ useEffect(() => {
             value: facolta.id,
         }));
         setFacoltaOptions(facoltaOptions);
+    }
 
         if (Array.isArray(ownerResponse.data)) {
     const ownerOptions = ownerResponse.data.map((owner) => ({
@@ -59,6 +62,7 @@ useEffect(() => {
             value: owner.id,
         }));
         setOwnerOptions(ownerOptions);
+    }
         
         if (Array.isArray(responseNeedSkills.data)) {
         const skillsOptions = responseNeedSkills.data.map((skills) => ({
@@ -66,6 +70,7 @@ useEffect(() => {
             value: skills.id,
         }));
         setSkillsOptions(skillsOptions);
+    }
 
         if (Array.isArray(responseTipologia.data)) {
             const tipologiaOptions = responseTipologia.data.map((tipologia) => ({
@@ -73,6 +78,7 @@ useEffect(() => {
             value: tipologia.id,
             }));
             setTipologiaOptions(tipologiaOptions);
+        }
 
 
             if (Array.isArray(responseJobTitle.data)) {
@@ -81,6 +87,7 @@ useEffect(() => {
                 value: jobTitle.id,
             }));
             setJobTitleOptions(jobTitleOptions);
+        }
 
 
             if (Array.isArray(responseFornitori.data)) {
@@ -89,6 +96,7 @@ useEffect(() => {
                 value: fornitori.id,
                 }));
                 setFornitoriOptions(fornitoriOptions);
+            }
 
 
 
@@ -98,24 +106,22 @@ useEffect(() => {
                     value: stato.id,
                 }));
                 setStatoOptions(statoOptions);
+            }
 
-        } else {
-        console.error("I dati ottenuti non sono nel formato Array:", responseStato.data);
-        } 
-    }
-    }
-}
-}
-        }
-    }
-    }
-    } catch (error) {
+         } catch (error) {
         console.error("Errore durante il recupero delle province:", error);
     }
     };
 
     fetchAziendeOptions();
 }, []);
+
+const handleCloseAlert = (event, reason) => {
+    if (reason === 'clickaway') {
+        return;
+    }
+    setAlert({ ...alert, open: false });
+};
 
 
 const campiObbligatori = ["nome", "cognome", "email", "anniEsperienzaRuolo", "tipologia", "dataUltimoContatto" ];
@@ -128,31 +134,31 @@ const fields = [
         { value: "R", label: "R" },
         { value: "C-R", label: "C-R" },
     ]},
-    { label: "* Nome",                          name: "nome",                     type: "text"                                                            },
-    { label: "* Cognome",                       name: "cognome",                  type: "text"                                                            },
+    { label: "Nome*",                         name: "nome",                     type: "text"                                                            },
+    { label: "Cognome*",                      name: "cognome",                  type: "text"                                                            },
     { label: "Data di Nascita",               name: "dataNascita",              type: "date"                                                            },
-    { label: "* Email",                         name: "email",                    type: "text"                                                            },
+    { label: "Email*",                        name: "email",                    type: "text"                                                            },
     { label: "Cellulare",                     name: "cellulare",                type: "text"                                                            },
-    { label: "Anni di Esperienza",            name: "anniEsperienza",           type: "text"                                                            },
+    { label: "Anni di Esperienza",            name: "anniEsperienza",           type: "decimalNumber"                                                            },
     { label: "Residenza",                     name: "citta",                    type: "text"                                                            },
     { label: "Modalità di lavoro",            name: "modalita",                 type: "select",          options: [ 
         { value: 1, label: "Full Remote" },
         { value: 2, label: "Ibrido" },
         { value: 3, label: "On Site"},
     ] },
-    { label: "* Anni di Esperienza nel Ruolo",  name: "anniEsperienzaRuolo",      type: "text"                                                            },
-    { label: "Livello Scolastico",            name: "livelloScolastico",        type: "select",               options: livelloScolasticoOptions },
-    { label: "Facoltà",                       name: "facolta",                  type: "select",               options: facoltaOptions},
-    { label: "* Job Title",                     name: "tipologia",                type: "select",               options: jobTitleOptions                       },
-    { label: "* Data Inserimento",              name: "dataUltimoContatto",       type: "date"                                                            },
-    { label: "Stato",                         name: "stato",                    type: "select",               options: statoOptions                          },
-    { label: "Owner",                         name: "owner",                    type: "select",               options: ownerOptions      },
-    { label: "Seleziona le Skills",           name: "skills",                   type: "multipleSelectSkill",  options: skillsOptions                    },
-    { label: "RAL/Tariffa",                   name: "ral",                      type: "text"                                                            },
-    { label: "Disponibilità",                 name: "disponibilita",            type: "text"                                                            },
-    { label: "Note",                          name: "note",                     type: "note"                                                            },
-    { label: "Curriculim Vitae",              name: "cv",                       type: "modificaFileCV"                                                            },
-    { label: "Consultant File",               name: "cf",                       type: "modificaFileCF"                                                            },
+    { label: "Anni di Esperienza nel Ruolo*",   name: "anniEsperienzaRuolo",      type: "decimalNumber"                                                            },
+    { label: "Livello Scolastico",              name: "livelloScolastico",        type: "select",               options: livelloScolasticoOptions         },
+    { label: "Facoltà",                         name: "facolta",                  type: "select",               options: facoltaOptions                   },
+    { label: "Job Title*",                      name: "tipologia",                type: "select",               options: jobTitleOptions                  },
+    { label: "Data Inserimento*",               name: "dataUltimoContatto",       type: "date"                                                            },
+    { label: "Stato",                           name: "stato",                    type: "select",               options: statoOptions                     },
+    { label: "Owner",                           name: "owner",                    type: "select",               options: ownerOptions                     },
+    { label: "Seleziona le Skills",             name: "skills",                   type: "multipleSelectSkill",  options: skillsOptions                    },
+    { label: "RAL/Tariffa",                     name: "ral",                      type: "text"                                                            },
+    { label: "Disponibilità",                   name: "disponibilita",            type: "text"                                                            },
+    { label: "Note",                            name: "note",                     type: "note"                                                            },
+    { label: "Curriculim Vitae",                name: "cv",                       type: "modificaFileCV"                                                  },
+    { label: "Consultant File",                 name: "cf",                       type: "modificaFileCF"                                                  },
 ];
 
 
@@ -167,12 +173,8 @@ const handleSubmit = async (values, fileCV, fileCF, fileMultipli, fileAllegati) 
                 values[key] = null;
                 }
             });
-        // Preparazione dei dati delle skills come stringhe separate
         const skills = values.skills ? values.skills.join(',') : '';
 
-
-
-        // Rimozione delle proprietà delle skills dall'oggetto values
         delete values.skills;
 
         // const cv = values.cv;
@@ -181,40 +183,30 @@ const handleSubmit = async (values, fileCV, fileCF, fileMultipli, fileAllegati) 
         delete values.cv;
         delete values.cf;
 
-        // Invio della richiesta al server con skills e skills2 come parametri di query
-        const datiResponse = await axios.post("https://localhost:8443/staffing/salva", values, {
+        const datiResponse = await axios.post("http://89.46.67.198:8443/staffing/salva", values, {
         params: { skill: skills },
         headers: headers,
         });
+        console.log("dati inviati: ", values);
+        if (datiResponse.data === "DUPLICATO") {
+            setAlert({ open: true, message: "Email già utilizzata!" });
+            console.error("L'email fornita è già in uso.");
+            return; 
+          }
+        const candidatoId = datiResponse.data;
 
-              // Ottieni l'ID del candidato dalla risposta
-    const candidatoId = datiResponse.data;
-
-
-    
-
-
-
-    
-
-      // Preparazione dei dati per le chiamate Axios dei file
-    const config = {
-        headers: {
-        Authorization: `Bearer ${accessToken}`,
-        }
-    };
-
-
-
-try{
-
-      // Invio del file "cv", se presente
+        const config = {
+            headers: {
+            Authorization: `Bearer ${accessToken}`,
+            }
+        };
+    try{
     if (fileCV) {
         const formDataCV = new FormData();
         formDataCV.append('file', fileCV);
         formDataCV.append('tipo', 1);
 
-        const responseCV = await axios.post(`https://localhost:8443/staffing/react/staff/salva/file/${candidatoId}`, formDataCV, 
+        const responseCV = await axios.post(`http://89.46.67.198:8443/staffing/react/staff/salva/file/${candidatoId}`, formDataCV,
         {headers: headers});
     } 
 } catch(error) {
@@ -228,14 +220,12 @@ try{
         const formDataCF = new FormData();
         formDataCF.append('file', fileCF);
         formDataCF.append('tipo', 2);
-        const responseCF = await axios.post(`https://localhost:8443/staffing/react/staff/salva/file/${candidatoId}`, formDataCF, {headers: headers});
+        const responseCF = await axios.post(`http://89.46.67.198:8443/staffing/react/staff/salva/file/${candidatoId}`, formDataCF, {headers: headers});
     }
 } catch(error) {
     console.error("errore nell'invio del CF", error);
 }
-
     navigate("/recruiting");
-
 } catch(error) {
     console.error("Errore nella chiamata axios: ", error);
 }
@@ -255,19 +245,18 @@ const validateFields = (values) => {
 };
 
 
-
-
-
-
-
 return (
-    <div className="container">
-    <div className="content">
-        <div className="sidebar-container">
+    <Box sx={{ display: 'flex', backgroundColor: '#fbb800', height: '100%', width: '100%', overflow: 'hidden'}}>
+
         <Sidebar />
-        </div>
-        <div className="container">
-        <div className="page-name">Aggiungi Candidato</div>
+        <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
+        <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+                <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
+                    {alert.message}
+                </Alert>
+            </Snackbar>
+        <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Aggiungi Candidato</Typography>
+
         <FieldBoxFile 
         fields={fields} 
         campiObbligatori={campiObbligatori}  
@@ -276,11 +265,9 @@ return (
         skillsOptions={skillsOptions} 
         // onCVChange={handleCVChange}
         // onCFChange={handleCFChange}
-        
         />
-        </div>
-    </div>
-    </div>
+          </Box>
+      </Box>
 );
 };
 

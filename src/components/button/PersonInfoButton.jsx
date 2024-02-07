@@ -21,13 +21,13 @@ function PersonInfoButton({onClick, to}) {
         size="medium" 
         startIcon={<PersonSearchIcon />} 
         onClick={handleEditAction}
-        sx={{backgroundColor: '#14D928',
+        sx={{backgroundColor: '#ffb800',
         color: 'black',
         borderRadius: '40px',
         justifyContent: 'end !important',
         marginRight: '15px',
         "&:hover": {
-            backgroundColor: "#14D928",
+            backgroundColor: "#ffb800",
             transform: "scale(1.05)",
             color: 'white',
         },

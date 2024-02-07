@@ -14,21 +14,18 @@ function Associazioni() {
   const { id, nome, nomeAzienda } = params;
 
 
-  // const [need, setNeed] = useState([]);
   const [searchText,                setSearchText              ] = useState("");
   const [filteredAssociabili,       setFilteredAssociabili     ] = useState([]);
   const [originalAssociabili,       setOriginalAssociabili     ] = useState([]);
   const [associatiOptions,          setAssociatiOptions        ] = useState([]);
 
 
-   // Recupera l'accessToken da localStorage
-   const user = JSON.parse(localStorage.getItem("user"));
-   const accessToken = user?.accessToken;
+    const user = JSON.parse(localStorage.getItem("user"));
+    const accessToken = user?.accessToken;
 
-   // Configura gli headers della richiesta con l'Authorization token
-   const headers = {
-     Authorization: `Bearer ${accessToken}`
-   };
+    const headers = {
+      Authorization: `Bearer ${accessToken}`
+    };
 
   const navigateToDettaglioKeyPeople = (nome) => {
     navigate(`/keyPeople/dettaglio/${nome}`);
@@ -36,8 +33,8 @@ function Associazioni() {
   
   const fetchData = async () => {
     try {
-      const associabiliResponse = await axios.get(`https://localhost:8443/associazioni/react/match/associabili/${id}`, { headers });
-      const associatiResponse   = await axios.get(`https://localhost:8443/need/react/match/associati/${id}`, { headers });
+      const associabiliResponse = await axios.get(`http://89.46.67.198:8443/associazioni/react/match/associabili/${id}`, { headers });
+      const associatiResponse   = await axios.get(`http://89.46.67.198:8443/need/react/match/associati/${id}`, { headers });
 
       if (Array.isArray(associatiResponse.data)) {
         const associatiConId = associatiResponse.data.map((associati) => ({ ...associati }));
@@ -45,9 +42,6 @@ function Associazioni() {
       } else {
         console.error("I dati ottenuti non sono nel formato Array:", associatiResponse.data);
       }
-      
-      
-      
       if (Array.isArray(associabiliResponse.data)) {
         const associabiliConId = associabiliResponse.data.map((associabili) => ({ ...associabili }));
         setFilteredAssociabili(associabiliConId);
@@ -55,8 +49,6 @@ function Associazioni() {
       } else {
         console.error("I dati ottenuti non sono nel formato Array:", associabiliResponse.data);
       }
-
-
     } catch (error) {
       console.error("Errore durante il recupero dei dati:", error);
     }
@@ -76,12 +68,8 @@ function Associazioni() {
     try {
       const idNeed = parseInt(id); 
       const idCandidato = row.id;
-  
-      const url = `https://localhost:8443/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
-  
-  
+      const url = `http://89.46.67.198:8443/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
       const response = await axios.post(url, { headers });
-  
       fetchData();
     } catch (error) {
       console.error("Errore durante il recupero dei dati:", error);
@@ -91,7 +79,7 @@ function Associazioni() {
 
 
   const tableAssociabili = [
-    { field: "cliente", headerName: "Cliente", width: 250, renderCell: (params) => (
+    { field: "cliente",             headerName: "Cliente",                            flex: 1, renderCell: (params) => (
       <div style={{ textAlign: "left"  }}>
           <Link
         to={`/staffing/ricerca/${params.row.email}`}
@@ -99,38 +87,36 @@ function Associazioni() {
       >
         {params.row.nome} {params.row.cognome}
       </Link>
-      
     </div>
-  
-  
       ),},
-    { field: "email",                 headerName: "Descrizione",                        width: 250},
-    { field: "tipologia",             headerName: "Priorità",                           width: 250, renderCell: (params) => (
+    { field: "email",                 headerName: "Descrizione",                        flex: 1},
+    { field: "tipologia",             headerName: "Priorità",                           flex: 1, renderCell: (params) => (
       <div style={{ textAlign: "start" }}>
         {params.row.tipologia && params.row.tipologia.descrizione
           ? params.row.tipologia.descrizione
           : "N/A"}
       </div>
     ),},
-    { field: "rating",                headerName: "Stato",                              width: 150},
-    { field: "stato",                 headerName: "Week",                               width: 70, renderCell: (params) => (
+    { field: "rating",                headerName: "Stato",                              flex: 1},
+    { field: "stato",                 headerName: "Week",                              flex: 1, renderCell: (params) => (
       <div style={{ textAlign: "start" }}>
         {params.row.stato && params.row.stato.descrizione
           ? params.row.stato.descrizione
           : "N/A"}
       </div>
     ),},
-    { field: "azioni",                headerName: "Azioni",                             width: 250, renderCell: (params) => (
+    { field: "azioni",                headerName: "Azioni",                             flex: 1, renderCell: (params) => (
       <div>
         <Button
-         onClick={() => handleAssocia(params.row)}
-         sx={{ backgroundColor: '#14D928',
-        color: 'white',
-        "&:hover": {
-          backgroundColor: "#14D928",
-          transform: "scale(1.05)",
-          color: 'white',
-        },
+          onClick={() => handleAssocia(params.row)}
+          sx={{ 
+            backgroundColor: '#FFB800',
+            color: 'white',
+            "&:hover": {
+              backgroundColor: "#ffb800",
+              transform: "scale(1.05)",
+              color: 'white',
+            },
       }}>Associa</Button>
       </div>
     )},
@@ -139,7 +125,7 @@ function Associazioni() {
 
 
   const tableAssociati = [
-    { field: "nome",                   headerName: "Cliente",                             width: 250, renderCell: (params) => (
+    { field: "nome",                   headerName: "Cliente",                             flex: 1, renderCell: (params) => (
       <div style={{ textAlign: "left"  }}>
           <Link
         to={`/staffing/ricerca/${params.row.email}`}
@@ -150,22 +136,22 @@ function Associazioni() {
     
     </div>
       ),},
-    { field: "email",                   headerName: "Need",                                width: 250},
-    { field: "tipologia",               headerName: "Priorità",                            width: 150, renderCell: (params) => (
+    { field: "email",                   headerName: "Need",                                flex: 1},
+    { field: "tipologia",               headerName: "Priorità",                            flex: 1, renderCell: (params) => (
       <div style={{ textAlign: "start" }}>
         {params.row.tipologia && params.row.tipologia.descrizione
           ? params.row.tipologia.descrizione
           : "N/A"}
       </div>
     ),},
-    { field: "stato",                   headerName: "Stato",                                width: 70, renderCell: (params) => (
+    { field: "stato",                   headerName: "Stato",                               flex: 1, renderCell: (params) => (
       <div style={{ textAlign: "start" }}>
         {params.row.stato && params.row.stato.descrizione
           ? params.row.stato.descrizione
           : "N/A"}
       </div>
     ),},
-    { field: "dataUltimoContatto",      headerName: "Week",                                 width: 100},
+    { field: "dataUltimoContatto",      headerName: "Week",                                 flex: 1},
   ];
 
   return (

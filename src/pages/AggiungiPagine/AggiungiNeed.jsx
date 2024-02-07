@@ -2,6 +2,7 @@ import React, { useState, useEffect }     from "react";
 import { useNavigate, useLocation }       from "react-router-dom";
 import axios                              from "axios";
 import Sidebar                            from "../../components/Sidebar";
+import { Box, Typography } from "@mui/material";
 
 
 
@@ -17,11 +18,9 @@ const AggiungiNeed = () => {
   const [ tipologiaOptions,     setTipologiaOptions   ] = useState([]);
   const [ statoOptions,         setStatoOptions       ] = useState([]);
 
-  // Recupera l'accessToken da localStorage
   const user = JSON.parse(localStorage.getItem("user"));
   const accessToken = user?.accessToken;
 
-  // Configura gli headers della richiesta con l'Authorization token
   const headers = {
     Authorization: `Bearer ${accessToken}`
   };
@@ -31,12 +30,12 @@ const AggiungiNeed = () => {
   useEffect(() => {
     const fetchNeedOptions = async () => {
       try {
-        const responseAziende       = await axios.get("https://localhost:8443/aziende/react"       , { headers: headers });
-        const responseSkill         = await axios.get("https://localhost:8443/staffing/react/skill", { headers: headers });
-        const responseSkill2        = await axios.get("https://localhost:8443/staffing/react/skill", { headers: headers });
-        const ownerResponse         = await axios.get("https://localhost:8443/aziende/react/owner" , { headers: headers });
-        const tipologiaResponse     = await axios.get("https://localhost:8443/need/react/tipologia", { headers: headers });
-        const statoResponse         = await axios.get("https://localhost:8443/need/react/stato"    , { headers: headers});
+        const responseAziende       = await axios.get("http://89.46.67.198:8443/aziende/react/select", { headers: headers });
+        const responseSkill         = await axios.get("http://89.46.67.198:8443/staffing/react/skill", { headers: headers });
+        const responseSkill2        = await axios.get("http://89.46.67.198:8443/staffing/react/skill", { headers: headers });
+        const ownerResponse         = await axios.get("http://89.46.67.198:8443/aziende/react/owner" , { headers: headers });
+        const tipologiaResponse     = await axios.get("http://89.46.67.198:8443/need/react/tipologia", { headers: headers });
+        const statoResponse         = await axios.get("http://89.46.67.198:8443/need/react/stato"    , { headers: headers});
 
 
         if (Array.isArray(statoResponse.data)) {
@@ -64,7 +63,7 @@ const AggiungiNeed = () => {
           }));
           setOwnerOptions(ownerOptions);
 
-       
+
       if (Array.isArray(responseSkill.data)) {
         const skillsOptions = responseSkill.data.map((skill) => ({
           value: skill.id,
@@ -78,11 +77,7 @@ const AggiungiNeed = () => {
             label: skill2.descrizione
           }));
           setSkill2sOptions(skills2Options);
-  
 
-
-       
-    
         if (Array.isArray(responseAziende.data)) {
           const ownerOptions = responseAziende.data.map((aziende) => ({
             label: aziende.denominazione,
@@ -109,26 +104,24 @@ const AggiungiNeed = () => {
   const campiObbligatori = [ "idAzienda", "descrizione", "priorita", "week"]; 
 
   const fields = [
-    { label: "* Azienda",           name: "idAzienda",                    type: "select",           options: aziendeOptions },
-    { label: "* Descrizione Need",  name: "descrizione",                  type: "text" },
-    { label: "* Priorità",          name: "priorita",                     type: "text" },
-    { label: "* Week",              name: "week",                         type: "weekPicker" },
-    { label: "Tipologia",         name: "tipologia",                    type: "select",           options: tipologiaOptions  },
-    { label: "Tipologia Azienda", name: "tipo",                         type: "select",           options: [ 
+    { label: "Azienda*",            name: "idAzienda",                    type: "select",           options: aziendeOptions },
+    { label: "Descrizione Need*",   name: "descrizione",                  type: "text" },
+    { label: "Priorità*",           name: "priorita",                     type: "number" },
+    { label: "Week*",               name: "week",                         type: "weekPicker" },
+    { label: "Tipologia",           name: "tipologia",                    type: "select",           options: tipologiaOptions  },
+    { label: "Tipologia Azienda",   name: "tipo",                         type: "select",           options: [
     { value: 1,                   label: "Cliente" },
     { value: 2,                   label: "Consulenza" },
     { value: 3,                   label: "Prospect" }
   ] },
-    { label: "Owner",             name: "idOwner",                      type: "select",           options: ownerOptions },
-    { label: "Stato",             name: "stato",                        type: "select",           options: statoOptions },
-    { label: "Headcount",         name: "numeroRisorse",                type: "text" },
+    { label: "Owner",             name: "idOwner",                      type: "select",                options: ownerOptions },
+    { label: "Stato",             name: "stato",                        type: "select",                options: statoOptions },
+    { label: "Headcount",         name: "numeroRisorse",                type: "number" },
     { label: "Location",          name: "location",                     type: "text" },
-    { label: "Skills 1",          name: "skills",                       type: "multipleSelectSkill",   options: skillsOptions },
+    { label: "Skills 1",          name: "skills",                       type: "multipleSelectSkill",    options: skillsOptions },
     { label: "Skills 2",          name: "skills2",                      type: "multipleSelectSkill2",   options: skills2Options },
-    { label: "Seniority",         name: "anniEsperienza",               type: "text" },
+    { label: "Seniority",         name: "anniEsperienza",               type: "decimalNumber" },
     { label: "Note",              name: "note",                         type: "note" },
-
-
   ];
 
 
@@ -139,18 +132,13 @@ const AggiungiNeed = () => {
   
     if (!hasErrors) {
       try {
-        // Preparazione dei dati delle skills come stringhe separate
         const skills = values.skills ? values.skills.join(',') : '';
         const skills2 = values.skills2 ? values.skills2.join(',') : '';
 
-
-  
-        // Rimozione delle proprietà delle skills dall'oggetto values
         delete values.skills;
         delete values.skills2;
   
-        // Invio della richiesta al server con skills e skills2 come parametri di query
-        const response = await axios.post("https://localhost:8443/need/react/salva", values, {
+        const response = await axios.post("http://89.46.67.198:8443/need/react/salva", values, {
           params: {
             skill1: skills,
             skill2: skills2
@@ -165,12 +153,8 @@ const AggiungiNeed = () => {
           console.error("Dettagli dell'errore:", error.response.data);
         }
       }
-
     }
   };
-  
-
-
   
 
   const validateFields = (values) => {
@@ -184,13 +168,12 @@ const AggiungiNeed = () => {
   };
 
   return (
-    <div className="container">
-      <div className="content">
-        <div className="sidebar-container">
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
+
           <Sidebar />
-        </div>
-        <div className="container">
-          <div className="page-name">Aggiungi un nuovo Need</div>
+          <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
+          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Aggiungi un nuovo Need</Typography>
+
           <FieldsBox
           fields={fields}
           campiObbligatori={campiObbligatori}
@@ -198,10 +181,9 @@ const AggiungiNeed = () => {
           title=""
           skillsOptions={skillsOptions} 
           skills2Options={skills2Options}
-   />
-        </div>
-      </div>
-    </div>
+    />
+         </Box>
+      </Box>
   );
 };
 

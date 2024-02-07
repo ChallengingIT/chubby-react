@@ -37,13 +37,11 @@ function MyPopUp({ open, onClose, onSave, title }) {
               onChange={(e) => setOwner(e.target.value)}
               sx={{backgroundColor: '#ececec'}}
             >
-              {/* Opzioni per Owner */}
               <MenuItem value="RT">RT</MenuItem>
               <MenuItem value="RM">RM</MenuItem>
               <MenuItem value="MS">MS</MenuItem>
               <MenuItem value="EU">EU</MenuItem>
               <MenuItem value="PC">PC</MenuItem>
-              {/* Aggiungi altre opzioni se necessario */}
             </Select>
           </FormControl>
           <FormControl fullWidth>
@@ -55,9 +53,7 @@ function MyPopUp({ open, onClose, onSave, title }) {
               sx={{backgroundColor: '#ececec'}}
               onChange={(e) => setContatto(e.target.value)}
             >
-              {/* Opzioni per Contatto */}
               <MenuItem value="contatto1">Contatto 1</MenuItem>
-              {/* Aggiungi altre opzioni se necessario */}
             </Select>
           </FormControl>
         </div>

@@ -1,12 +1,7 @@
 import axios from 'axios';
 
-
-
-
-
 const authenticate = async (username, password) => {
 
-  
   try {
     const response = await axios.post('https://localhost:8080/login', {
       username,

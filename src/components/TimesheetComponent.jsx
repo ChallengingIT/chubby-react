@@ -52,14 +52,12 @@ const TimesheetComponent = ({ timesheetData, id }) => {
     const [ ore,                    setOre                        ] = useState('');
 
 
-      // Recupera l'accessToken da localStorage
-      const user = JSON.parse(localStorage.getItem("user"));
-      const accessToken = user?.accessToken;
-  
-      // Configura gli headers della richiesta con l'Authorization token
-      const headers = {
-        Authorization: `Bearer ${accessToken}`
-      };
+        const user = JSON.parse(localStorage.getItem("user"));
+        const accessToken = user?.accessToken;
+    
+        const headers = {
+            Authorization: `Bearer ${accessToken}`
+        };
 
 
 
@@ -83,7 +81,7 @@ const TimesheetComponent = ({ timesheetData, id }) => {
         setAnnoNumero(anno.toString());
 
 
-        axios.get(`https://localhost:8443/timesheet/react/staff/${id}/${anno}/${mese}`, { headers: headers})
+        axios.get(`http://89.46.67.198:8443/timesheet/react/staff/${id}/${anno}/${mese}`, { headers: headers})
             .then(response => {
 
             const timesheetConId = response.data.mese.days.map((timesheet) => ({...timesheet}));
@@ -97,7 +95,6 @@ const TimesheetComponent = ({ timesheetData, id }) => {
                             giorni: {}
                         };
                     }
-                    // Assicurati che ogni giorno sia un oggetto con tutti i dati necessari
                     acc[idProgetto].giorni[current.giorno] = {
                         data: current.data,
                         oreOrdinarie: current.oreOrdinarie || 0,
@@ -110,7 +107,6 @@ const TimesheetComponent = ({ timesheetData, id }) => {
                         festivo: current.festivo,
                         id: current.id,
                         oreTotali: current.oreTotali || 0,
-                        // Aggiungi qui altri campi se necessario
                     };
                     return acc;
                 }, {});
@@ -137,7 +133,7 @@ const TimesheetComponent = ({ timesheetData, id }) => {
     useEffect(() => {
         const fetchPrimoTimesheet = async () => {
             try {
-                const response = await axios.get(`https://localhost:8443/timesheet/react/staff/primo/${id}`, { headers: headers });;
+                const response = await axios.get(`http://89.46.67.198:8443/timesheet/react/staff/primo/${id}`, { headers: headers });;
                 const [mese, anno] = response.data.split('-').map(Number);
                 setPrimoTimesheet(new Date(anno, mese -1, 1)); // -1 perchè i mesi in javascript iniziano da 0
             } catch(error) {
@@ -150,7 +146,7 @@ const TimesheetComponent = ({ timesheetData, id }) => {
 
 
      // Funzione per controllare se una data è precedente a un'altra
-     const mesePrimoTimesheet = (anno, mese, targetDate) => {
+        const mesePrimoTimesheet = (anno, mese, targetDate) => {
         const dataDaControllare = new Date(anno, mese - 1, 1); // -1 perché i mesi in JS partono da 0
         return dataDaControllare < targetDate;
     };
@@ -173,13 +169,12 @@ const TimesheetComponent = ({ timesheetData, id }) => {
             return;
         }
     
-        axios.get(`https://localhost:8443/timesheet/react/staff/precedente/${id}/${annoNumero}/${meseNumero}`)
+        axios.get(`http://89.46.67.198:8443/timesheet/react/staff/precedente/${id}/${annoNumero}/${meseNumero}`)
             .then(response => {
                 const timesheetConId = response.data.mese.days.map((timesheet) => ({...timesheet}));
                 // Crea un oggetto che raggruppa le ore per progetto e giorno
                 const projectsMap = timesheetConId.reduce((acc, current) => {
                     if (!current.progetto) {
-                        // Gestisci il caso in cui l'oggetto progetto è null o mancante
                         return acc;
                     }
                     const idProgetto = current.progetto.id;
@@ -190,7 +185,6 @@ const TimesheetComponent = ({ timesheetData, id }) => {
                             giorni: {}
                         };
                     }
-                    // Assicurati che ogni giorno sia un oggetto con tutti i dati necessari
                     acc[idProgetto].giorni[current.giorno] = {
                         data: current.data,
                         oreOrdinarie: current.oreOrdinarie || 0,
@@ -203,7 +197,6 @@ const TimesheetComponent = ({ timesheetData, id }) => {
                         festivo: current.festivo,
                         id: current.id,
                         oreTotali: current.oreTotali || 0,
-                        // Aggiungi qui altri campi se necessario
                     };
                     return acc;
                 }, {});
@@ -233,13 +226,12 @@ const TimesheetComponent = ({ timesheetData, id }) => {
             nuovoAnno += 1;
         }
     
-        axios.get(`https://localhost:8443/timesheet/react/staff/successivo/${id}/${annoNumero}/${meseNumero}`)
+        axios.get(`http://89.46.67.198:8443/timesheet/react/staff/successivo/${id}/${annoNumero}/${meseNumero}`)
             .then(response => {
                 const timesheetConId = response.data.mese.days.map((timesheet) => ({...timesheet}));
                 // Crea un oggetto che raggruppa le ore per progetto e giorno
                 const projectsMap = timesheetConId.reduce((acc, current) => {
                     if (!current.progetto) {
-                        // Gestisci il caso in cui l'oggetto progetto è null o mancante
                         return acc;
                     }
                     const idProgetto = current.progetto.id;
@@ -250,7 +242,6 @@ const TimesheetComponent = ({ timesheetData, id }) => {
                             giorni: {}
                         };
                     }
-                    // Assicurati che ogni giorno sia un oggetto con tutti i dati necessari
                     acc[idProgetto].giorni[current.giorno] = {
                         data: current.data,
                         oreOrdinarie: current.oreOrdinarie || 0,
@@ -263,7 +254,6 @@ const TimesheetComponent = ({ timesheetData, id }) => {
                         festivo: current.festivo,
                         id: current.id,
                         oreTotali: current.oreTotali || 0,
-                        // Aggiungi qui altri campi se necessario
                     };
                     return acc;
                 }, {});
@@ -296,7 +286,6 @@ const TimesheetComponent = ({ timesheetData, id }) => {
         else if (permessoChecked) {
             setOreOrdinarie('0');
         }
-        // Se nessuno è selezionato, potresti voler resettare il campo "ore" o lasciarlo come sta
         else {
             setOreOrdinarie('0'); 
         }
@@ -341,7 +330,6 @@ const TimesheetComponent = ({ timesheetData, id }) => {
             setGiornoSelezionato(new Date(annoNumero, meseNumero - 1, giorno)); 
             setProgettoSelezionato(progetto); 
             setModalOpen(true); 
-             // Recupera i dati dal giorno selezionato
         const datiGiorno = progetto.giorni[giorno];
         if (datiGiorno) {
             setOrePermesso(datiGiorno.orePermesso || '');
@@ -351,7 +339,6 @@ const TimesheetComponent = ({ timesheetData, id }) => {
             setFerieChecked(datiGiorno.ferie || false);
             setMalattiaChecked(datiGiorno.malattia || false);
             setPermessoChecked(datiGiorno.permesso || false);
-            // Aggiungi qui altri campi se necessario
         } else {
             // Resetta i valori se non ci sono dati per il giorno selezionato
             setOrePermesso('');
@@ -400,7 +387,7 @@ const TimesheetComponent = ({ timesheetData, id }) => {
             };
 
             try {
-            const response = await axios.post(`https://localhost:8443/timesheet/react/staff/aggiorna/${id}/${annoNumero}/${meseNumero}`, datiDaInviare);
+            const response = await axios.post(`http://89.46.67.198:8443/timesheet/react/staff/aggiorna/${id}/${annoNumero}/${meseNumero}`, datiDaInviare);
             if (response.data === "OK") {
             setModalOpen(false); 
             fetchTimesheetData(); 
@@ -418,9 +405,8 @@ const TimesheetComponent = ({ timesheetData, id }) => {
         // Funzione per richiedere i dati aggiornati del timesheet
         const fetchTimesheetData = async () => {
             try {
-                const response = await axios.get(`https://localhost:8443/timesheet/react/staff/${id}/${annoNumero}/${meseNumero}`);
+                const response = await axios.get(`http://89.46.67.198:8443/timesheet/react/staff/${id}/${annoNumero}/${meseNumero}`);
                 const timesheetConId = response.data.mese.days.map((timesheet) => ({...timesheet}));
-                // Crea un oggetto che raggruppa le ore per progetto e giorno
                 const projectsMap = timesheetConId.reduce((acc, current) => {
                     const idProgetto = current.progetto.id;
                     if (!acc[idProgetto]) {
@@ -430,7 +416,6 @@ const TimesheetComponent = ({ timesheetData, id }) => {
                             giorni: {}
                         };
                     }
-                    // Assicurati che ogni giorno sia un oggetto con tutti i dati necessari
                     acc[idProgetto].giorni[current.giorno] = {
                         data: current.data,
                         oreOrdinarie: current.oreOrdinarie || 0,
@@ -443,7 +428,6 @@ const TimesheetComponent = ({ timesheetData, id }) => {
                         festivo: current.festivo,
                         id: current.id,
                         oreTotali: current.oreTotali || 0,
-                        // Aggiungi qui altri campi se necessario
                     };
                     return acc;
                 }, {});
@@ -476,7 +460,7 @@ const TimesheetComponent = ({ timesheetData, id }) => {
             
         
             try {
-                const response = await axios.post(`https://localhost:8443/timesheet/react/staff/cancella/${id}/${annoNumero}/${meseNumero}`, datiDaInviare);
+                const response = await axios.post(`http://89.46.67.198:8443/timesheet/react/staff/cancella/${id}/${annoNumero}/${meseNumero}`, datiDaInviare);
                 setModalOpen(false); 
                 setDatiTimesheet(response.data);
                 fetchTimesheetData();
@@ -499,10 +483,10 @@ const TimesheetComponent = ({ timesheetData, id }) => {
         
 
 
-        const giorniSettimana = ['D', 'L', 'M', 'M', 'G', 'V', 'S'];
-        const giorniFestivi = ['01-01', '01-06', '04-01', '04-25', '05-01', '06-02', '08-15', '11-01', '12-08', '12-25', '12-26'];
-        const lunediPasqua = [ "2025-04-21", "2026-04-06", "2027-03-29", "2028-04-17", "2029-04-02", "2030-04-22", "2031-04-14", "2032-03-29", "2033-04-18", "2034-04-10" ]; 
-        const nomiMesi = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
+        const giorniSettimana   = ['D', 'L', 'M', 'M', 'G', 'V', 'S'];
+        const giorniFestivi     = ['01-01', '01-06', '04-01', '04-25', '05-01', '06-02', '08-15', '11-01', '12-08', '12-25', '12-26'];
+        const lunediPasqua      = [ "2025-04-21", "2026-04-06", "2027-03-29", "2028-04-17", "2029-04-02", "2030-04-22", "2031-04-14", "2032-03-29", "2033-04-18", "2034-04-10" ]; 
+        const nomiMesi          = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
 
 
         const isLunediPasqua = (giorno, mese, anno) => {
@@ -528,7 +512,7 @@ const TimesheetComponent = ({ timesheetData, id }) => {
         //chiamata per inviare tutto il timesheet
         const handleSubmit = async () => {
             try {
-                const responseSubmitTimesheet = await axios.post(`https://localhost:8443/timesheet/react/staff/salva/${id}/${annoNumero}/${meseNumero}`, { headers: headers });
+                const responseSubmitTimesheet = await axios.post(`http://89.46.67.198:8443/timesheet/react/staff/salva/${id}/${annoNumero}/${meseNumero}`, { headers: headers });
                 if (responseSubmitTimesheet.data.message !== "OK") {
                 setAlert({ open: true, message: responseSubmitTimesheet.data });
                 setMeseInviato(true);
@@ -677,10 +661,10 @@ const progettiArray = Object.values(progettoUnivoco);
       {/* Navigazione Mesi e Griglia dei giorni */}
             <Grid item xs={10} sm={10}>
                 <Grid container justifyContent="flex-start" alignItems="center" marginBottom="20px" marginTop="20px" >
-                <Button sx={{ color:"#14D928"}} onClick={handlePrevMese}>{"<"}</Button>
+                <Button sx={{ color:"#ffb800"}} onClick={handlePrevMese}>{"<"}</Button>
                 <Typography variant="h6">{`${nomiMesi[parseInt(meseNumero, 10) - 1]}  ${annoNumero}`}</Typography>
 
-                <Button sx={{ color:"#14D928"}} onClick={handleSuccMese}>{">"}</Button>
+                <Button sx={{ color:"#ffb800"}} onClick={handleSuccMese}>{">"}</Button>
                 </Grid>
                 {renderDaySquares()}
             </Grid>
@@ -769,7 +753,7 @@ disabled
 
         sx={{
             '&.Mui-checked': {
-            color: '#14D928',
+            color: '#ffb800',
             },
         }}
         />
@@ -788,7 +772,7 @@ disabled
 
         sx={{
             '&.Mui-checked': {
-            color: '#14D928', 
+            color: '#ffb800', 
             },
         }}
         />
@@ -807,7 +791,7 @@ disabled
 
         sx={{
             '&.Mui-checked': {
-            color: '#14D928', 
+            color: '#ffb800', 
             },
         }}
         />

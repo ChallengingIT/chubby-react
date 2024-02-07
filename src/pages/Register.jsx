@@ -11,10 +11,9 @@ export const Register = () => {
   return (
     <div className="login">
       <div className="div-2">
-        <p className="chubby">
-          <span className="span">C-</span>
+        <p className="WE-HUB">
+          <span className="span">WE-</span>
           <span className="text-wrapper-6">HUB</span>
-          <span className="span">BY-</span>
         </p>
         <div className="overlap-group">
           <RegisterComponent

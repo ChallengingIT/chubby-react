@@ -10,7 +10,6 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import Button     from "@mui/material/Button";
 import Logo       from "../images/innotek.svg";
 import Dialog     from "@mui/material/Dialog";
-import axios from "axios";
 import authService from "../services/auth.service";
 
 
@@ -117,7 +116,7 @@ const DropdownLink = styled(NavLink)`
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: #14D928;
+  color: #ffb900;
   font-size: 18px;
   overflow: hidden;
   
@@ -265,15 +264,15 @@ const Sidebar = ({ handleLogout }) => {
               variant="outlined"
               onClick={onClose}
               sx={{
-                borderColor: "#14D928",
-                color: "#14D928",
+                borderColor: "#ffb900",
+                color: "#ffb900",
                 marginRight: "5px",
                 marginTop: "20px",
                 "&:hover": {
                   transform: "scale(1.05)",
                   // variant: "filled",
-                  // backgroundColor: "#14D928",
-                  borderColor: "#14D928",
+                  // backgroundColor: "#ffb900",
+                  borderColor: "#ffb900",
                   // color: "black",
                 },
               }}
@@ -284,16 +283,16 @@ const Sidebar = ({ handleLogout }) => {
               variant="contained"
               onClick={handleConfirmLogout}
               sx={{
-                backgroundColor: "#14D928",
+                backgroundColor: "#ffb900",
                 marginLeft: "5px",
                 marginTop: "20px",
                 color: "black",
                 "&:hover": {
                   // variant: "outlined",
-                  // borderColor: "#14D928",
-                  backgroundColor: "#14D928",
+                  // borderColor: "#ffb900",
+                  backgroundColor: "#ffb900",
                   transform: "scale(1.05)",
-                  // color: "#14D928",
+                  // color: "#ffb900",
                 },
               }}
             >
@@ -311,7 +310,7 @@ const Sidebar = ({ handleLogout }) => {
   const SidebarData = [
     {
       title: "Home",
-      path: "/home",
+      // path: "/home",
       icon: <AiIcons.AiFillHome />,
       sidebarcollapsed: false,
     },
@@ -373,7 +372,7 @@ const Sidebar = ({ handleLogout }) => {
                 fontSize: "33px",
               }}
             >
-              CHUBBY
+              WE-HUB
             </span>
             <ImgContainer>
               <img src={Logo} alt="Logo" style={{ marginLeft: "5%" }} />
@@ -480,13 +479,13 @@ const Sidebar = ({ handleLogout }) => {
             display: "flex",
             width: "100%",
             maxWidth: "120px",
-            color: "#14D928",
-            borderColor: "#14D928",
+            color: "#FFB900",
+            borderColor: "#FFB900",
             margin: "15px",
             "&:hover": {
               variant: "filled",
-              borderColor: "#14D928",
-              backgroundColor: "#14D928",
+              borderColor: "#ffb900",
+              backgroundColor: "#ffb800",
               color: "black",
               padding: "0.55rem 0.55rem",
             },
@@ -505,7 +504,7 @@ const Sidebar = ({ handleLogout }) => {
             justifyContent: "space-between",
             height: "60px",
             minWidth: "60px !important",
-            color: "#14D928",
+            color: "#ffb800",
             backgroundColor: "black",
             borderStyle: "none",
             padding: "23px",
@@ -545,13 +544,13 @@ const Sidebar = ({ handleLogout }) => {
               variant="outlined"
               onClick={closeLogoutPopup}
               sx={{
-                borderColor: '#14D928',
-                color: '#14D928',
+                borderColor: '#ffb900',
+                color: '#ffb900',
                 marginRight: '5px',
                 marginTop: '20px',
                 '&:hover': {
                   transform: 'scale(1.05)',
-                  borderColor: '#14D928',
+                  borderColor: '#ffb900',
                 },
               }}
             >
@@ -561,12 +560,12 @@ const Sidebar = ({ handleLogout }) => {
               variant="contained"
               onClick={confirmLogout}
               sx={{
-                backgroundColor: '#14D928',
+                backgroundColor: '#ffb900',
                 marginLeft: '5px',
                 marginTop: '20px',
                 color: 'black',
                 '&:hover': {
-                  backgroundColor: '#14D928',
+                  backgroundColor: '#ffb900',
                   transform: 'scale(1.05)',
                 },
               }}

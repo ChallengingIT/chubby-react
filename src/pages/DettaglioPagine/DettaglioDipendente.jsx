@@ -3,8 +3,9 @@ import { useNavigate, useLocation }           from "react-router-dom";
 import axios                                  from "axios";
 import Sidebar                                from "../../components/Sidebar";
 import MyBoxMIU                               from "../../components/MyBoxMIU";
-import FieldsBox from "../../components/FieldsBox";
-import FieldBoxFile from "../../components/FieldBoxFile";
+import FieldsBox                              from "../../components/FieldsBox";
+import FieldBoxFile                           from "../../components/FieldBoxFile";
+import { Box, Typography } from "@mui/material";
 
 const DettaglioDipendente = () => {
   const navigate                        = useNavigate();
@@ -14,22 +15,22 @@ const DettaglioDipendente = () => {
   const cognomeDipendente               = dipendentiData.cognome;
 
 
-  const [ tipologiaOptions, setTipologiaOptions] = useState([]);
-  const [ skillsOptions,   setSkillsOptions  ] = useState([]);
+  const [ tipologiaOptions,               setTipologiaOptions                 ] = useState([]);
+  const [ skillsOptions,                  setSkillsOptions                    ] = useState([]);
   const [ facoltaOptions,                 setFacoltaOptions                   ] = useState([]);
   const [ livelloScolasticoOptions,       setLivelloScolasticoOptions         ] = useState([]);
-  const [ tipologiaContrattoOptions,      setTipologiaContrattoOptions                 ] = useState([]);
+  const [ tipologiaContrattoOptions,      setTipologiaContrattoOptions        ] = useState([]);
 
 
 
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseJobTitle              = await axios.get("https://localhost:8443/aziende/react/tipologia");
-        const responseNeed                  = await axios.get("https://localhost:8443/staffing/react/skill");
-        const facoltaResponse               = await axios.get("https://localhost:8443/staffing/react/facolta");
-        const livelloScolasticoResponse     = await axios.get("https://localhost:8443/staffing/react/livello");
-        const tipologiaContrattoResponse    = await axios.get("https://localhost:8443/hr/react/tipocontratto");
+        const responseJobTitle              = await axios.get("http://89.46.67.198:8443/aziende/react/tipologia");
+        const responseNeed                  = await axios.get("http://89.46.67.198:8443/staffing/react/skill");
+        const facoltaResponse               = await axios.get("http://89.46.67.198:8443/staffing/react/facolta");
+        const livelloScolasticoResponse     = await axios.get("http://89.46.67.198:8443/staffing/react/livello");
+        const tipologiaContrattoResponse    = await axios.get("http://89.46.67.198:8443/hr/react/tipocontratto");
 
         if (Array.isArray(tipologiaContrattoResponse.data)) {
           const tipologiaContrattoOptions = tipologiaContrattoResponse.data.map((tipologiaContratto) => ({
@@ -94,11 +95,11 @@ const DettaglioDipendente = () => {
     scadenza:           dipendentiData.dataScadenza      || "",
     anniEsperienza:     dipendentiData.anniEsperienza    || "",
     livelloScolastico:  dipendentiData.livelloScolastico && dipendentiData.livelloScolastico.descrizione || "",
-    facolta:            dipendentiData.facolta && dipendentiData.facolta.descrizione           || "",
+    facolta:            dipendentiData.facolta           && dipendentiData.facolta.descrizione           || "",
     iban:               dipendentiData.iban              || "",
     codFiscale:         dipendentiData.codFiscale        || "",
     ral:                dipendentiData.ral               || "",
-    tipologia:          dipendentiData.tipologia && dipendentiData.tipologia.descrizione || "",
+    tipologia:          dipendentiData.tipologia         && dipendentiData.tipologia.descrizione || "",
     skills:            (dipendentiData.skills?.map(skill => skill?.descrizione)) || [],
     tipologiaContratto: dipendentiData.tipologiaContratto && dipendentiData.tipologiaContratto.descrizione || "",
     note:               dipendentiData.note              || "",
@@ -123,12 +124,12 @@ const DettaglioDipendente = () => {
     { label: "Residenza",                 name: "citta",                type: "text",                                     disabled: true },
     { label: "Data Inizio",               name: "dataInizio",           type: "text",                                     disabled: true },
     { label: "Scadenza Contratto",        name: "scadenza",             type: "text",                                     disabled: true },
-    { label: "Anni Esperienza",           name: "anniEsperienza",       type: "text",                                     disabled: true },
+    { label: "Anni Esperienza",           name: "anniEsperienza",       type: "decimalNumber",                            disabled: true },
     { label: "Livello Scolastico",        name: "livelloScolastico",    type: "text",                                     disabled: true },
     { label: "Facoltà",                   name: "facolta",              type: "text",                                     disabled: true},
-    { label: "IBAN",                      name: "iban",                 type:"text",                                      disabled: true},
-    { label: "Codice Fiscale",            name: "codFiscale",           type:"text",                                      disabled: true},
-    { label: "RAL/Tariffa",               name: "ral",                  type:"text",                                      disabled: true},
+    { label: "IBAN",                      name: "iban",                 type: "text",                                     disabled: true},
+    { label: "Codice Fiscale",            name: "codFiscale",           type: "text",                                     disabled: true},
+    { label: "RAL/Tariffa",               name: "ral",                  type: "text",                                     disabled: true},
     { label: "Job Title",                 name: "tipologia",            type: "text",                                     disabled: true },
     { label: "Seleziona le Skills",       name: "skills",               type: "text",                                     disabled: true },
     { label: "Tipologia Contratto",       name: "tipologiaContratto",   type: "text",                                     disabled: true }, 
@@ -146,7 +147,7 @@ const DettaglioDipendente = () => {
         const fileID = file.id;
         const fileDescrizione = file.descrizione; 
   
-        const url = `https://localhost:8443/files/react/download/file/${fileID}`;
+        const url = `http://89.46.67.198:8443/files/react/download/file/${fileID}`;
         const response = await axios({
           method: 'GET',
           url: url,
@@ -172,13 +173,11 @@ const DettaglioDipendente = () => {
 
 
   return (
-    <div className="container">
-      <div className="content">
-        <div className="sidebar-container">
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
           <Sidebar />
-        </div>
-        <div className="container">
-          <div className="page-name">Visualizza Staff {nomeDipendente} {cognomeDipendente} </div>
+          <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
+          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Visualizza {nomeDipendente} {cognomeDipendente}</Typography>
+
           <FieldBoxFile
           fields={fields} 
           initialValues={initialValues} 
@@ -186,9 +185,8 @@ const DettaglioDipendente = () => {
           title="" 
           onDownloadAllegati = {handleDownloadAllegati}
           />
-        </div>
-      </div>
-    </div>
+          </Box>
+      </Box>
   );
 };
 

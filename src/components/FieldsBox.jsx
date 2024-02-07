@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+
+
 import { 
   Grid, 
   Button, 
@@ -20,10 +22,6 @@ import CloudDownloadIcon  from '@mui/icons-material/CloudDownload';
 import CloudUploadIcon    from '@mui/icons-material/CloudUpload';
 import DeleteIcon         from '@mui/icons-material/Delete';
 import { GlobalStyles }   from '@mui/material';
-
-// import axios from 'axios';
-
-
 
 const FieldsBox = ({
   fields,
@@ -49,35 +47,21 @@ const FieldsBox = ({
   const [values, setValues] = useState(initialValues || {});
   const [errors, setErrors] = useState({});
   
-
-
-
-
-
 //stile campi disabilitati
 const getDisabledStyles = (isDisabled) => {
   return isDisabled ? { color: 'black' } : {};
 };
 
-
-
-
-
   const handleChangeMultiple = (name) => (event) => {
     if (event.target.type === 'file') {
-      // Prendi tutti i file dall'input
       const newFiles = Array.from(event.target.files);
   
-      // Accedi ai file esistenti nel tuo stato (se presenti)
       const existingFiles = values[name] || [];
   
-      // Combina i file esistenti con i nuovi file
       const combinedFiles = existingFiles.concat(newFiles);
   
-      // Aggiorna il valore del form con l'array combinato di file
       setValues({ ...values, [name]: combinedFiles });
     } else {
-      // Per altri tipi di input, imposta il valore come al solito
       setValues({ ...values, [name]: event.target.value });
     }
   };
@@ -157,6 +141,16 @@ const getDisabledStyles = (isDisabled) => {
       setValues({ ...values, [name]: value });
     }
   };
+
+
+
+  const onAmountChange = e => {
+    const amount = e.target.value;
+
+    if (!amount || amount.match(/^\d{1,}(\.\d{0,4})?$/)) {
+      this.setState(() => ({ amount }));
+    }
+  };
   
 
   const handleChange = (name) => (event) => {
@@ -173,6 +167,21 @@ const getDisabledStyles = (isDisabled) => {
       setErrors({ ...errors, [name]: '' });
     }
   };
+
+        //funzione di change per decimalNumber
+        const handleChangeDecimal = (name) => (event) => {
+          let { value } = event.target;
+          value = value.replace(/,/g, '.');
+          if (!value || value.match(/^\d+(\.\d{0,2})?$/)) {
+          setValues({ ...values, [name]: value });
+          }
+          };
+
+
+
+
+
+  
 
   const validate = () => {
     let tempErrors = {};
@@ -239,13 +248,8 @@ const getDisabledStyles = (isDisabled) => {
       case 'text':
 
         return (
-
-          
-          
-  
           <TextField
           style={getDisabledStyles(field.disabled)}
-          
           label={field.label}
           name={field.name}
           onChange={handleChange(field.name)}
@@ -254,39 +258,73 @@ const getDisabledStyles = (isDisabled) => {
           error={!!errors[field.name]} 
           helperText={errors[field.name]} 
           disabled={field.disabled}
-
         />
+        );
 
+        case 'number':
+
+        return (
+          <TextField
+          style={getDisabledStyles(field.disabled)}
+          label={field.label}
+          name={field.name}
+          type='number'
+          onChange={handleChange(field.name)}
+          value={values[field.name] || ''}
+          fullWidth
+          error={!!errors[field.name]} 
+          helperText={errors[field.name]} 
+          disabled={field.disabled}
+          inputProps={{
+            min: "0", 
+            max: "100",
+            step: "1"
+          }}
+        />
         
         );
 
 
+        case 'decimalNumber':
+          return (
+              <TextField
+              sx={{ width: "100%", textAlign: "left" }}
+              label={field.label}
+              name={field.name}
+              value={values[field.name] || ''}
+              onChange={handleChangeDecimal(field.name)} 
+              fullWidth
+              error={!!errors[field.name]}
+              helperText={errors[field.name]}
+              disabled={field.disabled}
+              />
+          );
 
 
-        
+
+
 
       case 'select':
         return (
           <FormControl fullWidth error={!!errorMessage} disabled={isDisabled}> 
-  <InputLabel style={getDisabledStyles(isDisabled)} >{field.label}</InputLabel>
-  <Select
-    style={{ width: "100%", textAlign: "left" }}
-    name={field.name}
-    value={values[field.name] || ''}
-    onChange={handleChange(field.name)}
-    error={!!errors[field.name]}
-    disabled={field.disabled}
-    
-  >
-    {field.options.map((option) => (
-      <MenuItem key={option.value} value={option.value}>
-        {option.label}
-      </MenuItem>
-    ))}
-  </Select>
-  <FormHelperText>{errorMessage || ''}</FormHelperText> 
-</FormControl>
-
+          <InputLabel style={getDisabledStyles(isDisabled)} >{field.label}</InputLabel>
+          <Select
+            style={{ width: "100%", textAlign: "left" }}
+            name={field.name}
+            value={values[field.name] || ''}
+            onChange={handleChange(field.name)}
+            error={!!errors[field.name]}
+            disabled={field.disabled}
+            
+          >
+            {field.options.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </Select>
+          <FormHelperText>{errorMessage || ''}</FormHelperText> 
+        </FormControl>
         );
 
       case 'multipleSelect':
@@ -436,31 +474,31 @@ case 'multipleSelectSkill2':
 
                     case 'soloDownloadAllegati':
                     
-                     return (
-  <Box>
-    <Typography variant="subtitle1" gutterBottom>{field.label}</Typography>
-    {values[field.name] && values[field.name].length > 0 ? (
-      values[field.name].map((file, index) => (
-        <Box key={file.id} style={{ display: 'flex', flexDirection: "row", alignItems: 'center', margin: '10px 0', justifyContent: 'space-between', }}>
-          <Typography variant="body1" style={{ marginRight: '10px' }}>{file}</Typography> 
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ marginLeft: '10px', marginBottom: "10px", marginTop: "10px" }}
-            startIcon={<CloudDownloadIcon style={{justifyContent:"flex-end", marginLeft: "10px"}} />}
+                    return (
+                      <Box>
+                        <Typography variant="subtitle1" gutterBottom>{field.label}</Typography>
+                        {values[field.name] && values[field.name].length > 0 ? (
+                          values[field.name].map((file, index) => (
+                            <Box key={file.id} style={{ display: 'flex', flexDirection: "row", alignItems: 'center', margin: '10px 0', justifyContent: 'space-between', }}>
+                              <Typography variant="body1" style={{ marginRight: '10px' }}>{file}</Typography> 
+                              <Button
+                                variant="contained"
+                                color="primary"
+                                style={{ marginLeft: '10px', marginBottom: "10px", marginTop: "10px" }}
+                                startIcon={<CloudDownloadIcon style={{justifyContent:"flex-end", marginLeft: "10px"}} />}
 
-            onClick={() => {
-              onDownloadAllegati(file.id, file.descrizione);
-            }}
-          >
-          </Button>
-        </Box>
-      ))
-    ) : (
-      <Typography variant="body2">Non ci sono allegati presenti</Typography>
-    )}
-  </Box>
-);
+                                onClick={() => {
+                                  onDownloadAllegati(file.id, file.descrizione);
+                                }}
+                              >
+                              </Button>
+                            </Box>
+                          ))
+                        ) : (
+                          <Typography variant="body2">Non ci sono allegati presenti</Typography>
+                        )}
+                      </Box>
+                    );
 
 
 
@@ -636,29 +674,7 @@ case 'multipleSelectSkill2':
           />
         );
 
-      case 'number':
-  return (
-    <TextField
-      type="number"
-      label={field.label}
-      name={field.name}
-      onChange={(e) => {
-        const value = e.target.value;
-        if (value === '' || (/^-?\d+$/.test(value) && parseInt(value) >= 0)) {
-          handleChange(field.name)(e);
-        }
-      }}
-      value={values[field.name] || ''}
-      fullWidth
-      disabled={isDisabled}
-      InputProps={{
-        inputProps: { 
-          min: 0, 
-          step: 1 
-        }
-      }}
-    />
-  );
+     
 
 
         case 'fileMultiple':
@@ -702,6 +718,9 @@ case 'multipleSelectSkill2':
     />
   );
 
+
+ 
+
         
 
       default:
@@ -721,6 +740,7 @@ case 'multipleSelectSkill2':
         borderRadius: "20px",
         justifyItems: "center",
         boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.5)",
+
       }}
     >
       <Typography variant="h5" style={{ marginBottom: "20px" }}>

@@ -1,19 +1,19 @@
-import React, { useState, useEffect }     from "react";
-import { useNavigate, useLocation }       from "react-router-dom";
-import Sidebar                            from "../../components/Sidebar";
+import React, { useState, useEffect }                                                             from "react";
+import { useNavigate, useLocation }                                                               from "react-router-dom";
+import Sidebar                                                                                    from "../../components/Sidebar";
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid }                   from "@mui/material";
-import { useParams }                      from "react-router-dom";
-import FeedIcon                           from "@mui/icons-material/Feed";
-import EmailIcon                          from "@mui/icons-material/Email";
-import LocalPhoneIcon                     from "@mui/icons-material/LocalPhone";
-import dayjs                              from 'dayjs';
-import axios                              from 'axios';
-import AttivitaCard                       from "../../components/card/AttivitaCard";
-import InformazioniAziendaCard            from "../../components/card/InformazioniAziendaCard";
-import ComunicazioniCard                  from "../../components/card/ComunicazioniCard";
-import NeedCard                           from "../../components/card/NeedCard";
-import ContattiCard                       from "../../components/card/ContattiCard";
-import ReusablePopup                      from "../../components/ReusablePopup";
+import { useParams }                                                                              from "react-router-dom";
+import FeedIcon                                                                                   from "@mui/icons-material/Feed";
+import EmailIcon                                                                                  from "@mui/icons-material/Email";
+import LocalPhoneIcon                                                                             from "@mui/icons-material/LocalPhone";
+import dayjs                                                                                      from 'dayjs';
+import axios                                                                                      from 'axios';
+import AttivitaCard                                                                               from "../../components/card/AttivitaCard";
+import InformazioniAziendaCard                                                                    from "../../components/card/InformazioniAziendaCard";
+import ComunicazioniCard                                                                          from "../../components/card/ComunicazioniCard";
+import NeedCard                                                                                   from "../../components/card/NeedCard";
+import ContattiCard                                                                               from "../../components/card/ContattiCard";
+import ReusablePopup                                                                              from "../../components/ReusablePopup";
 import "../../styles/DettaglioAziende.css"
 
 
@@ -22,15 +22,12 @@ function DettaglioAziende2() {
         const navigate = useNavigate();
         const location = useLocation();
         const params   = useParams();
-    
-    
+
         const { aziendaData = {} }  = location.state || {};
         const { id }                = params;
-    
-        const idAzienda   = aziendaData.id;
-        const nomeAzienda = aziendaData.denominazione;
-    
-    
+        const idAzienda             = aziendaData.id;
+        const nomeAzienda           = aziendaData.denominazione;
+
         const handleGoBack = () => {
         window.history.back();
         };
@@ -40,7 +37,7 @@ function DettaglioAziende2() {
         const [ isEmailPopupOpen,   setEmailPopupOpen     ] = useState(false);
         const [ isPhonePopupOpen,   setPhonePopupOpen     ] = useState(false);
         const [ ownerOptions,       setOwnerOptions       ] = useState([]);
-        const [ keyPeopleOptions,   setKeyPeopleOptions    ] = useState([]);
+        const [ keyPeopleOptions,   setKeyPeopleOptions   ] = useState([]);
         const [ needOptions,        setNeedOptions        ] = useState([]);
         const [ attivitaOptions,    setAttivitaOptions    ] = useState([]);
         const [ statoNeedOptions,   setStatoNeedOptions   ] = useState([]);
@@ -51,22 +48,17 @@ function DettaglioAziende2() {
         };
         const [ popupData,          setPopupData          ] = useState(initialState);
 
-        // Recupera l'accessToken da localStorage
     const user = JSON.parse(localStorage.getItem("user"));
     const accessToken = user?.accessToken;
 
-    // Configura gli headers della richiesta con l'Authorization token
     const headers = {
         Authorization: `Bearer ${accessToken}`
     };
 
-
-
-
-
     const fetchAttivita = async () => {
         try {
-        const responseAttivita = await axios.get(`https://localhost:8443/aziende/react/attivita/${id}`, { headers: headers });
+        const responseAttivita = await axios.get(`http://89.46.67.198:8443/aziende/react/attivita/${id}`, { headers: headers });
+        console.log(responseAttivita.data);
 
         if (Array.isArray(responseAttivita.data)) {
             const attivitaOptions = responseAttivita.data.map((attivita) => ({
@@ -76,7 +68,6 @@ function DettaglioAziende2() {
             keyPeople: attivita.keyPeople ? attivita.keyPeople.nome : '' 
             }));
             setAttivitaOptions(attivitaOptions);
-           
         }
         } catch (error) {
         console.error("Errore durante il recupero delle attività:", error);
@@ -88,11 +79,12 @@ function DettaglioAziende2() {
     useEffect(() => {
     const fetchOptions = async () => {
         try {
-        const responseOwner           = await axios.get("https://localhost:8443/aziende/react/owner"             , { headers: headers });
-        const responseKeyPeople        = await axios.get(`https://localhost:8443/aziende/react/keypeople/${id}`   , { headers: headers });
-        const responseNeed            = await axios.get(`https://localhost:8443/need/react/cliente/${id}`        , { headers: headers });
-        // const responseAttivita        = await axios.get(`https://localhost:8443/aziende/react/attivita/${id}`    , { headers: headers });
-        const responseStatoNeed       = await axios.get(`https://localhost:8443/need/react/cliente/${id}`        , { headers: headers });
+        const responseOwner            = await axios.get("http://89.46.67.198:8443/aziende/react/owner"             , { headers: headers });
+        const responseKeyPeople        = await axios.get(`http://89.46.67.198:8443/aziende/react/keypeople/${id}`   , { headers: headers });
+        const responseNeed             = await axios.get(`http://89.46.67.198:8443/need/react/cliente/priorita/${id}`        , { headers: headers });
+        const responseStatoNeed        = await axios.get(`http://89.46.67.198:8443/need/react/cliente/modificato/${id}`        , { headers: headers });
+                // const responseAttivita        = await axios.get(`http://89.46.67.198:8443/aziende/react/attivita/${id}`    , { headers: headers });
+
 
         if (Array.isArray(responseStatoNeed.data)) {
             const statoNeedOptions = responseStatoNeed.data.map((statoNeed) => ({
@@ -102,12 +94,10 @@ function DettaglioAziende2() {
             data:          statoNeed.data,
             ownerNome:     statoNeed.owner && statoNeed.owner.nome,
             ownerCognome:  statoNeed.owner && statoNeed.owner.cognome,
-            }));
 
+            }));
             setStatoNeedOptions(statoNeedOptions);
         }
-
-
 
         if (Array.isArray(responseNeed.data)) {
             const needOptions = responseNeed.data.map((need) => ({
@@ -127,7 +117,7 @@ function DettaglioAziende2() {
             email:      keyPeople.email,
             cellulare:  keyPeople.cellulare,
             value:      keyPeople.id,
-            // label:      keyPeople.nome
+            label:      keyPeople.nome
 
             }));
             setKeyPeopleOptions(keyPeopleOptions);
@@ -217,7 +207,7 @@ function DettaglioAziende2() {
                 }).toString();
             
                 try {
-                const responseFeed = await axios.post(`https://localhost:8443/aziende/react/attivita/salva?${params}`, attivitaMap, { headers });
+                const responseFeed = await axios.post(`http://89.46.67.198:8443/aziende/react/attivita/salva?${params}`, attivitaMap, { headers });
                 setPopupData(initialState);
                 setTimeout(fetchAttivita, 500); 
                 } catch (error) {
@@ -237,7 +227,7 @@ function DettaglioAziende2() {
                 };
                 
                 try {
-                await axios.post('https://localhost:8443/aziende/react/attivita/salva', attivitaMap, { params });
+                await axios.post('http://89.46.67.198:8443/aziende/react/attivita/salva', attivitaMap, { params });
                 setTimeout(fetchAttivita, 500); 
                 } catch (error) {
                 console.error("Errore durante il salvataggio dell'email:", error);
@@ -254,7 +244,7 @@ function DettaglioAziende2() {
                 };
                 
             try{
-                await axios.post('https://localhost:8443/aziende/react/attivita/salva', attivitaMap, { params });
+                await axios.post('http://89.46.67.198:8443/aziende/react/attivita/salva', attivitaMap, { params });
                 setTimeout(fetchAttivita, 500); 
                 } catch (error) {
                 console.error("Errore durante il salvataggio dell'email:", error);
@@ -287,23 +277,6 @@ function DettaglioAziende2() {
                     citta:                    aziendaData.citta                                               || "",
                 };
 
-
-                // //dati di "Attività"
-                //     const tableAttivita = [
-                //         { label: "Owner",                 name: "owner" },
-                //         { label: "Data" ,                 name: "data"  },
-                //         { label: "Note",                  name: "note"  },
-                //         { label: 'Contatto',              name: 'keyPeople' },
-                //     ];
-                    
-                //     const intialValuesAttivita = attivitaOptions.map(attivita => ({
-                //         owner:                            attivita.owner || "",
-                //         data:                             attivita.data  || "",
-                //         note:                             attivita.note  || "",
-                //         keyPeople:                        attivita.keyPeople || ""
-                //     }));
-
-                //dati di "Attività"
                 const tableAttivita = [
                     { label: "Owner", name: "owner"},
                     { label: "Data", name: "data"},
@@ -367,15 +340,6 @@ function DettaglioAziende2() {
                                         { label: 'Contatto',              name: 'idKeyPeople',            type: "select",                 options: keyPeopleOptions },
                                         { label: 'Commento',              name: 'note',                   type: "note"                                             },
                                         ];
-
-
-
-
-
-
-
-
-
 
 
     return (

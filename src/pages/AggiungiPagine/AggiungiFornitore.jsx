@@ -3,15 +3,14 @@ import { useNavigate, useLocation }   from "react-router-dom";
 import axios                          from "axios";
 import Sidebar                        from "../../components/Sidebar";
 import FieldsBox                      from "../../components/FieldsBox";
+import { Box, Typography } from "@mui/material";
 
 const AggiungiFornitore = () => {
   const navigate = useNavigate();
 
-  // Recupera l'accessToken da localStorage
   const user = JSON.parse(localStorage.getItem("user"));
   const accessToken = user?.accessToken;
 
-  // Configura gli headers della richiesta con l'Authorization token
   const headers = {
     Authorization: `Bearer ${accessToken}`
   };
@@ -20,17 +19,13 @@ const AggiungiFornitore = () => {
 const campiObbligatori = [ "denominazione", "referente", "email"];
 
   const fields = [
-    { label: "* Ragione Sociale",     name: "denominazione",  type: "text" },
-    { label: "* Referente",           name: "referente",      type: "text" },
-    { label: "* Email",               name: "email",          type: "text"},
-    { label: "PI",                  name: "pi",             type: "text" },
-    { label: "Codice",              name: "codice",         type: "text"},
-    { label: "Città",               name: "citta",          type: "text" },
-    { label: "Cellulare",           name: "cellulare",      type: "text" },
-
-
-
-
+    { label: "Ragione Sociale*",      name: "denominazione",  type: "text" },
+    { label: "Referente*",            name: "referente",      type: "text" },
+    { label: "Email*",                name: "email",          type: "text"},
+    { label: "PI",                    name: "pi",             type: "text" },
+    { label: "Codice",                name: "codice",         type: "text"},
+    { label: "Città",                 name: "citta",          type: "text" },
+    { label: "Cellulare",             name: "cellulare",      type: "text" },
   ];
 
 
@@ -41,7 +36,7 @@ const campiObbligatori = [ "denominazione", "referente", "email"];
     if (!hasErrors) {
     try {
 
-      const response = await axios.post("https://localhost:8443/fornitori/react/salva",  values, { headers: headers });
+      const response = await axios.post("http://89.46.67.198:8443/fornitori/react/salva",  values, { headers: headers });
 
       navigate("/fornitori");
     } catch (error) {
@@ -63,22 +58,20 @@ const campiObbligatori = [ "denominazione", "referente", "email"];
   
 
   return (
-    <div className="container">
-      <div className="content">
-        <div className="sidebar-container">
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
+
           <Sidebar />
-        </div>
-        <div className="container">
-          <div className="page-name">Aggiungi un nuovo Fornitore</div>
+          <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
+          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Aggiungi un nuovo Fornitore</Typography>
+
           <FieldsBox 
           fields={fields} 
           campiObbligatori={campiObbligatori}  
           onSubmit={handleSubmit} 
           title="" 
           />
-        </div>
-      </div>
-    </div>
+           </Box>
+      </Box>
   );
 };
 

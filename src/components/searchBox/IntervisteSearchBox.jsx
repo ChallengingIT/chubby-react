@@ -9,6 +9,12 @@ import { AdapterDateFns }                     from '@mui/x-date-pickers/AdapterD
 import "../../styles/HR.css";
 
 
+
+
+
+
+
+
 const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalInterviste }) => {
   const initialSearchTerm = {
     stato: '',
@@ -16,42 +22,47 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
     data: null,
   };
 
-  const commonFieldStyles = {
-    width: "100%", 
-    maxWidth: "200px", 
-    height: "56px", 
-    borderRadius: "40px",
-    fontSize: "0.8rem",
-    textAlign: "start",
-    color: "#757575",
-    "& .MuiInputBase-root": {
-      borderRadius: "40px",
-    },
-    "& .MuiOutlinedInput-notchedOutline": {
-      borderColor: "#757575", 
-    },
-    "&:hover .MuiOutlinedInput-notchedOutline": {
-      borderColor: "#000", 
-    },
-    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-      borderColor: "#757575", 
-    },
-  };
+
+  console.log("ORIGINAL INTERVISTE: ", OriginalInterviste);
+
+  // const commonFieldStyles = {
+  //   width: "100%", // Assicurati che sia la stessa per tutti i campi
+  //   maxWidth: "200px", // o qualsiasi altra larghezza desideri
+  //   height: "56px", // l'altezza di default per il TextField di MUI
+  //   borderRadius: "40px",
+  //   fontSize: "0.8rem",
+  //   textAlign: "start",
+  //   color: "#757575",
+  //   "& .MuiInputBase-root": {
+  //     borderRadius: "40px", // Arrotonda gli angoli della base dell'input
+  //   },
+  //   "& .MuiOutlinedInput-notchedOutline": {
+  //     borderColor: "#757575", // Colore del bordo
+  //   },
+  //   "&:hover .MuiOutlinedInput-notchedOutline": {
+  //     borderColor: "#000", // Colore del bordo al passaggio del mouse
+  //   },
+  //   "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+  //     borderColor: "#757575", // Colore del bordo quando è focalizzato
+  //   },
+  // };
 
   const [ searchTerm,   setSearchTerm   ] = useState(initialSearchTerm);
   const [ ownerOptions, setOwnerOptions ] = useState([]);
   const [ statoOptions, setStatoOptions ] = useState([]);
   const [ filteredData, setFilteredData ] = useState([]);
+  const [ selectedDate, setSelectedDate ] = useState('');
 
 
-  const accessToken = localStorage.getItem("accessToken"); 
-
+  const accessToken = localStorage.getItem("accessToken"); // Ottieni l'accessToken dal localStorage
+  // console.log("accessToken: ", accessToken);
+  // Configura l'header "Authorization" con l'accessToken
   const headers = {
     Authorization: `Bearer ${accessToken}`,
   };
 
   const handleKeyDown = (e) => {
-    if (e.keyCode === 13) { 
+    if (e.keyCode === 13) { // Verifica se è stato premuto il tasto "Invio"
       handleSearch();     
     }
   };
@@ -59,9 +70,9 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseOwner = await axios.get("https://localhost:8443/aziende/react/owner", { headers: headers});
+        const responseOwner = await axios.get("http://89.46.67.198:8443/aziende/react/owner", { headers: headers});
 
-        const responseStato = await axios.get("https://localhost:8443/staffing/react/stato/candidato", { headers: headers});
+        const responseStato = await axios.get("http://89.46.67.198:8443/staffing/react/stato/candidato", { headers: headers});
 
                 if (Array.isArray(responseStato.data)) {
                   setStatoOptions(responseStato.data.map((stato) => ({ label: stato.descrizione, value: stato.id })));
@@ -70,7 +81,7 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
                 } 
 
         if (Array.isArray(responseOwner.data)) {
-          setOwnerOptions(responseOwner.data.map((owner, index) => ({ label: owner.descrizione, value: owner.id })));
+          setOwnerOptions(responseOwner.data.map((owner) => ({ label: owner.descrizione, value: owner.id })));
         } else {
           console.error("I dati ottenuti non sono nel formato Array:", responseOwner.data);
         } 
@@ -84,7 +95,8 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
 
 
   const handleSearch = () => {
-
+    console.log("Valori di ricerca:", searchTerm);
+    console.log("Contenuto di Originale:", OriginalInterviste);
     const filteredData = OriginalInterviste.filter(item =>
       Object.keys(searchTerm).every(key =>
         searchTerm[key] === '' ||
@@ -94,6 +106,7 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
         String(item[key]).toLowerCase().includes(String(searchTerm[key]).toLowerCase())
       )
     );
+    console.log("Dati filtrati:", filteredData);
     onSearch(filteredData);
     setFilteredData(filteredData);
   };
@@ -106,88 +119,128 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
     setFilteredData([]); 
   };
 
+
+
+  const handleDateChange = (event) => {
+    const newDate = event.target.value;
+    setSelectedDate(newDate);
+    setSearchTerm({...searchTerm, data: newDate});
+  };
+  
+
+
+
+  const uniformStyle = {
+    height: '40px',
+    borderRadius: '40px',
+    fontSize: '0.8rem',
+    textAlign: 'start',
+    color: '#757575',
+    width: '100%', // Assicurati che questo si adatti al layout del tuo form
+  };
+
+
+
   return (
     <div className="gridContainer" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr) auto', gap: '10px', alignItems: 'center', margin: '20px 5px', padding: '0 0 20px 0',  borderBottom: '2px solid #dbd9d9',}}>
 
     {/* prima colonna */}
-    
     <Select
+              style={uniformStyle}
                   className="dropdown-menu"
                   value={searchTerm.stato}
                   onChange={e => setSearchTerm({...searchTerm, stato: e.target.value })}
-                  sx={commonFieldStyles
-                  }
+                  sx={{
+                    marginTop: '10px',
+                    borderRadius: "40px",
+                    fontSize: "0.8rem",
+                    textAlign: "start",
+                    color: "#757575",
+                  }}
                   native
                   onKeyDown={handleKeyDown}
                 >
                   <option value="" disabled>
                     Stato
                   </option>
-                  {statoOptions.map((option) => (
+                    {statoOptions.map((option) => (
                     <option key={option.value} value={option.label}>
                       {option.label}
                     </option>
                   ))}
                 </Select>
+
+
+                
     {/* seconda colonna */}
-    
     <Select
+              style={uniformStyle}
                   className="dropdown-menu"
                   value={searchTerm.intervistatore}
-                  onChange={e => setSearchTerm({...searchTerm, intervistatore: e.target.value })}
-                  sx={commonFieldStyles
-                  }
+                  onChange={e => setSearchTerm({...searchTerm, owner: e.target.value })}
+                  sx={{
+                    marginTop: '10px',
+                    borderRadius: "40px",
+                    fontSize: "0.8rem",
+                    textAlign: "start",
+                    color: "#757575",
+                  }}
                   native
                   onKeyDown={handleKeyDown}
                 >
                   <option value="" disabled>
                     Intervistatore
                   </option>
-                  {ownerOptions.map((option) => (
+                  {ownerOptions.map((option) => (  
                     <option key={option.value} value={option.label}>
                       {option.label}
                     </option>
                   ))}
                 </Select>
+
+
+
+                <TextField
+              style={uniformStyle}
+  type="date"
+  label="date"
+  value={searchTerm.data}
+  InputLabelProps={{ shrink: true}}
+  variant="outlined"
+  onKeyDown={handleKeyDown}
+  onChange={handleDateChange}
+  InputProps={{
+    style: {
+        height: "40px",
+        // marginBottom: "15px",
+      borderRadius: "40px", // Imposta i bordi arrotondati
+    //   fontSize: "0.8rem",
+      textAlign: "start",
+      color: "#757575",
+    }
+  }}
+/>
+
+
+
+
     {/* terza colonna */}
-    
-
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DatePicker
-            label="data"
-            value={searchTerm.data}
-            onKeyDown={handleKeyDown}
-            onChange={(newValue) => {
-              setSearchTerm({ ...searchTerm, data: newValue });
-            }}
-            sx={{ border: 'solid 1px #black',
-          borderRadius: '40px',
-          fontSize: "0.8rem",
-          textAlign: "start",
-          color: "black",
-          '& .MuiInputBase-root': { borderRadius: '50px' } }}
- 
-          
-          />
-        </LocalizationProvider>
-
-
-    {/* quarta colonna */}
     <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
     <Button
       className="button-search"
       variant="contained"
       onClick={handleSearch}
+      
       sx={{
         width: '100px',
         height: "40px",
-        backgroundColor: "#14D928",
+        backgroundColor: "#ffb800",
         color: "black",
         borderRadius: "10px",
         fontSize: "0.8rem",
         fontWeight: "bolder",
         "&:hover": {
-          backgroundColor: "#14D928",
+          backgroundColor: "#ffb800",
           color: "black",
           transform: "scale(1.05)",
         },
@@ -217,6 +270,8 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
   </div>
 </div>
   );
+
+
 };
 
 export default IntervisteSearchBox;

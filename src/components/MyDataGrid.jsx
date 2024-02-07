@@ -20,7 +20,7 @@ const MyDataGrid = ({ data, columns, title, searchBoxComponent: SearchBox }) => 
       const timer = setTimeout(() => {
         setLoading(false);
         setShowNoDataMessage(true);
-      }, 600);
+      }, 4000);
       return () => clearTimeout(timer);
     } else {
       setLoading(false);
@@ -45,13 +45,13 @@ const MyDataGrid = ({ data, columns, title, searchBoxComponent: SearchBox }) => 
   return (
     <Box
       sx={{
-        width: "97%",
-        height: "77%",
+        width: "94vw",
+        height: "80vh",
         backgroundColor: "white",
         borderRadius: "40px",
         display: "flex",
         flexDirection: "column",
-        margin: '20px',
+        marginLeft: '20px',
         marginRight: '20px',
         borderWidth: "0",
         boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.6)",
@@ -89,19 +89,9 @@ const MyDataGrid = ({ data, columns, title, searchBoxComponent: SearchBox }) => 
           </div>
         )}
       </div>
-     {/* Renderizza il componente Search Box passato come prop */}
      {SearchBox && <SearchBox />}
 
       <DataGrid
-        // rows={data}
-        // columns={columns}
-        // pageSize={5}
-        // rowsPerPage={rowsPerPage}
-        // pagination={{ pageSize: 25 }} 
-        // pstatoSizeOptions={[5, 10, 20]}
-        // checkboxSelection={false}
-        // disableRowSelectionOnClick
-        // disableColumnMenu={true}
         rows={data}
         columns={columns}
         initialState={{

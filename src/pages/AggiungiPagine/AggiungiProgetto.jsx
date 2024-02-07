@@ -3,6 +3,7 @@ import { useNavigate, useLocation }     from "react-router-dom";
 import axios                            from "axios";
 import Sidebar                          from "../../components/Sidebar";
 import FieldsBox                        from "../../components/FieldsBox";
+import { Box, Typography } from "@mui/material";
 
 const AggiungiProgetto = () => {
   const navigate = useNavigate();
@@ -10,22 +11,18 @@ const AggiungiProgetto = () => {
   const [ clientiOptions,     setClientiOptions   ] = useState([]);
   const [ dipendentiOptions,  setDipendentiOptions] = useState([]);
 
-  // Recupera l'accessToken da localStorage
   const user = JSON.parse(localStorage.getItem("user"));
   const accessToken = user?.accessToken;
 
-  // Configura gli headers della richiesta con l'Authorization token
   const headers = {
     Authorization: `Bearer ${accessToken}`
   };
 
-
-
   useEffect(() => {
     const fetchProgettiOptions = async () => {
       try {
-        const responseDipendenti = await axios.get("https://localhost:8443/hr/react/modificato"     , { headers: headers});
-        const responseClienti    = await axios.get("https://localhost:8443/aziende/react", { headers: headers });
+        const responseDipendenti = await axios.get("http://89.46.67.198:8443/hr/react/modificato"     , { headers: headers});
+        const responseClienti    = await axios.get("http://89.46.67.198:8443/aziende/react/select", { headers: headers });
 
 
         if (Array.isArray(responseDipendenti.data)) {
@@ -52,33 +49,23 @@ const AggiungiProgetto = () => {
       fetchProgettiOptions();
     }, []);
 
-  
-  
-  
-  
-  
-
-  // const campiObbligatori = [ "descrizione", "idCliente", "idStaff", "inzio", "scadenza" ];
 
   const campiObbligatori = [ "description", "idAzienda", "idStaff", "inizio", "scadenza" ];
 
 
   const fields = [
-    { label: "* Descrizione",     name: "description",              type: "text" },
-    { label: "* Cliente",         name: "idAzienda",                type: "select", options: clientiOptions },
-    { label: "* Dipendente",      name: "idStaff",                  type: "select", options: dipendentiOptions },
-    { label: "* Data Inizio",     name: "inizio",                   type: "date" },
-    { label: "* Scadenza",        name: "scadenza",                 type: "date" },
-    { label: "Durata Stimata",  name: "durataStimata",            type: "text" },
-    { label: "Rate",            name: "rate",                     type: "text" },
-    { label: "Costo",           name: "costo",                    type: "text" },
-    { label: "Margine",         name: "margine",                  type: "text" },
-    { label: "Durata",          name: "durata",                   type: "text" },
-    { label: "Valore Totale",   name: "valoreTotale",             type: "text" },
-    { label: "Note",            name: "note",                     type: "note" },
-
-
-
+    { label: "Descrizione*",      name: "description",              type: "text" },
+    { label: "Cliente*",          name: "idAzienda",                type: "select", options: clientiOptions },
+    { label: "Dipendente*",       name: "idStaff",                  type: "select", options: dipendentiOptions },
+    { label: "Data Inizio*",      name: "inizio",                   type: "date" },
+    { label: "Scadenza*",         name: "scadenza",                 type: "date" },
+    { label: "Durata Stimata",    name: "durataStimata",            type: "text" },
+    { label: "Rate",              name: "rate",                     type: "text" },
+    { label: "Costo",             name: "costo",                    type: "text" },
+    { label: "Margine",           name: "margine",                  type: "text" },
+    { label: "Durata",            name: "durata",                   type: "text" },
+    { label: "Valore Totale",     name: "valoreTotale",             type: "text" },
+    { label: "Note",              name: "note",                     type: "note" },
   ];
 
 
@@ -89,7 +76,7 @@ const AggiungiProgetto = () => {
     if (!hasErrors) {
     try {
 
-      const response = await axios.post("https://localhost:8443/progetti/react/salva", values, 
+      const response = await axios.post("http://89.46.67.198:8443/progetti/react/salva", values,
       { headers: headers });
 
       navigate("/progetti");
@@ -112,22 +99,20 @@ const AggiungiProgetto = () => {
   
 
   return (
-    <div className="container">
-      <div className="content">
-        <div className="sidebar-container">
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
+
           <Sidebar />
-        </div>
-        <div className="container">
-          <div className="page-name">Aggiungi un nuovo Progetto</div>
+          <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
+          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Aggiungi un nuovo progetto</Typography>
+
           <FieldsBox 
           fields={fields} 
           campiObbligatori={campiObbligatori}  
           onSubmit={handleSubmit} 
           title="" 
           />
-        </div>
-      </div>
-    </div>
+          </Box>
+      </Box>
   );
 };
 

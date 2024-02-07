@@ -85,13 +85,13 @@ const HRSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalHr})
           sx={{
             width: '100px',
             height: "40px",
-            backgroundColor: "#14D928",
+            backgroundColor: "#ffb800",
             color: "black",
             borderRadius: "10px",
             fontSize: "0.8rem",
             fontWeight: "bolder",
             "&:hover": {
-              backgroundColor: "#14D928",
+              backgroundColor: "#ffb800",
               color: "black",
               transform: "scale(1.05)",
             },

@@ -1,43 +1,23 @@
 import React from 'react'
 import Sidebar from '../../components/Sidebar';
 import ReportSearchBox from '../../components/searchBox/ReportSearchBox';
-import { Button } from '@mui/material';
+import { Button, Box, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import ReportPage from '../ReportPage';
 
-
-
-
-    
-
-
 function EstraiReport() {
 
-    const navigate                = useNavigate();
-    
+    const navigate = useNavigate();
     const handleGoBack = () => {
         navigate("/hr");
           };
 
-
-
-
-
-
   return (
-    <div className="container">
-    <div className="content">
-      <div className="sidebar-container">
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
         <Sidebar />
-      </div>
-      <div className="container">
-        {/* <div className="page-name">Report</div> */}
-        <h1 style={{ display: 'flex', justifyContent:'flex-start', marginTop: '35px', marginBottom: '20px', marginLeft: '35px' }}>Report</h1>
+        <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto', justifyContent: 'center',}}>
+        <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Report</Typography>
           <ReportPage/>
-          
-       
-
-
         <Button
           color="primary"
           onClick={handleGoBack}
@@ -58,10 +38,8 @@ function EstraiReport() {
         >
           Indietro
         </Button>
-        </div>
-        </div>
-        </div>
-        
+        </Box>
+        </Box>
   )
 };
 

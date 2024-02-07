@@ -14,13 +14,16 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  Button
+  Button,
+  Box,
+  Typography
 } from '@mui/material';
 
-import "../styles/Fornitori.css";
 
 const Fornitori = () => {
+
   const navigate = useNavigate();
+
   const [ fornitori,              setFornitori                        ] = useState([]);
   const [ originalFornitori,      setOriginalFornitori                ] = useState([]);
   const [ searchText,             setSearchText                       ] = useState("");
@@ -28,21 +31,19 @@ const Fornitori = () => {
   const [ openDialog,             setOpenDialog                       ] = useState(false);
   const [ deleteId,               setDeleteId                         ] = useState(null);
 
-   // Recupera l'accessToken da localStorage
-   const user = JSON.parse(localStorage.getItem("user"));
-   const accessToken = user?.accessToken;
+  const user = JSON.parse(localStorage.getItem("user"));
+  const accessToken = user?.accessToken;
 
-   // Configura gli headers della richiesta con l'Authorization token
-   const headers = {
-     Authorization: `Bearer ${accessToken}`
-   };
+  const headers = {
+    Authorization: `Bearer ${accessToken}`
+  };
 
-
-  
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("https://localhost:8443/fornitori/react", { headers: headers});
+
+      const response = await axios.get("http://89.46.67.198:8443/fornitori/react", { headers: headers});
+
         if (Array.isArray(response.data)) {
         const fornitoriConId = response.data.map((fornitori) => ({ ...fornitori}));
         setOriginalFornitori(fornitoriConId);
@@ -56,34 +57,27 @@ const Fornitori = () => {
     };
 
 
-useEffect(() => {
-  fetchData();
-}, []);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
 
-
-
-
-const openDeleteDialog = (id) => {
-  setDeleteId(id);
-  setOpenDialog(true);
-};
-
-  
+  const openDeleteDialog = (id) => {
+    setDeleteId(id);
+    setOpenDialog(true);
+  };
 
   const navigateToAggiungiFornitori = () => {
     navigate("/fornitori/aggiungi");
   };
 
   const handleDelete = async () => {
-  
     try {
-      const response = await axios.delete(`https://localhost:8443/fornitori/react/elimina/${deleteId}`, { headers: headers});
+
+      const response = await axios.delete(`http://89.46.67.198:8443/fornitori/react/elimina/${deleteId}`, { headers: headers});
 
       setOpenDialog(false);
-
       fetchData();
-
     } catch (error) {
       console.error("Errore durante la cancellazione:", error);
     }
@@ -91,11 +85,11 @@ const openDeleteDialog = (id) => {
 
   const columns = [
     // { field: "id",              headerName: "ID",               width: 70  },
-    { field: "denominazione",   headerName: "Ragione Sociale",  width: 150 },
-    { field: "email",           headerName: "Email",            width: 250 },
-    { field: "referente",       headerName: "Referente",        width: 200 },
-    { field: "cellulare",       headerName: "Cellulare",        width: 100 },
-    { field: "azioni",          headerName: "Azioni",           width: 615,  renderCell: (params) => (
+    { field: "denominazione",   headerName: "Ragione Sociale",  flex: 1 },
+    { field: "email",           headerName: "Email",            flex: 2 },
+    { field: "referente",       headerName: "Referente",        flex: 1 },
+    { field: "cellulare",       headerName: "Cellulare",        flex: 1 },
+    { field: "azioni",          headerName: "Azioni",           flex: 1,  renderCell: (params) => (
       <div>
         <Link
         to={`/fornitori/modifica/${params.row.id}`}
@@ -112,6 +106,7 @@ const openDeleteDialog = (id) => {
   const handleSearch = (filteredData) => {
     setFilteredFornitori(filteredData);
   };
+
   const handleReset = () => {
     setSearchText(""); 
     setFilteredFornitori(originalFornitori);
@@ -119,15 +114,12 @@ const openDeleteDialog = (id) => {
 
 
   return (
-    <div className="container">
-      <div className="content">
-        <div className="sidebar-container">
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
           <Sidebar />
-        </div>
-        <div className="container">
-          <div className="page-name">Gestione Fornitori</div>
+          <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
+          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Fornitori</Typography>
           <MyButton onClick={navigateToAggiungiFornitori}>Gestione Fornitori</MyButton>
-          
+          <Box sx={{ height: '100%', marginTop: '40px', width: '100%'}}>
             <MyDataGrid 
             data={filteredFornitori} 
             columns={columns} 
@@ -135,56 +127,56 @@ const openDeleteDialog = (id) => {
             getRowId={(row) => row.id}
             searchBoxComponent={() => (
               <FornitoriSearchBox
-               data={fornitori}
-          onSearch={handleSearch} 
-          onReset={handleReset}
-          searchText={searchText}
-          onSearchTextChange={(text) => setSearchText(text)}
-          OriginalFornitori={originalFornitori}/>
-
+                data={fornitori}
+                onSearch={handleSearch} 
+                onReset={handleReset}
+                searchText={searchText}
+                onSearchTextChange={(text) => setSearchText(text)}
+                OriginalFornitori={originalFornitori}
+                />
             )}
             />
-        </div>
-      </div>
+            </Box>
+            </Box>
       <Dialog
-  open={openDialog}
-  onClose={() => setOpenDialog(false)}
-  aria-labelledby="alert-dialog-title"
-  aria-describedby="alert-dialog-description"
-  
->
-  <DialogTitle id="alert-dialog-title">{"Conferma Eliminazione"}</DialogTitle>
-  <DialogContent>
-    <DialogContentText id="alert-dialog-description">
-      Sei sicuro di voler eliminare questa azienda?
-    </DialogContentText>
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={() => setOpenDialog(false)} color="primary" style={{
-              backgroundColor: "black",
-              color: "white",
-              "&:hover": {
-                backgroundColor: "black",
-                transform: "scale(1.05)",
-              },
-            }}>
-      Annulla
-    </Button>
-    <Button onClick={handleDelete} color="primary" variant="contained" type="submit"
-              style={{
-                backgroundColor: "#14D928",
-                color: "black",
-                "&:hover": {
-                  backgroundColor: "#14D928",
-                  color: "black",
-                  transform: "scale(1.05)",
-                },
-              }}>
-      Conferma
-    </Button>
-  </DialogActions>
-</Dialog>
-    </div>
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        
+      >
+        <DialogTitle id="alert-dialog-title">{"Conferma Eliminazione"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Sei sicuro di voler eliminare questa azienda?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)} color="primary" style={{
+                    backgroundColor: "black",
+                    color: "white",
+                    "&:hover": {
+                      backgroundColor: "black",
+                      transform: "scale(1.05)",
+                    },
+                  }}>
+            Annulla
+          </Button>
+          <Button onClick={handleDelete} color="primary" variant="contained" type="submit"
+                    style={{
+                      backgroundColor: "#14D928",
+                      color: "black",
+                      "&:hover": {
+                        backgroundColor: "#14D928",
+                        color: "black",
+                        transform: "scale(1.05)",
+                      },
+                    }}>
+            Conferma
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Box>
   );
 };
 

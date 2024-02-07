@@ -23,8 +23,8 @@ const AssociazioniSearchBox = ({ data, onSearch, onReset, onSearchTextChange }) 
     const fetchData = async () => {
       try {
 
-        const responseAziende  = await axios.get("https://localhost:8443/aziende/react");
-        const responseStato    = await axios.get("https://localhost:8443/fatturazionePassiva/react/stato");
+        const responseAziende  = await axios.get("http://89.46.67.198:8443/aziende/react/select");
+        const responseStato    = await axios.get("http://89.46.67.198:8443/fatturazionePassiva/react/stato");
 
 
         if (Array.isArray(responseStato.data)) {
@@ -147,7 +147,7 @@ const AssociazioniSearchBox = ({ data, onSearch, onReset, onSearchTextChange }) 
                 sx={{
                   width: "100%",
                   height: "50px",
-                  backgroundColor: "#14D928",
+                  backgroundColor: "#ffb800",
                   color: "black",
                   borderRadius: "10px",
                   fontSize: "0.8rem",
@@ -156,7 +156,7 @@ const AssociazioniSearchBox = ({ data, onSearch, onReset, onSearchTextChange }) 
                   marginTop: "5px",
                   padding: "0.5rem 1rem",
                   "&:hover": {
-                    backgroundColor: "#14D928",
+                    backgroundColor: "#ffb800",
                     color: "black",
                     transform: "scale(1.05)",
                   },

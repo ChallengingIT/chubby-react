@@ -3,6 +3,7 @@ import { useNavigate, useLocation }           from "react-router-dom";
 import axios                                  from "axios";
 import Sidebar                                from "../../components/Sidebar";
 import FieldsBox                              from "../../components/FieldsBox";
+import { Box, Typography } from "@mui/material";
 
 
 
@@ -18,11 +19,9 @@ const ModificaAzienda = () => {
   const [ ownerOptions,    setOwnerOptions   ] = useState([]);
   const [ aziendeOptions,  setAziendeOptions ] = useState([]);
 
-   // Recupera l'accessToken da localStorage
    const user = JSON.parse(localStorage.getItem("user"));
    const accessToken = user?.accessToken;
 
-   // Configura gli headers della richiesta con l'Authorization token
    const headers = {
      Authorization: `Bearer ${accessToken}`
    };
@@ -33,9 +32,9 @@ const ModificaAzienda = () => {
   useEffect(() => {
     const fetchProvinceOptions = async () => {
       try {
-        const responseProvince = await axios.get("https://localhost:8443/aziende/react/province", { headers: headers });
-        const responseOwner    = await axios.get("https://localhost:8443/aziende/react/owner", { headers: headers });
-        const responseAziende  = await axios.get("https://localhost:8443/aziende/react", { headers: headers });
+        const responseProvince = await axios.get("http://89.46.67.198:8443/aziende/react/province", { headers: headers });
+        const responseOwner    = await axios.get("http://89.46.67.198:8443/aziende/react/owner", { headers: headers });
+        const responseAziende  = await axios.get("http://89.46.67.198:8443/aziende/react/select", { headers: headers });
 
         if (Array.isArray(responseAziende.data)) {
           const aziendeOptions = responseAziende.data.map((aziende) => ({
@@ -74,56 +73,56 @@ const ModificaAzienda = () => {
   const campiObbligatori = [ "denominazione", "email", "idOwner", "status", "citta", "provincia" ];
 
   const fields = [
-    { label: "* Nome Azienda",          name: "denominazione",        type: "text",       disabled: true                                  },
-    { label: "* Email",                 name: "email",                type: "text"                                                        },
-    { label: "Partita IVA",           name: "pi",                   type: "text"                                                        },
-    { label: "Codice Fiscale",        name: "cf",                   type: "text"                                                        },
-    { label: "* Città",                 name: "citta",                type: "text"                                                        },
-    { label: "CAP",                   name: "cap",                  type: "text"                                                        },
-    { label: "Paese",                 name: "paese",                type: "text"                                                        },
-    { label: "* Provincia",             name: "provincia",            type: "select",     options: provinceOptions                        },
-    { label: "Pec",                   name: "pec",                  type: "text"                                                        },
-    { label: "Sede Operativa",        name: "sedeOperativa",        type: "text"                                                        },
-    { label: "Sede Legale",           name: "sedeLegale",           type: "text"                                                        },
-    { label: "CodicePA",              name: "codicePa",             type: "text"                                                        },
-    { label: "Codice Destinatario",   name: "codiceDestinatario",   type: "text"                                                        },
-    { label: "Sito Web",              name: "sito",                 type: "text"                                                        },
-    { label: "Settore di mercato",    name: "settoreMercato",       type: "text"                                                        },
-    { label: "* Owner",                 name: "idOwner",              type: "select",      options: ownerOptions                          },
-    { label: "Tipologia",             name: "tipologia",            type: "select",      options: [ 
-      { label: "Cliente", value: "Cliente" },
-      { label: "Prospect", value: "Prospect" },
+    { label: "Nome Azienda*",           name: "denominazione",        type: "text",       disabled: true                                  },
+    { label: "Email*",                  name: "email",                type: "text"                                                        },
+    { label: "Partita IVA",             name: "pi",                   type: "text"                                                        },
+    { label: "Codice Fiscale",          name: "cf",                   type: "text"                                                        },
+    { label: "Città*",                  name: "citta",                type: "text"                                                        },
+    { label: "CAP",                     name: "cap",                  type: "number"                                                      },
+    { label: "Paese",                   name: "paese",                type: "text"                                                        },
+    { label: "Provincia*",              name: "provincia",            type: "select",     options: provinceOptions                        },
+    { label: "Pec",                     name: "pec",                  type: "text"                                                        },
+    { label: "Sede Operativa",          name: "sedeOperativa",        type: "text"                                                        },
+    { label: "Sede Legale",             name: "sedeLegale",           type: "text"                                                        },
+    { label: "CodicePA",                name: "codicePa",             type: "text"                                                        },
+    { label: "Codice Destinatario",     name: "codiceDestinatario",   type: "text"                                                        },
+    { label: "Sito Web",                name: "sito",                 type: "text"                                                        },
+    { label: "Settore di mercato",      name: "settoreMercato",       type: "text"                                                        },
+    { label: "Owner*",                  name: "idOwner",              type: "select",      options: ownerOptions                          },
+    { label: "Tipologia",               name: "tipologia",            type: "select",      options: [ 
+      { label: "Cliente",    value: "Cliente" },
+      { label: "Prospect",   value: "Prospect" },
       { label: "Consulenza", value: "Consulenza" },
     ] },
-    { label: "* Stato",                 name: "status",               type: "selectValue", options: [
+    { label: "Stato*",                  name: "status",               type: "selectValue", options: [
       { value: 1, label: "Verde" },
       { value: 2, label: "Giallo" },
       { value: 3, label: "Rosso" },
     ] },
-    { label: "Note",                  name: "note",                 type: "note" },
+    { label: "Note",                    name: "note",                 type: "note" },
   ];
 
   const initialValues = {
     id:                           aziendaData.id                              ,
-    denominazione:                aziendaData.denominazione                   || "",
-    email:                        aziendaData.email                           || "",
-    pi:                           aziendaData.pi                              || "",
-    cf:                           aziendaData.cf                              || "",
-    citta:                        aziendaData.citta                           || "",
-    cap:                          aziendaData.cap                             || "",
-    paese:                        aziendaData.paese                           || "",
-    provincia:                    aziendaData.provincia                       || "",
-    pec:                          aziendaData.pec                             || "",
-    sedeOperativa:                aziendaData.sedeOperativa                   || "",
-    sedeLegale:                   aziendaData.sedeLegale                      || "",
-    codicePa:                     aziendaData.codicePa                        || "",
-    codiceDestinatario:           aziendaData.codiceDestinatario              || "",
-    sito:                         aziendaData.sito                            || "",
-    settoreMercato:               aziendaData.settoreMercato                  || "",
-    tipologia:                    aziendaData.tipologia                       || "",
-    status:                       aziendaData.status                          || "",
-    idOwner:                     (aziendaData.owner && aziendaData.owner.id)  || "",
-    note:                         aziendaData.note                            || "",
+    denominazione:                aziendaData.denominazione                   || null,
+    email:                        aziendaData.email                           || null,
+    pi:                           aziendaData.pi                              || null,
+    cf:                           aziendaData.cf                              || null,
+    citta:                        aziendaData.citta                           || null,
+    cap:                          aziendaData.cap                             || null,
+    paese:                        aziendaData.paese                           || null,
+    provincia:                    aziendaData.provincia                       || null,
+    pec:                          aziendaData.pec                             || null,
+    sedeOperativa:                aziendaData.sedeOperativa                   || null,
+    sedeLegale:                   aziendaData.sedeLegale                      || null,
+    codicePa:                     aziendaData.codicePa                        || null,
+    codiceDestinatario:           aziendaData.codiceDestinatario              || null,
+    sito:                         aziendaData.sito                            || null,
+    settoreMercato:               aziendaData.settoreMercato                  || null,
+    tipologia:                    aziendaData.tipologia                       || null,
+    status:                       aziendaData.status                          || null,
+    idOwner:                     (aziendaData.owner && aziendaData.owner.id)  || null,
+    note:                         aziendaData.note                            || null,
   };
 
 
@@ -140,25 +139,13 @@ const ModificaAzienda = () => {
         }
       });
 
-       // Recupera l'accessToken da localStorage
-     const user = JSON.parse(localStorage.getItem("user"));
-     const accessToken = user?.accessToken;
- 
-     const headers = {
-       Authorization: `Bearer ${accessToken}`
-     };
-      
-      
-      
-      const response = await axios.post("https://localhost:8443/aziende/react/salva", values, {
+      const response = await axios.post("http://89.46.67.198:8443/aziende/react/salva", values, {
         headers: headers
       });
-
       navigate("/aziende");
     } catch (error) {
       console.error("Errore durante il salvataggio:", error);
     }
-
   }
   };
 
@@ -173,15 +160,10 @@ const ModificaAzienda = () => {
   };
 
   return (
-    <div className="container">
-      <div className="content">
-        <div className="sidebar-container">
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
           <Sidebar />
-        </div>
-        <div className="container">
-          <div className="page-name" style={{ margin: '20px',fontSize: "15px" }}>
-          <h1>{`Modifica Azienda `}</h1>
-          </div>
+          <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
+          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Modifica Azienda</Typography>
           <FieldsBox 
           fields={fields} 
           initialValues={initialValues} 
@@ -189,9 +171,10 @@ const ModificaAzienda = () => {
           title="" 
           campiObbligatori={campiObbligatori}
           />
-        </div>
-      </div>
-    </div>
+          </Box>
+          </Box>
+
+
   );
 };
 

@@ -48,8 +48,8 @@ const headers = {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseJobTitle = await axios.get("https://localhost:8443/aziende/react/tipologia", { headers: headers});
-        const responseTipo     = await axios.get("https://localhost:8443/staffing/react/tipo"    , { headers: headers}); 
+        const responseJobTitle = await axios.get("http://89.46.67.198:8443/aziende/react/tipologia", { headers: headers});
+        const responseTipo     = await axios.get("http://89.46.67.198:8443/staffing/react/tipo"    , { headers: headers});
 
         if (Array.isArray(responseJobTitle.data)) {
           setJobTitleOptions(responseJobTitle.data.map((jobTitle) => ({ label: jobTitle.descrizione, value: jobTitle.id })));
@@ -158,7 +158,7 @@ const headers = {
           <Select
               className="dropdown-menu"
               value={searchTerm.tipo}
-              onChange={e => setSearchTerm({...searchTerm, sttipoato: e.target.value })}
+              onChange={e => setSearchTerm({...searchTerm, tipo: e.target.value })}
               sx={{
                 borderRadius: "40px",
                 fontSize: "0.8rem",
@@ -211,13 +211,13 @@ const headers = {
           sx={{
             width: '100px',
             height: "40px",
-            backgroundColor: "#14D928",
+            backgroundColor: "#ffb800",
             color: "black",
             borderRadius: "10px",
             fontSize: "0.8rem",
             fontWeight: "bolder",
             "&:hover": {
-              backgroundColor: "#14D928",
+              backgroundColor: "#ffb800",
               color: "black",
               transform: "scale(1.05)",
             },

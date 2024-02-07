@@ -24,9 +24,6 @@ export const RegisterComponent = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // const existingUserData = JSON.parse(localStorage.getItem("userData")); 
-    // setFormErrors(validate(formValues, existingUserData)); 
-    // setFormErrors(validate(formValues));
     const errors = validate(formValues);
 
     if (Object.keys(errors).length === 0) {

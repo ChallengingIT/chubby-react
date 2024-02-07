@@ -16,15 +16,19 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  Button
+  Button,
+  Box,
+  Typography,
+
 } from '@mui/material';
 
 
-import "../styles/KeyPeople.css";
 import KeyPeopleSearchBox from "../components/searchBox/KeyPeopleSearchBox.jsx";
 
 const KeyPeople = () => {
+
   const navigate = useNavigate();
+
   const [ searchText,           setSearchText               ] = useState("");
   const [ keypeople,            setKeypeople                ] = useState([]);
   const [ originalKeypeople,    setOriginalKeypeople        ] = useState([]);
@@ -33,19 +37,18 @@ const KeyPeople = () => {
   const [ openDialog,           setOpenDialog               ] = useState(false);
   const [ deleteId,             setDeleteId                 ] = useState(null);
 
+    const user = JSON.parse(localStorage.getItem("user"));
+    const accessToken = user?.accessToken;
 
-  
+    const headers = {
+      Authorization: `Bearer ${accessToken}`
+    };
+
   const fetchData = async () => {
     try {
-      // Recupera l'accessToken da localStorage
-     const user = JSON.parse(localStorage.getItem("user"));
-     const accessToken = user?.accessToken;
- 
-     // Configura gli headers della richiesta con l'Authorization token
-     const headers = {
-       Authorization: `Bearer ${accessToken}`
-     };
-      const response = await axios.get("https://localhost:8443/keypeople/react", { headers: headers});
+
+      const response = await axios.get("http://89.46.67.198:8443/keypeople/react/mod", { headers: headers});
+
       if (Array.isArray(response.data)) {
       const keypeopleConId = response.data.map((keypeople) => ({ ...keypeople}));
       setOriginalKeypeople(keypeopleConId);
@@ -58,51 +61,24 @@ const KeyPeople = () => {
     }
   };
 
-  useEffect(() => {
-  fetchData();
-}, []);
+    useEffect(() => {
+    fetchData();
+  }, []);
 
-const openDeleteDialog = (id) => {
-  setDeleteId(id);
-  setOpenDialog(true);
-};
-  
-  
-  
-
-  
+  const openDeleteDialog = (id) => {
+    setDeleteId(id);
+    setOpenDialog(true);
+  };
 
   const navigateToAggiungiContatto = () => {
     navigate("/keyPeople/aggiungi");
   };
 
-  // const handleDelete = async (id) => {
-  //   try {
-  //     await axios.delete(`https://localhost:8443/keypeople/react/elimina/${id}`);
-
-  //     const updatedKeypeople = originalKeypeople.filter((keypeople) => keypeople.id !== id);
-  //     setKeypeople(updatedKeypeople);
-  //     setOriginalKeypeople(updatedKeypeople);
-  //     setFilteredKeypeople(updatedKeypeople);
-  //   } catch (error) {
-  //     console.error("Errore durante la cancellazione:", error);
-  //   }
-  // };
-
   const handleDelete = async (id) => {
     try {
-      // Recupera l'accessToken da localStorage
-     const user = JSON.parse(localStorage.getItem("user"));
-     const accessToken = user?.accessToken;
- 
-     // Configura gli headers della richiesta con l'Authorization token
-     const headers = {
-       Authorization: `Bearer ${accessToken}`
-     };
-      const response = await axios.delete(`https://localhost:8443/keypeople/react/elimina/${deleteId}`, {headers: headers});
+      const response = await axios.delete(`http://89.46.67.198:8443/keypeople/react/elimina/${deleteId}`, {headers: headers});
       setOpenDialog(false);
-
-fetchData();
+      fetchData();
     } catch (error) {
       console.error("Errore durante la cancellazione:", error);
     }
@@ -123,12 +99,9 @@ fetchData();
   };
 
   const columns = [
-    { field: "status", headerName: "Stato", width: 100, renderCell: (params) => getSmileIcon(params) },
+    { field: "status", headerName: "Stato", flex: 0.5, renderCell: (params) => getSmileIcon(params) },
     {
-      field: "nome",
-      headerName: "Nome",
-      width: 200,
-      renderCell: (params) => {
+      field: "nome",   headerName: "Nome",  flex: 1, renderCell: (params) => {
         return (
           <div style={{ textAlign: "left" }}>
             <Link
@@ -137,28 +110,21 @@ fetchData();
             >
               {params.row.nome}
             </Link>
+            {/* <div style={{ textAlign: "start" }}>{params.row.email}</div> */}
           </div>
         );
       },
     },
-    { field: "email",              headerName: "Email", width: 300 },
-    { field: "cellulare",          headerName: "Telefono", width: 150 },
-    { field: "Owner",              headerName: "Proprietario",    width: 150,
-    valueGetter: (params) => params.row.owner && params.row.owner.descrizione || "N/A",
-},
+    { field: "email",              headerName: "Email",             flex: 1.5                },
+    { field: "cellulare",          headerName: "Telefono",          flex: 1                },
+    { field: "Owner",              headerName: "Proprietario",      flex: 1,
+    valueGetter: (params) => params.row.owner && params.row.owner.descrizione || "N/A"        },
 
 {
-  field: "cliente",
-  headerName: "Azienda",
-  width: 150,
-  valueGetter: (params) => params.row.cliente && params.row.cliente.denominazione || "N/A",
-  },
-    { field: "ruolo", headerName: "Ruolo", width: 200 },
-    {
-      field: "azioni",
-      headerName: "Azioni",
-      width: 400,
-      renderCell: (params) => (
+  field: "cliente",                headerName: "Azienda",            flex: 1,
+  valueGetter: (params) => params.row.cliente && params.row.cliente.denominazione || "N/A"    },
+    { field: "ruolo",             headerName: "Ruolo",               flex: 1 },
+    { field: "azioni",            headerName: "Azioni",              flex: 1,  renderCell: (params) => (
         <div>
           <Link to={`/keyPeople/modifica/${params.row.id}`} state={{ keyPeopleData: { ...params.row, descrizioneOwner: params.row.descrizioneOwner, denominazioneAzienda: params.row.denominazioneAzienda } }}>
   <EditButton />
@@ -179,16 +145,13 @@ fetchData();
   };
 
   return (
-    <div className="container">
-      <div className="content">
-        <div className="sidebar-container">
-          <Sidebar />
-        </div>
-        <div className="container">
-          <div className="page-name">Gestione Contatti</div>
-          <MyButton onClick={navigateToAggiungiContatto}>Aggiungi Contatto</MyButton>
-          
-          <MyDataGrid 
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
+      <Sidebar />
+    <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
+    <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Gestione Contatto</Typography>
+    <MyButton onClick={navigateToAggiungiContatto}>Aggiungi Contatto</MyButton>
+    <Box sx={{ height: '100%', marginTop: '40px'}}>
+    <MyDataGrid
           data={filteredKeypeople} 
           columns={columns} 
           title="Key People" 
@@ -202,50 +165,55 @@ fetchData();
             OriginalKeypeople={originalKeypeople}
           />
           )}
-
-           />
-        </div>
-      </div>
-      <Dialog
-  open={openDialog}
-  onClose={() => setOpenDialog(false)}
-  aria-labelledby="alert-dialog-title"
-  aria-describedby="alert-dialog-description"
-  
->
-  <DialogTitle id="alert-dialog-title">{"Conferma Eliminazione"}</DialogTitle>
-  <DialogContent>
-    <DialogContentText id="alert-dialog-description">
-      Sei sicuro di voler eliminare questa azienda?
-    </DialogContentText>
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={() => setOpenDialog(false)} color="primary" style={{
+          />
+    </Box>
+    </Box>
+    <Dialog
+            open={openDialog}
+            onClose={() => setOpenDialog(false)}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+        >
+    <DialogTitle id="alert-dialog-title">{"Conferma Eliminazione"}</DialogTitle>
+    <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+        Sei sicuro di voler eliminare questo contatto?
+        </DialogContentText>
+    </DialogContent>
+    <DialogActions>
+        <Button
+        onClick={() => setOpenDialog(false)}
+        color="primary"
+        style={{
+          backgroundColor: "black",
+          color: "white",
+          "&:hover": {
               backgroundColor: "black",
-              color: "white",
-              "&:hover": {
-                backgroundColor: "black",
-                transform: "scale(1.05)",
-              },
-            }}>
-      Annulla
-    </Button>
-    <Button onClick={handleDelete} color="primary" variant="contained" type="submit"
-              style={{
-                backgroundColor: "#14D928",
-                color: "black",
-                "&:hover": {
-                  backgroundColor: "#14D928",
-                  color: "black",
-                  transform: "scale(1.05)",
-                },
-              }}>
-      Conferma
-    </Button>
-  </DialogActions>
-</Dialog>
-    </div>
-  );
+              transform: "scale(1.05)",
+          },
+          }}
+          >
+        Annulla
+        </Button>
+        <Button onClick={handleDelete}
+        color="primary"
+        variant="contained"
+        type="submit"
+        style={{
+            backgroundColor: "#14D928",
+            color: "black",
+            "&:hover": {
+            backgroundColor: "#14D928",
+            color: "black",
+            transform: "scale(1.05)",
+            },
+        }}>
+        Conferma
+        </Button>
+    </DialogActions>
+    </Dialog>
+    </Box>
+);
 };
 
 export default KeyPeople;

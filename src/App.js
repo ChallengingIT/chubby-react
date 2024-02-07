@@ -1,8 +1,8 @@
 import './App.css';
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
-import React, { useState, useEffect }             from 'react';
-import eventBus from './common/EventBus.js';
-import PrivateRoute from './components/PrivateRoute.jsx';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate }        from 'react-router-dom';
+import React, { useState, useEffect }                                 from 'react';
+import eventBus                                                       from './common/EventBus.js';
+import PrivateRoute                                                   from './components/PrivateRoute.jsx';
 
 
 
@@ -55,53 +55,45 @@ import UserHomepage                                                    from './p
 import UserTimesheet                                                   from './pages/UserPagine/UserTimesheet.jsx';
 import DettaglioNeed                                                   from './pages/DettaglioPagine/DettaglioNeed.jsx';
 import ModificaDipendente                                              from './pages/ModificaPagine/ModificaDipendente.jsx';
-
-
 import DettaglioAziende2                                               from './pages/DettaglioPagine/DettaglioAziende2.jsx';
-
 
 
 
 const App = () => {
 
-
-
-
-
   const [currentUser, setCurrentUser] = useState(undefined);
 
+    useEffect(() => {
 
-  useEffect(() => {
-    const user = authService.getCurrentUser();
-    setCurrentUser(user);
-  
-    const onLoginSuccess = () => {
       const user = authService.getCurrentUser();
       setCurrentUser(user);
-    };
-  
-    eventBus.on("loginSuccess", onLoginSuccess);
-  
-    return () => {
-      eventBus.remove("loginSuccess", onLoginSuccess);
-    };
-  }, []);
-  
-  const logOut = () => {
-    authService.logout();
-    setCurrentUser(undefined);
- 
     
+      const onLoginSuccess = () => {
+        const user = authService.getCurrentUser();
+        setCurrentUser(user);
+      };
+    
+      eventBus.on("loginSuccess", onLoginSuccess);
+    
+      return () => {
+        eventBus.remove("loginSuccess", onLoginSuccess);
+      };
+    }, []);
+    
+    const logOut = () => {
+      authService.logout();
+      setCurrentUser(undefined);
+
   };
 
   const getUserRole = () => {
     return currentUser && currentUser.roles && currentUser.roles[0];
   };
 
-  const isAdmin = getUserRole() === "ROLE_ADMIN";
-  const isUser = getUserRole() === "ROLE_USER";
-  const isBm = getUserRole() === "ROLE_BM";
-  const isRecruiter = getUserRole() === "ROLE_RECRUITER";
+  const isAdmin           = getUserRole() === "ROLE_ADMIN";
+  const isUser            = getUserRole() === "ROLE_USER";
+  const isBm              = getUserRole() === "ROLE_BM";
+  const isRecruiter       = getUserRole() === "ROLE_RECRUITER";
 
 
 
@@ -111,6 +103,7 @@ const App = () => {
       <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        {/* <Route path="/homepage"                                     element={<Homepage/>  } /> */}
 
         {(isAdmin || isBm || isRecruiter ) && (
           <>
@@ -118,7 +111,7 @@ const App = () => {
           <Route path="/homepage"                                     element={<PrivateRoute>         <Homepage                    />   </PrivateRoute>} />
           <Route path="/home"                                         element={<PrivateRoute>         <Home                        />   </PrivateRoute>} />
           <Route path="/aziende"                                      element={<PrivateRoute>         <Aziende                     />   </PrivateRoute>} />
-          <Route path="/aziende/dettaglio/:id"                        element={<PrivateRoute>         <DettaglioAziende2            />   </PrivateRoute>} />
+          <Route path="/aziende/dettaglio/:id"                        element={<PrivateRoute>         <DettaglioAziende2           />   </PrivateRoute>} />
           <Route path="/aziende/modifica/:id"                         element={<PrivateRoute>         <ModificaAzienda             />   </PrivateRoute>} />
           <Route path="/keyPeople/modifica/:id"                       element={<PrivateRoute>         <ModificaContatto            />   </PrivateRoute>} />
           <Route path="/keyPeople/dettaglio/:id"                      element={<PrivateRoute>         <DettaglioKeyPeople          />   </PrivateRoute>} />
@@ -138,7 +131,7 @@ const App = () => {
           <Route path="/fornitori/modifica/:id"                       element={<PrivateRoute>         <ModificaFornitori           />   </PrivateRoute>} />
           <Route path="/tesoreria"                                    element={<PrivateRoute>         <Tesoreria                   />   </PrivateRoute>} />
           <Route path="/hr"                                           element={<PrivateRoute>         <HR                          />   </PrivateRoute>} />
-          <Route path="/hr/staff/modifica/:id"                        element={<PrivateRoute>         <ModificaDipendente          />  </PrivateRoute>} />
+          <Route path="/hr/staff/modifica/:id"                        element={<PrivateRoute>         <ModificaDipendente          />   </PrivateRoute>} />
           <Route path="/hr/staff/visualizza/:id"                      element={<PrivateRoute>         <DettaglioDipendente         />   </PrivateRoute>} />
           <Route path="/aziende/aggiungi"                             element={<PrivateRoute>         <AggiungiAzienda             />   </PrivateRoute>} />
           <Route path="/need/aggiungi"                                element={<PrivateRoute>         <AggiungiNeed                />   </PrivateRoute>} />
@@ -167,9 +160,8 @@ const App = () => {
         {isUser && (
           <>
   
-            <Route path="/userHomepage" element={<PrivateRoute><UserHomepage /></PrivateRoute>} />
-            
-        <Route path="/userTimesheet" element={<PrivateRoute><UserTimesheet /></PrivateRoute>} />
+            <Route path="/userHomepage"  element={<PrivateRoute><UserHomepage  /></PrivateRoute>} />
+            <Route path="/userTimesheet" element={<PrivateRoute><UserTimesheet /></PrivateRoute>} />
           </>
         )}
 

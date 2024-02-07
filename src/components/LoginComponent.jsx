@@ -1,9 +1,12 @@
-import React, { useState, useEffect }           from "react";
-import { useNavigate }                          from "react-router-dom";
-import authService                              from "../services/auth.service";
-import eventBus from "../common/EventBus";
-import { Box, Button, Typography, TextField, ThemeProvider, createTheme} from "@mui/material";
+import React, { useState, useEffect }                                               from "react";
+import { useNavigate }                                                              from "react-router-dom";
+import authService                                                                  from "../services/auth.service";
+import eventBus                                                                     from "../common/EventBus";
+import { Box, Button, Typography, TextField, ThemeProvider, createTheme}            from "@mui/material";
+
+
 export const LoginComponent = (props) => {
+
     const theme = createTheme({
         components: {
           MuiOutlinedInput: {
@@ -26,17 +29,13 @@ export const LoginComponent = (props) => {
           },
         },
       });
-  // Aggiungi una prop al tuo componente per poter impostare l'utente corrente da App
   const { onLoginSuccess } = props;
   useEffect(() => {
-    // Aggiungi un event listener per 'beforeunload'
     const handleBeforeUnload = (e) => {
-      // Rimuove i dati dell'utente dal localStorage
       localStorage.removeItem("user");
     };
     window.addEventListener('beforeunload', handleBeforeUnload);
     return () => {
-      // Rimuovi l'event listener quando il componente viene smontato
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, []);
@@ -44,7 +43,7 @@ export const LoginComponent = (props) => {
   const navigate = useNavigate();
   const [ username,           setUsername           ] = useState("");
   const [ password,           setPassword           ] = useState("");
-  const [ loginError,         setLoginError         ] = useState(false);
+  const [ loginError,         setLoginError         ] = useState({ username: false, password: false });
   useEffect(() => {
     const lastRegisteredUsername = localStorage.getItem("lastRegisteredUsername");
     if (lastRegisteredUsername) {
@@ -65,25 +64,25 @@ export const LoginComponent = (props) => {
       // onLoginSuccess(response);
       console.log("UTENTE LOGGATO DA LOGIN: ", response);
       // Emesso un evento di login riuscito
-  eventBus.dispatch("loginSuccess");
-      // console.log("Dati utente in localStorage:", JSON.parse(localStorage.getItem("user")));
-     // Ottieni il ruolo dell'utente dalla risposta
-     const userRole = response.roles[0];
-     // Utilizza il ruolo per determinare la destinazione del reindirizzamento
-     if (userRole === "ROLE_ADMIN") {
-       navigate("/homepage");
-     } else if ( userRole === "ROLE_RECRUITER") {
-        navigate("/homepage")
-     } else if (userRole === "ROLE_BM") {
-        navigate("/homepage")
-     } else if (userRole === "ROLE_USER") {
-       navigate("/userHomepage");
-     }
-   }
- } catch (error) {
-   console.error("Errore di login:", error);
-   setLoginError(true);
- }
+      eventBus.dispatch("loginSuccess");
+      const userRole = response.roles[0];
+
+      if (userRole === "ROLE_ADMIN" || userRole === "ROLE_RECRUITER" || userRole === "ROLE_BM") {
+        navigate("/homepage");
+      } else if (userRole === "ROLE_USER") {
+        navigate("/userHomepage");
+      }
+    }
+  } catch (error) {
+    console.error("Errore di login:", error);
+    if (error.message.includes("username")) {
+      setLoginError(errors => ({ ...errors, username: true }));
+    } else if (error.message.includes("password")) {
+      setLoginError(errors => ({ ...errors, password: true }));
+    } else {
+      setLoginError({ username: true, password: true }); 
+    }
+  }
 };
 const handleKeyDown = (e) => {
     if (e.keyCode === 13) { // Verifica se è stato premuto il tasto "Invio"
@@ -124,10 +123,14 @@ return (
           autoFocus
           value={username}
           onKeyDown={handleKeyDown}
-          onChange={(e) => setUsername(e.target.value)}
-          sx={{ mb: 2, width: '400px'}}
+          error={loginError.username} 
+          helperText={loginError.username ? "Username non valida." : ""}
+          onChange={(e) => {
+            setUsername(e.target.value);
+            setLoginError(errors => ({ ...errors, username: false }));
+          }}          sx={{ mb: 2, width: '400px'}}
         />
-        {loginError && <p className="password-error">Username non valido.</p>}
+        {/* {loginError && <p className="password-error">Username non valido.</p>} */}
         <TextField
           margin="normal"
           required
@@ -139,11 +142,16 @@ return (
           autoComplete="current-password"
           value={password}
           onKeyDown={handleKeyDown}
-          onChange={(e) => setPassword(e.target.value)}
+          error={loginError.password} 
+          helperText={loginError.password ? "Password non valida." : ""}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setLoginError(errors => ({ ...errors, password: false }));
+          }}
           sx={{ mb: 2, width: '400px' }}
         />
         </ThemeProvider>
-        {loginError && <p className="password-error">Password non valido.</p>}
+        {/* {loginError && <p className="password-error">Password non valido.</p>} */}
   <Button
             color="primary"
             variant="contained"

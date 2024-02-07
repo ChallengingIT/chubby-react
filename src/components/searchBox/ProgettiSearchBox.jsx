@@ -33,8 +33,8 @@ const headers = {
     const fetchData = async () => {
       try {
 
-        const responseCliente    = await axios.get("https://localhost:8443/aziende/react", { headers: headers});
-        const responseDipendenti = await axios.get("https://localhost:8443/hr/react"     , { headers: headers});
+        const responseCliente    = await axios.get("http://89.46.67.198:8443/aziende/react/select", { headers: headers});
+        const responseDipendenti = await axios.get("http://89.46.67.198:8443/hr/react"     , { headers: headers});
 
         if (Array.isArray(responseCliente.data)) {
           setClienteOptions(responseCliente.data.map((cliente) => ({ label: cliente.denominazione, value: cliente.id })));
@@ -45,7 +45,7 @@ const headers = {
         if (Array.isArray(responseDipendenti.data)) {
      
           setDipendentiOptions(responseDipendenti.data.map((dipendente) => ({
-            label: dipendente.nome,
+            label: `${dipendente.nome} ${dipendente.cognome}`,
             value: dipendente.id
           })));
         } else {
@@ -152,13 +152,13 @@ const headers = {
       sx={{
         width: '100px',
         height: "40px",
-        backgroundColor: "#14D928",
+        backgroundColor: "#ffb800",
         color: "black",
         borderRadius: "10px",
         fontSize: "0.8rem",
         fontWeight: "bolder",
         "&:hover": {
-          backgroundColor: "#14D928",
+          backgroundColor: "#ffb800",
           color: "black",
           transform: "scale(1.05)",
         },

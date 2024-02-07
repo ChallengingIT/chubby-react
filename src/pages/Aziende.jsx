@@ -20,12 +20,10 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  Button
+  Button,
+  Box,
+  Typography
 } from '@mui/material';
-
-
-import "../styles/Aziende.css";
-
 
 const Aziende = () => {
 
@@ -37,14 +35,12 @@ const Aziende = () => {
   const [ deleteId,                   setDeleteId               ] = useState(null);
   const [ content,                    setContent                ] = useState("");
 
-   // Recupera l'accessToken da localStorage
-   const user = JSON.parse(localStorage.getItem("user"));
-   const accessToken = user?.accessToken;
+  const user = JSON.parse(localStorage.getItem("user"));
+  const accessToken = user?.accessToken;
 
-   // Configura gli headers della richiesta con l'Authorization token
-   const headers = {
-     Authorization: `Bearer ${accessToken}`
-   };
+  const headers = {
+    Authorization: `Bearer ${accessToken}`
+  };
 
 
 
@@ -52,12 +48,11 @@ const Aziende = () => {
 
 const fetchData = async () => {
   try {
-    
-    const response = await axios.get("https://localhost:8443/aziende/react", { headers: headers });
+
+    const response = await axios.get("http://89.46.67.198:8443/aziende/react/mod", { headers: headers });
+
     if (Array.isArray(response.data)) {
       const aziendeConId = response.data.map((aziende) => ({ ...aziende }));
-
-      // const aziendeConOwner = await translateOwnerNames(aziendeConId);
       setFilteredAziende(aziendeConId);
       setOriginalAziende(aziendeConId);
     } else {
@@ -73,12 +68,10 @@ useEffect(() => {
 }, []);
 
 
-const openDeleteDialog = (id) => {
+  const openDeleteDialog = (id) => {
   setDeleteId(id);
   setOpenDialog(true);
-};
-
-
+  };
 
   const navigate = useNavigate();
 
@@ -88,17 +81,15 @@ const openDeleteDialog = (id) => {
 
 
 
-const handleDelete = async () => {
-  try {
-    const response = await axios.delete(`https://localhost:8443/aziende/react/elimina/${deleteId}`, { headers: headers});
-    setOpenDialog(false);
-
-    
-    fetchData();
-  } catch (error) {
-    console.error("Errore durante la cancellazione: ", error);
-  }
-};
+  const handleDelete = async () => {
+    try {
+      const response = await axios.delete(`http://89.46.67.198:8443/aziende/react/elimina/${deleteId}`, { headers: headers});
+      setOpenDialog(false);
+      fetchData();
+    } catch (error) {
+      console.error("Errore durante la cancellazione: ", error);
+    }
+  };
 
 
 
@@ -118,76 +109,58 @@ const handleDelete = async () => {
 
   const columns = [
     // { field: "id",             headerName: "aziende.id",              width: 70  },
-    { field: "status",         headerName: "Stato",            width: 100,  renderCell: (params) => getSmileIcon(params), },
-    { field: "denominazione",  headerName: "Ragione Sociale", width: 250, renderCell: (params) => (
-      <Link
-          to={`/aziende/dettaglio/${params.row.id}`}
-          state={{ aziendaData: { ...params.row
-            // , descrizioneOwner: params.row.descrizioneOwner 
-          } }}
-        >
+    { field: "status",         headerName: "Stato",            flex: 0.4,  renderCell: (params) => getSmileIcon(params), },
+    { field: "denominazione",  headerName: "Ragione Sociale",   flex: 1.5,  renderCell: (params) => (
+      <Link to={`/aziende/dettaglio/${params.row.id}`} state={{ aziendaData: { ...params.row} }}>
           {params.row.denominazione}
         </Link>
-    ), },
-    {
-      field: "owner",
-      headerName: "Owner",
-      width: 150,
-      valueGetter: (params) => params.row.owner && params.row.owner.descrizione || "N/A",
-    },
-    { field: "tipologia",      headerName: "Tipologia",       width: 200 },
-    { field: "citta",          headerName: "Città",           width: 250 },
-    { field: "paese",          headerName: "Paese",           width: 150 },
-    { field: "need",           headerName: "Need",            width: 150, renderCell: (params) => ( 
+    ),
+  },
+    { field: "owner",          headerName: "Owner",           flex: 0.6, valueGetter: (params) => params.row.owner && params.row.owner.descrizione || "N/A" },
+    { field: "tipologia",      headerName: "Tipologia",       flex: 1 },
+    { field: "citta",          headerName: "Città",           flex: 1 },
+    { field: "paese",          headerName: "Paese",           flex: 1 },
+    { field: "need",           headerName: "Need",            flex: 0.5, renderCell: (params) => (
     <div>
-    <Link
-  to={`/need/${params.row.id}`}
-  state={{ aziendaData: { ...params.row} }}
->
-  <ListButton />
-</Link>
-      </div> ),  },
-    { field: "azioni",         headerName: "Azioni",          width: 360, renderCell: (params) => (
+    <Link to={`/need/${params.row.id}`} state={{ aziendaData: { ...params.row} }} >
+        <ListButton />
+    </Link>
+    </div>
+    ),
+    },
+    { field: "azioni",         headerName: "Azioni",          flex: 1, renderCell: (params) => (
       <div>
-<Link
-  to={`/aziende/modifica/${params.row.id}`}
-  state={{ aziendaData: { ...params.row, descrizioneOwner: params.row.descrizioneOwner } }}
->
-  <EditButton />
-</Link>
-
+    <Link to={`/aziende/modifica/${params.row.id}`} state={{ aziendaData: { ...params.row, descrizioneOwner: params.row.descrizioneOwner } }} >
+      <EditButton />
+    </Link>
         <DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
-
       </div>
-    ), },
+    ),
+  },
   ];
 
   const handleSearch = (filteredData) => {
     setFilteredAziende(filteredData);
   };
-  
+
 
   const handleReset = () => {
-    setSearchText(""); 
+    setSearchText("");
     setFilteredAziende(originalAziende);
   };
 
 
   return (
-    <div className="container">
-      <div className="content">
-        <div className="sidebar-container">
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'auto'}}>
           <Sidebar />
-        </div>
-        <div className="container">
-          <div className="page-name">Gestione Aziende</div>
+          <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
+          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Gestione Aziende</Typography>
           <MyButton onClick={navigateToAggiungiAzienda}>Aggiungi Azienda</MyButton>
-
-
-          <MyDataGrid 
-          data={filteredAziende} 
-          columns={columns} 
-          title="Aziende" 
+          <Box sx={{ height: '90%', marginTop: '40px', width: '100%'}}>
+          <MyDataGrid
+          data={filteredAziende}
+          columns={columns}
+          title="Aziende"
           getRowId={(row) => row.id}
             searchBoxComponent={() => (
               <AziendeSearchBox
@@ -198,22 +171,27 @@ const handleDelete = async () => {
                     onSearchTextChange={(text) => setSearchText(text)}
                     OriginalAziende={originalAziende}/>
                     )} />
-                  </div>
-                </div>
+          </Box>
+    </Box>
+
+
       <Dialog
         open={openDialog}
         onClose={() => setOpenDialog(false)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-  <DialogTitle id="alert-dialog-title">{"Conferma Eliminazione"}</DialogTitle>
-  <DialogContent>
-    <DialogContentText id="alert-dialog-description">
-      Sei sicuro di voler eliminare questa azienda?
-    </DialogContentText>
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={() => setOpenDialog(false)} color="primary" style={{
+        <DialogTitle id="alert-dialog-title">{"Conferma Eliminazione"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Sei sicuro di voler eliminare questa azienda?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+          onClick={() => setOpenDialog(false)}
+          color="primary"
+          style={{
               backgroundColor: "black",
               color: "white",
               "&:hover": {
@@ -221,25 +199,28 @@ const handleDelete = async () => {
                 transform: "scale(1.05)",
               },
             }}>
-      Annulla
-    </Button>
-    <Button onClick={handleDelete} color="primary" variant="contained" type="submit"
-              style={{
+            Annulla
+          </Button>
+          <Button
+            onClick={handleDelete}
+            color="primary"
+            variant="contained"
+            type="submit"
+            style={{
+              backgroundColor: "#14D928",
+              color: "black",
+              "&:hover": {
                 backgroundColor: "#14D928",
                 color: "black",
-                "&:hover": {
-                  backgroundColor: "#14D928",
-                  color: "black",
-                  transform: "scale(1.05)",
-                },
-              }}>
-      Conferma
-    </Button>
-  </DialogActions>
-</Dialog>
+                transform: "scale(1.05)",
+              },
+            }}>
+            Conferma
+          </Button>
+        </DialogActions>
+      </Dialog>
 
-    </div>
-  );
+    </Box>  );
 };
 
 export default Aziende;

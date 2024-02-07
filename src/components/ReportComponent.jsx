@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Button } from '@mui/material';
+import React, { useEffect, useState }                                                                     from 'react';
+import axios                                                                                              from 'axios';
 import { Box, Grid, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-import ReportSearchBox from './searchBox/ReportSearchBox';
 
 function ReportComponent() {
 
@@ -31,7 +29,7 @@ function ReportComponent() {
 
 
   useEffect(() => {
-    axios.get('https://localhost:8443/hr/react')
+    axios.get('http://89.46.67.198:8443/hr/react')
       .then(response => {
         setDipendenti(response.data);
       })
@@ -84,8 +82,6 @@ function ReportComponent() {
             alignItems: "center",
             justifyContent: "center",
             width: "98%",
-            // minWidth: "30px",
-            // flexGrow: 1,
           }}
         >
           <Typography>{day}</Typography>

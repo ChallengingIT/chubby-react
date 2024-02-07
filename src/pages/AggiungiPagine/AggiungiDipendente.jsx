@@ -4,6 +4,7 @@ import axios                          from "axios";
 import Sidebar                        from "../../components/Sidebar";
 import FieldBoxFile from "../../components/FieldBoxFile";
 import FieldsBox from "../../components/FieldsBox";
+import { Box, Typography, Alert, Snackbar } from "@mui/material";
 
 const AggiungiDipendente = () => {
   const navigate = useNavigate();
@@ -12,12 +13,11 @@ const AggiungiDipendente = () => {
   const [ facoltaOptions,                 setFacoltaOptions                   ] = useState([]);
   const [ livelloScolasticoOptions,       setLivelloScolasticoOptions         ] = useState([]);
   const [ contrattoOptions,               setContrattoOptions                 ] = useState([]);
+  const [ alert,                          setAlert                            ] = useState(false);
 
-      // Recupera l'accessToken da localStorage
       const user = JSON.parse(localStorage.getItem("user"));
       const accessToken = user?.accessToken;
   
-      // Configura gli headers della richiesta con l'Authorization token
       const headers = {
         Authorization: `Bearer ${accessToken}`
       };
@@ -29,11 +29,11 @@ const AggiungiDipendente = () => {
       try {
     
 
-        const responseJobTitle              = await axios.get("https://localhost:8443/aziende/react/tipologia" , { headers: headers });
-        const responseSkill                 = await axios.get("https://localhost:8443/staffing/react/skill"    , { headers: headers });
-        const facoltaResponse               = await axios.get("https://localhost:8443/staffing/react/facolta"  , { headers: headers });
-        const livelloScolasticoResponse     = await axios.get("https://localhost:8443/staffing/react/livello"  , { headers: headers });
-        const contrattoResponse             = await axios.get("https://localhost:8443/hr/react/tipocontratto"  , { headers: headers });
+        const responseJobTitle              = await axios.get("http://89.46.67.198:8443/aziende/react/tipologia" , { headers: headers });
+        const responseSkill                 = await axios.get("http://89.46.67.198:8443/staffing/react/skill"    , { headers: headers });
+        const facoltaResponse               = await axios.get("http://89.46.67.198:8443/staffing/react/facolta"  , { headers: headers });
+        const livelloScolasticoResponse     = await axios.get("http://89.46.67.198:8443/staffing/react/livello"  , { headers: headers });
+        const contrattoResponse             = await axios.get("http://89.46.67.198:8443/hr/react/tipocontratto"  , { headers: headers });
 
         if (Array.isArray(contrattoResponse.data)) {
           const contrattoOptions = contrattoResponse.data.map((contratto) => ({
@@ -86,27 +86,33 @@ const AggiungiDipendente = () => {
     fetchAziendeOptions();
   }, []);
 
-  // const campiObbligatori = [ "nome", "cognome", "dataNasciata", "luogoNascita", "email", "cellulare", "dataInizio", "scadenza", "anniEsperienza", "idTipologia" ];
+  const handleCloseAlert = (event, reason) => {
+    if (reason === 'clickaway') {
+        return;
+    }
+    setAlert({ ...alert, open: false });
+};
+
 const campiObbligatori = [ "nome", "cognome", "email", "anniEsperienza", "livelloScolastico", "tipologia", "tipologiaContratto", "citta", "dataNascita" ];
   const fields = [
-    { label: "* Nome",                        name: "nome",               type: "text" },
-    { label: "* Cognome",                     name: "cognome",            type: "text" },
-    { label: "* Data di Nascita",             name: "dataNascita",        type: "date" },
+    { label: "Nome*",                         name: "nome",               type: "text" },
+    { label: "Cognome*",                      name: "cognome",            type: "text" },
+    { label: "Data di Nascita*",              name: "dataNascita",        type: "date" },
     { label: "Luogo di Nascita",              name: "luogoNascita",       type: "text" },
-    { label: "* Email",                       name: "email",              type: "text" },
+    { label: "Email*",                        name: "email",              type: "text" },
     { label: "Cellulare",                     name: "cellulare",          type: "text" },
-    { label: "* Residenza",                   name: "citta",              type: "text" },
+    { label: "Residenza*",                    name: "citta",              type: "text" },
     { label: "Data Inizio",                   name: "dataInizio",         type: "date" },
     { label: "Scadenza Contratto",            name: "dataScadenza",       type: "date" },
-    { label: "* Anni Esperienza",             name: "anniEsperienza",     type: "text" },
-    { label: "* Livello Scolastico",          name: "livelloScolastico",  type: "select",                      options: livelloScolasticoOptions },
+    { label: "Anni Esperienza*",              name: "anniEsperienza",     type: "decimalNumber" },
+    { label: "Livello Scolastico*",           name: "livelloScolastico",  type: "select",                      options: livelloScolasticoOptions },
     { label: "Facoltà",                       name: "facolta",            type: "select",                      options: facoltaOptions},
     { label: "IBAN",                          name: "iban",               type:"text"  },
     { label: "Codice Fiscale",                name: "codFiscale",         type:"text"  },
     { label: "RAL/Tariffa",                   name: "ral",                type:"text"  },
-    { label: "* Job Title",                   name: "tipologia",          type: "select",                       options: jobTitleOptions },
+    { label: "Job Title*",                    name: "tipologia",          type: "select",                       options: jobTitleOptions },
     { label: "Seleziona le skill",            name: "skills",             type: "multipleSelectSkill",          options: skillsOptions },
-    { label: "* Tipologia Contratto",         name: "tipologiaContratto", type: "select",                       options: contrattoOptions },
+    { label: "Tipologia Contratto*",          name: "tipologiaContratto", type: "select",                       options: contrattoOptions },
     { label: "Note",                          name: "note",               type: "note" },
     { label: "Allegati",                      name: "file",               type: "modificaAllegati" },
   ];
@@ -127,22 +133,12 @@ const handleSubmit = async (values, fileCV, fileCF, fileMultipli, fileAllegati) 
         }
       });
       const skills = values.skills ? values.skills.join(',') : '';
-
       delete values.skills;
-
-
-
-      const datiResponse = await axios.post("https://localhost:8443/hr/react/staff/salva", values, {
+      const datiResponse = await axios.post("http://89.46.67.198:8443/hr/react/staff/salva", values, {
         params: { skill: skills },
         headers: headers,
       });
-
-
     const staffId = datiResponse.data;
-  
-
-
-
 
     if (fileAllegati && fileAllegati.length > 0) {
       fileAllegati.forEach(async (file) => {
@@ -150,22 +146,19 @@ const handleSubmit = async (values, fileCV, fileCF, fileMultipli, fileAllegati) 
         formData.append("file", file.file);
     
         try {
-          const fileResponse = await axios.post(`https://localhost:8443/hr/react/staff/salva/file/${staffId}`, formData, { headers: headers });
+          const fileResponse = await axios.post(`http://89.46.67.198:8443/hr/react/staff/salva/file/${staffId}`, formData, { headers: headers });
         } catch (error) {
           console.error("Errore nell'invio del file: ", error);
         }
       });
+      if (datiResponse.data === "DUPLICATO") {
+        setAlert({ open: true, message: "Email già utilizzata!" });
+        console.error("L'email fornita è già in uso.");
+        return; 
+      }
     }
-    
-
-
-
-
-      
       navigate("/hr");
-    
-
-
+  
   } catch (error) {
     console.error("Errore nell'invio dei dati: ", error);
   }
@@ -188,13 +181,16 @@ const validateFields = (values) => {
 
 
   return (
-    <div className="container">
-      <div className="content">
-        <div className="sidebar-container">
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
+
           <Sidebar />
-        </div>
-        <div className="container">
-          <div className="page-name">Aggiungi un nuovo Dipendente</div>
+          <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
+          <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+                <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
+                    {alert.message}
+                </Alert>
+            </Snackbar>
+          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Aggiungi un nuovo dipendente</Typography>
           <FieldBoxFile 
           fields={fields} 
           campiObbligatori={campiObbligatori}  
@@ -202,9 +198,8 @@ const validateFields = (values) => {
           title="" 
           skillsOptions={skillsOptions} 
           />
-        </div>
-      </div>
-    </div>
+       </Box>
+      </Box>
   );
 };
 

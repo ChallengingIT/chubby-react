@@ -32,8 +32,8 @@ const handleKeyDown = (e) => {
     const fetchData = async () => {
       try {
 
-        const responseFornitori = await axios.get("https://localhost:8443/fornitori/react", { headers: headers});
-        const responseStato     = await axios.get("https://localhost:8443/fatturazionePassiva/react/stato", { headers: headers});
+        const responseFornitori = await axios.get("http://89.46.67.198:8443/fornitori/react", { headers: headers});
+        const responseStato     = await axios.get("http://89.46.67.198:8443/fatturazionePassiva/react/stato", { headers: headers});
         
         if (Array.isArray(responseStato.data)) {
           setStatoOptions(responseStato.data.map((stato, index) => ({ label: stato.descrizione, value: stato.id })));
@@ -133,13 +133,13 @@ const handleKeyDown = (e) => {
           sx={{
             width: '100px',
             height: "40px",
-            backgroundColor: "#14D928",
+            backgroundColor: "#ffb800",
             color: "black",
             borderRadius: "10px",
             fontSize: "0.8rem",
             fontWeight: "bolder",
             "&:hover": {
-              backgroundColor: "#14D928",
+              backgroundColor: "#ffb800",
               color: "black",
               transform: "scale(1.05)",
             },

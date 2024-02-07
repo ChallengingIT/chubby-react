@@ -63,7 +63,6 @@ const validate = () => {
       }));
 
     }
-    // Rimuovi l'errore quando un utente modifica il campo
     if (errors[name]) {
       setErrors({ ...errors, [name]: '' });
     }
@@ -186,7 +185,7 @@ const validate = () => {
           );
 
 
- 
+
       default:
         return (
           <Grid item xs={12} key={field.name}>
@@ -250,7 +249,7 @@ const validate = () => {
           {!isLastGroup && (
             <Grid item xs={12}>
               <Button onClick={handleNext} fullWidth
-               style={{
+                style={{
                 width: '250px',
                 backgroundColor: "#14D928",
                 color: "black",
@@ -316,7 +315,7 @@ const validate = () => {
               >
                 Salva
                 </Button>
-                 )}
+                )}
             </Grid>
           )}
         </Grid>

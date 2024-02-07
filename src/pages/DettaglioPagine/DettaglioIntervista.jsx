@@ -3,7 +3,7 @@ import { useNavigate, useLocation, useParams }      from "react-router-dom";
 import axios                                        from "axios";
 import Sidebar                                      from "../../components/Sidebar";
 import MyBoxGroups                                  from "../../components/MyBoxGroups";
-import { Button } from "@mui/material";
+import { Button, Box, Typography }                                   from "@mui/material";
 
 const DettaglioIntervista = () => {
   const navigate = useNavigate();
@@ -11,14 +11,9 @@ const DettaglioIntervista = () => {
   const rowData  = location.state;
   const params   = useParams();
 
-
-
   const handleGoBack = () => {
     navigate(-1); 
   };
-
-
-
 
 const fields = [
 
@@ -81,11 +76,11 @@ const initialValues = {
   cognome:                          rowData.candidato?.cognome                || "",
   dataNascita:                      rowData.candidato?.dataNascita            || "",
   location:                         rowData.candidato?.citta                  || "", 
-  tipologia:                        rowData.candidato?.tipologia?.descrizione          || "",
+  tipologia:                        rowData.candidato?.tipologia?.descrizione || "",
   anniEsperienza:                   rowData.candidato?.anniEsperienza         || "",
   dataColloquio:                    rowData.dataColloquio                     || "",
   cellulare:                        rowData.candidato?.cellulare              || "",
-  owner:                            rowData.owner?.descrizione                         || "",
+  owner:                            rowData.owner?.descrizione                || "",
   aderenza:                         rowData.aderenza                          || "",
   coerenza:                         rowData.coerenza                          || "",
   motivazione:                      rowData.motivazione                       || "",
@@ -102,10 +97,10 @@ const initialValues = {
   attuale:                          rowData.attuale                           || "",
   desiderata:                       rowData.desiderata                        || "",
   proposta:                         rowData.proposta                          || "",
-  idTipo:                           rowData.tipo?.descrizione                          || "",
+  idTipo:                           rowData.tipo?.descrizione                 || "",
   preavviso:                        rowData.preavviso                         || "",
-  dataAggiornamento:                rowData.dataAggiornamento                 || "", // Assicurati che questo sia il campo corretto
-  idNextOwner:                      rowData.candidato?.owner?.descrizione              || ""
+  dataAggiornamento:                rowData.dataAggiornamento                 || "", 
+  idNextOwner:                      rowData.candidato?.owner?.descrizione     || ""
 };
 
 
@@ -147,11 +142,9 @@ const disableFields = {
 
 
   return (
-    <div className="container">
-      <div className="content">
-        <div className="sidebar-container">
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
+
           <Sidebar />
-        </div>
         <div className="container">
           <div className="page-name" style={{ margin: '20px',fontSize: "15px" }}>
           <h1>{`Gestisci Incontro `}</h1>
@@ -178,9 +171,8 @@ const disableFields = {
           Torna ad Interviste
         </Button>
         </div>
-      </div>
-    </div>
-  );
+</Box> 
+ );
 };
 
 export default DettaglioIntervista;

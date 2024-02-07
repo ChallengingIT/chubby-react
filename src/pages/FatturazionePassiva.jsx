@@ -7,10 +7,10 @@ import MyDataGrid                             from "../components/MyDataGrid";
 import MyButton                               from "../components/MyButton";
 import FatturazionePassivaSearchBox           from "../components/searchBox/FatturazionePassivaSearchBox";
 import EditButton                             from "../components/button/EditButton";
-
-import "../styles/FatturazionePassiva.css";
+import { Box, Typography }                    from "@mui/material";
 
 const FatturazionePassiva = () => {
+
   const navigate = useNavigate();
 
   const [ fatturazionePassiva,            setFatturazionePassiva            ] = useState([]);
@@ -18,22 +18,24 @@ const FatturazionePassiva = () => {
   const [ originalFatturazionePassiva,    setOriginalFatturazionePassiva    ] = useState([]);
   const [ filteredFatturazionePassiva,    setFilteredFatturazionePassiva    ] = useState([]);
 
-   // Recupera l'accessToken da localStorage
-   const user = JSON.parse(localStorage.getItem("user"));
-   const accessToken = user?.accessToken;
+  const user = JSON.parse(localStorage.getItem("user"));
+  const accessToken = user?.accessToken;
 
-   // Configura gli headers della richiesta con l'Authorization token
-   const headers = {
-     Authorization: `Bearer ${accessToken}`
-   };
+  const headers = {
+    Authorization: `Bearer ${accessToken}`
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://localhost:8443/fatturazione/passiva/react", { headers: headers});
+
+        const response = await axios.get("http://89.46.67.198:8443/fatturazione/passiva/react", { headers: headers});
+
         if (Array.isArray(response.data)) {
+
         const fatturazionePassivaConId = response.data.map((fatturazionePassiva) => ({ ...fatturazionePassiva}));
-        setFatturazionePassiva(fatturazionePassivaConId);
+
+        setFatturazionePassiva        (fatturazionePassivaConId);
         setFilteredFatturazionePassiva(fatturazionePassivaConId);
         setOriginalFatturazionePassiva(fatturazionePassivaConId);
         } else {
@@ -54,41 +56,36 @@ const FatturazionePassiva = () => {
 
   const columns = [
     // { field: "id",                    headerName: "ID",                     width: 70  },
-    { field: "tipologia",             headerName: "Tipologia",              width: 180 },
-    { field: "fornitore",             headerName: "Fornitore Riferimenti",  width: 180,
-  renderCell: (params) => (
-    <div style={{ textAlign: "start" }}>
-      {params.row.fornitore && params.row.fornitore.denominazione 
-      ? params.row.fornitore.denominazione: "N/A"}
-      </div>
-  ) },
-    { field: "descrizione",           headerName: "Descrizione",            width: 280 },
-    { field: "dataFattura",           headerName: "Data Fattura",           width: 100 },
-    { field: "scadenza",              headerName: "Scadenza",               width: 100 },
-    { field: "imponibile",            headerName: "Imponibile",             width: 100 },
-    { field: "iva",                   headerName: "Iva",                    width: 100 },
-    { field: "importo",               headerName: "Importo",                width: 100 },
-    {
-      field: "stato",
-      headerName: "Stato",
-      width: 100,
-      renderCell: (params) => (
-        <div style={{ textAlign: "start" }}>
-          {params.row.stato && params.row.stato.descrizione
-            ? params.row.stato.descrizione
-            : "N/A"}
-        </div>
-      ),
-    },
-    { field: "azioni",                headerName: "Azioni",                 width: 200, renderCell: (params) => ( <div>
-      <Link
-      to={`/fatturazione/passiva/modifica/${params.row.id}`}
-        state={{ fatturazionePassivaData: params.row }}
-      >
-        <EditButton />
-      </Link>
-      </div>
-    ), },
+    { field: "tipologia",             headerName: "Tipologia",              flex: 2 },
+    { field: "fornitore",             headerName: "Fornitore Riferimenti",  flex: 2,  renderCell: (params) => (
+                                                                                                                  <div style={{ textAlign: "start" }}>
+                                                                                                                    {params.row.fornitore && params.row.fornitore.denominazione 
+                                                                                                                    ? params.row.fornitore.denominazione: "N/A"}
+                                                                                                                    </div>
+                                                                                                                ) },
+    { field: "descrizione",           headerName: "Descrizione",            flex: 2 },
+    { field: "dataFattura",           headerName: "Data Fattura",           flex: 1.2 },
+    { field: "scadenza",              headerName: "Scadenza",               flex: 1.2 },
+    { field: "imponibile",            headerName: "Imponibile",             flex: 1 },
+    { field: "iva",                   headerName: "Iva",                    flex: 1 },
+    { field: "importo",               headerName: "Importo",                flex: 1 },
+    { field: "stato",                 headerName: "Stato",                  flex: 1,   renderCell: (params) => (
+                                                                                                                    <div style={{ textAlign: "start" }}>
+                                                                                                                      {params.row.stato && params.row.stato.descrizione
+                                                                                                                        ? params.row.stato.descrizione
+                                                                                                                        : "N/A"}
+                                                                                                                    </div>
+                                                                                                                  ),
+                                                                                                                },
+    { field: "azioni",                headerName: "Azioni",                 flex: 1, renderCell: (params) => ( <div>
+                                                                                                                      <Link
+                                                                                                                      to={`/fatturazione/passiva/modifica/${params.row.id}`}
+                                                                                                                        state={{ fatturazionePassivaData: params.row }}
+                                                                                                                      >
+                                                                                                                        <EditButton />
+                                                                                                                      </Link>
+                                                                                                                      </div>
+                                                                                                                    ), },
   ];
 
   const handleSearch = (filteredData) => {
@@ -101,15 +98,12 @@ const FatturazionePassiva = () => {
 
 
   return (
-    <div className="container">
-      <div className="content">
-        <div className="sidebar-container">
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
           <Sidebar />
-        </div>
-        <div className="container">
-          <div className="page-name">Fatturazione Passiva</div>
+          <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
+          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Fatturazione Passiva</Typography>
           <MyButton onClick={navigateToAggiungiFatturazionePassiva}>Aggiungi una nuova Fattura</MyButton>
-        
+          <Box sx={{ height: '100%', marginTop: '40px', width: '100%'}}>
             <MyDataGrid 
             data={fatturazionePassiva} 
             columns={columns} 
@@ -117,18 +111,18 @@ const FatturazionePassiva = () => {
             getRowId={(row) => row.id}
             searchBoxComponent={() => (
               <FatturazionePassivaSearchBox 
-        data={fatturazionePassiva} 
-        onSearch={handleSearch} 
-        onReset={handleReset}
-        searchText={searchText}
-        onSearchTextChange={(text) => setSearchText(text)}
-        OriginalFatturazionePassiva={originalFatturazionePassiva}/>
-
+                data={fatturazionePassiva} 
+                onSearch={handleSearch} 
+                onReset={handleReset}
+                searchText={searchText}
+                onSearchTextChange={(text) => setSearchText(text)}
+                OriginalFatturazionePassiva={originalFatturazionePassiva}
+                />
             )}
-             />
-        </div>
-      </div>
-    </div>
+            />
+          </Box>
+          </Box>
+    </Box>
   );
 };
 

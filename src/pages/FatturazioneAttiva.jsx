@@ -7,9 +7,11 @@ import FatturazioneAttivaSearchBox              from "../components/searchBox/Fa
 import MyButton                                 from '../components/MyButton.jsx';
 import EditButton                               from "../components/button/EditButton.jsx";
 import { Link }                                 from "react-router-dom";
-import "../styles/FatturazioneAttiva.css";
+import { Box, Typography }                      from "@mui/material";
+
 
 const FatturazioneAttiva = () => {
+
   const navigate = useNavigate();
 
   const [ fatturazioneAttiva,                  setFatturazioneAttiva                ] = useState([]);  
@@ -17,26 +19,25 @@ const FatturazioneAttiva = () => {
   const [ searchText,                          setSearchText                        ] = useState("");
   const [ filteredFatturazioneAttiva,          setFilteredFatturazioneAttiva        ] = useState([]);
 
-   // Recupera l'accessToken da localStorage
-   const user = JSON.parse(localStorage.getItem("user"));
-   const accessToken = user?.accessToken;
+  const user = JSON.parse(localStorage.getItem("user"));
+  const accessToken = user?.accessToken;
 
-   // Configura gli headers della richiesta con l'Authorization token
-   const headers = {
-     Authorization: `Bearer ${accessToken}`
-   };
+ const headers = {
+    Authorization: `Bearer ${accessToken}`
+  };
 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseFatturazioneAttiva = await axios.get("https://localhost:8443/fatturazione/attiva/react", { headers: headers});
+        const responseFatturazioneAttiva = await axios.get("http://89.46.67.198:8443/fatturazione/attiva/react", { headers: headers});
+
         if (Array.isArray(responseFatturazioneAttiva.data)) {
+
           const fatturazioneAttivaConId = responseFatturazioneAttiva.data.map((fatturazioneAttiva) => ({ ...fatturazioneAttiva}));
-          setFatturazioneAttiva(fatturazioneAttivaConId);
-          setFilteredFatturazioneAttiva(fatturazioneAttivaConId);
-          setOriginalFatturazioneAttiva(fatturazioneAttivaConId);
- 
+          setFatturazioneAttiva           (fatturazioneAttivaConId);
+          setFilteredFatturazioneAttiva   (fatturazioneAttivaConId);
+          setOriginalFatturazioneAttiva   (fatturazioneAttivaConId);
           } else {
             console.error("I dati ottenuti non sono nel formato Array:", responseFatturazioneAttiva.data);
           }
@@ -54,31 +55,27 @@ const FatturazioneAttiva = () => {
 
   const columns = [
     // { field: "id",                  headerName: "ID",                          width: 70  },
-    { field: "dataEmissione",       headerName: "Data Emissione",              width: 150 },
-    { field: "termine",             headerName: "Termine di pagamento",        width: 100 },
-    { field: "dataScadenza",        headerName: "Data Scadenza",               width: 100 },
-    { field: "tariffa",             headerName: "Tariffa",                     width: 100 },
-    { field: "giorniLavorati",      headerName: "GG Lavorati",                 width: 100 },
-    { field: "imponibile",          headerName: "Imponibile",                  width: 100 },
-    { field: "totaleConIva",        headerName: "Totale con Iva",              width: 100 },
-    { field: "nfattura",            headerName: "N. Fattura",                  width: 100 },
-    { field: "stato",               headerName: "Stato",                       width: 100, 
-  renderCell: (params) => (
-    <div style={{ textAlign: "start" }}>
-      {params.row.stato && params.row.stato.descrizione}
-    </div>
-  ) },
-    { field: "idCliente",           headerName: "Cliente",                     width: 100,
-    renderCell: (params) => (
-      <div style={{ textAlign: "start" }}>
-        {params.row.cliente && params.row.cliente.denominazione}
-      </div>
-    ) },
-    { field: "consulente",          headerName: "Consulente",                  width: 100 },
-    { field: "oggetto",             headerName: "Oggetto",                     width: 100 },
-    { field: "descrizione",         headerName: "Descrizione",                 width: 100 },
-    { field: "oda",                 headerName: "ODA",                         width: 100 },
-    { field: "azioni",              headerName: "Azioni",                      width: 300, renderCell: (params) => ( <div>
+    { field: "dataEmissione",       headerName: "Data Emissione",              width: 120 },
+    { field: "termine",             headerName: "Termine di pagamento",        width: 120 },
+    { field: "dataScadenza",        headerName: "Data Scadenza",               width: 120 },
+    { field: "tariffa",             headerName: "Tariffa",                     flex: 1 },
+    { field: "giorniLavorati",      headerName: "GG Lavorati",                 flex: 1 },
+    { field: "imponibile",          headerName: "Imponibile",                  flex: 1 },
+    { field: "totaleConIva",        headerName: "Totale con Iva",              flex: 1 },
+    { field: "nfattura",            headerName: "N. Fattura",                  flex: 1 },
+    { field: "stato",               headerName: "Stato",                       flex: 1, renderCell: (params) => (  <div style={{ textAlign: "start" }}>
+                                                                                                                        {params.row.stato && params.row.stato.descrizione}
+                                                                                                                      </div>
+                                                                                                                    ) },
+    { field: "idCliente",           headerName: "Cliente",                     width: 130, renderCell: (params) => (  <div style={{ textAlign: "start" }}>
+                                                                                                                        {params.row.cliente && params.row.cliente.denominazione}
+                                                                                                                      </div>
+                                                                                                                    ) },
+    { field: "consulente",          headerName: "Consulente",                  flex: 1 },
+    { field: "oggetto",             headerName: "Oggetto",                     flex: 1 },
+    { field: "descrizione",         headerName: "Descrizione",                 flex: 1 },
+    { field: "oda",                 headerName: "ODA",                         flex: 1 },
+    { field: "azioni",              headerName: "Azioni",                      flex: 1, renderCell: (params) => ( <div>
       <Link
       to={`/fatturazioneAttiva/modifica/${params.row.id}`}
         state={{ fatturazioneAttivaData: params.row }}
@@ -87,7 +84,6 @@ const FatturazioneAttiva = () => {
       </Link>
       </div>
     ), },
-
   ];
 
   
@@ -95,21 +91,19 @@ const FatturazioneAttiva = () => {
   const handleSearch = (filteredData) => {
     setFatturazioneAttiva(filteredData);
   };
+
   const handleReset = () => {
     setSearchText(""); 
     setFatturazioneAttiva(originalFatturazioneAttiva);
   };
 
   return (
-    <div className="container">
-      <div className="content">
-        <div className="sidebar-container">
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
           <Sidebar />
-        </div>
-        <div className="container">
-          <div className="page-name">Fatturazione Attiva</div>
+          <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
+          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Fatturazione Attiva</Typography>
           <MyButton onClick={navigateToAggiungiFatturazioneAttiva}>Aggiungi una nuova Fattura</MyButton>
-          
+          <Box sx={{ height: '90%', marginTop: '40px', width: '100%'}}>
             <MyDataGrid 
             data={fatturazioneAttiva} 
             columns={columns} 
@@ -125,9 +119,9 @@ const FatturazioneAttiva = () => {
           OriginalFatturazioneAttiva={originalFatturazioneAttiva}/>
             )}
             />
-        </div>
-      </div>
-    </div>
+          </Box>
+          </Box>
+  </Box>
   );
 };
 

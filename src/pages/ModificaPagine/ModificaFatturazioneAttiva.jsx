@@ -3,6 +3,7 @@ import { useNavigate, useLocation }           from "react-router-dom";
 import axios                                  from "axios";
 import Sidebar                                from "../../components/Sidebar";
 import FieldsBox                              from "../../components/FieldsBox";
+import { Box, Typography } from "@mui/material";
 
 const AggiungiFatturazioneAttiva = () => {
     const navigate = useNavigate();
@@ -12,11 +13,9 @@ const AggiungiFatturazioneAttiva = () => {
   const [ clienteOptions, setClienteOptions] = useState([]);
   const [ statoOptions,   setStatoOptions  ] = useState([]);
 
-   // Recupera l'accessToken da localStorage
    const user = JSON.parse(localStorage.getItem("user"));
    const accessToken = user?.accessToken;
 
-   // Configura gli headers della richiesta con l'Authorization token
    const headers = {
      Authorization: `Bearer ${accessToken}`
    };
@@ -24,9 +23,8 @@ const AggiungiFatturazioneAttiva = () => {
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseCliente   = await axios.get("https://localhost:8443/aziende/react", { headers: headers });
-        const responseStato     = await axios.get("https://localhost:8443/fatturazione/attiva/react/stato", { headers: headers });
-
+        const responseCliente   = await axios.get("http://89.46.67.198:8443/aziende/react/select", { headers: headers });
+        const responseStato     = await axios.get("http://89.46.67.198:8443/fatturazione/attiva/react/stato", { headers: headers });
 
         if (Array.isArray(responseStato.data)) {
           const statoOptions = responseStato.data.map((stato) => ({
@@ -57,40 +55,40 @@ const AggiungiFatturazioneAttiva = () => {
 
   const fields = [
  
-    { label: "* Cliente",               name: "idCliente",            type: "select", options: clienteOptions,  disabled: true},
-    { label: "* Stato",                 name: "stato",                type: "select", options: statoOptions},
-    { label: "* Data Emissione",        name: "dataEmissione",        type: "date" },
-    { label: "* Data Scadenza",         name: "dataScadenza",         type: "date" },
-    { label: "Termine",               name: "termine",              type: "text" },
-    { label: "* Tariffa",               name: "tariffa",              type: "text" },
-    { label: "Giorni Lavorati",       name: "giorniLavorati",       type: "text" },
-    { label: "Imponibile",            name: "imponibile",           type: "text" },
-    { label: "Totale con Iva",        name: "totaleConIva",         type: "text" },
-    { label: "N.Fattura",             name: "nFattura",             type: "text" },
-    { label: "Consulente",            name: "consulente",           type: "text" },
-    { label: "Oggetto",               name: "oggetto",              type: "text" },
-    { label: "Descrizione",           name: "descrizione",          type: "text" },
-    { label: "Oda",                   name: "oda",                  type: "text" },
-    { label: "Note",                  name: "note",                 type: "note" },
+    { label: "Cliente*",                name: "idCliente",            type: "select", options: clienteOptions,  disabled: true},
+    { label: "Stato*",                  name: "stato",                type: "select", options: statoOptions},
+    { label: "Data Emissione*",         name: "dataEmissione",        type: "date" },
+    { label: "Data Scadenza*",          name: "dataScadenza",         type: "date" },
+    { label: "Termine",                 name: "termine",              type: "text" },
+    { label: "Tariffa*",                name: "tariffa",              type: "text" },
+    { label: "Giorni Lavorati",         name: "giorniLavorati",       type: "text" },
+    { label: "Imponibile",              name: "imponibile",           type: "text" },
+    { label: "Totale con Iva",          name: "totaleConIva",         type: "text" },
+    { label: "N.Fattura",               name: "nFattura",             type: "text" },
+    { label: "Consulente",              name: "consulente",           type: "text" },
+    { label: "Oggetto",                 name: "oggetto",              type: "text" },
+    { label: "Descrizione",             name: "descrizione",          type: "text" },
+    { label: "Oda",                     name: "oda",                  type: "text" },
+    { label: "Note",                    name: "note",                 type: "note" },
   ];
 
   const initialValues = {
     id:                               fatturazioneAttivaData.id,
     idCliente:                        fatturazioneAttivaData.cliente && fatturazioneAttivaData.cliente.id ,
-    stato:                            fatturazioneAttivaData.stato && fatturazioneAttivaData.stato.id     || "",
-    dataEmissione:                    fatturazioneAttivaData.dataEmissione                                || "",
-    dataScadenza:                     fatturazioneAttivaData.dataScadenza                                 || "",
-    termine:                          fatturazioneAttivaData.termine                                      || "",
-    tariffa:                          fatturazioneAttivaData.tariffa                                      || "",
-    giorniLavorati:                   fatturazioneAttivaData.giorniLavorati                               || "",
-    imponibile:                       fatturazioneAttivaData.imponibile                                   || "",
-    totaleConIva:                     fatturazioneAttivaData.totaleConIva                                 || "",
-    nFattura:                         fatturazioneAttivaData.nfattura                                     || "",
-    consulente:                       fatturazioneAttivaData.consulente                                   || "",
-    oggetto:                          fatturazioneAttivaData.oggetto                                      || "",
-    descrizione:                      fatturazioneAttivaData.descrizione                                  || "",
-    oda:                              fatturazioneAttivaData.oda                                          || "",
-    note:                             fatturazioneAttivaData.note                                         || "",
+    stato:                            fatturazioneAttivaData.stato    && fatturazioneAttivaData.stato.id  || null,
+    dataEmissione:                    fatturazioneAttivaData.dataEmissione                                || null,
+    dataScadenza:                     fatturazioneAttivaData.dataScadenza                                 || null,
+    termine:                          fatturazioneAttivaData.termine                                      || null,
+    tariffa:                          fatturazioneAttivaData.tariffa                                      || null,
+    giorniLavorati:                   fatturazioneAttivaData.giorniLavorati                               || null,
+    imponibile:                       fatturazioneAttivaData.imponibile                                   || null,
+    totaleConIva:                     fatturazioneAttivaData.totaleConIva                                 || null,
+    nFattura:                         fatturazioneAttivaData.nfattura                                     || null,
+    consulente:                       fatturazioneAttivaData.consulente                                   || null,
+    oggetto:                          fatturazioneAttivaData.oggetto                                      || null,
+    descrizione:                      fatturazioneAttivaData.descrizione                                  || null,
+    oda:                              fatturazioneAttivaData.oda                                          || null,
+    note:                             fatturazioneAttivaData.note                                         || null,
   }
 
 
@@ -101,7 +99,7 @@ const AggiungiFatturazioneAttiva = () => {
     if (!hasErrors) {
     try {
 
-      const response = await axios.post("https://localhost:8443/fatturazione/attiva/react/salva", initialValues, {
+      const response = await axios.post("http://89.46.67.198:8443/fatturazione/attiva/react/salva", initialValues, {
         headers: headers
       });
 
@@ -109,7 +107,6 @@ const AggiungiFatturazioneAttiva = () => {
     } catch (error) {
       console.error("Errore durante il salvataggio:", error);
     }
-
   }
   };
 
@@ -124,13 +121,11 @@ const AggiungiFatturazioneAttiva = () => {
   };
 
   return (
-    <div className="container">
-      <div className="content">
-        <div className="sidebar-container">
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
           <Sidebar />
-        </div>
-        <div className="container">
-          <div className="page-name">Aggiungi un nuova fattura</div>
+          <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
+          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Aggiungi una nuova Fattura Attiva</Typography>
+
           <FieldsBox 
           fields={fields} 
           initialValues={initialValues} 
@@ -138,9 +133,9 @@ const AggiungiFatturazioneAttiva = () => {
           onSubmit={handleSubmit} 
           title="" 
           />
-        </div>
-      </div>
-    </div>
+          </Box>
+          </Box>
+
   );
 };
 

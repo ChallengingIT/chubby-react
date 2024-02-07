@@ -16,7 +16,7 @@ Snackbar,
 } from '@mui/material';
 import BackButton from '../../components/button/BackButton';
 import SaveButton from '../../components/button/SaveButton';
-import axios from 'axios';
+import axios      from 'axios';
 
 const UserTimesheetComponent2 = ({ timesheetData }) => {
 
@@ -84,7 +84,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
         setMeseNumero(mese.toString());
         setAnnoNumero(anno.toString());
 
-        axios.get(`https://localhost:8443/timesheet/react/user/${anno}/${mese}`, {
+        axios.get(`http://89.46.67.198:8443/timesheet/react/user/${anno}/${mese}`, {
             headers: headers,
             params: requestParams
         })
@@ -133,7 +133,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
     useEffect(() => {
         const fetchPrimoTimesheet = async () => {
             try {
-                const response = await axios.get(`https://localhost:8443/timesheet/react/user/primo`, {
+                const response = await axios.get(`http://89.46.67.198:8443/timesheet/react/user/primo`, {
                     headers: headers,
                     params: requestParams
                 });
@@ -172,7 +172,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
             return;
         }
     
-        axios.get(`https://localhost:8443/timesheet/react/user/precedente/${annoNumero}/${meseNumero}`, {
+        axios.get(`http://89.46.67.198:8443/timesheet/react/user/precedente/${annoNumero}/${meseNumero}`, {
             headers: headers,
             params: requestParams
         })
@@ -232,7 +232,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
             nuovoAnno += 1;
         }
     
-        axios.get(`https://localhost:8443/timesheet/react/user/successivo/${annoNumero}/${meseNumero}`, {
+        axios.get(`http://89.46.67.198:8443/timesheet/react/user/successivo/${annoNumero}/${meseNumero}`, {
             headers: headers,
             params: requestParams
         })
@@ -356,8 +356,6 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
         }
         };
 
-
-
         const handleCloseModal = () => {
             setModalOpen(false);
             setOreOrdinarie(''); 
@@ -392,7 +390,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
             };
 
             try {
-            const response = await axios.post(`https://localhost:8443/timesheet/react/user/aggiorna/${annoNumero}/${meseNumero}`, datiDaInviare, {
+            const response = await axios.post(`http://89.46.67.198:8443/timesheet/react/user/aggiorna/${annoNumero}/${meseNumero}`, datiDaInviare, {
                 headers: headers,
                 params: requestParams
             });
@@ -414,7 +412,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
         // Funzione per richiedere i dati aggiornati del timesheet
         const fetchTimesheetData = async () => {
             try {
-                const response = await axios.get(`https://localhost:8443/timesheet/react/user/${annoNumero}/${meseNumero}`, {
+                const response = await axios.get(`http://89.46.67.198:8443/timesheet/react/user/${annoNumero}/${meseNumero}`, {
                     headers: headers,
                     params: requestParams
                 });
@@ -472,7 +470,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
             
         
             try {
-                const response = await axios.post(`https://localhost:8443/timesheet/react/user/cancella/${annoNumero}/${meseNumero}`, datiDaInviare, {
+                const response = await axios.post(`http://89.46.67.198:8443/timesheet/react/user/cancella/${annoNumero}/${meseNumero}`, datiDaInviare, {
                     headers: headers,
                     params: requestParams
                 });
@@ -486,9 +484,9 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
 
 
         const giorniSettimana = ['D', 'L', 'M', 'M', 'G', 'V', 'S'];
-        const giorniFestivi = ['01-01', '01-06', '04-01', '04-25', '05-01', '06-02', '08-15', '11-01', '12-08', '12-25', '12-26'];
-        const lunediPasqua = [ "2025-04-21", "2026-04-06", "2027-03-29", "2028-04-17", "2029-04-02", "2030-04-22", "2031-04-14", "2032-03-29", "2033-04-18", "2034-04-10" ]; 
-        const nomiMesi = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
+        const giorniFestivi =   ['01-01', '01-06', '04-01', '04-25', '05-01', '06-02', '08-15', '11-01', '12-08', '12-25', '12-26'];
+        const lunediPasqua =    [ "2025-04-21", "2026-04-06", "2027-03-29", "2028-04-17", "2029-04-02", "2030-04-22", "2031-04-14", "2032-03-29", "2033-04-18", "2034-04-10" ]; 
+        const nomiMesi =        ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
 
 
         const isLunediPasqua = (giorno, mese, anno) => {
@@ -514,7 +512,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
         //chiamata per inviare tutto il timesheet
         const handleSubmit = async () => {
             try {
-                const url = `https://localhost:8443/timesheet/react/user/salva/${annoNumero}/${meseNumero}`;
+                const url = `http://89.46.67.198:8443/timesheet/react/user/salva/${annoNumero}/${meseNumero}`;
                 const response = await axios.post(url, { timesheetData });
                 setAlert({ open: true, message: response.data });
             } catch (error) {
@@ -671,10 +669,10 @@ const progettiArray = Object.values(progettoUnivoco);
       {/* Navigazione Mesi e Griglia dei giorni */}
             <Grid item xs={10} sm={10}>
                 <Grid container justifyContent="flex-start" alignItems="center" marginBottom="20px" marginTop="20px" >
-                <Button sx={{ color:"#14D928"}} onClick={handlePrevMese}>{"<"}</Button>
+                <Button sx={{ color:"#ffb800"}} onClick={handlePrevMese}>{"<"}</Button>
                 <Typography variant="h6">{`${nomiMesi[parseInt(meseNumero, 10) - 1]}  ${annoNumero}`}</Typography>
 
-                <Button sx={{ color:"#14D928"}} onClick={handleSuccMese}>{">"}</Button>
+                <Button sx={{ color:"#ffb800"}} onClick={handleSuccMese}>{">"}</Button>
                 </Grid>
                 {renderDaySquares()}
             </Grid>
@@ -711,7 +709,7 @@ const progettiArray = Object.values(progettoUnivoco);
     </Grid>
 </Grid>
 
-         
+
             <Grid container  justifyContent="center" alignItems="center" gap={10} spacing={2}>
                 <BackButton />
                 {
@@ -760,7 +758,7 @@ disabled
         name="ferie"
         sx={{
             '&.Mui-checked': {
-            color: '#14D928',
+            color: '#ffb800',
             },
         }}
         />
@@ -777,7 +775,7 @@ disabled
         name="malattia"
         sx={{
             '&.Mui-checked': {
-            color: '#14D928', 
+            color: '#ffb800', 
             },
         }}
         />
@@ -794,7 +792,7 @@ disabled
         name="permesso"
         sx={{
             '&.Mui-checked': {
-            color: '#14D928', 
+            color: '#ffb800', 
             },
         }}
         />
@@ -989,8 +987,6 @@ InputLabelProps={{
     label="Ore"
     name="ore"
     type="number"
-    // value={selectedDay ? hours[selectedDay.toISOString().split('T')[0]] : ''} 
-    // onChange={(e) => handleHoursChange(selectedDay, e.target.value)}
     value={oreOrdinarie}  
     onChange={(e) => setOreOrdinarie(e.target.value)}
     />

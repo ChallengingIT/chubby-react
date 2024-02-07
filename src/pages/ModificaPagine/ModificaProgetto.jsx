@@ -3,6 +3,7 @@ import { useNavigate, useLocation }           from "react-router-dom";
 import axios                                  from "axios";
 import Sidebar                                from "../../components/Sidebar";
 import FieldsBox                              from "../../components/FieldsBox";
+import { Box,Typography } from "@mui/material";
 
 const ModificaProgetto = () => {
 
@@ -15,20 +16,18 @@ const ModificaProgetto = () => {
   const [clienteOptions,    setClienteOptions]    = useState([]);
   const [dipendenteOptions, setDipendenteOptions] = useState([]);
 
-   // Recupera l'accessToken da localStorage
-   const user = JSON.parse(localStorage.getItem("user"));
-   const accessToken = user?.accessToken;
+    const user = JSON.parse(localStorage.getItem("user"));
+    const accessToken = user?.accessToken;
 
-   // Configura gli headers della richiesta con l'Authorization token
-   const headers = {
-     Authorization: `Bearer ${accessToken}`
-   };
+    const headers = {
+      Authorization: `Bearer ${accessToken}`
+    };
 
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseCliente    = await axios.get("https://localhost:8443/aziende/react", { headers: headers });
-        const responseDipendente = await axios.get("https://localhost:8443/hr/react/modificato", { headers: headers });
+        const responseCliente    = await axios.get("http://89.46.67.198:8443/aziende/react/select",{ headers: headers });
+        const responseDipendente = await axios.get("http://89.46.67.198:8443/hr/react/modificato", { headers: headers });
 
         if (Array.isArray(responseCliente.data)) {
           const clienteOptions = responseCliente.data.map((cliente) => ({
@@ -58,11 +57,11 @@ const ModificaProgetto = () => {
 
 
   const fields = [
-    { label: "Descrizione",             name: "descrizione",            type: "text" },
-    { label: "Cliente",                 name: "idCliente",              type: "select", options: clienteOptions },
-    { label: "Dipendente",              name: "idStaff",                type: "select", options: dipendenteOptions },
-    { label: "Data Inizio",             name: "inizio",                 type: "date" },
-    { label: "Scadenza",                name: "scadenza",               type: "date" },
+    { label: "Descrizione*",            name: "descrizione",            type: "text" },
+    { label: "Cliente*",                name: "idCliente",              type: "select", options: clienteOptions },
+    { label: "Dipendente*",             name: "idStaff",                type: "select", options: dipendenteOptions },
+    { label: "Data Inizio*",            name: "inizio",                 type: "date" },
+    { label: "Scadenza*",               name: "scadenza",               type: "date" },
     { label: "Durata Stimata",          name: "durataStimata",          type: "text" },
     { label: "Rate",                    name: "rate",                   type: "text" },
     { label: "Costo",                   name: "costo",                  type: "text" },
@@ -73,18 +72,18 @@ const ModificaProgetto = () => {
   ];
   const initialValues = {
     id:               progettiData.id               ,
-    descrizione:      progettiData.description      || "",
-    idCliente:        progettiData.cliente && progettiData.cliente.id || "",
-    idStaff:          progettiData.idStaff          || "",
-    inizio:           progettiData.inizio           || "",
-    scadenza:         progettiData.scadenza         || "",
-    durataStimata:    progettiData.durataStimata    || "",
-    rate:             progettiData.rate             || "",
-    costo:            progettiData.costo            || "",
-    margine:          progettiData.margine          || "",
-    durata:           progettiData.durata           || "",
-    valoreTotale:     progettiData.valoreTotale     || "",
-    note:             progettiData.note             || "",
+    descrizione:      progettiData.description                        || null,
+    idCliente:        progettiData.cliente && progettiData.cliente.id || null,
+    idStaff:          progettiData.idStaff                            || null,
+    inizio:           progettiData.inizio                             || null,
+    scadenza:         progettiData.scadenza                           || null,
+    durataStimata:    progettiData.durataStimata                      || null,
+    rate:             progettiData.rate                               || null,
+    costo:            progettiData.costo                              || null,
+    margine:          progettiData.margine                            || null,
+    durata:           progettiData.durata                             || null,
+    valoreTotale:     progettiData.valoreTotale                       || null,
+    note:             progettiData.note                               || null,
   };
 
 
@@ -95,11 +94,9 @@ const ModificaProgetto = () => {
   
     if (!hasErrors) {
     try {
-
-      const response = await axios.post("https://localhost:8443/progetti/react/salva", values, {
+      const response = await axios.post("http://89.46.67.198:8443/progetti/react/salva", values, {
         headers: headers 
       });
-
       navigate("/progetti");
     } catch (error) {
       console.error("Errore durante il salvataggio:", error);
@@ -119,24 +116,21 @@ const ModificaProgetto = () => {
   };
 
   return (
-    <div className="container">
-      <div className="content">
-        <div className="sidebar-container">
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
           <Sidebar />
-        </div>
-        <div className="container">
-          <div className="page-name">Modifica Progetto</div>
+          <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
+          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Modifica Progetto</Typography>
+
           <FieldsBox 
           fields={fields} 
           initialValues={initialValues} 
           onSubmit={handleSubmit} 
           title="" 
           campiObbligatori={campiObbligatori}
-
           />
-        </div>
-      </div>
-    </div>
+                    </Box>
+          </Box>
+
   );
 };
 

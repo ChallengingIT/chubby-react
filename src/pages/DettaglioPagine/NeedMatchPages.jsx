@@ -7,7 +7,7 @@ import DeleteButton                                   from '../../components/but
 import axios                                          from 'axios';
 import { Link }                                       from "react-router-dom";
 import NeedMatchSearchBox                             from '../../components/searchBox/NeedMatchSearchBox.jsx';
-import { Modal, Box, Button }                         from '@mui/material';
+import { Modal, Box, Button, Typography }                         from '@mui/material';
 import ModalBox                                       from '../../components/ModalBox.jsx';
 import { useLocation }                                from 'react-router-dom';
 
@@ -53,11 +53,11 @@ function NeedMatchPages() {
   
   const fetchData = async () => {
     try {
-      const associatiResponse   = await axios.get(`https://localhost:8443/need/react/match/associati/${id}`, { headers: headers});
-      const storicoResponse     = await axios.get(`https://localhost:8443/need/react/storico/${id}`, { headers: headers});
-      const associabiliResponse = await axios.get(`https://localhost:8443/need/react/match/associabili/${id}`, { headers: headers});
-      const ownerResponse       = await axios.get("https://localhost:8443/aziende/react/owner", { headers: headers});
-      const statoResponse       = await axios.get("https://localhost:8443/associazioni/react/stati", { headers: headers});
+      const associatiResponse   = await axios.get(`http://89.46.67.198:8443/need/react/match/associati/mod/${id}`, { headers: headers});
+      const storicoResponse     = await axios.get(`http://89.46.67.198:8443/need/react/storico/${id}`, { headers: headers});
+      const associabiliResponse = await axios.get(`http://89.46.67.198:8443/need/react/match/associabili/mod/${id}`, { headers: headers});
+      const ownerResponse       = await axios.get("http://89.46.67.198:8443/aziende/react/owner", { headers: headers});
+      const statoResponse       = await axios.get("http://89.46.67.198:8443/associazioni/react/stati", { headers: headers});
 
       if (Array.isArray(ownerResponse.data)) {
         const ownerOptions = ownerResponse.data.map((owner) => ({
@@ -78,7 +78,6 @@ function NeedMatchPages() {
       if (Array.isArray(associatiResponse.data)) {
         const associatiConId = associatiResponse.data.map((associati) => ({ ...associati }));
         setAssociatiOptions(associatiConId);
-        // setFilteredAssociabili(associatiConId);
       } else {
         console.error("I dati ottenuti non sono nel formato Array:", associatiResponse.data);
       }
@@ -86,7 +85,6 @@ function NeedMatchPages() {
       if (Array.isArray(storicoResponse.data)) {
         const storicoConId = storicoResponse.data.map((storico) => ({ ...storico }));
         setStoricoOptions(storicoConId);
-        // setFilteredAssociabili(storicoConId);
       } else {
         console.error("I dati ottenuti non sono nel formato Array:", storicoResponse.data);
       }
@@ -107,7 +105,7 @@ function NeedMatchPages() {
     }
   };
 
- 
+
 
   useEffect(() => {
     fetchData();
@@ -127,15 +125,10 @@ function NeedMatchPages() {
 
   const handleDeleteAssociati = async (row) => {
     try {
-
-
       const idNeed = parseInt(id); 
       const idCandidato = row;
-
-
-      const url = `https://localhost:8443/associazioni/react/rimuovi/candidato/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
+      const url = `http://89.46.67.198:8443/associazioni/react/rimuovi/candidato/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
       const response = await axios.delete(url, { headers: headers});;
-  
       fetchData();
     } catch (error) {
       console.error("Errore durante l'eliminazione:", error);
@@ -147,17 +140,9 @@ function NeedMatchPages() {
 
   const handleDeleteStorico = async (row) => {
     try {
-
-      
-
-  
       const idAssociazione = row;
-
-      const url = `https://localhost:8443/associazioni/react/rimuovi/associa/${idAssociazione}`;
-
-    
+      const url = `http://89.46.67.198:8443/associazioni/react/rimuovi/associa/${idAssociazione}`;
       const response = await axios.delete(url, { headers: headers});;;
-  
       fetchData();
     } catch (error) {
       console.error("Errore durante l'eliminazione:", error);
@@ -169,12 +154,8 @@ function NeedMatchPages() {
     try {
       const idNeed = parseInt(id); 
       const idCandidato = row.id;
-
-      const url = `https://localhost:8443/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
-  
-  
+      const url = `http://89.46.67.198:8443/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
       const response = await axios.post(url, { headers: headers});
-  
       fetchData();
     } catch (error) {
       console.error("Errore durante il recupero dei dati:", error);
@@ -204,12 +185,6 @@ function NeedMatchPages() {
     setIsModalOpen(true); 
   };
 
-
-
-
-  
-
-
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
@@ -233,7 +208,7 @@ function NeedMatchPages() {
       delete updatedValues.cliente;
   
   
-      const response = await axios.post(`https://localhost:8443/associazioni/salva`, updatedValues, { headers: headers });;
+      const response = await axios.post(`http://89.46.67.198:8443/associazioni/salva`, updatedValues, { headers: headers });;
       fetchData();
     } catch (error) {
       console.error("Errore durante il recupero dei dati:", error);
@@ -252,11 +227,6 @@ function NeedMatchPages() {
     { label: "Owner",                   name: "idOwner",               type: "select", options: ownerOptions || [] },
   ];
 
-
-
-  
-
-
   const disableFields = {
     cliente:      true,
     idNeed:       true,
@@ -264,39 +234,37 @@ function NeedMatchPages() {
   };
 
 const tableStorico = [
-  { field: "dataModifica",            headerName: "Data",         width: 120 },
-  { field: "tipo",                    headerName: "Tipologia",    width: 150, renderCell: (params) => (
+  { field: "dataModifica",            headerName: "Data",         flex: 1 },
+  { field: "tipo",                    headerName: "Tipologia",    flex: 1, renderCell: (params) => (
     <div style={{ textAlign: "start" }}>
       {params.row.candidato && params.row.candidato.tipo ? params.row.candidato.tipo.descrizione : "N/A"}
     </div>
   )},
-  { field: "candidato",                    headerName: "Nome",         width: 250, renderCell: (params) => (
+  { field: "candidato",                    headerName: "Nome",         flex: 1, renderCell: (params) => (
     <div style={{ textAlign: "left"  }}>
-         <div onClick={() => navigateToCercaCandidato(params.row)}>
-            
-         {params.row.candidato ? `${params.row.candidato.nome} ${params.row.candidato.cognome}` : ""}
+        <div onClick={() => navigateToCercaCandidato(params.row)}>
+        {params.row.candidato ? `${params.row.candidato.nome} ${params.row.candidato.cognome}` : ""}
           </div>
-    
   </div>
 
 
     ),},
-    { field: "tipologia",             headerName: "Job Title",    width: 250, renderCell: (params) => (
+    { field: "tipologia",             headerName: "Job Title",    flex: 1, renderCell: (params) => (
       <div style={{ textAlign: "start" }}>
         {params.row.candidato && params.row.candidato.tipologia.descrizione}
       </div>
     ),},
-    { field: "stato",                 headerName: "Stato",        width: 70, renderCell: (params) => (
+    { field: "stato",                 headerName: "Stato",       flex: 1, renderCell: (params) => (
       <div style={{ textAlign: "start" }}>
         {params.row.stato && params.row.stato.descrizione}
       </div>
     ),},
-  { field: "owner",                   headerName: "Owner",        width: 70, renderCell: (params) => (
+  { field: "owner",                   headerName: "Owner",       flex: 1, renderCell: (params) => (
     <div style={{ textAlign: "start" }}>
       {params.row.owner && params.row.owner.descrizione}
     </div>
   )},
-  { field: "azioni",                  headerName: "Azioni",       width: 400, renderCell: (params) => (
+  { field: "azioni",                  headerName: "Azioni",       flex: 1, renderCell: (params) => (
     <div>
       <DeleteButton onClick={handleDeleteStorico} id={params.row.id}/>
     </div>
@@ -305,46 +273,46 @@ const tableStorico = [
 
 
 const tableAssociati = [
-  { field: "nome",                    headerName: "Nome",         width: 250, renderCell: (params) => (
+  { field: "nome",                    headerName: "Nome",         flex: 1, renderCell: (params) => (
     <div style={{ textAlign: "left"  }}>
-       <div onClick={() => navigateToCercaCandidato(params.row)}>
+      <div onClick={() => navigateToCercaCandidato(params.row)}>
             
             {params.row.nome} {params.row.cognome}
           </div>
   
   </div>
     ),},
-  { field: "email",                   headerName: "E-Mail",        width: 250},
-  { field: "tipologia",               headerName: "Job Title",     width: 150, renderCell: (params) => (
+  { field: "email",                   headerName: "E-Mail",        flex: 1.4},
+  { field: "tipologia",               headerName: "Job Title",     flex: 1, renderCell: (params) => (
     <div style={{ textAlign: "start" }}>
       {params.row.tipologia && params.row.tipologia.descrizione
         ? params.row.tipologia.descrizione
         : "N/A"}
     </div>
   ),},
-  { field: "rating",                  headerName: "Rating",         width: 70},
-  { field: "stato",                   headerName: "Stato",          width: 70, renderCell: (params) => (
+  { field: "rating",                  headerName: "Rating",        flex: 1},
+  { field: "stato",                   headerName: "Stato",         flex: 1, renderCell: (params) => (
     <div style={{ textAlign: "start" }}>
       {params.row.stato && params.row.stato.descrizione
         ? params.row.stato.descrizione
         : "N/A"}
     </div>
   ),},
-  { field: "dataUltimoContatto",       headerName: "Contatto",       width: 100},
-  { field: "elimina",                  headerName: "Elimina",        width: 100, renderCell: (params) => (
+  { field: "dataUltimoContatto",       headerName: "Contatto",       flex: 1},
+  { field: "elimina",                  headerName: "Elimina",        flex: 1, renderCell: (params) => (
     <div>
       <DeleteButton onClick={handleDeleteAssociati} id={params.row.id}/>
     </div>
   ), },
-  { field: "status",                   headerName: "Status",         width: 330, renderCell: (params) => (
+  { field: "status",                   headerName: "Status",         flex: 1, renderCell: (params) => (
     <div>
       <Button
       onClick={() => handleOpenModal(params.row)}
-      sx={{ backgroundColor: '#14D928',
+      sx={{ backgroundColor: '#FFB800',
       fontWeight: 'bold',
       color: 'black',
       "&:hover": {
-        backgroundColor: "#14D928",
+        backgroundColor: "#ffb800",
         transform: "scale(1.05)",
         color: 'black',
         
@@ -355,7 +323,7 @@ const tableAssociati = [
 ];
 
   const tableAssociabili = [
-    { field: "nome",                    headerName: "Nome",          width: 250, renderCell: (params) => (
+    { field: "nome",                    headerName: "Nome",          flex: 1, renderCell: (params) => (
       <div style={{ textAlign: "left"  }}>
           <div onClick={() => navigateToCercaCandidato(params.row)}>
             
@@ -367,32 +335,32 @@ const tableAssociati = [
   
   
       ),},
-    { field: "email",                   headerName: "E-Mail",         width: 250},
-    { field: "tipologia",               headerName: "Job Title",      width: 250, renderCell: (params) => (
+    { field: "email",                   headerName: "E-Mail",         flex: 1.4},
+    { field: "tipologia",               headerName: "Job Title",      flex: 1, renderCell: (params) => (
       <div style={{ textAlign: "start" }}>
         {params.row.tipologia && params.row.tipologia.descrizione
           ? params.row.tipologia.descrizione
           : "N/A"}
       </div>
     ),},
-    { field: "rating",                  headerName: "Rating",         width: 150},
-    { field: "stato",                   headerName: "Stato",          width: 70, renderCell: (params) => (
+    { field: "rating",                  headerName: "Rating",         flex: 1},
+    { field: "stato",                   headerName: "Stato",         flex: 1, renderCell: (params) => (
       <div style={{ textAlign: "start" }}>
         {params.row.stato && params.row.stato.descrizione
           ? params.row.stato.descrizione
           : "N/A"}
       </div>
     ),},
-    { field: "dataUltimoContatto",      headerName: "Contatto",        width: 100},
-    { field: "azioni",                  headerName: "Azioni",          width: 250, renderCell: (params) => (
+    { field: "dataUltimoContatto",      headerName: "Contatto",        flex: 1},
+    { field: "azioni",                  headerName: "Azioni",          flex: 1, renderCell: (params) => (
       <div>
         <Button
         onClick={() => handleAssocia(params.row)}
-        sx={{ backgroundColor: '#14D928',
+        sx={{ backgroundColor: '#FFB800',
         fontWeight: 'bold',
         color: 'black',
         "&:hover": {
-          backgroundColor: "#14D928",
+          backgroundColor: "#ffb800",
           transform: "scale(1.05)",
           color: 'black',
         },
@@ -403,16 +371,16 @@ const tableAssociati = [
 
 
   return (
-    
-    <div className="container">
-      <Modal
-  open={isModalOpen}
-  onClose={handleCloseModal}
-  aria-labelledby="modal-title"
-  aria-describedby="modal-description"
->
-  {/* <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', boxShadow: 24, p: 4 }}> */}
-    
+          
+      <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
+          <Sidebar />
+          <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
+          <Modal
+        open={isModalOpen}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+      >
     <ModalBox
       fields=        {fieldsAggiorna}
       initialValues= {initialValuesAggiorna}
@@ -425,25 +393,23 @@ const tableAssociati = [
     />
   {/* </Box> */}
 </Modal>
-
-      
-      <div className="content">
-        <div className="sidebar-container">
-          <Sidebar />
-        </div>
-        <div className="container">
-        <div className="containerTitle">
-                    <h1>{`${descrizione} ${nomeAzienda} Staffing`}</h1>
-                </div>
-                
+          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>{descrizione} {nomeAzienda} </Typography>
+          <Box sx={{ marginBottom: '20px'}}>
                 <MyDataGrid data={filteredAssociabili} columns={tableAssociabili} title="Candidati"             getRowId={(row) => row.id} searchBoxComponent={() => (<NeedMatchSearchBox data={needMatch}
           onSearch={handleSearch}
           onReset={handleReset}
           searchText={searchText}
           onSearchTextChange={(text) => setSearchText(text)}
           OriginalAssociabili={originalAssociabili}/>)} />
+          </Box>
+          <Box sx={{ marginBottom: '20px'}}>
+
                 <MyDataGrid data={storicoOptions}      columns={tableStorico}   title="Storico"               getRowId={(row) => row.id} />
+                </Box>
+                <Box sx={{ marginBottom: '20px'}}>
+
                 <MyDataGrid data={associatiOptions}    columns={tableAssociati} title="Candidati Associati"   getRowId={(row) => row.id} />
+                </Box>
             <Button
           color="primary"
           onClick={handleGoBack}
@@ -464,11 +430,8 @@ const tableAssociati = [
         >
           Indietro
         </Button>
-            </div>
-
-        </div>
-    </div>
-    
+        </Box>
+        </Box>
   );
 };
 

@@ -3,17 +3,16 @@ import { useNavigate, useLocation }   from "react-router-dom";
 import axios                          from "axios";
 import Sidebar                        from "../../components/Sidebar";
 import FieldsBox                      from "../../components/FieldsBox";
+import { Box, Typography } from "@mui/material";
 
 const AggiungiFatturazioneAttiva = () => {
   const navigate = useNavigate();
   const [ clientiOptions, setClientiOptions] = useState([]);
   const [ statoOptions,   setStatoOptions  ] = useState([]);
 
-  // Recupera l'accessToken da localStorage
   const user = JSON.parse(localStorage.getItem("user"));
   const accessToken = user?.accessToken;
 
-  // Configura gli headers della richiesta con l'Authorization token
   const headers = {
     Authorization: `Bearer ${accessToken}`
   };
@@ -21,8 +20,8 @@ const AggiungiFatturazioneAttiva = () => {
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseClienti   = await axios.get("https://localhost:8443/aziende/react"                  , { headers: headers });
-        const responseStato     = await axios.get("https://localhost:8443/fatturazione/passiva/react/stato", { headers: headers });
+        const responseClienti   = await axios.get("http://89.46.67.198:8443/aziende/react/select"            , { headers: headers });
+        const responseStato     = await axios.get("http://89.46.67.198:8443/fatturazione/passiva/react/stato", { headers: headers });
 
 
         if (Array.isArray(responseStato.data)) {
@@ -53,24 +52,21 @@ const AggiungiFatturazioneAttiva = () => {
 
   const fields = [
  
-    { label: "* Cliente",               name: "idCliente",            type: "select", options: clientiOptions },
-    { label: "* Stato",                 name: "stato",                type: "select", options: statoOptions},
-    { label: "* Data Emissione",        name: "dataEmissione",        type: "date" },
-    { label: "* Data Scadenza",         name: "dataScadenza",         type: "date" },
-    { label: "Termine",               name: "termine",              type: "text" },
-    { label: "* Tariffa",               name: "tariffa",              type: "text" },
-    { label: "Giorni Lavorati",       name: "giorniLavorati",       type: "text" },
-    { label: "Imponibile",            name: "imponibile",           type: "text" },
-    { label: "Totale con Iva",        name: "totaleConIva",         type: "text" },
-    { label: "N.Fattura",             name: "nFattura",             type: "text" },
-    { label: "Consulente",            name: "consulente",           type: "text" },
-    { label: "Oggetto",               name: "oggetto",              type: "text" },
-    { label: "Descrizione",           name: "descrizione",          type: "text" },
-    { label: "Oda",                   name: "oda",                  type: "text" },
-    { label: "Note",                  name: "note",                 type: "note" },
-
-
-
+    { label: "Cliente*",                name: "idCliente",            type: "select", options: clientiOptions },
+    { label: "Stato*",                  name: "stato",                type: "select", options: statoOptions},
+    { label: "Data Emissione*",         name: "dataEmissione",        type: "date" },
+    { label: "Data Scadenza*",          name: "dataScadenza",         type: "date" },
+    { label: "Termine",                 name: "termine",              type: "text" },
+    { label: "Tariffa*",                name: "tariffa",              type: "text" },
+    { label: "Giorni Lavorati",         name: "giorniLavorati",       type: "text" },
+    { label: "Imponibile",              name: "imponibile",           type: "text" },
+    { label: "Totale con Iva",          name: "totaleConIva",         type: "text" },
+    { label: "N.Fattura",               name: "nFattura",             type: "text" },
+    { label: "Consulente",              name: "consulente",           type: "text" },
+    { label: "Oggetto",                 name: "oggetto",              type: "text" },
+    { label: "Descrizione",             name: "descrizione",          type: "text" },
+    { label: "Oda",                     name: "oda",                  type: "text" },
+    { label: "Note",                    name: "note",                 type: "note" },
   ];
 
   const handleSubmit = async (values) => {
@@ -80,7 +76,7 @@ const AggiungiFatturazioneAttiva = () => {
     if (!hasErrors) {
     try {
 
-      const response = await axios.post("https://localhost:8443/fatturazione/attiva/react/salva", values, { headers: headers });
+      const response = await axios.post("http://89.46.67.198:8443/fatturazione/attiva/react/salva", values, { headers: headers });
 
       navigate("/fatturazioneAttiva");
     } catch (error) {
@@ -103,22 +99,20 @@ const AggiungiFatturazioneAttiva = () => {
 
 
   return (
-    <div className="container">
-      <div className="content">
-        <div className="sidebar-container">
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
+
           <Sidebar />
-        </div>
-        <div className="container">
-          <div className="page-name">Aggiungi un nuova fattura</div>
+          <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
+          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Aggiungi una nuova fattura</Typography>
+
           <FieldsBox 
           fields={fields} 
           campiObbligatori={campiObbligatori}  
           onSubmit={handleSubmit} 
           title="" 
           />
-        </div>
-      </div>
-    </div>
+          </Box>
+      </Box>
   );
 };
 

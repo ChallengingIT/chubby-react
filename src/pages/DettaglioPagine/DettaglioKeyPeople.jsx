@@ -45,7 +45,7 @@ useEffect(() => {
   useEffect(() => {
     const fetchOptions = async () => {
       try { 
-        const responseAttivita = await axios.get(`https://localhost:8443/keypeople/react/attivita/${id}`);
+        const responseAttivita = await axios.get(`http://89.46.67.198:8443/keypeople/react/attivita/${id}`);
         if (Array.isArray(responseAttivita.data)) {
           const attivitaOptions = responseAttivita.data.map((attivita) => ({
             note: attivita.note,
@@ -82,11 +82,11 @@ useEffect(() => {
   ];
 
   const initialValues1 = {
-    nome:                 keypeopleData.nome                    || "",
+    nome:                 keypeopleData.nome                                              || "",
     cliente:              keypeopleData.cliente && keypeopleData.cliente.denominazione    || "",
-    email:                keypeopleData.email                   || "",
-    cellulare:            keypeopleData.cellulare               || "",
-    owner:                keypeopleData.owner && keypeopleData.owner.descrizione        || "",
+    email:                keypeopleData.email                                             || "",
+    cellulare:            keypeopleData.cellulare                                         || "",
+    owner:                keypeopleData.owner && keypeopleData.owner.descrizione          || "",
   };
 
   const tableAttivita = [
@@ -108,8 +108,6 @@ useEffect(() => {
     <Sidebar />
     </div>
       <div className="contentDettaglioKeyPeople">
-       
-        {/* <div className="flex-container" style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}> */}
           <div className="containerTitle">
             <h1>{`Visualizzazione ${nomeKeypeople}`}</h1>
           </div>
@@ -144,7 +142,6 @@ useEffect(() => {
           </Button>
         </div>
       </div>
-    // </div>
   );
 
 };

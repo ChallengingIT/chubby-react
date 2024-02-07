@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
+import * as Yup from 'yup';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+
 import {
     Grid,
     Button,
@@ -12,11 +15,16 @@ import {
     Checkbox,
     ListItemText,
     FormHelperText,
+    Dialog,
+    DialogActions,
+    DialogContent, 
+    DialogContentText, 
+    DialogTitle
 } from "@mui/material";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import DeleteIcon from "@mui/icons-material/Delete";
-import axios from "axios";
+import CloudUploadIcon  from "@mui/icons-material/CloudUpload";
+import DeleteIcon       from "@mui/icons-material/Delete";
+import axios            from "axios";
 
 
 
@@ -41,17 +49,31 @@ const FieldBoxFile = ({
     const [ fileCF,               setFileCF             ] = useState(null);
     const [ fileAllegati,         setFileAllegati       ] = useState(initialValues.files || []);
     const [ fileMultipli,         setFileMultipli       ] = useState([]);
+    const [ openDialog,           setOpenDialog         ] = useState(false);
+    const [ selectedFileId,       setSelectedFileId     ] = useState(null);
 
 
-        // Recupera l'accessToken da localStorage
+
     const user = JSON.parse(localStorage.getItem("user"));
     const accessToken = user?.accessToken;
 
-    // Configura gli headers della richiesta con l'Authorization token
     const headers = {
         Authorization: `Bearer ${accessToken}`
     };
 
+
+    //apertura popup eliminazione file
+    const handleOpenDeleteAllegatiDialog = (fileId, fileType) => {
+        setSelectedFileId(fileId, fileType);
+        setOpenDialog(true);
+    };
+    
+    //apertura popup eliminazione cv e cf
+    const handleOpenDeleteDialogCVCF = (fileId, fileType) => {
+        setSelectedFileId({ id: fileId, type: fileType });
+        setOpenDialog(true);
+    };
+    
 
     const getDisabledStyles = (isDisabled) => {
         return isDisabled ? { color: "black" } : {};
@@ -76,6 +98,16 @@ const FieldBoxFile = ({
         setErrors({ ...errors, [name]: "" });
         }
     };
+
+      //funzione di change per decimalNumber
+    const handleChangeDecimal = (name) => (event) => {
+    let { value } = event.target;
+    value = value.replace(/,/g, '.');
+    if (!value || value.match(/^\d+(\.\d{0,2})?$/)) {
+    setValues({ ...values, [name]: value });
+    }
+    };
+
 
     const validate = () => {
         let tempErrors = {};
@@ -128,7 +160,7 @@ const FieldBoxFile = ({
 
 
     const handleDownloadCVCF = async (fileId, fileDescrizione) => {
-        const url = `https://localhost:8443/files/react/download/file/${fileId}`;
+        const url = `http://89.46.67.198:8443/files/react/download/file/${fileId}`;
         try {
             const response = await axios({
                 method: 'GET',
@@ -154,7 +186,7 @@ const FieldBoxFile = ({
         const handleDeleteCVCF = async (fileId, idCandidato, fileType) => {
             const idc = idCandidato;
             try {
-            const response = await axios.delete(`https://localhost:8443/files/react/elimina/file/candidato/${fileId}/${idc}`, { headers: headers })
+            const response = await axios.delete(`http://89.46.67.198:8443/files/react/elimina/file/candidato/${fileId}/${idc}`, { headers: headers })
             if(response.data === "OK") {
             } else {
                 console.error("Errore dal server: ", response.data);
@@ -164,6 +196,8 @@ const FieldBoxFile = ({
             } else if (fileType === 'cf') {
                 setValues({ ...values, cf: null });
             }
+            setOpenDialog(false); 
+            setSelectedFileId(null);  
             } catch (error) {
             console.error("Si è verificato un errore durante l'eliminazione del file:", error);
             }
@@ -188,7 +222,7 @@ const FieldBoxFile = ({
 
 
         const handleDownloadAllegati = async (fileID, fileDescrizione) => {
-            const url = `https://localhost:8443/files/react/download/file/${fileID}`;
+            const url = `http://89.46.67.198:8443/files/react/download/file/${fileID}`;
             try {
                 const response = await axios({
                     method: 'GET',
@@ -210,15 +244,22 @@ const FieldBoxFile = ({
         };
 
         const handleDeleteAllegati = async (fileId, idStaff) => {
+            
             try {
                 const ids = idStaff; 
-                const url = `https://localhost:8443/files/react/elimina/file/${fileId}/${ids}`;
+                const url = `http://89.46.67.198:8443/files/react/elimina/file/${fileId}/${ids}`;
         
-                const response = await axios.delete(url, { headers: headers });
-                setValues(prevValues => ({
-                    ...prevValues,
-                    files: prevValues.files.filter(file => file.id !== fileId)
-                }));        
+                const responseDeleteFile = await axios.delete(url, { headers: headers });
+                if(responseDeleteFile.status === 200 || responseDeleteFile.data === "OK") {
+                    const updatedFiles = fileAllegati.filter(file => file.id !== fileId);
+                    setFileAllegati(updatedFiles);
+                // setValues(prevValues => ({
+                //     ...prevValues,
+                //     files: prevValues.files.filter(file => file.id !== fileId)
+                // }));     
+                }  
+                setOpenDialog(false); 
+                setSelectedFileId(null);  
             } catch (error) {
                 console.error('Errore durante l\'eliminazione del file:', error);
             }
@@ -280,6 +321,23 @@ const FieldBoxFile = ({
                 disabled={field.disabled}
             />
             );
+
+
+            case 'decimalNumber':
+                return (
+                    <TextField
+                    sx={{ width: "100%", textAlign: "left" }}
+                    label={field.label}
+                    name={field.name}
+                    value={values[field.name] || ''}
+                    onChange={handleChangeDecimal(field.name)} 
+                    fullWidth
+                    error={!!errors[field.name]}
+                    helperText={errors[field.name]}
+                    disabled={field.disabled}
+                    />
+                );
+
 
         case "select":
             return (
@@ -575,7 +633,8 @@ const FieldBoxFile = ({
                                     startIcon={<DeleteIcon />}
                                     component="label"
                                     disabled={!values[field.name]}
-                                    onClick={() => handleDeleteCVCF(values.cv.id, idCandidato, 'cv')}
+                                    // onClick={() => handleDeleteCVCF(values.cv.id, idCandidato, 'cv')}
+                                    onClick={() => handleOpenDeleteDialogCVCF(values.cv.id, 'cv')}
                                 >
                                 </Button>
                         </Box>
@@ -649,7 +708,9 @@ const FieldBoxFile = ({
                                     startIcon={<DeleteIcon />}
                                     component="label"
                                     disabled={!values[field.name]}
-                                    onClick={() => handleDeleteCVCF(values.cf.id, idCandidato, 'cf')}
+                                    // onClick={() => handleDeleteCVCF(values.cf.id, idCandidato, 'cf')}
+                                    onClick={() => handleOpenDeleteDialogCVCF(values.cf.id, 'cf')}
+
                                 >
                                 </Button>
                             </Box>
@@ -685,9 +746,21 @@ const FieldBoxFile = ({
                         <Button
                             variant="contained"
                             startIcon={<DeleteIcon />}
-                            sx={{ marginLeft: '10px', marginBottom: "10px", marginTop: "10px", justifyContent:"flex-end", backgroundColor: "red", color: "white" }}
-                            onClick={() => handleDeleteAllegati(file.id, idStaff)}
-                            disabled={!values[field.name]}                                >
+                            sx={{ 
+                            marginLeft: '10px', 
+                            marginBottom: "10px", 
+                            marginTop: "10px", 
+                            justifyContent:"flex-end", 
+                            backgroundColor: "red", 
+                            color: "white",
+                            "&:hover": {
+                                backgroundColor: "red",
+                                transform: "scale(1.05)",
+                            }, }}
+                            // onClick={() => handleDeleteAllegati(file.id, idStaff)}
+                            onClick={() => handleOpenDeleteAllegatiDialog(file.id, "allegato")}
+                            disabled={!values[field.name]}  
+                            >
                         </Button>
                         </>
                     )}
@@ -778,17 +851,6 @@ const FieldBoxFile = ({
                         </Box>
                     );
 
-
-
-
-
-
-
-
-
-
-
-
         default:
             return null;
         }
@@ -808,6 +870,54 @@ const FieldBoxFile = ({
             boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.5)",
         }}
         >
+            <Dialog
+    open={openDialog}
+    onClose={() => setOpenDialog(false)}
+    aria-labelledby="alert-dialog-title"
+    aria-describedby="alert-dialog-description"
+>
+    <DialogTitle id="alert-dialog-title">
+        {"Conferma Eliminazione"}
+    </DialogTitle>
+    <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+            Sei sicuro di voler eliminare questo file?
+        </DialogContentText>
+    </DialogContent>
+    <DialogActions>
+        <Button onClick={() => setOpenDialog(false)}
+        sx={{
+            backgroundColor: 'black',
+            color: 'white',
+            "&:hover": {
+                backgroundColor: 'black'
+            }
+            
+            }}>
+            Annulla
+            </Button>
+        <Button onClick={() => {
+            if (selectedFileId.type === 'cv') {
+                handleDeleteCVCF(selectedFileId.id, idCandidato, 'cv');
+            } else if (selectedFileId.type === 'cf') {
+                handleDeleteCVCF(selectedFileId.id, idCandidato, 'cf');
+            } else if (selectedFileId.type === 'allegato') {
+                handleDeleteAllegati(selectedFileId.id, idStaff);
+            }
+            setOpenDialog(false);
+        }} 
+        autoFocus 
+        sx={{
+            backgroundColor: '#14D928',
+            color: 'black',
+            "&:hover": {
+                backgroundColor: '#14D928',
+            }
+        }}>
+            Elimina
+        </Button>
+    </DialogActions>
+</Dialog>
         <Typography variant="h5" style={{ marginBottom: "20px" }}>
             {title}
         </Typography>

@@ -176,7 +176,6 @@ const ProvaComponente = ({ fields, initialValues, onSubmit, onCVChange, onCFChan
         value={formValues[field.name] || ""}
         disabled={field.disabled}
         style={{ width: "100%", textAlign: "left" }}
-        // ... altre props che potrebbero essere necessarie
       />
       {isWeekPickerVisible && (
         <div ref={weekPickerRef}>

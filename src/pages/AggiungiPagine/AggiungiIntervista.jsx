@@ -3,7 +3,7 @@ import { useNavigate, useLocation }     from "react-router-dom";
 import axios                            from "axios";
 import Sidebar                          from "../../components/Sidebar";
 import MyBoxGroups                      from "../../components/MyBoxGroups";
-import { Button } from "@mui/material";
+import { Button, Box, Typography, Alert, Snackbar } from "@mui/material";
 
 const AggiungiIntervista = () => {
 const navigate      = useNavigate();
@@ -11,28 +11,22 @@ const location      = useLocation();
 const candidatoID   = location.state?.candidatoID;
 
 
-// Recupera l'accessToken da localStorage
 const user = JSON.parse(localStorage.getItem("user"));
 const accessToken = user?.accessToken;
 
-// Configura gli headers della richiesta con l'Authorization token
 const headers = {
   Authorization: `Bearer ${accessToken}`
 };
 
 
-
-
-
-
-
-const [ tipologiaOptions,           setTipologiaOptions             ] = useState([]); //jobtile
-const [ ownerOptions,               setOwnerOptions                 ] = useState([]);
-const [ statoOptions,               setStatoOptions                 ] = useState([]); //tipologiaIncontro
-const [ tipoIntervistaOptions,      setTipoIntervistaOptions        ] = useState([]); //follow up
-const [ interviste,                 setInterviste                   ] = useState([]);
-const [ candidato,                  setCandidato                    ] = useState([]);
-const [ isDataLoaded,               setIsDataLoaded                 ] = useState(false);
+  const [ tipologiaOptions,           setTipologiaOptions             ] = useState([]); //jobtile
+  const [ ownerOptions,               setOwnerOptions                 ] = useState([]);
+  const [ statoOptions,               setStatoOptions                 ] = useState([]); //tipologiaIncontro
+  const [ tipoIntervistaOptions,      setTipoIntervistaOptions        ] = useState([]); //follow up
+  const [ interviste,                 setInterviste                   ] = useState([]);
+  const [ candidato,                  setCandidato                    ] = useState([]);
+  const [ isDataLoaded,               setIsDataLoaded                 ] = useState(false);
+  const [ alert,                      setAlert                        ] = useState(false);
 
 
 
@@ -42,28 +36,26 @@ const fetchData = async () => {
 
 
       //jobtitle = tipologia, tipologiaIncontro = stato, owner = owner
-    const responseTipologia                      = await axios.get("https://localhost:8443/aziende/react/tipologia"                  , { headers: headers });
-    const ownerResponse                          = await axios.get("https://localhost:8443/aziende/react/owner"                      , { headers: headers });
-    const responseStato                          = await axios.get("https://localhost:8443/staffing/react/stato/candidato"           , { headers: headers });
-    const responseTipoIntervista                 = await axios.get("https://localhost:8443/intervista/react/tipointervista"          , { headers: headers });
-    const responseIntervista                     = await axios.get(`https://localhost:8443/intervista/react/${candidatoID}`          , { headers: headers });
-    const responseCandidato                      = await axios.get(`https://localhost:8443/staffing/react/${candidatoID}`            , { headers: headers }); 
+    const responseTipologia                      = await axios.get("http://89.46.67.198:8443/aziende/react/tipologia"                  , { headers: headers });
+    const ownerResponse                          = await axios.get("http://89.46.67.198:8443/aziende/react/owner"                      , { headers: headers });
+    const responseStato                          = await axios.get("http://89.46.67.198:8443/staffing/react/stato/candidato"           , { headers: headers });
+    const responseTipoIntervista                 = await axios.get("http://89.46.67.198:8443/intervista/react/tipointervista"          , { headers: headers });
+    const responseIntervista                     = await axios.get(`http://89.46.67.198:8443/intervista/react/mod/${candidatoID}`      , { headers: headers });
+    const responseCandidato                      = await axios.get(`http://89.46.67.198:8443/staffing/react/${candidatoID}`            , { headers: headers });
 
 
 
     if (Array.isArray(responseIntervista.data) && responseIntervista.data.length > 0) {
         // Prendi l'ultima intervista (supponendo che l'array sia ordinato in base alla data)
         const ultimaIntervista = responseIntervista.data[responseIntervista.data.length - 1];
-        setInterviste(ultimaIntervista); // Aggiorna lo stato con l'ultima intervista
+        setInterviste(ultimaIntervista);
     } else if (responseIntervista.data.length === 0) {
 
     } else {
         console.error("I dati ottenuti non sono nel formato Array:", responseIntervista.data);
-        // Gestisci altri potenziali errori
     }
     
     if (responseCandidato.data && typeof responseCandidato.data === 'object' && !Array.isArray(responseCandidato.data)) {
-        // Supponendo che setCandidato sia il metodo per impostare lo stato del candidato nel tuo componente
         setCandidato(responseCandidato.data);
     } else {
         console.error("I dati ottenuti non sono in formato oggetto:", responseCandidato.data);
@@ -116,6 +108,13 @@ const handleGoBack = () => {
     navigate(-1); 
   };
 
+  const handleCloseAlert = (event, reason) => {
+    if (reason === 'clickaway') {
+        return;
+    }
+    setAlert({ ...alert, open: false });
+};
+
 
 const campiObbligatori = [ "dataColloquio"];
 
@@ -128,7 +127,7 @@ const fields = [
     { label: "Location",                  name: "location",               type: "text"},
     { label: "Job Title",                 name: "tipologia",              type: "select", options: tipologiaOptions },
     { label: "Anni di Esperienza",        name: "anniEsperienza",         type: "text"},
-    { label: "* Data Incontro",           name: "dataColloquio",          type: "date"},
+    { label: "Data Incontro*",            name: "dataColloquio",          type: "date"},
     { label: "Recapiti",                  name: "cellulare",              type: "text"},
     { label: "Intervistatore",            name: "idOwner",                type: "select", options: ownerOptions },
 
@@ -218,20 +217,21 @@ cellulare:          true,
 };
 
 const handleSubmit = async (values) => {
+  const errors    = validateFields(values);
+  const hasErrors = Object.keys(errors).length > 0;
+
+  if (hasErrors) {
+    setAlert({
+      open: true,
+      message: 'Per favore, inserire la data del colloquio.'
+    });
+    return; 
+  }
+
     try {
-
-
-
-    //   const idCandidato = rowData.candidato?.id;
     const note = values.note;
     const modifica = 0; 
-
-    // delete values.candidatoID;
-    // delete values.modifica;
-    // delete values.note;
-
-    // const url = `https://localhost:8443/intervista/react/salva?idCandidato=${idCandidato}&note=${encodeURIComponent(note)}&modifica=${modifica}`;
-    const response = await axios.post("https://localhost:8443/intervista/react/salva",  values, {
+    const response = await axios.post("http://89.46.67.198:8443/intervista/react/salva",  values, {
       params: {
         idCandidato: candidatoID,
         note: note,
@@ -239,25 +239,37 @@ const handleSubmit = async (values) => {
       },
       headers: headers
     });
-
-
-
     navigate(`/staffing/intervista/${candidatoID}`);
     } catch (error) {
     console.error("Errore durante il salvataggio:", error);
     }
+  
+};
+
+
+const validateFields = (values) => {
+  let errors = {};
+  campiObbligatori.forEach(field => {
+    if (!values[field]) {
+      errors[field] = 'Questo campo è obbligatorio';
+    }
+  });
+  return errors;
 };
 
 return (
-    <div className="container">
-    <div className="content">
-        <div className="sidebar-container">
+  <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
+
         <Sidebar />
-        </div>
         <div className="container">
         <div className="page-name" style={{ margin: '20px',fontSize: "15px" }}>
         <h1>{`Aggiungi Intervista `}</h1>
         </div>
+        <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+                <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
+                    {alert.message}
+                </Alert>
+            </Snackbar>
         {isDataLoaded ? (
         <MyBoxGroups 
         fields={fields} 
@@ -268,7 +280,7 @@ return (
         campiObbligatori={campiObbligatori}
         />
         ) : (
-            <div>Caricamento in corso...</div> // Puoi sostituirlo con un componente di spinner o simili
+            <div>Caricamento in corso...</div>
           )}
           <Button
               color="primary"
@@ -291,8 +303,7 @@ return (
               Torna ad Interviste
             </Button>
         </div>
-    </div>
-    </div>
+</Box>
 );
 };
 

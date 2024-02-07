@@ -21,7 +21,6 @@ import {
     Typography,
     TableFooter
  } from '@mui/material';
-import { set } from 'date-fns';
 
 
 const ReportPage = () => {
@@ -40,13 +39,11 @@ const [ giorniTotali,           setGiorniTotali                     ] = useState
 const [ selectDisabled,         setSelectDisabled                   ] = useState(false);
 
 
-// Recupera l'accessToken da localStorage
 const user = JSON.parse(localStorage.getItem("user"));
 const accessToken = user?.accessToken;
 
-// Configura gli headers della richiesta con l'Authorization token
 const headers = {
-  Authorization: `Bearer ${accessToken}`
+Authorization: `Bearer ${accessToken}`
 };
 
 
@@ -107,7 +104,7 @@ const handleSearch = async () => {
 
 
     try {
-        const responseReport = await axios.get("https://localhost:8443/hr/report/estrai", {
+        const responseReport = await axios.get("http://89.46.67.198:8443/hr/report/estrai", {
             headers: headers,
             params: params
         });
@@ -115,7 +112,7 @@ const handleSearch = async () => {
         setShowTable(true);
         setLoading(false);
         setDipendenti(responseReport.data);
- 
+
     } catch(error) {
         console.error("Errore nella chiamata per recuperare il report: ", error);
     }
@@ -123,13 +120,11 @@ const handleSearch = async () => {
 
 
 // Quando la tabella viene visualizzata, disabilito i select e li posso riabilitare solo dopo aver premuto reset
-useEffect(() => { 
-    if (showTable) {
-      setSelectDisabled(true);
-    }
-  }, [showTable]);
-
-
+    useEffect(() => { 
+        if (showTable) {
+        setSelectDisabled(true);
+        }
+    }, [showTable]);
 
 
 
@@ -140,7 +135,7 @@ const handleEstraiExcel = async () => {
 
     const giornoInizio = dal || primoGiornoDelMese.getDate().toString();
     const giornoFine = al || ultimoGiornoDelMese.getDate().toString();
-    const url = `https://localhost:8443/hr/report/excel/${annoSelezionato}/${meseSelezionato}/${giornoInizio}/${giornoFine}`
+    const url = `http://89.46.67.198:8443/hr/report/excel/${annoSelezionato}/${meseSelezionato}/${giornoInizio}/${giornoFine}`
 
 
     try {
@@ -150,7 +145,7 @@ const handleEstraiExcel = async () => {
             responseType: 'blob',
             headers: headers
         });
-  
+
 
         const fileURL = window.URL.createObjectURL(new Blob([responseEstraiExcel.data]));
 
@@ -206,6 +201,7 @@ const isLunediPasqua = (giorno, mese, anno) => {
 
 const renderDayBox = (dipendente, giorniTotali) => {
     return (
+
         <React.Fragment>
             {Array.from({ length: giorniTotali }, (_, i) => {
             const giorno = i + 1;
@@ -228,10 +224,10 @@ const renderDayBox = (dipendente, giorniTotali) => {
             
             const giornoStyle = isSabatoODomenica || isGiornoFestivo
                 ? { backgroundColor: '#14D928', color: 'white' }
-                : { backgroundColor: 'grey.200', color: colore };
+                : { backgroundColor: 'white', color: colore };
     
             return (
-                <TableCell key={i} style={giornoStyle}>
+                <TableCell key={i} sx={giornoStyle}>
                 <Typography variant="body2" style={{ fontWeight: 'bold' }}>
                     {oreTotaliGiorno}
                 </Typography>
@@ -243,28 +239,9 @@ const renderDayBox = (dipendente, giorniTotali) => {
     };
     
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 return (
 <Box>
-
-    
-    <Box sx={{ width: '40%', margin: '20px', backgroundColor: 'white', borderRadius: '20px', boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.4)' }}>
+    <Box sx={{ width: '45vw', margin: '20px', backgroundColor: 'white', borderRadius: '20px', boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.4)' }}>
         <Grid container spacing={3} justifyContent="center" alignItems="center" padding={3}>
         <Grid item xs={6}>
             <FormControl fullWidth>
@@ -352,31 +329,33 @@ return (
         </Grid>
     </Box>
 
-
-
     {loading && (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
         <CircularProgress sx={{ color: 'white'}}/>
-      </Box>
+    </Box>
     )}
 
-
         {!loading && showTable && (
-            
+    <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
+
         <React.Fragment>
             <TableContainer component={Paper} sx={{ 
             margin: '20px',
-            width: 'auto', // La larghezza si adatta al contenuto
+            maxWidth: 'calc(100vw - 40px)',
+            width: '94vw', 
             backgroundColor: 'white', 
             borderRadius: '20px',
-            boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.4)'
+            boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.4)',
+            overflowX: 'hidden',
+            display: 'flex',
+            flexDirection: 'column'
             }}>
             <Table aria-label="customized table">
                 <TableHead>
                 <TableRow>
                     <TableCell>Dipendente</TableCell>
                     {[...Array(giorniTotali)].map((_, i) => (
-                    <TableCell key={i}>{i + 1}</TableCell>
+                    <TableCell key={i} sx={{maxWidth: '10px'}}>{i + 1}</TableCell>
                     ))}
                 </TableRow>
                 </TableHead>
@@ -420,6 +399,12 @@ return (
         </Box>
         </Box>
             </TableContainer> 
+            <Box sx={{        
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: '20px'
+            }}>
             <Button variant="contained" color="primary" onClick={handleEstraiExcel} sx={{
             backgroundColor: 'black',
             color: 'white',
@@ -431,7 +416,9 @@ return (
             }}>
             Estrai Report
             </Button>
+            </Box>
         </React.Fragment>
+        </Box>
         )}
 
         

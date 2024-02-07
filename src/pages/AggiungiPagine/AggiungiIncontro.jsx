@@ -6,6 +6,7 @@ import { useNavigate, useLocation }     from "react-router-dom";
 import Sidebar                          from "../../components/Sidebar";
 import axios                            from "axios";
 import MyBoxGroups                      from "../../components/MyBoxGroups";
+import { Box, Typography } from "@mui/material";
 
 const AggiungiIncontro = () => {
   const navigate = useNavigate();
@@ -15,11 +16,9 @@ const candidatoData = location.state?.candidatoData;
 const candidatoID   = location.state?.candidatoID; 
 
 
-// Recupera l'accessToken da localStorage
 const user = JSON.parse(localStorage.getItem("user"));
 const accessToken = user?.accessToken;
 
-// Configura gli headers della richiesta con l'Authorization token
 const headers = {
   Authorization: `Bearer ${accessToken}`
 };
@@ -40,24 +39,16 @@ useEffect(() => {
   const [ statoOptions,                 setStatoOptions           ] = useState([]); //tipologiaIncontro
   const [ tipoIntervistaOptions,        setTipoIntervistaOptions  ] = useState([]); //follow up
   const [ interviste,                   setInterviste             ] = useState([]);
-  
-
-
-
-
-
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-
-
         //jobtitle = tipologia, tipologiaIncontro = stato, owner = owner
-        const responseTipologia                      = await axios.get("https://localhost:8443/aziende/react/tipologia"          , { headers: headers });
-        const ownerResponse                          = await axios.get("https://localhost:8443/aziende/react/owner"              , { headers: headers });
-        const responseStato                          = await axios.get("https://localhost:8443/staffing/react/stato/candidato"   , { headers: headers });
-        const responseTipoIntervista                 = await axios.get("https://localhost:8443/intervista/react/tipointervista"  , { headers: headers });
-        const responseIntervista                     = await axios.get(`https://localhost:8443/intervista/react/${candidatoID}`  , { headers: headers });
+        const responseTipologia                      = await axios.get("http://89.46.67.198:8443/aziende/react/tipologia"          , { headers: headers });
+        const ownerResponse                          = await axios.get("http://89.46.67.198:8443/aziende/react/owner"              , { headers: headers });
+        const responseStato                          = await axios.get("http://89.46.67.198:8443/staffing/react/stato/candidato"   , { headers: headers });
+        const responseTipoIntervista                 = await axios.get("http://89.46.67.198:8443/intervista/react/tipointervista"  , { headers: headers });
+        const responseIntervista                     = await axios.get(`http://89.46.67.198:8443/intervista/react/mod/${candidatoID}`  , { headers: headers });
 
         if (Array.isArray(responseIntervista.data)) {
           const intervisteConId = responseIntervista.data.map((interviste) => ({ ...interviste }));
@@ -111,7 +102,6 @@ useEffect(() => {
     fetchData();
   }, []);
 
-//verifica se candidato ha interviste altrimenti lo crea
   useEffect(() => {
     if (candidatoData) {
       const intervisteArray = candidatoData.interviste || [];
@@ -128,13 +118,10 @@ useEffect(() => {
     return null;
   };
   
-  
 
   const fields = [
 
-    { label: "Tipologia Incontro",        name: "stato",                  type: "select", options: statoOptions, 
-  
-},
+    { label: "Tipologia Incontro",        name: "stato",                  type: "select", options: statoOptions, },
     { label: "Nome",                      name: "nome",                   type: "text"   },
     { label: "Cognome",                   name: "cognome",                type: "text"   },
     { label: "Data di Nasciata",          name: "dataNascita",            type: "date"   },
@@ -243,7 +230,7 @@ const initialValues = {
       const note = values.note;
       const modifica = 0; 
   
-      const response = await axios.post("https://localhost:8443/intervista/react/salva", values, {
+      const response = await axios.post("http://89.46.67.198:8443/intervista/react/salva", values, {
           params: {
             idCandidato: idCandidato,
             note: note,
@@ -264,13 +251,12 @@ const initialValues = {
  
 
   return (
-    <div className="container">
-      <div className="content">
-        <div className="sidebar-container">
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
+
           <Sidebar />
-        </div>
-        <div className="container">
-          <div className="page-name">Aggiungi un nuovo incontro</div>
+          <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
+          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Aggiungi un nuovo incontro</Typography>
+
           <MyBoxGroups 
           fields={fields} 
           initialValues={initialValues} 
@@ -279,9 +265,8 @@ const initialValues = {
           onCancel={handleCancel} 
           title="" 
           />
-        </div>
-      </div>
-    </div>
+           </Box>
+      </Box>
   );
 };
 

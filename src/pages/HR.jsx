@@ -19,65 +19,45 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  Box,
+  Typography
 } from '@mui/material';
-
-import "../styles/HR.css";
-
-
-
-
 
 
 const HR = () => {
+
   const navigate = useNavigate();
 
-const [ hr,                               setHr                           ] = useState([]);
-const [ originalHr,                       setOriginalHr                   ] = useState([]);
-const [ filteredHr,                       setFilteredHr                   ] = useState([]);
-const [ searchText,                       setSearchText                   ] = useState("");
-const [ isNotesPopupOpen,                 setIsNotesPopupOpen             ] = useState(false);
-const [ selectedCandidateNotes,           setSelectedCandidateNotes       ] = useState("");
-const [ openDialog,                       setOpenDialog                   ] = useState(false);
-const [ deleteId,                         setDeleteId                     ] = useState(null);
+    const [ hr,                               setHr                           ] = useState([]);
+    const [ originalHr,                       setOriginalHr                   ] = useState([]);
+    const [ filteredHr,                       setFilteredHr                   ] = useState([]);
+    const [ searchText,                       setSearchText                   ] = useState("");
+    const [ isNotesPopupOpen,                 setIsNotesPopupOpen             ] = useState(false);
+    const [ selectedCandidateNotes,           setSelectedCandidateNotes       ] = useState("");
+    const [ openDialog,                       setOpenDialog                   ] = useState(false);
+    const [ deleteId,                         setDeleteId                     ] = useState(null);
 
+    const user = JSON.parse(localStorage.getItem("user"));
+    const accessToken = user?.accessToken;
 
+    const headers = {
+      Authorization: `Bearer ${accessToken}`
+    };
 
-
-
-   // Recupera l'accessToken da localStorage
-   const user = JSON.parse(localStorage.getItem("user"));
-   const accessToken = user?.accessToken;
-
-   // Configura gli headers della richiesta con l'Authorization token
-   const headers = {
-     Authorization: `Bearer ${accessToken}`
-   };
-
-
-
-  const handleCloseNotesModal = () => {
-    setIsNotesPopupOpen(false);
-  };
+    const handleCloseNotesModal = () => {
+      setIsNotesPopupOpen(false);
+    };
 
 
   const fetchData = async () => {
     try {
-      // Recupera l'accessToken da localStorage
-     const user = JSON.parse(localStorage.getItem("user"));
-     const accessToken = user?.accessToken;
- 
-     // Configura gli headers della richiesta con l'Authorization token
-     const headers = {
-       Authorization: `Bearer ${accessToken}`
-     };
 
-      const response = await axios.get("https://localhost:8443/hr/react/modificato", { headers: headers });
+      const response = await axios.get("http://89.46.67.198:8443/hr/react/modificato", { headers: headers });
+
       if (Array.isArray(response.data)) {
         const hrConId = response.data.map((hr) => ({ ...hr }));
         setOriginalHr(hrConId);
         setFilteredHr(hrConId);
-
-        
       } else {
         console.error("I dati ottenuti non sono nel formato Array:", response.data);
       }
@@ -86,14 +66,14 @@ const [ deleteId,                         setDeleteId                     ] = us
     }
   };
 
-  useEffect(() => {
-  fetchData();
-}, []);
+    useEffect(() => {
+    fetchData();
+  }, []);
 
-const openDeleteDialog = (id) => {
-  setDeleteId(id);
-  setOpenDialog(true);
-};
+  const openDeleteDialog = (id) => {
+    setDeleteId(id);
+    setOpenDialog(true);
+  };
 
 
   const navigateToAggiungiUser = () => {
@@ -109,11 +89,9 @@ const openDeleteDialog = (id) => {
   };
 
 
-
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`https://localhost:8443/hr/react/staff/elimina/${deleteId}`, { headers: headers});
-
+      const response = await axios.delete(`http://89.46.67.198:8443/hr/react/staff/elimina/${deleteId}`, { headers: headers});
       setOpenDialog(false);
       fetchData();
     } catch (error) {
@@ -123,60 +101,46 @@ const openDeleteDialog = (id) => {
 
   const columns = [
     // { field: "id",        headerName: "ID",         width: 70  },
-    { field: "nome",      headerName: "Nome",       width: 150 },
-    { field: "cognome",   headerName: "Cognome",    width: 150 },
-    { field: "email",     headerName: "Email",      width: 250 },
-    { field: "note",      headerName: "Note",       width: 180, renderCell: (params) => (
-      <div>
-        <NoteButton onClick={() => {
-          setIsNotesPopupOpen(true);
-          setSelectedCandidateNotes(params.row.note);
-        }} />
-        </div>
-    ),
-      },
-    { field: "timesheet", headerName: "Timesheet",  width: 180, renderCell: (params) => (
-      <div>
-        <Link
-        to={`/hr/staff/timesheet/${params.row.id}`}
-        state={{ dipendentiData: params.row}}
-        >
-          <TimesheetButton />
-          </Link>
-      </div> 
-       ), },
-    { field: "azioni",    headerName: "Azioni",     width: 700, renderCell: (params) => (
-      <div>
-        <Link
-        to={`/hr/staff/visualizza/${params.row.id}`}
-        state={{ dipendentiData: params.row}}
-        >
-        <VisibilityButton />
-        </Link>
-        <Link
-        to={`/hr/staff/modifica/${params.row.id}`}
-        state={{ dipendentiData: params.row}}
-        >
-        <EditButton  />
-        </Link>
-        <DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
-      </div>
-    ), },
+    { field: "nome",      headerName: "Nome",       flex: 1 },
+    { field: "cognome",   headerName: "Cognome",    flex: 1 },
+    { field: "email",     headerName: "Email",      flex: 1.2 },
+    { field: "note",      headerName: "Note",       flex: 0.5, renderCell: (params) => (
+                                                                                          <div>
+                                                                                            <NoteButton onClick={() => {
+                                                                                              setIsNotesPopupOpen(true);
+                                                                                              setSelectedCandidateNotes(params.row.note);
+                                                                                            }} />
+                                                                                            </div>
+                                                                                            ),
+                                                                                          },
+    { field: "timesheet", headerName: "Timesheet",  flex: 0.5, renderCell: (params) => (
+                                                                                            <div>
+                                                                                              <Link
+                                                                                              to={`/hr/staff/timesheet/${params.row.id}`}
+                                                                                              state={{ dipendentiData: params.row}}
+                                                                                              >
+                                                                                                <TimesheetButton />
+                                                                                                </Link>
+                                                                                            </div> 
+                                                                                            ), },
+    { field: "azioni",    headerName: "Azioni",     flex: 1, renderCell: (params) => (
+                                                                                              <div>
+                                                                                                <Link
+                                                                                                to={`/hr/staff/visualizza/${params.row.id}`}
+                                                                                                state={{ dipendentiData: params.row}}
+                                                                                                >
+                                                                                                <VisibilityButton />
+                                                                                                </Link>
+                                                                                                <Link
+                                                                                                to={`/hr/staff/modifica/${params.row.id}`}
+                                                                                                state={{ dipendentiData: params.row}}
+                                                                                                >
+                                                                                                <EditButton  />
+                                                                                                </Link>
+                                                                                                <DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
+                                                                                              </div>
+                                                                                            ), },
   ];
-
-
-  // const handleSearch = (text) => {
-  //   setSearchText(text);
-  
-  //   const filtered = originalHr.filter((item) =>
-  //     Object.values(item).some(
-  //       (value) =>
-  //         value && value.toString().toLowerCase().includes(text.toLowerCase())
-  //     )
-  //   );
-  
-  //   setFilteredHr(filtered);
-  // };
   
   const handleSearch = (filteredData) => {
     setFilteredHr(filteredData);
@@ -185,23 +149,13 @@ const openDeleteDialog = (id) => {
 
   const handleReset = () => {
     setSearchText(""); 
-    // fetchData();
-    setFilteredHr(originalHr);
+    fetchData();
   };
 
 
   const handleInviaSollecito = async () => {
     try {
-      // Recupera l'accessToken da localStorage
-     const user = JSON.parse(localStorage.getItem("user"));
-     const accessToken = user?.accessToken;
- 
-     // Configura gli headers della richiesta con l'Authorization token
-     const headers = {
-       Authorization: `Bearer ${accessToken}`
-     };
-
-      const response = await axios.post("https://localhost:8443/hr/react/staff/sollecito", { headers: headers });
+      const response = await axios.post("http://89.46.67.198:8443/hr/react/staff/sollecito", { headers: headers });
     } catch (error) {
       console.error("Errore durante la cancellazione:", error);
     }
@@ -209,15 +163,11 @@ const openDeleteDialog = (id) => {
 
 
   return (
-    <div className="container">
-      <div className="content">
-        <div className="sidebar-container">
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
           <Sidebar />
-        </div>
-        <div className="container">
-          <div className="page-name">HR Managing</div>
-      
-          <div className="row-container1">
+          <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
+          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>HR Managing</Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', gap: '40px', margin: '0 30px' }}>
             <Button
                 className="button-add"
                 variant="contained"
@@ -237,7 +187,7 @@ const openDeleteDialog = (id) => {
                 display: "flex",
                 alignItems: "flex-start",
                 "&:hover": {
-                  backgroundColor: "#14D928",
+                  backgroundColor: "#ffb800",
                   transform: "scale(1.05)",
                   color: 'black',
                 },
@@ -263,7 +213,7 @@ const openDeleteDialog = (id) => {
                 display: "flex",
                 alignItems: "flex-start",
                 "&:hover": {
-                  backgroundColor: "#14D928",
+                  backgroundColor: "#ffb800",
                   transform: "scale(1.05)",
                   color: 'black',
                 },
@@ -290,113 +240,112 @@ const openDeleteDialog = (id) => {
                 alignItems: "flex-start",
                 "&:hover": {
                   color: 'black',
-                  backgroundColor: "#14D928",
+                  backgroundColor: "#ffb800",
                   transform: "scale(1.05)",
                 },
               }}
             >
               Invia Sollecito
             </Button>
-          </div>
-         
-          
+            </Box>
+            <Box sx={{ height: '90%', marginTop: '40px', width: '100%'}}>
             <MyDataGrid 
-            data={filteredHr} 
-            columns={columns} 
-            title="Staff" 
-            getRowId={(row) => row.id}
-            searchBoxComponent={() => (
-              <HRSearchBox data={hr}
-          onSearch={handleSearch} 
-          onReset={handleReset}
-          searchText={searchText}
-          onSearchTextChange={(text) => setSearchText(text)}
-          OriginalHr={originalHr}/>
-
-            )}
+                data={filteredHr} 
+                columns={columns} 
+                title="Staff" 
+                getRowId={(row) => row.id}
+                searchBoxComponent={() => (
+                  <HRSearchBox data={hr}
+                      onSearch={handleSearch} 
+                      onReset={handleReset}
+                      searchText={searchText}
+                      onSearchTextChange={(text) => setSearchText(text)}
+                      OriginalHr={originalHr}
+                  />
+                )}
             />
           <Modal
-  isOpen={isNotesPopupOpen}
-  onRequestClose={() => setIsNotesPopupOpen(false)}
-  style={{
-    content: {
-      width: '400px',
-      height: '400px',
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-      borderRadius: '10px',
-      position: 'relative', 
-    },
-    overlay: {
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    },
-  }}
->
-  <h2>Note</h2>
-  <div style={{ marginTop: "20px"}}>{selectedCandidateNotes}</div>
-  <Button
-    color="primary"
-    onClick={() => setIsNotesPopupOpen(false)}
-    sx={{
-      position: 'absolute', 
-      bottom: '10px',       
-      right: '10px',        
-      backgroundColor: "#6C757D",
-      color: "white",
-      "&:hover": {
-        backgroundColor: "#6C757D",
-        transform: "scale(1.05)",
-      },
-    }}
-  >
-    Indietro
-  </Button>
-</Modal>
-        </div>
-      </div>
-      <Dialog
-  open={openDialog}
-  onClose={() => setOpenDialog(false)}
-  aria-labelledby="alert-dialog-title"
-  aria-describedby="alert-dialog-description"
-  
->
-  <DialogTitle id="alert-dialog-title">{"Conferma Eliminazione"}</DialogTitle>
-  <DialogContent>
-    <DialogContentText id="alert-dialog-description">
-      Sei sicuro di voler eliminare questa azienda?
-    </DialogContentText>
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={() => setOpenDialog(false)} color="primary" style={{
-              backgroundColor: "black",
-              color: "white",
-              "&:hover": {
-                backgroundColor: "black",
-                transform: "scale(1.05)",
-              },
-            }}>
-      Annulla
-    </Button>
-    <Button onClick={handleDelete} color="primary" variant="contained" type="submit"
+              isOpen={isNotesPopupOpen}
+              onRequestClose={() => setIsNotesPopupOpen(false)}
               style={{
-                backgroundColor: "#14D928",
-                color: "black",
-                "&:hover": {
-                  backgroundColor: "#14D928",
-                  color: "black",
-                  transform: "scale(1.05)",
+                content: {
+                  width: '400px',
+                  height: '400px',
+                  top: '50%',
+                  left: '50%',
+                  right: 'auto',
+                  bottom: 'auto',
+                  marginRight: '-50%',
+                  transform: 'translate(-50%, -50%)',
+                  borderRadius: '10px',
+                  position: 'relative', 
                 },
-              }}>
-      Conferma
-    </Button>
-  </DialogActions>
-</Dialog>
-    </div>
+                overlay: {
+                  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                },
+              }}
+            >
+              <h2>Note</h2>
+              <div style={{ marginTop: "20px"}}>{selectedCandidateNotes}</div>
+              <Button
+                color="primary"
+                onClick={() => setIsNotesPopupOpen(false)}
+                sx={{
+                  position: 'absolute', 
+                  bottom: '10px',       
+                  right: '10px',        
+                  backgroundColor: "#6C757D",
+                  color: "white",
+                  "&:hover": {
+                    backgroundColor: "#6C757D",
+                    transform: "scale(1.05)",
+                  },
+                }}
+              >
+                Indietro
+              </Button>
+            </Modal>
+            </Box>
+                    </Box>
+                  <Dialog
+              open={openDialog}
+              onClose={() => setOpenDialog(false)}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+              
+            >
+              <DialogTitle id="alert-dialog-title">{"Conferma Eliminazione"}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Sei sicuro di voler eliminare questa azienda?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => setOpenDialog(false)} color="primary" style={{
+                          backgroundColor: "black",
+                          color: "white",
+                          "&:hover": {
+                            backgroundColor: "black",
+                            transform: "scale(1.05)",
+                          },
+                        }}>
+                  Annulla
+                </Button>
+                <Button onClick={handleDelete} color="primary" variant="contained" type="submit"
+                          style={{
+                            backgroundColor: "#14D928",
+                            color: "black",
+                            "&:hover": {
+                              backgroundColor: "#14D928",
+                              color: "black",
+                              transform: "scale(1.05)",
+                            },
+                          }}>
+                  Conferma
+                </Button>
+              </DialogActions>
+            </Dialog>
+      </Box>
   );
 };
 
