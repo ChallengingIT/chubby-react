@@ -187,7 +187,7 @@ const HR = () => {
                 display: "flex",
                 alignItems: "flex-start",
                 "&:hover": {
-                  backgroundColor: "#ffb800",
+                  backgroundColor: "#14D928",
                   transform: "scale(1.05)",
                   color: 'black',
                 },
@@ -213,7 +213,7 @@ const HR = () => {
                 display: "flex",
                 alignItems: "flex-start",
                 "&:hover": {
-                  backgroundColor: "#ffb800",
+                  backgroundColor: "#14D928",
                   transform: "scale(1.05)",
                   color: 'black',
                 },
@@ -240,7 +240,7 @@ const HR = () => {
                 alignItems: "flex-start",
                 "&:hover": {
                   color: 'black',
-                  backgroundColor: "#ffb800",
+                  backgroundColor: "#14D928",
                   transform: "scale(1.05)",
                 },
               }}

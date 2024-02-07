@@ -661,10 +661,10 @@ const progettiArray = Object.values(progettoUnivoco);
       {/* Navigazione Mesi e Griglia dei giorni */}
             <Grid item xs={10} sm={10}>
                 <Grid container justifyContent="flex-start" alignItems="center" marginBottom="20px" marginTop="20px" >
-                <Button sx={{ color:"#ffb800"}} onClick={handlePrevMese}>{"<"}</Button>
+                <Button sx={{ color:"#14D928"}} onClick={handlePrevMese}>{"<"}</Button>
                 <Typography variant="h6">{`${nomiMesi[parseInt(meseNumero, 10) - 1]}  ${annoNumero}`}</Typography>
 
-                <Button sx={{ color:"#ffb800"}} onClick={handleSuccMese}>{">"}</Button>
+                <Button sx={{ color:"#14D928"}} onClick={handleSuccMese}>{">"}</Button>
                 </Grid>
                 {renderDaySquares()}
             </Grid>
@@ -753,7 +753,7 @@ disabled
 
         sx={{
             '&.Mui-checked': {
-            color: '#ffb800',
+            color: '#14D928',
             },
         }}
         />
@@ -772,7 +772,7 @@ disabled
 
         sx={{
             '&.Mui-checked': {
-            color: '#ffb800', 
+            color: '#14D928', 
             },
         }}
         />
@@ -791,7 +791,7 @@ disabled
 
         sx={{
             '&.Mui-checked': {
-            color: '#ffb800', 
+            color: '#14D928', 
             },
         }}
         />

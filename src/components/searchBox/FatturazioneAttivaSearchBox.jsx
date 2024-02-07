@@ -133,13 +133,13 @@ const FatturazioneAttivaSearchBox = ({ data, onSearch, onReset, onSearchTextChan
       sx={{
         width: '100px',
         height: "40px",
-        backgroundColor: "#ffb800",
+        backgroundColor: "#14D928",
         color: "black",
         borderRadius: "10px",
         fontSize: "0.8rem",
         fontWeight: "bolder",
         "&:hover": {
-          backgroundColor: "#ffb800",
+          backgroundColor: "#14D928",
           color: "black",
           transform: "scale(1.05)",
         },
