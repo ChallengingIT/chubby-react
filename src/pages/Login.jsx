@@ -1,7 +1,7 @@
 import React                      from "react";
 import { useNavigate }            from "react-router-dom";
 import LoginComponent             from "../components/LoginComponent";
-import loginimg                   from "../images/loginimg.jpeg";
+import loginimg                   from "../images/login_scura.jpeg";
 import "../styles/Login.css";
 
 export const Login = () => {
