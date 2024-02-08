@@ -308,11 +308,11 @@ const tableAssociati = [
     <div>
       <Button
       onClick={() => handleOpenModal(params.row)}
-      sx={{ backgroundColor: '#FFB800',
+      sx={{ backgroundColor: '#14D928',
       fontWeight: 'bold',
       color: 'black',
       "&:hover": {
-        backgroundColor: "#ffb800",
+        backgroundColor: "#14D928",
         transform: "scale(1.05)",
         color: 'black',
         
@@ -356,11 +356,11 @@ const tableAssociati = [
       <div>
         <Button
         onClick={() => handleAssocia(params.row)}
-        sx={{ backgroundColor: '#FFB800',
+        sx={{ backgroundColor: '#14D928',
         fontWeight: 'bold',
         color: 'black',
         "&:hover": {
-          backgroundColor: "#ffb800",
+          backgroundColor: "#14D928",
           transform: "scale(1.05)",
           color: 'black',
         },

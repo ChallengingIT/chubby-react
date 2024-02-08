@@ -11,8 +11,7 @@ export const Login = () => {
     <div className="login">
       <div className="div-2">
         <p className="WE-HUB">
-          <span className="span">WE-</span>
-          <span className="text-wrapper-6">HUB</span>
+          <span className="text-wrapper-6">TORCHY</span>
         </p>
         <div className="overlap-group">
           <LoginComponent

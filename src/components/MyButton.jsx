@@ -26,7 +26,7 @@ function MyButton({onClick, children}) {
       textAlign:'center',
 
       "&:hover": {
-        backgroundColor: "#ffb800",
+        backgroundColor: "#14D928",
         transform: "scale(1.05)",
         color: 'black',
       },
