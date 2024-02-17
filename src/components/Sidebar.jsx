@@ -389,7 +389,7 @@ const Sidebar = ({ handleLogout }) => {
                 fontSize: "30px",
               }}
             >
-              WE-HUB
+              TORCHY
             </span>
             <ImgContainer>
               <img src={Logo} alt="Logo" style={{ marginLeft: "5%" }} />

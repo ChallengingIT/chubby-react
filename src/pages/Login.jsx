@@ -83,8 +83,7 @@ export const Login = () => {
       right: '30px', 
       top: '30px',
     }}>
-      <span style={{ color: '#ffffff' }}>WE-</span>
-      <span style={{ color: '#14D928' }}>HUB</span>
+      <span style={{ color: '#14D928' }}>TORCHY</span>
     </Box>
   
   </Box>

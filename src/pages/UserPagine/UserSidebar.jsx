@@ -169,7 +169,7 @@ return (
             {open && ( 
                 <Box sx={{ display: 'flex', justifyContent: 'center', padding: '16px', flexDirection: 'column' }}>
                     <Typography sx={{ color: 'white', display: 'flex', alignItems: 'flex-start', fontWeight: 'bold', fontSize: '30px' }}>
-                        WE-HUB
+                        TORCHY
                     </Typography>
                     <img src={Logo} alt="Logo" style={{ maxWidth: '100%' }} />
                 </Box>
