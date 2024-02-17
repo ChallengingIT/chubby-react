@@ -180,44 +180,6 @@ const sidebarData = [
         sidebarcollapsed: true,
     },
     {
-        title: 'Progetti',
-        path: '/progetti',
-        icon: <ChecklistIcon style={{ color: '#14D928' }}/>,
-    sidebarcollapsed: true,
-    },
-
-    {
-        title: 'Amministrazione',
-        icon: <AccountTreeIcon style={{ color: '#14D928' }}/>,
-        iconClosed: (
-            <ExpandMore style={{ color: '#14D928', marginRight: '2em'}}/>
-        ),
-        sidebarcollapsed: true,
-        subNav: [
-            {
-                title: 'Fatturazione Attiva',
-                path: '/fatturazioneAttiva',
-                icon: <CreditCardIcon style={{ color: '#14D928' }}/>,
-            },
-            {
-                title: "Fatturazione Passiva",
-                path: "/fatturazione/passiva",
-                icon: <ImportContactsIcon style={{ color: '#14D928' }}/>,
-            },
-            {
-                title: "Fornitori",
-                path: "/fornitori",
-                icon: <FactoryIcon style={{ color: '#14D928' }}/>,
-            },
-        ],
-    },
-    {
-        title: 'HR',
-        path: '/hr',
-        icon: <PeopleIcon style={{ color: '#14D928' }}/>,
-        sidebarcollapsed: true,
-    },
-    {
         title: 'Logout',
         icon: <ExitToAppIcon style={{ color: '#14D928' }}/>,
         action: 'logout',

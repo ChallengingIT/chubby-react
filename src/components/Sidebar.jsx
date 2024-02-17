@@ -373,59 +373,7 @@ const Sidebar = ({ handleLogout }) => {
       path: "/recruiting",
       icon: <FaIcons.FaUser className="active-icon" />,
       sidebarcollapsed: false,
-    },
-    {
-      title: "Progetti",
-      path: "/progetti",
-      icon: <Fa6Icons.FaListCheck className="active-icon" />,
-      sidebarcollapsed: false,
-    },
-    {
-      title: "Amministrazione",
-      icon: <FaIcons.FaSitemap />,
-      iconClosed: (
-        <RiIcons.RiArrowDownSFill
-          className="active-icon"
-          style={{ color: "#14D928", marginRight: "10px", }}
-        />
-      ),
-      iconOpened: (
-        <RiIcons.RiArrowUpSFill
-          className="active-icon"
-          style={{ color: "#14D928", marginRight: "10px" }}
-        />
-      ),
-      sidebarcollapsed: false,
-      subNav: [
-        {
-          title: "Fatturazione Attiva",
-          path: "/FatturazioneAttiva",
-          icon: <FaIcons.FaMoneyCheck className="active-icon" />,
-        },
-        {
-          title: "Fatturazione Passiva",
-          path: "/fatturazione/passiva",
-          icon: <FaIcons.FaIdBadge className="active-icon" />,
-        },
-        {
-          title: "Fornitori",
-          path: "/fornitori",
-          icon: <FaIcons.FaIndustry className="active-icon" />,
-        },
-        // {
-        //   title: "Tesoreria",
-        //   path: "/tesoreria",
-        //   icon: <Fa6Icons.FaCreditCard className="active-icon" />,
-        //   sidebarcollapsed: false,
-        // },
-      ],
-    },
-    {
-      title: "HR",
-      path: "/hr",
-      icon: <FaIcons.FaUsers className="active-icon" />,
-      sidebarcollapsed: false,
-    },
+    }
   ];
 
   return (
