@@ -55,7 +55,7 @@ function ListaNeed() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://89.46.67.198:8443/need/react/cliente/modificato/${id}`, { headers: headers });;
+      const response = await axios.get(`http://89.46.196.60:8443/need/react/cliente/modificato/${id}`, { headers: headers });;
       if (Array.isArray(response.data)) {
         const needConId = response.data.map((need) => ({ ...need }));
         setNeed(needConId);
@@ -100,7 +100,7 @@ function ListaNeed() {
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`http://89.46.67.198:8443/need/react/elimina/${deleteId}`);
+      const response = await axios.delete(`http://89.46.196.60:8443/need/react/elimina/${deleteId}`);
       fetchData();
       setOpenDialog(false);
     } catch (error) {
@@ -165,7 +165,7 @@ function ListaNeed() {
   ]
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100vh', width: '100vw', overflow: 'hidden'}}>
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100vh', width: '100vw', overflow: 'hidden'}}>
     <Sidebar2 />
     <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowX: 'hidden', overFlowY:'auto', width: '100vw'}}>
     <Typography variant="h4" component="h1" sx={{ marginLeft: '30px', marginTop: '30px', marginBottom: '15px', fontWeight: 'bold', fontSize: '1.8rem'}}>Visualizzazione di {nomeAzienda}</Typography>
@@ -243,10 +243,10 @@ function ListaNeed() {
               </Button>
               <Button onClick={handleDelete} color="primary" variant="contained" type="submit"
                         style={{
-                          backgroundColor: "#FFB700",
+                          backgroundColor: "#14D928",
                           color: "black",
                           "&:hover": {
-                            backgroundColor: "#FFB700",
+                            backgroundColor: "#14D928",
                             color: "black",
                             transform: "scale(1.05)",
                           },

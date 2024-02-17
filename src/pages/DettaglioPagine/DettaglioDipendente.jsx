@@ -27,11 +27,11 @@ const DettaglioDipendente = () => {
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseJobTitle              = await axios.get("http://89.46.67.198:8443/aziende/react/tipologia");
-        const responseNeed                  = await axios.get("http://89.46.67.198:8443/staffing/react/skill");
-        const facoltaResponse               = await axios.get("http://89.46.67.198:8443/staffing/react/facolta");
-        const livelloScolasticoResponse     = await axios.get("http://89.46.67.198:8443/staffing/react/livello");
-        const tipologiaContrattoResponse    = await axios.get("http://89.46.67.198:8443/hr/react/tipocontratto");
+        const responseJobTitle              = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia");
+        const responseNeed                  = await axios.get("http://89.46.196.60:8443/staffing/react/skill");
+        const facoltaResponse               = await axios.get("http://89.46.196.60:8443/staffing/react/facolta");
+        const livelloScolasticoResponse     = await axios.get("http://89.46.196.60:8443/staffing/react/livello");
+        const tipologiaContrattoResponse    = await axios.get("http://89.46.196.60:8443/hr/react/tipocontratto");
 
         if (Array.isArray(tipologiaContrattoResponse.data)) {
           const tipologiaContrattoOptions = tipologiaContrattoResponse.data.map((tipologiaContratto) => ({
@@ -148,7 +148,7 @@ const DettaglioDipendente = () => {
         const fileID = file.id;
         const fileDescrizione = file.descrizione; 
   
-        const url = `http://89.46.67.198:8443/files/react/download/file/${fileID}`;
+        const url = `http://89.46.196.60:8443/files/react/download/file/${fileID}`;
         const response = await axios({
           method: 'GET',
           url: url,
@@ -174,7 +174,7 @@ const DettaglioDipendente = () => {
 
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100%', width: '100%', overflow: 'hidden'}}>
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
           <Sidebar2 />
           <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
           <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Visualizza {nomeDipendente} {cognomeDipendente}</Typography>

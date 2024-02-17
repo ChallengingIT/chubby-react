@@ -143,83 +143,83 @@ const Sidebar2 = ({ isSidebarOpen, setIsSidebarOpen }) => {
 const sidebarData = [
     {
         title: 'Home',
-        icon: <HomeIcon style={{ color: '#FFB700' }}/>,
+        icon: <HomeIcon style={{ color: '#14D928' }}/>,
         sidebarcollapsed: true,
     },
     {
         title: 'Business Dev',
-        icon: <AccountBoxIcon style={{ color: '#FFB700' }}/>,
+        icon: <AccountBoxIcon style={{ color: '#14D928' }}/>,
         iconClosed: (
-            <ExpandMore style={{ color: '#FFB700', marginRight: '2em'}}/>
+            <ExpandMore style={{ color: '#14D928', marginRight: '2em'}}/>
         ),
         sidebarcollapsed: true,
         subNav: [
             {
                 title: 'Aziende',
                 path: '/aziende',
-                icon: <BusinessCenterIcon style={{ color: '#FFB700' }}/>,
+                icon: <BusinessCenterIcon style={{ color: '#14D928' }}/>,
                 customStyle: { marginLeft: '10px' },
             },
             {
                 title: 'KeyPeople',
                 path: '/KeyPeople',
-                icon: <CollectionsBookmarkIcon style={{ color: '#FFB700' }}/>
+                icon: <CollectionsBookmarkIcon style={{ color: '#14D928' }}/>
             },
         ],
     },
     {
         title: 'Need',
         path: '/need',
-        icon: <NearMeIcon style={{ color: '#FFB700' }}/>,
+        icon: <NearMeIcon style={{ color: '#14D928' }}/>,
         sidebarcollapsed: true,
     },
     {
         title: 'Recruiting',
         path: '/recruiting',
-        icon: <PersonIcon style={{ color: '#FFB700' }}/>,
+        icon: <PersonIcon style={{ color: '#14D928' }}/>,
         sidebarcollapsed: true,
     },
     {
         title: 'Progetti',
         path: '/progetti',
-        icon: <ChecklistIcon style={{ color: '#FFB700' }}/>,
+        icon: <ChecklistIcon style={{ color: '#14D928' }}/>,
     sidebarcollapsed: true,
     },
 
     {
         title: 'Amministrazione',
-        icon: <AccountTreeIcon style={{ color: '#FFB700' }}/>,
+        icon: <AccountTreeIcon style={{ color: '#14D928' }}/>,
         iconClosed: (
-            <ExpandMore style={{ color: '#FFB700', marginRight: '2em'}}/>
+            <ExpandMore style={{ color: '#14D928', marginRight: '2em'}}/>
         ),
         sidebarcollapsed: true,
         subNav: [
             {
                 title: 'Fatturazione Attiva',
                 path: '/fatturazioneAttiva',
-                icon: <CreditCardIcon style={{ color: '#FFB700' }}/>,
+                icon: <CreditCardIcon style={{ color: '#14D928' }}/>,
             },
             {
                 title: "Fatturazione Passiva",
                 path: "/fatturazione/passiva",
-                icon: <ImportContactsIcon style={{ color: '#FFB700' }}/>,
+                icon: <ImportContactsIcon style={{ color: '#14D928' }}/>,
             },
             {
                 title: "Fornitori",
                 path: "/fornitori",
-                icon: <FactoryIcon style={{ color: '#FFB700' }}/>,
+                icon: <FactoryIcon style={{ color: '#14D928' }}/>,
             },
         ],
     },
     {
         title: 'HR',
         path: '/hr',
-        icon: <PeopleIcon style={{ color: '#FFB700' }}/>,
+        icon: <PeopleIcon style={{ color: '#14D928' }}/>,
         sidebarcollapsed: true,
     },
     {
         title: 'Logout',
-        icon: <ExitToAppIcon style={{ color: '#FFB700' }}/>,
+        icon: <ExitToAppIcon style={{ color: '#14D928' }}/>,
         action: 'logout',
         
     }
@@ -272,7 +272,7 @@ return (
                             gap: 0,
                                 '&:hover': {
                                     backgroundColor: '#252831',
-                                    borderLeft: '4px solid #FFB700',
+                                    borderLeft: '4px solid #14D928',
                                     cursor: 'pointer',
                                     borderRadius: '40px',
                                 },
@@ -298,7 +298,7 @@ return (
                                         sx={{pl: 2.8,
                                             '&:hover': {
                                                 backgroundColor: '#252831',
-                                                borderLeft: '4px solid #FFB700',
+                                                borderLeft: '4px solid #14D928',
                                                 cursor: 'pointer',
                                                 borderRadius: '40px',
                                             },
@@ -348,25 +348,25 @@ return (
                 <Button onClick={closeLogoutPopup}
                 variant="outlined"
                 sx={{
-                    borderColor: "#FFB700",
-                    color: "#FFB700",
+                    borderColor: "#14D928",
+                    color: "#14D928",
                     marginRight: "5px",
                     marginTop: "10px",
                     "&:hover": {
                         transform: "scale(1.05)",
-                        borderColor: "#FFB700",
+                        borderColor: "#14D928",
                     },
                     }}>Annulla</Button>
                 <Button onClick={handleLogout}
                 variant="contained"
                 sx={{
-                    backgroundColor: "#FFB700",
+                    backgroundColor: "#14D928",
                     marginLeft: "5px",
                     marginTop: "10px",
                     marginRight: '50px',
                     color: "black",
                     "&:hover": {
-                        backgroundColor: "#FFB700",
+                        backgroundColor: "#14D928",
                         transform: "scale(1.05)",
                     },
                     }}

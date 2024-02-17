@@ -143,7 +143,7 @@ const disableFields = {
 
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100%', width: '100%', overflow: 'hidden'}}>
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
 
           <Sidebar2 />
         <div className="container">

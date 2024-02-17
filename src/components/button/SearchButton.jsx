@@ -22,7 +22,7 @@ function SearchButton({onClick, to}) {
         startIcon={<SearchIcon />} 
         sx={{
           marginRight: '10%',
-          backgroundColor: '#FFB700',
+          backgroundColor: '#14D928',
           color: 'black',
           borderRadius: '50%',
           minWidth: '40px',
@@ -36,7 +36,7 @@ function SearchButton({onClick, to}) {
             justifyContent: 'center'
           },
           '&:hover': {
-            backgroundColor: '#FFB700',
+            backgroundColor: '#14D928',
             transform:'scale(1.05)',
             color: 'black',
             cursor: 'pointer',

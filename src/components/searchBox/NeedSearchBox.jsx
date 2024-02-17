@@ -52,10 +52,10 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalNe
      const headers = {
        Authorization: `Bearer ${accessToken}`
      };
-        const responseCliente       = await axios.get("http://89.46.67.198:8443/aziende/react/select", { headers });
-        const responseOwner         = await axios.get("http://89.46.67.198:8443/aziende/react/owner", { headers });
-        const responseTipologia     = await axios.get("http://89.46.67.198:8443/need/react/tipologia", { headers });
-        const responseStato         = await axios.get("http://89.46.67.198:8443/need/react/stato", { headers });
+        const responseCliente       = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers });
+        const responseOwner         = await axios.get("http://89.46.196.60:8443/aziende/react/owner", { headers });
+        const responseTipologia     = await axios.get("http://89.46.196.60:8443/need/react/tipologia", { headers });
+        const responseStato         = await axios.get("http://89.46.196.60:8443/need/react/stato", { headers });
 
         if (Array.isArray(responseCliente.data)) {
           setClienteOptions(responseCliente.data.map((cliente) => ({ label: cliente.denominazione, value: cliente.id })));
@@ -293,13 +293,13 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalNe
           sx={{
             width: '2rem',
             height: "40px",
-            backgroundColor: "#ffb700",
+            backgroundColor: "#14D928",
             color: "black",
             borderRadius: "10px",
             fontSize: "0.8rem",
             fontWeight: "bolder",
             "&:hover": {
-              backgroundColor: "#ffb700",
+              backgroundColor: "#14D928",
               color: "black",
               transform: "scale(1.05)",
             },

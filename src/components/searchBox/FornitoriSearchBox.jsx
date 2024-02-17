@@ -92,13 +92,13 @@ const FornitoriSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Origi
           sx={{
             width: '2rem',
             height: "40px",
-            backgroundColor: "#ffb700",
+            backgroundColor: "#14D928",
             color: "black",
             borderRadius: "10px",
             fontSize: "0.8rem",
             fontWeight: "bolder",
             "&:hover": {
-              backgroundColor: "#ffb700",
+              backgroundColor: "#14D928",
               color: "black",
               transform: "scale(1.05)",
             },

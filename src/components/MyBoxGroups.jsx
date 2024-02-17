@@ -251,14 +251,14 @@ const validate = () => {
               <Button onClick={handleNext} fullWidth
                 style={{
                 width: '250px',
-                backgroundColor: "#FFB700",
+                backgroundColor: "#14D928",
                 color: "black",
                 fontWeight:"bold",
                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                 borderRadius: '10px',
                 
                 "&:hover": {
-                  backgroundColor: "#FFB700",
+                  backgroundColor: "#14D928",
                   color: "black",
                   transform: "scale(1.05)",
                   boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
@@ -298,14 +298,14 @@ const validate = () => {
               <Button type="submit" fullWidth
               style={{
                 width: '250px',
-                backgroundColor: "#FFB700",
+                backgroundColor: "#14D928",
                 color: "black",
                 fontWeight:"bold",
                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                 borderRadius: '10px',
                 
                 "&:hover": {
-                  backgroundColor: "#FFB700",
+                  backgroundColor: "#14D928",
                   color: "black",
                   transform: "scale(1.05)",
                   boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',

@@ -54,7 +54,7 @@ const HR = () => {
   // const fetchData = async () => {
   //   try {
 
-  //     const response = await axios.get("http://89.46.67.198:8443/hr/react/modificato", { headers: headers });
+  //     const response = await axios.get("http://89.46.196.60:8443/hr/react/modificato", { headers: headers });
 
   //     if (Array.isArray(response.data)) {
   //       const hrConId = response.data.map((hr) => ({ ...hr }));
@@ -74,7 +74,7 @@ const HR = () => {
 
 
   const fetchData = async () => {
-    let url = "http://89.46.67.198:8443/hr/react";
+    let url = "http://89.46.196.60:8443/hr/react";
     const lastSearchParams = localStorage.getItem("lastSearchHRParams");
     console.log("LAST SEARCH PARAMS:", lastSearchParams);
     let params = {};
@@ -127,7 +127,7 @@ const HR = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`http://89.46.67.198:8443/hr/react/staff/elimina/${deleteId}`, { headers: headers});
+      const response = await axios.delete(`http://89.46.196.60:8443/hr/react/staff/elimina/${deleteId}`, { headers: headers});
       setOpenDialog(false);
       fetchData();
     } catch (error) {
@@ -191,7 +191,7 @@ const HR = () => {
 
   const handleInviaSollecito = async () => {
     try {
-      const response = await axios.post("http://89.46.67.198:8443/hr/react/staff/sollecito", { headers: headers });
+      const response = await axios.post("http://89.46.196.60:8443/hr/react/staff/sollecito", { headers: headers });
     } catch (error) {
       console.error("Errore durante la cancellazione:", error);
     }
@@ -199,7 +199,7 @@ const HR = () => {
 
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100vh', width: '100vw', overflow: 'hidden'}}>
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100vh', width: '100vw', overflow: 'hidden'}}>
     <Sidebar2 />
     <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'hidden', width: '100vw'}}>
     <Typography variant="h4" component="h1" sx={{ marginLeft: '30px', marginTop: '30px', marginBottom: '15px', fontWeight: 'bold', fontSize: '1.8rem'}}>HR Managing</Typography>
@@ -223,7 +223,7 @@ const HR = () => {
                 display: "flex",
                 alignItems: "flex-start",
                 "&:hover": {
-                  backgroundColor: "#ffb700",
+                  backgroundColor: "#14D928",
                   transform: "scale(1.05)",
                   color: 'black',
                 },
@@ -249,7 +249,7 @@ const HR = () => {
                 display: "flex",
                 alignItems: "flex-start",
                 "&:hover": {
-                  backgroundColor: "#ffb700",
+                  backgroundColor: "#14D928",
                   transform: "scale(1.05)",
                   color: 'black',
                 },
@@ -276,7 +276,7 @@ const HR = () => {
                 alignItems: "flex-start",
                 "&:hover": {
                   color: 'black',
-                  backgroundColor: "#ffb700",
+                  backgroundColor: "#14D928",
                   transform: "scale(1.05)",
                 },
               }}
@@ -369,10 +369,10 @@ const HR = () => {
                 </Button>
                 <Button onClick={handleDelete} color="primary" variant="contained" type="submit"
                           style={{
-                            backgroundColor: "#FFB700",
+                            backgroundColor: "#14D928",
                             color: "black",
                             "&:hover": {
-                              backgroundColor: "#FFB700",
+                              backgroundColor: "#14D928",
                               color: "black",
                               transform: "scale(1.05)",
                             },

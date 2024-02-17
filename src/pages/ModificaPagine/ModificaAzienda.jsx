@@ -36,9 +36,9 @@ const ModificaAzienda = () => {
   useEffect(() => {
     const fetchProvinceOptions = async () => {
       try {
-        const responseProvince = await axios.get("http://89.46.67.198:8443/aziende/react/province", { headers: headers });
-        const responseOwner    = await axios.get("http://89.46.67.198:8443/aziende/react/owner", { headers: headers });
-        const responseAziende  = await axios.get("http://89.46.67.198:8443/aziende/react/select", { headers: headers });
+        const responseProvince = await axios.get("http://89.46.196.60:8443/aziende/react/province", { headers: headers });
+        const responseOwner    = await axios.get("http://89.46.196.60:8443/aziende/react/owner", { headers: headers });
+        const responseAziende  = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers: headers });
 
         if (Array.isArray(responseAziende.data)) {
           const aziendeOptions = responseAziende.data.map((aziende) => ({
@@ -143,7 +143,7 @@ const ModificaAzienda = () => {
         }
       });
 
-      const response = await axios.post("http://89.46.67.198:8443/aziende/react/salva", values, {
+      const response = await axios.post("http://89.46.196.60:8443/aziende/react/salva", values, {
         headers: headers
       });
       navigate("/aziende");
@@ -164,7 +164,7 @@ const ModificaAzienda = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100%', width: '100%', overflow: 'hidden'}}>
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
           <Sidebar2 />
           <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
           <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Modifica Azienda</Typography>

@@ -37,12 +37,12 @@ const fetchData = async () => {
 
 
       //jobtitle = tipologia, tipologiaIncontro = stato, owner = owner
-    const responseTipologia                      = await axios.get("http://89.46.67.198:8443/aziende/react/tipologia"                  , { headers: headers });
-    const ownerResponse                          = await axios.get("http://89.46.67.198:8443/aziende/react/owner"                      , { headers: headers });
-    const responseStato                          = await axios.get("http://89.46.67.198:8443/staffing/react/stato/candidato"           , { headers: headers });
-    const responseTipoIntervista                 = await axios.get("http://89.46.67.198:8443/intervista/react/tipointervista"          , { headers: headers });
-    const responseIntervista                     = await axios.get(`http://89.46.67.198:8443/intervista/react/mod/${candidatoID}`      , { headers: headers });
-    const responseCandidato                      = await axios.get(`http://89.46.67.198:8443/staffing/react/${candidatoID}`            , { headers: headers });
+    const responseTipologia                      = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia"                  , { headers: headers });
+    const ownerResponse                          = await axios.get("http://89.46.196.60:8443/aziende/react/owner"                      , { headers: headers });
+    const responseStato                          = await axios.get("http://89.46.196.60:8443/staffing/react/stato/candidato"           , { headers: headers });
+    const responseTipoIntervista                 = await axios.get("http://89.46.196.60:8443/intervista/react/tipointervista"          , { headers: headers });
+    const responseIntervista                     = await axios.get(`http://89.46.196.60:8443/intervista/react/mod/${candidatoID}`      , { headers: headers });
+    const responseCandidato                      = await axios.get(`http://89.46.196.60:8443/staffing/react/${candidatoID}`            , { headers: headers });
 
 
 
@@ -232,7 +232,7 @@ const handleSubmit = async (values) => {
     try {
     const note = values.note;
     const modifica = 0; 
-    const response = await axios.post("http://89.46.67.198:8443/intervista/react/salva",  values, {
+    const response = await axios.post("http://89.46.196.60:8443/intervista/react/salva",  values, {
       params: {
         idCandidato: candidatoID,
         note: note,
@@ -259,7 +259,7 @@ const validateFields = (values) => {
 };
 
 return (
-  <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100%', width: '100%', overflow: 'hidden'}}>
+  <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
 
         <Sidebar2 />
         <div className="container">

@@ -27,8 +27,8 @@ const ModificaProgetto = () => {
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseCliente    = await axios.get("http://89.46.67.198:8443/aziende/react/select",{ headers: headers });
-        const responseDipendente = await axios.get("http://89.46.67.198:8443/hr/react/modificato", { headers: headers });
+        const responseCliente    = await axios.get("http://89.46.196.60:8443/aziende/react/select",{ headers: headers });
+        const responseDipendente = await axios.get("http://89.46.196.60:8443/hr/react/modificato", { headers: headers });
 
         if (Array.isArray(responseCliente.data)) {
           const clienteOptions = responseCliente.data.map((cliente) => ({
@@ -95,7 +95,7 @@ const ModificaProgetto = () => {
   
     if (!hasErrors) {
     try {
-      const response = await axios.post("http://89.46.67.198:8443/progetti/react/salva", values, {
+      const response = await axios.post("http://89.46.196.60:8443/progetti/react/salva", values, {
         headers: headers 
       });
       navigate("/progetti");
@@ -117,7 +117,7 @@ const ModificaProgetto = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100%', width: '100%', overflow: 'hidden'}}>
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
           <Sidebar2 />
           <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
           <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Modifica Progetto</Typography>

@@ -37,7 +37,7 @@
 //   useEffect(() => {
 //     const fetchData = async () => {
 //       try {
-//         const response = await axios.get(`http://89.46.67.198:8443/intervista/react/mod/${id}`);
+//         const response = await axios.get(`http://89.46.196.60:8443/intervista/react/mod/${id}`);
 //         if (Array.isArray(response.data)) {
 //           const intervisteConId = response.data.map((intervista) => ({ ...intervista }));
 //           dispatch(setOriginalInterviste(intervisteConId));
@@ -72,7 +72,7 @@
 
 //   const handleDelete = async (idToDelete) => {
 //     try {
-//       const response = await axios.delete(`http://89.46.67.198:8443/intervista/react/elimina/${idToDelete}`);
+//       const response = await axios.delete(`http://89.46.196.60:8443/intervista/react/elimina/${idToDelete}`);
 //       dispatch(deleteIntervista(idToDelete));
 //     } catch (error) {
 //       console.error("Errore durante l'eliminazione dell'intervista:", error);

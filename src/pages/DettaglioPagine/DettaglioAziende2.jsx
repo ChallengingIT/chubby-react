@@ -56,7 +56,7 @@ function DettaglioAziende2() {
 
     const fetchAttivita = async () => {
         try {
-        const responseAttivita = await axios.get(`http://89.46.67.198:8443/aziende/react/attivita/${id}`, { headers: headers });
+        const responseAttivita = await axios.get(`http://89.46.196.60:8443/aziende/react/attivita/${id}`, { headers: headers });
         console.log(responseAttivita.data);
 
         if (Array.isArray(responseAttivita.data)) {
@@ -78,11 +78,11 @@ function DettaglioAziende2() {
     useEffect(() => {
     const fetchOptions = async () => {
         try {
-        const responseOwner            = await axios.get("http://89.46.67.198:8443/aziende/react/owner"             , { headers: headers });
-        const responseKeyPeople        = await axios.get(`http://89.46.67.198:8443/aziende/react/keypeople/${id}`   , { headers: headers });
-        const responseNeed             = await axios.get(`http://89.46.67.198:8443/need/react/cliente/priorita/${id}`        , { headers: headers });
-        const responseStatoNeed        = await axios.get(`http://89.46.67.198:8443/need/react/cliente/modificato/${id}`        , { headers: headers });
-                // const responseAttivita        = await axios.get(`http://89.46.67.198:8443/aziende/react/attivita/${id}`    , { headers: headers });
+        const responseOwner            = await axios.get("http://89.46.196.60:8443/aziende/react/owner"             , { headers: headers });
+        const responseKeyPeople        = await axios.get(`http://89.46.196.60:8443/aziende/react/keypeople/${id}`   , { headers: headers });
+        const responseNeed             = await axios.get(`http://89.46.196.60:8443/need/react/cliente/priorita/${id}`        , { headers: headers });
+        const responseStatoNeed        = await axios.get(`http://89.46.196.60:8443/need/react/cliente/modificato/${id}`        , { headers: headers });
+                // const responseAttivita        = await axios.get(`http://89.46.196.60:8443/aziende/react/attivita/${id}`    , { headers: headers });
 
 
         if (Array.isArray(responseStatoNeed.data)) {
@@ -206,7 +206,7 @@ function DettaglioAziende2() {
                 }).toString();
             
                 try {
-                const responseFeed = await axios.post(`http://89.46.67.198:8443/aziende/react/attivita/salva?${params}`, attivitaMap, { headers: headers });
+                const responseFeed = await axios.post(`http://89.46.196.60:8443/aziende/react/attivita/salva?${params}`, attivitaMap, { headers: headers });
                 setPopupData(initialState);
                 setTimeout(fetchAttivita, 500); 
                 } catch (error) {
@@ -226,7 +226,7 @@ function DettaglioAziende2() {
                 };
                 
                 try {
-                await axios.post('http://89.46.67.198:8443/aziende/react/attivita/salva', attivitaMap, { params });
+                await axios.post('http://89.46.196.60:8443/aziende/react/attivita/salva', attivitaMap, { params });
                 setTimeout(fetchAttivita, 500); 
                 } catch (error) {
                 console.error("Errore durante il salvataggio dell'email:", error);
@@ -243,7 +243,7 @@ function DettaglioAziende2() {
                 };
                 
             try{
-                await axios.post('http://89.46.67.198:8443/aziende/react/attivita/salva', attivitaMap, { params });
+                await axios.post('http://89.46.196.60:8443/aziende/react/attivita/salva', attivitaMap, { params });
                 setTimeout(fetchAttivita, 500); 
                 } catch (error) {
                 console.error("Errore durante il salvataggio dell'email:", error);
@@ -342,7 +342,7 @@ function DettaglioAziende2() {
 
 
     return (
-        <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100vh', width: '100vw', overflow: 'hidden'}}>
+        <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100vh', width: '100vw', overflow: 'hidden'}}>
         <Sidebar2 />
         <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'hidden', width: '100vw'}}>
         <Typography variant="h4" component="h1" sx={{ marginLeft: '30px', marginTop: '30px', marginBottom: '15px', fontWeight: 'bold', fontSize: '1.8rem'}}>Visualizzazione {nomeAzienda}</Typography>

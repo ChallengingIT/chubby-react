@@ -74,12 +74,12 @@
 //               type="submit"
 //               variant="contained"
 //               sx={{
-//                 bgcolor: '#FFB700',
+//                 bgcolor: '#14D928',
 //                 color: 'black',
 //                 maxWidth: "100px",
 //                 marginLeft: "20px",
 //                 '&:hover': {
-//                   bgcolor: '#FFB700',
+//                   bgcolor: '#14D928',
 //                 },
 //                 marginBottom: '16px', // to give space between the two buttons
 //               }}

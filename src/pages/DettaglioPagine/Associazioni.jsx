@@ -33,8 +33,8 @@
   
 //   const fetchData = async () => {
 //     try {
-//       const associabiliResponse = await axios.get(`http://89.46.67.198:8443/associazioni/react/match/associabili/${id}`, { headers });
-//       const associatiResponse   = await axios.get(`http://89.46.67.198:8443/need/react/match/associati/${id}`, { headers });
+//       const associabiliResponse = await axios.get(`http://89.46.196.60:8443/associazioni/react/match/associabili/${id}`, { headers });
+//       const associatiResponse   = await axios.get(`http://89.46.196.60:8443/need/react/match/associati/${id}`, { headers });
 
 //       if (Array.isArray(associatiResponse.data)) {
 //         const associatiConId = associatiResponse.data.map((associati) => ({ ...associati }));
@@ -68,7 +68,7 @@
 //     try {
 //       const idNeed = parseInt(id); 
 //       const idCandidato = row.id;
-//       const url = `http://89.46.67.198:8443/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
+//       const url = `http://89.46.196.60:8443/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
 //       const response = await axios.post(url, { headers });
 //       fetchData();
 //     } catch (error) {

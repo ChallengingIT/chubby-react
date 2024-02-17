@@ -28,7 +28,7 @@
 // `;
 
 // const StyledH2 = styled.h2`
-//   color: #FFB700; /* Testo giallo */
+//   color: #14D928; /* Testo giallo */
 // `;
 
 // const LogoutButton = ({ onLogout, onCancel }) => {

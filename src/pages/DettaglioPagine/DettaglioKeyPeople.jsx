@@ -46,7 +46,7 @@ useEffect(() => {
   useEffect(() => {
     const fetchOptions = async () => {
       try { 
-        const responseAttivita = await axios.get(`http://89.46.67.198:8443/keypeople/react/attivita/${id}`);
+        const responseAttivita = await axios.get(`http://89.46.196.60:8443/keypeople/react/attivita/${id}`);
         if (Array.isArray(responseAttivita.data)) {
           const attivitaOptions = responseAttivita.data.map((attivita) => ({
             note: attivita.note,
@@ -104,7 +104,7 @@ useEffect(() => {
 
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100vh', width: '100vw', overflow: 'hidden'}}>
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100vh', width: '100vw', overflow: 'hidden'}}>
 
     <Sidebar2 />
     <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'hidden', width: '100vw'}}>

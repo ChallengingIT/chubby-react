@@ -88,9 +88,9 @@ const Aziende2 = () => {
         const fetchData = async () => {
             try {
         
-            const responseAziende = await axios.get("http://89.46.67.198:8443/aziende/react/mod",   { headers: headers });
-            const responseOwner   = await axios.get("http://89.46.67.198:8443/aziende/react/owner", { headers: headers });
-            const responseStato   = await axios.get("http://89.46.67.198:8443/aziende/react/mod",   { headers: headers });
+            const responseAziende = await axios.get("http://89.46.196.60:8443/aziende/react/mod",   { headers: headers });
+            const responseOwner   = await axios.get("http://89.46.196.60:8443/aziende/react/owner", { headers: headers });
+            const responseStato   = await axios.get("http://89.46.196.60:8443/aziende/react/mod",   { headers: headers });
         
             if (Array.isArray(responseAziende.data)) {
                 const aziendeConId = responseAziende.data.map((aziende) => ({ ...aziende }));
@@ -149,7 +149,7 @@ const Aziende2 = () => {
             
                 const handleDelete = async () => {
                 try {
-                    const response = await axios.delete(`http://89.46.67.198:8443/aziende/react/elimina/${deleteId}`, { headers: headers});
+                    const response = await axios.delete(`http://89.46.196.60:8443/aziende/react/elimina/${deleteId}`, { headers: headers});
                     setOpenDialog(false);
                     fetchData();
                 } catch (error) {
@@ -197,7 +197,7 @@ const Aziende2 = () => {
                     try {
                         const savedSearchTerms = JSON.parse(localStorage.getItem("lastSearchAziendeParams"));
 
-                        const responseSearch = await axios.get("http://89.46.67.198:8443/aziende/react/ricerca/mod", { headers: headers, params: savedSearchTerms
+                        const responseSearch = await axios.get("http://89.46.196.60:8443/aziende/react/ricerca/mod", { headers: headers, params: savedSearchTerms
                     })
                     console.log("responseSearch: ", responseSearch); 
                     if (Array.isArray(responseSearch.data)) {
@@ -384,13 +384,13 @@ const Aziende2 = () => {
                         sx={{
                             width: '2rem',
                             height: "40px",
-                            backgroundColor: "#ffb700",
+                            backgroundColor: "#14D928",
                             color: "black",
                             borderRadius: "10px",
                             fontSize: "0.8rem",
                             fontWeight: "bolder",
                             "&:hover": {
-                            backgroundColor: "#ffb700",
+                            backgroundColor: "#14D928",
                             color: "black",
                             transform: "scale(1.05)",
                             },
@@ -435,7 +435,7 @@ const Aziende2 = () => {
 
 //return della pagina delle aziende
     return (
-        <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100vh', width: '100vw', overflow: 'hidden'}}>
+        <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100vh', width: '100vw', overflow: 'hidden'}}>
             <Sidebar2 />
             <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'hidden', width: '100vw'}}>
             <Typography variant="h4" component="h1" sx={{ marginLeft: '30px', marginTop: '30px', marginBottom: '15px', fontWeight: 'bold', fontSize: '1.8rem'}}>Gestione Aziende</Typography>
@@ -494,10 +494,10 @@ const Aziende2 = () => {
                 variant="contained"
                 type="submit"
                 style={{
-                backgroundColor: "#FFB700",
+                backgroundColor: "#14D928",
                 color: "black",
                 "&:hover": {
-                    backgroundColor: "#FFB700",
+                    backgroundColor: "#14D928",
                     color: "black",
                     transform: "scale(1.05)",
                 },

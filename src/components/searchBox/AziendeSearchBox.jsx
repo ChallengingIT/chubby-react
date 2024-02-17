@@ -58,10 +58,10 @@ const handleKeyDown = (e) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseOwner = await axios.get("http://89.46.67.198:8443/aziende/react/owner", {
+        const responseOwner = await axios.get("http://89.46.196.60:8443/aziende/react/owner", {
           headers: headers,
         });
-        const responseStato = await axios.get("http://89.46.67.198:8443/aziende/react/mod", {
+        const responseStato = await axios.get("http://89.46.196.60:8443/aziende/react/mod", {
           headers: headers,
         });
 
@@ -235,13 +235,13 @@ const handleKeyDown = (e) => {
           sx={{
             width: '2rem',
             height: "40px",
-            backgroundColor: "#ffb700",
+            backgroundColor: "#14D928",
             color: "black",
             borderRadius: "10px",
             fontSize: "0.8rem",
             fontWeight: "bolder",
             "&:hover": {
-              backgroundColor: "#ffb700",
+              backgroundColor: "#14D928",
               color: "black",
               transform: "scale(1.05)",
             },

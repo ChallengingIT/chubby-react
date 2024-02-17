@@ -39,12 +39,12 @@ const ModificaNeed = () => {
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseAziende      = await axios.get("http://89.46.67.198:8443/aziende/react/select",  { headers: headers });
-        const responseSkill        = await axios.get("http://89.46.67.198:8443/staffing/react/skill",  { headers: headers });
-        const responseSkill2       = await axios.get("http://89.46.67.198:8443/staffing/react/skill",  { headers: headers });
-        const ownerResponse        = await axios.get("http://89.46.67.198:8443/aziende/react/owner",   { headers: headers });
-        const tipologiaResponse    = await axios.get("http://89.46.67.198:8443/need/react/tipologia",  { headers: headers });
-        const statoResponse        = await axios.get("http://89.46.67.198:8443/need/react/stato",      { headers: headers });
+        const responseAziende      = await axios.get("http://89.46.196.60:8443/aziende/react/select",  { headers: headers });
+        const responseSkill        = await axios.get("http://89.46.196.60:8443/staffing/react/skill",  { headers: headers });
+        const responseSkill2       = await axios.get("http://89.46.196.60:8443/staffing/react/skill",  { headers: headers });
+        const ownerResponse        = await axios.get("http://89.46.196.60:8443/aziende/react/owner",   { headers: headers });
+        const tipologiaResponse    = await axios.get("http://89.46.196.60:8443/need/react/tipologia",  { headers: headers });
+        const statoResponse        = await axios.get("http://89.46.196.60:8443/need/react/stato",      { headers: headers });
 
 
         if (Array.isArray(statoResponse.data)) {
@@ -159,7 +159,7 @@ const ModificaNeed = () => {
     delete values.skills;
     delete values.skills2;
 
-    const response = await axios.post("http://89.46.67.198:8443/need/react/salva", values, {
+    const response = await axios.post("http://89.46.196.60:8443/need/react/salva", values, {
       params: { skill1: skills, skill2: skills2 },
       headers: headers
     });
@@ -186,7 +186,7 @@ const ModificaNeed = () => {
 
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100%', width: '100%', overflow: 'hidden'}}>
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
           <Sidebar2 />
           <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
           <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Modifica Need di {needData.cliente.denominazione}</Typography>

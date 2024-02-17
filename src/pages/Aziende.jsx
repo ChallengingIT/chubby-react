@@ -57,7 +57,7 @@ const Aziende = () => {
 const fetchData = async () => {
   try {
 
-    const response = await axios.get("http://89.46.67.198:8443/aziende/react/mod", { headers: headers });
+    const response = await axios.get("http://89.46.196.60:8443/aziende/react/mod", { headers: headers });
 
     if (Array.isArray(response.data)) {
       const aziendeConId = response.data.map((aziende) => ({ ...aziende }));
@@ -83,7 +83,7 @@ const fetchData = async () => {
 //     const savedSearchTerms = JSON.parse(localStorage.getItem("searchTerms"));
 //     console.log("savedSearchTerms", savedSearchTerms);
 
-//     let url = "http://89.46.67.198:8443/aziende/react";
+//     let url = "http://89.46.196.60:8443/aziende/react";
 
 //     if (savedSearchTerms && Object.keys(savedSearchTerms).length > 0) {
 //       const params = new URLSearchParams();
@@ -104,7 +104,7 @@ const fetchData = async () => {
 //     }
 //     const response = await axios.get(url, { headers: headers });
 
-//     // const response = await axios.get("http://89.46.67.198:8443/aziende/react/mod", { headers: headers });
+//     // const response = await axios.get("http://89.46.196.60:8443/aziende/react/mod", { headers: headers });
 
 //     if (Array.isArray(response.data)) {
 //       const aziendeConId = response.data.map((aziende) => ({ ...aziende }));
@@ -147,7 +147,7 @@ useEffect(() => {
 
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`http://89.46.67.198:8443/aziende/react/elimina/${deleteId}`, { headers: headers});
+      const response = await axios.delete(`http://89.46.196.60:8443/aziende/react/elimina/${deleteId}`, { headers: headers});
       setOpenDialog(false);
       fetchData();
     } catch (error) {
@@ -217,7 +217,7 @@ useEffect(() => {
 
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100%', width: '100%', overflow: 'hidden'}}>
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
       <Sidebar2 isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
           <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowX: 'hidden', overFlowY:'auto', width: contentWidth,}}>
           <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Gestione Aziende</Typography>
@@ -273,10 +273,10 @@ useEffect(() => {
             variant="contained"
             type="submit"
             style={{
-              backgroundColor: "#FFB700",
+              backgroundColor: "#14D928",
               color: "black",
               "&:hover": {
-                backgroundColor: "#FFB700",
+                backgroundColor: "#14D928",
                 color: "black",
                 transform: "scale(1.05)",
               },

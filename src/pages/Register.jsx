@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Register.css";
 import RegisterComponent from "../components/RegisterComponent";
-import loginimg from "../images/loginimg.jpeg";
+import loginimg from "../images/login_scura.jpg";
 
 
 export const Register = () => {

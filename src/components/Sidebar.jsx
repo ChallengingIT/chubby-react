@@ -69,7 +69,7 @@ const ImgContainer = styled.div`
 `;
 
 const NavIcon = styled(NavLink)`
-  color: #FFB700;
+  color: #14D928;
   margin-right: 0rem;
   font-size: 2rem;
   margin-top: 15px;
@@ -104,7 +104,7 @@ const SidebarLink = styled(NavLink)`
   &:active,
   &:focus {
     background: #252831;
-    border-left: 4px solid #FFB700;
+    border-left: 4px solid #14D928;
     cursor: pointer;
     border-radius: 40px;
   }
@@ -114,7 +114,7 @@ const SidebarLink = styled(NavLink)`
 
 
 const SidebarIcon = styled.span`
-  color: #FFB700;
+  color: #14D928;
 `;
 
 const DropdownLink = styled(NavLink)`
@@ -124,7 +124,7 @@ const DropdownLink = styled(NavLink)`
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: #ffb700;
+  color: #14D928;
   font-size: 18px;
   overflow: hidden;
   
@@ -134,7 +134,7 @@ const DropdownLink = styled(NavLink)`
   &:focus {
     background: #252831;
     border-radius: 40px;
-    border-left: 4px solid #FFB700;
+    border-left: 4px solid #14D928;
     cursor: pointer;
   }
 
@@ -278,15 +278,15 @@ const Sidebar = ({ handleLogout }) => {
               variant="outlined"
               onClick={onClose}
               sx={{
-                borderColor: "#FFB700",
-                color: "#FFB700",
+                borderColor: "#14D928",
+                color: "#14D928",
                 marginRight: "5px",
                 marginTop: "20px",
                 "&:hover": {
                   transform: "scale(1.05)",
                   // variant: "filled",
-                  // backgroundColor: "#ffb700",
-                  borderColor: "#FFB700",
+                  // backgroundColor: "#14D928",
+                  borderColor: "#14D928",
                   // color: "black",
                 },
               }}
@@ -297,16 +297,16 @@ const Sidebar = ({ handleLogout }) => {
               variant="contained"
               onClick={handleConfirmLogout}
               sx={{
-                backgroundColor: "#FFB700",
+                backgroundColor: "#14D928",
                 marginLeft: "5px",
                 marginTop: "20px",
                 color: "black",
                 "&:hover": {
                   // variant: "outlined",
-                  // borderColor: "#ffb700",
-                  backgroundColor: "#FFB700",
+                  // borderColor: "#14D928",
+                  backgroundColor: "#14D928",
                   transform: "scale(1.05)",
-                  // color: "#ffb700",
+                  // color: "#14D928",
                 },
               }}
             >
@@ -333,12 +333,12 @@ const Sidebar = ({ handleLogout }) => {
       icon: <FaIcons.FaAddressBook />,
       iconClosed: (
         <RiIcons.RiArrowDownSFill
-          style={{ color: "#FFB700", marginRight: "10px" }}
+          style={{ color: "#14D928", marginRight: "10px" }}
         />
       ),
       iconOpened: (
         <RiIcons.RiArrowUpSFill
-          style={{ color: "#FFB700", marginRight: "10px" }}
+          style={{ color: "#14D928", marginRight: "10px" }}
         />
       ),
       sidebarcollapsed: false,
@@ -386,13 +386,13 @@ const Sidebar = ({ handleLogout }) => {
       iconClosed: (
         <RiIcons.RiArrowDownSFill
           className="active-icon"
-          style={{ color: "#FFB700", marginRight: "10px", }}
+          style={{ color: "#14D928", marginRight: "10px", }}
         />
       ),
       iconOpened: (
         <RiIcons.RiArrowUpSFill
           className="active-icon"
-          style={{ color: "#FFB700", marginRight: "10px" }}
+          style={{ color: "#14D928", marginRight: "10px" }}
         />
       ),
       sidebarcollapsed: false,
@@ -548,13 +548,13 @@ const Sidebar = ({ handleLogout }) => {
             display: "flex",
             width: "100%",
             maxWidth: "120px",
-            color: "#ffb700",
-            borderColor: "#ffb700",
+            color: "#14D928",
+            borderColor: "#14D928",
             margin: "15px",
             "&:hover": {
               variant: "filled",
-              borderColor: "#ffb700",
-              backgroundColor: "#ffb700",
+              borderColor: "#14D928",
+              backgroundColor: "#14D928",
               color: "black",
               padding: "0.55rem 0.55rem",
             },
@@ -573,7 +573,7 @@ const Sidebar = ({ handleLogout }) => {
             justifyContent: "space-between",
             height: "60px",
             minWidth: "60px !important",
-            color: "#ffb700",
+            color: "#14D928",
             backgroundColor: "black",
             borderStyle: "none",
             padding: "23px",
@@ -613,13 +613,13 @@ const Sidebar = ({ handleLogout }) => {
               variant="outlined"
               onClick={closeLogoutPopup}
               sx={{
-                borderColor: '#ffb700',
-                color: '#ffb700',
+                borderColor: '#14D928',
+                color: '#14D928',
                 marginRight: '5px',
                 marginTop: '20px',
                 '&:hover': {
                   transform: 'scale(1.05)',
-                  borderColor: '#ffb700',
+                  borderColor: '#14D928',
                 },
               }}
             >
@@ -629,12 +629,12 @@ const Sidebar = ({ handleLogout }) => {
               variant="contained"
               onClick={confirmLogout}
               sx={{
-                backgroundColor: '#ffb700',
+                backgroundColor: '#14D928',
                 marginLeft: '5px',
                 marginTop: '20px',
                 color: 'black',
                 '&:hover': {
-                  backgroundColor: '#ffb700',
+                  backgroundColor: '#14D928',
                   transform: 'scale(1.05)',
                 },
               }}

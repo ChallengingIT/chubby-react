@@ -7,7 +7,7 @@
 }
 
 .login-container {
-  background-color: #ffb700;
+  background-color: #14D928;
   border-radius: 10px;
   max-height: 441px;
   position: relative;
@@ -104,7 +104,7 @@
 
 .div {
   position: relative;
-  color: #ffb700;
+  color: #14D928;
   font-family: "Inter-Bold", Helvetica;
   font-size: 15px;
   font-weight: 700;

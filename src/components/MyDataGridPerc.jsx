@@ -111,7 +111,7 @@ const MyDataGridPerc = ({ data, columns, title, searchBoxComponent: SearchBox })
           showNoDataMessage ? ( 
             <div>Nessun dato</div>
           ) : (
-            <CircularProgress style={{ color: '#FFB700' }} />
+            <CircularProgress style={{ color: '#14D928' }} />
           )
         }
         components={{
@@ -122,7 +122,7 @@ const MyDataGridPerc = ({ data, columns, title, searchBoxComponent: SearchBox })
               justifyContent: 'center',
               height: '100%',
             }}>
-              <CircularProgress style={{ color: '#FFB700' }} />
+              <CircularProgress style={{ color: '#14D928' }} />
             </div>
           ),
         }}

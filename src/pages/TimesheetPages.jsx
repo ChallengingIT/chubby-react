@@ -26,7 +26,7 @@ const idProgetti = dipendentiData.progetti?.map(progetto => progetto.id);
 
 
     return (
-      <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100%', width: '100%', overflow: 'hidden'}}>
+      <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
               <Sidebar2 />
               <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'hidden',}}>
               <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Timesheet di {dipendentiData.nome} {dipendentiData.cognome}</Typography>

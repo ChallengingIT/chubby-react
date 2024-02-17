@@ -21,8 +21,8 @@ const AggiungiFatturazioneAttiva = () => {
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseClienti   = await axios.get("http://89.46.67.198:8443/aziende/react/select"            , { headers: headers });
-        const responseStato     = await axios.get("http://89.46.67.198:8443/fatturazione/passiva/react/stato", { headers: headers });
+        const responseClienti   = await axios.get("http://89.46.196.60:8443/aziende/react/select"            , { headers: headers });
+        const responseStato     = await axios.get("http://89.46.196.60:8443/fatturazione/passiva/react/stato", { headers: headers });
 
 
         if (Array.isArray(responseStato.data)) {
@@ -77,7 +77,7 @@ const AggiungiFatturazioneAttiva = () => {
     if (!hasErrors) {
     try {
 
-      const response = await axios.post("http://89.46.67.198:8443/fatturazione/attiva/react/salva", values, { headers: headers });
+      const response = await axios.post("http://89.46.196.60:8443/fatturazione/attiva/react/salva", values, { headers: headers });
 
       navigate("/fatturazioneAttiva");
     } catch (error) {
@@ -100,7 +100,7 @@ const AggiungiFatturazioneAttiva = () => {
 
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100%', width: '100%', overflow: 'hidden'}}>
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
 
           <Sidebar2 />
           <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>

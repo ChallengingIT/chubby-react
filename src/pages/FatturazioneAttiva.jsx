@@ -32,7 +32,7 @@ const FatturazioneAttiva = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseFatturazioneAttiva = await axios.get("http://89.46.67.198:8443/fatturazione/attiva/react", { headers: headers});
+        const responseFatturazioneAttiva = await axios.get("http://89.46.196.60:8443/fatturazione/attiva/react", { headers: headers});
 
         if (Array.isArray(responseFatturazioneAttiva.data)) {
 
@@ -100,7 +100,7 @@ const FatturazioneAttiva = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100vh', width: '100vw', overflow: 'hidden'}}>
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100vh', width: '100vw', overflow: 'hidden'}}>
     <Sidebar2 />
     <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'hidden', width: '100vw'}}>
     <Typography variant="h4" component="h1" sx={{ marginLeft: '30px', marginTop: '30px', marginBottom: '15px', fontWeight: 'bold', fontSize: '1.8rem'}}>Fatturazione Attiva</Typography>

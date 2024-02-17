@@ -1,7 +1,7 @@
 import React                      from "react";
 import { useNavigate }            from "react-router-dom";
 import LoginComponent             from "../components/LoginComponent";
-import loginimg                   from "../images/loginimg.jpeg";
+import loginimg                   from "../images/login_scura.jpg";
 import { Box, Typography } from "@mui/material";
 
 export const Login = () => {
@@ -84,7 +84,7 @@ export const Login = () => {
       top: '30px',
     }}>
       <span style={{ color: '#ffffff' }}>WE-</span>
-      <span style={{ color: '#ffb700' }}>HUB</span>
+      <span style={{ color: '#14D928' }}>HUB</span>
     </Box>
   
   </Box>

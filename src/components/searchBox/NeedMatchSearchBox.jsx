@@ -49,8 +49,8 @@ const headers = {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseJobTitle = await axios.get("http://89.46.67.198:8443/aziende/react/tipologia", { headers: headers});
-        const responseTipo     = await axios.get("http://89.46.67.198:8443/staffing/react/tipo"    , { headers: headers});
+        const responseJobTitle = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia", { headers: headers});
+        const responseTipo     = await axios.get("http://89.46.196.60:8443/staffing/react/tipo"    , { headers: headers});
 
         if (Array.isArray(responseJobTitle.data)) {
           setJobTitleOptions(responseJobTitle.data.map((jobTitle) => ({ label: jobTitle.descrizione, value: jobTitle.id })));
@@ -252,13 +252,13 @@ const headers = {
           sx={{
             width: '2rem',
             height: "40px",
-            backgroundColor: "#ffb700",
+            backgroundColor: "#14D928",
             color: "black",
             borderRadius: "10px",
             fontSize: "0.8rem",
             fontWeight: "bolder",
             "&:hover": {
-              backgroundColor: "#ffb700",
+              backgroundColor: "#14D928",
               color: "black",
               transform: "scale(1.05)",
             },

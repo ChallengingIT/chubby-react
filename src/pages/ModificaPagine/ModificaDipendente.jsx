@@ -34,11 +34,11 @@ const ModificaDipendente = () => {
     useEffect(() => {
       const fetchAziendeOptions = async () => {
         try {
-          const responseTipologia                      = await axios.get("http://89.46.67.198:8443/aziende/react/tipologia" , { headers: headers });
-          const skillsResponse                         = await axios.get("http://89.46.67.198:8443/staffing/react/skill"    , { headers: headers });
-          const facoltaResponse                        = await axios.get("http://89.46.67.198:8443/staffing/react/facolta"  , { headers: headers });
-          const livelloScolasticoResponse              = await axios.get("http://89.46.67.198:8443/staffing/react/livello"  , { headers: headers });
-          const tipologiaContrattoResponse             = await axios.get("http://89.46.67.198:8443/hr/react/tipocontratto"  , { headers: headers });
+          const responseTipologia                      = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia" , { headers: headers });
+          const skillsResponse                         = await axios.get("http://89.46.196.60:8443/staffing/react/skill"    , { headers: headers });
+          const facoltaResponse                        = await axios.get("http://89.46.196.60:8443/staffing/react/facolta"  , { headers: headers });
+          const livelloScolasticoResponse              = await axios.get("http://89.46.196.60:8443/staffing/react/livello"  , { headers: headers });
+          const tipologiaContrattoResponse             = await axios.get("http://89.46.196.60:8443/hr/react/tipocontratto"  , { headers: headers });
   
           if (Array.isArray(tipologiaContrattoResponse.data)) {
             const tipologiaContrattoOptions = tipologiaContrattoResponse.data.map((tipologiaContratto) => ({
@@ -167,7 +167,7 @@ const handleSubmit = async (values, fileCV, fileCF, fileMultipli, fileAllegati) 
       const allegati = values.files;
       delete values.files;
 
-      const datiResponse = await axios.post("http://89.46.67.198:8443/hr/react/staff/salva", values, {
+      const datiResponse = await axios.post("http://89.46.196.60:8443/hr/react/staff/salva", values, {
         params: { skill: skills },
         headers: headers,
       });
@@ -178,7 +178,7 @@ const handleSubmit = async (values, fileCV, fileCF, fileMultipli, fileAllegati) 
         const formData = new FormData();
         formData.append("file", file.file);
         try {
-          const fileResponse = await axios.post(`http://89.46.67.198:8443/hr/react/staff/salva/file/${staffId}`, formData, { headers: headers });
+          const fileResponse = await axios.post(`http://89.46.196.60:8443/hr/react/staff/salva/file/${staffId}`, formData, { headers: headers });
         } catch (error) {
           console.error("Errore nell'invio del file: ", error);
         }
@@ -208,7 +208,7 @@ const handleSubmit = async (values, fileCV, fileCF, fileMultipli, fileAllegati) 
     
   
     return (
-      <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100%', width: '100%', overflow: 'hidden'}}>
+      <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
             <Sidebar2 />
             <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
             <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Modifica di {nomeDipendente} {cognomeDipendente}</Typography>

@@ -37,8 +37,8 @@ const Need = () => {
     const fetchData = async () => {
       try {
 
-        const response      = await axios.get("http://89.46.67.198:8443/need/react/modificato",       { headers: headers});
-        const responseStato = await axios.get("http://89.46.67.198:8443/need/react/stato", { headers: headers });
+        const response      = await axios.get("http://89.46.196.60:8443/need/react/modificato",       { headers: headers});
+        const responseStato = await axios.get("http://89.46.196.60:8443/need/react/stato", { headers: headers });
 
         if (Array.isArray(responseStato.data)) {
           const statoConId = responseStato.data.map((stato) => ({ ...stato}));
@@ -85,7 +85,7 @@ const Need = () => {
       const idStato = newStato;
       const params = new URLSearchParams({ stato: idStato });
   
-      await axios.post(`http://89.46.67.198:8443/need/react/salva/stato/${selectedNeed.id}?${params.toString()}`, { headers: headers });
+      await axios.post(`http://89.46.196.60:8443/need/react/salva/stato/${selectedNeed.id}?${params.toString()}`, { headers: headers });
       setIsModalOpen(false);
       fetchData();
     } catch (error) {
@@ -232,7 +232,7 @@ const Need = () => {
 
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100vh', width: '100vw', overflow: 'hidden'}}>
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100vh', width: '100vw', overflow: 'hidden'}}>
     <Sidebar2 />
     <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'hidden', width: '100vw'}}>
     <Typography variant="h4" component="h1" sx={{ marginLeft: '30px', marginTop: '30px', marginBottom: '15px', fontWeight: 'bold', fontSize: '1.8rem'}}>Gestione Need</Typography>
@@ -319,10 +319,10 @@ const Need = () => {
             variant="contained"
             onClick={handleUpdateStato}
             sx={{
-              backgroundColor: "#FFB700",
+              backgroundColor: "#14D928",
               color: "black",
               "&:hover": {
-                backgroundColor: "#FFB700",
+                backgroundColor: "#14D928",
                 color: "black",
                 transform: "scale(1.05)",
               },

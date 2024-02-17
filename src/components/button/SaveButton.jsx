@@ -8,7 +8,7 @@ function SaveButton({ onSubmit, buttonText }) {
             variant="contained"
             onClick={onSubmit}
             style={{
-                backgroundColor: "#FFB700",
+                backgroundColor: "#14D928",
                 color: "black",
                 fontWeight: "bold",
                 marginBottom: "20px",

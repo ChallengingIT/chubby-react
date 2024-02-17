@@ -2,8 +2,8 @@ import axios from "axios";
 
 
 
-const API_URL = "http://89.46.67.198:8443/api/auth/";
-const API_LOGOUT = "http://89.46.67.198:8443/logout";
+const API_URL = "http://89.46.196.60:8443/api/auth/";
+const API_LOGOUT = "http://89.46.196.60:8443/logout";
 
 
 // Configura gli headers della richiesta con l'Authorization token

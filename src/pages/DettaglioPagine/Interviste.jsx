@@ -53,8 +53,8 @@ function Interviste() {
 
   const fetchData = async () => {
     try {
-      const response                = await axios.get(`http://89.46.67.198:8443/intervista/react/mod/${id}`       , { headers: headers});
-      const candidatoResponse       = await axios.get(`http://89.46.67.198:8443/staffing/react/${candidatoID}`, { headers: headers});
+      const response                = await axios.get(`http://89.46.196.60:8443/intervista/react/mod/${id}`       , { headers: headers});
+      const candidatoResponse       = await axios.get(`http://89.46.196.60:8443/staffing/react/${candidatoID}`, { headers: headers});
 
       if (typeof candidatoResponse.data === 'object') {
         setCandidatoData([candidatoResponse.data]); 
@@ -110,7 +110,7 @@ navigate("/recruiting");
   const handleDelete = async (id) => {
     try {
 
-        const response = await axios.delete(`http://89.46.67.198:8443/intervista/react/elimina/${deleteId}`, { headers: headers});
+        const response = await axios.delete(`http://89.46.196.60:8443/intervista/react/elimina/${deleteId}`, { headers: headers});
         setOpenDialog(false);
 
   
@@ -192,7 +192,7 @@ state={params.row}
 
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100vh', width: '100vw', overflow: 'hidden'}}>
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100vh', width: '100vw', overflow: 'hidden'}}>
           <Sidebar2 />
           <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowX: 'hidden', overFlowY: 'auto', width: '100vw'}}>
           <Typography variant="h4" component="h1" sx={{ marginLeft: '30px', marginTop: '30px', marginBottom: '15px', fontWeight: 'bold', fontSize: '1.8rem'}}>Lista ITW di {candidatoNome} {candidatoCognome}</Typography>
@@ -263,10 +263,10 @@ state={params.row}
             </Button>
             <Button onClick={handleDelete} color="primary" variant="contained" type="submit"
                       style={{
-                        backgroundColor: "#FFB700",
+                        backgroundColor: "#14D928",
                         color: "black",
                         "&:hover": {
-                          backgroundColor: "#FFB700",
+                          backgroundColor: "#14D928",
                           color: "black",
                           transform: "scale(1.05)",
                         },

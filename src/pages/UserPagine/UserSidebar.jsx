@@ -134,13 +134,13 @@ const UserSidebar = () => {
 const sidebarData = [
     {
         title: 'Timesheet',
-        icon: <AccessTimeIcon style={{ color: '#FFB700' }}/>,
+        icon: <AccessTimeIcon style={{ color: '#14D928' }}/>,
         path: '/userTimesheet',
         sidebarcollapsed: true,
     },
     {
       title: 'Logout',
-      icon: <ExitToAppIcon style={{ color: '#FFB700' }}/>,
+      icon: <ExitToAppIcon style={{ color: '#14D928' }}/>,
       action: 'logout',
       
   }
@@ -192,7 +192,7 @@ return (
                         <ListItem sx={{
                                 '&:hover': {
                                     backgroundColor: '#252831',
-                                    borderLeft: '4px solid #FFB700',
+                                    borderLeft: '4px solid #14D928',
                                     cursor: 'pointer',
                                     borderRadius: '40px',
                                 },
@@ -218,7 +218,7 @@ return (
                                         sx={{pl: 4,
                                             '&:hover': {
                                                 backgroundColor: '#252831',
-                                                borderLeft: '4px solid #FFB700',
+                                                borderLeft: '4px solid #14D928',
                                                 cursor: 'pointer',
                                                 borderRadius: '40px',
                                             },
@@ -268,25 +268,25 @@ return (
                 <Button onClick={closeLogoutPopup}
                 variant="outlined"
                 sx={{
-                    borderColor: "#FFB700",
-                    color: "#FFB700",
+                    borderColor: "#14D928",
+                    color: "#14D928",
                     marginRight: "5px",
                     marginTop: "10px",
                     "&:hover": {
                         transform: "scale(1.05)",
-                        borderColor: "#FFB700",
+                        borderColor: "#14D928",
                     },
                     }}>Annulla</Button>
                 <Button onClick={handleLogout}
                 variant="contained"
                 sx={{
-                    backgroundColor: "#FFB700",
+                    backgroundColor: "#14D928",
                     marginLeft: "5px",
                     marginTop: "10px",
                     marginRight: '50px',
                     color: "black",
                     "&:hover": {
-                        backgroundColor: "#FFB700",
+                        backgroundColor: "#14D928",
                         transform: "scale(1.05)",
                     },
                     }}
