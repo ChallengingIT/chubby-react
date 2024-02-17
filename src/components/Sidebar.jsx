@@ -583,7 +583,7 @@ const Sidebar = ({ handleLogout }) => {
               width: "60px",
               height: "60px",
               color: "black",
-              backgroundColor: "#e0a81a",
+              backgroundColor: "#14D928",
               transform: "scale(1.05)",
               cursor: "pointer",
               borderRadius: "50%",
