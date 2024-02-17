@@ -5,7 +5,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 
 
-const MyDataGrid = ({ data, columns, title, searchBoxComponent: SearchBox }) => {
+const MyDataGridPerc = ({ data, columns, title, searchBoxComponent: SearchBox }) => {
 
   const [ rowsPerPage,                setRowsPerPage        ] = React.useState(25);
   const [ page,                       setPage               ] = React.useState(0);
@@ -46,16 +46,17 @@ const MyDataGrid = ({ data, columns, title, searchBoxComponent: SearchBox }) => 
     <Box
       sx={{
         width: "94vw",
-        height: "80vh",
+        height: "84vh",
         backgroundColor: "white",
         borderRadius: "40px",
         display: "flex",
         flexDirection: "column",
-        marginLeft: '20px',
-        marginRight: '20px',
+        marginLeft: '1.5%',
+        marginRight: '1.5%',
         borderWidth: "0",
         boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.6)",
-        fontSize: "25px",
+        // fontSize: "25px",
+        fontSize: '1.4rem',
         fontWeight: "bolder",
       }}
     >
@@ -67,13 +68,13 @@ const MyDataGrid = ({ data, columns, title, searchBoxComponent: SearchBox }) => 
           display: "flex",
           flexDirection: "row",
           justifyContent: "flex-start",
-          paddingLeft: "20px",
-          paddingTop: "20px",
+          paddingLeft: "1.6%",
+          paddingTop: "1.5%",
           backgroundColor: "white",
           color: "black",
           borderRadius: "40px 40px 0 0",
           borderBottom: '2px solid #dbd9d9',
-          padding: '20px',
+          padding: '1%',
         }}
       >
         
@@ -130,10 +131,10 @@ const MyDataGrid = ({ data, columns, title, searchBoxComponent: SearchBox }) => 
           height: `${5 * 52}px`,
           borderStyle: "none",
 
-          "& .MuiDataGrid-columnHeaderTitle": {
-            fontWeight: "bolder",
-            color: '#808080',
-          },
+        //   "& .MuiDataGrid-columnHeaderTitle": {
+        //     fontWeight: "bolder",
+        //     color: '#808080',
+        //   },
 
           "& .MuiDataGrid-columnHeader": {
             borderBottom: '2px solid #c4c4c4',
@@ -159,13 +160,16 @@ const MyDataGrid = ({ data, columns, title, searchBoxComponent: SearchBox }) => 
             width: "100%",
           },
           "& .MuiDataGrid-cell": {
-            fontSize: "16.5px",
+            // fontSize: "16.5px",
+            fontSize: '14px',
             fontFamily: "Roboto",
           },
           "& .MuiDataGrid-columnHeaderTitle": {
             color: '#808080',
             fontWeight: "bolder",
-            fontSize: "18px", 
+            // fontSize: "18px", 
+            fontSize: '16px',
+            // fontSize: '1rem',
           },
           
         }}
@@ -174,4 +178,4 @@ const MyDataGrid = ({ data, columns, title, searchBoxComponent: SearchBox }) => 
   );
 };
 
-export default MyDataGrid;
+export default MyDataGridPerc;

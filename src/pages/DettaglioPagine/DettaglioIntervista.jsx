@@ -4,6 +4,7 @@ import axios                                        from "axios";
 import Sidebar                                      from "../../components/Sidebar";
 import MyBoxGroups                                  from "../../components/MyBoxGroups";
 import { Button, Box, Typography }                                   from "@mui/material";
+import Sidebar2 from "../../components/componentiBackup/Sidebar2";
 
 const DettaglioIntervista = () => {
   const navigate = useNavigate();
@@ -142,9 +143,9 @@ const disableFields = {
 
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
+    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100%', width: '100%', overflow: 'hidden'}}>
 
-          <Sidebar />
+          <Sidebar2 />
         <div className="container">
           <div className="page-name" style={{ margin: '20px',fontSize: "15px" }}>
           <h1>{`Gestisci Incontro `}</h1>

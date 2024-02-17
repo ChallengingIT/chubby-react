@@ -92,14 +92,14 @@ const handleKeyDown = (e) => {
 return (
     <Box
       sx={{
-        minHeight: '400px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
+        width: '100vw',
         p: 3,
         m: 2,
-        backgroundColor: '#14D928',
+        backgroundColor: '#FFB700',
         borderRadius: '20px',
         boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.5)',
       }}
@@ -109,7 +109,7 @@ return (
         component="form"
         onSubmit={handleLogin}
         noValidate
-        sx={{ mt: 1 }}
+        sx={{ mt: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '400px'}}
       >
         <ThemeProvider theme={theme}>
         <TextField
@@ -128,7 +128,7 @@ return (
           onChange={(e) => {
             setUsername(e.target.value);
             setLoginError(errors => ({ ...errors, username: false }));
-          }}          sx={{ mb: 2, width: '400px'}}
+          }}          sx={{ mb: 2}}
         />
         {/* {loginError && <p className="password-error">Username non valido.</p>} */}
         <TextField
@@ -148,7 +148,7 @@ return (
             setPassword(e.target.value);
             setLoginError(errors => ({ ...errors, password: false }));
           }}
-          sx={{ mb: 2, width: '400px' }}
+          sx={{  mb: 2 }}
         />
         </ThemeProvider>
         {/* {loginError && <p className="password-error">Password non valido.</p>} */}
@@ -157,6 +157,10 @@ return (
             variant="contained"
             onClick={handleLogin}
             sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              
                 marginTop: '20px',
                 width: '70%',
                 backgroundColor: "black",

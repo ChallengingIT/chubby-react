@@ -4,6 +4,7 @@ import axios                                        from "axios";
 import Sidebar                                      from "../../components/Sidebar";
 import FieldsBox                                    from "../../components/FieldsBox.jsx";
 import { Box,Typography, Alert, Snackbar } from "@mui/material";
+import Sidebar2 from "../../components/componentiBackup/Sidebar2.jsx";
 const AggiungiAziende = () => {
   const navigate = useNavigate();
 
@@ -34,8 +35,8 @@ const AggiungiAziende = () => {
       const headers = {
         Authorization: `Bearer ${accessToken}`
       };
-        const provinceResponse = await axios.get("http://89.46.196.60:8443/aziende/react/province", { headers: headers });
-        const ownerResponse    = await axios.get("http://89.46.196.60:8443/aziende/react/owner",    { headers: headers }   );
+        const provinceResponse = await axios.get("http://89.46.67.198:8443/aziende/react/province", { headers: headers });
+        const ownerResponse    = await axios.get("http://89.46.67.198:8443/aziende/react/owner",    { headers: headers }   );
 
         if (Array.isArray(ownerResponse.data)) {
           const ownerOptions = ownerResponse.data.map((owner) => ({
@@ -72,21 +73,21 @@ const AggiungiAziende = () => {
     setAlert({ ...alert, open: false });
 };
 
-  const campiObbligatori = [ "denominazione", "email", "idOwner", "status", "citta", "provincia" ];
+  const campiObbligatori = [ "denominazione", "ragioneSociale", "email", "idOwner", "status", "citta", "provincia" ];
 
   const fields = [
     { label: "Nome Azienda*",                   name: "denominazione",            type: "text"                             },
+    { label: "Ragione Sociale*",                name: "ragioneSociale",           type: "text"                             },
     { label: "Email*",                          name: "email",                    type: "text"                             },
     { label: "Partita IVA",                     name: "pi",                       type: "text"                             },
     { label: "Codice Fiscale",                  name: "cf",                       type: "text"                             },
     { label: "Città*",                          name: "citta",                    type: "text"                             },
-    { label: "CAP",                             name: "cap",                      type: "number"                           },
+    { label: "CAP",                             name: "cap",                      type: "text"                           },
     { label: "Paese",                           name: "paese",                    type: "text"                             },
     { label: "Provincia*",                      name: "provincia",                type: "select", options: provinceOptions },
     { label: "Pec",                             name: "pec",                      type: "text"                             },
     { label: "Sede Operativa",                  name: "sedeOperativa",            type: "text"                             },
     { label: "Sede Legale",                     name: "sedeLegale",               type: "text"                             },
-    { label: "CodicePA",                        name: "codicePa",                 type: "text"                             },
     { label: "Codice Destinatario",             name: "codiceDestinatario",       type: "text"                             },
     { label: "Sito Web",                        name: "sito",                     type: "text"                             },
     { label: "Settore di mercato",              name: "settoreMercato",           type: "text"                             },
@@ -138,7 +139,7 @@ const AggiungiAziende = () => {
           Authorization: `Bearer ${accessToken}`
         };
 
-        const response = await axios.post("http://89.46.196.60:8443/aziende/react/salva", values, {
+        const response = await axios.post("http://89.46.67.198:8443/aziende/react/salva", values, {
           headers: headers
         });
         if (response.data === "DUPLICATO") {
@@ -167,8 +168,8 @@ const AggiungiAziende = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
-          <Sidebar />
+    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100%', width: '100%', overflow: 'hidden'}}>
+          <Sidebar2 />
           <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
           <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
                 <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>

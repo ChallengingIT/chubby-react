@@ -1,5 +1,5 @@
 import React, { useEffect }               from "react";
-import sfondohome                         from "../../images/challenging.png";
+import sfondohome                         from "../../images/sfondohome.png";
 
 
 import "../../styles/Homepage.css";

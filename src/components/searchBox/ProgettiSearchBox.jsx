@@ -1,16 +1,14 @@
 import React, { useState, useEffect }     from "react";
-import Button                             from "@mui/material/Button";
-import Select                             from "@mui/material/Select";
+import { Box, Button, Select } from "@mui/material";
 import axios                              from "axios";
 
-import "../../styles/Progetti.css";
 
 
 
 
 const ProgettiSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalProgetti}) => {
 
-  const initialSearchTerm = {
+  const savedSearchTerms = JSON.parse(localStorage.getItem("ricercaProgetti")) || {
     dipendente: '',
     cliente: '',
   };
@@ -23,7 +21,7 @@ const headers = {
 };
 
 
-  const [ searchTerm,                   setSearchTerm               ] = useState(initialSearchTerm);
+  const [ searchTerm,                   setSearchTerm               ] = useState(savedSearchTerms);
   const [ clienteOptions,               setClienteOptions           ] = useState([]);
   const [ dipendentiOptions,            setDipendentiOptions        ] = useState([]);
   const [ filteredData,                 setFilteredData             ] = useState([]);
@@ -33,8 +31,8 @@ const headers = {
     const fetchData = async () => {
       try {
 
-        const responseCliente    = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers: headers});
-        const responseDipendenti = await axios.get("http://89.46.196.60:8443/hr/react"     , { headers: headers});
+        const responseCliente    = await axios.get("http://89.46.67.198:8443/aziende/react/select", { headers: headers});
+        const responseDipendenti = await axios.get("http://89.46.67.198:8443/hr/react"     , { headers: headers});
 
         if (Array.isArray(responseCliente.data)) {
           setClienteOptions(responseCliente.data.map((cliente) => ({ label: cliente.denominazione, value: cliente.id })));
@@ -74,16 +72,22 @@ const headers = {
         
       )
     );
+    localStorage.setItem("ricercaProgetti", JSON.stringify(searchTerm));
 
     onSearch(filteredData);
     setFilteredData(filteredData);
   };
   
   const handleReset = () => {
-    setSearchTerm(initialSearchTerm);
+    setSearchTerm({
+      dipendente: '',
+      cliente: '',
+    });
     onSearchTextChange("");
     onReset();
     setFilteredData([]);
+    localStorage.removeItem("ricercaProgetti");
+
   };
 
 
@@ -95,7 +99,7 @@ const headers = {
 
 
   return (
-    <div className="gridContainer" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr) auto', gap: '10px', alignItems: 'center', margin: '20px 5px', padding: '0 0 20px 0',  borderBottom: '2px solid #dbd9d9',}}>
+    <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr) auto', gap: '0.5%', alignItems: 'center', margin: '0.4%', borderBottom: '2px solid #dbd9d9'}}>
 
     {/* prima colonna */}
     <Select
@@ -103,6 +107,7 @@ const headers = {
                   value={searchTerm.dipendente}
                   onChange={e => setSearchTerm({...searchTerm, dipendenti: e.target.value })}
                   sx={{
+                    marginTop: '1%',
                     borderRadius: "40px",
                     fontSize: "0.8rem",
                     textAlign: "start",
@@ -126,6 +131,7 @@ const headers = {
                   value={searchTerm.cliente}
                   onChange={e => setSearchTerm({...searchTerm, cliente: e.target.value })}
                   sx={{
+                    marginTop: '1%',
                     borderRadius: "40px",
                     fontSize: "0.8rem",
                     textAlign: "start",
@@ -144,49 +150,49 @@ const headers = {
                   ))}
                 </Select>
     {/* terza colonna */}
-    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
-    <Button
-      className="button-search"
-      variant="contained"
-      onClick={handleSearch}
-      sx={{
-        width: '100px',
-        height: "40px",
-        backgroundColor: "#14D928",
-        color: "black",
-        borderRadius: "10px",
-        fontSize: "0.8rem",
-        fontWeight: "bolder",
-        "&:hover": {
-          backgroundColor: "#14D928",
-          color: "black",
-          transform: "scale(1.05)",
-        },
-      }}
-    >
-      Cerca
-    </Button>
-    <Button
-      className="ripristina-link"
-      onClick={handleReset}
-      sx={{
-        width: '100px', 
-        color: 'white', 
-        backgroundColor: 'black',
-        height: "40px",
-        borderRadius: "10px",
-        fontSize: "0.8rem",
-        fontWeight: "bolder",
-        "&:hover": {
-          backgroundColor: "black",
-          color: "white",
-          transform: "scale(1.05)",
-        },
-      }}>
-      Reset
-    </Button>
-  </div>
-</div>
+    <Box style={{ display: 'flex', justifyContent: 'flex-end', gap: '5%', marginLeft: '10px', marginTop: '-1%' }}>
+        <Button
+          className="button-search"
+          variant="contained"
+          onClick={handleSearch}
+          sx={{
+            width: '2rem',
+            height: "40px",
+            backgroundColor: "#ffb700",
+            color: "black",
+            borderRadius: "10px",
+            fontSize: "0.8rem",
+            fontWeight: "bolder",
+            "&:hover": {
+              backgroundColor: "#ffb700",
+              color: "black",
+              transform: "scale(1.05)",
+            },
+          }}
+        >
+          Cerca
+        </Button>
+        <Button
+          className="ripristina-link"
+          onClick={handleReset}
+          sx={{
+            width: '2rem',
+            color: 'white', 
+            backgroundColor: 'black',
+            height: "40px",
+            borderRadius: "10px",
+            fontSize: "0.8rem",
+            fontWeight: "bolder",
+            "&:hover": {
+              backgroundColor: "black",
+              color: "white",
+              transform: "scale(1.05)",
+            },
+          }}>
+          Reset
+        </Button>
+      </Box>
+    </Box>
   );
 };
 

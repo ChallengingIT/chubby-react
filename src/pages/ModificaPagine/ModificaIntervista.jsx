@@ -4,6 +4,7 @@
   import Sidebar                                  from "../../components/Sidebar";
   import MyBoxGroups                              from "../../components/MyBoxGroups";
   import { Button, Box, Typography }                               from "@mui/material";
+import Sidebar2 from "../../components/componentiBackup/Sidebar2";
 
 
   const ModificaIntervista = () => {
@@ -28,10 +29,10 @@
     const fetchData = async () => {
       try {
         //jobtitle = tipologia, tipologiaIncontro = stato, owner = owner
-        const responseTipologia                      = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia",         { headers: headers});
-        const ownerResponse                          = await axios.get("http://89.46.196.60:8443/aziende/react/owner",             { headers: headers});
-        const responseStato                          = await axios.get("http://89.46.196.60:8443/staffing/react/stato/candidato",  { headers: headers});
-        const responseTipoIntervista                 = await axios.get("http://89.46.196.60:8443/intervista/react/tipointervista", { headers: headers});
+        const responseTipologia                      = await axios.get("http://89.46.67.198:8443/aziende/react/tipologia",         { headers: headers});
+        const ownerResponse                          = await axios.get("http://89.46.67.198:8443/aziende/react/owner",             { headers: headers});
+        const responseStato                          = await axios.get("http://89.46.67.198:8443/staffing/react/stato/candidato",  { headers: headers});
+        const responseTipoIntervista                 = await axios.get("http://89.46.67.198:8443/intervista/react/tipointervista", { headers: headers});
 
         if (Array.isArray(responseTipoIntervista.data)) {
           const tipoIntervistaOptions = responseTipoIntervista.data.map((tipoIntervista) => ({
@@ -177,7 +178,7 @@
         const idCandidato = rowData.candidato?.id;
         const note        = values.note;
         const modifica    = 1; 
-        const response = await axios.post("http://89.46.196.60:8443/intervista/react/salva", values, {
+        const response = await axios.post("http://89.46.67.198:8443/intervista/react/salva", values, {
           params: {
             idCandidato: idCandidato,
             note: note,
@@ -193,9 +194,9 @@
     };
 
     return (
-      <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
+      <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100%', width: '100%', overflow: 'hidden'}}>
 
-            <Sidebar />
+            <Sidebar2 />
           <div className="container">
             <div className="page-name" style={{ margin: '20px',fontSize: "15px" }}>
             <h1>{`Modifica Incontro `}</h1>

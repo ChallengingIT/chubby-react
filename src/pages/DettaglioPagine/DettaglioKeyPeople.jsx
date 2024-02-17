@@ -1,12 +1,13 @@
 import React, { useState, useEffect }           from "react";
 import { useNavigate, useLocation }             from "react-router-dom";
 import Sidebar                                  from "../../components/Sidebar";
-import { Button, Grid }                         from "@mui/material";
+import { Button, Grid, Box, Typography }                         from "@mui/material";
 import { useParams }                            from "react-router-dom";
 import AttivitaCard                             from "../../components/card/AttivitaCard";
 import axios                                    from "axios";
 import InformazioniKeypeopleCard                from "../../components/card/InformazioniKeypeopleCard";
 import "../../styles/DettaglioKeyPeople.css";
+import Sidebar2 from "../../components/componentiBackup/Sidebar2";
 
 
 
@@ -45,7 +46,7 @@ useEffect(() => {
   useEffect(() => {
     const fetchOptions = async () => {
       try { 
-        const responseAttivita = await axios.get(`http://89.46.196.60:8443/keypeople/react/attivita/${id}`);
+        const responseAttivita = await axios.get(`http://89.46.67.198:8443/keypeople/react/attivita/${id}`);
         if (Array.isArray(responseAttivita.data)) {
           const attivitaOptions = responseAttivita.data.map((attivita) => ({
             note: attivita.note,
@@ -103,14 +104,12 @@ useEffect(() => {
 
 
   return (
-    <div className="dettaglioContainerKeyPeople" >
-    <div className="bar" style={{ height: '100vh', overflowY: 'hidden'}}>
-    <Sidebar />
-    </div>
-      <div className="contentDettaglioKeyPeople">
-          <div className="containerTitle">
-            <h1>{`Visualizzazione ${nomeKeypeople}`}</h1>
-          </div>
+    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100vh', width: '100vw', overflow: 'hidden'}}>
+
+    <Sidebar2 />
+    <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'hidden', width: '100vw'}}>
+    <Typography variant="h4" component="h1" sx={{ marginLeft: '30px', marginTop: '30px', marginBottom: '15px', fontWeight: 'bold', fontSize: '1.8rem'}}>Visualizzazione {nomeKeypeople}</Typography>
+
 
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
@@ -140,8 +139,8 @@ useEffect(() => {
           >
             Indietro
           </Button>
-        </div>
-      </div>
+        </Box>
+      </Box>
   );
 
 };

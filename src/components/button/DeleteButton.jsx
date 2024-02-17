@@ -9,15 +9,28 @@ function DeleteButton({ onClick, id }) {
       size="medium"
       startIcon={<DeleteIcon />}
       sx={{
+        marginRight: '10%',
         backgroundColor: 'black',
-        color: '#ECECEC',
-        borderRadius: '40px',
-        justifyContent: 'end !important',
-        "&:hover": {
-          backgroundColor: "#fc2d2d",
-          transform: "scale(1.05)",
-          color: 'black',
+        color: 'white',
+        borderRadius: '50%', 
+        minWidth: '40px', 
+        width: '40px', 
+        height: '40px', 
+        padding: '0', 
+        '& .MuiButton-startIcon': { 
+          margin: '0', 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center' 
         },
+        '&:hover': {
+          backgroundColor: '',
+          transform:'scale(1.05)',
+          color: 'black',
+          cursor: 'pointer',
+          borderRadius: '50%',
+          borderStyle: 'none',
+        }
       }}
       onClick={() => onClick(id)}
     />

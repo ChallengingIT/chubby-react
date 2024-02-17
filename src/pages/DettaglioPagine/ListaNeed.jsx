@@ -15,8 +15,12 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  Button
+  Button,
+  Box,
+  Typography
 } from '@mui/material';
+import MyDataGridPerc from '../../components/MyDataGridPerc.jsx';
+import Sidebar2 from '../../components/componentiBackup/Sidebar2.jsx';
 
 function ListaNeed() {
   const navigate              = useNavigate();
@@ -51,7 +55,7 @@ function ListaNeed() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://89.46.196.60:8443/need/react/cliente/modificato/${id}`, { headers: headers });;
+      const response = await axios.get(`http://89.46.67.198:8443/need/react/cliente/modificato/${id}`, { headers: headers });;
       if (Array.isArray(response.data)) {
         const needConId = response.data.map((need) => ({ ...need }));
         setNeed(needConId);
@@ -96,7 +100,7 @@ function ListaNeed() {
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`http://89.46.196.60:8443/need/react/elimina/${deleteId}`);
+      const response = await axios.delete(`http://89.46.67.198:8443/need/react/elimina/${deleteId}`);
       fetchData();
       setOpenDialog(false);
     } catch (error) {
@@ -147,7 +151,7 @@ function ListaNeed() {
         </div>
       ),
     },
-    { field: "azioni",            headerName: "Azioni",              flex: 1,  renderCell: (params) => (
+    { field: "azioni",            headerName: "Azioni",              flex: 0.7,  renderCell: (params) => (
       <div>
         <Link
         to={`/need/modifica/${params.row.id}`}
@@ -161,22 +165,19 @@ function ListaNeed() {
   ]
 
   return (
-    <div className="container">
-      <div className="content">
-        <div className="sidebar-container">
-          <Sidebar />
-        </div>
-        <div className="container">
-        <div className="containerTitle">
-                    <h1>{`Visualizzazione ${nomeAzienda}`}</h1>
-                </div>
+    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100vh', width: '100vw', overflow: 'hidden'}}>
+    <Sidebar2 />
+    <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowX: 'hidden', overFlowY:'auto', width: '100vw'}}>
+    <Typography variant="h4" component="h1" sx={{ marginLeft: '30px', marginTop: '30px', marginBottom: '15px', fontWeight: 'bold', fontSize: '1.8rem'}}>Visualizzazione di {nomeAzienda}</Typography>
                 <Link
                   to={`/need/aggiungi/${id}`}
                   state={{ aziendaData: aziendaData }}
                   >
                 <MyButton>Aggiungi Need</MyButton>
                 </Link>
-                <MyDataGrid 
+                <Box sx={{ height: '90vh', marginTop: '20px', width: '100vw'}}>
+
+                <MyDataGridPerc 
                 data={need} 
                 columns={columns} 
                 title={`Needs for ${nomeAzienda}`} 
@@ -191,6 +192,7 @@ function ListaNeed() {
                   />
                 )}
                 />
+                <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: '2%', marginTop: '2%'}}>
 
             <Button
           color="primary"
@@ -212,9 +214,9 @@ function ListaNeed() {
         >
           Indietro
         </Button>
-            </div>
-
-        </div>
+        </Box>
+        </Box>
+        </Box>
         <Dialog
             open={openDialog}
             onClose={() => setOpenDialog(false)}
@@ -241,10 +243,10 @@ function ListaNeed() {
               </Button>
               <Button onClick={handleDelete} color="primary" variant="contained" type="submit"
                         style={{
-                          backgroundColor: "#14D928",
+                          backgroundColor: "#FFB700",
                           color: "black",
                           "&:hover": {
-                            backgroundColor: "#14D928",
+                            backgroundColor: "#FFB700",
                             color: "black",
                             transform: "scale(1.05)",
                           },
@@ -253,7 +255,7 @@ function ListaNeed() {
               </Button>
   </DialogActions>
 </Dialog>
-    </div>
+    </Box>
   );
 };
 

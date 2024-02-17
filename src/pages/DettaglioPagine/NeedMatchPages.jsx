@@ -10,6 +10,8 @@ import NeedMatchSearchBox                             from '../../components/sea
 import { Modal, Box, Button, Typography }                         from '@mui/material';
 import ModalBox                                       from '../../components/ModalBox.jsx';
 import { useLocation }                                from 'react-router-dom';
+import MyDataGridPerc from '../../components/MyDataGridPerc.jsx';
+import Sidebar2 from '../../components/componentiBackup/Sidebar2.jsx';
 
 
 
@@ -53,11 +55,11 @@ function NeedMatchPages() {
   
   const fetchData = async () => {
     try {
-      const associatiResponse   = await axios.get(`http://89.46.196.60:8443/need/react/match/associati/mod/${id}`, { headers: headers});
-      const storicoResponse     = await axios.get(`http://89.46.196.60:8443/need/react/storico/${id}`, { headers: headers});
-      const associabiliResponse = await axios.get(`http://89.46.196.60:8443/need/react/match/associabili/mod/${id}`, { headers: headers});
-      const ownerResponse       = await axios.get("http://89.46.196.60:8443/aziende/react/owner", { headers: headers});
-      const statoResponse       = await axios.get("http://89.46.196.60:8443/associazioni/react/stati", { headers: headers});
+      const associatiResponse   = await axios.get(`http://89.46.67.198:8443/need/react/match/associati/mod/${id}`, { headers: headers});
+      const storicoResponse     = await axios.get(`http://89.46.67.198:8443/need/react/storico/${id}`, { headers: headers});
+      const associabiliResponse = await axios.get(`http://89.46.67.198:8443/staffing/react/mod`, { headers: headers});
+      const ownerResponse       = await axios.get("http://89.46.67.198:8443/aziende/react/owner", { headers: headers});
+      const statoResponse       = await axios.get("http://89.46.67.198:8443/associazioni/react/stati", { headers: headers});
 
       if (Array.isArray(ownerResponse.data)) {
         const ownerOptions = ownerResponse.data.map((owner) => ({
@@ -127,7 +129,7 @@ function NeedMatchPages() {
     try {
       const idNeed = parseInt(id); 
       const idCandidato = row;
-      const url = `http://89.46.196.60:8443/associazioni/react/rimuovi/candidato/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
+      const url = `http://89.46.67.198:8443/associazioni/react/rimuovi/candidato/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
       const response = await axios.delete(url, { headers: headers});;
       fetchData();
     } catch (error) {
@@ -141,7 +143,7 @@ function NeedMatchPages() {
   const handleDeleteStorico = async (row) => {
     try {
       const idAssociazione = row;
-      const url = `http://89.46.196.60:8443/associazioni/react/rimuovi/associa/${idAssociazione}`;
+      const url = `http://89.46.67.198:8443/associazioni/react/rimuovi/associa/${idAssociazione}`;
       const response = await axios.delete(url, { headers: headers});;;
       fetchData();
     } catch (error) {
@@ -154,7 +156,7 @@ function NeedMatchPages() {
     try {
       const idNeed = parseInt(id); 
       const idCandidato = row.id;
-      const url = `http://89.46.196.60:8443/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
+      const url = `http://89.46.67.198:8443/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
       const response = await axios.post(url, { headers: headers});
       fetchData();
     } catch (error) {
@@ -208,7 +210,7 @@ function NeedMatchPages() {
       delete updatedValues.cliente;
   
   
-      const response = await axios.post(`http://89.46.196.60:8443/associazioni/salva`, updatedValues, { headers: headers });;
+      const response = await axios.post(`http://89.46.67.198:8443/associazioni/salva`, updatedValues, { headers: headers });;
       fetchData();
     } catch (error) {
       console.error("Errore durante il recupero dei dati:", error);
@@ -308,11 +310,11 @@ const tableAssociati = [
     <div>
       <Button
       onClick={() => handleOpenModal(params.row)}
-      sx={{ backgroundColor: '#14D928',
+      sx={{ backgroundColor: '#ffb700',
       fontWeight: 'bold',
       color: 'black',
       "&:hover": {
-        backgroundColor: "#14D928",
+        backgroundColor: "#ffb700",
         transform: "scale(1.05)",
         color: 'black',
         
@@ -356,11 +358,11 @@ const tableAssociati = [
       <div>
         <Button
         onClick={() => handleAssocia(params.row)}
-        sx={{ backgroundColor: '#14D928',
+        sx={{ backgroundColor: '#ffb700',
         fontWeight: 'bold',
         color: 'black',
         "&:hover": {
-          backgroundColor: "#14D928",
+          backgroundColor: "#ffb700",
           transform: "scale(1.05)",
           color: 'black',
         },
@@ -372,14 +374,19 @@ const tableAssociati = [
 
   return (
           
-      <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
-          <Sidebar />
-          <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
+    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100vh', width: '100vw', overflow: 'hidden'}}>
+    <Sidebar2 />
+    <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowX: 'hidden', overFlowY: 'auto', width: '100vw'}}>
           <Modal
         open={isModalOpen}
         onClose={handleCloseModal}
         aria-labelledby="modal-title"
         aria-describedby="modal-description"
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
       >
     <ModalBox
       fields=        {fieldsAggiorna}
@@ -393,9 +400,10 @@ const tableAssociati = [
     />
   {/* </Box> */}
 </Modal>
-          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>{descrizione} {nomeAzienda} </Typography>
-          <Box sx={{ marginBottom: '20px'}}>
-                <MyDataGrid data={filteredAssociabili} columns={tableAssociabili} title="Candidati"             getRowId={(row) => row.id} searchBoxComponent={() => (<NeedMatchSearchBox data={needMatch}
+          <Typography variant="h4" component="h1" sx={{ marginLeft: '30px', marginTop: '30px', marginBottom: '15px', fontWeight: 'bold', fontSize: '1.8rem'}}>{descrizione} {nomeAzienda}</Typography>
+
+          <Box sx={{ height: '90vh', marginTop: '20px', width: '100vw', marginBottom: '2%'}}>
+                <MyDataGridPerc data={filteredAssociabili} columns={tableAssociabili} title="Candidati"             getRowId={(row) => row.id} searchBoxComponent={() => (<NeedMatchSearchBox data={needMatch}
           onSearch={handleSearch}
           onReset={handleReset}
           searchText={searchText}
@@ -404,11 +412,11 @@ const tableAssociati = [
           </Box>
           <Box sx={{ marginBottom: '20px'}}>
 
-                <MyDataGrid data={storicoOptions}      columns={tableStorico}   title="Storico"               getRowId={(row) => row.id} />
+                <MyDataGridPerc data={storicoOptions}      columns={tableStorico}   title="Storico"               getRowId={(row) => row.id} />
                 </Box>
-                <Box sx={{ marginBottom: '20px'}}>
+                <Box sx={{ marginBottom: '2%'}}>
 
-                <MyDataGrid data={associatiOptions}    columns={tableAssociati} title="Candidati Associati"   getRowId={(row) => row.id} />
+                <MyDataGridPerc data={associatiOptions}    columns={tableAssociati} title="Candidati Associati"   getRowId={(row) => row.id} />
                 </Box>
             <Button
           color="primary"

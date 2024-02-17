@@ -4,6 +4,7 @@ import axios                            from "axios";
 import Sidebar                          from "../../components/Sidebar";
 import FieldsBox                        from "../../components/FieldsBox";
 import { Box, Typography, Alert, Snackbar } from "@mui/material";
+import Sidebar2 from "../../components/componentiBackup/Sidebar2";
 
 const AggiungiContatto = () => {
   const navigate = useNavigate();
@@ -23,8 +24,8 @@ const AggiungiContatto = () => {
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const aziendeResponse = await axios.get("http://89.46.196.60:8443/aziende/react/select",       { headers: headers });
-        const ownerResponse   = await axios.get("http://89.46.196.60:8443/aziende/react/owner",        { headers: headers });
+        const aziendeResponse = await axios.get("http://89.46.67.198:8443/aziende/react/select",       { headers: headers });
+        const ownerResponse   = await axios.get("http://89.46.67.198:8443/aziende/react/owner",        { headers: headers });
         if (Array.isArray(ownerResponse.data)) {
           const ownerOptions = ownerResponse.data.map((owner) => ({
             label: owner.descrizione,
@@ -89,7 +90,7 @@ const AggiungiContatto = () => {
     const hasErrors = Object.keys(errors).length > 0;
     if (!hasErrors) {
     try {
-      const response = await axios.post("http://89.46.196.60:8443/keypeople/react/salva", values, {
+      const response = await axios.post("http://89.46.67.198:8443/keypeople/react/salva", values, {
         headers: headers
       });
       if (response.data === "DUPLICATO") {
@@ -120,8 +121,8 @@ const AggiungiContatto = () => {
 
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
-          <Sidebar />
+    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100%', width: '100%', overflow: 'hidden'}}>
+          <Sidebar2 />
           <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
           <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
                 <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>

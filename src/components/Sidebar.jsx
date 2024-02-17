@@ -11,18 +11,22 @@ import Button     from "@mui/material/Button";
 import Logo       from "../images/innotek.svg";
 import Dialog     from "@mui/material/Dialog";
 import authService from "../services/auth.service";
+import { Box } from "@mui/material";
+
+
 
 
 
 const SidebarContainer = styled.div`
   width: ${({ $sidebarcollapsed }) => ($sidebarcollapsed ? "60px" : "250px")};
-  height: 100%;
+  height: 100vh;
   min-height: 100vh;
   background: #000000;
   display: flex;
   flex-direction: column;
   border-radius: 0px 20px 20px 0px;
   transition: width 0.4s;
+  overflow: hidden;
 `;
 
 const SidebarHeader = styled.div`
@@ -53,8 +57,8 @@ const SidebarTitle3 = styled.h2`
 const LinkText = styled.div`
   font-size: 18px;
   color: #817b7b;
-  margin-left: 20px;
-  width: 100%; // Imposta la larghezza a 100% o il valore desiderato
+  margin-left: 5px;
+  width: 100%; 
   display: ${({ $sidebarcollapsed }) => ($sidebarcollapsed ? "none" : "flex")};
 `;
 
@@ -65,7 +69,7 @@ const ImgContainer = styled.div`
 `;
 
 const NavIcon = styled(NavLink)`
-  color: #14D928;
+  color: #FFB700;
   margin-right: 0rem;
   font-size: 2rem;
   margin-top: 15px;
@@ -89,24 +93,28 @@ const SidebarWrap = styled.div`
 const SidebarLink = styled(NavLink)`
   display: flex;
   justify-content: space-between;
-  padding: 20px;
+  padding: 10px;
   list-style: none;
   height: 60px;
   text-decoration: none;
   font-size: 18px;
+  min-width: 45px;
 
   &:hover,
   &:active,
   &:focus {
     background: #252831;
-    border-left: 4px solid #14D928;
+    border-left: 4px solid #FFB700;
     cursor: pointer;
     border-radius: 40px;
   }
 `;
 
+
+
+
 const SidebarIcon = styled.span`
-  color: #14D928;
+  color: #FFB700;
 `;
 
 const DropdownLink = styled(NavLink)`
@@ -116,7 +124,7 @@ const DropdownLink = styled(NavLink)`
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: #14D928;
+  color: #ffb700;
   font-size: 18px;
   overflow: hidden;
   
@@ -126,7 +134,7 @@ const DropdownLink = styled(NavLink)`
   &:focus {
     background: #252831;
     border-radius: 40px;
-    border-left: 4px solid #14D928;
+    border-left: 4px solid #FFB700;
     cursor: pointer;
   }
 
@@ -143,10 +151,11 @@ const linkStyle = {
   color: "inherit",
   cursor: "pointer",
   flexDirection: "column",
+  minWidth: "45px",
 };
 
 const SubmenuItem = styled.div`
-  margin-left: 20px;
+  margin-left: 5px;
 `;
 
 const Sidebar = ({ handleLogout }) => {
@@ -176,6 +185,9 @@ const Sidebar = ({ handleLogout }) => {
   };
 
   const confirmLogout = () => {
+    localStorage.clear();
+
+    console.log("Logout da confirmLogout");
     navigate('/login', { replace: true });
     // window.location.reload();
     closeLogoutPopup();
@@ -220,6 +232,8 @@ const Sidebar = ({ handleLogout }) => {
 
   const handleConfirmLogout = async () => {
     try {
+      localStorage.clear();
+
       await authService.logout(); 
       navigate('/login', { replace: true });
     // window.location.reload();
@@ -264,15 +278,15 @@ const Sidebar = ({ handleLogout }) => {
               variant="outlined"
               onClick={onClose}
               sx={{
-                borderColor: "#14D928",
-                color: "#14D928",
+                borderColor: "#FFB700",
+                color: "#FFB700",
                 marginRight: "5px",
                 marginTop: "20px",
                 "&:hover": {
                   transform: "scale(1.05)",
                   // variant: "filled",
-                  // backgroundColor: "#14D928",
-                  borderColor: "#14D928",
+                  // backgroundColor: "#ffb700",
+                  borderColor: "#FFB700",
                   // color: "black",
                 },
               }}
@@ -283,16 +297,16 @@ const Sidebar = ({ handleLogout }) => {
               variant="contained"
               onClick={handleConfirmLogout}
               sx={{
-                backgroundColor: "#14D928",
+                backgroundColor: "#FFB700",
                 marginLeft: "5px",
                 marginTop: "20px",
                 color: "black",
                 "&:hover": {
                   // variant: "outlined",
-                  // borderColor: "#14D928",
-                  backgroundColor: "#14D928",
+                  // borderColor: "#ffb700",
+                  backgroundColor: "#FFB700",
                   transform: "scale(1.05)",
-                  // color: "#14D928",
+                  // color: "#ffb700",
                 },
               }}
             >
@@ -319,12 +333,12 @@ const Sidebar = ({ handleLogout }) => {
       icon: <FaIcons.FaAddressBook />,
       iconClosed: (
         <RiIcons.RiArrowDownSFill
-          style={{ color: "#14D928", marginRight: "20px" }}
+          style={{ color: "#FFB700", marginRight: "10px" }}
         />
       ),
       iconOpened: (
         <RiIcons.RiArrowUpSFill
-          style={{ color: "#14D928", marginRight: "20px" }}
+          style={{ color: "#FFB700", marginRight: "10px" }}
         />
       ),
       sidebarcollapsed: false,
@@ -341,6 +355,9 @@ const Sidebar = ({ handleLogout }) => {
           title: "Key People",
           path: "/KeyPeople",
           icon: <FaIcons.FaBook className="active-icon" />,
+          customStyle: {
+            minWidth: '45px', 
+          },
         },
       ],
     },
@@ -356,7 +373,59 @@ const Sidebar = ({ handleLogout }) => {
       path: "/recruiting",
       icon: <FaIcons.FaUser className="active-icon" />,
       sidebarcollapsed: false,
-    }
+    },
+    {
+      title: "Progetti",
+      path: "/progetti",
+      icon: <Fa6Icons.FaListCheck className="active-icon" />,
+      sidebarcollapsed: false,
+    },
+    {
+      title: "Amministrazione",
+      icon: <FaIcons.FaSitemap />,
+      iconClosed: (
+        <RiIcons.RiArrowDownSFill
+          className="active-icon"
+          style={{ color: "#FFB700", marginRight: "10px", }}
+        />
+      ),
+      iconOpened: (
+        <RiIcons.RiArrowUpSFill
+          className="active-icon"
+          style={{ color: "#FFB700", marginRight: "10px" }}
+        />
+      ),
+      sidebarcollapsed: false,
+      subNav: [
+        {
+          title: "Fatturazione Attiva",
+          path: "/FatturazioneAttiva",
+          icon: <FaIcons.FaMoneyCheck className="active-icon" />,
+        },
+        {
+          title: "Fatturazione Passiva",
+          path: "/fatturazione/passiva",
+          icon: <FaIcons.FaIdBadge className="active-icon" />,
+        },
+        {
+          title: "Fornitori",
+          path: "/fornitori",
+          icon: <FaIcons.FaIndustry className="active-icon" />,
+        },
+        // {
+        //   title: "Tesoreria",
+        //   path: "/tesoreria",
+        //   icon: <Fa6Icons.FaCreditCard className="active-icon" />,
+        //   sidebarcollapsed: false,
+        // },
+      ],
+    },
+    {
+      title: "HR",
+      path: "/hr",
+      icon: <FaIcons.FaUsers className="active-icon" />,
+      sidebarcollapsed: false,
+    },
   ];
 
   return (
@@ -369,10 +438,10 @@ const Sidebar = ({ handleLogout }) => {
                 color: "white",
                 display: "flex",
                 alignSelf: "flex-start",
-                fontSize: "33px",
+                fontSize: "30px",
               }}
             >
-              TORCHY
+              WE-HUB
             </span>
             <ImgContainer>
               <img src={Logo} alt="Logo" style={{ marginLeft: "5%" }} />
@@ -457,7 +526,7 @@ const Sidebar = ({ handleLogout }) => {
                     activeclassname="active"
                     className={activeLink === subItem.path ? "active" : ""}
                   >
-                    <div className="icon" style={{ marginLeft: "20px" }}>
+                    <div className="icon" style={{ marginLeft: "10px" }}>
                       {subItem.icon}
                     </div>
                     <LinkText className="sub-link-text">
@@ -479,13 +548,13 @@ const Sidebar = ({ handleLogout }) => {
             display: "flex",
             width: "100%",
             maxWidth: "120px",
-            color: "#14D928",
-            borderColor: "#14D928",
+            color: "#ffb700",
+            borderColor: "#ffb700",
             margin: "15px",
             "&:hover": {
               variant: "filled",
-              borderColor: "#14D928",
-              backgroundColor: "#14D928",
+              borderColor: "#ffb700",
+              backgroundColor: "#ffb700",
               color: "black",
               padding: "0.55rem 0.55rem",
             },
@@ -504,7 +573,7 @@ const Sidebar = ({ handleLogout }) => {
             justifyContent: "space-between",
             height: "60px",
             minWidth: "60px !important",
-            color: "#14D928",
+            color: "#ffb700",
             backgroundColor: "black",
             borderStyle: "none",
             padding: "23px",
@@ -544,13 +613,13 @@ const Sidebar = ({ handleLogout }) => {
               variant="outlined"
               onClick={closeLogoutPopup}
               sx={{
-                borderColor: '#14D928',
-                color: '#14D928',
+                borderColor: '#ffb700',
+                color: '#ffb700',
                 marginRight: '5px',
                 marginTop: '20px',
                 '&:hover': {
                   transform: 'scale(1.05)',
-                  borderColor: '#14D928',
+                  borderColor: '#ffb700',
                 },
               }}
             >
@@ -560,12 +629,12 @@ const Sidebar = ({ handleLogout }) => {
               variant="contained"
               onClick={confirmLogout}
               sx={{
-                backgroundColor: '#14D928',
+                backgroundColor: '#ffb700',
                 marginLeft: '5px',
                 marginTop: '20px',
                 color: 'black',
                 '&:hover': {
-                  backgroundColor: '#14D928',
+                  backgroundColor: '#ffb700',
                   transform: 'scale(1.05)',
                 },
               }}

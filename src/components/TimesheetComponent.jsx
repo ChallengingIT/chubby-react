@@ -81,7 +81,7 @@ const TimesheetComponent = ({ timesheetData, id }) => {
         setAnnoNumero(anno.toString());
 
 
-        axios.get(`http://89.46.196.60:8443/timesheet/react/staff/${id}/${anno}/${mese}`, { headers: headers})
+        axios.get(`http://89.46.67.198:8443/timesheet/react/staff/${id}/${anno}/${mese}`, { headers: headers})
             .then(response => {
 
             const timesheetConId = response.data.mese.days.map((timesheet) => ({...timesheet}));
@@ -133,7 +133,7 @@ const TimesheetComponent = ({ timesheetData, id }) => {
     useEffect(() => {
         const fetchPrimoTimesheet = async () => {
             try {
-                const response = await axios.get(`http://89.46.196.60:8443/timesheet/react/staff/primo/${id}`, { headers: headers });;
+                const response = await axios.get(`http://89.46.67.198:8443/timesheet/react/staff/primo/${id}`, { headers: headers });;
                 const [mese, anno] = response.data.split('-').map(Number);
                 setPrimoTimesheet(new Date(anno, mese -1, 1)); // -1 perchè i mesi in javascript iniziano da 0
             } catch(error) {
@@ -169,7 +169,7 @@ const TimesheetComponent = ({ timesheetData, id }) => {
             return;
         }
     
-        axios.get(`http://89.46.196.60:8443/timesheet/react/staff/precedente/${id}/${annoNumero}/${meseNumero}`)
+        axios.get(`http://89.46.67.198:8443/timesheet/react/staff/precedente/${id}/${annoNumero}/${meseNumero}`)
             .then(response => {
                 const timesheetConId = response.data.mese.days.map((timesheet) => ({...timesheet}));
                 // Crea un oggetto che raggruppa le ore per progetto e giorno
@@ -226,7 +226,7 @@ const TimesheetComponent = ({ timesheetData, id }) => {
             nuovoAnno += 1;
         }
     
-        axios.get(`http://89.46.196.60:8443/timesheet/react/staff/successivo/${id}/${annoNumero}/${meseNumero}`)
+        axios.get(`http://89.46.67.198:8443/timesheet/react/staff/successivo/${id}/${annoNumero}/${meseNumero}`)
             .then(response => {
                 const timesheetConId = response.data.mese.days.map((timesheet) => ({...timesheet}));
                 // Crea un oggetto che raggruppa le ore per progetto e giorno
@@ -387,7 +387,7 @@ const TimesheetComponent = ({ timesheetData, id }) => {
             };
 
             try {
-            const response = await axios.post(`http://89.46.196.60:8443/timesheet/react/staff/aggiorna/${id}/${annoNumero}/${meseNumero}`, datiDaInviare);
+            const response = await axios.post(`http://89.46.67.198:8443/timesheet/react/staff/aggiorna/${id}/${annoNumero}/${meseNumero}`, datiDaInviare);
             if (response.data === "OK") {
             setModalOpen(false); 
             fetchTimesheetData(); 
@@ -405,7 +405,7 @@ const TimesheetComponent = ({ timesheetData, id }) => {
         // Funzione per richiedere i dati aggiornati del timesheet
         const fetchTimesheetData = async () => {
             try {
-                const response = await axios.get(`http://89.46.196.60:8443/timesheet/react/staff/${id}/${annoNumero}/${meseNumero}`);
+                const response = await axios.get(`http://89.46.67.198:8443/timesheet/react/staff/${id}/${annoNumero}/${meseNumero}`);
                 const timesheetConId = response.data.mese.days.map((timesheet) => ({...timesheet}));
                 const projectsMap = timesheetConId.reduce((acc, current) => {
                     const idProgetto = current.progetto.id;
@@ -460,7 +460,7 @@ const TimesheetComponent = ({ timesheetData, id }) => {
             
         
             try {
-                const response = await axios.post(`http://89.46.196.60:8443/timesheet/react/staff/cancella/${id}/${annoNumero}/${meseNumero}`, datiDaInviare);
+                const response = await axios.post(`http://89.46.67.198:8443/timesheet/react/staff/cancella/${id}/${annoNumero}/${meseNumero}`, datiDaInviare);
                 setModalOpen(false); 
                 setDatiTimesheet(response.data);
                 fetchTimesheetData();
@@ -512,7 +512,7 @@ const TimesheetComponent = ({ timesheetData, id }) => {
         //chiamata per inviare tutto il timesheet
         const handleSubmit = async () => {
             try {
-                const responseSubmitTimesheet = await axios.post(`http://89.46.196.60:8443/timesheet/react/staff/salva/${id}/${annoNumero}/${meseNumero}`, { headers: headers });
+                const responseSubmitTimesheet = await axios.post(`http://89.46.67.198:8443/timesheet/react/staff/salva/${id}/${annoNumero}/${meseNumero}`, { headers: headers });
                 if (responseSubmitTimesheet.data.message !== "OK") {
                 setAlert({ open: true, message: responseSubmitTimesheet.data });
                 setMeseInviato(true);
@@ -542,11 +542,11 @@ const renderDaySquares = () => {
         
 
         const giornoStyle = isSabatoODomenica || isGiornoFestivo
-            ? { backgroundColor: '#14D928', color: 'white' }
+            ? { backgroundColor: '#FFB700', color: 'white' }
             : { backgroundColor: 'grey.200', color: 'black' };
 
         return (
-            <Grid item key={i} sx={{ padding: 0, margin: 0,  width: '35px', height: '45px'}}>
+            <Grid item key={i} sx={{ padding: 0, margin: 0,  width: '2.3vw', height: '45px'}}>
                 <Box
                     sx={{
                         display: 'flex',
@@ -582,7 +582,7 @@ const renderDayBox = (progetto) => {
         const isGiornoFestivo = festivi(giorno, meseNumero) || isLunediPasqua(giorno, meseNumero, annoNumero);
         const datiGiorno = progetto.giorni[giorno];
 
-        let backgroundColor = isSabatoODomenica || isGiornoFestivo ? '#14D928' : 'grey.200';
+        let backgroundColor = isSabatoODomenica || isGiornoFestivo ? '#FFB700' : 'grey.200';
         let coloreTesto = isSabatoODomenica || isGiornoFestivo ? 'white' : 'black'; 
 
         if (progetto.description === "Ferie, Permessi e Malattia" && datiGiorno) {
@@ -598,7 +598,7 @@ const renderDayBox = (progetto) => {
         }
 
         return (
-            <Grid item key={i} sx={{ padding: 0, margin: 0, width: '35px', height: '45px' }}>
+            <Grid item key={i} sx={{ padding: 0, margin: 0, width: '2.3vw', height: '45px' }}>
                 <Box
                     sx={{
                         display: 'flex',
@@ -612,7 +612,7 @@ const renderDayBox = (progetto) => {
                         backgroundColor: backgroundColor,
                         color: coloreTesto,
                         ':hover': {
-                            backgroundColor: "#14D928",
+                            backgroundColor: "#FFB700",
                             cursor: 'pointer',
                         }
                     }}
@@ -661,10 +661,10 @@ const progettiArray = Object.values(progettoUnivoco);
       {/* Navigazione Mesi e Griglia dei giorni */}
             <Grid item xs={10} sm={10}>
                 <Grid container justifyContent="flex-start" alignItems="center" marginBottom="20px" marginTop="20px" >
-                <Button sx={{ color:"#14D928"}} onClick={handlePrevMese}>{"<"}</Button>
+                <Button sx={{ color:"#ffb700"}} onClick={handlePrevMese}>{"<"}</Button>
                 <Typography variant="h6">{`${nomiMesi[parseInt(meseNumero, 10) - 1]}  ${annoNumero}`}</Typography>
 
-                <Button sx={{ color:"#14D928"}} onClick={handleSuccMese}>{">"}</Button>
+                <Button sx={{ color:"#ffb700"}} onClick={handleSuccMese}>{">"}</Button>
                 </Grid>
                 {renderDaySquares()}
             </Grid>
@@ -753,7 +753,7 @@ disabled
 
         sx={{
             '&.Mui-checked': {
-            color: '#14D928',
+            color: '#ffb700',
             },
         }}
         />
@@ -772,7 +772,7 @@ disabled
 
         sx={{
             '&.Mui-checked': {
-            color: '#14D928', 
+            color: '#ffb700',
             },
         }}
         />
@@ -791,7 +791,7 @@ disabled
 
         sx={{
             '&.Mui-checked': {
-            color: '#14D928', 
+            color: '#ffb700',
             },
         }}
         />
@@ -905,11 +905,11 @@ onChange={(e) => setOreOrdinarie(e.target.value)}
             onClick={handleSubmitModal}
 
             sx={{
-                backgroundColor: "#14D928",
+                backgroundColor: "#FFB700",
                 color: "black",
                 fontWeight: "bold",
                 "&:hover": {
-                backgroundColor: "#14D928",
+                backgroundColor: "#FFB700",
                 color: "black",
                 transform: "scale(1.05)",
                 },
@@ -1053,11 +1053,11 @@ InputLabelProps={{
             onClick={handleSubmitModal}
 
             style={{
-                backgroundColor: "#14D928",
+                backgroundColor: "#FFB700",
                 color: "black",
                 fontWeight: "bold",
                 "&:hover": {
-                backgroundColor: "#14D928",
+                backgroundColor: "#FFB700",
                 color: "black",
                 transform: "scale(1.05)",
                 },
@@ -1095,11 +1095,11 @@ InputLabelProps={{
             color="primary"
             onClick={handleConfirmSubmit}
             style={{
-            backgroundColor: "#14D928",
+            backgroundColor: "#FFB700",
             color: "black",
             fontWeight: 'bold',
             "&:hover": {
-                backgroundColor: "#14D928",
+                backgroundColor: "#FFB700",
                 transform: "scale(1.05)",
         },
             }}

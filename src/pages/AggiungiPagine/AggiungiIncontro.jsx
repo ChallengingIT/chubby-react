@@ -7,6 +7,7 @@ import Sidebar                          from "../../components/Sidebar";
 import axios                            from "axios";
 import MyBoxGroups                      from "../../components/MyBoxGroups";
 import { Box, Typography } from "@mui/material";
+import Sidebar2 from "../../components/componentiBackup/Sidebar2";
 
 const AggiungiIncontro = () => {
   const navigate = useNavigate();
@@ -44,11 +45,11 @@ useEffect(() => {
     const fetchData = async () => {
       try {
         //jobtitle = tipologia, tipologiaIncontro = stato, owner = owner
-        const responseTipologia                      = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia"          , { headers: headers });
-        const ownerResponse                          = await axios.get("http://89.46.196.60:8443/aziende/react/owner"              , { headers: headers });
-        const responseStato                          = await axios.get("http://89.46.196.60:8443/staffing/react/stato/candidato"   , { headers: headers });
-        const responseTipoIntervista                 = await axios.get("http://89.46.196.60:8443/intervista/react/tipointervista"  , { headers: headers });
-        const responseIntervista                     = await axios.get(`http://89.46.196.60:8443/intervista/react/mod/${candidatoID}`  , { headers: headers });
+        const responseTipologia                      = await axios.get("http://89.46.67.198:8443/aziende/react/tipologia"          , { headers: headers });
+        const ownerResponse                          = await axios.get("http://89.46.67.198:8443/aziende/react/owner"              , { headers: headers });
+        const responseStato                          = await axios.get("http://89.46.67.198:8443/staffing/react/stato/candidato"   , { headers: headers });
+        const responseTipoIntervista                 = await axios.get("http://89.46.67.198:8443/intervista/react/tipointervista"  , { headers: headers });
+        const responseIntervista                     = await axios.get(`http://89.46.67.198:8443/intervista/react/mod/${candidatoID}`  , { headers: headers });
 
         if (Array.isArray(responseIntervista.data)) {
           const intervisteConId = responseIntervista.data.map((interviste) => ({ ...interviste }));
@@ -230,7 +231,7 @@ const initialValues = {
       const note = values.note;
       const modifica = 0; 
   
-      const response = await axios.post("http://89.46.196.60:8443/intervista/react/salva", values, {
+      const response = await axios.post("http://89.46.67.198:8443/intervista/react/salva", values, {
           params: {
             idCandidato: idCandidato,
             note: note,
@@ -251,9 +252,9 @@ const initialValues = {
  
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
+    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100%', width: '100%', overflow: 'hidden'}}>
 
-          <Sidebar />
+          <Sidebar2 />
           <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
           <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Aggiungi un nuovo incontro</Typography>
 

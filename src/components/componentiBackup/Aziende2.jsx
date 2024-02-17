@@ -25,6 +25,8 @@ import {
   Select,
   TextField
 } from '@mui/material';
+import MyDataGridPerc from "../MyDataGridPerc.jsx";
+import Sidebar2 from "./Sidebar2.jsx";
 
 const Aziende2 = () => {
 
@@ -59,6 +61,8 @@ const Aziende2 = () => {
     const [ tipologiaOptions,    setTipologiaOptions  ] = useState([]);
     const [ statoOptions,        setStatoOptions      ] = useState([]);
     const [ filteredData,        setFilteredData      ] = useState([]);
+    const [ tempDenominazione,   setTempDenominazione ] = useState(searchTerm.denominazione);
+
 
 
         const convertStatus = (data) => {
@@ -79,21 +83,14 @@ const Aziende2 = () => {
             return 'Sconosciuto';
         };
         
-        
-        const handleKeyDown = (e) => {
-            if (e.keyCode === 13) { // Verifica se è stato premuto il tasto "Invio"
-            handleSearch();     
-            }
-        };
-
 
     //fetch sia per la tabella che per la search box
         const fetchData = async () => {
             try {
         
-            const responseAziende = await axios.get("http://89.46.196.60:8443/aziende/react/mod",   { headers: headers });
-            const responseOwner   = await axios.get("http://89.46.196.60:8443/aziende/react/owner", { headers: headers });
-            const responseStato   = await axios.get("http://89.46.196.60:8443/aziende/react/mod",   { headers: headers });
+            const responseAziende = await axios.get("http://89.46.67.198:8443/aziende/react/mod",   { headers: headers });
+            const responseOwner   = await axios.get("http://89.46.67.198:8443/aziende/react/owner", { headers: headers });
+            const responseStato   = await axios.get("http://89.46.67.198:8443/aziende/react/mod",   { headers: headers });
         
             if (Array.isArray(responseAziende.data)) {
                 const aziendeConId = responseAziende.data.map((aziende) => ({ ...aziende }));
@@ -152,7 +149,7 @@ const Aziende2 = () => {
             
                 const handleDelete = async () => {
                 try {
-                    const response = await axios.delete(`http://89.46.196.60:8443/aziende/react/elimina/${deleteId}`, { headers: headers});
+                    const response = await axios.delete(`http://89.46.67.198:8443/aziende/react/elimina/${deleteId}`, { headers: headers});
                     setOpenDialog(false);
                     fetchData();
                 } catch (error) {
@@ -176,25 +173,45 @@ const Aziende2 = () => {
                 };
 
 
-                const handleSearch = () => {
-                    // Filtra l'array originalAziende in base ai criteri di ricerca
+                const handleSearch2 = () => {
                     const filtered = originalAziende.filter((azienda) => {
-                        // Verifica per ciascun criterio di ricerca se il valore nell'azienda corrisponde
-                        // Se il criterio di ricerca è vuoto, ignora quel criterio (ritorna true per quel filtro)
                         const matchDenominazione = searchTerm.denominazione ? azienda.denominazione.toLowerCase().includes(searchTerm.denominazione.toLowerCase()) : true;
                         const matchTipologia = searchTerm.tipologia ? azienda.tipologia === searchTerm.tipologia : true;
                         const matchStatus = searchTerm.status ? String(azienda.status) === String(searchTerm.status) : true;
                         const matchOwner = searchTerm.owner ? azienda.owner && azienda.owner.descrizione === searchTerm.owner : true;
                 
-                        // Ritorna true se l'azienda corrisponde a tutti i criteri di ricerca
                         return matchDenominazione && matchTipologia && matchStatus && matchOwner;
                     });
                 
-                    // Imposta l'array filtrato come nuovo stato per filteredAziende
                     setFilteredAziende(filtered);
 
                 };
-                
+
+                const handleSearch = async () => {
+                    localStorage.setItem("lastSearchAziendeParams", JSON.stringify({
+                      denominazione: searchTerm.denominazione || "",
+                      tipologia: searchTerm.tipologia || "",
+                      status: searchTerm.status || "",
+                      owner: searchTerm.owner || "",
+                    }));
+                    try {
+                        const savedSearchTerms = JSON.parse(localStorage.getItem("lastSearchAziendeParams"));
+
+                        const responseSearch = await axios.get("http://89.46.67.198:8443/aziende/react/ricerca/mod", { headers: headers, params: savedSearchTerms
+                    })
+                    console.log("responseSearch: ", responseSearch); 
+                    if (Array.isArray(responseSearch.data)) {
+                        const aziendeConId = responseSearch.data.map((aziende) => ({ ...aziende }));
+                        setFilteredAziende(aziendeConId);
+                        setOriginalAziende(aziendeConId);
+                    } else {
+                        console.error("I dati ottenuti non sono nel formato Array:", responseSearch.data);
+                    }
+                    } catch(error) {
+                        console.error("Errore durante la ricerca: ", error);
+                    }
+                  
+                  };
 
 
             //funzione per resettare i valori di ricerca della search box
@@ -209,18 +226,18 @@ const Aziende2 = () => {
 
                     const columns = [
                         // { field: "id",             headerName: "aziende.id",              width: 70  },
-                        { field: "status",         headerName: "Stato",            flex: 1,  renderCell: (params) => getSmileIcon(params), },
-                        { field: "denominazione",  headerName: "Ragione Sociale",   flex: 1,  renderCell: (params) => (
+                        { field: "status",         headerName: "Stato",            flex: 0.4,  renderCell: (params) => getSmileIcon(params), },
+                        { field: "denominazione",  headerName: "Cliente",          flex: 1.5,  renderCell: (params) => (
                         <Link to={`/aziende/dettaglio/${params.row.id}`} state={{ aziendaData: { ...params.row} }}>
                             {params.row.denominazione}
                             </Link>
                         ),
                     },
-                        { field: "owner",          headerName: "Owner",           flex: 1, valueGetter: (params) => params.row.owner && params.row.owner.descrizione || "N/A" },
+                        { field: "owner",          headerName: "Owner",           flex: 0.6, valueGetter: (params) => params.row.owner && params.row.owner.descrizione || "N/A" },
                         { field: "tipologia",      headerName: "Tipologia",       flex: 1 },
                         { field: "citta",          headerName: "Città",           flex: 1 },
                         { field: "paese",          headerName: "Paese",           flex: 1 },
-                        { field: "need",           headerName: "Need",            flex: 1, renderCell: (params) => (
+                        { field: "need",           headerName: "Need",            flex: 0.5, renderCell: (params) => (
                         <div>
                         <Link to={`/need/${params.row.id}`} state={{ aziendaData: { ...params.row} }} >
                             <ListButton />
@@ -241,22 +258,38 @@ const Aziende2 = () => {
 
                 //grafica della searchBox
         const SearchBox = () => {
+            //permetto di premero invio ed effettuare la ricerca da qualsiasi punto della pagina
+            const handleGlobalKeyDown = (e) => {
+            if (e.key === 'Enter') {
+                handleSearch();
+            }
+        };
+    
+        useEffect(() => {
+            document.addEventListener('keydown', handleGlobalKeyDown);
+    
+            return () => {
+                document.removeEventListener('keydown', handleGlobalKeyDown);
+            };
+        }, []);
+
+
                 return (
-                    <div className="gridContainer" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr) auto', gap: '10px', alignItems: 'center', margin: '20px 5px', padding: '0 0 20px 0',  borderBottom: '2px solid #dbd9d9',}}>
+                    <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr) auto', gap: '0.5%', alignItems: 'center', margin: '0.4%', borderBottom: '2px solid #dbd9d9'}}>
                     {/* Prima colonna */}
                     <Select
                 className="dropdown-menu"
                 value={searchTerm.status}
                 onChange={(e) => setSearchTerm({ ...searchTerm, status: e.target.value })}
                 sx={{
-                    marginTop: '10px',
+                    marginTop: '1%',
                     borderRadius: "40px",
                     fontSize: "0.8rem",
                     textAlign: "start",
                     color: "#757575",
                 }}
                 native
-                onKeyDown={handleKeyDown}
+                // onKeyDown={handleKeyDown}
                 >
                 <option value="" disabled>
                     Stato
@@ -272,23 +305,23 @@ const Aziende2 = () => {
                         sx={{
                             '& .MuiOutlinedInput-root': {
                                 '& fieldset': {
-                                  border: 'none', // Rimuove il bordo esterno in tutti i casi
+                                    border: 'none', 
                                 },
                                 '&:hover fieldset': {
-                                  border: 'none', // Assicura che il bordo rimanga nascosto anche al passaggio del mouse
+                                    border: 'none',
                                 },
                                 '&.Mui-focused fieldset': {
-                                  border: 'none', // Assicura che il bordo rimanga nascosto quando il TextField è in focus
+                                    border: 'none',
                                 },
                             },
                             
-                            display: 'flex', justifyContent: 'center', border: 'solid 1px #c4c4c4', width: '100%'}}
+                            display: 'flex', justifyContent: 'center', border: 'solid 1px #c4c4c4', width: '100%', marginTop: '-2%'}}
                         type="text"
                         placeholder="Ragione Sociale"
                         className="text-form"
                         value={searchTerm.denominazione}
                         onChange={(e) => setSearchTerm({ ...searchTerm, denominazione: e.target.value })}
-                        onKeyDown={handleKeyDown}
+                        // onKeyDown={handleKeyDown}
                     />
                     
                 
@@ -298,14 +331,14 @@ const Aziende2 = () => {
                                 value={searchTerm.owner}
                                 onChange={e => setSearchTerm({...searchTerm, owner: e.target.value })}
                                 sx={{
-                                    marginTop: '10px',
+                                    marginTop: '1%',
                                     borderRadius: "40px",
                                     fontSize: "0.8rem",
                                     textAlign: "start",
                                     color: "#757575",
                                 }}
                                 native
-                                onKeyDown={handleKeyDown}
+                                // onKeyDown={handleKeyDown}
                                 >
                                 <option value="" disabled>
                                 Owner
@@ -324,14 +357,14 @@ const Aziende2 = () => {
                                 value={searchTerm.tipologia}
                                 onChange={(e) => setSearchTerm({...searchTerm, tipologia: e.target.value })}
                                 sx={{
-                                    marginTop: '10px',
+                                    marginTop: '1%',
                                     borderRadius: "40px",
                                     fontSize: "0.8rem",
                                     textAlign: "start",
                                     color: "#757575",
                                 }}
                                 native
-                                onKeyDown={handleKeyDown}
+                                // onKeyDown={handleKeyDown}
                                 >
                                 <option value="" disabled>
                                     Tipologia
@@ -343,21 +376,21 @@ const Aziende2 = () => {
                                 </Select>
                 
                     {/* Colonna dei pulsanti */}
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                    <Box style={{ display: 'flex', justifyContent: 'flex-end', gap: '5%', marginLeft: '10px', marginTop: '-5%' }}>
                         <Button
                         className="button-search"
                         variant="contained"
                         onClick={handleSearch}
                         sx={{
-                            width: '100px',
+                            width: '2rem',
                             height: "40px",
-                            backgroundColor: "#14D928",
+                            backgroundColor: "#ffb700",
                             color: "black",
                             borderRadius: "10px",
                             fontSize: "0.8rem",
                             fontWeight: "bolder",
                             "&:hover": {
-                            backgroundColor: "#14D928",
+                            backgroundColor: "#ffb700",
                             color: "black",
                             transform: "scale(1.05)",
                             },
@@ -369,7 +402,7 @@ const Aziende2 = () => {
                         className="ripristina-link"
                         onClick={handleReset}
                         sx={{
-                            width: '100px', 
+                            width: '2rem', 
                             color: 'white', 
                             backgroundColor: 'black',
                             height: "40px",
@@ -384,8 +417,8 @@ const Aziende2 = () => {
                         }}>
                         Reset
                         </Button>
-                    </div>
-                    </div>
+                    </Box>
+                    </Box>
                 );
         };
 
@@ -402,13 +435,14 @@ const Aziende2 = () => {
 
 //return della pagina delle aziende
     return (
-        <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
-            <Sidebar />
-            <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
-            <Typography variant="h4" component="h1" sx={{ marginLeft: '30px', marginTop: '35px', fontWeight: 'bold', fontSize: '1.8rem'}}>Gestione Aziende</Typography>
-            <Box sx={{ height: '90%', marginTop: '40px', width: '100%'}}>
+        <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100vh', width: '100vw', overflow: 'hidden'}}>
+            <Sidebar2 />
+            <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'hidden', width: '100vw'}}>
+            <Typography variant="h4" component="h1" sx={{ marginLeft: '30px', marginTop: '30px', marginBottom: '15px', fontWeight: 'bold', fontSize: '1.8rem'}}>Gestione Aziende</Typography>
             <MyButton onClick={navigateToAggiungiAzienda}>Aggiungi Azienda</MyButton>
-            <MyDataGrid
+
+            <Box sx={{ height: '90vh', marginTop: '20px', width: '100vw'}}>
+            <MyDataGridPerc
                 data={filteredAziende}
                 columns={columns}
                 title="Aziende"
@@ -460,10 +494,10 @@ const Aziende2 = () => {
                 variant="contained"
                 type="submit"
                 style={{
-                backgroundColor: "#14D928",
+                backgroundColor: "#FFB700",
                 color: "black",
                 "&:hover": {
-                    backgroundColor: "#14D928",
+                    backgroundColor: "#FFB700",
                     color: "black",
                     transform: "scale(1.05)",
                 },

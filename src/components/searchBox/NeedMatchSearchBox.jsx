@@ -7,14 +7,15 @@ import {
   MenuItem, 
   Select, 
   InputLabel, 
-  FormControl 
+  FormControl,
+  Box
 } from '@mui/material';
 
 import "../../styles/Need.css";
 
 const NeedMatchSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalAssociabili}) => {
 
-  const initialSearchTerm = {
+  const savedSearchTerms = JSON.parse(localStorage.getItem("ricercaNeedMatch")) || {
     nome: '',
     cognome: '',
     jobtitle: '',
@@ -33,7 +34,7 @@ const headers = {
 };
 
 
-  const [ searchTerm,                     setSearchTerm                 ] = useState(initialSearchTerm);
+  const [ searchTerm,                     setSearchTerm                 ] = useState(savedSearchTerms);
   const [ tipoOptions,                    setTipoOptions                ] = useState([]);
   const [ jobTitleOptions,                setJobTitleOptions            ] = useState([]);
   const [ tipologiaOptions,               setTipologiaOptions           ] = useState([]);
@@ -48,8 +49,8 @@ const headers = {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseJobTitle = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia", { headers: headers});
-        const responseTipo     = await axios.get("http://89.46.196.60:8443/staffing/react/tipo"    , { headers: headers});
+        const responseJobTitle = await axios.get("http://89.46.67.198:8443/aziende/react/tipologia", { headers: headers});
+        const responseTipo     = await axios.get("http://89.46.67.198:8443/staffing/react/tipo"    , { headers: headers});
 
         if (Array.isArray(responseJobTitle.data)) {
           setJobTitleOptions(responseJobTitle.data.map((jobTitle) => ({ label: jobTitle.descrizione, value: jobTitle.id })));
@@ -84,7 +85,8 @@ const headers = {
         String(item[key]).toLowerCase().includes(String(searchTerm[key]).toLowerCase())
       )
     );
-  
+    localStorage.setItem("ricercaNeedMatch", JSON.stringify(searchTerm));
+
     onSearch(filteredData);
     setFilteredData(filteredData);
   } else {
@@ -94,10 +96,18 @@ const headers = {
   
   
   const handleReset = () => {
-    setSearchTerm(initialSearchTerm);
+    setSearchTerm({
+      nome: '',
+      cognome: '',
+      jobtitle: '',
+      tipologia: '',
+      seniority: '',
+    });
     onSearchTextChange("");
     onReset();
     setFilteredData([]);
+    localStorage.removeItem("ricercaNeedMatch");
+
   };
 
 
@@ -108,11 +118,24 @@ const headers = {
   };
       
   return (
-    <div className="gridContainer" style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr) auto', gap: '10px', alignItems: 'center', margin: '20px 5px', padding: '0 0 20px 0',  borderBottom: '2px solid #dbd9d9',}}>
+    <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr) auto', gap: '0.5%', alignItems: 'center', margin: '0.4%', borderBottom: '2px solid #dbd9d9'}}>
 
         {/* Prima colonna */}
-          <input style={{border: 'solid 1px #c4c4c4'}}
-                  type="text"
+        <TextField 
+      sx={{
+          '& .MuiOutlinedInput-root': {
+              '& fieldset': {
+                  border: 'none', 
+              },
+              '&:hover fieldset': {
+                  border: 'none',
+              },
+              '&.Mui-focused fieldset': {
+                  border: 'none',
+              },
+          },
+        display: 'flex', justifyContent: 'center', border: 'solid 1px #c4c4c4', width: '100%', marginTop: '-2%'}}
+      type="text"
                   placeholder="Nome"
                   className="text-form"
                   id="nome"
@@ -121,8 +144,23 @@ const headers = {
                   onKeyDown={handleKeyDown}
                   onChange={(e) => setSearchTerm({ ...searchTerm, nome: e.target.value })}
                 />
-          <input style={{border: 'solid 1px #c4c4c4'}}
-                  type="text"
+
+
+          <TextField 
+      sx={{
+          '& .MuiOutlinedInput-root': {
+              '& fieldset': {
+                  border: 'none', 
+              },
+              '&:hover fieldset': {
+                  border: 'none',
+              },
+              '&.Mui-focused fieldset': {
+                  border: 'none',
+              },
+          },
+        display: 'flex', justifyContent: 'center', border: 'solid 1px #c4c4c4', width: '100%', marginTop: '-2%'}}
+      type="text"
                   placeholder="Cognome"
                   className="text-form"
                   id="cognome"
@@ -138,6 +176,7 @@ const headers = {
               value={searchTerm.tipologia}
               onChange={e => setSearchTerm({...searchTerm, tipologia: e.target.value })}
               sx={{
+                marginTop: '1%',
                 borderRadius: "40px",
                 fontSize: "0.8rem",
                 textAlign: "start",
@@ -160,6 +199,7 @@ const headers = {
               value={searchTerm.tipo}
               onChange={e => setSearchTerm({...searchTerm, tipo: e.target.value })}
               sx={{
+                marginTop: '1%',
                 borderRadius: "40px",
                 fontSize: "0.8rem",
                 textAlign: "start",
@@ -183,6 +223,7 @@ const headers = {
               value={searchTerm.seniority}
               onChange={e => setSearchTerm({...searchTerm, seniority: e.target.value })}
               sx={{
+                marginTop: '1%',
                 borderRadius: "40px",
                 fontSize: "0.8rem",
                 textAlign: "start",
@@ -203,21 +244,21 @@ const headers = {
           
         {/* Quarta colonna */}
             
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+        <Box style={{ display: 'flex', justifyContent: 'flex-end', gap: '5%', marginLeft: '10px', marginTop: '-5%' }}>
         <Button
           className="button-search"
           variant="contained"
           onClick={handleSearch}
           sx={{
-            width: '100px',
+            width: '2rem',
             height: "40px",
-            backgroundColor: "#14D928",
+            backgroundColor: "#ffb700",
             color: "black",
             borderRadius: "10px",
             fontSize: "0.8rem",
             fontWeight: "bolder",
             "&:hover": {
-              backgroundColor: "#14D928",
+              backgroundColor: "#ffb700",
               color: "black",
               transform: "scale(1.05)",
             },
@@ -229,7 +270,7 @@ const headers = {
           className="ripristina-link"
           onClick={handleReset}
           sx={{
-            width: '100px', 
+            width: '2rem',
             color: 'white', 
             backgroundColor: 'black',
             height: "40px",
@@ -244,8 +285,8 @@ const headers = {
           }}>
           Reset
         </Button>
-      </div>
-    </div>
+      </Box>
+    </Box>
 );
 };
 

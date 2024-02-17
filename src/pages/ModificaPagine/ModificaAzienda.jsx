@@ -4,10 +4,14 @@ import axios                                  from "axios";
 import Sidebar                                from "../../components/Sidebar";
 import FieldsBox                              from "../../components/FieldsBox";
 import { Box, Typography } from "@mui/material";
+import Sidebar2 from "../../components/componentiBackup/Sidebar2";
 
 
 
 const ModificaAzienda = () => {
+
+  console.log("localStorageAziende: ", localStorage.getItem("searchTermsAzienda"));
+
 
   const navigate             = useNavigate();
   const location             = useLocation();
@@ -32,9 +36,9 @@ const ModificaAzienda = () => {
   useEffect(() => {
     const fetchProvinceOptions = async () => {
       try {
-        const responseProvince = await axios.get("http://89.46.196.60:8443/aziende/react/province", { headers: headers });
-        const responseOwner    = await axios.get("http://89.46.196.60:8443/aziende/react/owner", { headers: headers });
-        const responseAziende  = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers: headers });
+        const responseProvince = await axios.get("http://89.46.67.198:8443/aziende/react/province", { headers: headers });
+        const responseOwner    = await axios.get("http://89.46.67.198:8443/aziende/react/owner", { headers: headers });
+        const responseAziende  = await axios.get("http://89.46.67.198:8443/aziende/react/select", { headers: headers });
 
         if (Array.isArray(responseAziende.data)) {
           const aziendeOptions = responseAziende.data.map((aziende) => ({
@@ -70,10 +74,11 @@ const ModificaAzienda = () => {
     fetchProvinceOptions();
   }, []);
 
-  const campiObbligatori = [ "denominazione", "email", "idOwner", "status", "citta", "provincia" ];
+  const campiObbligatori = [ "denominazione", "denominazione2", "email", "idOwner", "status", "citta", "provincia" ];
 
   const fields = [
     { label: "Nome Azienda*",           name: "denominazione",        type: "text",       disabled: true                                  },
+    { label: "Ragione Sociale*",        name: "denominazione2",       type: "text",       disabled: true                                  },
     { label: "Email*",                  name: "email",                type: "text"                                                        },
     { label: "Partita IVA",             name: "pi",                   type: "text"                                                        },
     { label: "Codice Fiscale",          name: "cf",                   type: "text"                                                        },
@@ -84,7 +89,6 @@ const ModificaAzienda = () => {
     { label: "Pec",                     name: "pec",                  type: "text"                                                        },
     { label: "Sede Operativa",          name: "sedeOperativa",        type: "text"                                                        },
     { label: "Sede Legale",             name: "sedeLegale",           type: "text"                                                        },
-    { label: "CodicePA",                name: "codicePa",             type: "text"                                                        },
     { label: "Codice Destinatario",     name: "codiceDestinatario",   type: "text"                                                        },
     { label: "Sito Web",                name: "sito",                 type: "text"                                                        },
     { label: "Settore di mercato",      name: "settoreMercato",       type: "text"                                                        },
@@ -139,7 +143,7 @@ const ModificaAzienda = () => {
         }
       });
 
-      const response = await axios.post("http://89.46.196.60:8443/aziende/react/salva", values, {
+      const response = await axios.post("http://89.46.67.198:8443/aziende/react/salva", values, {
         headers: headers
       });
       navigate("/aziende");
@@ -160,8 +164,8 @@ const ModificaAzienda = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
-          <Sidebar />
+    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100%', width: '100%', overflow: 'hidden'}}>
+          <Sidebar2 />
           <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
           <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Modifica Azienda</Typography>
           <FieldsBox 

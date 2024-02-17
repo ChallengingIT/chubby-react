@@ -1,16 +1,14 @@
 import React, { useState } from "react";
-import Button              from "@mui/material/Button";
-
-import "../../styles/Fornitori.css";
+import { Box, Button, TextField } from "@mui/material";
 
 const HRSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalHr}) => {
-  const initialSearchTerm = {
+  const savedSearchTerms = JSON.parse(localStorage.getItem("ricercaHR")) || {
     nome: '',
     cognome: '',
     email: '',
   };
 
-  const [ searchTerm,    setSearchTerm    ] = useState(initialSearchTerm);
+  const [ searchTerm,    setSearchTerm    ] = useState(savedSearchTerms);
   const [ filteredData,  setFilteredData  ] = useState([]);
 
   const handleKeyDown = (e) => {
@@ -26,19 +24,27 @@ const HRSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalHr})
         String(item[key]).toLowerCase().includes(String(searchTerm[key]).toLowerCase())
       )
     );
+    localStorage.setItem("ricercaHR", JSON.stringify(searchTerm));
+
     onSearch(filteredData);
     setFilteredData(filteredData);
   };
   
 
   const handleReset = () => {
-    setSearchTerm(initialSearchTerm);
+    setSearchTerm({
+      nome: '',
+      cognome: '',
+      email: '',
+    });
     onSearchTextChange("");
     onReset();
     setFilteredData([]); 
+    localStorage.removeItem("ricercaHR");
+
   };
   return (
-    <div className="gridContainer" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr) auto', gap: '10px', alignItems: 'center', margin: '20px 5px', padding: '0 0 20px 0',  borderBottom: '2px solid #dbd9d9',}}>
+    <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr) auto', gap: '0.5%', alignItems: 'center', margin: '0.4%', borderBottom: '2px solid #dbd9d9'}}>
 
     {/* prima colonna */}
       <input style={{border: 'solid 1px #c4c4c4'}}
@@ -77,21 +83,21 @@ const HRSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalHr})
         onChange={(e) => setSearchTerm({ ...searchTerm, email: e.target.value })}
       />
     {/* quarta colonna */}
-    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+    <Box style={{ display: 'flex', justifyContent: 'flex-end', gap: '5%', marginLeft: '10px', marginTop: '-2%' }}>
         <Button
           className="button-search"
           variant="contained"
           onClick={handleSearch}
           sx={{
-            width: '100px',
+            width: '2rem',
             height: "40px",
-            backgroundColor: "#14D928",
+            backgroundColor: "#ffb700",
             color: "black",
             borderRadius: "10px",
             fontSize: "0.8rem",
             fontWeight: "bolder",
             "&:hover": {
-              backgroundColor: "#14D928",
+              backgroundColor: "#ffb700",
               color: "black",
               transform: "scale(1.05)",
             },
@@ -103,7 +109,7 @@ const HRSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalHr})
           className="ripristina-link"
           onClick={handleReset}
           sx={{
-            width: '100px', 
+            width: '2rem',
             color: 'white', 
             backgroundColor: 'black',
             height: "40px",
@@ -118,8 +124,8 @@ const HRSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalHr})
           }}>
           Reset
         </Button>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

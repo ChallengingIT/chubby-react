@@ -57,8 +57,6 @@ import DettaglioNeed                                                   from './p
 import ModificaDipendente                                              from './pages/ModificaPagine/ModificaDipendente.jsx';
 import DettaglioAziende2                                               from './pages/DettaglioPagine/DettaglioAziende2.jsx';
 
-
-
 const App = () => {
 
   const [currentUser, setCurrentUser] = useState(undefined);
@@ -108,9 +106,10 @@ const App = () => {
         {(isAdmin || isBm || isRecruiter ) && (
           <>
           
+
           <Route path="/homepage"                                     element={<PrivateRoute>         <Homepage                    />   </PrivateRoute>} />
           <Route path="/home"                                         element={<PrivateRoute>         <Home                        />   </PrivateRoute>} />
-          <Route path="/aziende"                                      element={<PrivateRoute>         <Aziende                     />   </PrivateRoute>} />
+          <Route path="/aziende"                                      element={<PrivateRoute>         <Aziende                   />   </PrivateRoute>} />
           <Route path="/aziende/dettaglio/:id"                        element={<PrivateRoute>         <DettaglioAziende2           />   </PrivateRoute>} />
           <Route path="/aziende/modifica/:id"                         element={<PrivateRoute>         <ModificaAzienda             />   </PrivateRoute>} />
           <Route path="/keyPeople/modifica/:id"                       element={<PrivateRoute>         <ModificaContatto            />   </PrivateRoute>} />

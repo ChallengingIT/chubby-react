@@ -10,6 +10,8 @@ import PaperButton                                                from "../compo
 import Modal                                                      from 'react-modal';
 import { Button, Select, MenuItem, Box, Typography}               from "@mui/material";
 import NeedSearchBox                                              from "../components/searchBox/NeedSearchBox.jsx";
+import MyDataGridPerc from "../components/MyDataGridPerc.jsx";
+import Sidebar2 from "../components/componentiBackup/Sidebar2.jsx";
 
 
 const Need = () => {
@@ -35,8 +37,8 @@ const Need = () => {
     const fetchData = async () => {
       try {
 
-        const response      = await axios.get("http://89.46.196.60:8443/need/react/modificato",       { headers: headers});
-        const responseStato = await axios.get("http://89.46.196.60:8443/need/react/stato", { headers: headers });
+        const response      = await axios.get("http://89.46.67.198:8443/need/react/modificato",       { headers: headers});
+        const responseStato = await axios.get("http://89.46.67.198:8443/need/react/stato", { headers: headers });
 
         if (Array.isArray(responseStato.data)) {
           const statoConId = responseStato.data.map((stato) => ({ ...stato}));
@@ -83,7 +85,7 @@ const Need = () => {
       const idStato = newStato;
       const params = new URLSearchParams({ stato: idStato });
   
-      await axios.post(`http://89.46.196.60:8443/need/react/salva/stato/${selectedNeed.id}?${params.toString()}`, { headers: headers });
+      await axios.post(`http://89.46.67.198:8443/need/react/salva/stato/${selectedNeed.id}?${params.toString()}`, { headers: headers });
       setIsModalOpen(false);
       fetchData();
     } catch (error) {
@@ -120,7 +122,7 @@ const Need = () => {
     // </div>
     //   ),
     // },
-    { field: "week",              headerNmae: "Week",                flex: 1 },
+    { field: "week",              headerNmae: "Week",                flex: 0.6 },
     // {
     //   field: "descrizione",
     //   headerName: "Descrizione",
@@ -190,8 +192,8 @@ const Need = () => {
           : "N/A"}
       </div>
     ), },
-    { field: "numeroRisorse",     headerName: "Headcount",           flex: 1 },
-    { field: "stato",             headerName: "Stato",               flex: 1,  renderCell: (params) => (
+    { field: "numeroRisorse",     headerName: "Headcount",           flex: 0.7 },
+    { field: "stato",             headerName: "Stato",               flex: 0.6,  renderCell: (params) => (
         <div style={{ textAlign: "start" }}>
           {params.row.stato && params.row.stato.descrizione
             ? params.row.stato.descrizione
@@ -199,7 +201,7 @@ const Need = () => {
         </div>
       ),
     },
-    { field: "azioni",            headerName: "Azioni",              flex: 2,  renderCell: (params) => (
+    { field: "azioni",            headerName: "Azioni",              flex: 1,  renderCell: (params) => (
       <div>
         <PaperButton onClick={() => handleOpenModal(params.row)} />
         <Link
@@ -230,13 +232,13 @@ const Need = () => {
 
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
-      <Sidebar />
-      <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
-          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Gestione Need</Typography>
+    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100vh', width: '100vw', overflow: 'hidden'}}>
+    <Sidebar2 />
+    <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'hidden', width: '100vw'}}>
+    <Typography variant="h4" component="h1" sx={{ marginLeft: '30px', marginTop: '30px', marginBottom: '15px', fontWeight: 'bold', fontSize: '1.8rem'}}>Gestione Need</Typography>
           <MyButton onClick={navigateToAggiungiNeed}>Aggiungi Need</MyButton>
-          <Box sx={{ height: '100%', marginTop: '40px', width: '100%'}}>
-          <MyDataGrid 
+          <Box sx={{ height: '95vh', marginTop: '20px', width: '100vw'}}>
+          <MyDataGridPerc 
           data={filteredNeed} 
           columns={columns} 
           title="Need" 
@@ -317,10 +319,10 @@ const Need = () => {
             variant="contained"
             onClick={handleUpdateStato}
             sx={{
-              backgroundColor: "#14D928",
+              backgroundColor: "#FFB700",
               color: "black",
               "&:hover": {
-                backgroundColor: "#14D928",
+                backgroundColor: "#FFB700",
                 color: "black",
                 transform: "scale(1.05)",
               },

@@ -84,7 +84,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
         setMeseNumero(mese.toString());
         setAnnoNumero(anno.toString());
 
-        axios.get(`http://89.46.196.60:8443/timesheet/react/user/${anno}/${mese}`, {
+        axios.get(`http://89.46.67.198:8443/timesheet/react/user/${anno}/${mese}`, {
             headers: headers,
             params: requestParams
         })
@@ -133,7 +133,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
     useEffect(() => {
         const fetchPrimoTimesheet = async () => {
             try {
-                const response = await axios.get(`http://89.46.196.60:8443/timesheet/react/user/primo`, {
+                const response = await axios.get(`http://89.46.67.198:8443/timesheet/react/user/primo`, {
                     headers: headers,
                     params: requestParams
                 });
@@ -172,7 +172,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
             return;
         }
     
-        axios.get(`http://89.46.196.60:8443/timesheet/react/user/precedente/${annoNumero}/${meseNumero}`, {
+        axios.get(`http://89.46.67.198:8443/timesheet/react/user/precedente/${annoNumero}/${meseNumero}`, {
             headers: headers,
             params: requestParams
         })
@@ -232,7 +232,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
             nuovoAnno += 1;
         }
     
-        axios.get(`http://89.46.196.60:8443/timesheet/react/user/successivo/${annoNumero}/${meseNumero}`, {
+        axios.get(`http://89.46.67.198:8443/timesheet/react/user/successivo/${annoNumero}/${meseNumero}`, {
             headers: headers,
             params: requestParams
         })
@@ -390,7 +390,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
             };
 
             try {
-            const response = await axios.post(`http://89.46.196.60:8443/timesheet/react/user/aggiorna/${annoNumero}/${meseNumero}`, datiDaInviare, {
+            const response = await axios.post(`http://89.46.67.198:8443/timesheet/react/user/aggiorna/${annoNumero}/${meseNumero}`, datiDaInviare, {
                 headers: headers,
                 params: requestParams
             });
@@ -412,7 +412,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
         // Funzione per richiedere i dati aggiornati del timesheet
         const fetchTimesheetData = async () => {
             try {
-                const response = await axios.get(`http://89.46.196.60:8443/timesheet/react/user/${annoNumero}/${meseNumero}`, {
+                const response = await axios.get(`http://89.46.67.198:8443/timesheet/react/user/${annoNumero}/${meseNumero}`, {
                     headers: headers,
                     params: requestParams
                 });
@@ -470,7 +470,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
             
         
             try {
-                const response = await axios.post(`http://89.46.196.60:8443/timesheet/react/user/cancella/${annoNumero}/${meseNumero}`, datiDaInviare, {
+                const response = await axios.post(`http://89.46.67.198:8443/timesheet/react/user/cancella/${annoNumero}/${meseNumero}`, datiDaInviare, {
                     headers: headers,
                     params: requestParams
                 });
@@ -512,7 +512,7 @@ const UserTimesheetComponent2 = ({ timesheetData }) => {
         //chiamata per inviare tutto il timesheet
         const handleSubmit = async () => {
             try {
-                const url = `http://89.46.196.60:8443/timesheet/react/user/salva/${annoNumero}/${meseNumero}`;
+                const url = `http://89.46.67.198:8443/timesheet/react/user/salva/${annoNumero}/${meseNumero}`;
                 const response = await axios.post(url, { timesheetData });
                 setAlert({ open: true, message: response.data });
             } catch (error) {
@@ -539,7 +539,7 @@ const renderDaySquares = () => {
         
 
         const giornoStyle = isSabatoODomenica || isGiornoFestivo
-            ? { backgroundColor: '#14D928', color: 'white' }
+            ? { backgroundColor: '#FFB700', color: 'white' }
             : { backgroundColor: 'grey.200', color: 'black' };
 
         return (
@@ -602,7 +602,7 @@ const renderDayBox = (progetto) => {
 
 
         const giornoStyle = isSabatoODomenica || isGiornoFestivo
-            ? { backgroundColor: '#14D928', color: 'white' }
+            ? { backgroundColor: '#FFB700', color: 'white' }
             : { backgroundColor: 'grey.200', color: 'black' };
             
 
@@ -620,7 +620,7 @@ const renderDayBox = (progetto) => {
                         borderBottom: '0.1px solid black',
                         ...giornoStyle,
                         ':hover': {
-                            backgroundColor: "#14D928",
+                            backgroundColor: "#FFB700",
                             cursor: 'pointer',
                         }
                     }}
@@ -669,10 +669,10 @@ const progettiArray = Object.values(progettoUnivoco);
       {/* Navigazione Mesi e Griglia dei giorni */}
             <Grid item xs={10} sm={10}>
                 <Grid container justifyContent="flex-start" alignItems="center" marginBottom="20px" marginTop="20px" >
-                <Button sx={{ color:"#14D928"}} onClick={handlePrevMese}>{"<"}</Button>
+                <Button sx={{ color:"#ffb700"}} onClick={handlePrevMese}>{"<"}</Button>
                 <Typography variant="h6">{`${nomiMesi[parseInt(meseNumero, 10) - 1]}  ${annoNumero}`}</Typography>
 
-                <Button sx={{ color:"#14D928"}} onClick={handleSuccMese}>{">"}</Button>
+                <Button sx={{ color:"#ffb700"}} onClick={handleSuccMese}>{">"}</Button>
                 </Grid>
                 {renderDaySquares()}
             </Grid>
@@ -758,7 +758,7 @@ disabled
         name="ferie"
         sx={{
             '&.Mui-checked': {
-            color: '#14D928',
+            color: '#ffb700',
             },
         }}
         />
@@ -775,7 +775,7 @@ disabled
         name="malattia"
         sx={{
             '&.Mui-checked': {
-            color: '#14D928', 
+            color: '#ffb700',
             },
         }}
         />
@@ -792,7 +792,7 @@ disabled
         name="permesso"
         sx={{
             '&.Mui-checked': {
-            color: '#14D928', 
+            color: '#ffb700',
             },
         }}
         />
@@ -897,11 +897,11 @@ onChange={(e) => setOreOrdinarie(e.target.value)}
             onClick={handleSubmitModal}
 
             sx={{
-                backgroundColor: "#14D928",
+                backgroundColor: "#FFB700",
                 color: "black",
                 fontWeight: "bold",
                 "&:hover": {
-                backgroundColor: "#14D928",
+                backgroundColor: "#FFB700",
                 color: "black",
                 transform: "scale(1.05)",
                 },
@@ -1037,11 +1037,11 @@ InputLabelProps={{
             onClick={handleSubmitModal}
 
             style={{
-                backgroundColor: "#14D928",
+                backgroundColor: "#FFB700",
                 color: "black",
                 fontWeight: "bold",
                 "&:hover": {
-                backgroundColor: "#14D928",
+                backgroundColor: "#FFB700",
                 color: "black",
                 transform: "scale(1.05)",
                 },

@@ -1,6 +1,5 @@
 import React, { useState, useEffect }       from "react";
-import Button                               from "@mui/material/Button";
-import Select                               from "@mui/material/Select";
+import { Box, Select, Button } from "@mui/material";
 import axios                                from "axios";
 
 import "../../styles/FatturazionePassiva.css";
@@ -32,8 +31,8 @@ const handleKeyDown = (e) => {
     const fetchData = async () => {
       try {
 
-        const responseFornitori = await axios.get("http://89.46.196.60:8443/fornitori/react", { headers: headers});
-        const responseStato     = await axios.get("http://89.46.196.60:8443/fatturazionePassiva/react/stato", { headers: headers});
+        const responseFornitori = await axios.get("http://89.46.67.198:8443/fornitori/react", { headers: headers});
+        const responseStato     = await axios.get("http://89.46.67.198:8443/fatturazionePassiva/react/stato", { headers: headers});
         
         if (Array.isArray(responseStato.data)) {
           setStatoOptions(responseStato.data.map((stato, index) => ({ label: stato.descrizione, value: stato.id })));
@@ -76,7 +75,7 @@ const handleKeyDown = (e) => {
 
 
   return (
-    <div className="gridContainer" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr) auto', gap: '10px', alignItems: 'center', margin: '20px 5px', padding: '0 0 20px 0',  borderBottom: '2px solid #dbd9d9',}}>
+    <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr) auto', gap: '0.5%', alignItems: 'center', margin: '0.4%', borderBottom: '2px solid #dbd9d9'}}>
 
             {/* prima colonna */}
             <Select
@@ -84,6 +83,7 @@ const handleKeyDown = (e) => {
                   value={searchTerm.fornitore}
                   onChange={e => setSearchTerm({...searchTerm, fornitori: e.target.value })}
                   sx={{
+                    marginTop: '1%',
                     borderRadius: "40px",
                     fontSize: "0.8rem",
                     textAlign: "start",
@@ -107,6 +107,7 @@ const handleKeyDown = (e) => {
                   value={searchTerm.stato}
                   onChange={e => setSearchTerm({...searchTerm, stato: e.target.value })}
                   sx={{
+                    marginTop: '1%',
                     borderRadius: "40px",
                     fontSize: "0.8rem",
                     textAlign: "start",
@@ -125,21 +126,21 @@ const handleKeyDown = (e) => {
                   ))}
                 </Select>
             {/* terza colonna */}
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+            <Box style={{ display: 'flex', justifyContent: 'flex-end', gap: '5%', marginLeft: '10px', marginTop: '-1%' }}>
         <Button
           className="button-search"
           variant="contained"
           onClick={handleSearch}
           sx={{
-            width: '100px',
+            width: '2rem',
             height: "40px",
-            backgroundColor: "#14D928",
+            backgroundColor: "#ffb700",
             color: "black",
             borderRadius: "10px",
             fontSize: "0.8rem",
             fontWeight: "bolder",
             "&:hover": {
-              backgroundColor: "#14D928",
+              backgroundColor: "#ffb700",
               color: "black",
               transform: "scale(1.05)",
             },
@@ -151,7 +152,7 @@ const handleKeyDown = (e) => {
           className="ripristina-link"
           onClick={handleReset}
           sx={{
-            width: '100px', 
+            width: '2rem',
             color: 'white', 
             backgroundColor: 'black',
             height: "40px",
@@ -166,8 +167,8 @@ const handleKeyDown = (e) => {
           }}>
           Reset
         </Button>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

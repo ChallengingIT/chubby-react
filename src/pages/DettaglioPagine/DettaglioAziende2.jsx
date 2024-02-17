@@ -1,7 +1,6 @@
 import React, { useState, useEffect }                                                             from "react";
 import { useNavigate, useLocation }                                                               from "react-router-dom";
-import Sidebar                                                                                    from "../../components/Sidebar";
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid }                   from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography }       from "@mui/material";
 import { useParams }                                                                              from "react-router-dom";
 import FeedIcon                                                                                   from "@mui/icons-material/Feed";
 import EmailIcon                                                                                  from "@mui/icons-material/Email";
@@ -15,7 +14,7 @@ import NeedCard                                                                 
 import ContattiCard                                                                               from "../../components/card/ContattiCard";
 import ReusablePopup                                                                              from "../../components/ReusablePopup";
 import "../../styles/DettaglioAziende.css"
-
+import Sidebar2                                                                                   from "../../components/componentiBackup/Sidebar2";
 
 
 function DettaglioAziende2() {
@@ -57,7 +56,7 @@ function DettaglioAziende2() {
 
     const fetchAttivita = async () => {
         try {
-        const responseAttivita = await axios.get(`http://89.46.196.60:8443/aziende/react/attivita/${id}`, { headers: headers });
+        const responseAttivita = await axios.get(`http://89.46.67.198:8443/aziende/react/attivita/${id}`, { headers: headers });
         console.log(responseAttivita.data);
 
         if (Array.isArray(responseAttivita.data)) {
@@ -79,11 +78,11 @@ function DettaglioAziende2() {
     useEffect(() => {
     const fetchOptions = async () => {
         try {
-        const responseOwner            = await axios.get("http://89.46.196.60:8443/aziende/react/owner"             , { headers: headers });
-        const responseKeyPeople        = await axios.get(`http://89.46.196.60:8443/aziende/react/keypeople/${id}`   , { headers: headers });
-        const responseNeed             = await axios.get(`http://89.46.196.60:8443/need/react/cliente/priorita/${id}`        , { headers: headers });
-        const responseStatoNeed        = await axios.get(`http://89.46.196.60:8443/need/react/cliente/modificato/${id}`        , { headers: headers });
-                // const responseAttivita        = await axios.get(`http://89.46.196.60:8443/aziende/react/attivita/${id}`    , { headers: headers });
+        const responseOwner            = await axios.get("http://89.46.67.198:8443/aziende/react/owner"             , { headers: headers });
+        const responseKeyPeople        = await axios.get(`http://89.46.67.198:8443/aziende/react/keypeople/${id}`   , { headers: headers });
+        const responseNeed             = await axios.get(`http://89.46.67.198:8443/need/react/cliente/priorita/${id}`        , { headers: headers });
+        const responseStatoNeed        = await axios.get(`http://89.46.67.198:8443/need/react/cliente/modificato/${id}`        , { headers: headers });
+                // const responseAttivita        = await axios.get(`http://89.46.67.198:8443/aziende/react/attivita/${id}`    , { headers: headers });
 
 
         if (Array.isArray(responseStatoNeed.data)) {
@@ -207,7 +206,7 @@ function DettaglioAziende2() {
                 }).toString();
             
                 try {
-                const responseFeed = await axios.post(`http://89.46.196.60:8443/aziende/react/attivita/salva?${params}`, attivitaMap, { headers });
+                const responseFeed = await axios.post(`http://89.46.67.198:8443/aziende/react/attivita/salva?${params}`, attivitaMap, { headers: headers });
                 setPopupData(initialState);
                 setTimeout(fetchAttivita, 500); 
                 } catch (error) {
@@ -227,7 +226,7 @@ function DettaglioAziende2() {
                 };
                 
                 try {
-                await axios.post('http://89.46.196.60:8443/aziende/react/attivita/salva', attivitaMap, { params });
+                await axios.post('http://89.46.67.198:8443/aziende/react/attivita/salva', attivitaMap, { params });
                 setTimeout(fetchAttivita, 500); 
                 } catch (error) {
                 console.error("Errore durante il salvataggio dell'email:", error);
@@ -244,7 +243,7 @@ function DettaglioAziende2() {
                 };
                 
             try{
-                await axios.post('http://89.46.196.60:8443/aziende/react/attivita/salva', attivitaMap, { params });
+                await axios.post('http://89.46.67.198:8443/aziende/react/attivita/salva', attivitaMap, { params });
                 setTimeout(fetchAttivita, 500); 
                 } catch (error) {
                 console.error("Errore durante il salvataggio dell'email:", error);
@@ -343,17 +342,13 @@ function DettaglioAziende2() {
 
 
     return (
-        <div className="containerDettaglioAziende" >
-        <div className="bar" style={{ height: '100vh', overflowY: 'hidden'}}>
-        <Sidebar />
-        </div>
+        <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100vh', width: '100vw', overflow: 'hidden'}}>
+        <Sidebar2 />
+        <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'hidden', width: '100vw'}}>
+        <Typography variant="h4" component="h1" sx={{ marginLeft: '30px', marginTop: '30px', marginBottom: '15px', fontWeight: 'bold', fontSize: '1.8rem'}}>Visualizzazione {nomeAzienda}</Typography>
 
-        <div className="contentDettaglioAziende" >
-            <div className="Title" style={{ display: 'flex', justifyContent: 'flex-start', width: '100%', height: '50px', marginLeft: '35px', marginTop: '35px', marginBottom: '20px'}}>
-                <h1>{`Visualizzazione ${nomeAzienda}`}</h1>
-        </div>
         { /* bottoni del menu dei popup */ }
-        <div className="buttonRow" style={{ display: 'flex', justifyContent: 'flex-start', marginLeft: '30px',  }}>
+        <Box sx={{display: 'flex', justifyContent: 'flex-start', marginLeft: '30px'}}>
         <Button
             variant="contained"
             startIcon={<FeedIcon />}
@@ -428,7 +423,7 @@ function DettaglioAziende2() {
                 onSave={handleSavePhonePopup}
                 title="Registrazione Chiamata effettuata"
             />
-        </div>
+        </Box>
 
         { /* chiusura menu dei bottoni */}
 
@@ -495,8 +490,8 @@ function DettaglioAziende2() {
             >
                 Indietro
             </Button>
-        </div>
-        </div>
+        </Box>
+        </Box>
 
 
 

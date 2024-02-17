@@ -1,21 +1,19 @@
 import React, { useState, useEffect }     from "react";
-import Button                             from "@mui/material/Button";
-import Select                             from "@mui/material/Select";
+import { Box, Select, Button            } from "@mui/material";
 import axios                              from "axios";
 
-import "../../styles/KeyPeople.css";
 
 
 const KeyPeopleSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalKeypeople }) => {
 
-  const initialSearchTerm = {
+  const savedSearchTerms = JSON.parse(localStorage.getItem("ricercaKeyPeople")) || {
     owner: '',
     cliente: '',
     status: '',
   };
 
   const [statoOptions, setStatoOptions] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+  const [searchTerm, setSearchTerm] = useState(savedSearchTerms);
   const [clienteOptions, setClienteOptions] = useState([]);
   const [ownerOptions, setOwnerOptions] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -64,9 +62,9 @@ const accessToken = user?.accessToken;
 const headers = {
   Authorization: `Bearer ${accessToken}`
 };
-        const responseCliente = await axios.get("http://89.46.196.60:8443/aziende/react/select",            { headers: headers });
-        const responseOwner   = await axios.get("http://89.46.196.60:8443/aziende/react/owner",      { headers: headers });
-        const responseStato   = await axios.get("http://89.46.196.60:8443/aziende/react/mod",            { headers: headers });
+        const responseCliente = await axios.get("http://89.46.67.198:8443/aziende/react/select",            { headers: headers });
+        const responseOwner   = await axios.get("http://89.46.67.198:8443/aziende/react/owner",      { headers: headers });
+        const responseStato   = await axios.get("http://89.46.67.198:8443/aziende/react/mod",            { headers: headers });
     if (Array.isArray(responseStato.data)) {
       const statoOptionsData = responseStato.data.map((status, index) => ({
         label: convertStatus(status),
@@ -111,26 +109,35 @@ const headers = {
         String(item[key]).toLowerCase().includes(String(searchTerm[key]).toLowerCase())
       )
     );
+    localStorage.setItem("ricercaKeyPeople", JSON.stringify(searchTerm));
+
     onSearch(filteredData);
     setFilteredData(filteredData);
   };
   
 
   const handleReset = () => {
-    setSearchTerm(initialSearchTerm);
+    setSearchTerm({
+      owner: '',
+    cliente: '',
+    status: '',
+    });
     onSearchTextChange("");
     onReset();
     setFilteredData([]);
+    localStorage.removeItem("ricercaKeyPeople");
+
   };
 
   return (
-    <div className="gridContainer" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr) auto', gap: '10px', alignItems: 'center', margin: '20px 5px', padding: '0 0 20px 0',  borderBottom: '2px solid #dbd9d9',}}>
+    <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr) auto', gap: '0.5%', alignItems: 'center', margin: '0.4%', borderBottom: '2px solid #dbd9d9'}}>
     {/* prima colonna */}
     <Select
   className="dropdown-menu"
   value={searchTerm.status}
   onChange={(e) => setSearchTerm({ ...searchTerm, status: e.target.value })}
   sx={{
+    marginTop: '1%',
     borderRadius: "40px",
     fontSize: "0.8rem",
     textAlign: "start",
@@ -155,6 +162,7 @@ const headers = {
                   value={searchTerm.owner}
                   onChange={e => setSearchTerm({...searchTerm, owner: e.target.value })}
                   sx={{
+                    marginTop: '1%',
                     borderRadius: "40px",
                     fontSize: "0.8rem",
                     textAlign: "start",
@@ -179,6 +187,7 @@ const headers = {
                   value={searchTerm.cliente}
                   onChange={e => setSearchTerm({...searchTerm, cliente: e.target.value })}
                   sx={{
+                    marginTop: '1%',
                     borderRadius: "40px",
                     fontSize: "0.8rem",
                     textAlign: "start",
@@ -197,21 +206,21 @@ const headers = {
                   ))}
                 </Select>
 
-                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                <Box style={{ display: 'flex', justifyContent: 'flex-end', gap: '5%', marginLeft: '10px', marginTop: '-2%' }}>
         <Button
           className="button-search"
           variant="contained"
           onClick={handleSearch}
           sx={{
-            width: '100px',
+            width: '2rem',
             height: "40px",
-            backgroundColor: "#14D928",
+            backgroundColor: "#ffb700",
             color: "black",
             borderRadius: "10px",
             fontSize: "0.8rem",
             fontWeight: "bolder",
             "&:hover": {
-              backgroundColor: "#14D928",
+              backgroundColor: "#ffb700",
               color: "black",
               transform: "scale(1.05)",
             },
@@ -223,7 +232,7 @@ const headers = {
           className="ripristina-link"
           onClick={handleReset}
           sx={{
-            width: '100px', 
+            width: '2rem',
             color: 'white', 
             backgroundColor: 'black',
             height: "40px",
@@ -238,8 +247,8 @@ const headers = {
           }}>
           Reset
         </Button>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

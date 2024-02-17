@@ -1,5 +1,5 @@
 .register-container {
-  background-color: #14D928;
+  background-color: #ffb700;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -79,7 +79,7 @@
 
 
 .div-registrati {
-  color: #14D928;
+  color: #ffb700;
   font-family: "Inter-Bold", Helvetica;
   font-size: 15px;
   font-weight: 700;

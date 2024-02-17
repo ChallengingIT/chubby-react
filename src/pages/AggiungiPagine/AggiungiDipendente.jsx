@@ -5,6 +5,7 @@ import Sidebar                        from "../../components/Sidebar";
 import FieldBoxFile from "../../components/FieldBoxFile";
 import FieldsBox from "../../components/FieldsBox";
 import { Box, Typography, Alert, Snackbar } from "@mui/material";
+import Sidebar2 from "../../components/componentiBackup/Sidebar2";
 
 const AggiungiDipendente = () => {
   const navigate = useNavigate();
@@ -29,11 +30,11 @@ const AggiungiDipendente = () => {
       try {
     
 
-        const responseJobTitle              = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia" , { headers: headers });
-        const responseSkill                 = await axios.get("http://89.46.196.60:8443/staffing/react/skill"    , { headers: headers });
-        const facoltaResponse               = await axios.get("http://89.46.196.60:8443/staffing/react/facolta"  , { headers: headers });
-        const livelloScolasticoResponse     = await axios.get("http://89.46.196.60:8443/staffing/react/livello"  , { headers: headers });
-        const contrattoResponse             = await axios.get("http://89.46.196.60:8443/hr/react/tipocontratto"  , { headers: headers });
+        const responseJobTitle              = await axios.get("http://89.46.67.198:8443/aziende/react/tipologia" , { headers: headers });
+        const responseSkill                 = await axios.get("http://89.46.67.198:8443/staffing/react/skill"    , { headers: headers });
+        const facoltaResponse               = await axios.get("http://89.46.67.198:8443/staffing/react/facolta"  , { headers: headers });
+        const livelloScolasticoResponse     = await axios.get("http://89.46.67.198:8443/staffing/react/livello"  , { headers: headers });
+        const contrattoResponse             = await axios.get("http://89.46.67.198:8443/hr/react/tipocontratto"  , { headers: headers });
 
         if (Array.isArray(contrattoResponse.data)) {
           const contrattoOptions = contrattoResponse.data.map((contratto) => ({
@@ -134,7 +135,7 @@ const handleSubmit = async (values, fileCV, fileCF, fileMultipli, fileAllegati) 
       });
       const skills = values.skills ? values.skills.join(',') : '';
       delete values.skills;
-      const datiResponse = await axios.post("http://89.46.196.60:8443/hr/react/staff/salva", values, {
+      const datiResponse = await axios.post("http://89.46.67.198:8443/hr/react/staff/salva", values, {
         params: { skill: skills },
         headers: headers,
       });
@@ -146,7 +147,7 @@ const handleSubmit = async (values, fileCV, fileCF, fileMultipli, fileAllegati) 
         formData.append("file", file.file);
     
         try {
-          const fileResponse = await axios.post(`http://89.46.196.60:8443/hr/react/staff/salva/file/${staffId}`, formData, { headers: headers });
+          const fileResponse = await axios.post(`http://89.46.67.198:8443/hr/react/staff/salva/file/${staffId}`, formData, { headers: headers });
         } catch (error) {
           console.error("Errore nell'invio del file: ", error);
         }
@@ -181,9 +182,9 @@ const validateFields = (values) => {
 
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
+    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100%', width: '100%', overflow: 'hidden'}}>
 
-          <Sidebar />
+          <Sidebar2 />
           <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
           <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
                 <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>

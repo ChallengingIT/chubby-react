@@ -1,13 +1,10 @@
 import React, { useState, useEffect }     from "react";
-import Button                             from "@mui/material/Button";
-import Select                             from "@mui/material/Select";
+import { Box, Select, Button, TextField } from "@mui/material";
 import axios                              from "axios";
-
-import "../../styles/Recruiting.css";
 
 
 const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalRecruiting, initialEmail}) => {
-  const initialSearchTerm = {
+  const savedSearchTerms = JSON.parse(localStorage.getItem("ricercaRecruiting")) || {
     nome: '',
     cognome: '',
     email: '',
@@ -16,7 +13,7 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
     stato:'',
   };
 
-  const [ searchTerm,                 setSearchTerm                   ] = useState(initialSearchTerm);
+  const [ searchTerm,                 setSearchTerm                   ] = useState(savedSearchTerms);
   const [ tipoOptions,                setTipoOptions                  ] = useState([]);
   const [ statoOptions,               setStatoOptions                 ] = useState([]);
   const [ tipologiaOptions,           setTipologiaOptions             ] = useState([]);
@@ -31,7 +28,7 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
   }, [initialEmail]);
 
   const handleSearchWithInitialEmail = (email) => {
-    const newSearchTerm = { ...initialSearchTerm, email };
+    const newSearchTerm = { ...savedSearchTerms, email };
     setSearchTerm(newSearchTerm);
     handleSearch(); 
   };
@@ -49,9 +46,9 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
        Authorization: `Bearer ${accessToken}`
      };
 
-        const responseTipologia = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia", { headers });
-        const responseTipo      = await axios.get("http://89.46.196.60:8443/staffing/react/tipo", { headers });
-        const responseStato     = await axios.get("http://89.46.196.60:8443/staffing/react/stato/candidato", { headers });
+        const responseTipologia = await axios.get("http://89.46.67.198:8443/aziende/react/tipologia", { headers });
+        const responseTipo      = await axios.get("http://89.46.67.198:8443/staffing/react/tipo", { headers });
+        const responseStato     = await axios.get("http://89.46.67.198:8443/staffing/react/stato/candidato", { headers });
 
 
         if (Array.isArray(responseStato.data)) {
@@ -94,6 +91,7 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
         String(item[key]).toLowerCase().includes(String(searchTerm[key]).toLowerCase())
       )
     );
+    localStorage.setItem("ricercaRecruiting", JSON.stringify(searchTerm));
 
     onSearch(filteredData);
     setFilteredData(filteredData);
@@ -101,10 +99,19 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
   
 
   const handleReset = () => {
-    setSearchTerm(initialSearchTerm);
+    setSearchTerm({
+      nome: '',
+      cognome: '',
+      email: '',
+      tipo:'',
+      tipologia:'',
+      stato:'',
+    });
     onSearchTextChange("");
     onReset();
     setFilteredData([]);
+    localStorage.removeItem("ricercaRecruiting");
+
   };
 
 
@@ -116,11 +123,24 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
 
   
   return (
-    <div className="gridContainer" style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr) auto', gap: '10px', alignItems: 'center', margin: '20px 5px', padding: '0 0 20px 0',  borderBottom: '2px solid #dbd9d9',}}>
+    <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr) auto', gap: '0.5%', alignItems: 'center', margin: '0.4%', borderBottom: '2px solid #dbd9d9'}}>
 
     {/* Prima colonna */}
-        <input style={{border: 'solid 1px #c4c4c4', marginTop: '10px'}}
-          type="text"
+    <TextField 
+      sx={{
+          '& .MuiOutlinedInput-root': {
+              '& fieldset': {
+                  border: 'none', 
+              },
+              '&:hover fieldset': {
+                  border: 'none',
+              },
+              '&.Mui-focused fieldset': {
+                  border: 'none',
+              },
+          },
+        display: 'flex', justifyContent: 'center', border: 'solid 1px #c4c4c4', width: '100%', marginTop: '-2%'}}
+      type="text"
           placeholder="Nome Candidato"
           id="ricercaNome"
           className="text-form"
@@ -129,8 +149,21 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
           onKeyDown={handleKeyDown}
           onChange={(e) => setSearchTerm({ ...searchTerm, nome: e.target.value })}
           />
-        <input style={{border: 'solid 1px #c4c4c4', marginTop: '10px'}}
-          type="text"
+        <TextField 
+      sx={{
+          '& .MuiOutlinedInput-root': {
+              '& fieldset': {
+                  border: 'none', 
+              },
+              '&:hover fieldset': {
+                  border: 'none',
+              },
+              '&.Mui-focused fieldset': {
+                  border: 'none',
+              },
+          },
+        display: 'flex', justifyContent: 'center', border: 'solid 1px #c4c4c4', width: '100%', marginTop: '-2%'}}
+      type="text"
           placeholder="Cognome Candidato"
           id="ricercaCognome"
           className="text-form"
@@ -140,8 +173,21 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
           onChange={(e) => setSearchTerm({ ...searchTerm, cognome: e.target.value })}
           />
     {/* Seconda colonna */}
-        <input style={{border: 'solid 1px #c4c4c4', marginTop: '10px'}}
-          type="text"
+    <TextField 
+      sx={{
+          '& .MuiOutlinedInput-root': {
+              '& fieldset': {
+                  border: 'none', 
+              },
+              '&:hover fieldset': {
+                  border: 'none',
+              },
+              '&.Mui-focused fieldset': {
+                  border: 'none',
+              },
+          },
+        display: 'flex', justifyContent: 'center', border: 'solid 1px #c4c4c4', width: '100%', marginTop: '-2%'}}
+      type="text"
           placeholder="Email Candidato"
           id="ricercaCognome"
           className="text-form"
@@ -155,7 +201,7 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
                   value={searchTerm.tipologia}
                   onChange={e => setSearchTerm({...searchTerm, tipologia: e.target.value })}
                   sx={{
-                    marginTop: '10px',
+                    marginTop: '1%',
                     borderRadius: "40px",
                     fontSize: "0.8rem",
                     textAlign: "start",
@@ -179,7 +225,7 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
   value={searchTerm.tipo}
   onChange={(e) => setSearchTerm({ ...searchTerm, tipo: e.target.value })}
   sx={{
-    marginTop: '10px',
+    marginTop: '1%',
     borderRadius: "40px",
     fontSize: "0.8rem",
     textAlign: "start",
@@ -203,7 +249,7 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
   value={searchTerm.stato}
   onChange={(e) => setSearchTerm({ ...searchTerm, stato: e.target.value })}
   sx={{
-    marginTop: '10px',
+    marginTop: '1%',
     borderRadius: "40px",
     fontSize: "0.8rem",
     textAlign: "start",
@@ -223,49 +269,49 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
 </Select>
 
     {/* Quarta colonna */}
-    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
-    <Button
-      className="button-search"
-      variant="contained"
-      onClick={handleSearch}
-      sx={{
-        width: '100px',
-        height: "40px",
-        backgroundColor: "#14D928",
-        color: "black",
-        borderRadius: "10px",
-        fontSize: "0.8rem",
-        fontWeight: "bolder",
-        "&:hover": {
-          backgroundColor: "#14D928",
-          color: "black",
-          transform: "scale(1.05)",
-        },
-      }}
-    >
-      Cerca
-    </Button>
-    <Button
-      className="ripristina-link"
-      onClick={handleReset}
-      sx={{
-        width: '100px', 
-        color: 'white', 
-        backgroundColor: 'black',
-        height: "40px",
-        borderRadius: "10px",
-        fontSize: "0.8rem",
-        fontWeight: "bolder",
-        "&:hover": {
-          backgroundColor: "black",
-          color: "white",
-          transform: "scale(1.05)",
-        },
-      }}>
-      Reset
-    </Button>
-  </div>
-</div>
+    <Box style={{ display: 'flex', justifyContent: 'flex-end', gap: '5%', marginLeft: '10px', marginTop: '-5%' }}>
+        <Button
+          className="button-search"
+          variant="contained"
+          onClick={handleSearch}
+          sx={{
+            width: '2rem',
+            height: "40px",
+            backgroundColor: "#ffb700",
+            color: "black",
+            borderRadius: "10px",
+            fontSize: "0.8rem",
+            fontWeight: "bolder",
+            "&:hover": {
+              backgroundColor: "#ffb700",
+              color: "black",
+              transform: "scale(1.05)",
+            },
+          }}
+        >
+          Cerca
+        </Button>
+        <Button
+          className="ripristina-link"
+          onClick={handleReset}
+          sx={{
+            width: '2rem',
+            color: 'white', 
+            backgroundColor: 'black',
+            height: "40px",
+            borderRadius: "10px",
+            fontSize: "0.8rem",
+            fontWeight: "bolder",
+            "&:hover": {
+              backgroundColor: "black",
+              color: "white",
+              transform: "scale(1.05)",
+            },
+          }}>
+          Reset
+        </Button>
+      </Box>
+</Box>
   );
 };
 

@@ -12,16 +12,28 @@ function PaperButton({onClick}) {
         startIcon={<NoteIcon />} 
         onClick={onClick}
         sx={{
-          backgroundColor: '#14D928',
+          marginRight: '10%',
+          backgroundColor: '#FFB700',
           color: 'black',
-          borderRadius: '40px',
-          justifyContent: 'end !important',
-          marginRight: '15px',
-          "&:hover": {
-            backgroundColor: "#14D928",
-            transform: "scale(1.05)",
-            color: 'white',
+          borderRadius: '50%',
+          minWidth: '40px',
+          width: '40px',
+          height: '40px',
+          padding: '0',
+          '& .MuiButton-startIcon': {
+            margin: '0',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
           },
+          '&:hover': {
+            backgroundColor: '#FFB700',
+            transform:'scale(1.05)',
+            color: 'black',
+            cursor: 'pointer',
+            borderRadius: '50%',
+            borderStyle: 'none',
+          }
         }}
         
       />

@@ -22,6 +22,8 @@ import {
   Box,
   Typography
 } from '@mui/material';
+import MyDataGridPerc from "../components/MyDataGridPerc";
+import Sidebar2 from "../components/componentiBackup/Sidebar2";
 
 
 const HR = () => {
@@ -49,26 +51,60 @@ const HR = () => {
     };
 
 
+  // const fetchData = async () => {
+  //   try {
+
+  //     const response = await axios.get("http://89.46.67.198:8443/hr/react/modificato", { headers: headers });
+
+  //     if (Array.isArray(response.data)) {
+  //       const hrConId = response.data.map((hr) => ({ ...hr }));
+  //       setOriginalHr(hrConId);
+  //       setFilteredHr(hrConId);
+  //     } else {
+  //       console.error("I dati ottenuti non sono nel formato Array:", response.data);
+  //     }
+  //   } catch (error) {
+  //     console.error("Errore durante il recupero dei dati:", error);
+  //   }
+  // };
+
+  //   useEffect(() => {
+  //   fetchData();
+  // }, []);
+
+
   const fetchData = async () => {
-    try {
+    let url = "http://89.46.67.198:8443/hr/react";
+    const lastSearchParams = localStorage.getItem("lastSearchHRParams");
+    console.log("LAST SEARCH PARAMS:", lastSearchParams);
+    let params = {};
 
-      const response = await axios.get("http://89.46.196.60:8443/hr/react/modificato", { headers: headers });
-
-      if (Array.isArray(response.data)) {
-        const hrConId = response.data.map((hr) => ({ ...hr }));
-        setOriginalHr(hrConId);
-        setFilteredHr(hrConId);
-      } else {
-        console.error("I dati ottenuti non sono nel formato Array:", response.data);
+    if (lastSearchParams) {
+      params = JSON.parse(lastSearchParams);
+      url += "/ricerca/modificato";
+      try{
+        const responseSearch = await axios.get(url , { headers: headers, params});
+        setFilteredHr(responseSearch.data);
+        setOriginalHr(responseSearch.data);
+      } catch(error) {
+        console.error("Errore durante il recupero dei dati:", error);
       }
-    } catch (error) {
-      console.error("Errore durante il recupero dei dati:", error);
+    } else {
+      url += "/modificato";
+      try {
+        const response = await axios.get(url, { headers: headers, params });
+        setFilteredHr(response.data);
+        setOriginalHr(response.data);
+      } catch (error) {
+        console.error("Errore durante il recupero dei dati:", error);
+      }
     }
   };
 
-    useEffect(() => {
-    fetchData();
-  }, []);
+
+  useEffect(() => {
+  fetchData();
+}, []);
 
   const openDeleteDialog = (id) => {
     setDeleteId(id);
@@ -91,7 +127,7 @@ const HR = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`http://89.46.196.60:8443/hr/react/staff/elimina/${deleteId}`, { headers: headers});
+      const response = await axios.delete(`http://89.46.67.198:8443/hr/react/staff/elimina/${deleteId}`, { headers: headers});
       setOpenDialog(false);
       fetchData();
     } catch (error) {
@@ -104,7 +140,7 @@ const HR = () => {
     { field: "nome",      headerName: "Nome",       flex: 1 },
     { field: "cognome",   headerName: "Cognome",    flex: 1 },
     { field: "email",     headerName: "Email",      flex: 1.2 },
-    { field: "note",      headerName: "Note",       flex: 0.5, renderCell: (params) => (
+    { field: "note",      headerName: "Note",       flex: 0.2, renderCell: (params) => (
                                                                                           <div>
                                                                                             <NoteButton onClick={() => {
                                                                                               setIsNotesPopupOpen(true);
@@ -113,7 +149,7 @@ const HR = () => {
                                                                                             </div>
                                                                                             ),
                                                                                           },
-    { field: "timesheet", headerName: "Timesheet",  flex: 0.5, renderCell: (params) => (
+    { field: "timesheet", headerName: "Timesheet",  flex: 0.4, renderCell: (params) => (
                                                                                             <div>
                                                                                               <Link
                                                                                               to={`/hr/staff/timesheet/${params.row.id}`}
@@ -123,7 +159,7 @@ const HR = () => {
                                                                                                 </Link>
                                                                                             </div> 
                                                                                             ), },
-    { field: "azioni",    headerName: "Azioni",     flex: 1, renderCell: (params) => (
+    { field: "azioni",    headerName: "Azioni",     flex: 0.5, renderCell: (params) => (
                                                                                               <div>
                                                                                                 <Link
                                                                                                 to={`/hr/staff/visualizza/${params.row.id}`}
@@ -155,7 +191,7 @@ const HR = () => {
 
   const handleInviaSollecito = async () => {
     try {
-      const response = await axios.post("http://89.46.196.60:8443/hr/react/staff/sollecito", { headers: headers });
+      const response = await axios.post("http://89.46.67.198:8443/hr/react/staff/sollecito", { headers: headers });
     } catch (error) {
       console.error("Errore durante la cancellazione:", error);
     }
@@ -163,10 +199,10 @@ const HR = () => {
 
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
-          <Sidebar />
-          <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
-          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>HR Managing</Typography>
+    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100vh', width: '100vw', overflow: 'hidden'}}>
+    <Sidebar2 />
+    <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'hidden', width: '100vw'}}>
+    <Typography variant="h4" component="h1" sx={{ marginLeft: '30px', marginTop: '30px', marginBottom: '15px', fontWeight: 'bold', fontSize: '1.8rem'}}>HR Managing</Typography>
           <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', gap: '40px', margin: '0 30px' }}>
             <Button
                 className="button-add"
@@ -187,7 +223,7 @@ const HR = () => {
                 display: "flex",
                 alignItems: "flex-start",
                 "&:hover": {
-                  backgroundColor: "#14D928",
+                  backgroundColor: "#ffb700",
                   transform: "scale(1.05)",
                   color: 'black',
                 },
@@ -213,7 +249,7 @@ const HR = () => {
                 display: "flex",
                 alignItems: "flex-start",
                 "&:hover": {
-                  backgroundColor: "#14D928",
+                  backgroundColor: "#ffb700",
                   transform: "scale(1.05)",
                   color: 'black',
                 },
@@ -240,7 +276,7 @@ const HR = () => {
                 alignItems: "flex-start",
                 "&:hover": {
                   color: 'black',
-                  backgroundColor: "#14D928",
+                  backgroundColor: "#ffb700",
                   transform: "scale(1.05)",
                 },
               }}
@@ -248,8 +284,8 @@ const HR = () => {
               Invia Sollecito
             </Button>
             </Box>
-            <Box sx={{ height: '90%', marginTop: '40px', width: '100%'}}>
-            <MyDataGrid 
+            <Box sx={{ height: '90vh', marginTop: '20px', width: '100vw'}}>
+            <MyDataGridPerc
                 data={filteredHr} 
                 columns={columns} 
                 title="Staff" 
@@ -333,10 +369,10 @@ const HR = () => {
                 </Button>
                 <Button onClick={handleDelete} color="primary" variant="contained" type="submit"
                           style={{
-                            backgroundColor: "#14D928",
+                            backgroundColor: "#FFB700",
                             color: "black",
                             "&:hover": {
-                              backgroundColor: "#14D928",
+                              backgroundColor: "#FFB700",
                               color: "black",
                               transform: "scale(1.05)",
                             },

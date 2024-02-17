@@ -97,7 +97,7 @@ function TesoreriaSearchBox() {
         sx={{
           width: "90px",
           height: "50px",
-          backgroundColor: "#14D928",
+          backgroundColor: "#ffb700",
           color: "black",
           borderRadius: "10px",
           fontSize: "0.8rem",
@@ -106,7 +106,7 @@ function TesoreriaSearchBox() {
           marginTop: "5px",
           padding: "0.5rem 1rem",
           "&:hover": {
-            backgroundColor: "#14D928",
+            backgroundColor: "#ffb700",
             color: "black",
             transform: "scale(1.05)",
           },

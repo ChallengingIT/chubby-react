@@ -42,7 +42,7 @@
 //   useEffect(() => {
 //     const fetchData = async () => {
 //       try {
-//         const response = await axios.get("http://89.46.196.60:8443/staffing/react");
+//         const response = await axios.get("http://89.46.67.198:8443/staffing/react");
 //         if (Array.isArray(response.data)) {
 //           dispatch(setOriginalRecruiting(response.data));
 //           dispatch(setFilteredRecruiting(response.data));
@@ -69,7 +69,7 @@
 
 //   const handleDelete = async (id) => {
 //     try {
-//       const response = await axios.delete(`http://89.46.196.60:8443/staffing/elimina/${id}`);
+//       const response = await axios.delete(`http://89.46.67.198:8443/staffing/elimina/${id}`);
 
 //       dispatch(deleteRecruiting(id));
       
@@ -166,7 +166,7 @@
     
 //     // Opzionale: Riesegui il fetch dei dati invece di usare quelli memorizzati
 //     try {
-//         const response = await axios.get("http://89.46.196.60:8443/staffing/react");
+//         const response = await axios.get("http://89.46.67.198:8443/staffing/react");
 //         if (Array.isArray(response.data)) {
 //             dispatch(setOriginalRecruiting(response.data));
 //             dispatch(setFilteredRecruiting(response.data));

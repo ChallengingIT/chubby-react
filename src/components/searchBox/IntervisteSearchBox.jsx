@@ -16,14 +16,14 @@ import "../../styles/HR.css";
 
 
 const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalInterviste }) => {
-  const initialSearchTerm = {
+  const savedSearchTerms = JSON.parse(localStorage.getItem("ricercaInterviste")) || {
     stato: '',
     intervistatore: '',
     data: null,
   };
 
 
-  console.log("ORIGINAL INTERVISTE: ", OriginalInterviste);
+  // console.log("ORIGINAL INTERVISTE: ", OriginalInterviste);
 
   // const commonFieldStyles = {
   //   width: "100%", // Assicurati che sia la stessa per tutti i campi
@@ -47,7 +47,7 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
   //   },
   // };
 
-  const [ searchTerm,   setSearchTerm   ] = useState(initialSearchTerm);
+  const [ searchTerm,   setSearchTerm   ] = useState(savedSearchTerms);
   const [ ownerOptions, setOwnerOptions ] = useState([]);
   const [ statoOptions, setStatoOptions ] = useState([]);
   const [ filteredData, setFilteredData ] = useState([]);
@@ -70,9 +70,9 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseOwner = await axios.get("http://89.46.196.60:8443/aziende/react/owner", { headers: headers});
+        const responseOwner = await axios.get("http://89.46.67.198:8443/aziende/react/owner", { headers: headers});
 
-        const responseStato = await axios.get("http://89.46.196.60:8443/staffing/react/stato/candidato", { headers: headers});
+        const responseStato = await axios.get("http://89.46.67.198:8443/staffing/react/stato/candidato", { headers: headers});
 
                 if (Array.isArray(responseStato.data)) {
                   setStatoOptions(responseStato.data.map((stato) => ({ label: stato.descrizione, value: stato.id })));
@@ -95,8 +95,6 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
 
 
   const handleSearch = () => {
-    console.log("Valori di ricerca:", searchTerm);
-    console.log("Contenuto di Originale:", OriginalInterviste);
     const filteredData = OriginalInterviste.filter(item =>
       Object.keys(searchTerm).every(key =>
         searchTerm[key] === '' ||
@@ -106,17 +104,24 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
         String(item[key]).toLowerCase().includes(String(searchTerm[key]).toLowerCase())
       )
     );
-    console.log("Dati filtrati:", filteredData);
+    localStorage.setItem("ricercaInterviste", JSON.stringify(searchTerm));
+
     onSearch(filteredData);
     setFilteredData(filteredData);
   };
   
 
   const handleReset = () => {
-    setSearchTerm(initialSearchTerm);
+    setSearchTerm({
+      stato: '',
+      intervistatore: '',
+      data: null,
+    });
     onSearchTextChange("");
     onReset();
     setFilteredData([]); 
+    localStorage.removeItem("ricercaInterviste");
+
   };
 
 
@@ -234,13 +239,13 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
       sx={{
         width: '100px',
         height: "40px",
-        backgroundColor: "#14D928",
+        backgroundColor: "#ffb700",
         color: "black",
         borderRadius: "10px",
         fontSize: "0.8rem",
         fontWeight: "bolder",
         "&:hover": {
-          backgroundColor: "#14D928",
+          backgroundColor: "#ffb700",
           color: "black",
           transform: "scale(1.05)",
         },

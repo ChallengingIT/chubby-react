@@ -2,8 +2,8 @@ import axios from "axios";
 
 
 
-const API_URL = "http://89.46.196.60:8443/api/auth/";
-const API_LOGOUT = "http://89.46.196.60:8443/logout";
+const API_URL = "http://89.46.67.198:8443/api/auth/";
+const API_LOGOUT = "http://89.46.67.198:8443/logout";
 
 
 // Configura gli headers della richiesta con l'Authorization token
@@ -31,15 +31,18 @@ class AuthService {
     const user = JSON.parse(localStorage.getItem("user"));
     const accessToken = user?.accessToken;
 
-    const headers = {
-      Authorization: `Bearer ${accessToken}`
-    };
+    const config = {
+      headers: {
+          Authorization: `Bearer ${accessToken}`
+      }
+  };
     
     return axios
-    .post(API_LOGOUT, { headers: headers })
+    .post(API_LOGOUT, {}, config)
     .then(response => {
       if (response.data) {
         localStorage.removeItem("user");
+        
         
       }
       return response.data;

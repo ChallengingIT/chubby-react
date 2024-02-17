@@ -4,6 +4,7 @@ import axios                                  from "axios";
 import Sidebar                                from "../../components/Sidebar";
 import FieldsBox                              from "../../components/FieldsBox";
 import { Box, Typography } from "@mui/material";
+import Sidebar2 from "../../components/componentiBackup/Sidebar2";
 
 const AggiungiFatturazioneAttiva = () => {
     const navigate = useNavigate();
@@ -23,8 +24,8 @@ const AggiungiFatturazioneAttiva = () => {
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseCliente   = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers: headers });
-        const responseStato     = await axios.get("http://89.46.196.60:8443/fatturazione/attiva/react/stato", { headers: headers });
+        const responseCliente   = await axios.get("http://89.46.67.198:8443/aziende/react/select", { headers: headers });
+        const responseStato     = await axios.get("http://89.46.67.198:8443/fatturazione/attiva/react/stato", { headers: headers });
 
         if (Array.isArray(responseStato.data)) {
           const statoOptions = responseStato.data.map((stato) => ({
@@ -99,7 +100,7 @@ const AggiungiFatturazioneAttiva = () => {
     if (!hasErrors) {
     try {
 
-      const response = await axios.post("http://89.46.196.60:8443/fatturazione/attiva/react/salva", initialValues, {
+      const response = await axios.post("http://89.46.67.198:8443/fatturazione/attiva/react/salva", initialValues, {
         headers: headers
       });
 
@@ -121,8 +122,8 @@ const AggiungiFatturazioneAttiva = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
-          <Sidebar />
+    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100%', width: '100%', overflow: 'hidden'}}>
+          <Sidebar2 />
           <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
           <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Aggiungi una nuova Fattura Attiva</Typography>
 

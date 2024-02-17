@@ -1,8 +1,9 @@
 import React, { useEffect }               from "react";
-import sfondohome           from "../images/challenging.png";
+import sfondohome           from "../images/sfondohome.png";
 import Sidebar              from "../components/Sidebar";
 
 import "../styles/Homepage.css";
+import Sidebar2 from "../components/componentiBackup/Sidebar2";
 
 
 
@@ -27,7 +28,7 @@ return (
         className="background-image"
         />
         <div className="sidebar-container">
-          <Sidebar />
+          <Sidebar2 />
         </div>
 
     </div>

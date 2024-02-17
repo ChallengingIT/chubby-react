@@ -8,25 +8,33 @@ import { Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, Box, Co
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import HomeIcon from '@mui/icons-material/Home'; 
+import PeopleIcon from '@mui/icons-material/People'; 
+import ExitToAppIcon from '@mui/icons-material/ExitToApp'; 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
+import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
+import NearMeIcon from '@mui/icons-material/NearMe';
+import PersonIcon from '@mui/icons-material/Person';
+import ChecklistIcon from '@mui/icons-material/Checklist';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import ImportContactsIcon from '@mui/icons-material/ImportContacts';
+import FactoryIcon from '@mui/icons-material/Factory';
 import { ListItemIcon as MuiListItemIcon } from "@mui/material";
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp'; 
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 
 
 
 
-
-
-const drawerWidth = "14vw";
+const drawerWidth = "13.5vw";
 const drawerCollapsed = "3.5vw";
 
-const UserSidebar = () => {
+const Sidebar2 = ({ isSidebarOpen, setIsSidebarOpen }) => {
     const [sidebarcollapsed, setSidebarcollapsed] = useState(true);
     const [submenuOpen, setSubmenuOpen] = useState(false);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    // const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [activeLink, setActiveLink] = useState(null);
     const [isLogoutPopupOpen, setIsLogoutPopupOpen] = useState(false);
     const [open, setOpen] = useState(false);
@@ -62,7 +70,8 @@ const UserSidebar = () => {
     // };
 
     const handleLogout = () => {
-        localStorage.clear();
+        const user = JSON.parse(localStorage.getItem("user"));
+        localStorage.removeItem("user");
         navigate('/login', { replace: true});
         closeLogoutPopup();
     };
@@ -133,17 +142,87 @@ const UserSidebar = () => {
 
 const sidebarData = [
     {
-        title: 'Timesheet',
-        icon: <AccessTimeIcon style={{ color: '#FFB700' }}/>,
-        path: '/userTimesheet',
+        title: 'Home',
+        icon: <HomeIcon style={{ color: '#FFB700' }}/>,
         sidebarcollapsed: true,
     },
     {
-      title: 'Logout',
-      icon: <ExitToAppIcon style={{ color: '#FFB700' }}/>,
-      action: 'logout',
-      
-  }
+        title: 'Business Dev',
+        icon: <AccountBoxIcon style={{ color: '#FFB700' }}/>,
+        iconClosed: (
+            <ExpandMore style={{ color: '#FFB700', marginRight: '2em'}}/>
+        ),
+        sidebarcollapsed: true,
+        subNav: [
+            {
+                title: 'Aziende',
+                path: '/aziende',
+                icon: <BusinessCenterIcon style={{ color: '#FFB700' }}/>,
+                customStyle: { marginLeft: '10px' },
+            },
+            {
+                title: 'KeyPeople',
+                path: '/KeyPeople',
+                icon: <CollectionsBookmarkIcon style={{ color: '#FFB700' }}/>
+            },
+        ],
+    },
+    {
+        title: 'Need',
+        path: '/need',
+        icon: <NearMeIcon style={{ color: '#FFB700' }}/>,
+        sidebarcollapsed: true,
+    },
+    {
+        title: 'Recruiting',
+        path: '/recruiting',
+        icon: <PersonIcon style={{ color: '#FFB700' }}/>,
+        sidebarcollapsed: true,
+    },
+    {
+        title: 'Progetti',
+        path: '/progetti',
+        icon: <ChecklistIcon style={{ color: '#FFB700' }}/>,
+    sidebarcollapsed: true,
+    },
+
+    {
+        title: 'Amministrazione',
+        icon: <AccountTreeIcon style={{ color: '#FFB700' }}/>,
+        iconClosed: (
+            <ExpandMore style={{ color: '#FFB700', marginRight: '2em'}}/>
+        ),
+        sidebarcollapsed: true,
+        subNav: [
+            {
+                title: 'Fatturazione Attiva',
+                path: '/fatturazioneAttiva',
+                icon: <CreditCardIcon style={{ color: '#FFB700' }}/>,
+            },
+            {
+                title: "Fatturazione Passiva",
+                path: "/fatturazione/passiva",
+                icon: <ImportContactsIcon style={{ color: '#FFB700' }}/>,
+            },
+            {
+                title: "Fornitori",
+                path: "/fornitori",
+                icon: <FactoryIcon style={{ color: '#FFB700' }}/>,
+            },
+        ],
+    },
+    {
+        title: 'HR',
+        path: '/hr',
+        icon: <PeopleIcon style={{ color: '#FFB700' }}/>,
+        sidebarcollapsed: true,
+    },
+    {
+        title: 'Logout',
+        icon: <ExitToAppIcon style={{ color: '#FFB700' }}/>,
+        action: 'logout',
+        
+    }
 ];
 
 return (
@@ -161,14 +240,14 @@ return (
                 color: '#817B7B',
                 transition: 'width 0.3s ease',
                 borderRadius: '0 22px 22px 0',
-                overflowX: 'hidden', 
+                overflow: 'hidden', 
             },
         }}
     >
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', padding: '8px', flexDirection: 'row' }}>
             {open && ( 
                 <Box sx={{ display: 'flex', justifyContent: 'center', padding: '16px', flexDirection: 'column' }}>
-                    <Typography sx={{ color: 'white', display: 'flex', alignItems: 'flex-start', fontWeight: 'bold', fontSize: '30px' }}>
+                    <Typography sx={{ color: 'white', display: 'flex', alignItems: 'flex-start', fontWeight: 'bold', fontSize: '28px' }}>
                         WE-HUB
                     </Typography>
                     <img src={Logo} alt="Logo" style={{ maxWidth: '100%' }} />
@@ -190,6 +269,7 @@ return (
                 {sidebarData.map((item, index) => (
                     <React.Fragment key={index}>
                         <ListItem sx={{
+                            gap: 0,
                                 '&:hover': {
                                     backgroundColor: '#252831',
                                     borderLeft: '4px solid #FFB700',
@@ -206,7 +286,7 @@ return (
                                 }
                             }}
                         >
-                            <ListItemIcon >{item.icon}</ListItemIcon>
+                            <ListItemIcon sx={{ minWidth: '2.2em'}}>{item.icon}</ListItemIcon>
                             <ListItemText primary={item.title} />
                             {item.subNav ? (openSubmenus[index] ? <ExpandLess /> : <ExpandMore />) : null}
                         </ListItem>
@@ -215,7 +295,7 @@ return (
                                 <List component="div" disablePadding>
                                     {item.subNav.map((subItem, subIndex) => (
                                         <ListItem
-                                        sx={{pl: 4,
+                                        sx={{pl: 2.8,
                                             '&:hover': {
                                                 backgroundColor: '#252831',
                                                 borderLeft: '4px solid #FFB700',
@@ -224,7 +304,7 @@ return (
                                             },
                                         }}
                                         button key={subIndex} onClick={() => navigate(subItem.path)}>
-                                            <ListItemIcon>{subItem.icon}</ListItemIcon>
+                                            <ListItemIcon sx={{ minWidth: '2.2em'}}>{subItem.icon}</ListItemIcon>
                                             <ListItemText primary={subItem.title} />
                                         </ListItem>
                                     ))}
@@ -300,4 +380,4 @@ return (
 );
 };
 
-export default UserSidebar;
+export default Sidebar2;

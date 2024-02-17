@@ -4,6 +4,7 @@ import MyDataGrid               from "../components/MyDataGrid";
 import Sidebar                  from "../components/Sidebar";
 
 import "../styles/Home.css";
+import Sidebar2 from "../components/componentiBackup/Sidebar2";
 
 const Home = () => {
 
@@ -77,7 +78,7 @@ const Home = () => {
     <div className="container">
       <div className="content">
         <div className="sidebar-container">
-          <Sidebar />
+          <Sidebar2 />
         </div>
         <div className="container">
           <div className="primafila">

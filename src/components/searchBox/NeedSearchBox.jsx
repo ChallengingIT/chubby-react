@@ -1,20 +1,14 @@
 //funzionante al 19 dicembre 2023 16:15
 
 import React, { useState, useEffect }             from "react";
-import Button                                     from "@mui/material/Button";
-import Select                                     from "@mui/material/Select";
-import CustomCalendar2                            from "../CustomCalendar2.jsx";
 import axios                                      from "axios";
-import Need                                       from "../../pages/Need.jsx";
-import TextField                                  from '@mui/material/TextField';
 import { format, getWeek }                        from 'date-fns';
 import itLocale                                   from 'date-fns/locale/it';
-
-import "../../styles/Need.css";
+import { Box, Select, TextField, Button }         from "@mui/material";
 
 const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalNeed}) => {
 
-  const initialSearchTerm = {
+  const savedSearchTerms = JSON.parse(localStorage.getItem("ricercaNeed")) || {
     cliente: '',
     priorita: '',
     owner: '',
@@ -23,7 +17,7 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalNe
     week: '',
   };
 
-  const [ searchTerm,                 setSearchTerm                 ] = useState(initialSearchTerm);
+  const [ searchTerm,                 setSearchTerm                 ] = useState(savedSearchTerms);
   const [ clienteOptions,             setClienteOptions             ] = useState([]);
   const [ ownerOptions,               setOwnerOptions               ] = useState([]);
   const [ tipologiaOptions,           setTipologiaOptions           ] = useState([]);
@@ -58,10 +52,10 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalNe
      const headers = {
        Authorization: `Bearer ${accessToken}`
      };
-        const responseCliente       = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers });
-        const responseOwner         = await axios.get("http://89.46.196.60:8443/aziende/react/owner", { headers });
-        const responseTipologia     = await axios.get("http://89.46.196.60:8443/need/react/tipologia", { headers });
-        const responseStato         = await axios.get("http://89.46.196.60:8443/need/react/stato", { headers });
+        const responseCliente       = await axios.get("http://89.46.67.198:8443/aziende/react/select", { headers });
+        const responseOwner         = await axios.get("http://89.46.67.198:8443/aziende/react/owner", { headers });
+        const responseTipologia     = await axios.get("http://89.46.67.198:8443/need/react/tipologia", { headers });
+        const responseStato         = await axios.get("http://89.46.67.198:8443/need/react/stato", { headers });
 
         if (Array.isArray(responseCliente.data)) {
           setClienteOptions(responseCliente.data.map((cliente) => ({ label: cliente.denominazione, value: cliente.id })));
@@ -107,16 +101,27 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalNe
         String(item[key]).toLowerCase().includes(String(searchTerm[key]).toLowerCase())
       )
     );
+    localStorage.setItem("ricercaNeed", JSON.stringify(searchTerm));
+
     onSearch(filteredData);
     setFilteredData(filteredData);
   };
   
   
   const handleReset = () => {
-    setSearchTerm(initialSearchTerm);
+    setSearchTerm({
+      cliente: '',
+      priorita: '',
+      owner: '',
+      tipologia: '',
+      stato: '',
+      week: '',
+    });
     onSearchTextChange("");
     onReset();
     setFilteredData([]);
+    localStorage.removeItem("ricercaNeed");
+
   };
 
 
@@ -131,7 +136,8 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalNe
   
       
   return (
-    <div className="gridContainer" style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr) auto', gap: '10px', alignItems: 'center', margin: '20px 5px', padding: '0 0 20px 0',  borderBottom: '2px solid #dbd9d9',}}>
+          <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr) auto', gap: '0.5%', alignItems: 'center', margin: '0.4%', borderBottom: '2px solid #dbd9d9'}}>
+
 
             {/* Prima colonna */}
               <Select
@@ -140,7 +146,7 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalNe
                   value={searchTerm.cliente}
                   onChange={e => setSearchTerm({...searchTerm, cliente: e.target.value })}
                   sx={{
-                    marginTop: '10px',
+                    marginTop: '1%',
                     borderRadius: "40px",
                     fontSize: "0.8rem",
                     textAlign: "start",
@@ -164,7 +170,7 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalNe
                   value={searchTerm.tipologia}
                   onChange={e => setSearchTerm({...searchTerm, tipologia: e.target.value })}
                   sx={{
-                    marginTop: '10px',
+                    marginTop: '1%',
                     borderRadius: "40px",
                     fontSize: "0.8rem",
                     textAlign: "start",
@@ -184,8 +190,9 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalNe
                 </Select>
 
                   {/* Seconda colonna */}
-                <input 
-                style={{...uniformStyle, border: 'solid 1px #c4c4c4',  marginTop: '10px',}}
+                <TextField 
+                // style={{...uniformStyle, border: 'solid 1px #c4c4c4', marginTop: '-2%'}}
+                style={uniformStyle}
                   type="number"
                   placeholder="Priorità"
                   className="text-form"
@@ -194,13 +201,25 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalNe
                   value={searchTerm.priorita}
                   onKeyDown={handleKeyDown}
                   onChange={(e) => setSearchTerm({ ...searchTerm, priorita: e.target.value })}
+                  InputProps={{
+                    style: {
+                        height: "40px",
+                      borderRadius: "40px", 
+                      textAlign: "start",
+                      color: "black",
+                      display: 'flex',
+                      fontSize: '0.9rem',
+                      justifyContent: 'center',
+                      marginTop: '-2%'
+                    }
+                  }}
                 />
               <Select
                   className="dropdown-menu"
                   value={searchTerm.stato}
                   onChange={e => setSearchTerm({...searchTerm, stato: e.target.value })}
                   sx={{
-                    marginTop: '10px',
+                    marginTop: '1%',
                     borderRadius: "40px",
                     fontSize: "0.8rem",
                     textAlign: "start",
@@ -224,7 +243,7 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalNe
                   value={searchTerm.owner}
                   onChange={e => setSearchTerm({...searchTerm, owner: e.target.value })}
                   sx={{
-                    marginTop: '10px',
+                    marginTop: '1%',
                     borderRadius: "40px",
                     fontSize: "0.8rem",
                     textAlign: "start",
@@ -255,28 +274,32 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalNe
     style: {
         height: "40px",
       borderRadius: "40px", 
+      fontSize: '0.9rem',
       textAlign: "start",
       color: "#757575",
+      display: 'flex',
+      justifyContent: 'center',
+      marginTop: '-2%'
     }
   }}
 />
                   {/* Quarta colonna */}
                 
-                  <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                  <Box style={{ display: 'flex', justifyContent: 'flex-end', gap: '5%', marginLeft: '10px', marginTop: '-5%' }}>
         <Button
           className="button-search"
           variant="contained"
           onClick={handleSearch}
           sx={{
-            width: '100px',
+            width: '2rem',
             height: "40px",
-            backgroundColor: "#14D928",
+            backgroundColor: "#ffb700",
             color: "black",
             borderRadius: "10px",
             fontSize: "0.8rem",
             fontWeight: "bolder",
             "&:hover": {
-              backgroundColor: "#14D928",
+              backgroundColor: "#ffb700",
               color: "black",
               transform: "scale(1.05)",
             },
@@ -288,7 +311,7 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalNe
           className="ripristina-link"
           onClick={handleReset}
           sx={{
-            width: '100px', 
+            width: '2rem',
             color: 'white', 
             backgroundColor: 'black',
             height: "40px",
@@ -303,8 +326,8 @@ const NeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalNe
           }}>
           Reset
         </Button>
-      </div>
-      </div>
+      </Box>
+      </Box>
          
         );
 };

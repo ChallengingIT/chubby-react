@@ -8,6 +8,8 @@ import MyButton                                 from '../components/MyButton.jsx
 import EditButton                               from "../components/button/EditButton.jsx";
 import { Link }                                 from "react-router-dom";
 import { Box, Typography }                      from "@mui/material";
+import MyDataGridPerc from "../components/MyDataGridPerc.jsx";
+import Sidebar2 from "../components/componentiBackup/Sidebar2.jsx";
 
 
 const FatturazioneAttiva = () => {
@@ -30,7 +32,7 @@ const FatturazioneAttiva = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseFatturazioneAttiva = await axios.get("http://89.46.196.60:8443/fatturazione/attiva/react", { headers: headers});
+        const responseFatturazioneAttiva = await axios.get("http://89.46.67.198:8443/fatturazione/attiva/react", { headers: headers});
 
         if (Array.isArray(responseFatturazioneAttiva.data)) {
 
@@ -98,13 +100,13 @@ const FatturazioneAttiva = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
-          <Sidebar />
-          <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
-          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Fatturazione Attiva</Typography>
+    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100vh', width: '100vw', overflow: 'hidden'}}>
+    <Sidebar2 />
+    <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'hidden', width: '100vw'}}>
+    <Typography variant="h4" component="h1" sx={{ marginLeft: '30px', marginTop: '30px', marginBottom: '15px', fontWeight: 'bold', fontSize: '1.8rem'}}>Fatturazione Attiva</Typography>
           <MyButton onClick={navigateToAggiungiFatturazioneAttiva}>Aggiungi una nuova Fattura</MyButton>
-          <Box sx={{ height: '90%', marginTop: '40px', width: '100%'}}>
-            <MyDataGrid 
+          <Box sx={{ height: '90vh', marginTop: '20px', width: '100vw'}}>
+            <MyDataGridPerc 
             data={fatturazioneAttiva} 
             columns={columns} 
             title="Fatture Attive" 

@@ -4,6 +4,7 @@ import axios                                    from "axios";
 import Sidebar                                  from "../../components/Sidebar";
 import FieldsBox                                from "../../components/FieldsBox";
 import { Box, Typography } from "@mui/material";
+import Sidebar2 from "../../components/componentiBackup/Sidebar2";
 
 const ModificaFatturazionePassiva = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const ModificaFatturazionePassiva = () => {
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseStato = await axios.get("http://89.46.196.60:8443/fatturazione/passiva/react/stato", { headers: headers});
+        const responseStato = await axios.get("http://89.46.67.198:8443/fatturazione/passiva/react/stato", { headers: headers});
         if (Array.isArray(responseStato.data)) {
           const statoOptions = responseStato.data.map((stato) => ({
             label: stato.descrizione,
@@ -75,7 +76,7 @@ const handleSubmit = async (initialValues) => {
   const hasErrors = Object.keys(errors).length > 0;
   if (!hasErrors) {
   try {
-    const response = await axios.post("http://89.46.196.60:8443/fatturazione/passiva/react/salva", initialValues, {
+    const response = await axios.post("http://89.46.67.198:8443/fatturazione/passiva/react/salva", initialValues, {
       headers: headers
     });
     navigate("/fatturazione/passiva");
@@ -98,8 +99,8 @@ const validateFields = (values) => {
 
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
-          <Sidebar />
+    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100%', width: '100%', overflow: 'hidden'}}>
+          <Sidebar2 />
           <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
           <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Modifica Fatturazione Passiva</Typography>
           <FieldsBox 

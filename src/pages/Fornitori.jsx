@@ -18,6 +18,8 @@ import {
   Box,
   Typography
 } from '@mui/material';
+import MyDataGridPerc from "../components/MyDataGridPerc.jsx";
+import Sidebar2 from "../components/componentiBackup/Sidebar2.jsx";
 
 
 const Fornitori = () => {
@@ -42,7 +44,7 @@ const Fornitori = () => {
   const fetchData = async () => {
     try {
 
-      const response = await axios.get("http://89.46.196.60:8443/fornitori/react", { headers: headers});
+      const response = await axios.get("http://89.46.67.198:8443/fornitori/react", { headers: headers});
 
         if (Array.isArray(response.data)) {
         const fornitoriConId = response.data.map((fornitori) => ({ ...fornitori}));
@@ -74,7 +76,7 @@ const Fornitori = () => {
   const handleDelete = async () => {
     try {
 
-      const response = await axios.delete(`http://89.46.196.60:8443/fornitori/react/elimina/${deleteId}`, { headers: headers});
+      const response = await axios.delete(`http://89.46.67.198:8443/fornitori/react/elimina/${deleteId}`, { headers: headers});
 
       setOpenDialog(false);
       fetchData();
@@ -114,13 +116,13 @@ const Fornitori = () => {
 
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
-          <Sidebar />
-          <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
-          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Fornitori</Typography>
+    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100vh', width: '100vw', overflow: 'hidden'}}>
+    <Sidebar2 />
+    <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'hidden', width: '100vw'}}>
+    <Typography variant="h4" component="h1" sx={{ marginLeft: '30px', marginTop: '30px', marginBottom: '15px', fontWeight: 'bold', fontSize: '1.8rem'}}>Fornitori</Typography>
           <MyButton onClick={navigateToAggiungiFornitori}>Gestione Fornitori</MyButton>
-          <Box sx={{ height: '100%', marginTop: '40px', width: '100%'}}>
-            <MyDataGrid 
+          <Box sx={{ height: '90vh', marginTop: '20px', width: '100vw'}}>
+            <MyDataGridPerc 
             data={filteredFornitori} 
             columns={columns} 
             title="Fornitori" 
@@ -164,10 +166,10 @@ const Fornitori = () => {
           </Button>
           <Button onClick={handleDelete} color="primary" variant="contained" type="submit"
                     style={{
-                      backgroundColor: "#14D928",
+                      backgroundColor: "#FFB700",
                       color: "black",
                       "&:hover": {
-                        backgroundColor: "#14D928",
+                        backgroundColor: "#FFB700",
                         color: "black",
                         transform: "scale(1.05)",
                       },

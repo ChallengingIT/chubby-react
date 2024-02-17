@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Register.css";
 import RegisterComponent from "../components/RegisterComponent";
-import loginimg from "../images/login_scura.jpeg";
+import loginimg from "../images/loginimg.jpeg";
 
 
 export const Register = () => {
@@ -12,7 +12,8 @@ export const Register = () => {
     <div className="login">
       <div className="div-2">
         <p className="WE-HUB">
-          <span className="text-wrapper-6">TORCHY</span>
+          <span className="span">WE-</span>
+          <span className="text-wrapper-6">HUB</span>
         </p>
         <div className="overlap-group">
           <RegisterComponent

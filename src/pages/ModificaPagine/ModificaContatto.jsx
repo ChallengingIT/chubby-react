@@ -4,6 +4,7 @@ import axios                                      from "axios";
 import Sidebar                                    from "../../components/Sidebar";
 import FieldsBox                                  from "../../components/FieldsBox";
 import { Box, Typography } from "@mui/material";
+import Sidebar2 from "../../components/componentiBackup/Sidebar2";
 
 
 const ModificaContatto = () => {
@@ -27,8 +28,8 @@ const ModificaContatto = () => {
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseAziende = await axios.get("http://89.46.196.60:8443/aziende/react/select",{ headers: headers});
-        const responseOwner   = await axios.get("http://89.46.196.60:8443/aziende/react/owner", { headers: headers});
+        const responseAziende = await axios.get("http://89.46.67.198:8443/aziende/react/select",{ headers: headers});
+        const responseOwner   = await axios.get("http://89.46.67.198:8443/aziende/react/owner", { headers: headers});
         
         if (Array.isArray(responseOwner.data)) {
           const ownerOptions = responseOwner.data.map((owner) => ({
@@ -97,7 +98,7 @@ const ModificaContatto = () => {
     const hasErrors = Object.keys(errors).length > 0;
     if (!hasErrors) {
     try {
-      const response = await axios.post("http://89.46.196.60:8443/keypeople/react/salva", values, {
+      const response = await axios.post("http://89.46.67.198:8443/keypeople/react/salva", values, {
         headers: headers
       });
       navigate("/keypeople");
@@ -119,8 +120,8 @@ const ModificaContatto = () => {
 
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overFlow: 'hidden'}}>
-          <Sidebar />
+    <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100%', width: '100%', overFlow: 'hidden'}}>
+          <Sidebar2 />
           <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
           <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Modifica Contatto</Typography>
           <FieldsBox 

@@ -29,6 +29,8 @@ import {
   Box,
   Typography
 } from '@mui/material';
+import MyDataGridPerc from "../components/MyDataGridPerc.jsx";
+import Sidebar2 from "../components/componentiBackup/Sidebar2.jsx";
 
 
 
@@ -67,7 +69,7 @@ const Recruiting = () => {
 
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://89.46.196.60:8443/staffing/react/mod", { headers: headers });
+        const response = await axios.get("http://89.46.67.198:8443/staffing/react/mod", { headers: headers });
         if (Array.isArray(response.data)) {
         const recruitingConId = response.data.map((recruiting) => ({ ...recruiting}));
         setOriginalRecruiting(recruitingConId);
@@ -102,7 +104,7 @@ const Recruiting = () => {
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`http://89.46.196.60:8443/staffing/elimina/${deleteId}`, { headers: headers });
+      const response = await axios.delete(`http://89.46.67.198:8443/staffing/elimina/${deleteId}`, { headers: headers });
       setOpenDialog(false);
       fetchData();
     } catch (error) {
@@ -151,9 +153,9 @@ const Recruiting = () => {
       </div>
     ),
   }, 
-    { field: "rating",        headerName: "Rating",         flex: 0.8, renderCell: (params) => getSmileIcon(params), }, //fino a 1.9 è rosso, da 2 a 3 giallo, sopra 3 è verde
+    { field: "rating",        headerName: "Rating",         flex: 0.6, renderCell: (params) => getSmileIcon(params), }, //fino a 1.9 è rosso, da 2 a 3 giallo, sopra 3 è verde
     // { field: "nrating",       headerName: "N. Rating",      width: 90  },
-    { field: "owner",         headerName: "Owner",         flex: 1, renderCell: (params) => (
+    { field: "owner",         headerName: "Owner",         flex: 0.6, renderCell: (params) => (
         <div style={{ textAlign: "start" }}>
           {params.row.owner && params.row.owner.descrizione
             ? params.row.owner.descrizione
@@ -164,7 +166,7 @@ const Recruiting = () => {
     {
       field: "stato",
       headerName: "Stato",
-      width: 150,
+      flex: 0.6,
       renderCell: (params) => (
         <div style={{ textAlign: "start" }}>
           {params.row.stato && params.row.stato.descrizione
@@ -173,8 +175,8 @@ const Recruiting = () => {
         </div>
       ),
     },
-    { field: "dataUltimoContatto",      headerName: "Contatto",       flex: 1.4 },
-    { field: "noteRal",                 headerName: "Note/Ral",       flex: 1.8,  renderCell: (params) => (
+    { field: "dataUltimoContatto",      headerName: "Contatto",       flex: 1 },
+    { field: "noteRal",                 headerName: "Note/Ral",       flex: 0.8,  renderCell: (params) => (
       <div>
         <NoteButton onClick={() => {
           setIsNotesPopupOpen(true);
@@ -188,7 +190,7 @@ const Recruiting = () => {
         />
       </div>
     ), },
-    { field: "schedaITW",     headerName: "Scheda ITW",      flex: 1, renderCell: (params) => ( <Link
+    { field: "schedaITW",     headerName: "Scheda ITW",      flex: 0.8, renderCell: (params) => ( <Link
       to={`/staffing/intervista/${params.row.id}`}
       state = {{ recruitingData: params.row.id}}
       >
@@ -196,7 +198,7 @@ const Recruiting = () => {
     </Link>
     ), },
     // { field: "associazioni",  headerName: "Associazioni",    width: 110, renderCell: (params) => ( <BagButton to={`/associazioni/${params.row.id}/${params.row.nome}`}/> ), },
-    { field: "azioni",        headerName: "Azioni",          flex: 1.5, renderCell: (params) => (
+    { field: "azioni",        headerName: "Azioni",          flex: 1, renderCell: (params) => (
       <div>
       <ClipButton 
       onClick={handleDownloadCV} 
@@ -221,7 +223,7 @@ const Recruiting = () => {
 
 
   const handleDownloadCV = async (fileId, fileDescrizione) => {
-    const url = `http://89.46.196.60:8443/files/react/download/file/${fileId}`;
+    const url = `http://89.46.67.198:8443/files/react/download/file/${fileId}`;
     try {
       const response = await axios({
         method: 'GET',
@@ -243,13 +245,13 @@ const Recruiting = () => {
 
 
 return (
-  <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
-        <Sidebar />
-        <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
-          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Gestione Staffing</Typography>
+  <Box sx={{ display: 'flex', backgroundColor: '#FFB700', height: '100vh', width: '100vw', overflow: 'hidden'}}>
+  <Sidebar2 />
+  <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'hidden', width: '100vw'}}>
+  <Typography variant="h4" component="h1" sx={{ marginLeft: '30px', marginTop: '30px', marginBottom: '15px', fontWeight: 'bold', fontSize: '1.8rem'}}>Gestione Staffing</Typography>
         <MyButton onClick={navigateToAggiungiCandidato}>Aggiungi Candidato</MyButton>
-        <Box sx={{ height: '100%', marginTop: '40px', width: '100%'}}>
-        <MyDataGrid 
+        <Box sx={{ height: '90vh', marginTop: '20px', width: '100vw'}}>
+        <MyDataGridPerc
         data={filteredRecruiting} 
         columns={columns} 
         title="Candidati" 
@@ -378,10 +380,10 @@ return (
         </Button>
         <Button onClick={handleDelete} color="primary" variant="contained" type="submit"
                   style={{
-                    backgroundColor: "#14D928",
+                    backgroundColor: "#FFB700",
                     color: "black",
                     "&:hover": {
-                      backgroundColor: "#14D928",
+                      backgroundColor: "#FFB700",
                       color: "black",
                       transform: "scale(1.05)",
                     },

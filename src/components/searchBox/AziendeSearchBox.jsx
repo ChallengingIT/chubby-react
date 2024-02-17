@@ -1,19 +1,17 @@
 import React, { useState, useEffect }         from "react";
 import axios                                  from "axios";
-import Button                                 from "@mui/material/Button";
-import Select                                 from "@mui/material/Select";
+import { Box, Select, Button, TextField }                from "@mui/material";
 
 
 
-import "../../styles/Aziende.css";
 import userService from "../../services/user.service.js";
 
 const AziendeSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalAziende }) => {
-  const initialSearchTerm = {
+  const savedSearchTerms = JSON.parse(localStorage.getItem("ricercaAzienda")) || {
     denominazione: '',
     tipologia: '',
     status: '',
-    owner:'',
+    owner: '',
   };
 
 
@@ -23,7 +21,7 @@ const headers = {
   Authorization: `Bearer ${accessToken}`,
 };
 
-  const [ searchTerm,          setSearchTerm        ] = useState(initialSearchTerm);
+  const [ searchTerm,          setSearchTerm        ] = useState(savedSearchTerms);
   const [ ownerOptions,        setOwnerOptions      ] = useState([]);
   const [ tipologiaOptions,    setTipologiaOptions  ] = useState([]);
   const [ statoOptions,        setStatoOptions      ] = useState([]);
@@ -60,10 +58,10 @@ const handleKeyDown = (e) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseOwner = await axios.get("http://89.46.196.60:8443/aziende/react/owner", {
+        const responseOwner = await axios.get("http://89.46.67.198:8443/aziende/react/owner", {
           headers: headers,
         });
-        const responseStato = await axios.get("http://89.46.196.60:8443/aziende/react/mod", {
+        const responseStato = await axios.get("http://89.46.67.198:8443/aziende/react/mod", {
           headers: headers,
         });
 
@@ -106,27 +104,37 @@ const handleKeyDown = (e) => {
         String(item[key]).toLowerCase().includes(String(searchTerm[key]).toLowerCase())
       )
     );
+    localStorage.setItem("ricercaAzienda", JSON.stringify(searchTerm));
+
     onSearch(filteredData);
     setFilteredData(filteredData);
   };
 
   const handleReset = () => {
-    setSearchTerm(initialSearchTerm);
+    // setSearchTerm(initialSearchTerm);
+    setSearchTerm({
+      denominazione: '',
+      tipologia: '',
+      status: '',
+      owner: '',
+    });
     onSearchTextChange("");
     onReset();
     setFilteredData([]);
+    localStorage.removeItem("ricercaAzienda");
+
   };
   
 
   return (
-    <div className="gridContainer" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr) auto', gap: '10px', alignItems: 'center', margin: '20px 5px', padding: '0 0 20px 0',  borderBottom: '2px solid #dbd9d9',}}>
-      {/* Prima colonna */}
+    <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr) auto', gap: '0.5%', alignItems: 'center', margin: '0.4%', borderBottom: '2px solid #dbd9d9'}}>
+    {/* Prima colonna */}
       <Select
   className="dropdown-menu"
   value={searchTerm.status}
   onChange={(e) => setSearchTerm({ ...searchTerm, status: e.target.value })}
   sx={{
-    marginTop: '10px',
+    marginTop: '1%',
     borderRadius: "40px",
     fontSize: "0.8rem",
     textAlign: "start",
@@ -144,16 +152,28 @@ const handleKeyDown = (e) => {
 </Select>
      
   
-      {/* Seconda colonna */}
-      <input 
-        style={{border: 'solid 1px #c4c4c4', width: '100%', marginTop: '10px'}}
-        type="text"
-        placeholder="Ragione Sociale"
-        className="text-form"
-        value={searchTerm.denominazione}
-        onChange={(e) => setSearchTerm({ ...searchTerm, denominazione: e.target.value })}
-        onKeyDown={handleKeyDown}
-      />
+  {/* Seconda colonna */}
+  <TextField 
+      sx={{
+          '& .MuiOutlinedInput-root': {
+              '& fieldset': {
+                  border: 'none', 
+              },
+              '&:hover fieldset': {
+                  border: 'none',
+              },
+              '&.Mui-focused fieldset': {
+                  border: 'none',
+              },
+          },
+        display: 'flex', justifyContent: 'center', border: 'solid 1px #c4c4c4', width: '100%', marginTop: '-2%'}}
+      type="text"
+      placeholder="Ragione Sociale"
+      className="text-form"
+      value={searchTerm.denominazione}
+      onChange={(e) => setSearchTerm({ ...searchTerm, denominazione: e.target.value })}
+      // onKeyDown={handleKeyDown}
+  />
       
   
       {/* Terza colonna */}
@@ -162,7 +182,7 @@ const handleKeyDown = (e) => {
                   value={searchTerm.owner}
                   onChange={e => setSearchTerm({...searchTerm, owner: e.target.value })}
                   sx={{
-                    marginTop: '10px',
+                    marginTop: '1%',
                     borderRadius: "40px",
                     fontSize: "0.8rem",
                     textAlign: "start",
@@ -188,7 +208,7 @@ const handleKeyDown = (e) => {
                   value={searchTerm.tipologia}
                   onChange={(e) => setSearchTerm({...searchTerm, tipologia: e.target.value })}
                   sx={{
-                    marginTop: '10px',
+                    marginTop: '1%',
                     borderRadius: "40px",
                     fontSize: "0.8rem",
                     textAlign: "start",
@@ -207,21 +227,21 @@ const handleKeyDown = (e) => {
                 </Select>
   
       {/* Colonna dei pulsanti */}
-      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+      <Box style={{ display: 'flex', justifyContent: 'flex-end', gap: '5%', marginLeft: '10px', marginTop: '-5%' }}>
         <Button
           className="button-search"
           variant="contained"
           onClick={handleSearch}
           sx={{
-            width: '100px',
+            width: '2rem',
             height: "40px",
-            backgroundColor: "#14D928",
+            backgroundColor: "#ffb700",
             color: "black",
             borderRadius: "10px",
             fontSize: "0.8rem",
             fontWeight: "bolder",
             "&:hover": {
-              backgroundColor: "#14D928",
+              backgroundColor: "#ffb700",
               color: "black",
               transform: "scale(1.05)",
             },
@@ -233,7 +253,7 @@ const handleKeyDown = (e) => {
           className="ripristina-link"
           onClick={handleReset}
           sx={{
-            width: '100px', 
+            width: '2rem',
             color: 'white', 
             backgroundColor: 'black',
             height: "40px",
@@ -248,8 +268,8 @@ const handleKeyDown = (e) => {
           }}>
           Reset
         </Button>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
   
   

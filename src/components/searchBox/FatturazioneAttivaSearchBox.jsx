@@ -1,18 +1,16 @@
 import React, { useState, useEffect }           from "react";
-import Button                                   from "@mui/material/Button";
-import Select                                   from "@mui/material/Select";
+import { Box, Select, Button } from "@mui/material";
 import axios                                    from "axios";
 
-import "../../styles/FatturazioneAttiva.css";
 
 const FatturazioneAttivaSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalFatturazioneAttiva}) => {
-  const initialSearchTerm = {
+  const savedSearchTerms = JSON.parse(localStorage.getItem("ricercaFatturazioneAttiva")) || {
     azienda: '',
     stato: '',
   };
 
   const [ statoOptions,       setStatoOptions       ] = useState([]);
-  const [ searchTerm,         setSearchTerm         ] = useState(initialSearchTerm);
+  const [ searchTerm,         setSearchTerm         ] = useState(savedSearchTerms);
   const [ aziendeOptions,     setAziendeOptions     ] = useState([]);
   const [ filteredData,       setFilteredData       ] = useState([]);
 
@@ -33,8 +31,8 @@ const FatturazioneAttivaSearchBox = ({ data, onSearch, onReset, onSearchTextChan
     const fetchData = async () => {
       try {
 
-        const responseAziende    = await axios.get("http://89.46.196.60:8443/aziende/react/select"                    , { headers: headers });
-        const responseStato      = await axios.get("http://89.46.196.60:8443/fatturazione/attiva/react/stato"  , { headers: headers });
+        const responseAziende    = await axios.get("http://89.46.67.198:8443/aziende/react/select"                    , { headers: headers });
+        const responseStato      = await axios.get("http://89.46.67.198:8443/fatturazione/attiva/react/stato"  , { headers: headers });
         if (Array.isArray(responseStato.data)) {
           setStatoOptions(responseStato.data.map((stato, index) => ({ label: stato.descrizione, value: stato.id })));
         } else {
@@ -62,21 +60,28 @@ const FatturazioneAttivaSearchBox = ({ data, onSearch, onReset, onSearchTextChan
         String(item[key]).toLowerCase().includes(String(searchTerm[key]).toLowerCase())
       )
     );
+    localStorage.setItem("ricercaFatturazioneAttiva", JSON.stringify(searchTerm));
+
     onSearch(filteredData);
     setFilteredData(filteredData);
   };
   
 
   const handleReset = () => {
-    setSearchTerm(initialSearchTerm);
+    setSearchTerm({
+      azienda: '',
+      stato: '',
+    });
     onSearchTextChange("");
     onReset();
     setFilteredData([]);
+    localStorage.removeItem("ricercaFatturazioneAttiva");
+
   };
 
 
   return (
-    <div className="gridContainer" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr) auto', gap: '10px', alignItems: 'center', margin: '20px 5px', padding: '0 0 20px 0',  borderBottom: '2px solid #dbd9d9',}}>
+    <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr) auto', gap: '0.5%', alignItems: 'center', margin: '0.4%', borderBottom: '2px solid #dbd9d9'}}>
 
     {/* prima colonna */}
     <Select
@@ -84,6 +89,7 @@ const FatturazioneAttivaSearchBox = ({ data, onSearch, onReset, onSearchTextChan
                   value={searchTerm.azienda}
                   onChange={e => setSearchTerm({...searchTerm, aziende: e.target.value })}
                   sx={{
+                    marginTop: '1%',
                     borderRadius: "40px",
                     fontSize: "0.8rem",
                     textAlign: "start",
@@ -107,6 +113,7 @@ const FatturazioneAttivaSearchBox = ({ data, onSearch, onReset, onSearchTextChan
                   value={searchTerm.stato}
                   onChange={e => setSearchTerm({...searchTerm, stato: e.target.value })}
                   sx={{
+                    marginTop: '1%',
                     borderRadius: "40px",
                     fontSize: "0.8rem",
                     textAlign: "start",
@@ -125,49 +132,49 @@ const FatturazioneAttivaSearchBox = ({ data, onSearch, onReset, onSearchTextChan
                   ))}
                 </Select>
     {/* terza colonna */}
-    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
-    <Button
-      className="button-search"
-      variant="contained"
-      onClick={handleSearch}
-      sx={{
-        width: '100px',
-        height: "40px",
-        backgroundColor: "#14D928",
-        color: "black",
-        borderRadius: "10px",
-        fontSize: "0.8rem",
-        fontWeight: "bolder",
-        "&:hover": {
-          backgroundColor: "#14D928",
-          color: "black",
-          transform: "scale(1.05)",
-        },
-      }}
-    >
-      Cerca
-    </Button>
-    <Button
-      className="ripristina-link"
-      onClick={handleReset}
-      sx={{
-        width: '100px', 
-        color: 'white', 
-        backgroundColor: 'black',
-        height: "40px",
-        borderRadius: "10px",
-        fontSize: "0.8rem",
-        fontWeight: "bolder",
-        "&:hover": {
-          backgroundColor: "black",
-          color: "white",
-          transform: "scale(1.05)",
-        },
-      }}>
-      Reset
-    </Button>
-  </div>
-</div>
+    <Box style={{ display: 'flex', justifyContent: 'flex-end', gap: '5%', marginLeft: '10px', marginTop: '-1%' }}>
+        <Button
+          className="button-search"
+          variant="contained"
+          onClick={handleSearch}
+          sx={{
+            width: '2rem',
+            height: "40px",
+            backgroundColor: "#ffb700",
+            color: "black",
+            borderRadius: "10px",
+            fontSize: "0.8rem",
+            fontWeight: "bolder",
+            "&:hover": {
+              backgroundColor: "#ffb700",
+              color: "black",
+              transform: "scale(1.05)",
+            },
+          }}
+        >
+          Cerca
+        </Button>
+        <Button
+          className="ripristina-link"
+          onClick={handleReset}
+          sx={{
+            width: '2rem',
+            color: 'white', 
+            backgroundColor: 'black',
+            height: "40px",
+            borderRadius: "10px",
+            fontSize: "0.8rem",
+            fontWeight: "bolder",
+            "&:hover": {
+              backgroundColor: "black",
+              color: "white",
+              transform: "scale(1.05)",
+            },
+          }}>
+          Reset
+        </Button>
+      </Box>
+    </Box>
   );
 };
 

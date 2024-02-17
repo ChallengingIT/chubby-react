@@ -104,7 +104,7 @@ const handleSearch = async () => {
 
 
     try {
-        const responseReport = await axios.get("http://89.46.196.60:8443/hr/report/estrai", {
+        const responseReport = await axios.get("http://89.46.67.198:8443/hr/report/estrai", {
             headers: headers,
             params: params
         });
@@ -135,7 +135,7 @@ const handleEstraiExcel = async () => {
 
     const giornoInizio = dal || primoGiornoDelMese.getDate().toString();
     const giornoFine = al || ultimoGiornoDelMese.getDate().toString();
-    const url = `http://89.46.196.60:8443/hr/report/excel/${annoSelezionato}/${meseSelezionato}/${giornoInizio}/${giornoFine}`
+    const url = `http://89.46.67.198:8443/hr/report/excel/${annoSelezionato}/${meseSelezionato}/${giornoInizio}/${giornoFine}`
 
 
     try {
@@ -223,7 +223,7 @@ const renderDayBox = (dipendente, giorniTotali) => {
             }
             
             const giornoStyle = isSabatoODomenica || isGiornoFestivo
-                ? { backgroundColor: '#14D928', color: 'white' }
+                ? { backgroundColor: '#FFB700', color: 'white' }
                 : { backgroundColor: 'white', color: colore };
     
             return (
@@ -315,11 +315,11 @@ return (
             Reset
             </Button>
             <Button variant="contained" color="primary" onClick={handleSearch} sx={{
-            backgroundColor: '#14D928',
+            backgroundColor: '#FFB700',
             color: 'black',
             borderRadius: '10px',
             '&:hover': {
-                backgroundColor: '#14D928',
+                backgroundColor: '#FFB700',
                 color: 'black',
             }
             }}>
@@ -336,19 +336,21 @@ return (
     )}
 
         {!loading && showTable && (
-    <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'auto', height: '50vh'}}>
 
         <React.Fragment>
             <TableContainer component={Paper} sx={{ 
             margin: '20px',
             maxWidth: 'calc(100vw - 40px)',
-            width: '94vw', 
+            width: '90vw', 
             backgroundColor: 'white', 
             borderRadius: '20px',
             boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.4)',
             overflowX: 'hidden',
             display: 'flex',
-            flexDirection: 'column'
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center'
             }}>
             <Table aria-label="customized table">
                 <TableHead>

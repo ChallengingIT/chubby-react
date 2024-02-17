@@ -20,16 +20,29 @@ function BagButton({onClick, to}) {
         size="medium" 
         startIcon={<BusinessCenterIcon />} 
         onClick={handleEditAction}
-        sx={{backgroundColor: '#14D928',
-        color: 'black',
-        borderRadius: '40px',
-        justifyContent: 'end !important',
-        marginRight: '15px',
-        "&:hover": {
-            backgroundColor: "#14D928",
-            transform: "scale(1.05)",
-            color: 'white',
-        },
+        sx={{
+          marginRight: '10%',
+          backgroundColor: '#FFB700',
+          color: 'black',
+          borderRadius: '50%',
+          minWidth: '40px',
+          width: '40px',
+          height: '40px',
+          padding: '0',
+          '& .MuiButton-startIcon': {
+            margin: '0',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          },
+          '&:hover': {
+            backgroundColor: '#FFB700',
+            transform:'scale(1.05)',
+            color: 'black',
+            cursor: 'pointer',
+            borderRadius: '50%',
+            borderStyle: 'none',
+          }
         }}
         
             />
