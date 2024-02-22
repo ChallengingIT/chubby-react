@@ -19,7 +19,6 @@ import FatturazionePassiva                                             from './p
 import Fornitori                                                       from './pages/Fornitori.jsx';
 import Tesoreria                                                       from './pages/Tesoreria.jsx';
 import HR                                                              from './pages/HR.jsx';
-import Login                                                           from './pages/Login.jsx';
 import Register                                                        from './pages/Register.jsx';
 import AggiungiAzienda                                                 from './pages/AggiungiPagine/AggiungiAzienda';
 import AggiungiContatto                                                from './pages/AggiungiPagine/AggiungiContatto';
@@ -56,6 +55,7 @@ import UserTimesheet                                                   from './p
 import DettaglioNeed                                                   from './pages/DettaglioPagine/DettaglioNeed.jsx';
 import ModificaDipendente                                              from './pages/ModificaPagine/ModificaDipendente.jsx';
 import DettaglioAziende2                                               from './pages/DettaglioPagine/DettaglioAziende2.jsx';
+import LoginPageTorchy from './pages/LoginTorchy.jsx';
 
 const App = () => {
 
@@ -98,8 +98,8 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-      <Route path="/" element={<Login />} />
-        <Route path="/login" element={<Login />} />
+      <Route path="/" element={<LoginPageTorchy />} />
+        <Route path="/login" element={<LoginPageTorchy />} />
         <Route path="/register" element={<Register />} />
         {/* <Route path="/homepage"                                     element={<Homepage/>  } /> */}
 

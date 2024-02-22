@@ -208,8 +208,8 @@ return (
     >
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', padding: '8px', flexDirection: 'row' }}>
             {open && ( 
-                <Box sx={{ display: 'flex', justifyContent: 'center', padding: '16px', flexDirection: 'column' }}>
-                    <Typography sx={{ color: 'white', display: 'flex', alignItems: 'flex-start', fontWeight: 'bold', fontSize: '28px' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', padding: '16px', flexDirection: 'column', alignItems: 'center' }}>
+                    <Typography sx={{ color: 'white', display: 'flex', alignItems: 'center', textAlign: 'center', fontWeight: 'bold', fontSize: '28px', marginLeft: '5%' }}>
                         TORCHY
                     </Typography>
                     <img src={Logo} alt="Logo" style={{ maxWidth: '100%' }} />
@@ -248,7 +248,7 @@ return (
                                 }
                             }}
                         >
-                            <ListItemIcon sx={{ minWidth: '2.2em'}}>{item.icon}</ListItemIcon>
+                            <ListItemIcon sx={{ minWidth: '2.7em'}}>{item.icon}</ListItemIcon>
                             <ListItemText primary={item.title} />
                             {item.subNav ? (openSubmenus[index] ? <ExpandLess /> : <ExpandMore />) : null}
                         </ListItem>
