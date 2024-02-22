@@ -219,7 +219,7 @@ return (
                 onClick={toggleDrawer}
                 sx={{
                     marginLeft: 'auto',
-                    color: '#FBB700',
+                    color: '#14D928',
                 }}
             >
                 {open ? <ArrowBackIcon /> : <ArrowForwardIcon />}
