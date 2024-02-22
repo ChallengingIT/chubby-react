@@ -8,7 +8,7 @@ import * as Fa6Icons from "react-icons/fa6";
 
 import LogoutIcon from "@mui/icons-material/Logout";
 import Button     from "@mui/material/Button";
-import Logo       from "../images/innotek.svg";
+import Logo       from "../images/logo.svg";
 import Dialog     from "@mui/material/Dialog";
 import authService from "../services/auth.service";
 import { Box } from "@mui/material";
