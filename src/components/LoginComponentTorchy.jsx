@@ -100,7 +100,7 @@ const handleLogin = async (e) => {
             alignItems: 'center',
             justifyContent: 'center',
             width: '75%',
-            height: '70%',
+            height: '65%',
             p: 3,
             m: 2,
             backgroundColor: 'white',
@@ -108,7 +108,7 @@ const handleLogin = async (e) => {
             boxShadow: '-10px -10px 10px 0 rgba(0.1, 0.1, 0.1, 0.1)' 
             }}
         >
-            <Box sx={{  alignSelf: 'flex-start', width: '100%', marginTop: 6 }}>
+            <Box sx={{  display: 'flex', alignSelf: 'flex-start', width: '100%', marginTop: 6 }}>
             <Typography variant="h5" component="h2" sx={{ ml: 4, mb: 4, color: "#1A9431", fontSize: '3em' }}>Sign in</Typography>
             </Box>
             <Box
