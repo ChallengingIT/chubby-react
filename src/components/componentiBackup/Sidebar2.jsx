@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import Logo       from "../../images/innotek.svg";
+import Logo       from "../../images/logo.svg";
 import authService from "../../services/auth.service";
 import { Button, Dialog, DialogActions, DialogContent,DialogContentText,DialogTitle, LogoutIcon, Typography } from "@mui/material";
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, Box, Collapse } from "@mui/material";
