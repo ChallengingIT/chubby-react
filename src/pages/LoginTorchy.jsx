@@ -51,7 +51,7 @@ const LoginPageTorchy = () => {
             alignItems: 'center',
             justifyContent: 'center',
             width: '40%',
-            height: '100vh',
+            height: '70vh',
         }}>
             <LoginComponentTorchy
             navigate={navigate}

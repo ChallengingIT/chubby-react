@@ -100,7 +100,7 @@ const handleLogin = async (e) => {
             alignItems: 'center',
             justifyContent: 'center',
             width: '75%',
-            height: '65%',
+            height: '100%',
             p: 3,
             m: 2,
             backgroundColor: 'white',
