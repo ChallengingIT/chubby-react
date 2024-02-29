@@ -26,6 +26,7 @@ import {
 import KeyPeopleSearchBox from "../components/searchBox/KeyPeopleSearchBox.jsx";
 import MyDataGridPerc from "../components/MyDataGridPerc.jsx";
 import Sidebar2 from "../components/componentiBackup/Sidebar2.jsx";
+import SidebarTorchy from "../components/SidebarTorchy.jsx";
 
 const KeyPeople = () => {
 
@@ -148,8 +149,8 @@ const KeyPeople = () => {
 
   return (
     <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100vh', width: '100vw', overflow: 'hidden'}}>
-    <Sidebar2 />
-    <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'hidden', width: '100vw'}}>
+    <SidebarTorchy />
+    <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'hidden', width: '100vw', marginLeft: '10vw'}}>
     <Typography variant="h4" component="h1" sx={{ marginLeft: '30px', marginTop: '30px', marginBottom: '15px', fontWeight: 'bold', fontSize: '1.8rem'}}>Gestione Contatto</Typography>
     <MyButton onClick={navigateToAggiungiContatto}>Aggiungi Contatto</MyButton>
     <Box sx={{ height: '90vh', marginTop: '20px', width: '100vw'}}>

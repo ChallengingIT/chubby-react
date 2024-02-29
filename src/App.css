@@ -1,34 +1,31 @@
-*{
-  box-sizing: border-box;
+/* Importa il font Roboto da Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* Reset minimale per rimuovere i margini e i padding predefiniti */
+* {
   margin: 0;
   padding: 0;
-  /* font-family: 'Lato', sans-serif; */
-  font-family: 'Roboto', sans-serif;
-  height: auto;
-  width: auto;
+  box-sizing: border-box;
 }
 
-.app-container {
-  display: flex; 
-  background-color: #14D928;
-  /* overflow-x: auto; */
-  height: 100vh;
-  width: 100vw;
+/* Stile del corpo per occupare l'intera altezza e larghezza dello schermo */
+html, body {
+  height: 100%;
+  width: 100%;
 }
 
-/* .sidebar-container {
-  position: fixed; 
-  top: 0;
-  bottom: 0;
-  width: 250px; 
-  border-radius: 0 20px 20px 0; 
-  overflow-y: auto; 
-  z-index: 100; 
-} */
-
-.main-content {
-  flex-grow: 1; /* Occupa lo spazio restante */
-  
+body {
+  font-family: 'Roboto', sans-serif; /* Imposta Roboto come font di default */
+  -webkit-font-smoothing: antialiased; /* Migliora la resa del font su dispositivi Apple */
+  -moz-osx-font-smoothing: grayscale; /* Migliora la resa del font su dispositivi Mozilla */
+  text-rendering: optimizeLegibility; /* Ottimizza la leggibilità del testo */
+  background-color: #dbd9d9; /* Colore di sfondo leggero per la pagina */
+  color: #333; /* Colore di default per il testo */
 }
 
+/* Assicura che i contenitori principali occupino l'intera altezza disponibile */
+#root, .App {
+  height: 100%;
+}
 
+/* Altre regole CSS standard possono essere aggiunte qui */

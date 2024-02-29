@@ -2,11 +2,14 @@ import React, { useState, useEffect }                                           
 import { useNavigate }                                                              from "react-router-dom";
 import authService                                                                  from "../services/auth.service";
 import eventBus                                                                     from "../common/EventBus";
-import { Box, Button, Typography, TextField, ThemeProvider, createTheme}            from "@mui/material";
-
+import { Box, Button, Typography, TextField, ThemeProvider, createTheme, IconButton, InputAdornment}            from "@mui/material";
+import Torcia from "../images/torciaSF.png";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 
 const LoginComponentTorchy = () => {
+    
 
     const theme = createTheme({
         components: {
@@ -46,6 +49,8 @@ const navigate = useNavigate();
 const [ username,           setUsername           ] = useState("");
 const [ password,           setPassword           ] = useState("");
 const [ loginError,         setLoginError         ] = useState({ username: false, password: false });
+const [ showPassword,       setShowPassword       ] = useState(false);
+
 
 useEffect(() => {
     const lastRegisteredUsername = localStorage.getItem("lastRegisteredUsername");
@@ -91,6 +96,10 @@ const handleLogin = async (e) => {
         }
     };
 
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
 
     return (
         <Box
@@ -99,18 +108,17 @@ const handleLogin = async (e) => {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            width: '75%',
-            height: '100%',
+            width: '100%',
+            height: '85vh',
             p: 3,
             m: 2,
-            backgroundColor: 'white',
+            backgroundColor: '#FEFCFD',
             borderRadius: 8,
-            boxShadow: '-10px -10px 10px 0 rgba(0.1, 0.1, 0.1, 0.1)' 
+            boxShadow: '-10px -10px 10px 0 rgba(0.1, 0.1, 0.1, 0.1)',
+            // overflow: 'hidden'
             }}
         >
-            <Box sx={{  display: 'flex', alignSelf: 'flex-start', width: '100%', marginTop: 6 }}>
-            <Typography variant="h5" component="h2" sx={{ ml: 4, mb: 4, color: "#1A9431", fontSize: '3em' }}>Sign in</Typography>
-            </Box>
+
             <Box
             component="form"
             onSubmit={handleLogin}
@@ -118,6 +126,14 @@ const handleLogin = async (e) => {
             sx={{ mt: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '90%'}}
             >
                 <ThemeProvider theme={theme}>
+                {/* <Box sx={{  display: 'flex', alignSelf: 'flex-start', marginTop: 6, flexGrow: 1 }}> */}
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+
+
+                <Typography variant="h5" component="h2" sx={{  mb: 5, color: "#00853C", fontSize: '3em', alignSelf: 'flex-start' }}>Sign in</Typography>
+                <img src={Torcia} alt="Torcia" style={{ maxWidth: '100%',transform: 'rotate(180deg)', width: '30%', alignSelf: 'flex-end', marginBottom: '5em' }} />
+                {/* </Box> */}
+                </Box>
                     <Typography variant="h6" component="h2" sx={{ alignSelf: 'flex-start', fontSize: '1em' }}>Enter your username</Typography>
                     <TextField
                     margin="normal"
@@ -145,7 +161,7 @@ const handleLogin = async (e) => {
                     fullWidth
                     name="password"
                     label="Password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     id="password"
                     autoComplete="current-password"
                     value={password}
@@ -156,6 +172,19 @@ const handleLogin = async (e) => {
                         setPassword(e.target.value);
                         setLoginError(errors => ({ ...errors, password: false }));
                     }}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={togglePasswordVisibility}
+                                    edge="end"
+                                >
+                                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                </IconButton>
+                            </InputAdornment>
+                                ),
+                            }}
                     sx={{  mb: 2 }}
                     />
                     <Box
@@ -165,12 +194,10 @@ const handleLogin = async (e) => {
                         width: '100%'
                     }}>
                 <Typography variant="h6" component="h2" sx={{  fontSize: '1em' }}>No Account?</Typography>
-                <Typography variant="h6" component="h2" sx={{  fontSize: '1em', color: '#1a9431' }}>Forgot password</Typography>
+                <Typography variant="h6" component="h2" sx={{  fontSize: '1em', color: '#00853C' }}>Forgot password</Typography>
 
                 </Box>
-                <Typography variant="h6" component="h2" sx={{ alignSelf: 'flex-start', fontSize: '1em', color: '#1a9431' }}>Sign up</Typography>
-
-                </ThemeProvider>
+                <Typography variant="h6" component="h2" sx={{ alignSelf: 'flex-start', fontSize: '1em', color: '#00853C' }}>Sign up</Typography>
                 <Button
                 color="primary"
                 variant="contained"
@@ -180,14 +207,14 @@ const handleLogin = async (e) => {
                     justifyContent: 'center',
                     alignItems: 'center',
                     width: '100%',
-                    backgroundColor: '#1a9431',
+                    backgroundColor: '#00853C',
                     color: 'white',
                     fontWeight: 'bold',
                     borderRadius: 2,
                     marginTop: 8,
                     marginBottom: 10,
                     "&:hover": {
-                        backgroundColor: '#1a9431',
+                        backgroundColor: '#00853C',
                         color: 'white',
                         transform: 'scale(1.05)'
                     },
@@ -195,6 +222,9 @@ const handleLogin = async (e) => {
                 >
                     Sign in
                 </Button>
+
+                </ThemeProvider>
+               
             </Box>
         </Box>
     )

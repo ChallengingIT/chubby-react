@@ -1,609 +1,351 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import * as AiIcons  from "react-icons/ai";
-import * as FaIcons  from "react-icons/fa";
-import * as RiIcons  from "react-icons/ri";
-import * as Fa6Icons from "react-icons/fa6";
-
-import LogoutIcon from "@mui/icons-material/Logout";
-import Button     from "@mui/material/Button";
-import Logo       from "../images/logo.svg";
-import Dialog     from "@mui/material/Dialog";
+import Logo       from "../images/logo.svg"
 import authService from "../services/auth.service";
-import { Box } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent,DialogContentText,DialogTitle, LogoutIcon, Typography } from "@mui/material";
+import { Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, Box, Collapse } from "@mui/material";
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import HomeIcon from '@mui/icons-material/Home'; 
+import PeopleIcon from '@mui/icons-material/People'; 
+import ExitToAppIcon from '@mui/icons-material/ExitToApp'; 
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
+import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
+import NearMeIcon from '@mui/icons-material/NearMe';
+import PersonIcon from '@mui/icons-material/Person';
+import ChecklistIcon from '@mui/icons-material/Checklist';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import ImportContactsIcon from '@mui/icons-material/ImportContacts';
+import FactoryIcon from '@mui/icons-material/Factory';
+import { ListItemIcon as MuiListItemIcon } from "@mui/material";
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 
 
 
 
-const SidebarContainer = styled.div`
-  width: ${({ $sidebarcollapsed }) => ($sidebarcollapsed ? "60px" : "250px")};
-  height: 100vh;
-  min-height: 100vh;
-  background: #000000;
-  display: flex;
-  flex-direction: column;
-  border-radius: 0px 20px 20px 0px;
-  transition: width 0.4s;
-  overflow: hidden;
-`;
+const drawerWidth = "13.5vw";
+const drawerCollapsed = "3.5vw";
 
-const SidebarHeader = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  height: 100px;
-  background: #000000;
-  padding: 20px;
-  border-radius: 0px 20px 20px 0px;
-`;
+const Sidebar = () => {
+    const [Sidebar2collapsed, setSidebar2collapsed] = useState(true);
+    const [submenuOpen, setSubmenuOpen] = useState(false);
+    const [isSidebar2Open, setIsSidebar2Open] = useState(false);
+    const [activeLink, setActiveLink] = useState(null);
+    const [isLogoutPopupOpen, setIsLogoutPopupOpen] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [openSubmenus, setOpenSubmenus] = useState({});
 
-const SidebarTitle = styled.h1`
-  color: white;
-  font-size: 1.5rem;
-  flex: 1;
-  display: ${({ $sidebarcollapsed }) => ($sidebarcollapsed ? "none" : "block")};
-`;
-
-const SidebarTitle3 = styled.h2`
-  color: #817b7b;
-  font-size: 0.8rem;
-  margin-top: 20px;
-  margin-left: 5px;
-  display: ${({ $sidebarcollapsed }) => ($sidebarcollapsed ? "none" : "block")};
-`;
-
-const LinkText = styled.div`
-  font-size: 18px;
-  color: #817b7b;
-  margin-left: 5px;
-  width: 100%; 
-  display: ${({ $sidebarcollapsed }) => ($sidebarcollapsed ? "none" : "flex")};
-`;
-
-const ImgContainer = styled.div`
-  display: flex;
-  widht: 80px;
-  height: 40px;
-`;
-
-const NavIcon = styled(NavLink)`
-  color: #14D928;
-  margin-right: 0rem;
-  font-size: 2rem;
-  margin-top: 15px;
-
-  display: flex;
-  justify-content: flex-end;
-
-  cursor: pointer;
-`;
-
-const SidebarNav = styled.nav`
-  background: #000000;
-  display: flex;
-  flex-direction: column;
-`;
-
-const SidebarWrap = styled.div`
-  width: 100%;
-`;
-
-const SidebarLink = styled(NavLink)`
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-  list-style: none;
-  height: 60px;
-  text-decoration: none;
-  font-size: 18px;
-  min-width: 45px;
-
-  &:hover,
-  &:active,
-  &:focus {
-    background: #252831;
-    border-left: 4px solid #14D928;
-    cursor: pointer;
-    border-radius: 40px;
-  }
-`;
-
-
-
-
-const SidebarIcon = styled.span`
-  color: #14D928;
-`;
-
-const DropdownLink = styled(NavLink)`
-  background: #00000;
-  height: 60px;
-  padding-left: 1.3rem;
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: #14D928;
-  font-size: 18px;
-  overflow: hidden;
-  
-
-  &:hover,
-  &:active,
-  &:focus {
-    background: #252831;
-    border-radius: 40px;
-    border-left: 4px solid #14D928;
-    cursor: pointer;
-  }
-
-  .sub-link-text {
-    flex: 1;
-    
-  }
-`;
-
-const linkStyle = {
-  display: "flex",
-  justifyContent: "flex-start",
-  textDecoration: "none",
-  color: "inherit",
-  cursor: "pointer",
-  flexDirection: "column",
-  minWidth: "45px",
-};
-
-const SubmenuItem = styled.div`
-  margin-left: 5px;
-`;
-
-const Sidebar = ({ handleLogout }) => {
-  const [sidebarcollapsed, setSidebarcollapsed] = useState(true);
-  const [submenuOpen, setSubMenuOpen] = useState({});
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
-  const [activeLink, setActiveLink] = useState(null);
-
-  const [isLogoutPopupOpen, setLogoutPopupOpen] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const handleLogoutClick = () => {
-    setLogoutPopupOpen(true);
-  };
-
-
-  useEffect(() => {
-    setActiveLink(location.pathname);
-  }, [location]);
-
-
-
-  const closeLogoutPopup = () => {
-    setLogoutPopupOpen(false);
-  };
-
-  const confirmLogout = () => {
-    localStorage.clear();
-
-    console.log("Logout da confirmLogout");
-    navigate('/login', { replace: true });
-    // window.location.reload();
-    closeLogoutPopup();
-  };
-
-
-
-  useEffect(() => {
-    setActiveLink(location.pathname);
-    setSidebarcollapsed(true);
-    // if (sidebarcollapsed) {
-    //   setSubMenuOpen({});
-    // }
-    setSubMenuOpen({});
-  }, [location.pathname]);
-  // }, [location, sidebarcollapsed]);
-
-
-
-  const toggleSidebar = () => {
-    const newSidebarcollapsed = !sidebarcollapsed;
-    setSidebarcollapsed(newSidebarcollapsed);
-    setIsSidebarOpen(!isSidebarOpen);
-    if (newSidebarcollapsed) {
-      setSubMenuOpen({});
-    }
-  };
-
-  const toggleSubMenu = (index) => {
-    if (sidebarcollapsed) {
-      setSidebarcollapsed(false);
-    }
-    setSubMenuOpen((prevState) => ({
-      ...prevState,
-      [index]: !prevState[index],
-    }));
-  };
-
-
-  const MyLogoutPopup = ({ open, onClose, onConfirm }) => {
     const navigate = useNavigate();
+    const location = useLocation();
 
-  const handleConfirmLogout = async () => {
-    try {
-      localStorage.clear();
+    const handleLogoutClick = () => {
+        setIsLogoutPopupOpen(true);
+    };
 
-      await authService.logout(); 
-      navigate('/login', { replace: true });
-    // window.location.reload();
-      closeLogoutPopup();        
-    } catch (error) {
-      console.error('Errore durante il logout:', error);
+    const toggleDrawer = () => {
+        if (open) {
+            setOpenSubmenus({});
+        }
+        setOpen(!open);
+    };
 
-    }
-    onConfirm();
-  };
+    const closeLogoutPopup = () => {
+        setIsLogoutPopupOpen(false);
+    };
+
+    // const handleLogout = async () => {
+    //     console.log("Logout");
+    //     try {
+    //         await authService.logout();
+    //         navigate("/login", { replace: true });
+    //         closeLogoutPopup();
+    //     } catch (error) {
+    //         console.error('Errore durante il logout:', error);
+    //     }
+    // };
+
+    const handleLogout = () => {
+        const user = JSON.parse(localStorage.getItem("user"));
+        localStorage.removeItem("user");
+        localStorage.clear();
+        navigate('/login', { replace: true});
+        closeLogoutPopup();
+    };
+
+
+    const handleDrawerOpen = () => {
+        setOpen(true);
+    };
+
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
+
+    const handleClickSubmenu = (index) => {
+        if (!open) {
+            setOpen(true);
+        }
+            setOpenSubmenus((prevOpenSubmenus) => ({
+            ...prevOpenSubmenus,
+            [index]: !prevOpenSubmenus[index],
+        }));
+    };
     
 
-    return (
-      <Dialog
-        open={open}
-        onClose={onClose}
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "100%",
-          height: "100%",
-        }}
-      >
-        <div
-          className="popup-container"
-          style={{
-            backgroundColor: "black",
-            color: "white",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            padding: "40px",
-            fontSize: "20px",
-          }}
-        >
-          <h2>Conferma Logout</h2>
 
-          <p>Sei sicuro di voler uscire?</p>
-          <div>
-            <Button
-              variant="outlined"
-              onClick={onClose}
-              sx={{
-                borderColor: "#14D928",
-                color: "#14D928",
-                marginRight: "5px",
-                marginTop: "20px",
-                "&:hover": {
-                  transform: "scale(1.05)",
-                  // variant: "filled",
-                  // backgroundColor: "#14D928",
-                  borderColor: "#14D928",
-                  // color: "black",
-                },
-              }}
-            >
-              Annulla
-            </Button>
-            <Button
-              variant="contained"
-              onClick={handleConfirmLogout}
-              sx={{
-                backgroundColor: "#14D928",
-                marginLeft: "5px",
-                marginTop: "20px",
-                color: "black",
-                "&:hover": {
-                  // variant: "outlined",
-                  // borderColor: "#14D928",
-                  backgroundColor: "#14D928",
-                  transform: "scale(1.05)",
-                  // color: "#14D928",
-                },
-              }}
-            >
-              Logout
-            </Button>
-          </div>
-        </div>
-      </Dialog>
-    );
-  };
+
+    useEffect(() => {
+        setActiveLink(location.pathname);
+        setSidebar2collapsed(true);
+        setSubmenuOpen(false);
+    }, [location.pathname]);
+
+    const toglleSidebar2 = () => {
+        const newSidebar2collapsed =!Sidebar2collapsed;
+        setSidebar2collapsed(newSidebar2collapsed);
+        setIsSidebar2Open(!isSidebar2Open);
+        if (newSidebar2collapsed) {
+            setSubmenuOpen(false);
+        }
+    };
+
+    const toggleSubMenu = (index) => {
+        if (Sidebar2collapsed) {
+            setSidebar2collapsed(false);
+        }
+        setSubmenuOpen((prevState) => ({
+            ...prevState,
+            [index]: !prevState[index],
+        }));
+    };
+
+
+    const StyledListItemIcon = styled(MuiListItemIcon)`
+  &.MuiListItemIcon-root:hover {
+    width: 60px;
+    height: 60px;
+    color: black;
+    background-color: #e0a81a;
+    transform: scale(1.05);
+    cursor: pointer;
+    border-radius: 50%;
+    border-style: none;
+  }
+`;
 
 
 
 
-  const SidebarData = [
+const Sidebar2Data = [
     {
-      title: "Home",
-      // path: "/home",
-      icon: <AiIcons.AiFillHome />,
-      sidebarcollapsed: false,
+        title: 'Home',
+        icon: <HomeIcon style={{ color: '#00853C' }}/>,
+        Sidebar2collapsed: true,
     },
     {
-      title: "Business Dev",
-      icon: <FaIcons.FaAddressBook />,
-      iconClosed: (
-        <RiIcons.RiArrowDownSFill
-          style={{ color: "#14D928", marginRight: "10px" }}
-        />
-      ),
-      iconOpened: (
-        <RiIcons.RiArrowUpSFill
-          style={{ color: "#14D928", marginRight: "10px" }}
-        />
-      ),
-      sidebarcollapsed: false,
-      subNav: [
-        {
-          title: "Aziende",
-          path: "/aziende",
-          icon: <FaIcons.FaBriefcase className="active-icon" />,
-          customStyle: {
-            marginLeft: "10px",
-          },
-        },
-        {
-          title: "Key People",
-          path: "/KeyPeople",
-          icon: <FaIcons.FaBook className="active-icon" />,
-          customStyle: {
-            minWidth: '45px', 
-          },
-        },
-      ],
+        title: 'Business Dev',
+        icon: <AccountBoxIcon style={{ color: '#00853C' }}/>,
+        iconClosed: (
+            <ExpandMore style={{ color: '#00853C', marginRight: '2em'}}/>
+        ),
+        Sidebar2collapsed: true,
+        subNav: [
+            {
+                title: 'Aziende',
+                path: '/aziende',
+                icon: <BusinessCenterIcon style={{ color: '#00853C' }}/>,
+                customStyle: { marginLeft: '10px' },
+            },
+            {
+                title: 'KeyPeople',
+                path: '/KeyPeople',
+                icon: <CollectionsBookmarkIcon style={{ color: '#00853C' }}/>
+            },
+        ],
+    },
+    {
+        title: 'Need',
+        path: '/need',
+        icon: <NearMeIcon style={{ color: '#00853C' }}/>,
+        Sidebar2collapsed: true,
+    },
+    {
+        title: 'Recruiting',
+        path: '/recruiting',
+        icon: <PersonIcon style={{ color: '#00853C' }}/>,
+        Sidebar2collapsed: true,
     },
 
     {
-      title: "Need",
-      path: "/need",
-      icon: <FaIcons.FaPaperPlane className="active-icon" />,
-      sidebarcollapsed: false,
-    },
-    {
-      title: "Recruiting",
-      path: "/recruiting",
-      icon: <FaIcons.FaUser className="active-icon" />,
-      sidebarcollapsed: false,
+        title: 'Logout',
+        icon: <ExitToAppIcon style={{ color: '#00853C' }}/>,
+        action: 'logout',
+        
     }
-  ];
+];
 
-  return (
-    <SidebarContainer $sidebarcollapsed={sidebarcollapsed}>
-      <SidebarHeader>
-        <SidebarTitle $sidebarcollapsed={sidebarcollapsed}>
-          <NavLink to="/homepage" style={linkStyle}>
-            <span
-              style={{
-                color: "white",
-                display: "flex",
-                alignSelf: "flex-start",
-                fontSize: "30px",
-              }}
+return (
+    <Box sx={{ display: 'flex' }}>
+    <Drawer
+        variant="permanent"
+        sx={{
+            width: open ? drawerWidth : drawerCollapsed, 
+            flexShrink: 0,
+            transition: 'width 0.3s ease',
+            '& .MuiDrawer-paper': {
+                width: open ? drawerWidth : drawerCollapsed, 
+                boxSizing: 'border-box',
+                backgroundColor: 'black',
+                color: '#817B7B',
+                transition: 'width 0.3s ease',
+                borderRadius: '0 22px 22px 0',
+                overflow: 'hidden', 
+            },
+        }}
+    >
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', padding: '8px', flexDirection: 'row' }}>
+            {open && ( 
+                <Box sx={{ display: 'flex', justifyContent: 'center', padding: '16px', flexDirection: 'column' }}>
+                    <Typography sx={{ color: 'white', display: 'flex', alignItems: 'flex-start', fontWeight: 'bold', fontSize: '28px' }}>
+                        TORCHY
+                    </Typography>
+                    <img src={Logo} alt="Logo" style={{ maxWidth: '100%' }} />
+                </Box>
+            )}
+            <IconButton
+                onClick={toggleDrawer}
+                sx={{
+                    marginLeft: 'auto',
+                    color: '#FBB700',
+                }}
             >
-              TORCHY
-            </span>
-            <ImgContainer>
-              <img src={Logo} alt="Logo" style={{ marginLeft: "5%" }} />
-            </ImgContainer>
-          </NavLink>
-        </SidebarTitle>
-        <NavIcon to="#" onClick={toggleSidebar}>
-          <AiIcons.AiOutlineArrowRight
-            style={{
-              transform: sidebarcollapsed ? "rotate(0deg)" : "rotate(180deg)",
-              transition: "transform 0.8s",
-            }}
-          />
-        </NavIcon>
-      </SidebarHeader>
-      <SidebarNav>
-        <SidebarWrap>
-          {SidebarData.map((item, index) => (
-            <div key={index} className="menu-item">
-              {item.customStyle ? (
-                <Button
-                  variant="outlined"
-                  size="small"
-                  startIcon={item.icon}
-                  sx={item.customStyle} 
-                >
-                  {item.title}
-                </Button>
-              ) : item.subNav ? (
-                <DropdownLink
-                  to={item.path}
-                  activeclassname="active"
-                  onClick={() => toggleSubMenu(index)}
-                  className={activeLink === item.path ? "active" : ""}
-                >
-                  <div className="subContainer">
-                    <div className="icon">
-                      <SidebarIcon>{item.icon}</SidebarIcon>
-                    </div>
-                  </div>
-                  <LinkText
-                    className="sub-link-text"
-                    $sidebarcollapsed={sidebarcollapsed}
-                  >
-                    {item.title}
-                  </LinkText>
-                  {item.subNav && (
-                    <div className="subContainer">
-                      <SubmenuItem className="icon submenu-item">
-                        {sidebarcollapsed
-                          ? null
-                          : submenuOpen[index]
-                          ? item.iconOpened
-                          : item.iconClosed}
-                      </SubmenuItem>
-                    </div>
-                  )}
-                </DropdownLink>
-              ) : (
-                <SidebarLink
-                  to={item.path}
-                  activeclassname="active"
-                  className={activeLink === item.path ? "active" : ""}
-                >
-                  <div className="icon" onClick={() => toggleSubMenu(index)}>
-                    <SidebarIcon>{item.icon}</SidebarIcon>
-                  </div>
-                  <LinkText
-                    className="sub-link-text"
-                    $sidebarcollapsed={sidebarcollapsed}
-                  >
-                    {item.title}
-                  </LinkText>
-                </SidebarLink>
-              )}
-              {item.subNav &&
-                submenuOpen[index] &&
-                item.subNav.map((subItem, subIndex) => (
-                  <DropdownLink
-                    to={subItem.path}
-                    key={subIndex}
-                    activeclassname="active"
-                    className={activeLink === subItem.path ? "active" : ""}
-                  >
-                    <div className="icon" style={{ marginLeft: "10px" }}>
-                      {subItem.icon}
-                    </div>
-                    <LinkText className="sub-link-text">
-                      {subItem.title}
-                    </LinkText>
-                  </DropdownLink>
+                {open ? <ArrowBackIcon /> : <ArrowForwardIcon />}
+            </IconButton>
+        </Box>
+            
+            
+            <List>
+                {Sidebar2Data.map((item, index) => (
+                    <React.Fragment key={index}>
+                        <ListItem sx={{
+                            gap: 0,
+                                '&:hover': {
+                                    backgroundColor: '#252831',
+                                    borderLeft: '4px solid #00853C',
+                                    cursor: 'pointer',
+                                    borderRadius: '40px',
+                                },
+                            }}button onClick={() => {
+                                if (item.action === 'logout') {
+                                    handleLogoutClick(); // Apri il Dialog di conferma del logout
+                                } else if (item.subNav) {
+                                    handleClickSubmenu(index);
+                                } else {
+                                    navigate(item.path);
+                                }
+                            }}
+                        >
+                            <ListItemIcon sx={{ minWidth: '15%'}}>{item.icon}</ListItemIcon>
+                            {open ? (
+                                <ListItemText primary={item.title} />
+                            ) : (
+                                <ListItemText primary={item.title} sx={{ display: 'none' }} />
+                            )}
+                            {item.subNav ? open && (openSubmenus[index] ? <ExpandLess /> : <ExpandMore />) : null}
+                        </ListItem>
+                        {item.subNav && (
+                            <Collapse in={openSubmenus[index]} timeout="auto" unmountOnExit>
+                                <List component="div" disablePadding>
+                                    {item.subNav.map((subItem, subIndex) => (
+                                        <ListItem
+                                        sx={{pl: 2.8,
+                                            '&:hover': {
+                                                backgroundColor: '#252831',
+                                                borderLeft: '4px solid #00853C',
+                                                cursor: 'pointer',
+                                                borderRadius: '40px',
+                                            },
+                                        }}
+                                        button key={subIndex} onClick={() => navigate(subItem.path)}>
+                                            <ListItemIcon sx={{ minWidth: '15%'}}>{subItem.icon}</ListItemIcon>
+                                            <ListItemText primary={subItem.title} />
+                                        </ListItem>
+                                    ))}
+                                </List>
+                            </Collapse>
+                        )}
+                    </React.Fragment>
                 ))}
-            </div>
-          ))}
-        </SidebarWrap>
-      </SidebarNav>
-      {!sidebarcollapsed ? (
-        <Button
-          variant="outlined"
-          size="small"
-          startIcon={<LogoutIcon />}
-          onClick={handleLogoutClick}
-          sx={{
-            display: "flex",
-            width: "100%",
-            maxWidth: "120px",
-            color: "#14D928",
-            borderColor: "#14D928",
-            margin: "15px",
-            "&:hover": {
-              variant: "filled",
-              borderColor: "#14D928",
-              backgroundColor: "#14D928",
-              color: "black",
-              padding: "0.55rem 0.55rem",
-            },
-          }}
+            </List>
+        </Drawer>
+        <Dialog
+            open={isLogoutPopupOpen}
+            onClose={closeLogoutPopup}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+            PaperProps={{
+                style: { backgroundColor: 'black', color: 'white' },
+            }}
         >
-          Logout
-        </Button>
-      ) : (
-        <Button
-          variant="filled"
-          size="small"
-          startIcon={<LogoutIcon />}
-          onClick={handleLogoutClick}
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            height: "60px",
-            minWidth: "60px !important",
-            color: "#14D928",
-            backgroundColor: "black",
-            borderStyle: "none",
-            padding: "23px",
-            width: "60px",
-            borderRadius: "60%",
-            "&:hover": {
-              width: "60px",
-              height: "60px",
-              color: "black",
-              backgroundColor: "#14D928",
-              transform: "scale(1.05)",
-              cursor: "pointer",
-              borderRadius: "50%",
-              borderStyle: "none",
-            },
-          }}
-        ></Button>
-      )}
-
-
-<Dialog open={isLogoutPopupOpen} onClose={closeLogoutPopup}>
-        <div
-          style={{
-            backgroundColor: 'black',
-            color: 'white',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            padding: '40px',
-            fontSize: '20px',
-          }}
-        >
-          <h2>Conferma Logout</h2>
-          <p>Sei sicuro di voler uscire?</p>
-          <div>
-            <Button
-              variant="outlined"
-              onClick={closeLogoutPopup}
-              sx={{
-                borderColor: '#14D928',
-                color: '#14D928',
-                marginRight: '5px',
-                marginTop: '20px',
-                '&:hover': {
-                  transform: 'scale(1.05)',
-                  borderColor: '#14D928',
-                },
-              }}
-            >
-              Annulla
-            </Button>
-            <Button
-              variant="contained"
-              onClick={confirmLogout}
-              sx={{
-                backgroundColor: '#14D928',
-                marginLeft: '5px',
-                marginTop: '20px',
-                color: 'black',
-                '&:hover': {
-                  backgroundColor: '#14D928',
-                  transform: 'scale(1.05)',
-                },
-              }}
-            >
-              Logout
-            </Button>
-          </div>
-        </div>
-      </Dialog>
-
-      {/* <MyLogoutPopup
-        open={isLogoutPopupOpen}
-        onClose={closeLogoutPopup}
-        onConfirm={confirmLogout}
-      /> */}
-
-      <SidebarTitle3 $sidebarcollapsed={sidebarcollapsed}>
-        Copyright © 2022 All rights reserved
-      </SidebarTitle3>
-    </SidebarContainer>
-  );
+            <DialogTitle id="alert-dialog-title"
+            sx={{
+                color: 'white',
+                fontSize: '24px',
+                textAlign: 'center',
+                fontWeight: 'bold',
+            }}>
+                {"Conferma Logout"}
+            </DialogTitle>
+            <DialogContent>
+                <DialogContentText id="alert-dialog-description"
+                sx={{
+                    color: 'white',
+                    fontSize: '18px',
+                    textAlign: 'center',
+                }}>
+                    Sei sicuro di voler effettuare il logout?
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginBottom: '10px' }}>
+                <Button onClick={closeLogoutPopup}
+                variant="outlined"
+                sx={{
+                    borderColor: "#00853C",
+                    color: "#00853C",
+                    marginRight: "5px",
+                    marginTop: "10px",
+                    "&:hover": {
+                        transform: "scale(1.05)",
+                        borderColor: "#00853C",
+                    },
+                    }}>Annulla</Button>
+                <Button onClick={handleLogout}
+                variant="contained"
+                sx={{
+                    backgroundColor: "#00853C",
+                    marginLeft: "5px",
+                    marginTop: "10px",
+                    marginRight: '50px',
+                    color: "black",
+                    "&:hover": {
+                        backgroundColor: "#00853C",
+                        transform: "scale(1.05)",
+                    },
+                    }}
+                    autoFocus>
+                    Conferma
+                </Button>
+                </Box>
+            </DialogActions>
+        </Dialog>
+    </Box>
+);
 };
 
 export default Sidebar;

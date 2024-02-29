@@ -57,26 +57,40 @@ import ModificaDipendente                                              from './p
 import DettaglioAziende2                                               from './pages/DettaglioPagine/DettaglioAziende2.jsx';
 import LoginPageTorchy from './pages/LoginTorchy.jsx';
 
+
+import SidebarTorchy from './components/SidebarTorchy.jsx';
+import AziendeTorchy from './pages/AziendeTorchy.jsx';
+import NeedTorchy from './pages/NeedTorchy.jsx';
+import NeedTorchy2 from './pages/NeedTorchy2.jsx';
+import ModificaNeedTorchy from './pages/ModificaPagine/ModificaNeedTorchy.jsx';
+import DettaglioNeedTorchy from './pages/DettaglioPagine/DettaglioNeedTorchy.jsx';
+
 const App = () => {
 
   const [currentUser, setCurrentUser] = useState(undefined);
 
-    useEffect(() => {
+  useEffect(() => {
+    const user = authService.getCurrentUser();
+    setCurrentUser(user);
 
+    const onLoginSuccess = () => {
       const user = authService.getCurrentUser();
       setCurrentUser(user);
-    
-      const onLoginSuccess = () => {
-        const user = authService.getCurrentUser();
-        setCurrentUser(user);
-      };
-    
-      eventBus.on("loginSuccess", onLoginSuccess);
-    
-      return () => {
-        eventBus.remove("loginSuccess", onLoginSuccess);
-      };
-    }, []);
+    };
+
+    eventBus.on("loginSuccess", onLoginSuccess);
+
+    const handleBeforeUnload = (event) => {
+      localStorage.clear(); 
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      eventBus.remove("loginSuccess", onLoginSuccess);
+      window.removeEventListener('beforeunload', handleBeforeUnload); 
+    };
+  }, []);
     
     const logOut = () => {
       authService.logout();
@@ -92,7 +106,15 @@ const App = () => {
   const isUser            = getUserRole() === "ROLE_USER";
   const isBm              = getUserRole() === "ROLE_BM";
   const isRecruiter       = getUserRole() === "ROLE_RECRUITER";
+  
 
+  // return (
+  //   <BrowserRouter>
+  //   <Routes>
+  //     <Route path="/" element={<SidebarTorchy />} />
+  //     </Routes>
+  //     </BrowserRouter>
+  // );
 
 
   return (
@@ -109,14 +131,14 @@ const App = () => {
 
           <Route path="/homepage"                                     element={<PrivateRoute>         <Homepage                    />   </PrivateRoute>} />
           <Route path="/home"                                         element={<PrivateRoute>         <Home                        />   </PrivateRoute>} />
-          <Route path="/aziende"                                      element={<PrivateRoute>         <Aziende                   />   </PrivateRoute>} />
+          <Route path="/aziende"                                      element={<PrivateRoute>         <Aziende               />   </PrivateRoute>} />
           <Route path="/aziende/dettaglio/:id"                        element={<PrivateRoute>         <DettaglioAziende2           />   </PrivateRoute>} />
           <Route path="/aziende/modifica/:id"                         element={<PrivateRoute>         <ModificaAzienda             />   </PrivateRoute>} />
           <Route path="/keyPeople/modifica/:id"                       element={<PrivateRoute>         <ModificaContatto            />   </PrivateRoute>} />
           <Route path="/keyPeople/dettaglio/:id"                      element={<PrivateRoute>         <DettaglioKeyPeople          />   </PrivateRoute>} />
           <Route path="/keyPeople"                                    element={<PrivateRoute>         <KeyPeople                   />   </PrivateRoute>} />
           <Route path="/keyPeople/aggiungi"                           element={<PrivateRoute>         <AggiungiContatto            />   </PrivateRoute>} />
-          <Route path="/need"                                         element={<PrivateRoute>         <Need                        />   </PrivateRoute>} />
+          <Route path="/need"                                         element={<PrivateRoute>         <NeedTorchy2                  />   </PrivateRoute>} />
           <Route path="/need/:id"                                     element={<PrivateRoute>         <ListaNeed                   />   </PrivateRoute>} />
           <Route path="/need/aggiungi/:id"                            element={<PrivateRoute>         <AggiungiNeedID              />   </PrivateRoute>} />
           <Route path="/need/match/:id"                               element={<PrivateRoute>         <NeedMatchPages              />   </PrivateRoute>} />
@@ -134,8 +156,8 @@ const App = () => {
           <Route path="/hr/staff/visualizza/:id"                      element={<PrivateRoute>         <DettaglioDipendente         />   </PrivateRoute>} />
           <Route path="/aziende/aggiungi"                             element={<PrivateRoute>         <AggiungiAzienda             />   </PrivateRoute>} />
           <Route path="/need/aggiungi"                                element={<PrivateRoute>         <AggiungiNeed                />   </PrivateRoute>} />
-          <Route path="/need/modifica/:id"                            element={<PrivateRoute>         <ModificaNeed                />   </PrivateRoute>} />
-          <Route path="/need/dettaglio/:id"                           element={<PrivateRoute>         <DettaglioNeed               />   </PrivateRoute>} />
+          <Route path="/need/modifica/:id"                            element={<PrivateRoute>         <ModificaNeedTorchy                />   </PrivateRoute>} />
+          <Route path="/need/dettaglio/:id"                           element={<PrivateRoute>         <DettaglioNeedTorchy               />   </PrivateRoute>} />
           <Route path="/recruiting/aggiungi"                          element={<PrivateRoute>         <AggiungiCandidato           />   </PrivateRoute>} />
           <Route path="/progetti/aggiungi"                            element={<PrivateRoute>         <AggiungiProgetto            />   </PrivateRoute>} />
           <Route path="/fatturazioneAttiva/aggiungi"                  element={<PrivateRoute>         <AggiungiFatturazioneAttiva  />   </PrivateRoute>} />
@@ -147,7 +169,7 @@ const App = () => {
           <Route path="/intervista/visualizza/:id"                    element={<PrivateRoute>         <DettaglioIntervista         />   </PrivateRoute>} />
           <Route path="/intervista/modifica/:id"                      element={<PrivateRoute>         <ModificaIntervista          />   </PrivateRoute>} />
           <Route path="/intervista/aggiungi"                          element={<PrivateRoute>         <AggiungiIntervista          />   </PrivateRoute>} />
-          <Route path="/associazioni/:id/:nome"                       element={<PrivateRoute>         <Associazioni                />   </PrivateRoute>} />
+          {/* <Route path="/associazioni/:id/:nome"                       element={<PrivateRoute>         <Associazioni                />   </PrivateRoute>} /> */}
           <Route path="/staffing/modifica/:id"                        element={<PrivateRoute>         <ModificaStaffing            />   </PrivateRoute>} />
           <Route path="/hr/staff/timesheet/:id"                       element={<PrivateRoute>         <TimesheetPages              />   </PrivateRoute>} />
           <Route path="/hr/report"                                    element={<PrivateRoute>         <EstraiReport                />   </PrivateRoute>} />

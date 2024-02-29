@@ -1,12 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import loginTorchy from '../images/loginTorchy.png';
-import logoTorchySF from '../images/logoTorchySF.png';
-import logoTorchySF2 from '../images/logoTorchySF2.png'
+import loginTorchy from '../images/loginTorchy.svg';
 import { Box } from '@mui/material';
 import LoginComponentTorchy from '../components/LoginComponentTorchy';
+import LogoTorchySVG from '../images/LogoTorchy.svg';
 
 const LoginPageTorchy = () => {
+    console.log("localstorage", localStorage);
     const navigate = useNavigate();
     return (
         <Box sx={{
@@ -38,7 +38,7 @@ const LoginPageTorchy = () => {
         }}>
             <img
             alt="Torchy logo"
-            src={logoTorchySF2}
+            src={LogoTorchySVG}
             style={{
                 height: '100%',
                 width: '45%', 

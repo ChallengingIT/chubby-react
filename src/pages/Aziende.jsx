@@ -12,6 +12,7 @@ import SmileGreenIcon                       from "../components/button/SmileGree
 import SmileOrangeIcon                      from "../components/button/SmileOrangeIcon.jsx";
 import SmileRedIcon                         from "../components/button/SmileRedIcon.jsx";
 import AziendeSearchBox                     from "../components/searchBox/AziendeSearchBox.jsx";
+import SidebarTorchy from "../components/SidebarTorchy.jsx";
 
 
 import {
@@ -26,6 +27,7 @@ import {
 } from '@mui/material';
 import { set } from "date-fns";
 import Sidebar2 from "../components/componentiBackup/Sidebar2.jsx";
+import MyDataGridPerc from '../components/MyDataGridPerc.jsx'
 
 const Aziende = () => {
 
@@ -217,13 +219,13 @@ useEffect(() => {
 
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
-      <Sidebar2 isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
-          <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowX: 'hidden', overFlowY:'auto', width: contentWidth,}}>
-          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Gestione Aziende</Typography>
+    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100vh', width: '100vw', overflow: 'hidden'}}>
+      <SidebarTorchy />
+      <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'hidden', width: '100vw', marginLeft: '10vw'}}>
+      <Typography variant="h4" component="h1" sx={{ marginLeft: '30px', marginTop: '30px', marginBottom: '15px', fontWeight: 'bold', fontSize: '1.8rem'}}>Gestione Aziende</Typography>
           <MyButton onClick={navigateToAggiungiAzienda}>Aggiungi Azienda</MyButton>
-          <Box sx={{ height: '90%', marginTop: '40px', width: '100%'}}>
-          <MyDataGrid
+          <Box sx={{ height: '90vh', marginTop: '20px', width: '100vw'}}>
+          <MyDataGridPerc
           data={filteredAziende}
           columns={columns}
           title="Aziende"

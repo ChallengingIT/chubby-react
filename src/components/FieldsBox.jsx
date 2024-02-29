@@ -773,11 +773,11 @@ case 'multipleSelectSkill2':
             color="primary"
             onClick={handleGoBack}
             style={{
-              backgroundColor: "black",
+              backgroundColor: "#000000",
               color: "white",
               fontWeight:"bold",
               "&:hover": {
-                backgroundColor: "black",
+                backgroundColor: "#000000",
                 transform: "scale(1.05)",
               },
             }}
@@ -791,13 +791,13 @@ case 'multipleSelectSkill2':
               variant="contained"
               type="submit"
               style={{
-                backgroundColor: "#14D928",
-                color: "black",
+                backgroundColor: "#00853C",
+                color: "#FEFCFD",
                 fontWeight:"bold",
                 
                 "&:hover": {
-                  backgroundColor: "#14D928",
-                  color: "black",
+                  backgroundColor: "#00853C",
+                  color: "#FEFCFD",
                   transform: "scale(1.05)",
                 },
               }}

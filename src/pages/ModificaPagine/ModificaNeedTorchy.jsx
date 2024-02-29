@@ -5,14 +5,19 @@ import Sidebar                                    from "../../components/Sidebar
 import FieldsBox                                  from "../../components/FieldsBox";
 import { Box, Typography } from "@mui/material";
 import Sidebar2 from "../../components/componentiBackup/Sidebar2";
+import SidebarTorchy from "../../components/SidebarTorchy";
 
 
-const ModificaNeed = () => {
+const ModificaNeedTorchy = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { needData = {} } = location.state || {};
+  const valori = location.state;
+ 
+
+
+//   const { valori = {} } = location.state || {};
 
   const [ aziendeOptions,         setAziendeOptions   ] = useState([]);
   const [ skillsOptions,          setSkillsOptions    ] = useState([]);
@@ -131,20 +136,20 @@ const ModificaNeed = () => {
   ];
 
   const initialValues = {
-    id:                         needData.id                                                 ,
-    descrizione:                needData.descrizione                                        || null,
-    priorita:                   needData.priorita                                           || null,
-    week:                       needData.week                                               || null,
-    tipologia:                  needData.tipologia && needData.tipologia.id                 || null,
-    tipo:                       needData.tipo                                               || null,
-    owner:                      needData.owner     && needData.owner.id                     || null,
-    stato:                      needData.stato     && needData.stato.id                     || null,
-    numeroRisorse:              needData.numeroRisorse                                      || null,
-    location:                   needData.location                                           || null,
-    skills:                    (needData.skills?.map(skill => skill?.id))                   || null,
-    skills2:                   (needData.skills2?.map(skill => skill?.id))                  || null,
-    anniEsperienza:             needData.anniEsperienza                                     || null,
-    note:                       needData.note                                               || null,          
+    id:                         valori.id                                                 ,
+    descrizione:                valori.descrizione                                        || null,
+    priorita:                   valori.priorita                                           || null,
+    week:                       valori.week                                               || null,
+    tipologia:                  valori.tipologia && valori.tipologia.id                 || null,
+    tipo:                       valori.tipo                                               || null,
+    owner:                      valori.owner     && valori.owner.id                     || null,
+    stato:                      valori.stato     && valori.stato.id                     || null,
+    numeroRisorse:              valori.numeroRisorse                                      || null,
+    location:                   valori.location                                           || null,
+    skills:                    (valori.skills?.map(skill => skill?.id))                   || null,
+    skills2:                   (valori.skills2?.map(skill => skill?.id))                  || null,
+    anniEsperienza:             valori.anniEsperienza                                     || null,
+    note:                       valori.note                                               || null,          
   };
 
   const handleSubmit = async (values) => {
@@ -186,11 +191,17 @@ const ModificaNeed = () => {
 
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
-          <Sidebar2 />
-          <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
-          {/* <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Modifica Need di {needData.cliente.denominazione}</Typography> */}
-            {/* <h1>{`Modifica Need di ${needData.cliente.denominazione}`}
+    <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
+            <Box sx={{ marginLeft: '2em'}}>
+
+          <SidebarTorchy />
+          </Box>
+
+          <Box sx={{ flexGrow: 1, p: 3, marginLeft: '12.2em', marginTop: '0.5em', marginBottom: '0.8em', marginRight: '0.8em', backgroundColor: '#EEEDEE', borderRadius: '10px' }}>
+          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem', color: '#00853C'}}>Modifica Need di {valori.cliente.denominazione}</Typography>
+
+          {/* <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Modifica Need di {valori.cliente.denominazione}</Typography> */}
+            {/* <h1>{`Modifica Need di ${valori.cliente.denominazione}`}
             </h1> */}
     
           <FieldsBox
@@ -208,4 +219,4 @@ const ModificaNeed = () => {
   );
 };
 
-export default ModificaNeed;
+export default ModificaNeedTorchy;

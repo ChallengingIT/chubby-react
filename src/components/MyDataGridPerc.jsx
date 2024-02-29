@@ -45,7 +45,7 @@ const MyDataGridPerc = ({ data, columns, title, searchBoxComponent: SearchBox })
   return (
     <Box
       sx={{
-        width: "94vw",
+        width: "88vw",
         height: "84vh",
         backgroundColor: "white",
         borderRadius: "40px",

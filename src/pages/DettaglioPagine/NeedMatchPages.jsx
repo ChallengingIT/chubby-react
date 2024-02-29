@@ -24,6 +24,8 @@ function NeedMatchPages() {
   const descrizione                                   = needData.descrizione;
   const nomeAzienda                                   = needData.cliente?.denominazione;
 
+  const valori = location.state;
+
 
 
 
@@ -400,7 +402,7 @@ const tableAssociati = [
     />
   {/* </Box> */}
 </Modal>
-          <Typography variant="h4" component="h1" sx={{ marginLeft: '30px', marginTop: '30px', marginBottom: '15px', fontWeight: 'bold', fontSize: '1.8rem'}}>{descrizione} {nomeAzienda}</Typography>
+          <Typography variant="h4" component="h1" sx={{ marginLeft: '30px', marginTop: '30px', marginBottom: '15px', fontWeight: 'bold', fontSize: '1.8rem'}}>{valori.cliente.descrizione} {valori.cliente.nomeAzienda}</Typography>
 
           <Box sx={{ height: '90vh', marginTop: '20px', width: '100vw', marginBottom: '2%'}}>
                 <MyDataGridPerc data={filteredAssociabili} columns={tableAssociabili} title="Candidati"             getRowId={(row) => row.id} searchBoxComponent={() => (<NeedMatchSearchBox data={needMatch}

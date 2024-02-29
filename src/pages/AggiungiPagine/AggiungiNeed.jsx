@@ -8,6 +8,7 @@ import { Box, Typography } from "@mui/material";
 
 import FieldsBox from "../../components/FieldsBox";
 import Sidebar2 from "../../components/componentiBackup/Sidebar2";
+import SidebarTorchy from "../../components/SidebarTorchy";
 
 const AggiungiNeed = () => {
   const navigate   = useNavigate();
@@ -169,11 +170,13 @@ const AggiungiNeed = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
+    <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
 
-          <Sidebar2 />
-          <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
-          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Aggiungi un nuovo Need</Typography>
+    <Box sx={{ marginLeft: '2em'}}>
+          <SidebarTorchy />
+          </Box>
+          <Box sx={{ flexGrow: 1, p: 3, marginLeft: '12.2em', marginTop: '0.5em', marginBottom: '0.8em', marginRight: '0.8em', backgroundColor: '#EEEDEE', borderRadius: '10px' }}>
+          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem', color: '#00853C'}}>Aggiungi un nuovo Need</Typography>
 
           <FieldsBox
           fields={fields}
