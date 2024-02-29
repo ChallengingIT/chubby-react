@@ -165,35 +165,39 @@ function NeedTorchy2() {
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     {/* Barra di ricerca */}
                     <TextField
-                    id="search-bar"
-                    variant="outlined"
-                    placeholder="Cerca"
-                    size="small"
-                    value={searchTerm}
-                    onChange={handleSearchChange}
-                    InputProps={{
-                        startAdornment: (
-                        <InputAdornment position="start">
-                            <SearchIcon sx={{ color: '#00853C' }} />
-                        </InputAdornment>
-                        ),
-                    }}
-                    sx={{
-                        width: '25em',
-                        '& .MuiOutlinedInput-root': {
-                          borderRadius: '0px',
-                        '& fieldset': {
-                            borderColor: '#00853C', // Colore del bordo di default
-                        },
-                        '&:hover fieldset': {
-                            borderColor: '#00853C', // Colore del bordo al passaggio del mouse
-                        },
-                        '&.Mui-focused fieldset': {
-                            borderColor: '#00853C', // Colore del bordo quando il componente è in focus
-                        },
-                        },
-                    }}
+                        id="search-bar"
+                        variant="outlined"
+                        placeholder="Cerca"
+                        size="small"
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <SearchIcon sx={{ color: '#00853C' }} />
+                                </InputAdornment>
+                            ),
+                        }}
+                        sx={{
+                            width: '25em',
+                            mb: 0.5,
+                            '& .MuiOutlinedInput-root': {
+                                borderRadius: '0px', 
+                                '& fieldset': {
+                                    borderColor: '#00853C', 
+                                    borderRadius: '4px 0 0 4px', // Imposta il borderRadius solo per gli angoli di sinistra
+                                    borderRight: 'none', // Rimuove il bordo di destra
+                                },
+                                '&:hover fieldset': {
+                                    borderColor: '#00853C', 
+                                },
+                                '&.Mui-focused fieldset': {
+                                    borderColor: '#00853C', 
+                                },
+                            },
+                        }}
                     />
+
                     <TextField
                     id="search-location"
                     variant="outlined"
@@ -211,6 +215,8 @@ function NeedTorchy2() {
                     sx={{
                       borderTopLeftRadius: 0,
                       borderBottomLeftRadius: 0,
+                      mb: 0.5,
+
                       '& .MuiOutlinedInput-root': {
                         borderTopLeftRadius: 0,
                         borderBottomLeftRadius: 0,

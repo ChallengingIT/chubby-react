@@ -96,7 +96,19 @@ const NeedCardTorchy = ({ valori }) => {
 
     return (
       
-      <Card onClick={handleCardClick} raised sx={{ borderRadius: '20px', maxWidth: '80%', justifyContent: 'center', margin: 'auto', cursor: 'pointer', height: '30vh', border: '2px solid #54AC7C' }}>
+      <Card onClick={handleCardClick} raised sx={{ 
+        borderRadius: '20px', 
+        maxWidth: '80%', 
+        justifyContent: 'center', 
+        margin: 'auto', 
+        cursor: 'pointer', 
+        height: '30vh', 
+        border: '2px solid #00853C', 
+        transition: 'transform 0.3s ease, border-width 0.3s ease', 
+        '&:hover': {
+          transform: 'scale(1.05)', 
+          border: '4px solid #00853C' 
+        } }}>
         <CardContent>
         <Dialog open={openStato} onClose={handleCloseStato} maxWidth="xl" fullWidth sx={{ width: '100%' }}>
         <DialogContent >
@@ -166,8 +178,8 @@ const NeedCardTorchy = ({ valori }) => {
                 backgroundColor: '#00853C',
                 transform: 'scale(1.05)',
               },
-            }}>Modifica</Button>
-          <Button 
+            }}>Aggiorna</Button>
+          {/* <Button 
             size="small"
             sx={{
               backgroundColor: '#000000',
@@ -176,7 +188,7 @@ const NeedCardTorchy = ({ valori }) => {
                 backgroundColor: '#000000',
                 transform: 'scale(1.05)',
               },
-            }}>Note</Button>
+            }}>Note</Button> */}
             <Button
             size="small"
             onClick={(event) => navigateToAssocia(valori.id, event)}
