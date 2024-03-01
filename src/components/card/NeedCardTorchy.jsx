@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import SearchIcon from '@mui/icons-material/Search';
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import InfoIcon from '@mui/icons-material/Info';
 import ApartmentIcon from '@mui/icons-material/Apartment';
