@@ -5,7 +5,7 @@ import ChecklistIcon from '@mui/icons-material/Checklist';
 import InfoIcon from '@mui/icons-material/Info';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import WorkIcon from '@mui/icons-material/Work';
-import { createTheme } from '@mui/material/styles';
+// import { createTheme } from '@mui/material/styles';
 
 import { 
         Card, 
@@ -64,20 +64,20 @@ const NeedCardTorchy = ({ valori }) => {
       navigate(`/need/match/${valori.id}`, { state: {...valori}});
     };
 
-    const theme = createTheme({
-      components: {
-      MuiLinearProgress: {
-          styleOverrides: {
-          colorPrimary: {
-              backgroundColor: '#e0e0e0', 
-          },
-          barColorPrimary: {
-              backgroundColor: '#00853C', 
-          },
-          },
-      },
-      },
-  });
+  //   const theme = createTheme({
+  //     components: {
+  //     MuiLinearProgress: {
+  //         styleOverrides: {
+  //         colorPrimary: {
+  //             backgroundColor: '#e0e0e0', 
+  //         },
+  //         barColorPrimary: {
+  //             backgroundColor: '#00853C', 
+  //         },
+  //         },
+  //     },
+  //     },
+  // });
 
 
     const handleOpenStato = (event) => {
@@ -102,7 +102,7 @@ const NeedCardTorchy = ({ valori }) => {
         justifyContent: 'center', 
         margin: 'auto', 
         cursor: 'pointer', 
-        height: '30vh', 
+        height: '40vh', 
         border: '2px solid #00853C', 
         transition: 'transform 0.3s ease, border-width 0.3s ease', 
         '&:hover': {
@@ -114,9 +114,9 @@ const NeedCardTorchy = ({ valori }) => {
         <DialogContent >
           <Typography variant="h6">Stato del Need</Typography>
           <Box sx={{ width: '100%', mb: 2 }}>
-          <ThemeProvider theme={theme}>
+          {/* <ThemeProvider theme={theme}>
   <LinearProgress variant="determinate" value={progress} />
-</ThemeProvider>
+</ThemeProvider> */}
           </Box>
           <Typography variant="body1">Progresso: {progress}%</Typography>
         </DialogContent>
