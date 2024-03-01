@@ -42,6 +42,8 @@ function NeedTorchy2() {
                       need.descrizione.toLowerCase().includes(searchTerm.toLowerCase())
                   );        
                   }
+                  data.sort((a, b) => b.week.localeCompare(a.week));
+
                   setOriginalNeed(data) ;
 
                 } else {
@@ -56,11 +58,18 @@ function NeedTorchy2() {
   }, []); 
 
   const filterData = (data, searchTerm) => {
-      const filteredData = data.filter(need =>
-          need.descrizione.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      setOriginalNeed(filteredData);
-  };
+    if (searchTerm.trim() === '') {
+        setOriginalNeed(data);
+    } else {
+        const filteredData = data.filter(need =>
+            need.descrizione.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setOriginalNeed(filteredData);
+    }
+};
+
+
+
 
   useEffect(() => {
       filterData(originalNeed, searchTerm);
@@ -148,7 +157,7 @@ function NeedTorchy2() {
             return (
                 <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto', width: '100vw' }}>
                 <SidebarTorchy />
-                <Box sx={{ flexGrow: 1, p: 3, marginLeft: '13.2em', marginTop: '0.5em', marginBottom: '0.8em', marginRight: '0.8em', backgroundColor: '#FEFCFD', borderRadius: '10px' }}>
+                <Box sx={{ flexGrow: 1, p: 3, marginLeft: '13.2em', marginTop: '0.5em', marginBottom: '0.8em', marginRight: '0.8em', backgroundColor: '#FEFCFD', borderRadius: '10px', minHeight: '98vh' }}>
                 <Box sx={{ position: 'sticky', top: 0, zIndex: 1000, backgroundColor: '#FEFCFD', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderRadius: '10px',  marginBottom: '4rem' }}>
                 <Button variant="contained" color="primary" onClick={navigateToAggiungi} sx={{
                     backgroundColor: '#00853C',
@@ -248,37 +257,6 @@ function NeedTorchy2() {
                   />
                 </Box>
 
-                {/* <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-
-                <Typography variant="h8" sx={{ color: '#00853C', textTransform: 'none' }}>
-                  Filtra per:
-                  </Typography>
-                  <Select
-                    displayEmpty
-                    value={orderDate}
-                    onChange={handleDateFilterChange}
-                    sx={{ width: '8em', backgroundColor: '#00853C', color: '#FEFCFD', borderRadius: '10px', height: '2em' }}
-                  >
-                    <MenuItem value="" disabled>Data</MenuItem>
-                    <MenuItem value="Meno recente">Meno recente</MenuItem>
-                    <MenuItem value="Più recente">Più recente</MenuItem>
-                  </Select>
-
-
-                  <Select
-                      displayEmpty
-                      value={tipologia} // Assicurati di avere una variabile di stato chiamata tipologia
-                      onChange={handleTipologiaChange} // E una funzione per gestire il cambiamento
-                      sx={{ width: '8em', backgroundColor: '#00853C', color: '#FEFCFD', borderRadius: '10px', height: '2em' }}
-                    >
-                      <MenuItem value="" disabled>Tipologia</MenuItem>
-                      <MenuItem value="Informatica">Informatica</MenuItem>
-                      <MenuItem value="Marketing">Marketing</MenuItem>
-                      <MenuItem value="HR">HR</MenuItem>
-                    </Select>
-
-                      </Box> */}
-    
                 <Button variant="contained" color="primary" onClick={handleOpenFiltri} sx={{
                     backgroundColor: '#00853C',
                     borderRadius: '10px',
@@ -333,8 +311,8 @@ function NeedTorchy2() {
 
                   <Select
                       displayEmpty
-                      value={tipologia} // Assicurati di avere una variabile di stato chiamata tipologia
-                      onChange={handleTipologiaChange} // E una funzione per gestire il cambiamento
+                      value={tipologia} 
+                      onChange={handleTipologiaChange} 
                       sx={{ width: '8em', backgroundColor: '#00853C', color: '#FEFCFD', borderRadius: '10px', height: '2em' }}
                     >
                       <MenuItem value="" disabled>Tipologia</MenuItem>
