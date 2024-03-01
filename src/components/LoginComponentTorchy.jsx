@@ -130,8 +130,8 @@ const handleLogin = async (e) => {
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
 
 
-                <Typography variant="h5" component="h2" sx={{  mb: 5, color: "#00853C", fontSize: '3em', alignSelf: 'flex-start' }}>Sign in</Typography>
-                <img src={Torcia} alt="Torcia" style={{ maxWidth: '100%',transform: 'rotate(180deg)', width: '30%', alignSelf: 'flex-end', marginBottom: '5em' }} />
+                <Typography variant="h5" component="h2" sx={{  mb: 5, color: "#00853C", fontSize: '3em', alignSelf: 'flex-start', mt: 8 }}>Sign in</Typography>
+                <img src={Torcia} alt="Torcia" style={{ maxWidth: '100%',transform: 'rotate(180deg)', width: '30%', alignSelf: 'flex-end', marginBottom: '2em' }} />
                 {/* </Box> */}
                 </Box>
                     <Typography variant="h6" component="h2" sx={{ alignSelf: 'flex-start', fontSize: '1em' }}>Enter your username</Typography>
