@@ -33,6 +33,7 @@ function NeedTorchy2() {
 
     useEffect(() => {
       const fetchData = async () => {
+        setLoading(true);
           try {
               const responseNeed = await axios.get("http://89.46.196.60:8443/need/react/modificato", { headers: headers });
               if (Array.isArray(responseNeed.data)) {
@@ -54,7 +55,10 @@ function NeedTorchy2() {
               }
           } catch (error) {
               console.error("Errore durante il recupero dei dati:", error);
-          }
+          
+        } finally {
+          setLoading(false); 
+        }
       };
 
       fetchData();
@@ -276,18 +280,18 @@ function NeedTorchy2() {
             {/* Main Content Area */}
             <Grid container spacing={2}>
               
-            {originalNeed.map((need, index) => (
-                    <Grid item xs={12} md={6} key={index}>
-                                {loading ? (
+            {loading ? (
+  <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+    <CircularProgress /> 
+  </Box>
+) : (
+  originalNeed.map((need, index) => (
+    <Grid item xs={12} md={6} key={index}>
+      <NeedCardTorchy valori={need} />
+    </Grid>
+  ))
+)}
 
-                    <NeedCardTorchy 
-                    valori={need}
-                     />
-                     ) : (
-                      <CircularProgress color="inherit" sx={{ color: 'black' }} />
-                      )}
-                </Grid>
-                  ))}
                 </Grid>
                 </Box>
 
