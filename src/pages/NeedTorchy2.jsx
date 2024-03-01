@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import SidebarTorchy from '../components/SidebarTorchy';    
 
-import { Button, Box, Grid, TextField, InputAdornment, Select, Dialog, DialogContent, Typography, ThemeProvider, LinearProgress, MenuItem } from "@mui/material";
+import { Button, Box, Grid, TextField, InputAdornment, Select, Dialog, DialogContent, Typography, ThemeProvider, LinearProgress, MenuItem, CircularProgress } from "@mui/material";
 import NeedCardTorchy from '../components/card/NeedCardTorchy';
 import SearchIcon from '@mui/icons-material/Search';
 import PlaceIcon from '@mui/icons-material/Place';
@@ -21,6 +21,8 @@ function NeedTorchy2() {
     const [searchTerm, setSearchTerm] = useState(localStorage.getItem("searchTerm") || '');
     const [orderDate, setOrderDate] = useState('');
     const [ tipologia, setTipologia] = useState('');
+    const [loading,                   setLoading                   ] = useState(false);
+
 
     const user = JSON.parse(localStorage.getItem("user"));
     const accessToken = user?.accessToken;
@@ -45,6 +47,7 @@ function NeedTorchy2() {
                   data.sort((a, b) => b.week.localeCompare(a.week));
 
                   setOriginalNeed(data) ;
+                  setLoading(true);
 
                 } else {
                   console.error("I dati ottenuti non sono nel formato Array:", responseNeed.data);
@@ -272,11 +275,17 @@ function NeedTorchy2() {
                 </Box>
             {/* Main Content Area */}
             <Grid container spacing={2}>
+              
             {originalNeed.map((need, index) => (
                     <Grid item xs={12} md={6} key={index}>
+                                {loading ? (
+
                     <NeedCardTorchy 
                     valori={need}
                      />
+                     ) : (
+                      <CircularProgress color="inherit" sx={{ color: 'black' }} />
+                      )}
                 </Grid>
                   ))}
                 </Grid>
