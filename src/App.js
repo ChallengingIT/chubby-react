@@ -33,6 +33,7 @@ import ModificaAziende                                                 from './p
 import Keypeople                                                       from './pages/Keypeople.jsx';
 
 import NeedLife from './components/NeedLife.jsx';
+import RecruitingTorchy from './pages/RecruitingTorchy.jsx';
 
 
 
