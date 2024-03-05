@@ -1,7 +1,7 @@
-import React from 'react';
-import EditIcon from '@mui/icons-material/Edit';
-import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom";
+import React                    from 'react';
+import EditIcon                 from '@mui/icons-material/Edit';
+import Button                   from "@mui/material/Button";
+import { useNavigate }          from "react-router-dom";
 
 function EditButton({ onClick, to, rowData }) {
   const navigate = useNavigate();
@@ -24,12 +24,12 @@ function EditButton({ onClick, to, rowData }) {
       onClick={handleEditAction}
       sx={{
         marginRight: '10%',
-        backgroundColor: '#14D928',
-        color: 'black',
+        backgroundColor: '#00853C',
+        color: 'white',
         borderRadius: '50%',
-        minWidth: '40px',
-        width: '40px',
-        height: '40px',
+        minWidth: '2em', 
+        width: '2em', 
+        height: '2em',
         padding: '0',
         '& .MuiButton-startIcon': {
           margin: '0',
@@ -38,9 +38,9 @@ function EditButton({ onClick, to, rowData }) {
           justifyContent: 'center'
         },
         '&:hover': {
-          backgroundColor: '#14D928',
+          backgroundColor: '#00853C',
           transform:'scale(1.05)',
-          color: 'black',
+          color: 'white',
           cursor: 'pointer',
           borderRadius: '50%',
           borderStyle: 'none',

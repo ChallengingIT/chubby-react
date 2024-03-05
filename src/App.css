@@ -19,7 +19,6 @@ body {
   -webkit-font-smoothing: antialiased; /* Migliora la resa del font su dispositivi Apple */
   -moz-osx-font-smoothing: grayscale; /* Migliora la resa del font su dispositivi Mozilla */
   text-rendering: optimizeLegibility; /* Ottimizza la leggibilità del testo */
-  background-color: #dbd9d9; /* Colore di sfondo leggero per la pagina */
   color: #333; /* Colore di default per il testo */
 }
 
@@ -28,4 +27,3 @@ body {
   height: 100%;
 }
 
-/* Altre regole CSS standard possono essere aggiunte qui */

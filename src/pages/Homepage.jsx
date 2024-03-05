@@ -1,49 +1,43 @@
-import React, { useEffect }               from "react";
-import sfondohome           from "../images/challenging.png";
-import Sidebar              from "../components/Sidebar";
-
-import "../styles/Homepage.css";
-import Sidebar2 from "../components/componentiBackup/Sidebar2";
-import SidebarTorchy from "../components/SidebarTorchy";
-import Sfondo from '../images/loginTorchy.svg';
-
+import React                 from 'react';
+import Sfondo                               from '../images/loginTorchy.svg';
+import { Box } from '@mui/material';
 
 
 const Homepage = () => {
 
-    useEffect(() => {
-        // Recupera i dati dell'utente dal localStorage
-        const userData = localStorage.getItem('user');
-        const user = userData ? JSON.parse(userData) : null;
-    
- 
+    // const currentUser = authService.getCurrentUser(); 
+    // console.log=("utente: ", currentUser);
 
-      }, []);
+    // useEffect(() => {
+    //     const userData = localStorage.getItem('user');
+    //     const user = userData ? JSON.parse(userData) : null;
+    // }, []);
 
 
-return (
-    <div className="homepage-container">
-    <div className="img-container-homepage">
-    <img
-            alt="Login background"
-            src={Sfondo}
-            style={{
+
+    return (
+    <Box
+    sx={{
+        display: 'flex',
+        width: '100vw',
+        height: '100vh'
+    }}
+    >
+        <img
+        alt='Login background'
+        src={Sfondo}
+        style={{
             width: '100vw',
             height: '100vh',
             objectFit: 'cover',
-            position: 'absolute', 
+            position: 'absolute',
             top: 0,
             left: 0,
-            zIndex: -1, 
-            }}
+            zIndex: -1
+        }}
         />
-        <div className="sidebar-container">
-          <SidebarTorchy />
-        </div>
-
-    </div>
-    </div>
-);
+    </Box>
+    );
 };
 
 export default Homepage;

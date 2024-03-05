@@ -1,7 +1,7 @@
-import React from 'react';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import Button from "@mui/material/Button";
-import { useNavigate, Link } from "react-router-dom";
+import React              from 'react';
+import VisibilityIcon     from '@mui/icons-material/Visibility';
+import Button             from "@mui/material/Button";
+import { useNavigate}     from "react-router-dom";
 
 function VisibilityButton({onClick, to, recruitingData}) {
     const navigate = useNavigate();
@@ -23,12 +23,12 @@ return (
     onClick={handleEditAction}
     sx={{
       marginRight: '10%',
-      backgroundColor: '#14D928',
+      backgroundColor: '#00853C',
       color: 'black',
       borderRadius: '50%',
-      minWidth: '40px',
-      width: '40px',
-      height: '40px',
+      minWidth: '2em', 
+        width: '2em', 
+        height: '2em',
       padding: '0',
       '& .MuiButton-startIcon': {
         margin: '0',
@@ -37,7 +37,7 @@ return (
         justifyContent: 'center'
       },
       '&:hover': {
-        backgroundColor: '#14D928',
+        backgroundColor: '#00853C',
         transform:'scale(1.05)',
         color: 'black',
         cursor: 'pointer',
@@ -45,8 +45,7 @@ return (
         borderStyle: 'none',
       }
     }}
-
-        />
+    />
 );
 };
 

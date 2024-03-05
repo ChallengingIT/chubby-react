@@ -33,22 +33,24 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
     handleSearch(); 
   };
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  const accessToken = user?.accessToken;
+
+
+     const headers = {
+     Authorization: `Bearer ${accessToken}`
+ };
+
 
   useEffect(() => {
     const fetchData = async () => {
       try {
 
-     const user = JSON.parse(localStorage.getItem("user"));
-     const accessToken = user?.accessToken;
- 
-   
-     const headers = {
-       Authorization: `Bearer ${accessToken}`
-     };
 
-        const responseTipologia = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia", { headers });
-        const responseTipo      = await axios.get("http://89.46.196.60:8443/staffing/react/tipo", { headers });
-        const responseStato     = await axios.get("http://89.46.196.60:8443/staffing/react/stato/candidato", { headers });
+
+        const responseTipologia = await axios.get("http://localhost:8080/aziende/react/tipologia", { headers });
+        const responseTipo      = await axios.get("http://localhost:8080/staffing/react/tipo", { headers });
+        const responseStato     = await axios.get("http://localhost:8080/staffing/react/stato/candidato", { headers });
 
 
         if (Array.isArray(responseStato.data)) {
@@ -80,22 +82,34 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
     fetchData();
   }, []);
 
-  const handleSearch = () => {
-
-    const filteredData = OriginalRecruiting.filter((item) =>
-      Object.keys(searchTerm).every((key) =>
-        searchTerm[key] === '' ||
-        (key === 'tipo' && item[key]?.descrizione?.toLowerCase().includes(String(searchTerm[key]).toLowerCase())) ||
-        (key === 'stato' && item[key]?.descrizione?.toLowerCase().includes(String(searchTerm[key]).toLowerCase())) ||
-        (key === 'tipologia' && item[key]?.descrizione?.toLowerCase().includes(String(searchTerm[key]).toLowerCase())) ||
-        String(item[key]).toLowerCase().includes(String(searchTerm[key]).toLowerCase())
-      )
-    );
-    localStorage.setItem("ricercaRecruiting", JSON.stringify(searchTerm));
-
-    onSearch(filteredData);
-    setFilteredData(filteredData);
+  const handleSearch = async () => {
+    // Prepara il payload per la richiesta
+    const filtriDaInviare = {
+      nome: searchTerm.nome || null,
+      cognome: searchTerm.cognome || null,
+      email: searchTerm.email || null,
+      stato: searchTerm.stato || null,
+      tipo: searchTerm.tipo || null,
+      tipologia: searchTerm.tipologia || null,
+    };
+  
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const accessToken = user?.accessToken;
+  
+      const response = await axios.post("http://localhost:8080/staffing/react/mod/ricerca",{ headers: headers, params: filtriDaInviare });
+  
+      if (response.data && Array.isArray(response.data)) {
+        onSearch(response.data);
+        setFilteredData(response.data);
+      } else {
+        console.error("I dati ottenuti non sono nel formato Array:", response.data);
+      }
+    } catch (error) {
+      console.error("Errore durante il recupero dei dati:", error);
+    }
   };
+  
   
 
   const handleReset = () => {
@@ -277,14 +291,14 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
           sx={{
             width: '2rem',
             height: "40px",
-            backgroundColor: "#14D928",
-            color: "black",
+            backgroundColor: "#00853C",
+            color: "white",
             borderRadius: "10px",
             fontSize: "0.8rem",
             fontWeight: "bolder",
             "&:hover": {
-              backgroundColor: "#14D928",
-              color: "black",
+              backgroundColor: "#00853C",
+              color: "white",
               transform: "scale(1.05)",
             },
           }}

@@ -1,7 +1,8 @@
-import React                 from 'react';
+import React                                from 'react';
 import { useNavigate }                      from 'react-router-dom';
-import ChecklistIcon                        from '@mui/icons-material/Checklist';
-import WorkIcon                             from '@mui/icons-material/Work';
+import EmailIcon                            from '@mui/icons-material/Email';
+import BusinessCenterIcon                   from '@mui/icons-material/BusinessCenter';
+import LocalPhoneIcon                       from '@mui/icons-material/LocalPhone';
 import { 
     Card, 
     CardContent, 
@@ -12,28 +13,9 @@ import {
     } from '@mui/material';
 
 
-    const calculateDataDifference = (weekString) => {
-        const [ year, week ] = weekString.split('-W');
-        const firstDayOfYear = new Date(year, 0, 1);
-        const weekDate = new Date(firstDayOfYear.setDate(firstDayOfYear.getDate() + (week - 1) * 7));
-        weekDate.setDate(weekDate.getDate() - weekDate.getDay());
-        const currentDate = new Date();
-        const diffInMs = currentDate - weekDate;
-        const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
-
-        if (diffInDays < 7) {
-            return `${Math.round(diffInDays)} giorno${Math.round(diffInDays) !== 1 ? 'i' : ''} fa`;
-        } else {
-            const diffInWeeks = diffInDays / 7;
-            return `${Math.round(diffInWeeks)} settiman${Math.round(diffInWeeks) !== 1 ? 'e' : ''} fa`;
-        }
-    };
-
-
-const NeedCard = ({valori}) => {
+const KeypeopleCard = ({valori}) => {
 
     const navigate = useNavigate();
-    // const [ setOpenStato        ] = useState(false);
 
 
     // const handleCardClick = (id) => {
@@ -41,14 +23,9 @@ const NeedCard = ({valori}) => {
     // };
 
 
-    const navigateToAssocia = (id, event) => {
-        event.stopPropagation();
-        navigate(`/need/match/${valori.id}`, { state: {...valori}});
-    };
-
     const navigateToAggiorna = (id, event) => {
         event.stopPropagation();
-        navigate(`/need/modifica/${valori.id}`, { state: { ...valori } });
+        navigate(`/keypeople/modifica/${valori.id}`, { state: { ...valori } });
     };
 
     // const handleOpenStato = (event) => {
@@ -60,19 +37,6 @@ const NeedCard = ({valori}) => {
     //     event.stopPropagation();
     //     setOpenStato(false);
     // };
-
-    // const handleOpenSkillsDialog = (event) => {
-    //     event.stopPropagation();
-    //     setOpenSkillsDialog(true);
-    // };
-
-    const skillsToShow = valori.skills.slice(0, 3).map(skill => skill.descrizione).join(', ');
-    const additionalSkillsCount = valori.skills.length > 3 ? `e altre ${valori.skills.length - 3}` : '';
-
-
-
-    const timeDifference = calculateDataDifference(valori.week);
-
 
 
 
@@ -108,10 +72,10 @@ const NeedCard = ({valori}) => {
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
                 textOverflow: 'ellipsis',
-                width: '100%' // Assicurati di impostare una larghezza, altrimenti 'nowrap' potrebbe non funzionare come previsto.
+                width: '100%' 
                 }}
             >
-                {valori.descrizione}
+                {valori.nome} {valori.cognome}
             </Typography>
                     {/* <Button
                     onClick={handleOpenStato}
@@ -128,35 +92,28 @@ const NeedCard = ({valori}) => {
                     </Button> */}
             </Box>
 
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, color: 'black' }}>
-                {valori.location}
-            </Typography>
-            <Typography variant="body2" color="text.primary" sx={{ mb: 0.5, color: 'black' }}>
-                {timeDifference}
-            </Typography>
-
-            <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
-                    <WorkIcon sx={{ color: '#00853C', mr: 1 }} />
-                    {valori.tipologia && valori.tipologia.descrizione
-                    ? valori.tipologia.descrizione
-                    : "N/A"}
-                    </Typography>
-           
-
-            <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
-                    <ChecklistIcon sx={{ color: '#00853C', mr: 1 }} />
-                    Competenze: {skillsToShow} {additionalSkillsCount}
-            </Typography>
-
-            {/* <Typography variant="body2" color="text.primary"  sx={{ mt: 4, color: 'black' }}>
-                <InputAdornment position="start">
-                    <WorkIcon sx={{ color: '#00853C', mr: 1 }} />
-                    Tipologia: {valori.tipo}
-                </InputAdornment>
+            {/* <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, color: 'black' }}>
+                {valori.citta}
             </Typography> */}
+
+            <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
+                    <EmailIcon sx={{ color: '#00853C', mr: 1 }} />
+                    {valori.email}
+            </Typography>
+
+            <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1}}>
+                <LocalPhoneIcon sx={{ color: '#00853C', mr: 1}} />
+                {valori.cellulare}
+            </Typography>
+
+            <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
+                <BusinessCenterIcon sx={{ color: '#00853C', mr: 1 }} />
+                {valori.ruolo}
+            </Typography>
+
         </CardContent>
         <CardActions>
-            <Box
+        <Box
             sx={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -184,17 +141,6 @@ const NeedCard = ({valori}) => {
                     transform: 'scale(1.05)',
                     },
                 }}>Aggiorna</Button>
-                <Button
-                    size="small"
-                    onClick={(event) => navigateToAssocia(valori.id, event)}
-                    sx={{
-                    backgroundColor: '#000000',
-                    color: 'white',
-                    '&:hover': {
-                        backgroundColor: '#000000',
-                        transform: 'scale(1.05)',
-                    },
-                    }}>Associa</Button>
                     </Box>
                     <Typography
                     gutterBottom
@@ -218,4 +164,4 @@ const NeedCard = ({valori}) => {
     );
 };
 
-export default NeedCard;
+export default KeypeopleCard;

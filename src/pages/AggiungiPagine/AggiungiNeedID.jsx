@@ -1,20 +1,15 @@
 import React, { useState, useEffect }                from "react";
 import { useNavigate, useLocation, useParams }       from "react-router-dom";
 import axios                                         from "axios";
-import Sidebar                                       from "../../components/Sidebar";
 import { Box, Typography } from "@mui/material";
 
-
-
-import FieldsBox from "../../components/FieldsBox";
-import Sidebar2 from "../../components/componentiBackup/Sidebar2";
+import FieldBoxFile from "../../components/FieldBoxFile";
 
 const AggiungiNeedID = () => {
   const { id }              = useParams();
   const navigate            = useNavigate();
   const location = useLocation();
-  const aziendaData = location.state?.aziendaData;
-
+  const valori = location.state;
   
 
   const [ aziendeOptions,       setAziendeOptions     ] = useState([]);
@@ -44,12 +39,12 @@ const AggiungiNeedID = () => {
   useEffect(() => {
     const fetchNeedOptions = async () => {
       try {
-        const responseAziende       = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers: headers });
-        const responseSkill         = await axios.get("http://89.46.196.60:8443/staffing/react/skill", { headers: headers });
-        const responseSkill2        = await axios.get("http://89.46.196.60:8443/staffing/react/skill", { headers: headers });
-        const ownerResponse         = await axios.get("http://89.46.196.60:8443/aziende/react/owner" , { headers: headers });
-        const tipologiaResponse     = await axios.get("http://89.46.196.60:8443/need/react/tipologia", { headers: headers });
-        const statoResponse         = await axios.get("http://89.46.196.60:8443/need/react/stato"    , { headers: headers });
+        const responseAziende       = await axios.get("http://89.46.67.198:8443/aziende/react/select", { headers: headers });
+        const responseSkill         = await axios.get("http://89.46.67.198:8443/staffing/react/skill", { headers: headers });
+        const responseSkill2        = await axios.get("http://89.46.67.198:8443/staffing/react/skill", { headers: headers });
+        const ownerResponse         = await axios.get("http://89.46.67.198:8443/aziende/react/owner" , { headers: headers });
+        const tipologiaResponse     = await axios.get("http://89.46.67.198:8443/need/react/tipologia", { headers: headers });
+        const statoResponse         = await axios.get("http://89.46.67.198:8443/need/react/stato"    , { headers: headers });
 
 
         if (Array.isArray(statoResponse.data)) {
@@ -137,15 +132,14 @@ const AggiungiNeedID = () => {
     { label: "Headcount",           name: "numeroRisorse",                type: "number" },
     { label: "Location",            name: "location",                     type: "text" },
     { label: "Skills 1",            name: "skills",                       type: "multipleSelectSkill",   options: skillsOptions },
-    { label: "Skills 2",            name: "skills2",                      type: "multipleSelectSkill2",   options: skills2Options },
     { label: "Seniority",           name: "anniEsperienza",               type: "decimalNumber" },
     { label: "Note",                name: "note",                         type: "note" },
   ];
 
 
   const initialValues = {
-    idAzienda:            aziendaData?.id            || "",
-    denominazione: aziendaData?.denominazione || "",
+    idAzienda:            valori?.id            || "",
+    denominazione: valori?.denominazione || "",
   };
 
 
@@ -167,23 +161,20 @@ const AggiungiNeedID = () => {
 
         // Preparazione dei dati delle skills come stringhe separate
         const skills = values.skills ? values.skills.join(',') : '';
-        const skills2 = values.skills2 ? values.skills2.join(',') : '';
 
 
 
   
         // Rimozione delle proprietà delle skills dall'oggetto values
         delete values.skills;
-        delete values.skills2;
 
 
 
       
         // Invio della richiesta al server con skills e skills2 come parametri di query
-        const response = await axios.post("http://89.46.196.60:8443/need/react/salva", values, {
+        const response = await axios.post("http://89.46.67.198:8443/need/react/salva", values, {
           params: {
             skill1: skills,
-            skill2: skills2
           },
           headers: headers
         });
@@ -215,23 +206,19 @@ const AggiungiNeedID = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100%', width: '100%', overflow: 'hidden'}}>
+    <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
+            <Box sx={{ flexGrow: 1, p: 3, marginLeft: '12.2em', marginTop: '0.5em', marginBottom: '0.8em', marginRight: '0.8em', backgroundColor: '#FEFCFD', borderRadius: '10px', display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+          <Typography variant="h4" component="h1" sx={{ mt: 3, fontWeight: 'bold', fontSize: '1.8rem', color: '#00853C'}}>Aggiungi un nuovo Need per {valori.denominazione}</Typography>
 
-          <Sidebar2 />
-          <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
-          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Aggiungi un nuovo need per {aziendaData.denominazione}</Typography>
-
-          <FieldsBox
+          <FieldBoxFile
           fields={fields}
-          initialValues={initialValues}
           campiObbligatori={campiObbligatori}
           onSubmit={handleSubmit}
           title=""
           skillsOptions={skillsOptions} 
-          skills2Options={skills2Options}
-   />
-        </Box>
-      </Box>
+          />
+          </Box>
+    </Box>
   );
 };
 

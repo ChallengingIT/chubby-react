@@ -1,0 +1,39 @@
+import React, { useEffect, useState } from 'react';
+
+function CardsComponent() {
+  const [cards, setCards] = useState([]);
+  const [page, setPage] = useState(0);
+  const pageSize = 20;
+
+  useEffect(() => {
+    const fetchCards = async () => {
+      const response = await fetch(`your-backend-url/cards?page=${page}&pageSize=${pageSize}`);
+      const newCards = await response.json();
+      setCards(prevCards => [...prevCards, ...newCards]);
+    };
+
+    fetchCards();
+  }, [page]);
+
+  const handleScroll = () => {
+    const bottom = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight;
+    if (bottom) {
+      setPage(prevPage => prevPage + 1);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <div>
+      {cards.map(card => (
+        // componente Card qui
+      ))}
+    </div>
+  );
+}
+
+export default CardsComponent;
