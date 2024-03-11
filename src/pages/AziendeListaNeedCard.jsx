@@ -63,7 +63,7 @@ const AziendeListaNeedCard = () => {
             quantita: 10
         };
         try {
-            const response = await axios.get(`http://localhost:8080/need/react/cliente/modificato/${id}`, { headers: headers, params: filtriDaInviare });;
+            const response = await axios.get(`http://89.46.196.60:8443/need/react/cliente/modificato/${id}`, { headers: headers, params: filtriDaInviare });;
             if (Array.isArray(response.data)) {
                 const listaNeedConId = response.data.map((need) => ({...need}));
                 setOriginalListaNeed(listaNeedConId);
@@ -98,7 +98,7 @@ const AziendeListaNeedCard = () => {
             quantita: 10
         };
         try {
-            const response = await axios.get(`http://localhost:8080/need/react/cliente/modificato/${id}`, { headers: headers, params: filtriDaInviare });;
+            const response = await axios.get(`http://89.46.196.60:8443/need/react/cliente/modificato/${id}`, { headers: headers, params: filtriDaInviare });;
             if (Array.isArray(response.data)) {
                 const listaNeedConId = response.data.map((need) => ({...need}));
                 setOriginalListaNeed(listaNeedConId);

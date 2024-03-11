@@ -64,8 +64,8 @@ function IntervisteList() {
     };
 
     try {
-      const response                = await axios.get(`http://localhost:8080/intervista/react/mod/${id}`       , { headers: headers, params: filtriDaInviare});
-      const candidatoResponse       = await axios.get(`http://localhost:8080/staffing/react/${candidatoID}`, { headers: headers});
+      const response                = await axios.get(`http://89.46.196.60:8443/intervista/react/mod/${id}`       , { headers: headers, params: filtriDaInviare});
+      const candidatoResponse       = await axios.get(`http://89.46.196.60:8443/staffing/react/${candidatoID}`, { headers: headers});
 
       if (typeof candidatoResponse.data === 'object') {
         setCandidatoData([candidatoResponse.data]); 
@@ -102,7 +102,7 @@ function IntervisteList() {
   };
 
     try{
-      const response                = await axios.get(`http://localhost:8080/intervista/react/mod/${id}`       , { headers: headers, params: filtriDaInviare});
+      const response                = await axios.get(`http://89.46.196.60:8443/intervista/react/mod/${id}`       , { headers: headers, params: filtriDaInviare});
       const { record, interviste } = response.data;
 
       if (interviste && Array.isArray(interviste)) {
@@ -160,7 +160,7 @@ navigate("/recruiting");
   const handleDelete = async (id) => {
     try {
 
-        const response = await axios.delete(`http://localhost:8080/intervista/react/elimina/${deleteId}`, { headers: headers});
+        const response = await axios.delete(`http://89.46.196.60:8443/intervista/react/elimina/${deleteId}`, { headers: headers});
         setOpenDialog(false);
 
   

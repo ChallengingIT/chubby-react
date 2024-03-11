@@ -64,9 +64,9 @@ const Keypeople = () => {
         setLoading(true);
         try {
     
-        const response        = await axios.get("http://localhost:8080/keypeople/react/mod",             { headers: headers, params: filtriDaInviare});
-        const responseCliente = await axios.get("http://localhost:8080/aziende/react/select",            { headers: headers });
-        const responseOwner   = await axios.get("http://localhost:8080/aziende/react/owner",             { headers: headers });
+        const response        = await axios.get("http://89.46.196.60:8443/keypeople/react/mod",             { headers: headers, params: filtriDaInviare});
+        const responseCliente = await axios.get("http://89.46.196.60:8443/aziende/react/select",            { headers: headers });
+        const responseOwner   = await axios.get("http://89.46.196.60:8443/aziende/react/owner",             { headers: headers });
 
         if (Array.isArray(responseOwner.data)) {
             setOwnerOptions(responseOwner.data.map((owner, index) => ({ label: owner.descrizione, value: owner.id })));
@@ -114,7 +114,7 @@ const Keypeople = () => {
         };
         
         try {
-            const response        = await axios.get("http://localhost:8080/keypeople/react/mod",             { headers: headers, params: filtriDaInviare});
+            const response        = await axios.get("http://89.46.196.60:8443/keypeople/react/mod",             { headers: headers, params: filtriDaInviare});
             if (Array.isArray(response.data)) {
                 const keypeopleConId = response.data.map((keypeople) => ({...keypeople}));
                 setOriginalKeypeople((prev) => [...prev, ...keypeopleConId]);
@@ -142,7 +142,7 @@ const Keypeople = () => {
         };
         setLoading(true);
         try {
-            const response = await axios.get("http://localhost:8080/keypeople/react/ricerca/mod", { headers: headers, params: filtriDaInviare });
+            const response = await axios.get("http://89.46.196.60:8443/keypeople/react/ricerca/mod", { headers: headers, params: filtriDaInviare });
 
             if (Array.isArray(response.data)) {
                 setOriginalKeypeople(response.data);

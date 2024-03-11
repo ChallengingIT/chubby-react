@@ -61,11 +61,11 @@ import {
             };
 
             try {
-            const responseNeed          = await axios.get("http://localhost:8080/need/react/modificato",         { headers: headers, params: filtriDaInviare });
-            // const responseCliente       = await axios.get("http://localhost:8080/aziende/react/select",          { headers: headers });
-            const responseOwner         = await axios.get("http://localhost:8080/aziende/react/owner",           { headers: headers });
-            const responseTipologia     = await axios.get("http://localhost:8080/need/react/tipologia",          { headers: headers });
-            const responseStato         = await axios.get("http://localhost:8080/need/react/stato",              { headers: headers });
+            const responseNeed          = await axios.get("http://89.46.196.60:8443/need/react/modificato",         { headers: headers, params: filtriDaInviare });
+            // const responseCliente       = await axios.get("http://89.46.196.60:8443/aziende/react/select",          { headers: headers });
+            const responseOwner         = await axios.get("http://89.46.196.60:8443/aziende/react/owner",           { headers: headers });
+            const responseTipologia     = await axios.get("http://89.46.196.60:8443/need/react/tipologia",          { headers: headers });
+            const responseStato         = await axios.get("http://89.46.196.60:8443/need/react/stato",              { headers: headers });
 
 
             if (Array.isArray(responseOwner.data)) {
@@ -119,7 +119,7 @@ import {
                 quantita: 10
             };
             try {
-                const responsePaginazione   = await axios.get("http://localhost:8080/need/react/modificato",     { headers: headers , params: filtriDaInviare });
+                const responsePaginazione   = await axios.get("http://89.46.196.60:8443/need/react/modificato",     { headers: headers , params: filtriDaInviare });
                 if (Array.isArray(responsePaginazione.data)) {
                     const needConId = responsePaginazione.data.map((need) => ({...need }));
                     setOriginalNeed((prev) => [...prev, ...needConId]);
@@ -147,7 +147,7 @@ import {
             };
             setLoading(true);
             try {
-                const response = await axios.get("http://localhost:8080/need/react/ricerca/modificato", { headers: headers, params: filtriDaInviare });
+                const response = await axios.get("http://89.46.196.60:8443/need/react/ricerca/modificato", { headers: headers, params: filtriDaInviare });
 
                 if (Array.isArray(response.data)) {
                     setOriginalNeed(response.data);
@@ -202,7 +202,7 @@ import {
         //funzione per cancellare il need
         const handleDelete = async (id) => {
             try{
-                const responseDelete = await axios.delete(`http://localhost:8080/need/react/elimina/${id}`, {headers: headers});
+                const responseDelete = await axios.delete(`http://89.46.196.60:8443/need/react/elimina/${id}`, {headers: headers});
                 await fetchData(0);
             } catch(error) {
                 console.error("Errore durante la cancellazione: ", error);

@@ -30,7 +30,7 @@ import AggiungiIntervista                                              from './p
 import ModificaIntervista                                              from './pages/ModificaPagine/ModificaInterviste.jsx';
 import AggiungiNeedID                                                  from './pages/AggiungiPagine/AggiungiNeedID.jsx';
 import ModificaAziende                                                 from './pages/ModificaPagine/ModificaAziende.jsx';
-import Keypeople                                                       from './pages/Keypeople.jsx';
+import Keypeople                                                       from './pages/KeyPeople.jsx';
 import Hiring                                                          from './pages/Hiring.jsx';
 
 import NeedLife from './components/NeedLife.jsx';
