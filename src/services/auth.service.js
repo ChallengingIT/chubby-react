@@ -2,11 +2,9 @@ import axios from "axios";
 
 
 
-const API_URL = "http://89.46.196.60:8443/api/auth/";
-const API_LOGOUT = "http://89.46.196.60:8443/logout";
+const API_URL = "http://localhost:8080/api/auth/";
+const API_LOGOUT = "http://localhost:8080/logout";
 
-
-// Configura gli headers della richiesta con l'Authorization token
 
 
 class AuthService {
@@ -27,7 +25,6 @@ class AuthService {
 
   logout() {
     
-    // Recupera l'accessToken da localStorage
     const user = JSON.parse(localStorage.getItem("user"));
     const accessToken = user?.accessToken;
 

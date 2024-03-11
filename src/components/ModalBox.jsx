@@ -183,11 +183,11 @@ const ModalBox = ({
               type="submit"
               style={{
                 fontWeight: "bold",
-                backgroundColor: "#14D928",
-                color: "black",
+                backgroundColor: "#00853C",
+                color: "white",
                 "&:hover": {
-                  backgroundColor: "#14D928",
-                  color: "black",
+                  backgroundColor: "#00853C",
+                  color: "white",
                   transform: "scale(1.05)",
                 },
               }}

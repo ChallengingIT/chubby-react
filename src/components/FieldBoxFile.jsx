@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import * as Yup from 'yup';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+
 
 import {
     Grid,
@@ -38,7 +37,6 @@ const FieldBoxFile = ({
     title = "",
     campiObbligatori,
     skillsOptions,
-    skills2Options,
     idCandidato,
     idStaff
 }) => {
@@ -48,7 +46,7 @@ const FieldBoxFile = ({
     const [ fileCV,               setFileCV             ] = useState(null);
     const [ fileCF,               setFileCF             ] = useState(null);
     const [ fileAllegati,         setFileAllegati       ] = useState(initialValues.files || []);
-    const [ fileMultipli,         setFileMultipli       ] = useState([]);
+    const [ fileMultipli,                               ] = useState([]);
     const [ openDialog,           setOpenDialog         ] = useState(false);
     const [ selectedFileId,       setSelectedFileId     ] = useState(null);
 
@@ -84,14 +82,8 @@ const FieldBoxFile = ({
         setValues({ ...values, skills: selectedSkills }); 
     };
     
-
-    const handleChangeSkills2 = (event) => {
-        const selectedSkills2 = event.target ? event.target.value : [];
-        setValues({ ...values, skills2: selectedSkills2 });
-    };
-
     const handleChange = (name) => (event) => {
-        const { type, value } = event.target;
+        const { value } = event.target;
         let fileValue = value;
         setValues({ ...values, [name]: fileValue });
         if (errors[name]) {
@@ -134,9 +126,10 @@ const FieldBoxFile = ({
     };
 
     const [isWeekPickerVisible, setIsWeekPickerVisible] = useState(false);
-    const handleWeekPickerClick = () => {
-        setIsWeekPickerVisible(!isWeekPickerVisible);
-    };
+
+    // const handleWeekPickerClick = () => {
+    //     setIsWeekPickerVisible(!isWeekPickerVisible);
+    // };
     const weekPickerRef = useRef(null);
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -160,7 +153,7 @@ const FieldBoxFile = ({
 
 
     const handleDownloadCVCF = async (fileId, fileDescrizione) => {
-        const url = `http://89.46.196.60:8443/files/react/download/file/${fileId}`;
+        const url = `http://89.46.67.198:8443/files/react/download/file/${fileId}`;
         try {
             const response = await axios({
                 method: 'GET',
@@ -186,7 +179,7 @@ const FieldBoxFile = ({
         const handleDeleteCVCF = async (fileId, idCandidato, fileType) => {
             const idc = idCandidato;
             try {
-            const response = await axios.delete(`http://89.46.196.60:8443/files/react/elimina/file/candidato/${fileId}/${idc}`, { headers: headers })
+            const response = await axios.delete(`http://89.46.67.198:8443/files/react/elimina/file/candidato/${fileId}/${idc}`, { headers: headers })
             if(response.data === "OK") {
             } else {
                 console.error("Errore dal server: ", response.data);
@@ -222,7 +215,7 @@ const FieldBoxFile = ({
 
 
         const handleDownloadAllegati = async (fileID, fileDescrizione) => {
-            const url = `http://89.46.196.60:8443/files/react/download/file/${fileID}`;
+            const url = `http://89.46.67.198:8443/files/react/download/file/${fileID}`;
             try {
                 const response = await axios({
                     method: 'GET',
@@ -247,7 +240,7 @@ const FieldBoxFile = ({
             
             try {
                 const ids = idStaff; 
-                const url = `http://89.46.196.60:8443/files/react/elimina/file/${fileId}/${ids}`;
+                const url = `http://89.46.67.198:8443/files/react/elimina/file/${fileId}/${ids}`;
         
                 const responseDeleteFile = await axios.delete(url, { headers: headers });
                 if(responseDeleteFile.status === 200 || responseDeleteFile.data === "OK") {
@@ -287,17 +280,17 @@ const FieldBoxFile = ({
 
 
 
-        //in aggiungi dipendente
-        const handleChangeFileMultipli = (event) => {
-            const newFiles = event.target.files;
-            if (newFiles && newFiles.length > 0) {
-                setFileMultipli([...fileMultipli, ...Array.from(newFiles)]);
-            }
-        };
+        // //in aggiungi dipendente
+        // const handleChangeFileMultipli = (event) => {
+        //     const newFiles = event.target.files;
+        //     if (newFiles && newFiles.length > 0) {
+        //         setFileMultipli([...fileMultipli, ...Array.from(newFiles)]);
+        //     }
+        // };
     
-        const handleDeleteFileMultipli = (index) => {
-            setFileMultipli(fileMultipli.filter((_, i) => i !== index));
-        };
+        // const handleDeleteFileMultipli = (index) => {
+        //     setFileMultipli(fileMultipli.filter((_, i) => i !== index));
+        // };
 
 
 
@@ -432,48 +425,7 @@ const FieldBoxFile = ({
                     </MenuItem>
                 ))}
                 </Select>
-                {errors.skills && <FormHelperText>{errors.skills2}</FormHelperText>}
-            </FormControl>
-            );
-
-        case "multipleSelectSkill2":
-            return (
-            <FormControl
-                fullWidth
-                error={!!errors[field.name]}
-                disabled={isDisabled}
-            >
-                <InputLabel>{field.label}</InputLabel>
-                <Select
-                multiple
-                name="skills2"
-                value={values.skills2 || []}
-                onChange={handleChangeSkills2}
-                disabled={field.disabled}
-                style={{ width: "100%", textAlign: "left" }}
-                renderValue={(selected) =>
-                    selected
-                    .map((skillId) => {
-                        const foundOption = skills2Options.find(
-                        (option) => option.value === skillId
-                        );
-                        return foundOption ? foundOption.label : "";
-                    })
-                    .join(", ")
-                }
-                >
-                {skills2Options.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                    <Checkbox
-                        checked={(values.skills2 || []).indexOf(option.value) > -1}
-                    />
-                    <ListItemText primary={option.label} />
-                    </MenuItem>
-                ))}
-                </Select>
-                {errors.skills2 && (
-                <FormHelperText>{errors.skills2}</FormHelperText>
-                )}
+                {errors.skills && <FormHelperText>{errors.skills}</FormHelperText>}
             </FormControl>
             );
 
@@ -857,17 +809,23 @@ const FieldBoxFile = ({
     };
 
     return (
-        <div
-        style={{
-            display: "flex",
-            flexDirection: "column",
-            width: "80%",
-            margin: "auto",
-            padding: "30px",
-            backgroundColor: "white",
-            borderRadius: "20px",
-            justifyItems: "center",
-            boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.5)",
+        <Box
+        // sx={{
+        //     display: "flex",
+        //     flexDirection: "column",
+        //     width: "87vw",
+        //     height: 'auto',
+        //     padding: "2em",
+        //     backgroundColor: "white",
+        //     borderRadius: "20px",
+        //     justifyItems: "center",
+        //     boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.5)",
+        // }}
+        sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            margin: 'auto'
         }}
         >
             <Dialog
@@ -908,10 +866,10 @@ const FieldBoxFile = ({
         }} 
         autoFocus 
         sx={{
-            backgroundColor: '#14D928',
+            backgroundColor: '#00853C',
             color: 'black',
             "&:hover": {
-                backgroundColor: '#14D928',
+                backgroundColor: '#00853C',
             }
         }}>
             Elimina
@@ -962,13 +920,13 @@ const FieldBoxFile = ({
                 variant="contained"
                 type="submit"
                 style={{
-                    backgroundColor: "#14D928",
-                    color: "black",
+                    backgroundColor: "#00853C",
+                    color: "white",
                     fontWeight: "bold",
 
                     "&:hover": {
-                    backgroundColor: "#14D928",
-                    color: "black",
+                    backgroundColor: "#00853C",
+                    color: "white",
                     transform: "scale(1.05)",
                     },
                 }}
@@ -978,7 +936,7 @@ const FieldBoxFile = ({
             )}
             </div>
         </form>
-        </div>
+        </Box>
     );
     };
 

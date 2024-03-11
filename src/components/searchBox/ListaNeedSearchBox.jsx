@@ -8,7 +8,6 @@ import { Box, TextField }                   from "@mui/material";
 import { format, getWeek }                  from 'date-fns';
 import itLocale                             from 'date-fns/locale/it';
 
-import "../../styles/Need.css";
 
 
 
@@ -65,9 +64,9 @@ const handleKeyDown = (e) => {
     const fetchData = async () => {
       try {
 
-        const responseOwner             = await axios.get("http://89.46.196.60:8443/aziende/react/owner", { headers: headers});
-        const responseTipologia         = await axios.get("http://89.46.196.60:8443/need/react/tipologia", { headers: headers});
-        const responseStato             = await axios.get("http://89.46.196.60:8443/need/react/stato", { headers: headers});
+        const responseOwner             = await axios.get("http://89.46.67.198:8443/aziende/react/owner",  { headers: headers});
+        const responseTipologia         = await axios.get("http://89.46.67.198:8443/need/react/tipologia", { headers: headers});
+        const responseStato             = await axios.get("http://89.46.67.198:8443/need/react/stato",     { headers: headers});
 
         if (Array.isArray(responseStato.data)) {
             setStatoOptions(responseStato.data.map((stato, index) => ({ label: stato.descrizione, value: stato.id })));
@@ -136,7 +135,6 @@ const handleKeyDown = (e) => {
 
 
   const uniformStyle = {
-    height: '40px',
     borderRadius: '40px',
     fontSize: '0.8rem',
     textAlign: 'start',
@@ -159,6 +157,8 @@ const handleKeyDown = (e) => {
                     fontSize: "0.8rem",
                     textAlign: "start",
                     color: "#757575",
+                    height: '2.4em'
+
                   }}
                   native
                   onKeyDown={handleKeyDown}
@@ -182,6 +182,8 @@ const handleKeyDown = (e) => {
                     fontSize: "0.8rem",
                     textAlign: "start",
                     color: "#757575",
+                    height: '2.4em'
+
                   }}
                   native
                   onKeyDown={handleKeyDown}
@@ -210,14 +212,13 @@ const handleKeyDown = (e) => {
                   onChange={(e) => setSearchTerm({ ...searchTerm, priorita: e.target.value })}
                   InputProps={{
                     style: {
-                        height: "40px",
+                        height: "2.2em",
                       borderRadius: "40px", 
                       textAlign: "start",
                       color: "black",
                       display: 'flex',
                       fontSize: '0.9rem',
                       justifyContent: 'center',
-                      marginTop: '-2%'
                     }
                   }}
                 />
@@ -231,6 +232,8 @@ const handleKeyDown = (e) => {
                     fontSize: "0.8rem",
                     textAlign: "start",
                     color: "#757575",
+                    height: '2.4em'
+
                   }}
                   native
                   onKeyDown={handleKeyDown}
@@ -248,71 +251,70 @@ const handleKeyDown = (e) => {
         
             <TextField
               style={uniformStyle}
-  type="week"
-//   label="week"
-  value={selectedWeek}
-  onChange={handleWeekChange}
-  InputLabelProps={{ shrink: true}}
-  variant="outlined"
-  onKeyDown={handleKeyDown}
-  InputProps={{
-    style: {
-        height: "40px",
-      borderRadius: "40px", 
-      fontSize: '0.9rem',
-      textAlign: "start",
-      color: "#757575",
-      display: 'flex',
-      justifyContent: 'center',
-      marginTop: '-2%'
-    }
-  }}
-/>
+              type="week"
+              value={selectedWeek}
+              onChange={handleWeekChange}
+              InputLabelProps={{ shrink: true}}
+              variant="outlined"
+              onKeyDown={handleKeyDown}
+              InputProps={{
+                style: {
+                    height: "2.2em",
+                  borderRadius: "40px", 
+                  fontSize: '0.9rem',
+                  textAlign: "start",
+                  color: "#757575",
+                  display: 'flex',
+                  justifyContent: 'center',
+                  marginTop: '-2%'
+                }
+              }}
+            />
 
             {/* Quarta colonna */}
                 
             <Box style={{ display: 'flex', justifyContent: 'flex-end', gap: '5%', marginLeft: '10px', marginTop: '-2%' }}>
-        <Button
-          className="button-search"
-          variant="contained"
-          onClick={handleSearch}
-          sx={{
-            width: '2rem',
-            height: "40px",
-            backgroundColor: "#14D928",
-            color: "black",
-            borderRadius: "10px",
-            fontSize: "0.8rem",
-            fontWeight: "bolder",
-            "&:hover": {
-              backgroundColor: "#14D928",
-              color: "black",
-              transform: "scale(1.05)",
-            },
-          }}
-        >
-          Cerca
-        </Button>
-        <Button
-          className="ripristina-link"
-          onClick={handleReset}
-          sx={{
-            width: '2rem',
-            color: 'white', 
-            backgroundColor: 'black',
-            height: "40px",
-            borderRadius: "10px",
-            fontSize: "0.8rem",
-            fontWeight: "bolder",
-            "&:hover": {
-              backgroundColor: "black",
-              color: "white",
-              transform: "scale(1.05)",
-            },
-          }}>
-          Reset
-        </Button>
-      </Box>
+              <Button
+                className="button-search"
+                variant="contained"
+                onClick={handleSearch}
+                sx={{
+                  width: '2rem',
+                  height: "2em",
+                  backgroundColor: "#00853C",
+                  color: "white",
+                  borderRadius: "10px",
+                  fontSize: "0.8rem",
+                  fontWeight: "bolder",
+                  "&:hover": {
+                    backgroundColor: "#00853C",
+                    color: "white",
+                    transform: "scale(1.05)",
+                  },
+                }}
+              >
+                Cerca
+              </Button>
+              <Button
+                className="ripristina-link"
+                onClick={handleReset}
+                sx={{
+                  width: '2rem',
+                  color: 'white', 
+                  backgroundColor: 'black',
+                  height: "2em",
+                  borderRadius: "10px",
+                  fontSize: "0.8rem",
+                  fontWeight: "bolder",
+                  "&:hover": {
+                    backgroundColor: "black",
+                    color: "white",
+                    transform: "scale(1.05)",
+                  },
+                }}>
+                Reset
+              </Button>
+            </Box>
     </Box>
   );
 };

@@ -1,296 +1,419 @@
-import React, { useState, useEffect }       from "react";
-import { useNavigate }                      from "react-router-dom";
-import { Link }                             from "react-router-dom";
-import axios                                from "axios";
-import Sidebar                              from "../components/Sidebar";
-import MyDataGrid                           from "../components/MyDataGrid";
-import MyButton                             from '../components/MyButton.jsx';
-import EditButton                           from "../components/button/EditButton.jsx";
-import DeleteButton                         from "../components/button/DeleteButton.jsx";
-import ListButton                           from "../components/button/ListButton.jsx";
-import SmileGreenIcon                       from "../components/button/SmileGreenIcon.jsx";
-import SmileOrangeIcon                      from "../components/button/SmileOrangeIcon.jsx";
-import SmileRedIcon                         from "../components/button/SmileRedIcon.jsx";
-import AziendeSearchBox                     from "../components/searchBox/AziendeSearchBox.jsx";
-import SidebarTorchy from "../components/SidebarTorchy.jsx";
+import React, { useState, useEffect }                   from 'react';
+import { useNavigate  }                                 from 'react-router-dom';
+import axios                                            from 'axios';
+import SearchIcon                                       from '@mui/icons-material/Search';
+import CloseIcon                                        from '@mui/icons-material/Close';
+import AziendeCard                                      from '../components/card/AziendeCard';
+import InfiniteScroll                                   from "react-infinite-scroll-component";
+import AggiungiBox                                      from '../components/AggiungiBox';   
+import RicercheAziende                                  from '../components/ricerche/RicercheAziende';    
 
+import { 
+    Box,
+    Grid,
+    CircularProgress,
+    } from '@mui/material';
 
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  Button,
-  Box,
-  Typography
-} from '@mui/material';
-import { set } from "date-fns";
-import Sidebar2 from "../components/componentiBackup/Sidebar2.jsx";
-import MyDataGridPerc from '../components/MyDataGridPerc.jsx'
 
 const Aziende = () => {
 
+    const navigate = useNavigate();
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const sidebarWidth = isSidebarOpen ? "13.5vw" : "3.5vw";
-  const contentWidth = `calc(100vw - ${sidebarWidth})`;
-
-
-  const [ aziende,                    setAziende                ] = useState([]);
-  const [ originalAziende,            setOriginalAziende        ] = useState([]);
-  const [ searchText,                 setSearchText             ] = useState("");
-  const [ filteredAziende,            setFilteredAziende        ] = useState([]);
-  const [ openDialog,                 setOpenDialog             ] = useState(false);
-  const [ deleteId,                   setDeleteId               ] = useState(null);
-  const [ content,                    setContent                ] = useState("");
-
-  const user = JSON.parse(localStorage.getItem("user"));
-  const accessToken = user?.accessToken;
-
-  const headers = {
-    Authorization: `Bearer ${accessToken}`
-  };
+    const [ originalAziende,   setOriginalAziende ] = useState([]);
+    const [ loading,           setLoading         ] = useState(false);
+    const [                    setAlert           ] = useState(false);
 
 
 
+    //stati ricerche
+    // const [ clienteOptions,             setClienteOptions             ] = useState([]);
+    const [ ownerOptions,               setOwnerOptions               ] = useState([]);
+    const [ provinceOptions,            setProvinceOptions            ] = useState([]);
+    const [ filtri,                     setFiltri                     ] = useState({
+        denominazione: '',
+        tipologia: '',
+        stato: '',
+        owner: ''
+    });
+
+    //stato paginazione
+    const [ pagina,                 setPagina       ] = useState(0);
+    const [ hasMore,                setHasMore      ] = useState(true);
+
+    const quantita = 10;
 
 
-const fetchData = async () => {
-  try {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const accessToken = user?.accessToken;
 
-    const response = await axios.get("http://89.46.196.60:8443/aziende/react/mod", { headers: headers });
-
-    if (Array.isArray(response.data)) {
-      const aziendeConId = response.data.map((aziende) => ({ ...aziende }));
-      setFilteredAziende(aziendeConId);
-      setOriginalAziende(aziendeConId);
-    } else {
-      console.error("I dati ottenuti non sono nel formato Array:", response.data);
-    }
-  } catch (error) {
-    console.error("Errore durante il recupero dei dati:", error);
-  }
-};
-
-
-
-
-
-
-
-// const fetchData = async () => {
-//   try {
-
-//     const savedSearchTerms = JSON.parse(localStorage.getItem("searchTerms"));
-//     console.log("savedSearchTerms", savedSearchTerms);
-
-//     let url = "http://89.46.196.60:8443/aziende/react";
-
-//     if (savedSearchTerms && Object.keys(savedSearchTerms).length > 0) {
-//       const params = new URLSearchParams();
-
-//       if (savedSearchTerms.status) params.append("stato", savedSearchTerms.status);
-//       if (savedSearchTerms.denominazione) params.append("ragione", savedSearchTerms.denominazione);
-//       if (savedSearchTerms.owner) params.append("owner", savedSearchTerms.owner);
-//       if (savedSearchTerms.tipologia) params.append("tipologia", savedSearchTerms.tipologia);
+    const headers = {
+        Authorization: `Bearer ${accessToken}`
+    };
 
 
 
-//       console.log("sto chiamando l'url con la ricerca: ", url, savedSearchTerms);
-//       url += `/ricerca/mod?${params.toString()}`;
-//     } else {
-//       console.log("sto chiamando l'url senza la ricerca: ", url);
+    const fetchData = async() => {
+        setLoading(true);
+        const filtriDaInviare = {
+            ragione: filtri.denominazione || null,
+            tipologia: filtri.tipologia || null,
+            owner: filtri.owner || null,
+            stato: filtri.stato || null,
+            pagina: 0,
+            quantita: 10
+        };
+            try {
+            const responseAziende   = await axios.get("http://localhost:8080/aziende/react/mod",     { headers: headers , params: filtriDaInviare });
+            // const responseCliente   = await axios.get("http://localhost:8080/aziende/react/select",  { headers });
+            const responseOwner     = await axios.get("http://localhost:8080/aziende/react/owner",   { headers });
+            const provinceResponse = await axios.get("http://localhost:8080/aziende/react/province", { headers: headers });
 
-//       url += "/mod";
-//     }
-//     const response = await axios.get(url, { headers: headers });
+            if (Array.isArray(responseOwner.data)) {
+            setOwnerOptions(responseOwner.data.map((owner, index) => ({ label: owner.descrizione, value: owner.id })));
+            } else {
+            console.error("I dati ottenuti non sono nel formato Array:", responseOwner.data);
+            } 
+            if (Array.isArray(provinceResponse.data)) {
+                const provinceOptions = provinceResponse.data.map((province) => ({
+                    label: province.nomeProvince,
+                    value: province.nomeProvince,
+                }));
+                setProvinceOptions(provinceOptions);
+    
+    
+            } else {
+                console.error("I dati ottenuti non sono nel formato Array:", provinceResponse.data);
+            }
+        
+            if (Array.isArray(responseAziende.data)) {
+                const aziendeConId = responseAziende.data
+                .map((aziende) => ({ ...aziende }));
+                setOriginalAziende(aziendeConId);
+                setHasMore(aziendeConId.length >= quantita); 
+                // setPagina(pagina + 1);
+            } else {
+                console.error("I dati ottenuti non sono nel formato Array:", responseAziende.data);
+            }
+            setLoading(false);
+            } catch (error) {
+            console.error("Errore durante il recupero dei dati:", error);
+            }
+        };
 
-//     // const response = await axios.get("http://89.46.196.60:8443/aziende/react/mod", { headers: headers });
+        useEffect(() => {
+            fetchData();
+            // eslint-disable-next-line
+        }, []); 
 
-//     if (Array.isArray(response.data)) {
-//       const aziendeConId = response.data.map((aziende) => ({ ...aziende }));
-//       setFilteredAziende(aziendeConId);
-//       setOriginalAziende(aziendeConId);
-//     } else {
-//       console.error("I dati ottenuti non sono nel formato Array:", response.data);
-//     }
-//   } catch (error) {
-//     console.error("Errore durante il recupero dei dati:", error);
-//   }
-// };
+        //funzione per la paginazione
+        const fetchMoreData = async () => {
+            const paginaSuccessiva = pagina + 1;
+            const filtriDaInviare = {
+                ragione: filtri.denominazione || null,
+                tipologia: filtri.tipologia || null,
+                owner: filtri.owner || null,
+                stato: filtri.stato || null,
+                pagina: paginaSuccessiva,
+                quantita: quantita
+            };
+            try {
+                const responsePaginazione   = await axios.get("http://localhost:8080/aziende/react/mod",     { headers: headers , params: filtriDaInviare });
+                if (Array.isArray(responsePaginazione.data)) {
+                    const aziendeConId = responsePaginazione.data
+                    .map((aziende) => ({ ...aziende }));
+                    setOriginalAziende((prev) => [...prev, ...aziendeConId]);
+                    setHasMore(responsePaginazione.data.length >= quantita);  
+                    } else {
+                    console.error("I dati ottenuti non sono nel formato Array:", responsePaginazione.data);
+                }
+                setLoading(false);
+                } catch (error) {
+                console.error("Errore durante il recupero dei dati:", error);
+                }
+                setPagina((prevPagina) => prevPagina + 1);
+            };
 
-
-useEffect(() => {
-  fetchData();
-}, []);
-
-
-
-
-
-
-
-
-
-
-  const openDeleteDialog = (id) => {
-  setDeleteId(id);
-  setOpenDialog(true);
-  };
-
-  const navigate = useNavigate();
-
-  const navigateToAggiungiAzienda = () => {
-    navigate("/aziende/aggiungi");
-  };
-
-
-
-  const handleDelete = async () => {
-    try {
-      const response = await axios.delete(`http://89.46.196.60:8443/aziende/react/elimina/${deleteId}`, { headers: headers});
-      setOpenDialog(false);
-      fetchData();
-    } catch (error) {
-      console.error("Errore durante la cancellazione: ", error);
-    }
-  };
-
-
-
-  const getSmileIcon = (params) => {
-    switch (params.row.status) {
-      case 1:
-        return <SmileGreenIcon />;
-      case 2:
-        return <SmileOrangeIcon />;
-      case 3:
-        return <SmileRedIcon />;
-      default:
-        return params.row.status;
-    }
-  };
-
-
-  const columns = [
-    // { field: "id",             headerName: "aziende.id",              width: 70  },
-    { field: "status",         headerName: "Stato",            flex: 0.4,  renderCell: (params) => getSmileIcon(params), },
-    { field: "denominazione",  headerName: "Cliente",   flex: 1.5,  renderCell: (params) => (
-      <Link to={`/aziende/dettaglio/${params.row.id}`} state={{ aziendaData: { ...params.row} }}>
-          {params.row.denominazione}
-        </Link>
-    ),
-  },
-    { field: "owner",          headerName: "Owner",           flex: 0.6, valueGetter: (params) => params.row.owner && params.row.owner.descrizione || "N/A" },
-    { field: "tipologia",      headerName: "Tipologia",       flex: 1 },
-    { field: "citta",          headerName: "Città",           flex: 1 },
-    { field: "paese",          headerName: "Paese",           flex: 1 },
-    { field: "need",           headerName: "Need",            flex: 0.3, renderCell: (params) => (
-    <div>
-    <Link to={`/need/${params.row.id}`} state={{ aziendaData: { ...params.row} }} >
-        <ListButton />
-    </Link>
-    </div>
-    ),
-    },
-    { field: "azioni",         headerName: "Azioni",          flex: 0.5, renderCell: (params) => (
-      <div>
-    <Link to={`/aziende/modifica/${params.row.id}`} state={{ aziendaData: { ...params.row, descrizioneOwner: params.row.descrizioneOwner } }} >
-      <EditButton />
-    </Link>
-        <DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
-      </div>
-    ),
-  },
-  ];
-
-  const handleSearch = (filteredData) => {
-    setFilteredAziende(filteredData);
-  };
-
-  
+            //funzione di ricerca
+            const handleRicerche = async () => {
+        
+                const filtriDaInviare = {
+                    ragione: filtri.denominazione || null,
+                    tipologia: filtri.tipologia || null,
+                    owner: filtri.owner || null,
+                    stato: filtri.stato || null,
+                    pagina: 0,
+                    quantita: quantita
+                };
+                setLoading(true);     
+                try {
+                    const response = await axios.get("http://localhost:8080/aziende/react/ricerca/mod", { headers: headers, params: filtriDaInviare });
+        
+                    if (Array.isArray(response.data)) {
+                        setOriginalAziende(response.data);
+                        setHasMore(response.data.length >= quantita); 
+                        console.log("ho effettuato la ricerca con: ", filtriDaInviare);
+                        } else {
+                        console.error("I dati ottenuti non sono nel formato Array:", response.data);
+                    }
+                } catch (error) {
+                    console.error("Errore durante il recupero dei dati filtrati:", error);
+                } finally {
+                    setLoading(false);
+                }
+            };
 
 
-  const handleReset = () => {
-    setSearchText("");
-    setFilteredAziende(originalAziende);
-  };
+            //funzione cambio stato select
+            const handleFilterChange = (name) => (event) => {
+                const newValue = event.target.value;
+                setFiltri({ ...filtri, [name]: newValue });
+                if (name === 'denominazione' && newValue === '') {
+                    fetchData();
+                } else {
+                    handleRicerche();
+                }
+            };
+
+            useEffect(() => {
+                const { denominazione, ...otherFilters } = filtri;
+                const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x != null);
+            
+                if (filtriHasValues) {
+                    handleRicerche();
+                }
+            }, [filtri.tipologia, filtri.stato, filtri.owner]);
+
+            //funzione di reset dei campi di ricerca
+            const handleReset = async() => {
+                setFiltri({
+                    denominazione: '',
+                    stato: '',
+                    owner:'',
+                    tipologia:''
+                });
+                setPagina(0);
+                setOriginalAziende([]);
+                setHasMore(true);
+        
+                await fetchData(0);
+                };
 
 
-  return (
-    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100vh', width: '100vw', overflow: 'hidden'}}>
-      <SidebarTorchy />
-      <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'hidden', width: '100vw', marginLeft: '10vw'}}>
-      <Typography variant="h4" component="h1" sx={{ marginLeft: '30px', marginTop: '30px', marginBottom: '15px', fontWeight: 'bold', fontSize: '1.8rem'}}>Gestione Aziende</Typography>
-          <MyButton onClick={navigateToAggiungiAzienda}>Aggiungi Azienda</MyButton>
-          <Box sx={{ height: '90vh', marginTop: '20px', width: '100vw'}}>
-          <MyDataGridPerc
-          data={filteredAziende}
-          columns={columns}
-          title="Aziende"
-          getRowId={(row) => row.id}
-            searchBoxComponent={() => (
-              <AziendeSearchBox
-              data={aziende}
-                    onSearch={handleSearch}
+                //funzione per il refresh
+                // const handleRefresh = async () => {
+                //     await fetchData(0);
+                // };
+
+
+        const tipologiaOptions = [
+            { label: "Cliente", value: "CLIENTE" },
+            { label: "Prospect", value: "PROSPECT" },
+            { label: "Ex cliente", value: "EXCLIENTE" }
+        ];
+
+        const statoOptions = [
+            { label: 'Verde', value: '1' },
+            { label: 'Giallo', value:'2'},
+            { label: 'Rosso', value: '3' }
+        ];
+
+
+    // const campiObbligatori = [ "denominazione", "ragioneSociale", "email", "idOwner", "status", "citta", "provincia" ];
+
+    // const fields = [
+    //     { type: 'titleGroups',                  label: 'Informazioni Generali',         xs: 12, sm: 12                      },
+    //     { label: "Nome Azienda*",                   name: "denominazione",            type: "text", xs: 12, sm: 12                             },
+    //     { label: "Ragione Sociale*",                name: "ragioneSociale",           type: "text", xs: 12, sm: 12                             },
+    //     { label: "Email*",                          name: "email",                    type: "text", xs: 12, sm: 12                             },
+    //     { label: "Sito Web",                        name: "sito",                     type: "text", xs: 12, sm: 12                             },
+
+    //     { type: 'titleGroups',                  label: 'Posizione',         xs: 12, sm: 12                      },
+    //     { label: "Città*",                          name: "citta",                    type: "text", xs: 12, sm: 12                             },
+    //     { label: "CAP",                             name: "cap",                      type: "text", xs: 12, sm: 12                             },
+    //     { label: "Paese",                           name: "paese",                    type: "text", xs: 12, sm: 12                             },
+    //     { label: "Provincia*",                      name: "provincia",                type: "select", options: provinceOptions, xs: 12, sm: 12 },
+    //     { label: "Sede Operativa",                  name: "sedeOperativa",            type: "text", xs: 12, sm: 12                             },
+    //     { label: "Sede Legale",                     name: "sedeLegale",               type: "text", xs: 12, sm: 12                             },
+    //     { type: 'titleGroups',                  label: 'altro', xs: 12, sm: 12 },
+    //     { label: "Pec",                             name: "pec",                      type: "text", xs: 12, sm: 12                             },
+    //     { label: "Partita IVA",                     name: "pi",                       type: "text", xs: 12, sm: 12                             },
+    //     { label: "Codice Fiscale",                  name: "cf",                       type: "text", xs: 12, sm: 12                             },
+    //     { label: "Codice Destinatario",             name: "codiceDestinatario",       type: "text", xs: 12, sm: 12                             },
+    //     { label: "Settore di mercato",              name: "settoreMercato",           type: "text", xs: 12, sm: 12                             },
+    //     { label: "Owner*",                          name: "idOwner",                  type: "select", options: ownerOptions, xs: 12, sm: 12    },
+    //     { label: "Tipologia",                       name: "tipologia",                type: "select", options: [
+    //         { value: "Cliente", label: "Cliente" },
+    //         { value: "Prospect", label: "Prospect" },
+    //         { value: "Ex cliente", label: "Ex cliente" }
+    //     ], xs: 12, sm: 12  },
+    //     { label: "Stato*",                          name: "status",                    type: "select", options: [
+    //         { value: 1, label: "Verde" },
+    //         { value: 2, label: "Giallo" },
+    //         { value: 3, label: "Rosso" },
+    //     ], xs: 12, sm: 12  },
+        
+    //     { label: "Note", name: "note", type: "note", xs: 12, sm: 12 },
+    // ];
+
+
+
+    // const handleSubmit = async (values) => {
+    //     const errors    = validateFields(values);
+    //     const hasErrors = Object.keys(errors).length > 0;
+    //     if (!hasErrors) {
+    //         try {
+        
+    //             Object.keys(values).forEach(key => {
+    //             if (!campiObbligatori.includes(key) && !values[key]) {
+    //                 values[key] = null;
+    //             }
+    //             });
+
+    //             const response = await axios.post("http://localhost:8080/aziende/react/salva", values, {
+    //             headers: headers
+    //             });
+    //             if (response.data === "DUPLICATO") {
+    //             setAlert({ open: true, message: "Email già utilizzata!" });
+    //             console.error("L'email fornita è già in uso.");
+    //             return; 
+    //             }
+    //             handleCloseModal(true);
+    //             fetchData();
+    //         } catch (error) {
+    //             console.error("Errore durante il salvataggio:", error);
+    //         }
+    //         }
+    //     };
+        
+    //     const validateFields = (values) => {
+    //         let errors = {};
+    //         campiObbligatori.forEach(field => {
+    //         if (!values[field]) {
+    //             errors[field] = 'Questo campo è obbligatorio';
+    //         }
+    //         });
+    //         return errors;
+    //     };
+
+
+    return(
+        <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto', width: '100vw' }}>
+            <Box sx={{ 
+                flexGrow: 1, 
+                p: 3, 
+                marginLeft: '13.2em', 
+                marginTop: '0.5em', 
+                marginBottom: '0.8em', 
+                marginRight: '0.8em', 
+                backgroundColor: '#FEFCFD', 
+                borderRadius: '10px', 
+                minHeight: '98vh',
+                mt: 1.5 
+            }}>
+                <Box sx={{ 
+                    position: 'sticky', 
+                    top: 0, 
+                    zIndex: 1000
+                }}>
+                    <RicercheAziende
+                    filtri={filtri}
+                    onFilterChange={handleFilterChange}
                     onReset={handleReset}
-                    searchText={searchText}
-                    onSearchTextChange={(text) => setSearchText(text)}
-                    OriginalAziende={originalAziende}/>
-                    )} />
-          </Box>
-    </Box>
+                    tipologiaOptions={tipologiaOptions}
+                    statoOptions={statoOptions}
+                    ownerOptions={ownerOptions}
+                    onRicerche={handleRicerche}
+                    />
+                    </Box>
+                        <InfiniteScroll
+                        dataLength={originalAziende.length}
+                        next={fetchMoreData}
+                        hasMore={hasMore}
+                        loader={'Caricamento in corso...'}
+                        >
+
+                            {/* Main Content Area */}
+                <Grid container spacing={2} sx={{ mt: 1, mb: 4}}>
+                    { loading ? (
+                        <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            height: '100%'
+                        }}>
+                            <CircularProgress sx={{ color: '#00853C'}}/> 
+                        </Box>
+                    ) : (
+                        originalAziende.map((aziende, index) => (
+                            <Grid item xs={12} md={6} key={index}>
+                                <AziendeCard
+                                valori={aziende}
+                                />
+                            </Grid>
+                        ))
+                    )
+                    }
+                    </Grid>
+                    </InfiniteScroll>
+                    </Box>
+{/* 
+                <Modal  
+                        open={openModal}
+                        onClose={(event, reason) => {
+                            if (reason !== 'backdropClick') {
+                                handleCloseModal();
+                            }   
+                        }}
+                        aria-labelledby="modal-title"
+                        aria-describedby="modal-description"
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}>
+                        <Box sx={{ 
+                            display: 'flex', 
+                            flexDirection: 'column', 
+                            backgroundColor: 'white', 
+                            width: '40vw', 
+                            height: '70vh', 
+                            borderRadius: '20px', 
+                            overflow: 'hidden',
+                            // border: '2px solid #00853C'
+
+                        }}>
+                            <Box sx={{ 
+                                display: 'flex', 
+                                justifyContent: 'space-between', 
+                                alignItems: 'center', 
+                                m: 2 
+                            }}>
+                                <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#00853C'}}>
+                                    Aggiungi Azienda
+                                </Typography>
+                                <IconButton onClick={handleCloseModal}>
+                                    <CloseIcon />
+                                </IconButton>
+                            </Box>
+                            <Box sx={{ overflowY: 'auto' }}>
+                                <Grid container direction="column" spacing={1} sx={{ pl: 2, pr: 2 }}>
+                                    <Grid item>
+                                        <AggiungiBox
+                                        fields={fields}
+                                        campiObbligatori={campiObbligatori}
+                                        title=''
+                                        onSave={handleSubmit}
+                                        />
 
 
-      <Dialog
-        open={openDialog}
-        onClose={() => setOpenDialog(false)}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{"Conferma Eliminazione"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Sei sicuro di voler eliminare questa azienda?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-          onClick={() => setOpenDialog(false)}
-          color="primary"
-          style={{
-              backgroundColor: "black",
-              color: "white",
-              "&:hover": {
-                backgroundColor: "black",
-                transform: "scale(1.05)",
-              },
-            }}>
-            Annulla
-          </Button>
-          <Button
-            onClick={handleDelete}
-            color="primary"
-            variant="contained"
-            type="submit"
-            style={{
-              backgroundColor: "#14D928",
-              color: "black",
-              "&:hover": {
-                backgroundColor: "#14D928",
-                color: "black",
-                transform: "scale(1.05)",
-              },
-            }}>
-            Conferma
-          </Button>
-        </DialogActions>
-      </Dialog>
+                                    </Grid>
+                                </Grid>
+                            </Box>
+                            </Box>
+                        </Modal> */}
 
-    </Box>  );
+                    </Box>
+    );
 };
-
 export default Aziende;
-
-

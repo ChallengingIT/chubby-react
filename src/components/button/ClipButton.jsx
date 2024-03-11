@@ -22,7 +22,7 @@ function ClipButton({ onClick, idFile, fileDescrizione }) {
             onClick={handleDownload} 
             sx={{
               marginRight: '10%',
-              backgroundColor: '#14D928',
+              backgroundColor: '#00853C',
               color: 'black',
               borderRadius: '50%',
               minWidth: '40px',
@@ -36,7 +36,7 @@ function ClipButton({ onClick, idFile, fileDescrizione }) {
                 justifyContent: 'center'
               },
               '&:hover': {
-                backgroundColor: '#14D928',
+                backgroundColor: '#00853C',
                 transform:'scale(1.05)',
                 color: 'black',
                 cursor: 'pointer',

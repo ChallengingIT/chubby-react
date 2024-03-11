@@ -1,222 +1,264 @@
-import React, { useEffect, useState }                 from "react";
-import { useNavigate }                                from "react-router-dom";
-import { Link }                                       from "react-router-dom";
-import axios                                          from "axios";
-import Sidebar                                        from "../components/Sidebar";
-import MyDataGrid                                     from "../components/MyDataGrid";
-import MyButton                                       from '../components/MyButton.jsx';
-import DeleteButton                                   from "../components/button/DeleteButton.jsx";
-import EditButton                                     from "../components/button/EditButton.jsx";
-import SmileGreenIcon                                 from "../components/button/SmileGreenIcon.jsx";
-import SmileOrangeIcon                                from "../components/button/SmileOrangeIcon.jsx";
-import SmileRedIcon                                   from "../components/button/SmileRedIcon.jsx";
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  Button,
-  Box,
-  Typography,
+import React, { useState, useEffect }                   from 'react';
+import { useNavigate  }                                 from 'react-router-dom';
+import axios                                            from 'axios';
+import SearchIcon                                       from '@mui/icons-material/Search';
+// import BusinessCenterIcon                               from '@mui/icons-material/BusinessCenter'; //aziende
+import CloseIcon                                        from '@mui/icons-material/Close';
+import KeypeopleCard                                    from '../components/card/KeypeopleCard';
+import InfiniteScroll                                   from 'react-infinite-scroll-component';
+import RicercheKeypeople                                from '../components/ricerche/RicercheKeypeople';
 
-} from '@mui/material';
+import { 
+    Box,
+    Grid,
+    CircularProgress,
+    } from '@mui/material';
 
 
-import KeyPeopleSearchBox from "../components/searchBox/KeyPeopleSearchBox.jsx";
-import MyDataGridPerc from "../components/MyDataGridPerc.jsx";
-import Sidebar2 from "../components/componentiBackup/Sidebar2.jsx";
-import SidebarTorchy from "../components/SidebarTorchy.jsx";
+const Keypeople = () => {
 
-const KeyPeople = () => {
+    const navigate = useNavigate();
 
-  const navigate = useNavigate();
+    const [ originalKeypeople,   setOriginalKeypeople ] = useState([]);
+    const [ loading,             setLoading           ] = useState(false);
 
-  const [ searchText,           setSearchText               ] = useState("");
-  const [ keypeople,            setKeypeople                ] = useState([]);
-  const [ originalKeypeople,    setOriginalKeypeople        ] = useState([]);
-  const [ filteredKeypeople,    setFilteredKeypeople        ] = useState([]);
-  const [ denominazioneAzienda, setDenominazioneAzienda     ] = useState("");
-  const [ openDialog,           setOpenDialog               ] = useState(false);
-  const [ deleteId,             setDeleteId                 ] = useState(null);
 
-    const user = JSON.parse(localStorage.getItem("user"));
+    //stati ricerche
+    const [ clienteOptions,             setClienteOptions             ] = useState([]);
+    const [ ownerOptions,               setOwnerOptions               ] = useState([]);
+    const [ filtri,                     setFiltri                     ] = useState({
+        nome:  '',
+        azienda: '',
+        stato: '',
+        owner:''
+    });
+
+    //stati per la paginazione
+    const [ pagina,             setPagina       ] = useState(0);
+    const [ hasMore,            setHasMore      ] = useState(false);
+    const quantita = 10;
+
+
+    const user = JSON.parse(localStorage.getItem('user'));
     const accessToken = user?.accessToken;
 
     const headers = {
-      Authorization: `Bearer ${accessToken}`
+        Authorization: `Bearer ${accessToken}`
     };
 
-  const fetchData = async () => {
-    try {
 
-      const response = await axios.get("http://89.46.196.60:8443/keypeople/react/mod", { headers: headers});
 
-      if (Array.isArray(response.data)) {
-      const keypeopleConId = response.data.map((keypeople) => ({ ...keypeople}));
-      setOriginalKeypeople(keypeopleConId);
-      setFilteredKeypeople(keypeopleConId);
-      } else {
-        console.error("I dati ottenuti non sono nel formato Array:", response.data);
-      }
-    } catch (error) {
-      console.error("Errore durante il recupero dei dati:", error);
-    }
-  };
 
+    const fetchData = async () => {
+
+        const filtriDaInviare = {
+            nome: filtri.nome || null,
+            azienda: filtri.azienda || null,
+            owner: filtri.owner || null,
+            stato: filtri.stato || null,
+            pagina: 0,
+            quantita: 10
+        };
+
+
+        setLoading(true);
+        try {
+    
+        const response        = await axios.get("http://localhost:8080/keypeople/react/mod",             { headers: headers, params: filtriDaInviare});
+        const responseCliente = await axios.get("http://localhost:8080/aziende/react/select",            { headers: headers });
+        const responseOwner   = await axios.get("http://localhost:8080/aziende/react/owner",             { headers: headers });
+
+        if (Array.isArray(responseOwner.data)) {
+            setOwnerOptions(responseOwner.data.map((owner, index) => ({ label: owner.descrizione, value: owner.id })));
+        } else {
+            console.error("I dati ottenuti non sono nel formato Array:", responseOwner.data);
+        } 
+
+
+        if (Array.isArray(responseCliente.data)) {
+            setClienteOptions(responseCliente.data.map((cliente) => ({ label: cliente.denominazione, value: cliente.id })));
+        } else {
+            console.error("I dati ottenuti non sono nel formato Array:", responseCliente.data);
+        }
+    
+        if (Array.isArray(response.data)) {
+            const keypeopleConId = response.data.map((keypeople) => ({ ...keypeople}));
+            setOriginalKeypeople(keypeopleConId);
+            setHasMore(keypeopleConId.length >= quantita);
+        } else {
+            console.error("I dati ottenuti non sono nel formato Array:", response.data);
+        }
+        setLoading(false);
+        } catch (error) {
+            console.error("Errore durante il recupero dei dati:", error);
+        }
+    };
+    
     useEffect(() => {
     fetchData();
-  }, []);
-
-  const openDeleteDialog = (id) => {
-    setDeleteId(id);
-    setOpenDialog(true);
-  };
-
-  const navigateToAggiungiContatto = () => {
-    navigate("/keyPeople/aggiungi");
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      const response = await axios.delete(`http://89.46.196.60:8443/keypeople/react/elimina/${deleteId}`, {headers: headers});
-      setOpenDialog(false);
-      fetchData();
-    } catch (error) {
-      console.error("Errore durante la cancellazione:", error);
-    }
-  };
+    // eslint-disable-next-line
+    }, []);
 
 
-  const getSmileIcon = (params) => {
-    switch (params.row.status) {
-      case "1":
-        return <SmileGreenIcon />;
-      case "2":
-        return <SmileOrangeIcon />;
-      case "3":
-        return <SmileRedIcon />;
-      default:
-        return params.row.status;
-    }
-  };
+    //funzione per la paginazione
+    const fetchMoreData = async () => {
+        const paginaSuccessiva = pagina + 1;
 
-  const columns = [
-    { field: "status", headerName: "Stato", flex: 0.5, renderCell: (params) => getSmileIcon(params) },
-    {
-      field: "nome",   headerName: "Nome",  flex: 1, renderCell: (params) => {
-        return (
-          <div style={{ textAlign: "left" }}>
-            <Link
-              to={`/keyPeople/dettaglio/${params.row.id}`}
-              state={{ keypeopleData: { ...params.row, descrizioneOwner: params.row.descrizioneOwner, denominazioneAzienda: params.row.denominazioneAzienda } }}
-            >
-              {params.row.nome}
-            </Link>
-            {/* <div style={{ textAlign: "start" }}>{params.row.email}</div> */}
-          </div>
-        );
-      },
-    },
-    { field: "email",              headerName: "Email",             flex: 1.5                },
-    { field: "cellulare",          headerName: "Telefono",          flex: 1                },
-    { field: "Owner",              headerName: "Proprietario",      flex: 1,
-    valueGetter: (params) => params.row.owner && params.row.owner.descrizione || "N/A"        },
+        const filtriDaInviare = {
+            nome: filtri.nome || null,
+            azienda: filtri.azienda || null,
+            owner: filtri.owner || null,
+            stato: filtri.stato || null,
+            pagina: paginaSuccessiva,
+            quantita: 10
+        };
+        
+        try {
+            const response        = await axios.get("http://localhost:8080/keypeople/react/mod",             { headers: headers, params: filtriDaInviare});
+            if (Array.isArray(response.data)) {
+                const keypeopleConId = response.data.map((keypeople) => ({...keypeople}));
+                setOriginalKeypeople((prev) => [...prev, ...keypeopleConId]);
+                setHasMore(response.data.length >= quantita);
+            } else {
+                console.error("I dati ottenuti non sonon nel formato Array: ", response.data);
+            }
+        } catch(error) {
+            console.error("Errore durante il recupero dei dati: ", error);
+        }
+        setPagina((prevPagina) => prevPagina + 1);
+    };
 
-{
-  field: "cliente",                headerName: "Azienda",            flex: 1,
-  valueGetter: (params) => params.row.cliente && params.row.cliente.denominazione || "N/A"    },
-    { field: "ruolo",             headerName: "Ruolo",               flex: 1 },
-    { field: "azioni",            headerName: "Azioni",              flex: 0.5,  renderCell: (params) => (
-        <div>
-          <Link to={`/keyPeople/modifica/${params.row.id}`} state={{ keyPeopleData: { ...params.row, descrizioneOwner: params.row.descrizioneOwner, denominazioneAzienda: params.row.denominazioneAzienda } }}>
-  <EditButton />
-</Link>
-<DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
-        </div>
-      ),
-    },
-  ];
+    //funzione per la ricerca
 
-  const handleSearch = (filteredData) => {
-    setFilteredKeypeople(filteredData);
-  };
+    const handleRicerche = async () => {
 
-  const handleReset = () => {
-    setSearchText("");
-    setFilteredKeypeople(originalKeypeople);
-  };
+        const filtriDaInviare = {
+            nome: filtri.nome || null,
+            azienda: filtri.azienda || null,
+            owner: filtri.owner || null,
+            stato: filtri.stato || null,
+            pagina: 0,
+            quantita: 10,
+        };
+        setLoading(true);
+        try {
+            const response = await axios.get("http://localhost:8080/keypeople/react/ricerca/mod", { headers: headers, params: filtriDaInviare });
 
-  return (
-    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100vh', width: '100vw', overflow: 'hidden'}}>
-    <SidebarTorchy />
-    <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'hidden', width: '100vw', marginLeft: '10vw'}}>
-    <Typography variant="h4" component="h1" sx={{ marginLeft: '30px', marginTop: '30px', marginBottom: '15px', fontWeight: 'bold', fontSize: '1.8rem'}}>Gestione Contatto</Typography>
-    <MyButton onClick={navigateToAggiungiContatto}>Aggiungi Contatto</MyButton>
-    <Box sx={{ height: '90vh', marginTop: '20px', width: '100vw'}}>
-    <MyDataGridPerc
-          data={filteredKeypeople} 
-          columns={columns} 
-          title="Key People" 
-          getRowId={(row) => row.id}
-          searchBoxComponent={() => (
-          <KeyPeopleSearchBox
-            data={keypeople}
-            onSearch={handleSearch}
-            onReset={handleReset}
-            onSearchTextChange={(text) => setSearchText(text)}
-            OriginalKeypeople={originalKeypeople}
-          />
-          )}
-          />
-    </Box>
-    </Box>
-    <Dialog
-            open={openDialog}
-            onClose={() => setOpenDialog(false)}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-        >
-    <DialogTitle id="alert-dialog-title">{"Conferma Eliminazione"}</DialogTitle>
-    <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-        Sei sicuro di voler eliminare questo contatto?
-        </DialogContentText>
-    </DialogContent>
-    <DialogActions>
-        <Button
-        onClick={() => setOpenDialog(false)}
-        color="primary"
-        style={{
-          backgroundColor: "black",
-          color: "white",
-          "&:hover": {
-              backgroundColor: "black",
-              transform: "scale(1.05)",
-          },
-          }}
-          >
-        Annulla
-        </Button>
-        <Button onClick={handleDelete}
-        color="primary"
-        variant="contained"
-        type="submit"
-        style={{
-            backgroundColor: "#14D928",
-            color: "black",
-            "&:hover": {
-            backgroundColor: "#14D928",
-            color: "black",
-            transform: "scale(1.05)",
-            },
-        }}>
-        Conferma
-        </Button>
-    </DialogActions>
-    </Dialog>
-    </Box>
-);
+            if (Array.isArray(response.data)) {
+                setOriginalKeypeople(response.data);
+                setHasMore(response.data.length >= quantita);
+            } else {
+                console.error("I dati ottenuti non sono nel formato Array:", response.data);
+            }
+        } catch (error) {
+            console.error("Errore durante il recupero dei dati filtrati:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    //funzione cambio stato select
+    const handleFilterChange = (name) => (event) => {
+        const newValue = event.target.value;
+        setFiltri({ ...filtri, [name]: newValue });
+        if( name === 'nome' && newValue === '') {
+            fetchData();
+        } else {
+            handleRicerche();
+        }
+    };
+
+    useEffect(() => {
+        const { nome, ...otherFilters } = filtri;
+        const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x != null);
+    
+        if (filtriHasValues) {
+            handleRicerche();
+        }
+    }, [filtri.azienda, filtri.stato, filtri.owner]);
+
+    //funzione di reset dei campi di ricerca
+
+    const handleReset = async () => {
+        setFiltri({
+            nome: '',
+            azienda: '',
+            stato: '',
+            owner: ''
+        });
+        setPagina(0);
+        setOriginalKeypeople([]);
+        setHasMore(true);
+        await fetchData(0);
+    };
+
+
+    const statoOptions = [
+        { label: 'Verde', value: '1' },
+        { label: 'Giallo', value: '2' },
+        { label: 'Rosso', value: '3' }
+    ];
+
+
+    return(
+        <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto', width: '100vw' }}>
+            <Box sx={{ 
+                flexGrow: 1, 
+                p: 3, 
+                marginLeft: '13.2em', 
+                marginTop: '0.5em', 
+                marginBottom: '0.8em', 
+                marginRight: '0.8em', 
+                backgroundColor: '#FEFCFD', 
+                borderRadius: '10px', 
+                minHeight: '98vh',
+                mt: 1.5
+            }}>
+                <Box sx={{ 
+                    position: 'sticky', 
+                    top: 0, 
+                    zIndex: 1000, 
+                }}>
+                    <RicercheKeypeople
+                        filtri={filtri}
+                        onFilterChange={handleFilterChange}
+                        onReset={handleReset}
+                        aziendaOptions={clienteOptions}
+                        statoOptions={statoOptions}
+                        ownerOptions={ownerOptions}
+                        onRicerche={handleRicerche}
+                        />
+                </Box>
+                <InfiniteScroll
+                dataLength={originalKeypeople.length}
+                next={fetchMoreData}
+                hasMore={hasMore}
+                loader={'Caricamento in corso...'}
+                >
+                            {/* Main Content Area */}
+                <Grid container spacing={2} sx={{ mt: 1, mb: 4}}>
+                    { loading ? (
+                        <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            height: '100%'
+                        }}>
+                            <CircularProgress /> 
+                        </Box>
+                    ) : (
+                        originalKeypeople.map((keypeople, index) => (
+                            <Grid item xs={12} md={6} key={index}>
+                                <KeypeopleCard valori={keypeople}/>
+                            </Grid>
+                        ))
+                    )
+                    }
+                    </Grid>
+                    </InfiniteScroll>
+                    </Box>
+        </Box>
+    );
 };
-
-export default KeyPeople;
+export default Keypeople;

@@ -1,6 +1,6 @@
-import React from 'react';
-import DeleteIcon from '@mui/icons-material/Delete';
-import Button from "@mui/material/Button";
+import React                    from 'react';
+import DeleteIcon               from '@mui/icons-material/Delete';
+import Button                   from "@mui/material/Button";
 
 function DeleteButton({ onClick, id }) {
   return (
@@ -13,9 +13,9 @@ function DeleteButton({ onClick, id }) {
         backgroundColor: 'black',
         color: 'white',
         borderRadius: '50%', 
-        minWidth: '40px', 
-        width: '40px', 
-        height: '40px', 
+        minWidth: '2em', 
+        width: '2em', 
+        height: '2em', 
         padding: '0', 
         '& .MuiButton-startIcon': { 
           margin: '0', 
@@ -24,7 +24,7 @@ function DeleteButton({ onClick, id }) {
           justifyContent: 'center' 
         },
         '&:hover': {
-          backgroundColor: '',
+          backgroundColor: 'red',
           transform:'scale(1.05)',
           color: 'black',
           cursor: 'pointer',

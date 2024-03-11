@@ -11,7 +11,6 @@ import {
   Box
 } from '@mui/material';
 
-import "../../styles/Need.css";
 
 const NeedMatchSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalAssociabili}) => {
 
@@ -27,7 +26,7 @@ const NeedMatchSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Origi
 
   
 
-  const accessToken = localStorage.getItem("accessToken"); 
+const accessToken = localStorage.getItem("accessToken"); 
 
 const headers = {
   Authorization: `Bearer ${accessToken}`,
@@ -49,8 +48,8 @@ const headers = {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseJobTitle = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia", { headers: headers});
-        const responseTipo     = await axios.get("http://89.46.196.60:8443/staffing/react/tipo"    , { headers: headers});
+        const responseJobTitle = await axios.get("http://89.46.67.198:8443/aziende/react/tipologia", { headers: headers});
+        const responseTipo     = await axios.get("http://89.46.67.198:8443/staffing/react/tipo"    , { headers: headers});
 
         if (Array.isArray(responseJobTitle.data)) {
           setJobTitleOptions(responseJobTitle.data.map((jobTitle) => ({ label: jobTitle.descrizione, value: jobTitle.id })));
@@ -134,7 +133,8 @@ const headers = {
                   border: 'none',
               },
           },
-        display: 'flex', justifyContent: 'center', border: 'solid 1px #c4c4c4', width: '100%', marginTop: '-2%'}}
+        display: 'flex', justifyContent: 'center', border: 'solid 1px #c4c4c4', width: '100%', marginTop: '-2%', height: '1.4em'
+      }}
       type="text"
                   placeholder="Nome"
                   className="text-form"
@@ -147,20 +147,21 @@ const headers = {
 
 
           <TextField 
-      sx={{
-          '& .MuiOutlinedInput-root': {
-              '& fieldset': {
-                  border: 'none', 
-              },
-              '&:hover fieldset': {
-                  border: 'none',
-              },
-              '&.Mui-focused fieldset': {
-                  border: 'none',
-              },
-          },
-        display: 'flex', justifyContent: 'center', border: 'solid 1px #c4c4c4', width: '100%', marginTop: '-2%'}}
-      type="text"
+              sx={{
+                  '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                          border: 'none', 
+                      },
+                      '&:hover fieldset': {
+                          border: 'none',
+                      },
+                      '&.Mui-focused fieldset': {
+                          border: 'none',
+                      },
+                  },
+                display: 'flex', justifyContent: 'center', border: 'solid 1px #c4c4c4', width: '100%', marginTop: '-2%', height: '1.4em'
+              }}
+                  type="text"
                   placeholder="Cognome"
                   className="text-form"
                   id="cognome"
@@ -181,12 +182,14 @@ const headers = {
                 fontSize: "0.8rem",
                 textAlign: "start",
                 color: "#757575",
+                height: '2.4em'
+
               }}
               native
               onKeyDown={handleKeyDown}
             >
               <option value="" disabled>
-                 Job Title
+                Job Title
               </option>
               {jobTitleOptions.map((option) => (
                 <option key={option.value} value={option.label}>
@@ -204,6 +207,8 @@ const headers = {
                 fontSize: "0.8rem",
                 textAlign: "start",
                 color: "#757575",
+                height: '2.4em'
+
               }}
               native
               onKeyDown={handleKeyDown}
@@ -228,6 +233,8 @@ const headers = {
                 fontSize: "0.8rem",
                 textAlign: "start",
                 color: "#757575",
+                height: '2.4em'
+
               }}
               native
               onKeyDown={handleKeyDown}
@@ -251,15 +258,15 @@ const headers = {
           onClick={handleSearch}
           sx={{
             width: '2rem',
-            height: "40px",
-            backgroundColor: "#14D928",
-            color: "black",
+            height: "2em",
+            backgroundColor: "#00853C",
+            color: "white",
             borderRadius: "10px",
             fontSize: "0.8rem",
             fontWeight: "bolder",
             "&:hover": {
-              backgroundColor: "#14D928",
-              color: "black",
+              backgroundColor: "#00853C",
+              color: "white",
               transform: "scale(1.05)",
             },
           }}
@@ -273,7 +280,7 @@ const headers = {
             width: '2rem',
             color: 'white', 
             backgroundColor: 'black',
-            height: "40px",
+            height: "2em",
             borderRadius: "10px",
             fontSize: "0.8rem",
             fontWeight: "bolder",

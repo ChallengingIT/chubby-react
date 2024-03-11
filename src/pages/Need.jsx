@@ -1,340 +1,289 @@
-import React, { useState, useEffect }                             from "react";
-import { Link, useNavigate}                                       from "react-router-dom";
-import axios                                                      from "axios";
-import Sidebar                                                    from "../components/Sidebar";
-import MyDataGrid                                                 from "../components/MyDataGrid";
-import MyButton                                                   from '../components/MyButton.jsx';
-import EditButton                                                 from "../components/button/EditButton.jsx";
-import SearchButton                                               from "../components/button/SearchButton.jsx";
-import PaperButton                                                from "../components/button/PaperButton.jsx";
-import Modal                                                      from 'react-modal';
-import { Button, Select, MenuItem, Box, Typography}               from "@mui/material";
-import NeedSearchBox                                              from "../components/searchBox/NeedSearchBox.jsx";
-import MyDataGridPerc from "../components/MyDataGridPerc.jsx";
-import Sidebar2 from "../components/componentiBackup/Sidebar2.jsx";
+import React, { useState, useEffect }                   from 'react';
+import axios                                            from 'axios';
+// import BusinessCenterIcon                               from '@mui/icons-material/BusinessCenter'; //aziende
+import NeedCard                                         from '../components/card/NeedCard';
+import InfiniteScroll                                   from 'react-infinite-scroll-component';
+import RicercheNeed from '../components/ricerche/RicercheNeed';
+
+import { 
+    Box,
+    Grid,
+    CircularProgress,
+    } from '@mui/material';
+
+    const Need = () => {
 
 
-const Need = () => {
 
-  const navigate = useNavigate();
+        const [ originalNeed,              setOriginalNeed          ] = useState([]);
+        const [ loading,                   setLoading               ] = useState(false);
+        const [                            setAlert                 ] = useState(false);
 
-  const [ need,                     setNeed                       ] = useState([]);
-  const [ originalNeed,             setOriginalNeed               ] = useState([]);
-  const [ filteredNeed,             setFilteredNeed               ] = useState([]);
-  const [ searchText,               setSearchText                 ] = useState("");
-  const [ selectedNeed,             setSelectedNeed               ] = useState(null);
-  const [ newStato,                 setNewStato                   ] = useState("");
-  const [ isModalOpen,              setIsModalOpen                ] = useState(false);
-  const [ statoOptions,             setStatoOptions               ] = useState([]);
+        //stati per le ricerche
+        const [ tipologiaOptions,               setTipologiaOptions         ] = useState([]);
+        const [ ownerOptions,                   setOwnerOptions             ] = useState([]);
+        const [ statoOptions,                   setStatoOptions             ] = useState([]);
+        const [ filtri,                         setFiltri                   ] = useState({
+            descrizione: '',
+            tipologia: '',
+            stato: '',
+            owner: ''
+        });
+        const quantita = 10;
 
-    const user = JSON.parse(localStorage.getItem("user"));
-    const accessToken = user?.accessToken;
-
-    const headers = {
-      Authorization: `Bearer ${accessToken}`
-    };
-
-    const fetchData = async () => {
-      try {
-
-        const response      = await axios.get("http://89.46.196.60:8443/need/react/modificato",       { headers: headers});
-        const responseStato = await axios.get("http://89.46.196.60:8443/need/react/stato", { headers: headers });
-
-        if (Array.isArray(responseStato.data)) {
-          const statoConId = responseStato.data.map((stato) => ({ ...stato}));
-          setStatoOptions(statoConId);
-          } else {
-            console.error("I dati ottenuti non sono nel formato Array:", responseStato.data);
-          }
+        //stati per la paginazione
+        const [ pagina,                 setPagina           ] = useState(0);
+        const [ hasMore,                setHasMore          ] = useState(true);
 
 
-        if (Array.isArray(response.data)) {
-        const needConId = response.data.map((need) => ({ ...need}));
-        setOriginalNeed(needConId);
-        setFilteredNeed(needConId);
-        } else {
-          console.error("I dati ottenuti non sono nel formato Array:", response.data);
-        }
-      } catch (error) {
-        console.error("Errore durante il recupero dei dati:", error);
-      }
-    };
 
-    useEffect(() => {
-      fetchData();
-    }, []);
-  
+        const user = JSON.parse(localStorage.getItem('user'));
+        const accessToken = user?.accessToken;
 
-  const navigateToAggiungiNeed = () => {
-    navigate("/need/aggiungi");
-  };
-
-  const handleOpenModal = (selectedRow) => {
-    setSelectedNeed(selectedRow);
-    if (!selectedRow.stato || selectedRow.stato === null) {
-      setNewStato("");
-    } else {
-      setNewStato(selectedRow.stato.id);
-    }
-  
-    setIsModalOpen(true);
-  };
-
-  const handleUpdateStato = async () => {
-    try {
-      const idStato = newStato;
-      const params = new URLSearchParams({ stato: idStato });
-  
-      await axios.post(`http://89.46.196.60:8443/need/react/salva/stato/${selectedNeed.id}?${params.toString()}`, { headers: headers });
-      setIsModalOpen(false);
-      fetchData();
-    } catch (error) {
-      console.error("Errore durante l'aggiornamento dello stato:", error);
-    }
-  };
+        const headers = {
+            Authorization: `Bearer ${accessToken}`
+        };
 
 
-  // function WrappedTextCell(props) {
-  //   return (
-  //     <div style={{
-  //       whiteSpace: 'normal',
-  //       overflowWrap: 'break-word',
-  //       textAlign:"left",
-  //       fontWeight:"bold",
-  //       maxWidth: '250px',
-  //     }}>
-  //       {props.value}
-  //     </div>
-  //   );
-  // }
+        //caricamento dati al montaggio
+        const fetchData = async ()  => {
+            // if(originalNeed.length > 0) { return; };
 
-  const columns = [
-    { field: "id",               headerName: "#",                 flex: 0.1, renderCell: (params) => (
-      <div style={{ textAlign: "center" }}>
-        {params.row.id }
-      </div>
-    ),
-  }, 
-    // { field: "weekDescrizione",  headerName: "Week/Descrizione",    width: 200, renderCell: (params) => (
-    //   <div style={{ textAlign: "left" }}>
-    //   <div style={{ textAlign: "start" }}>{params.row.week}</div>
-    //   <div style={{ textAlign: "start" }}>{params.row.descrizione}</div>
-    // </div>
-    //   ),
-    // },
-    { field: "week",              headerNmae: "Week",                flex: 0.6 },
-    // {
-    //   field: "descrizione",
-    //   headerName: "Descrizione",
-    //   width: 360,
-    //   renderCell: (params) => <WrappedTextCell value={params.row.descrizione} />
-    // },
-    { field: "descrizione",       headerName: "Descrizione",         flex: 2,   renderCell: (params) => (
-        // <a
-        //   href={"/need/dettaglio/" + params.row.id}
-        //   target="_blank"
-        //   rel="noopener noreferrer"
-        //   style={{
-        //     textAlign: 'left',
-        //     whiteSpace: 'normal',
-        //     wordWrap: 'break-word',
-        //     overflow: 'hidden',
-        //     textOverflow: 'ellipsis',
-        //     display: '-webkit-box',
-        //     WebkitLineClamp: 2, // Numero di linee massime prima di mostrare '...'
-        //     WebkitBoxOrient: 'vertical',
-        //   }}
-        // >
-        //   {params.row.descrizione}
-        // </a>
-        <div style={{ 
-          textAlign: "left",
-            maxWidth: 250,
-            whiteSpace: 'normal', 
-            wordWrap: 'break-word',
-            // overflow: 'auto',
-            // textOverflow: 'ellipsis',
-            display: '-webkit-box',
-            WebkitLineClamp: 2, 
-            WebkitBoxOrient: 'vertical',
-            lineHeight: '1.5',
+            setLoading(true);
+
+            const filtriDaInviare = {
+                descrizione: filtri.descrizione || null,
+                tipologia: filtri.tipologia || null,
+                owner: filtri.owner || null,
+                stato: filtri.stato || null,
+                pagina: 0,
+                quantita: 10
+            };
+
+            try {
+            const responseNeed          = await axios.get("http://localhost:8080/need/react/modificato",         { headers: headers, params: filtriDaInviare });
+            // const responseCliente       = await axios.get("http://localhost:8080/aziende/react/select",          { headers: headers });
+            const responseOwner         = await axios.get("http://localhost:8080/aziende/react/owner",           { headers: headers });
+            const responseTipologia     = await axios.get("http://localhost:8080/need/react/tipologia",          { headers: headers });
+            const responseStato         = await axios.get("http://localhost:8080/need/react/stato",              { headers: headers });
+
+
+            if (Array.isArray(responseOwner.data)) {
+                setOwnerOptions(responseOwner.data.map((owner) => ({ label: owner.descrizione, value: owner.id})));
+            } else {
+                console.error("I dati ottenuti non sono nel formato Array; ", responseOwner.data);
+            }
+
+            if (Array.isArray(responseTipologia.data)) {
+                setTipologiaOptions(responseTipologia.data.map((tipologia) => ({ label: tipologia.descrizione, value: tipologia.id})));
+            } else {
+                console.error("I dati ottenuti non sono nel formato Array; ", responseTipologia.data);
+            }
+
+            if (Array.isArray(responseStato.data)) {
+                setStatoOptions(responseStato.data.map((stato) => ({ label: stato.descrizione, value: stato.id})));
+            } else {
+                console.error("I dati ottenuti non sono nel formato Array; ", responseStato.data);
+            }
+            if (Array.isArray(responseNeed.data)) {
+                const needConId = responseNeed.data.map((need) => ({...need}));
+                setOriginalNeed(needConId);
+                setHasMore(needConId.length >= quantita);
+            } else {
+                console.error("I dati ottenuti non sono nel formato Array; ", responseNeed.data);
+            }
+            setLoading(false);
+            } catch(error) {
+                console.error("Errore durante il recupero dei dati: ", error);
+            }
+        };
+
+
+        useEffect(() => {
+            fetchData();
+            // eslint-disable-next-line
+        }, []);
+
+
+        //caricamento dati con paginazione
+        const fetchMoreData = async () => {
+
+            const paginaSuccessiva = pagina + 1;
+
+            const filtriDaInviare = {
+                descrizione: filtri.descrizione || null,
+                tipologia: filtri.tipologia || null,
+                owner: filtri.owner || null,
+                stato: filtri.stato || null,
+                pagina: paginaSuccessiva,
+                quantita: 10
+            };
+            try {
+                const responsePaginazione   = await axios.get("http://localhost:8080/need/react/modificato",     { headers: headers , params: filtriDaInviare });
+                if (Array.isArray(responsePaginazione.data)) {
+                    const needConId = responsePaginazione.data.map((need) => ({...need }));
+                    setOriginalNeed((prev) => [...prev, ...needConId]);
+                    setHasMore(needConId.length >= quantita);
+                } else {
+                    console.error("I dati ottenuti non sono nel formato array: ", responsePaginazione.data);
+                }
+                setLoading(false);
+            } catch(error) {
+                console.error("Errore durante il recupero dei dati: ", error);
+            }
+            setPagina((prevPagina) => prevPagina + 1);
+        };
+
+
+        //funzione di ricerca
+        const handleRicerche = async () => {
+            const filtriDaInviare = {
+                descrizione: filtri.descrizione || null,
+                tipologia: filtri.tipologia || null,
+                owner: filtri.owner || null,
+                stato: filtri.stato || null,
+                pagina: 0,
+                quantita: 10
+            };
+            setLoading(true);
+            try {
+                const response = await axios.get("http://localhost:8080/need/react/ricerca/modificato", { headers: headers, params: filtriDaInviare });
+
+                if (Array.isArray(response.data)) {
+                    setOriginalNeed(response.data);
+                    setHasMore(response.data.length >= quantita);
+                } else {
+                    console.error("I dati ottenuti non sono nel formato Array: ", response.data);
+                }
+            } catch(error) {
+                console.error("Errore durante il recupero dei dati filtrati: ", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        //funzione cambiamento stato select
+        const handleFilterChange = (name) => (event) => {
+            const newValue = event.target.value;
+            setFiltri({...filtri, [name]:newValue});
+            if(name === 'descrizione' && newValue === '') {
+                fetchData();
+            } else {
+                handleRicerche();
+            }
+        };
+
+        useEffect(() => {
+            const { descrizione, ...otherFilters } = filtri;
+            const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x !== null);
+            if (filtriHasValues) {
+                handleRicerche();
+            }
+        }, [filtri.tipologia, filtri.stato, filtri.owner]);
+
+
+
+        //funzione di reset dei campi di ricerca
+        const handleReset = async () => {
+            setFiltri({
+                descrizione: '',
+                stato: '',
+                tipologia: '',
+                owner: ''
+            });
+            setPagina(0);
+            setOriginalNeed([]);
+            setHasMore(true);
+
+            await fetchData(0);
+        };
+
+
+        //funzione per cancellare il need
+        const handleDelete = async (id) => {
+            try{
+                const responseDelete = await axios.delete(`http://localhost:8080/need/react/elimina/${id}`, {headers: headers});
+                await fetchData(0);
+            } catch(error) {
+                console.error("Errore durante la cancellazione: ", error);
+            }
+        };
+
+
+        //funzione per il refresh
+        const handleRefresh = async () => {
+            await fetchData(0);
+        };
+
+
+
+
+
+        return(
+            <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto', width: '100vw' }}>
+            <Box sx={{ 
+                flexGrow: 1, 
+                p: 3, 
+                marginLeft: '13.2em', 
+                marginTop: '0.5em', 
+                marginBottom: '0.8em', 
+                marginRight: '0.8em', 
+                backgroundColor: '#FEFCFD', 
+                borderRadius: '10px', 
+                minHeight: '98vh',
+                mt: 1.5 
             }}>
-      <Link
-      to={`/need/dettaglio/${params.row.id}`}
-      state={{ needData: params.row }}
-    >
-      {params.row.descrizione} 
-    </Link>
-    </div>
-      )
-    },
-    { field: "priorita",          headerName: "Priorità",           width: 100 },
-    { field: "tipologia",         headerName: "Tipologia",           flex: 1,    renderCell: (params) => (
-        <div style={{ textAlign: "start" }}>
-          {params.row.tipologia && params.row.tipologia.descrizione
-            ? params.row.tipologia.descrizione
-            : "N/A"}
-        </div>
-      ),
-    },
-    { field: "owner",             headerName: "Owner",               width: 100,      renderCell: (params) => (
-        <div style={{ textAlign: "start" }}>
-          {params.row.owner && params.row.owner.descrizione
-            ? params.row.owner.descrizione
-            : "N/A"}
-        </div>
-      ),
-    },
-    { field: "cliente",           headerName: "Azienda",             flex: 1.5, renderCell: (params) => (
-      <div style={{ textAlign: "start" }}>
-        {params.row.cliente && params.row.cliente.denominazione
-          ? params.row.cliente.denominazione
-          : "N/A"}
-      </div>
-    ), },
-    { field: "numeroRisorse",     headerName: "Headcount",           flex: 0.7 },
-    { field: "stato",             headerName: "Stato",               flex: 0.6,  renderCell: (params) => (
-        <div style={{ textAlign: "start" }}>
-          {params.row.stato && params.row.stato.descrizione
-            ? params.row.stato.descrizione
-            : "N/A"}
-        </div>
-      ),
-    },
-    { field: "azioni",            headerName: "Azioni",              flex: 1,  renderCell: (params) => (
-      <div>
-        <PaperButton onClick={() => handleOpenModal(params.row)} />
-        <Link
-        to={`/need/modifica/${params.row.id}`}
-        state={{ needData: params.row }}
-        >
-        <EditButton  />
-        </Link>
-        <Link
-        to={`/need/match/${params.row.id}`}
-        state = {{ needData: params.row}}
-        >
-        <SearchButton />
-        </Link>
-      </div>
-    ),
-    }, 
-  ];
+                <Box sx={{ 
+                    position: 'sticky', 
+                    top: 0, 
+                    zIndex: 1000, 
+                }}>
+                    <RicercheNeed 
+                    filtri={filtri}
+                    onFilterChange={handleFilterChange}
+                    onReset={handleReset}
+                    tipologiaOptions={tipologiaOptions}
+                    statoOptions={statoOptions}
+                    ownerOptions={ownerOptions}
+                    onRicerche={handleRicerche}
+                    
+                    />
+                    </Box>
+                    <InfiniteScroll
+                    dataLength={originalNeed.length}
+                    next={fetchMoreData}
+                    hasMore={hasMore}
+                    // loader={'Caricamento in corso...'}
+                    >
+                                {/* Main Content Area */}
+                    <Grid container spacing={2} sx={{ mt: 1, mb: 4}}>
+                        { loading ? (
+                            <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                height: '100%'
+                            }}>
+                                <CircularProgress sx={{ color: '#00853C'}}/> 
+                            </Box>
+                        ) : (
+                            originalNeed.map((need, index) => (
+                                <Grid item xs={12} md={6} key={index}>
+                                    <NeedCard valori={need}
+                                    statoOptions={statoOptions}
+                                    onDelete={() => handleDelete(need.id)}
+                                    onRefresh={handleRefresh}
 
-  const handleSearch = (filteredData) => {
-  setFilteredNeed(filteredData);
-  };
-  const handleReset = () => {
-    setSearchText(""); 
-    fetchData();
-  };
-
-
-
-  return (
-    <Box sx={{ display: 'flex', backgroundColor: '#14D928', height: '100vh', width: '100vw', overflow: 'hidden'}}>
-    <Sidebar2 />
-    <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'hidden', width: '100vw'}}>
-    <Typography variant="h4" component="h1" sx={{ marginLeft: '30px', marginTop: '30px', marginBottom: '15px', fontWeight: 'bold', fontSize: '1.8rem'}}>Gestione Need</Typography>
-          <MyButton onClick={navigateToAggiungiNeed}>Aggiungi Need</MyButton>
-          <Box sx={{ height: '95vh', marginTop: '20px', width: '100vw'}}>
-          <MyDataGridPerc 
-          data={filteredNeed} 
-          columns={columns} 
-          title="Need" 
-          getRowId={(row) => row.id}
-          searchBoxComponent={() => (
-            <NeedSearchBox
-            data={need}
-            onSearch={handleSearch}
-            onReset={handleReset}
-            searchText={searchText}
-            onSearchTextChange={(text) => setSearchText(text)}
-            OriginalNeed={originalNeed}/>
-          )}
-          />
-          </Box>
-      </Box>
-      <Modal
-        isOpen={isModalOpen}
-        onRequestClose={() => setIsModalOpen(false)}
-        style={{
-          content: {
-            width: '800px',
-            height: 'auto',
-            top: '50%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            transform: 'translate(-50%, -50%)',
-            borderRadius: '40px',
-          },
-          overlay: {
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          },
-        }}
-      >
-      <div
-        style={{
-          textAlign: 'center',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: 'column',
-        }}
-      >
-        <h2>Cambia stato al need</h2>
-        <Select
-          value={newStato}
-          onChange={(e) => setNewStato(e.target.value)}
-          sx={{
-            marginBottom: '10px',
-            width: '200px',
-          }}
-        >
-        {statoOptions.map((stato) => (
-        <MenuItem key={stato.id} value={stato.id}>
-          {stato.descrizione}
-        </MenuItem>
-      ))}
-        </Select>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Button
-            color="primary"
-            onClick={() => setIsModalOpen(false)}
-            sx={{
-              backgroundColor: "black",
-              color: "white",
-              marginRight: '10px',
-              "&:hover": {
-                backgroundColor: "black",
-                transform: "scale(1.05)",
-              },
-            }}
-          >
-            Indietro
-          </Button>
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={handleUpdateStato}
-            sx={{
-              backgroundColor: "#14D928",
-              color: "black",
-              "&:hover": {
-                backgroundColor: "#14D928",
-                color: "black",
-                transform: "scale(1.05)",
-              },
-            }}
-          >
-            Salva
-          </Button>
-        </div>
-            </div>
-          </Modal>
-      </Box>
-  );
-};
-
-export default Need;
+                                    />
+                                </Grid>
+                            ))
+                        )
+                        }
+                        </Grid>
+                        </InfiniteScroll>
+                    </Box>
+                </Box>
+        );
+    };
+    export default Need;
