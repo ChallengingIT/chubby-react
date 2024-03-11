@@ -2,13 +2,11 @@ import React, { useState } from 'react';
 import { Button, Box, Grid, Select, MenuItem, FormControl, InputLabel, IconButton, Drawer, Typography, TextField, InputAdornment } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon                                       from '@mui/icons-material/Search';
-import { useNavigate  }                                 from 'react-router-dom';
 
 
 
-function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, statoOptions, aziendaOptions, ownerOptions, onRicerche }) {
+function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, statoOptions, ownerOptions, onRicerche, onNavigate }) {
 
-    const navigate = useNavigate();
 
     const [ openFiltri,                setOpenFiltri            ] = useState(false);
 
@@ -16,9 +14,6 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
     const handleCloseFiltri = () => setOpenFiltri(false);
 
 
-    const navigateToAggiungi = () => {
-        navigate('/aziende/aggiungi');
-    };
 
 
 
@@ -38,7 +33,7 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
             <Button 
                         variant="contained" 
                         color="primary" 
-                        onClick={navigateToAggiungi} 
+                        onClick={onNavigate} 
                         sx={{
                             mt: 2,
                             minWidth: '12em',
@@ -141,7 +136,7 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
         </Box>
         <Grid container spacing={2} direction="column" sx={{ p: 2}}>
             <Grid item>
-            <FormControl fullWidth sx={{ mb: 2 }}>
+            {/* <FormControl fullWidth sx={{ mb: 2 }}>
                             <InputLabel id="azienda-label">Azienda</InputLabel>
                             <Select
                                 labelId="azienda-label"
@@ -163,7 +158,7 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
                                 </MenuItem>
                                 ))}
                             </Select>
-                            </FormControl>
+                            </FormControl> */}
 
             <FormControl fullWidth sx={{ mb: 2 }}>
                             <InputLabel id="tipologia-label">Tipologia</InputLabel>

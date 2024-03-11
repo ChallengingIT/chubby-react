@@ -36,6 +36,12 @@ import {
         const timeDifference = calculateDataDifference(valori.week);
 
 
+        const navigateToAggiorna = (id, event) => {
+            event.stopPropagation();
+            navigate(`/need/modifica/${valori.id}`, { state: {...valori }});
+        };
+
+
         return (
             <Card raised sx={{
                 borderRadius: '20px', 
@@ -81,6 +87,31 @@ import {
                 </Typography>
 
             </CardContent>
+            <CardActions>
+            <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+                width: '100%',
+                mr:2
+            }} >
+                <Button 
+                size="small"
+                onClick={(event) => navigateToAggiorna(valori.id, event)}
+                sx={{
+                    backgroundColor: '#00853C',
+                    color: 'white',
+                    ml: 1,
+                    '&:hover': {
+                        backgroundColor: '#00853C',
+                        transform: 'scale(1.05)',
+                        },
+                    }}>Modifica</Button>
+            </Box>
+
+            </CardActions>
             </Card>
         );
     };

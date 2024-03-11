@@ -99,7 +99,9 @@ function Sidebar() {
                 }}
             >
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px', flexDirection: 'row' }}>
+                <IconButton onClick={() => navigate('/dashboard')} style={{ padding: 0 }}>
                     <img src={Torcia} alt="Torcia" style={{ width: '6vw', marginTop: '1em' }} />
+                    </IconButton>
                 </Box>
                 <List>
                     {sidebarData.map((item, index) => (

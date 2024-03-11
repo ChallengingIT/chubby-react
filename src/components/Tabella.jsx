@@ -19,7 +19,7 @@ const Tabella = ({ data, columns, title, getRowId, pagina, quantita, onPageChang
             const timer = setTimeout(() => {
                 setLoading(false);
                 setShowNoDataMessage(true);
-            }, 4000);
+            }, 500);
             return () => clearTimeout(timer);
         } else {
             setLoading(false);

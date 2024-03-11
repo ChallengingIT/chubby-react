@@ -1,6 +1,6 @@
 import './App.css';
-import { BrowserRouter, Routes, Route }        from 'react-router-dom';
-import React, { useEffect }                                   from 'react';
+import { BrowserRouter, Routes, Route }                               from 'react-router-dom';
+import React, { useEffect }                                           from 'react';
 import PrivateRoute                                                   from './components/PrivateRoute.jsx';
 
 
@@ -10,18 +10,12 @@ import Need                                                            from './p
 import Recruiting                                                      from './pages/Recruiting.jsx';
 import AggiungiAziende                                                 from './pages/AggiungiPagine/AggiungiAziende.jsx';
 import AggiungiNeed                                                    from './pages/AggiungiPagine/AggiungiNeed';
-// import AggiungiNeedID                                                  from './pages/AggiungiPagine/AggiungiNeedID.jsx';
-// import DettaglioKeyPeople                                              from './pages/DettaglioPagine/DettaglioKeyPeople.jsx';
-import ModificaKeypeople                                                from './pages/ModificaPagine/ModificaKeypeople.jsx';
+import ModificaKeypeople                                               from './pages/ModificaPagine/ModificaKeypeople.jsx';
 import ModificaNeed                                                    from './pages/ModificaPagine/ModificaNeed.jsx';
-// import DettaglioIntervista                                             from './pages/DettaglioPagine/DettaglioIntervista.jsx';
 import DettaglioNeed                                                   from './pages/DettaglioPagine/DettaglioNeed.jsx';
-// import DettaglioAziende                                                from './pages/DettaglioPagine/DettaglioAziende.jsx';
 import Layout                                                          from './components/Layout.jsx';
-import Dashboard                                                       from './pages/Dashboard.jsx';
+// import Dashboard                                                       from './pages/Dashboard.jsx';
 import AggiungiKeypeople                                               from './pages/AggiungiPagine/AggiungiKeypeople.jsx';
-import AziendeListaNeed                                                from './pages/AziendeListaNeed.jsx';
-import NeedMatch                                                       from './pages/NeedMatch.jsx';
 import AggiungiRecruiting                                              from './pages/AggiungiPagine/AggiungiRecruiting.jsx';
 import ModificaRecruiting                                              from './pages/ModificaPagine/ModificaRecruiting.jsx';
 import LoginPage                                                       from './pages/LoginPage.jsx';
@@ -32,10 +26,9 @@ import AggiungiNeedID                                                  from './p
 import ModificaAziende                                                 from './pages/ModificaPagine/ModificaAziende.jsx';
 import Keypeople                                                       from './pages/Keypeople.jsx';
 import Hiring                                                          from './pages/Hiring.jsx';
-
-import NeedLife from './components/NeedLife.jsx';
-import NeedMatch2 from './pages/NeedMatch2.jsx';
-import AziendeListaNeedCard from './pages/AziendeListaNeedCard.jsx';
+import NeedLife                                                        from './components/NeedLife.jsx';
+import NeedMatch2                                                      from './pages/NeedMatch2.jsx';
+import AziendeListaNeedCard                                            from './pages/AziendeListaNeedCard.jsx';
 
 
 

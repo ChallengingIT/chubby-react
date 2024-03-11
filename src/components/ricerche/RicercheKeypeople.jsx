@@ -82,6 +82,7 @@ function RicercheKeypeople({ filtri, onFilterChange, onReset, aziendaOptions, st
                             backgroundColor: '#00853C',
                             borderRadius: '10px',
                             textTransform: 'none',
+                            mt: 2,
                             '&:hover': {
                             backgroundColor: '#00853C',
                             transform: 'scale(1.05)',
@@ -90,7 +91,7 @@ function RicercheKeypeople({ filtri, onFilterChange, onReset, aziendaOptions, st
                         + Aggiungi Contatto
                         </Button>
     
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
                             {/* Barra di ricerca */}
                             <TextField
                                 id="search-bar"
@@ -137,6 +138,7 @@ function RicercheKeypeople({ filtri, onFilterChange, onReset, aziendaOptions, st
                         minWidth: '12em',
                         borderRadius: '10px',
                         textTransform: 'none',
+                        mt: 2,
                         '&:hover': {
                         backgroundColor: '#00853C',
                         transform: 'scale(1.05)',

@@ -195,7 +195,8 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
                         color: '#000000',
                         minWidth: 'auto',
                         '&:hover': {
-                            backgroundColor: 'transparent'
+                            backgroundColor: 'red',
+                            borderRadius:'50%',
                         },
                     }}
                     >

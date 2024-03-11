@@ -23,6 +23,7 @@ import {
         const [ tipologiaOptions,               setTipologiaOptions         ] = useState([]);
         const [ ownerOptions,                   setOwnerOptions             ] = useState([]);
         const [ statoOptions,                   setStatoOptions             ] = useState([]);
+        const [ aziendaOptions,             setAziendaOptions             ] = useState([]);
         const [ filtri,                         setFiltri                   ] = useState({
             descrizione: '',
             tipologia: '',
@@ -56,13 +57,14 @@ import {
                 tipologia: filtri.tipologia || null,
                 owner: filtri.owner || null,
                 stato: filtri.stato || null,
+                azienda: filtri.azienda || null,
                 pagina: 0,
                 quantita: 10
             };
 
             try {
             const responseNeed          = await axios.get("http://localhost:8080/need/react/modificato",         { headers: headers, params: filtriDaInviare });
-            // const responseCliente       = await axios.get("http://localhost:8080/aziende/react/select",          { headers: headers });
+            const responseAzienda       = await axios.get("http://localhost:8080/aziende/react/select",          { headers: headers });
             const responseOwner         = await axios.get("http://localhost:8080/aziende/react/owner",           { headers: headers });
             const responseTipologia     = await axios.get("http://localhost:8080/need/react/tipologia",          { headers: headers });
             const responseStato         = await axios.get("http://localhost:8080/need/react/stato",              { headers: headers });
@@ -72,6 +74,12 @@ import {
                 setOwnerOptions(responseOwner.data.map((owner) => ({ label: owner.descrizione, value: owner.id})));
             } else {
                 console.error("I dati ottenuti non sono nel formato Array; ", responseOwner.data);
+            }
+
+            if (Array.isArray(responseAzienda.data)) {
+                setAziendaOptions(responseAzienda.data.map((azienda) => ({ label: azienda.denominazione, value: azienda.id })));
+            } else {
+                console.error("I dati ottenuti non sono nel formato Array:", responseAzienda.data);
             }
 
             if (Array.isArray(responseTipologia.data)) {
@@ -115,6 +123,7 @@ import {
                 tipologia: filtri.tipologia || null,
                 owner: filtri.owner || null,
                 stato: filtri.stato || null,
+                azienda: filtri.azienda || null,
                 pagina: paginaSuccessiva,
                 quantita: 10
             };
@@ -142,6 +151,7 @@ import {
                 tipologia: filtri.tipologia || null,
                 owner: filtri.owner || null,
                 stato: filtri.stato || null,
+                azienda: filtri.azienda || null,
                 pagina: 0,
                 quantita: 10
             };
@@ -179,7 +189,9 @@ import {
             if (filtriHasValues) {
                 handleRicerche();
             }
-        }, [filtri.tipologia, filtri.stato, filtri.owner]);
+        }, [filtri.tipologia, filtri.stato, filtri.owner, filtri.azienda]);
+
+
 
 
 
@@ -189,7 +201,8 @@ import {
                 descrizione: '',
                 stato: '',
                 tipologia: '',
-                owner: ''
+                owner: '',
+                azienda: ''
             });
             setPagina(0);
             setOriginalNeed([]);
@@ -231,11 +244,12 @@ import {
                 backgroundColor: '#FEFCFD', 
                 borderRadius: '10px', 
                 minHeight: '98vh',
-                mt: 1.5 
+                mt: 1.5
             }}>
+                
                 <Box sx={{ 
                     position: 'sticky', 
-                    top: 0, 
+                    top: 0,
                     zIndex: 1000, 
                 }}>
                     <RicercheNeed 
@@ -245,6 +259,7 @@ import {
                     tipologiaOptions={tipologiaOptions}
                     statoOptions={statoOptions}
                     ownerOptions={ownerOptions}
+                    aziendaOptions={aziendaOptions}
                     onRicerche={handleRicerche}
                     
                     />

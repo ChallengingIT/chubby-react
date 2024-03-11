@@ -173,13 +173,19 @@ const NeedMatch2 = () => {
                 } catch(error) {
                     console.error("Errore durante il recupero dei dati: ", error);
                 }
-    };
+            };
 
 
-    useEffect(() => {
-        fetchData();
-    // eslint-disable-next-line
-    }, []);
+            console.log("RIGHE DI CANDIDATI: ", righeTotCandidati);
+            console.log("RIGHE DI Storico: ", righeTotStorico);
+            console.log("RIGHE DI Associati: ", righeTotAssociati);
+
+
+
+                useEffect(() => {
+                    fetchData();
+                // eslint-disable-next-line
+                }, []);
 
 
     //funzione per la paginazione
@@ -332,28 +338,28 @@ const NeedMatch2 = () => {
 
 
             
-useEffect(() => {
-    const { nome, cognome, ...otherFilters } = filtri;
-    const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x != null);
+            useEffect(() => {
+                const { nome, cognome, ...otherFilters } = filtri;
+                const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x != null);
 
-    if (filtriHasValues) {
-        handleRicerche();
-    }
-}, [filtri.tipo, filtri.tipologia, filtri.seniority]);
+                if (filtriHasValues) {
+                    handleRicerche();
+                }
+            }, [filtri.tipo, filtri.tipologia, filtri.seniority]);
 
 
-const handleReset = () => {
-    setFiltri({
-        nome: '', 
-        cognome: '',
-        tipo: '',
-        tipologia: '',
-        seniority: ''
-    });
-    setPaginaCandidati(0);
-    fetchData();
-};
-            
+            const handleReset = () => {
+                setFiltri({
+                    nome: '', 
+                    cognome: '',
+                    tipo: '',
+                    tipologia: '',
+                    seniority: ''
+                });
+                setPaginaCandidati(0);
+                fetchData();
+            };
+                        
 
 
             const handleGoBack = () => {
@@ -655,6 +661,7 @@ const handleReset = () => {
                                 title="Candidati"             
                                 getRowId={(row) => row.id}
                                 pagina={paginaCandidati}
+                                quantita={quantita}
                                 righeTot={righeTotCandidati}
                                 onPageChange={handlePageChangeCandidati}
                                 />
@@ -667,6 +674,7 @@ const handleReset = () => {
                                 title="Storico"              
                                 getRowId={(row) => row.id}
                                 pagina={paginaStorico}
+                                quantita={quantita}
                                 righeTot={righeTotStorico}
                                 onPageChange={handlePageChangeStorico}
                                 />
@@ -679,6 +687,7 @@ const handleReset = () => {
                                 title="Candidati Associati"   
                                 getRowId={(row) => row.id}
                                 pagina={paginaAssociati}
+                                quantita={quantita}
                                 righeTot={righeTotAssociati}
                                 onPageChange={handlePageChangeAssociati}
                                 />
