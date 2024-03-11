@@ -17,7 +17,6 @@ const ModificaStaffing = () => {
 
   const [statoOptions,              setStatoOptions              ] = useState([]);
   const [staffing,                  setStaffing                  ] = useState([]);
-  const [fornitoreOptions,          setFornitoreOptions          ] = useState([]);
   const [jobTitleOptions,           setJobTitleOptions           ] = useState([]);
   const [tipologiaOptions,          setTipologiaOptions          ] = useState([]);
   const [skillsOptions,             setSkillsOptions             ] = useState([]); 
@@ -28,7 +27,11 @@ const ModificaStaffing = () => {
   const [cf,                        setCF                        ] = useState(null);  
   const [newCVUploaded,             setNewCVUploaded             ] = useState(false);
   const [newCFUploaded,             setNewCFUploaded             ] = useState(false);    
-  const [loading,                   setLoading                   ] = useState(false);
+  const [loading,                   setLoading                   ] = useState(true);
+
+
+
+
   // Recupera l'accessToken da localStorage
   const user = JSON.parse(localStorage.getItem("user"));
   const accessToken = user?.accessToken;
@@ -41,11 +44,10 @@ const ModificaStaffing = () => {
 
 
   useEffect(() => {
-    const fetchAziendeOptions = async () => {
+    const fetchData = async () => {
       try {
         const responseStaffing            = await axios.get(`http://localhost:8080/staffing/react/${id}`, { headers: headers });
         const responseStato               = await axios.get("http://localhost:8080/staffing/react/stato/candidato", { headers: headers });
-        const responseFornitore           = await axios.get("http://localhost:8080/fornitori/react", { headers: headers });
         const responseJobTitle            = await axios.get("http://localhost:8080/aziende/react/tipologia", { headers: headers });
         const responseTipologia           = await axios.get("http://localhost:8080/staffing/react/tipo", { headers: headers });
         const responseNeedSkill           = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
@@ -107,14 +109,6 @@ const ModificaStaffing = () => {
             setJobTitleOptions(jobTitleOptions);
 
           }
-            if (Array.isArray(responseFornitore.data)) {
-              const fornitoreOptions = responseFornitore.data.map((fornitore) => ({
-                label: fornitore.denominazione,
-                value: fornitore.id,
-              }));
-              setFornitoreOptions(fornitoreOptions);
-
-            }
 
               if (Array.isArray(responseStato.data)) {
                 const statoOptions = responseStato.data.map((stato) => ({
@@ -124,21 +118,20 @@ const ModificaStaffing = () => {
                 setStatoOptions(statoOptions);
               }
 
-              setLoading(true);
+              setLoading(false);
 
     } catch (error) {
         console.error("Errore durante il recupero delle province:", error);
       }
     };
 
-    fetchAziendeOptions();
+    fetchData();
   }, []);
 
   const campiObbligatori = ["nome", "cognome", "email", "anniEsperienzaRuolo", "tipologia", "dataUltimoContatto" ];
 
   const fields = [
     { label: "Tipologia",                           name: "tipo",                   type: "select",         options: tipologiaOptions },
-    { label: "Fornitore",                           name: "fornitore",              type: "select",         options: fornitoreOptions },
     { label: "Tipo Ricerca",                        name: "ricerca",                type: "select",         options: [
       { label: "C", value: "C" },
       { label: "R", value: "R"},
@@ -174,35 +167,34 @@ const ModificaStaffing = () => {
   ];
 
   const initialValues = {
-    id:                                 staffing.id                                                                   ,
-    tipo:                               staffing.tipo                      && staffing.tipo.id                  || null,
-    fornitore:                          staffing.fornitore                 && staffing.fornitore.id             || null,
-    ricerca:                            staffing.ricerca                                                              || null,
-    nome:                               staffing.nome                                                                 || null,
-    cognome:                            staffing.cognome                                                              || null,
-    dataNascita:                        staffing.dataNascita                                                          || null,
-    email:                              staffing.email                                                                || null,
-    cellulare:                          staffing.cellulare                                                            || null,
-    anniEsperienza:                     staffing.anniEsperienza                                                       || null,
-    citta:                              staffing.citta                                                                || null,
-    modalita:                           staffing.modalita                                                             || null,
-    anniEsperienzaRuolo:                staffing.anniEsperienzaRuolo                                                  || null,
-    livelloScolastico:                  staffing.livelloScolastico          && staffing.livelloScolastico.id    || null,
-    facolta:                            staffing.facolta                    && staffing.facolta.id              || null,
-    tipologia:                          staffing.tipologia                  && staffing.tipologia.id            || null,
-    dataUltimoContatto:                 staffing.dataUltimoContatto                                                || null,
-    stato:                              staffing.stato                      && staffing.stato.id                || null,
-    owner:                              staffing.owner                      && staffing.owner.id                || null,
-    skills:                            (staffing.skills?.map(skill => skill?.id))                                     || null,
-    ral:                                staffing.ral                                                                  || null,
-    disponibilita:                      staffing.disponibilita                                                        || null,
-    cv:                                 staffing.files?.find(file => file.tipologia.descrizione === 'CV')             || null,
-    cf:                                 staffing.files?.find(file => file.tipologia.descrizione === 'CF')             || null,
-    note:                               staffing.note                                                                 || null,
+    id:                                 recruitingData.id                                                                   ,
+    tipo:                               recruitingData.tipo                      && recruitingData.tipo.id                  || null,
+    ricerca:                            recruitingData.ricerca                                                              || null,
+    nome:                               recruitingData.nome                                                                 || null,
+    cognome:                            recruitingData.cognome                                                              || null,
+    dataNascita:                        recruitingData.dataNascita                                                          || null,
+    email:                              recruitingData.email                                                                || null,
+    cellulare:                          recruitingData.cellulare                                                            || null,
+    anniEsperienza:                     recruitingData.anniEsperienza                                                       || null,
+    citta:                              recruitingData.citta                                                                || null,
+    modalita:                           recruitingData.modalita                                                             || null,
+    anniEsperienzaRuolo:                recruitingData.anniEsperienzaRuolo                                                  || null,
+    livelloScolastico:                  recruitingData.livelloScolastico          && recruitingData.livelloScolastico.id    || null,
+    facolta:                            recruitingData.facolta                    && recruitingData.facolta.id              || null,
+    tipologia:                          recruitingData.tipologia                  && recruitingData.tipologia.id            || null,
+    dataUltimoContatto:                 recruitingData.dataUltimoContatto                                                || null,
+    stato:                              recruitingData.stato                      && recruitingData.stato.id                || null,
+    owner:                              recruitingData.owner                      && recruitingData.owner.id                || null,
+    skills:                            (recruitingData.skills?.map(skill => skill?.id))                                     || null,
+    ral:                                recruitingData.ral                                                                  || null,
+    disponibilita:                      recruitingData.disponibilita                                                        || null,
+    cv:                                 recruitingData.files?.find(file => file.tipologia.descrizione === 'CV')             || null,
+    cf:                                 recruitingData.files?.find(file => file.tipologia.descrizione === 'CF')             || null,
+    note:                               recruitingData.note                                                                 || null,
 
   };
   
-  console.log("initial values: ", initialValues);
+  console.log("initial values: ", recruitingData);
 
 
 const handleSubmit = async (values, fileCV, fileCF) => {
@@ -285,13 +277,22 @@ if(fileCF) {
     return errors;
   };
 
+
+
+
+  
+
   return (
     <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row', height: 'auto' }}>
-          <Box sx={{ flexGrow: 1, p: 3, marginLeft: '12.2em', marginTop: '0.5em', marginBottom: '0.8em', marginRight: '0.8em', backgroundColor: '#EEEDEE', borderRadius: '10px' }}>
+      {loading ? (
+      <CircularProgress /> // Mostra un indicatore di caricamento o un messaggio mentre i dati sono in caricamento
+    ) : (
+          <Box sx={{ flexGrow: 1, p: 3, marginLeft: '12.2em', marginTop: '0.5em', marginBottom: '0.8em', marginRight: '0.8em', backgroundColor: '#FEFCFD', borderRadius: '10px' }}>
           <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem', color: '#00853C'}}>Modifica di {nomeCandidato} {cognomeCandidato}</Typography>
 
           <FieldBoxFile
           fields={fields}
+          initialValues={initialValues}
           campiObbligatori={campiObbligatori}
           onSubmit={handleSubmit}
           title=""
@@ -299,6 +300,7 @@ if(fileCF) {
 
           />
           </Box>
+    )}
     </Box>
   );
 };

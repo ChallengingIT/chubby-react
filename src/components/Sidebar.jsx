@@ -22,6 +22,7 @@ import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import ExploreIcon from '@mui/icons-material/Explore';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
+import ChecklistRtlIcon from '@mui/icons-material/ChecklistRtl';
 
 function Sidebar() {
     const [activeLink, setActiveLink] = useState(null);
@@ -69,6 +70,10 @@ function Sidebar() {
         {
             title: 'Recruiting',
             icon: <PersonSearchIcon />,
+        },
+        { 
+            title: 'Hiring',
+            icon: <ChecklistRtlIcon />,
         }
     ];
 

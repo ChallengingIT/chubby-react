@@ -41,6 +41,14 @@ function IntervisteList() {
   const [ deleteId,                 setDeleteId             ] = useState(null);
 
 
+  //stati per la paginazione
+  const [ righeTot,                 setRigheTot             ] = useState(0);
+  const [ pagina,                   setPagina               ] = useState(0);
+  const [ loading,                  setLoading              ] = useState(false);
+  const quantita = 10;
+  
+
+
     const user = JSON.parse(localStorage.getItem("user"));
     const accessToken = user?.accessToken;
 
@@ -49,21 +57,30 @@ function IntervisteList() {
     };
 
   const fetchData = async () => {
+    setLoading(true);
+    const filtriDaInviare = {
+      pagina: 0,
+      quantita: 10
+    };
+
     try {
-      const response                = await axios.get(`http://89.46.67.198:8443/intervista/react/mod/${id}`       , { headers: headers});
-      const candidatoResponse       = await axios.get(`http://89.46.67.198:8443/staffing/react/${candidatoID}`, { headers: headers});
+      const response                = await axios.get(`http://localhost:8080/intervista/react/mod/${id}`       , { headers: headers, params: filtriDaInviare});
+      const candidatoResponse       = await axios.get(`http://localhost:8080/staffing/react/${candidatoID}`, { headers: headers});
 
       if (typeof candidatoResponse.data === 'object') {
         setCandidatoData([candidatoResponse.data]); 
       }
 
-
-      if (Array.isArray(response.data)) {
-        const intervisteConId = response.data.map((interviste) => ({ ...interviste }));
-        setOriginalInterviste(intervisteConId);
-        setFilteredInterviste(intervisteConId);
+      const { record, interviste } = response.data;
+      if (interviste && Array.isArray(interviste)) {
+        setOriginalInterviste(interviste);
+        if (typeof record === 'number') {
+          setRigheTot(record);
+        } else {
+          console.error("Il numero di recordo ottenuto non è un numero: ", record);
+        }
       } else {
-        console.error("I dati ottenuti non sono nel formato Array:", response.data);
+        console.error("I dati non contengono interviste in formato array: ", response.data);
       }
     } catch (error) {
       console.error("Errore durante il recupero dei dati:", error);
@@ -74,6 +91,35 @@ function IntervisteList() {
   useEffect(() => {
     fetchData();
   }, []);
+
+
+
+   //funzione per la paginazione
+   const fetchMoreData = async (pagina) => {
+    const filtriDaInviare = {
+      pagina: pagina,
+      quantita: 10
+  };
+
+    try{
+      const response                = await axios.get(`http://localhost:8080/intervista/react/mod/${id}`       , { headers: headers, params: filtriDaInviare});
+      const { record, interviste } = response.data;
+
+      if (interviste && Array.isArray(interviste)) {
+          setOriginalInterviste(interviste); 
+  
+          if (typeof record === 'number') {
+              setRigheTot(record);
+          } else {
+              console.error("Il numero di record ottenuto non è un numero: ", record);
+          }
+      } else {
+          console.error("I dati ottenuti non contengono 'interviste' come array: ", response.data);
+      }
+    } catch(error) {
+    console.error("Errore durante il recupero dei dati: ", error);
+    }
+  };
 
   useEffect(() => {
   }, [candidatoData]); 
@@ -86,6 +132,13 @@ navigate("/recruiting");
     setDeleteId(id);
     setOpenDialog(true);
   };
+
+
+      //funzione per il cambio pagina
+      const handlePageChange = (newPage) => {
+        setPagina(newPage);
+        fetchMoreData(newPage);
+    };
   
 
 
@@ -107,7 +160,7 @@ navigate("/recruiting");
   const handleDelete = async (id) => {
     try {
 
-        const response = await axios.delete(`http://89.46.67.198:8443/intervista/react/elimina/${deleteId}`, { headers: headers});
+        const response = await axios.delete(`http://localhost:8080/intervista/react/elimina/${deleteId}`, { headers: headers});
         setOpenDialog(false);
 
   
@@ -236,15 +289,10 @@ state={params.row}
                         columns={table1} 
                         title="Interviste" 
                         getRowId={(row) => row.id}
-                        storageID={"IntervistePagination"}
-                        searchBoxComponent={() => (
-                        <IntervisteSearchBox data={interviste}
-                        onSearch={handleSearch}
-                        onReset={handleReset}
-                        searchText={searchText}
-                        onSearchTextChange={(text) => setSearchText(text)}
-                        OriginalInterviste={originalInterviste}/>
-                        )}
+                        pagina={pagina}
+                        quantita={quantita}
+                        righeTot={righeTot}
+                        onPageChange={handlePageChange}
                         />
                         <Button
                             color="primary"

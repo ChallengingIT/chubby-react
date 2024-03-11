@@ -4,23 +4,14 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { DataGrid } from '@mui/x-data-grid/DataGrid';
 
 
-const Tabella = ({ data, columns, title, searchBoxComponent: SearchBox, storageID }) => {
+const Tabella = ({ data, columns, title, getRowId, pagina, quantita, onPageChange, righeTot }) => {
 
     // const [ rowPerPage, setRowsPerPage ] = useState( parseInt(localStorage.getItem("rowsPerPage") || "25", 10));
     // const [ page, setPage ] = useState( parseInt(localStorage.getItem("currentPage" || "0", 10)));
     const [ loading, setLoading] = useState(false);
     const [ showNoDataMessage, setShowNoDataMessage ] = useState(false);
-    const [ paginationModel, setPaginationModel] = useState({
-        page: 0,
-        pageSize: 9,
-      });
 
-    useEffect(() => {
-        const paginationInfo = localStorage.getItem(storageID)
-        if(paginationInfo) {
-            setPaginationModel(JSON.parse(paginationInfo))
-        }
-    }, [])
+
 
     useEffect(() => {
         if(data.length === 0) {
@@ -36,16 +27,12 @@ const Tabella = ({ data, columns, title, searchBoxComponent: SearchBox, storageI
         }
     }, [data]);
 
-    const onPaginationChange = (pageModel) => {
-        localStorage.setItem(storageID, JSON.stringify(pageModel));
-        setPaginationModel(pageModel);
-    };
 
 
     return (
         <Box
         sx={{
-            width: '85vw',
+            width: '97%',
             height: 'auto',
             minHeight: '40vh',
             backgroundColor: 'white',
@@ -57,7 +44,8 @@ const Tabella = ({ data, columns, title, searchBoxComponent: SearchBox, storageI
             borderWidth: '0',
             boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.6)",
             fontSize: '1.4rem',
-            fontWeight: 'bolder'
+            fontWeight: 'bolder',
+            border: '1.5px solid #00853C'
         }}
         >
             <Box
@@ -88,15 +76,18 @@ const Tabella = ({ data, columns, title, searchBoxComponent: SearchBox, storageI
                     </Box>
                 )}
             </Box>
-            {SearchBox && <SearchBox />}
+
 
             <DataGrid
-            columns={columns}
-            rows={data}
-            pagination
-            paginationModel={paginationModel}
-            onPaginationModelChange={onPaginationChange}
-            rowHeight={42}
+           rows={data}
+           columns={columns}
+           paginationMode='server'
+           rowCount={righeTot}
+           autoHeight
+           paginationModel={ {page: pagina, pageSize: quantita}}
+           onPaginationModelChange={({ page }) => {
+               onPageChange(page);
+           }}
 
             loading={data.length === 0 && loading}
             noRowsOverlay={
@@ -143,11 +134,7 @@ const Tabella = ({ data, columns, title, searchBoxComponent: SearchBox, storageI
                 
 
             }}          
-            
-            
-            
-            
-            
+
             />
 
         </Box>

@@ -14,7 +14,6 @@ const ModificaNeed = () => {
 
   const [ aziendeOptions,         setAziendeOptions   ] = useState([]);
   const [ skillsOptions,          setSkillsOptions    ] = useState([]);
-  const [ skills2Options,         setSkill2sOptions   ] = useState([]);
   const [ ownerOptions,           setOwnerOptions     ] = useState([]);
   const [ tipologiaOptions,       setTipologiaOptions ] = useState([]);
   const [ statoOptions,           setStatoOptions     ] = useState([]);
@@ -81,13 +80,7 @@ const ModificaNeed = () => {
         setSkillsOptions(skillsOptions);
       }
 
-        if (Array.isArray(responseSkill2.data)) {
-          const skills2Options = responseSkill2.data.map((skill2) => ({
-            value: skill2.id,
-            label: skill2.descrizione
-          }));
-          setSkill2sOptions(skills2Options);
-        }
+       
     
         if (Array.isArray(responseAziende.data)) {
           const ownerOptions = responseAziende.data.map((aziende) => ({
@@ -103,7 +96,19 @@ const ModificaNeed = () => {
     fetchAziendeOptions();
   }, []);
 
-  const campiObbligatori = [ "descrizione", "priorita", "week"]; 
+
+  const pubblicazioneOptions = [
+    { value: 0, label: 'To Do' },
+    { value: 1, label: 'Done'  }
+  ];
+
+  const screeningOptions = [
+    { value: 0, label: 'To Do' },
+    { value: 1, label: 'In progress' },
+    { value: 2, label: 'Done' }
+  ];
+
+  const campiObbligatori = [ "descrizione", "priorita", "week", "pubblicazione", "screening"]; 
 
   const fields = [
     { label: "Descrizione*",        name: "descrizione",            type: "text"                                            },
@@ -116,11 +121,13 @@ const ModificaNeed = () => {
       { value: 3, label: "Prospect" },
       ] },
     { label: "Owner",               name: "owner",                  type: "select",               options: ownerOptions     },
-    // { label: "Stato",               name: "stato",                  type: "select",               options: statoOptions     },
+    { label: "Stato",               name: "stato",                  type: "select",               options: statoOptions     },
     { label: "Headcount",           name: "numeroRisorse",          type: "text"                                            },
     { label: "Location",            name: "location",               type: "text"                                            },
     { label: "Skills 1",            name: "skills",                 type: "multipleSelectSkill",  options: skillsOptions    },
     { label: "Seniority",           name: "anniEsperienza",         type: "decimalNumber"                                   },
+    { label: 'Pubblicazione Annuncio*', name: 'pubblicazione',       type: 'select',               options: pubblicazioneOptions },
+    { label: 'Screening*',           name: 'screening',              type: 'select',               options: screeningOptions },
     { label: "Note",                name: "note",                   type: "note"                                            },
   ];
 
@@ -137,6 +144,8 @@ const ModificaNeed = () => {
     location:                   valori.location                                           || null,
     skills:                    (valori.skills?.map(skill => skill?.id))                   || null,
     anniEsperienza:             valori.anniEsperienza                                     || null,
+    pubblicazione:              valori.pubblicazione                                      || null,
+    screening:                  valori.screening                                          || null,
     note:                       valori.note                                               || null,          
   };
 
@@ -188,7 +197,6 @@ const ModificaNeed = () => {
           onSubmit={handleSubmit}
           title=""
           skillsOptions={skillsOptions} 
-          skills2Options={skills2Options}
           />
           </Box>
     </Box>

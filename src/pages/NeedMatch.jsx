@@ -5,7 +5,6 @@ import axios                                          from 'axios';
 import { Modal, Box, Button, Typography }             from '@mui/material';
 import { useLocation }                                from 'react-router-dom';
 import Tabella from '../components/Tabella.jsx';
-import NeedMatchSearchBox from '../components/searchBox/NeedMatchSearchBox.jsx';
 import DeleteButton from '../components/button/DeleteButton.jsx';
 import ModalBox from '../components/ModalBox.jsx';
 
@@ -22,16 +21,43 @@ function NeedMatch() {
 
 
 
-  const [ needMatch,                   setNeedMatch                 ] = useState([]);
-  const [ searchText,                  setSearchText                ] = useState("");
-  const [ filteredAssociabili,         setFilteredAssociabili       ] = useState([]);
-  const [ originalAssociabili,         setOriginalAssociabili       ] = useState([]);
+  const [ originalCandidati,           setOriginalCandidati       ] = useState([]);
   const [ storicoOptions,              setStoricoOptions            ] = useState([]);
   const [ associatiOptions,            setAssociatiOptions          ] = useState([]);
   const [ ownerOptions,                setOwnerOptions              ] = useState([]);
   const [ statoOptions,                setStatoOptions              ] = useState([]);
   const [ isModalOpen,                 setIsModalOpen               ] = useState(false);
   const [ initialValuesAggiorna,       setInitialValuesAggiorna     ] = useState([]);
+
+
+  //stati per le ricerche
+  const [ tipologiaOptions,           setTipologiaOptions         ] = useState([]);
+  const [ seniorityOptions,           setSeniorityOptions         ] = useState([]);
+  const [ jobTitleOptions,            setJobTitleOptions          ] = useState([]);
+  const [ openFiltri,                 setOpenFiltri               ] = useState(false);
+  const [ filtri,                     setFiltri                   ] = useState({
+    nome: '',
+    cognome: '',
+    jobTitle: '',
+    tipologia: '',
+    seniority: ''
+  });
+
+
+
+  //stati per la paginazione
+  const [ paginaCandidati,            setPaginaCandidati          ] = useState(0);
+  const [ righeTotCandidati,          setRigheTotCandidati        ] = useState(0);
+
+  const [ paginaStorico,              setPaginaStorico            ] = useState(0);
+  const [ righeTotStorico,            setRigheTotStorico          ] = useState(0);
+
+  const [ paginaAssociati,            setPaginaAssociati          ] = useState(0);
+  const [ righeTotAssociati,          setRigheTotAssociati        ] = useState(0);
+
+  const quantita = 10;
+
+
 
   // Recupera l'accessToken da localStorage
   const user = JSON.parse(localStorage.getItem("user"));
@@ -49,10 +75,27 @@ function NeedMatch() {
   };
   
   const fetchData = async () => {
+
+    const filtriCandidati = {
+      nome: filtri.nome || null,
+      cognome: filtri.cognome || null,
+      jobTitle: filtri.jobTitle || null,
+      tipologia: filtri.tipologia || null,
+      seniority: filtri.seniority || null,
+      pagina: 0,
+      quantita: 10
+    };
+
+
+    const paginazione = {
+      pagina: 0,
+      quantita: 10
+    };
+
     try {
-      const associatiResponse   = await axios.get(`http://89.46.67.198:8443/need/react/match/associati/mod/${id}`, { headers: headers});
-      const storicoResponse     = await axios.get(`http://89.46.67.198:8443/need/react/storico/${id}`, { headers: headers});
-      const associabiliResponse = await axios.get(`http://89.46.67.198:8443/need/react/match/associabili/mod/${id}`, { headers: headers});
+      const associatiResponse   = await axios.get(`http://89.46.67.198:8443/need/react/match/associati/mod/${id}`, { headers: headers, params: paginazione});
+      const storicoResponse     = await axios.get(`http://89.46.67.198:8443/need/react/storico/${id}`, { headers: headers, params: paginazione});
+      const candidatiResponse   = await axios.get(`http://89.46.67.198:8443/need/react/match/associabili/mod/${id}`, { headers: headers, params: filtriCandidati});
       const ownerResponse       = await axios.get("http://89.46.67.198:8443/aziende/react/owner", { headers: headers});
       const statoResponse       = await axios.get("http://89.46.67.198:8443/associazioni/react/stati", { headers: headers});
 
@@ -71,29 +114,46 @@ function NeedMatch() {
           setStatoOptions(statoOptions);
 
 
+          const { recordAssociati, associati } = associatiResponse.data;
 
-      if (Array.isArray(associatiResponse.data)) {
-        const associatiConId = associatiResponse.data.map((associati) => ({ ...associati }));
-        setAssociatiOptions(associatiConId);
-      } else {
-        console.error("I dati ottenuti non sono nel formato Array:", associatiResponse.data);
-      }
-
-      if (Array.isArray(storicoResponse.data)) {
-        const storicoConId = storicoResponse.data.map((storico) => ({ ...storico }));
-        setStoricoOptions(storicoConId);
-      } else {
-        console.error("I dati ottenuti non sono nel formato Array:", storicoResponse.data);
-      }
+          if (associati && Array.isArray(associati)) {
+            setAssociatiOptions(associati);
+            if (typeof recordAssociati === 'number' ) {
+              setRigheTotAssociati(recordAssociati);
+            } else {
+              console.error("Il numero di record ottenuto non è un numero: ", recordAssociati);
+            }
+          } else {
+            console.error("I dati ottenuti non sono nel formato Array:", associatiResponse.data);
+          }
 
 
-      if (Array.isArray(associabiliResponse.data)) {
-        const associabiliConId = associabiliResponse.data.map((associabili) => ({ ...associabili }));
-        setFilteredAssociabili(associabiliConId);
-        setOriginalAssociabili(associabiliConId);
-      } else {
-        console.error("I dati ottenuti non sono nel formato Array:", associabiliResponse.data);
-      }
+          const { recordStorico, storico } = storicoResponse.data;
+
+          if (storico && Array.isArray(storico)) {
+            setAssociatiOptions(storico);
+            if (typeof storicoResponse === 'number' ) {
+              setRigheTotAssociati(recordStorico);
+            } else {
+              console.error("Il numero di record ottenuto non è un numero: ", recordStorico);
+            }
+          } else {
+            console.error("I dati ottenuti non sono nel formato Array:", storicoResponse.data);
+          }
+
+          const { recordCandidati, candidati } = candidatiResponse.data;
+
+          if (candidati && Array.isArray(candidati)) {
+            setOriginalCandidati(candidati);
+            if (typeof recordCandidati === 'number' ) {
+              setRigheTotCandidati(recordStorico);
+            } else {
+              console.error("Il numero di record ottenuto non è un numero: ", recordCandidati);
+            }
+          } else {
+            console.error("I dati ottenuti non sono nel formato Array:", candidatiResponse.data);
+          }
+
       }
     }
 
@@ -103,23 +163,133 @@ function NeedMatch() {
   };
 
 
-
   useEffect(() => {
     fetchData();
   }, []);
+
+
+
+  console.log("candidati",originalCandidati);
+
+   //funzione per il cambio pagina
+   const handlePageChangeCandidati = (newPage) => {
+    setPaginaCandidati(newPage);
+    fetchMoreDataCandidati(newPage);
+};
+
+
+const handlePageChangeStorico = (newPage) => {
+  setPaginaStorico(newPage);
+  fetchMoreDataStorico(newPage);
+};
+
+const handlePageChangeAssociati = (newPage) => {
+  setPaginaAssociati(newPage);
+  fetchMoreDataAssociati(newPage);
+};
+
+
+
+//funzioni per la paginazione
+
+const fetchMoreDataCandidati = async (paginaCandidati) => {
+
+  const filtriCandidati = {
+    nome: filtri.nome || null,
+    cognome: filtri.cognome || null,
+    jobTitle: filtri.jobTitle || null,
+    tipologia: filtri.tipologia || null,
+    seniority: filtri.seniority || null,
+    pagina: paginaCandidati,
+    quantita: 10
+  };
+
+  try {
+    const candidatiResponse = await axios.get(`http://89.46.67.198:8443/need/react/match/associabili/mod/${id}`, { headers: headers, params: filtriCandidati});
+    const { recordCandidati, candidati } = candidatiResponse.data;
+
+    if (candidati && Array.isArray(candidati)) {
+      setAssociatiOptions(candidati);
+      if (typeof recordCandidati === 'number' ) {
+        setRigheTotAssociati(recordCandidati);
+      } else {
+        console.error("Il numero di record ottenuto non è un numero: ", recordCandidati);
+      }
+    } else {
+      console.error("I dati ottenuti non sono nel formato Array:", candidatiResponse.data);
+    }
+  } catch(error) {
+    console.error("Errore durante il recupero dei dati: ", error);
+    }
+};
+
+
+
+const fetchMoreDataStorico = async (paginaStorico) => {
+
+  const paginazione = {
+    pagina: paginaStorico,
+    quantita: 10
+  };
+
+  try {
+    const storicoResponse     = await axios.get(`http://89.46.67.198:8443/need/react/storico/${id}`, { headers: headers, params: paginazione});
+    const { recordStorico, storico } = storicoResponse.data;
+
+          if (storico && Array.isArray(storico)) {
+            setAssociatiOptions(storico);
+            if (typeof storicoResponse === 'number' ) {
+              setRigheTotAssociati(recordStorico);
+            } else {
+              console.error("Il numero di record ottenuto non è un numero: ", recordStorico);
+            }
+          } else {
+            console.error("I dati ottenuti non sono nel formato Array:", storicoResponse.data);
+          }
+  } catch(error) {
+    console.error("Errore durante il recupero dei dati: ", error);
+    }
+};
+
+
+const fetchMoreDataAssociati = async (paginaAssociati) => { 
+  const paginazione = {
+    pagina: paginaAssociati,
+    quantita: 10
+  };
+  try {
+    const associatiResponse   = await axios.get(`http://89.46.67.198:8443/need/react/match/associati/mod/${id}`, { headers: headers, params: paginazione});
+    const { recordAssociati, associati } = associatiResponse.data;
+
+    if (associati && Array.isArray(associati)) {
+      setAssociatiOptions(associati);
+      if (typeof recordAssociati === 'number' ) {
+        setRigheTotAssociati(recordAssociati);
+      } else {
+        console.error("Il numero di record ottenuto non è un numero: ", recordAssociati);
+      }
+    } else {
+      console.error("I dati ottenuti non sono nel formato Array:", associatiResponse.data);
+    }
+  } catch(error) {
+    console.error("Errore durante il recupero dei dati: ", error);
+    }
+  };
+
+
+
+
+
+
 
   const handleGoBack = () => {
     window.history.back(); 
   };
 
   const handleSearch = (filteredData) => {
-    setFilteredAssociabili(filteredData);
+    setOriginalCandidati(filteredData);
   };
-  const handleReset = () => {
-    setSearchText(""); 
-    setFilteredAssociabili(originalAssociabili);
-  };
-
+ 
   const handleDeleteAssociati = async (row) => {
     try {
       const idNeed = parseInt(id); 
@@ -319,7 +489,7 @@ const tableAssociati = [
   )},
 ];
 
-  const tableAssociabili = [
+  const tableCandidati = [
     { field: "nome",                    headerName: "Nome",          flex: 1, renderCell: (params) => (
       <div style={{ textAlign: "left"  }}>
           <div onClick={() => navigateToCercaCandidato(params.row)}>
@@ -395,24 +565,43 @@ const tableAssociati = [
           onClose={handleCloseModal}
           
         />
-      </Modal>
+        </Modal>
 
           <Box sx={{ height: 'auto', marginTop: '2em', width: '100vw', mb: 3}}>
-                <Tabella data={filteredAssociabili} columns={tableAssociabili} title="Candidati"             getRowId={(row) => row.id} searchBoxComponent={() => (<NeedMatchSearchBox data={needMatch}
-                  onSearch={handleSearch}
-                  onReset={handleReset}
-                  searchText={searchText}
-                  onSearchTextChange={(text) => setSearchText(text)}
-                  OriginalAssociabili={originalAssociabili}/>)} />
+                <Tabella 
+                  data={originalCandidati} 
+                  columns={tableCandidati} 
+                  title="Candidati"             
+                  getRowId={(row) => row.id}
+                  pagina={paginaCandidati}
+                  righeTot={righeTotCandidati}
+                  onPageChange={handlePageChangeCandidati}
+                />
           </Box>
 
 
           <Box sx={{ height: 'auto', mb: 3}}>
-                <Tabella data={storicoOptions}      columns={tableStorico}   title="Storico"               getRowId={(row) => row.id} />
+                <Tabella 
+                data={storicoOptions}     
+                columns={tableStorico}  
+                title="Storico"              
+                getRowId={(row) => row.id}
+                pagina={paginaStorico}
+                righeTot={righeTotStorico}
+                onPageChange={handlePageChangeStorico}
+                />
           </Box>
 
           <Box sx={{ height: 'auto', mb: 3}}>
-                <Tabella data={associatiOptions}    columns={tableAssociati} title="Candidati Associati"   getRowId={(row) => row.id} />
+                <Tabella 
+                  data={associatiOptions}    
+                  columns={tableAssociati} 
+                  title="Candidati Associati"   
+                  getRowId={(row) => row.id}
+                  pagina={paginaAssociati}
+                  righeTot={righeTotAssociati}
+                  onPageChange={handlePageChangeAssociati}
+                  />
           </Box>
 
           

@@ -31,9 +31,11 @@ import ModificaIntervista                                              from './p
 import AggiungiNeedID                                                  from './pages/AggiungiPagine/AggiungiNeedID.jsx';
 import ModificaAziende                                                 from './pages/ModificaPagine/ModificaAziende.jsx';
 import Keypeople                                                       from './pages/Keypeople.jsx';
+import Hiring                                                          from './pages/Hiring.jsx';
 
 import NeedLife from './components/NeedLife.jsx';
-import RecruitingTorchy from './pages/RecruitingTorchy.jsx';
+import NeedMatch2 from './pages/NeedMatch2.jsx';
+import AziendeListaNeedCard from './pages/AziendeListaNeedCard.jsx';
 
 
 
@@ -89,7 +91,7 @@ useEffect(() => {
                   } />
                 <Route path="/need/:id"element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
-                      <AziendeListaNeed />
+                      <AziendeListaNeedCard />
                     </PrivateRoute>
                   } />
                 <Route path="/need/aggiungi/:id"element={
@@ -134,7 +136,7 @@ useEffect(() => {
                   } />
                 <Route path="/need/match/:id"element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
-                      <NeedMatch />
+                      <NeedMatch2 />
                     </PrivateRoute>
                   } />
                 <Route path="/recruiting"element={
@@ -165,6 +167,11 @@ useEffect(() => {
                 <Route path="/intervista/modifica/:id" element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
                       <ModificaIntervista />
+                    </PrivateRoute>
+                  } />
+                <Route path="/hiring" element={
+                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
+                      <Hiring />
                     </PrivateRoute>
                   } />
         </Route>

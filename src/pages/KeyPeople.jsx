@@ -5,21 +5,13 @@ import SearchIcon                                       from '@mui/icons-materia
 // import BusinessCenterIcon                               from '@mui/icons-material/BusinessCenter'; //aziende
 import CloseIcon                                        from '@mui/icons-material/Close';
 import KeypeopleCard                                    from '../components/card/KeypeopleCard';
+import InfiniteScroll                                   from 'react-infinite-scroll-component';
+import RicercheKeypeople                                from '../components/ricerche/RicercheKeypeople';
+
 import { 
-    Button,
     Box,
     Grid,
-    TextField,
-    InputAdornment,
-    Select,
-    Drawer,
-    Typography,
-    MenuItem,
     CircularProgress,
-    // Slide,
-    FormControl,
-    InputLabel,
-    IconButton
     } from '@mui/material';
 
 
@@ -28,7 +20,6 @@ const Keypeople = () => {
     const navigate = useNavigate();
 
     const [ originalKeypeople,   setOriginalKeypeople ] = useState([]);
-    const [ openFiltri,          setOpenFiltri        ] = useState(false);
     const [ loading,             setLoading           ] = useState(false);
 
 
@@ -36,12 +27,17 @@ const Keypeople = () => {
     const [ clienteOptions,             setClienteOptions             ] = useState([]);
     const [ ownerOptions,               setOwnerOptions               ] = useState([]);
     const [ filtri,                     setFiltri                     ] = useState({
-        nome: localStorage.getItem("RicercheKeypeople") || '',
-        cognome: localStorage.getItem("RicercheKeypeople") || '',
+        nome:  '',
         azienda: '',
         stato: '',
         owner:''
     });
+
+    //stati per la paginazione
+    const [ pagina,             setPagina       ] = useState(0);
+    const [ hasMore,            setHasMore      ] = useState(false);
+    const quantita = 10;
+
 
     const user = JSON.parse(localStorage.getItem('user'));
     const accessToken = user?.accessToken;
@@ -52,11 +48,23 @@ const Keypeople = () => {
 
 
 
+
     const fetchData = async () => {
+
+        const filtriDaInviare = {
+            nome: filtri.nome || null,
+            azienda: filtri.azienda || null,
+            owner: filtri.owner || null,
+            stato: filtri.stato || null,
+            pagina: 0,
+            quantita: 10
+        };
+
+
         setLoading(true);
         try {
     
-        const response        = await axios.get("http://localhost:8080/keypeople/react/mod",             { headers: headers});
+        const response        = await axios.get("http://localhost:8080/keypeople/react/mod",             { headers: headers, params: filtriDaInviare});
         const responseCliente = await axios.get("http://localhost:8080/aziende/react/select",            { headers: headers });
         const responseOwner   = await axios.get("http://localhost:8080/aziende/react/owner",             { headers: headers });
 
@@ -76,6 +84,7 @@ const Keypeople = () => {
         if (Array.isArray(response.data)) {
             const keypeopleConId = response.data.map((keypeople) => ({ ...keypeople}));
             setOriginalKeypeople(keypeopleConId);
+            setHasMore(keypeopleConId.length >= quantita);
         } else {
             console.error("I dati ottenuti non sono nel formato Array:", response.data);
         }
@@ -87,58 +96,57 @@ const Keypeople = () => {
     
     useEffect(() => {
     fetchData();
+    // eslint-disable-next-line
     }, []);
 
 
-    // const filterData = (data, searchTerm ) => {
-    //     if (searchTerm.trim() === '') {
-    //         setOriginalKeypeople(data);
-    //     } else {
-    //         const filterData = data.filter(aziende => 
-    //             aziende.descrizione.toLowerCase().includes(searchTerm.toLowerCase())
-    //         );
-    //         setOriginalKeypeople(filterData);
-    //     }
-    // };
+    //funzione per la paginazione
+    const fetchMoreData = async () => {
+        const paginaSuccessiva = pagina + 1;
 
-
-    // const handleSearchChange = (event) => {
-    //     setSearchTerm(event.target.value);
-    // };
-
-
-    // // Funzione per l'animazione di scorrimento della barra dei filtri
-    // const Transition = React.forwardRef(function Transition(props, ref) {
-    //     return <Slide direction={openFiltri ? "left" : "right"} ref={ref} {...props} />;
-    // });
-
-
-    const handleFilterChange = (name) => (event) => {
-        const newValue = event.target.value;
-        setFiltri({ ...filtri, [name]: newValue });
-        if( name === 'nome' && newValue === '') {
-            fetchData();
-        } else {
-            handleRicerche();
+        const filtriDaInviare = {
+            nome: filtri.nome || null,
+            azienda: filtri.azienda || null,
+            owner: filtri.owner || null,
+            stato: filtri.stato || null,
+            pagina: paginaSuccessiva,
+            quantita: 10
+        };
+        
+        try {
+            const response        = await axios.get("http://localhost:8080/keypeople/react/mod",             { headers: headers, params: filtriDaInviare});
+            if (Array.isArray(response.data)) {
+                const keypeopleConId = response.data.map((keypeople) => ({...keypeople}));
+                setOriginalKeypeople((prev) => [...prev, ...keypeopleConId]);
+                setHasMore(response.data.length >= quantita);
+            } else {
+                console.error("I dati ottenuti non sonon nel formato Array: ", response.data);
+            }
+        } catch(error) {
+            console.error("Errore durante il recupero dei dati: ", error);
         }
+        setPagina((prevPagina) => prevPagina + 1);
     };
+
+    //funzione per la ricerca
 
     const handleRicerche = async () => {
 
         const filtriDaInviare = {
+            nome: filtri.nome || null,
             azienda: filtri.azienda || null,
             owner: filtri.owner || null,
-            stato: filtri.stato || null
+            stato: filtri.stato || null,
+            pagina: 0,
+            quantita: 10,
         };
-
-
         setLoading(true);
-     
         try {
-            const response = await axios.get("http://localhost:8080/aziende/react/ricerca/mod", { headers: headers, params: filtriDaInviare });
+            const response = await axios.get("http://localhost:8080/keypeople/react/ricerca/mod", { headers: headers, params: filtriDaInviare });
 
             if (Array.isArray(response.data)) {
                 setOriginalKeypeople(response.data);
+                setHasMore(response.data.length >= quantita);
             } else {
                 console.error("I dati ottenuti non sono nel formato Array:", response.data);
             }
@@ -149,8 +157,19 @@ const Keypeople = () => {
         }
     };
 
+    //funzione cambio stato select
+    const handleFilterChange = (name) => (event) => {
+        const newValue = event.target.value;
+        setFiltri({ ...filtri, [name]: newValue });
+        if( name === 'nome' && newValue === '') {
+            fetchData();
+        } else {
+            handleRicerche();
+        }
+    };
+
     useEffect(() => {
-        const { nome, cognome, ...otherFilters } = filtri;
+        const { nome, ...otherFilters } = filtri;
         const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x != null);
     
         if (filtriHasValues) {
@@ -158,29 +177,19 @@ const Keypeople = () => {
         }
     }, [filtri.azienda, filtri.stato, filtri.owner]);
 
-    const handleReset = () => {
+    //funzione di reset dei campi di ricerca
+
+    const handleReset = async () => {
         setFiltri({
             nome: '',
-            cognome: '',
             azienda: '',
             stato: '',
             owner: ''
         });
-        localStorage.removeItem("RicercheKeypeople");
-        fetchData();
-    };
-
-
-    const handleOpenFiltri = () => {
-        setOpenFiltri(true);
-    };
-
-    const handleCloseFiltri = () => {
-        setOpenFiltri(false);
-    };
-
-    const navigateToAggiungi = () => {
-        navigate('/keypeople/aggiungi');
+        setPagina(0);
+        setOriginalKeypeople([]);
+        setHasMore(true);
+        await fetchData(0);
     };
 
 
@@ -209,82 +218,25 @@ const Keypeople = () => {
                     position: 'sticky', 
                     top: 0, 
                     zIndex: 1000, 
-                    backgroundColor: '#FEFCFD', 
-                    display: 'flex', 
-                    flexDirection: 'row', 
-                    alignItems: 'center', 
-                    justifyContent: 'space-between', 
-                    borderRadius: '10px',  
-                    marginBottom: '4rem'
                 }}>
-                    <Button 
-                    variant="contained" 
-                    color="primary" 
-                    onClick={navigateToAggiungi} 
-                    sx={{
-                        minWidth: '12em',
-                        backgroundColor: '#00853C',
-                        borderRadius: '10px',
-                        textTransform: 'none',
-                        '&:hover': {
-                        backgroundColor: '#00853C',
-                        transform: 'scale(1.05)',
-                    },
-                }}>
-                    + Aggiungi Contatto
-                    </Button>
-
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        {/* Barra di ricerca */}
-                        <TextField
-                        id="search-bar"
-                        variant="outlined"
-                        placeholder="Cerca Contatto"
-                        size="small"
-                        value={filtri.nome}
-                        onChange={handleFilterChange('nome')}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <SearchIcon sx={{ color: '#00853C' }} />
-                                </InputAdornment>
-                            ),
-                        }}
-                        sx={{
-                            width: '25em',
-                            mb: 0.5,
-                            '& .MuiOutlinedInput-root': {
-                                borderRadius: '0px', 
-                                '& fieldset': {
-                                    borderColor: '#00853C', 
-                                    borderRadius: '4px 0 0 4px', 
-                                },
-                                '&:hover fieldset': {
-                                    borderColor: '#00853C', 
-                                },
-                                '&.Mui-focused fieldset': {
-                                    borderColor: '#00853C', 
-                                },
-                            },
-                        }}
-                    />
+                    <RicercheKeypeople
+                        filtri={filtri}
+                        onFilterChange={handleFilterChange}
+                        onReset={handleReset}
+                        aziendaOptions={clienteOptions}
+                        statoOptions={statoOptions}
+                        ownerOptions={ownerOptions}
+                        onRicerche={handleRicerche}
+                        />
                 </Box>
-                <Button variant="contained" color="primary" onClick={handleOpenFiltri} sx={{
-                    minWidth: '12em',
-                    backgroundColor: '#00853C',
-                    borderRadius: '10px',
-                    textTransform: 'none',
-                    '&:hover': {
-                    backgroundColor: '#00853C',
-                    transform: 'scale(1.05)',
-                    },
-                }}>
-                    Filtra per: 
-                </Button>  
-                
-                </Box>
+                <InfiniteScroll
+                dataLength={originalKeypeople.length}
+                next={fetchMoreData}
+                hasMore={hasMore}
+                loader={'Caricamento in corso...'}
+                >
                             {/* Main Content Area */}
-                <Grid container spacing={2}>
+                <Grid container spacing={2} sx={{ mt: 1, mb: 4}}>
                     { loading ? (
                         <Box
                         sx={{
@@ -304,129 +256,8 @@ const Keypeople = () => {
                     )
                     }
                     </Grid>
+                    </InfiniteScroll>
                     </Box>
-
-                    <Drawer
-                anchor='right'
-                open={openFiltri}
-                onClose={handleCloseFiltri}
-                sx={{ '& .MuiDrawer-paper': { width: '250px' } }}
-            >
-                <Box
-                    sx={{ width: 250, p: 2 }}
-                    role="presentation"
-                >
-                    <Box sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between'
-                    }}>
-                    <Typography variant="h6" sx={{ mb: 2, color: 'black', fontWeight: 'bold' }}>
-                        Filtri
-                    </Typography>
-                    <IconButton
-                        onClick={handleCloseFiltri}
-                        sx={{ color: 'black', mb: 2 }}
-                    >
-                        <CloseIcon />
-                    </IconButton>
-                    </Box>
-                </Box>
-
-                <Grid container spacing={2} direction="column" sx={{ p: 2}}>
-                    <Grid item>
-
-
-                    <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel id="azienda-label">Azienda</InputLabel>
-                        <Select
-                            labelId="azienda-label"
-                            displayEmpty
-                            value={filtri.azienda || ''} 
-                            onChange={handleFilterChange('azienda')}
-                            renderValue={(selected) => {
-                                if (selected === '') {
-                                    return <em></em>;
-                                }
-                                const selectedLabel = clienteOptions.find(option => option.value === selected)?.label;
-                                return selectedLabel || selected;
-                            }}
-                        >
-                            
-                            {clienteOptions.map((option) => (
-                            <MenuItem key={option.value} value={option.label}>
-                                {option.label}
-                            </MenuItem>
-                            ))}
-                        </Select>
-                        </FormControl>
-
-                        <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel id="stato-label">Stato</InputLabel>
-                        <Select
-                            labelId="stato-label"
-                            displayEmpty
-                            value={filtri.stato || ''} 
-                            onChange={handleFilterChange('stato')}
-                            renderValue={(selected) => {
-                                if (selected === '') {
-                                    return <em></em>;
-                                }
-                                const selectedLabel = statoOptions.find(option => option.value === selected)?.label;
-                                return selectedLabel || selected;
-                            }}
-                        >
-                            
-                            {statoOptions.map((option) => (
-                            <MenuItem key={option.value} value={option.label}>
-                                {option.label}
-                            </MenuItem>
-                            ))}
-                        </Select>
-                        </FormControl>
-
-                        <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel id="owner-label">Owner</InputLabel>
-                        <Select
-                            labelId="owner-label"
-                            displayEmpty
-                            value={filtri.owner || ''} 
-                            onChange={handleFilterChange('owner')}
-                            renderValue={(selected) => {
-                                if (selected === '') {
-                                    return <em></em>;
-                                }
-                                const selectedLabel = ownerOptions.find(option => option.value === selected)?.label;
-                                return selectedLabel || selected;
-                            }}
-                        >
-                            
-                            {ownerOptions.map((option) => (
-                            <MenuItem key={option.value} value={option.label}>
-                                {option.label}
-                            </MenuItem>
-                            ))}
-                        </Select>
-                        </FormControl>
-
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
-                        <Button 
-                        onClick={handleReset}
-                        sx={{
-                            backgroundColor: 'black',
-                            color: 'white',
-                            '&:hover': {
-                                backgroundColor: 'black',
-                                color: 'white',
-                                trasform: '1.05'
-                            },
-                        }}>
-                            Reset
-                        </Button>
-                        </Box>
-                    </Grid>
-                </Grid>
-                </Drawer>
         </Box>
     );
 };

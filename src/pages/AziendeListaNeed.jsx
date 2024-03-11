@@ -40,6 +40,11 @@ function AziendeListaNeed() {
   const [ deleteId,           setDeleteId           ] = useState(null);
 
 
+  //stati per la paginazione
+  const [ pagina,             setPagina             ] = useState(0);
+  const quantita = 10;
+
+
   const user = JSON.parse(localStorage.getItem("user"));
   const accessToken = user?.accessToken;
 
@@ -50,8 +55,12 @@ function AziendeListaNeed() {
 
 
   const fetchData = async () => {
+    const filtriDaInviare = {
+      pagina: 0,
+      quantita: 10
+    };
     try {
-      const response = await axios.get(`http://89.46.67.198:8443/need/react/cliente/modificato/${id}`, { headers: headers });;
+      const response = await axios.get(`http://localhost:8080/need/react/cliente/modificato/${id}`, { headers: headers, params: filtriDaInviare });;
       if (Array.isArray(response.data)) {
         const needConId = response.data.map((need) => ({ ...need }));
         setNeed(needConId);

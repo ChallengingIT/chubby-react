@@ -14,7 +14,6 @@ const AggiungiNeedID = () => {
 
   const [ aziendeOptions,       setAziendeOptions     ] = useState([]);
   const [ skillsOptions,        setSkillsOptions      ] = useState([]);
-  const [ skills2Options,       setSkill2sOptions     ] = useState([]);
   const [ ownerOptions,         setOwnerOptions       ] = useState([]);
   const [ tipologiaOptions,     setTipologiaOptions   ] = useState([]);
   const [ statoOptions,         setStatoOptions       ] = useState([]);
@@ -41,7 +40,6 @@ const AggiungiNeedID = () => {
       try {
         const responseAziende       = await axios.get("http://89.46.67.198:8443/aziende/react/select", { headers: headers });
         const responseSkill         = await axios.get("http://89.46.67.198:8443/staffing/react/skill", { headers: headers });
-        const responseSkill2        = await axios.get("http://89.46.67.198:8443/staffing/react/skill", { headers: headers });
         const ownerResponse         = await axios.get("http://89.46.67.198:8443/aziende/react/owner" , { headers: headers });
         const tipologiaResponse     = await axios.get("http://89.46.67.198:8443/need/react/tipologia", { headers: headers });
         const statoResponse         = await axios.get("http://89.46.67.198:8443/need/react/stato"    , { headers: headers });
@@ -80,14 +78,7 @@ const AggiungiNeedID = () => {
         }));
         setSkillsOptions(skillsOptions);
 
-        if (Array.isArray(responseSkill2.data)) {
-          const skills2Options = responseSkill2.data.map((skill2) => ({
-            value: skill2.id,
-            label: skill2.descrizione
-          }));
-          setSkill2sOptions(skills2Options);
-  
-
+       
 
        
     
@@ -104,7 +95,7 @@ const AggiungiNeedID = () => {
       }
     }
   }
-}
+
         }
       } catch (error) {
         console.error("Errore durante il recupero delle aziende:", error);
@@ -171,7 +162,6 @@ const AggiungiNeedID = () => {
 
 
       
-        // Invio della richiesta al server con skills e skills2 come parametri di query
         const response = await axios.post("http://89.46.67.198:8443/need/react/salva", values, {
           params: {
             skill1: skills,

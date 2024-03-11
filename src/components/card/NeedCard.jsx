@@ -1,7 +1,10 @@
-import React                 from 'react';
+import React, {useState, useEffect}                 from 'react';
 import { useNavigate }                      from 'react-router-dom';
 import ChecklistIcon                        from '@mui/icons-material/Checklist';
 import WorkIcon                             from '@mui/icons-material/Work';
+import axios from 'axios';
+import CloseIcon from '@mui/icons-material/Close';
+
 import { 
     Card, 
     CardContent, 
@@ -9,6 +12,9 @@ import {
     Typography,
     Button,
     CardActions,
+    Modal,
+    Select,
+    MenuItem
     } from '@mui/material';
 
 
@@ -30,9 +36,33 @@ import {
     };
 
 
-const NeedCard = ({valori}) => {
+const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
 
     const navigate = useNavigate();
+    const [ modalStato,        setModalStato      ] = useState(false);
+    const [ modalDelete,       setModalDelete     ] = useState(false);
+    const [ newStato,          setNewStato] = useState(valori.stato?.id); 
+    const [ idNeed,            setIdNeed          ] = useState(null);
+
+
+    const user = JSON.parse(localStorage.getItem('user'));
+    const accessToken = user?.accessToken;
+
+    const headers = {
+        Authorization: `Bearer ${accessToken}`
+    };
+
+
+    useEffect(() => {
+        setNewStato(valori.stato?.id);
+    }, [valori.stato?.id]);
+    
+
+
+
+
+
+
     // const [ setOpenStato        ] = useState(false);
 
 
@@ -75,6 +105,51 @@ const NeedCard = ({valori}) => {
 
 
 
+    const handleOpenModalStato = (id) => {
+        setModalStato(true);
+        setIdNeed(id);
+    };
+    const handleCloseModalStato = () => setModalStato(false);
+
+    const handleChangeStato = (event) => {
+        setNewStato(event.target.value); 
+    };
+
+
+
+      const handleUpdateStato = async () => {
+        const idStato = newStato;
+        const params = new URLSearchParams({ stato: idStato });
+
+
+        try {
+            const responseUpdateStato = await axios.post(`http://localhost:8080/need/react/salva/stato/${idNeed}?${params.toString()}`, { headers: headers});
+            setModalStato(false);
+            onRefresh();
+        } catch(error) {
+            console.error("Errore durante l'aggiornamento dello stato: ", error);
+        }
+      };
+
+
+
+
+    const handleOpenModalDelete = () => setModalDelete(true);
+    const handleCloseModalDelete = () => setModalDelete(false);
+
+    const confirmDelete = () => {
+        onDelete();
+        handleCloseModalDelete(true);
+    };
+
+
+
+
+
+
+
+    
+
 
     return (
         <Card
@@ -108,13 +183,13 @@ const NeedCard = ({valori}) => {
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
                 textOverflow: 'ellipsis',
-                width: '100%' // Assicurati di impostare una larghezza, altrimenti 'nowrap' potrebbe non funzionare come previsto.
+                width: '100%' 
                 }}
             >
                 {valori.descrizione}
             </Typography>
-                    {/* <Button
-                    onClick={handleOpenStato}
+                    <Button
+                    onClick={handleOpenModalDelete}
                     size='small'
                     sx={{
                         color: '#000000',
@@ -124,8 +199,8 @@ const NeedCard = ({valori}) => {
                         },
                     }}
                     >
-                        <InfoButton />
-                    </Button> */}
+                        <CloseIcon />
+                    </Button>
             </Box>
 
             <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, color: 'black' }}>
@@ -141,7 +216,6 @@ const NeedCard = ({valori}) => {
                     ? valori.tipologia.descrizione
                     : "N/A"}
                     </Typography>
-           
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
                     <ChecklistIcon sx={{ color: '#00853C', mr: 1 }} />
@@ -168,7 +242,7 @@ const NeedCard = ({valori}) => {
                 <Box
                 sx={{
                     display: 'flex',
-                    gap: 3,
+                    gap: 1.5,
                     mr:3
                     
                 }}>
@@ -183,7 +257,7 @@ const NeedCard = ({valori}) => {
                     backgroundColor: '#00853C',
                     transform: 'scale(1.05)',
                     },
-                }}>Aggiorna</Button>
+                }}>Modifica</Button>
                 <Button
                     size="small"
                     onClick={(event) => navigateToAssocia(valori.id, event)}
@@ -194,7 +268,19 @@ const NeedCard = ({valori}) => {
                         backgroundColor: '#000000',
                         transform: 'scale(1.05)',
                     },
-                    }}>Associa</Button>
+                    }}>Match</Button>
+                    <Button 
+                    size="small"
+                    onClick={(event) => handleOpenModalStato(valori.id, event)}
+                    sx={{
+                        backgroundColor: '#00853C',
+                        color: 'white',
+                        
+                        '&:hover': {
+                            backgroundColor: '#00853C',
+                            transform: 'scale(1.05)',
+                            },
+                        }}>Stato</Button>
                     </Box>
                     <Typography
                     gutterBottom
@@ -212,6 +298,155 @@ const NeedCard = ({valori}) => {
                 >
                     {valori.cliente.denominazione}
                 </Typography>
+
+                <Modal
+                open={modalDelete}
+                onClose={handleCloseModalDelete}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+                >
+                    <Box
+                            sx={{
+                            backgroundColor: 'white',
+                            p: 4,
+                            borderRadius: 2,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flexDirection: 'column',
+                            gap: 2,
+                            width: '40vw',
+                            }}
+                            >
+                            <Typography id="modal-modal-title" variant="h6" component="h2">
+                            Sei sicuro di voler eliminare il need?
+                            </Typography>
+                            <Box 
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                gap: 3
+                            }}>
+                                <Button
+                                onClick={handleCloseModalDelete}
+                                sx={{
+                                    backgroundColor: 'black',
+                                    color: 'white',
+                                    borderRadius: '5px',
+                                    '&:hover': {
+                                        backgroundColor: 'black',
+                                        color: 'white',
+                                        transform: 'scale(1.05)'
+                                    },
+                                }}>
+                                Indietro
+                            </Button>
+                            <Button
+                            onClick={confirmDelete}
+                            sx={{
+                                backgroundColor: '#00853C',
+                                color: 'white',
+                                borderRadius: '5px',
+                                '&:hover': {
+                                    backgroundColor: '#00853C',
+                                    color: 'white',
+                                    transform: 'scale(1.05)'
+                                },
+                            }}>
+                                Conferma
+                            </Button>
+                            </Box>
+                            </Box>
+                </Modal>
+                
+
+
+                <Modal
+                        open={modalStato}
+                        onClose={() => setModalStato(false)}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                        >
+                        <Box
+                            sx={{
+                            backgroundColor: 'white',
+                            p: 4,
+                            borderRadius: 2,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flexDirection: 'column',
+                            gap: 2,
+                            width: '40vw',
+                            }}
+                        >
+                            <Typography id="modal-modal-title" variant="h6" component="h2">
+                            Cambia stato al need
+                            </Typography>
+
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={newStato}
+                                onChange={handleChangeStato}
+                                sx={{ width: '30%' }}
+                            >
+                                {statoOptions.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+
+                            <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                pt: 2,
+                                gap: 3
+                            }}
+                            >
+                            <Button
+                                onClick={handleCloseModalStato}
+                                sx={{
+                                backgroundColor: 'black',
+                                color: 'white',
+                                '&:hover': {
+                                    backgroundColor: '#333',
+                                },
+                                }}
+                            >
+                                Indietro
+                            </Button>
+
+                            <Button
+                                onClick={handleUpdateStato}
+                                sx={{
+                                backgroundColor: '#00853C',
+                                color: 'white',
+                                '&:hover': {
+                                    backgroundColor: '#006b2b',
+                                },
+                                }}
+                            >
+                                Salva
+                            </Button>
+                            </Box>
+                        </Box>
+                        </Modal>
+
+
                     </Box>
         </CardActions>
     </Card>

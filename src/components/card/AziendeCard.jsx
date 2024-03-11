@@ -50,7 +50,30 @@ const AziendeCard = ({valori}) => {
                         border: '4px solid #0B3A4F'
                     }
                 };
+                case 'Prospect':
+                return {
+                    borderRadius: '20px', 
+                    maxWidth: '80%', 
+                    justifyContent: 'center', 
+                    margin: 'auto', 
+                    cursor: 'pointer', 
+                    height: 'auto',
+                    borderColor: '2px solid #0B3A4F', // Blu navy
+                    transition: 'transform 0.3s ease, border-width 0.3s ease', 
+
+                    '&:hover': {
+                        transform: 'scale(1.05)', 
+                        border: '4px solid #0B3A4F'
+                    }
+                };
             case 'CONSULENZA':
+                return {
+                    backgroundColor: '#f0f0f0', // Grigio Chiaro
+                    borderColor: '#f0f0f0'
+                    // pointerEvents: 'none', // Disabilita interazioni
+                    // opacity: 0.5 
+                };
+                case 'Consulenza':
                 return {
                     backgroundColor: '#f0f0f0', // Grigio Chiaro
                     borderColor: '#f0f0f0'
@@ -86,7 +109,6 @@ const AziendeCard = ({valori}) => {
         ...getCardStyle(valori.tipologia) 
     };
 
-    console.log("valori: ", valori);
 
 
 

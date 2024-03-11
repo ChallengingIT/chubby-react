@@ -4,23 +4,14 @@ import axios                                            from 'axios';
 import SearchIcon                                       from '@mui/icons-material/Search';
 import CloseIcon                                        from '@mui/icons-material/Close';
 import AziendeCard                                      from '../components/card/AziendeCard';
+import InfiniteScroll                                   from "react-infinite-scroll-component";
+import AggiungiBox                                      from '../components/AggiungiBox';   
+import RicercheAziende                                  from '../components/ricerche/RicercheAziende';    
 
 import { 
-    Button,
     Box,
     Grid,
-    TextField,
-    InputAdornment,
-    Select,
-    Drawer,
-    Typography,
-    MenuItem,
     CircularProgress,
-    // Slide,
-    FormControl,
-    InputLabel,
-    IconButton,
-    Modal
     } from '@mui/material';
 
 
@@ -29,20 +20,28 @@ const Aziende = () => {
     const navigate = useNavigate();
 
     const [ originalAziende,   setOriginalAziende ] = useState([]);
-    const [ openFiltri,        setOpenFiltri      ] = useState(false);
     const [ loading,           setLoading         ] = useState(false);
-    const [ openModal, setOpenModal ] = useState(false);
+    const [                    setAlert           ] = useState(false);
+
 
 
     //stati ricerche
     // const [ clienteOptions,             setClienteOptions             ] = useState([]);
     const [ ownerOptions,               setOwnerOptions               ] = useState([]);
+    const [ provinceOptions,            setProvinceOptions            ] = useState([]);
     const [ filtri,                     setFiltri                     ] = useState({
-        denominazione: localStorage.getItem("RicercheAzienda") || '',
+        denominazione: '',
         tipologia: '',
         stato: '',
         owner: ''
     });
+
+    //stato paginazione
+    const [ pagina,                 setPagina       ] = useState(0);
+    const [ hasMore,                setHasMore      ] = useState(true);
+
+    const quantita = 10;
+
 
     const user = JSON.parse(localStorage.getItem('user'));
     const accessToken = user?.accessToken;
@@ -53,33 +52,45 @@ const Aziende = () => {
 
 
 
-    const fetchData = async () => {
+    const fetchData = async() => {
         setLoading(true);
+        const filtriDaInviare = {
+            ragione: filtri.denominazione || null,
+            tipologia: filtri.tipologia || null,
+            owner: filtri.owner || null,
+            stato: filtri.stato || null,
+            pagina: 0,
+            quantita: 10
+        };
             try {
-        
-            const responseAziende   = await axios.get("http://localhost:8080/aziende/react/mod",     { headers: headers });
+            const responseAziende   = await axios.get("http://localhost:8080/aziende/react/mod",     { headers: headers , params: filtriDaInviare });
             // const responseCliente   = await axios.get("http://localhost:8080/aziende/react/select",  { headers });
             const responseOwner     = await axios.get("http://localhost:8080/aziende/react/owner",   { headers });
-        
-
-            // if (Array.isArray(responseCliente.data)) {
-            // setClienteOptions(responseCliente.data.map((cliente) => ({ label: cliente.denominazione, value: cliente.id })));
-            // } else {
-            // console.error("I dati ottenuti non sono nel formato Array:", responseCliente.data);
-            // } 
-
+            const provinceResponse = await axios.get("http://localhost:8080/aziende/react/province", { headers: headers });
 
             if (Array.isArray(responseOwner.data)) {
             setOwnerOptions(responseOwner.data.map((owner, index) => ({ label: owner.descrizione, value: owner.id })));
             } else {
             console.error("I dati ottenuti non sono nel formato Array:", responseOwner.data);
             } 
+            if (Array.isArray(provinceResponse.data)) {
+                const provinceOptions = provinceResponse.data.map((province) => ({
+                    label: province.nomeProvince,
+                    value: province.nomeProvince,
+                }));
+                setProvinceOptions(provinceOptions);
+    
+    
+            } else {
+                console.error("I dati ottenuti non sono nel formato Array:", provinceResponse.data);
+            }
         
             if (Array.isArray(responseAziende.data)) {
                 const aziendeConId = responseAziende.data
-                .map((aziende) => ({ ...aziende }))
-                .sort((a, b) => a.denominazione.localeCompare(b.denominazione));
+                .map((aziende) => ({ ...aziende }));
                 setOriginalAziende(aziendeConId);
+                setHasMore(aziendeConId.length >= quantita); 
+                // setPagina(pagina + 1);
             } else {
                 console.error("I dati ottenuti non sono nel formato Array:", responseAziende.data);
             }
@@ -94,11 +105,110 @@ const Aziende = () => {
             // eslint-disable-next-line
         }, []); 
 
+        //funzione per la paginazione
+        const fetchMoreData = async () => {
+            const paginaSuccessiva = pagina + 1;
+            const filtriDaInviare = {
+                ragione: filtri.denominazione || null,
+                tipologia: filtri.tipologia || null,
+                owner: filtri.owner || null,
+                stato: filtri.stato || null,
+                pagina: paginaSuccessiva,
+                quantita: quantita
+            };
+            try {
+                const responsePaginazione   = await axios.get("http://localhost:8080/aziende/react/mod",     { headers: headers , params: filtriDaInviare });
+                if (Array.isArray(responsePaginazione.data)) {
+                    const aziendeConId = responsePaginazione.data
+                    .map((aziende) => ({ ...aziende }));
+                    setOriginalAziende((prev) => [...prev, ...aziendeConId]);
+                    setHasMore(responsePaginazione.data.length >= quantita);  
+                    } else {
+                    console.error("I dati ottenuti non sono nel formato Array:", responsePaginazione.data);
+                }
+                setLoading(false);
+                } catch (error) {
+                console.error("Errore durante il recupero dei dati:", error);
+                }
+                setPagina((prevPagina) => prevPagina + 1);
+            };
+
+            //funzione di ricerca
+            const handleRicerche = async () => {
+        
+                const filtriDaInviare = {
+                    ragione: filtri.denominazione || null,
+                    tipologia: filtri.tipologia || null,
+                    owner: filtri.owner || null,
+                    stato: filtri.stato || null,
+                    pagina: 0,
+                    quantita: quantita
+                };
+                setLoading(true);     
+                try {
+                    const response = await axios.get("http://localhost:8080/aziende/react/ricerca/mod", { headers: headers, params: filtriDaInviare });
+        
+                    if (Array.isArray(response.data)) {
+                        setOriginalAziende(response.data);
+                        setHasMore(response.data.length >= quantita); 
+                        console.log("ho effettuato la ricerca con: ", filtriDaInviare);
+                        } else {
+                        console.error("I dati ottenuti non sono nel formato Array:", response.data);
+                    }
+                } catch (error) {
+                    console.error("Errore durante il recupero dei dati filtrati:", error);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+
+            //funzione cambio stato select
+            const handleFilterChange = (name) => (event) => {
+                const newValue = event.target.value;
+                setFiltri({ ...filtri, [name]: newValue });
+                if (name === 'denominazione' && newValue === '') {
+                    fetchData();
+                } else {
+                    handleRicerche();
+                }
+            };
+
+            useEffect(() => {
+                const { denominazione, ...otherFilters } = filtri;
+                const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x != null);
+            
+                if (filtriHasValues) {
+                    handleRicerche();
+                }
+            }, [filtri.tipologia, filtri.stato, filtri.owner]);
+
+            //funzione di reset dei campi di ricerca
+            const handleReset = async() => {
+                setFiltri({
+                    denominazione: '',
+                    stato: '',
+                    owner:'',
+                    tipologia:''
+                });
+                setPagina(0);
+                setOriginalAziende([]);
+                setHasMore(true);
+        
+                await fetchData(0);
+                };
+
+
+                //funzione per il refresh
+                // const handleRefresh = async () => {
+                //     await fetchData(0);
+                // };
+
 
         const tipologiaOptions = [
             { label: "Cliente", value: "CLIENTE" },
             { label: "Prospect", value: "PROSPECT" },
-            { label: "Consulenza", value: "CONSULENZA" }
+            { label: "Ex cliente", value: "EXCLIENTE" }
         ];
 
         const statoOptions = [
@@ -107,81 +217,83 @@ const Aziende = () => {
             { label: 'Rosso', value: '3' }
         ];
 
-    const handleFilterChange = (name) => (event) => {
-        const newValue = event.target.value;
-        setFiltri({ ...filtri, [name]: newValue });
-        if (name === 'denominazione' && newValue === '') {
-            fetchData();
-        } else {
-            handleRicerche();
-        }
-    };
+
+    // const campiObbligatori = [ "denominazione", "ragioneSociale", "email", "idOwner", "status", "citta", "provincia" ];
+
+    // const fields = [
+    //     { type: 'titleGroups',                  label: 'Informazioni Generali',         xs: 12, sm: 12                      },
+    //     { label: "Nome Azienda*",                   name: "denominazione",            type: "text", xs: 12, sm: 12                             },
+    //     { label: "Ragione Sociale*",                name: "ragioneSociale",           type: "text", xs: 12, sm: 12                             },
+    //     { label: "Email*",                          name: "email",                    type: "text", xs: 12, sm: 12                             },
+    //     { label: "Sito Web",                        name: "sito",                     type: "text", xs: 12, sm: 12                             },
+
+    //     { type: 'titleGroups',                  label: 'Posizione',         xs: 12, sm: 12                      },
+    //     { label: "Città*",                          name: "citta",                    type: "text", xs: 12, sm: 12                             },
+    //     { label: "CAP",                             name: "cap",                      type: "text", xs: 12, sm: 12                             },
+    //     { label: "Paese",                           name: "paese",                    type: "text", xs: 12, sm: 12                             },
+    //     { label: "Provincia*",                      name: "provincia",                type: "select", options: provinceOptions, xs: 12, sm: 12 },
+    //     { label: "Sede Operativa",                  name: "sedeOperativa",            type: "text", xs: 12, sm: 12                             },
+    //     { label: "Sede Legale",                     name: "sedeLegale",               type: "text", xs: 12, sm: 12                             },
+    //     { type: 'titleGroups',                  label: 'altro', xs: 12, sm: 12 },
+    //     { label: "Pec",                             name: "pec",                      type: "text", xs: 12, sm: 12                             },
+    //     { label: "Partita IVA",                     name: "pi",                       type: "text", xs: 12, sm: 12                             },
+    //     { label: "Codice Fiscale",                  name: "cf",                       type: "text", xs: 12, sm: 12                             },
+    //     { label: "Codice Destinatario",             name: "codiceDestinatario",       type: "text", xs: 12, sm: 12                             },
+    //     { label: "Settore di mercato",              name: "settoreMercato",           type: "text", xs: 12, sm: 12                             },
+    //     { label: "Owner*",                          name: "idOwner",                  type: "select", options: ownerOptions, xs: 12, sm: 12    },
+    //     { label: "Tipologia",                       name: "tipologia",                type: "select", options: [
+    //         { value: "Cliente", label: "Cliente" },
+    //         { value: "Prospect", label: "Prospect" },
+    //         { value: "Ex cliente", label: "Ex cliente" }
+    //     ], xs: 12, sm: 12  },
+    //     { label: "Stato*",                          name: "status",                    type: "select", options: [
+    //         { value: 1, label: "Verde" },
+    //         { value: 2, label: "Giallo" },
+    //         { value: 3, label: "Rosso" },
+    //     ], xs: 12, sm: 12  },
+        
+    //     { label: "Note", name: "note", type: "note", xs: 12, sm: 12 },
+    // ];
 
 
-    
 
+    // const handleSubmit = async (values) => {
+    //     const errors    = validateFields(values);
+    //     const hasErrors = Object.keys(errors).length > 0;
+    //     if (!hasErrors) {
+    //         try {
+        
+    //             Object.keys(values).forEach(key => {
+    //             if (!campiObbligatori.includes(key) && !values[key]) {
+    //                 values[key] = null;
+    //             }
+    //             });
 
-    const handleRicerche = async () => {
-
-        const filtriDaInviare = {
-            ragione: filtri.denominazione || null,
-            tipologia: filtri.tipologia || null,
-            owner: filtri.owner || null,
-            stato: filtri.stato || null
-        };
-
-
-        setLoading(true);
-     
-        try {
-            const response = await axios.get("http://localhost:8080/aziende/react/ricerca/mod", { headers: headers, params: filtriDaInviare });
-
-            if (Array.isArray(response.data)) {
-                setOriginalAziende(response.data);
-            } else {
-                console.error("I dati ottenuti non sono nel formato Array:", response.data);
-            }
-        } catch (error) {
-            console.error("Errore durante il recupero dei dati filtrati:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        const { denominazione, ...otherFilters } = filtri;
-        const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x != null);
-    
-        if (filtriHasValues) {
-            handleRicerche();
-        }
-    }, [filtri.tipologia, filtri.stato, filtri.owner]);
-    
-
-
-    const handleReset = () => {
-        setFiltri({
-            denominazione: '',
-            stato: '',
-            owner:'',
-            tipologia:''
-        });
-        localStorage.removeItem("RicercheAzienda");
-
-        fetchData();
-    };
-
-    const navigateToAggiungi = () => {
-        navigate('/aziende/aggiungi');
-    };
-
-    const handleOpenFiltri = () => setOpenFiltri(true);
-    const handleCloseFiltri = () => setOpenFiltri(false);
-
-
-    const handleOpenModal = () => setOpenModal(true);
-    const handleCloseModal = () => setOpenModal(false);
-
+    //             const response = await axios.post("http://localhost:8080/aziende/react/salva", values, {
+    //             headers: headers
+    //             });
+    //             if (response.data === "DUPLICATO") {
+    //             setAlert({ open: true, message: "Email già utilizzata!" });
+    //             console.error("L'email fornita è già in uso.");
+    //             return; 
+    //             }
+    //             handleCloseModal(true);
+    //             fetchData();
+    //         } catch (error) {
+    //             console.error("Errore durante il salvataggio:", error);
+    //         }
+    //         }
+    //     };
+        
+    //     const validateFields = (values) => {
+    //         let errors = {};
+    //         campiObbligatori.forEach(field => {
+    //         if (!values[field]) {
+    //             errors[field] = 'Questo campo è obbligatorio';
+    //         }
+    //         });
+    //         return errors;
+    //     };
 
 
     return(
@@ -201,90 +313,27 @@ const Aziende = () => {
                 <Box sx={{ 
                     position: 'sticky', 
                     top: 0, 
-                    zIndex: 1000, 
-                    backgroundColor: '#FEFCFD', 
-                    display: 'flex', 
-                    flexDirection: 'row', 
-                    alignItems: 'center', 
-                    justifyContent: 'space-between', 
-                    borderRadius: '10px',  
-                    marginBottom: '4rem'
+                    zIndex: 1000
                 }}>
-                    <Button 
-                    variant="contained" 
-                    color="primary" 
-                    onClick={navigateToAggiungi} 
-                    sx={{
-                        minWidth: '12em',
-                        backgroundColor: '#00853C',
-                        borderRadius: '10px',
-                        textTransform: 'none',
-                        '&:hover': {
-                        backgroundColor: '#00853C',
-                        transform: 'scale(1.05)',
-                    },
-                }}>
-                    + Aggiungi Azienda
-                    </Button>
+                    <RicercheAziende
+                    filtri={filtri}
+                    onFilterChange={handleFilterChange}
+                    onReset={handleReset}
+                    tipologiaOptions={tipologiaOptions}
+                    statoOptions={statoOptions}
+                    ownerOptions={ownerOptions}
+                    onRicerche={handleRicerche}
+                    />
+                    </Box>
+                        <InfiniteScroll
+                        dataLength={originalAziende.length}
+                        next={fetchMoreData}
+                        hasMore={hasMore}
+                        loader={'Caricamento in corso...'}
+                        >
 
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        {/* Barra di ricerca */}
-                        <TextField
-                            id="search-bar"
-                            variant="outlined"
-                            placeholder="Cerca Azienda"
-                            size="small"
-                            value={filtri.denominazione}
-                            onChange={(event) => setFiltri({ ...filtri, denominazione: event.target.value })}
-                            onKeyDown={(event) => {
-                                if (event.key === 'Enter') {
-                                    event.preventDefault();
-                                    handleRicerche();
-                                }
-                            }}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <SearchIcon sx={{ color: '#00853C' }} />
-                                    </InputAdornment>
-                                ),
-                            }}
-                            sx={{
-                                width: '25em',
-                                mb: 0.5,
-                                '& .MuiOutlinedInput-root': {
-                                    borderRadius: '0px', 
-                                    '& fieldset': {
-                                        borderColor: '#00853C', 
-                                        borderRadius: '4px 0 0 4px', 
-                                    },
-                                    '&:hover fieldset': {
-                                        borderColor: '#00853C', 
-                                    },
-                                    '&.Mui-focused fieldset': {
-                                        borderColor: '#00853C', 
-                                    },
-                                },
-                            }}
-                        />
-
-                </Box>
-                <Button variant="contained" color="primary" onClick={handleOpenFiltri} sx={{
-                    backgroundColor: '#00853C',
-                    minWidth: '12em',
-                    borderRadius: '10px',
-                    textTransform: 'none',
-                    '&:hover': {
-                    backgroundColor: '#00853C',
-                    transform: 'scale(1.05)',
-                    },
-                }}>
-                    Filtra per: 
-                </Button>  
-                
-                </Box>
                             {/* Main Content Area */}
-                <Grid container spacing={2}>
+                <Grid container spacing={2} sx={{ mt: 1, mb: 4}}>
                     { loading ? (
                         <Box
                         sx={{
@@ -298,254 +347,71 @@ const Aziende = () => {
                     ) : (
                         originalAziende.map((aziende, index) => (
                             <Grid item xs={12} md={6} key={index}>
-                                <AziendeCard valori={aziende}/>
+                                <AziendeCard
+                                valori={aziende}
+                                />
                             </Grid>
                         ))
                     )
                     }
                     </Grid>
+                    </InfiniteScroll>
                     </Box>
-
-
-                    <Drawer
-                anchor='right'
-                open={openFiltri}
-                onClose={handleCloseFiltri}
-                sx={{ '& .MuiDrawer-paper': { width: '250px' } }}
-            >
-                <Box
-                    sx={{ width: 250, p: 2 }}
-                    role="presentation"
-                >
-                    <Box sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        
-                    }}>
-                    <Typography variant="h6" sx={{ mb: 2, color: 'black', fontWeight: 'bold' }}>
-                        Filtri
-                    </Typography>
-                    <IconButton
-                        onClick={handleCloseFiltri}
-                        sx={{ color: 'black', mb: 2 }}
-                    >
-                        <CloseIcon />
-                    </IconButton>
-                    </Box>
-                </Box>
-
-                <Grid container spacing={2} direction="column" sx={{ p: 2}}>
-                    <Grid item>
-
-
-                    <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel id="tipologia-label">Tipologia</InputLabel>
-                        <Select
-                            labelId="tipologia-label"
-                            displayEmpty
-                            value={filtri.tipologia || ''} 
-                            onChange={handleFilterChange('tipologia')}
-                            renderValue={(selected) => {
-                                if (selected === '') {
-                                    return <em></em>;
-                                }
-                                const selectedLabel = tipologiaOptions.find(option => option.value === selected)?.label;
-                                return selectedLabel || selected;
-                            }}
-                        >
-                            
-                            {tipologiaOptions.map((option) => (
-                            <MenuItem key={option.value} value={option.value}>
-                                {option.label}
-                            </MenuItem>
-                            ))}
-                        </Select>
-                        </FormControl>
-
-                        <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel id="stato-label">Stato</InputLabel>
-                        <Select
-                            labelId="stato-label"
-                            displayEmpty
-                            value={filtri.stato || ''} 
-                            onChange={handleFilterChange('stato')}
-                            renderValue={(selected) => {
-                                if (selected === '') {
-                                    return <em></em>;
-                                }
-                                const selectedLabel = statoOptions.find(option => option.value === selected)?.label;
-                                return selectedLabel || selected;
-                            }}
-                        >
-                            
-                            {statoOptions.map((option) => (
-                            <MenuItem key={option.value} value={option.value}>
-                                {option.label}
-                            </MenuItem>
-                            ))}
-                        </Select>
-                        </FormControl>
-
-                        <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel id="owner-label">Owner</InputLabel>
-                        <Select
-                            labelId="owner-label"
-                            displayEmpty
-                            value={filtri.owner || ''} 
-                            onChange={handleFilterChange('owner')}
-                            renderValue={(selected) => {
-                                if (selected === '') {
-                                    return <em></em>;
-                                }
-                                const selectedLabel = ownerOptions.find(option => option.value === selected)?.label;
-                                return selectedLabel || selected;
-                            }}
-                        >
-                            
-                            {ownerOptions.map((option) => (
-                            <MenuItem key={option.value} value={option.value}>
-                                {option.label}
-                            </MenuItem>
-                            ))}
-                        </Select>
-                        </FormControl>
-
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
-                        <Button 
-                        onClick={handleReset}
-                        sx={{
-                            backgroundColor: 'black',
-                            color: 'white',
-                            fontWeight: 'bold',
-                            '&:hover': {
-                                backgroundColor: 'black',
-                                color: 'white',
-                                trasform: '1.05'
-                            },
-                        }}>
-                            Reset
-                        </Button>
-                        </Box>
-                    </Grid>
-                </Grid>
-                </Drawer>
-
-
+{/* 
                 <Modal  
-    open={openModal}
-    onClose={handleCloseModal}
-    aria-labelledby="modal-title"
-    aria-describedby="modal-description"
-    sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    }}>
-    <Box sx={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
-        backgroundColor: 'white', 
-        width: '40vw', 
-        height: '70vh', 
-        borderRadius: '20px', 
-        overflow: 'hidden',
-    }}>
-        <Box sx={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'center', 
-            m: 2 
-        }}>
-            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#00853C'}}>
-                Aggiungi need
-            </Typography>
-            <IconButton onClick={handleCloseModal}>
-                <CloseIcon />
-            </IconButton>
-        </Box>
-        {/* Contenuto scrollabile */}
-        <Box sx={{ overflowY: 'auto' }}>
-            <Grid container direction="column" spacing={2} sx={{ p: 1 }}>
-                <Grid item>
-                    <Typography
-                        variant="h6"
-                        sx={{
-                            textAlign: 'center',
-                            borderBottom: '1px solid #000',
-                            paddingBottom: '5px',
-                            marginTop: '20px',
-                            marginBottom: '20px',
-                            fontWeight: 'bold'
+                        open={openModal}
+                        onClose={(event, reason) => {
+                            if (reason !== 'backdropClick') {
+                                handleCloseModal();
+                            }   
                         }}
-                    >
-                        Informazioni Generali
-                    </Typography>
+                        aria-labelledby="modal-title"
+                        aria-describedby="modal-description"
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}>
+                        <Box sx={{ 
+                            display: 'flex', 
+                            flexDirection: 'column', 
+                            backgroundColor: 'white', 
+                            width: '40vw', 
+                            height: '70vh', 
+                            borderRadius: '20px', 
+                            overflow: 'hidden',
+                            // border: '2px solid #00853C'
 
-                    {/* {fields.map((field) => (
-                        <Grid item key={field.name}>
-                            {field.type === "text" ? (
-                            <TextField
-                                label={field.label}
-                                variant="outlined"
-                                fullWidth
-                                value={formValues[field.name]}
-                                onChange={(e) => setFormValues({ ...formValues, [field.name]: e.target.value })}
-                            />
-                            ) : field.type === "select" ? (
-                            <FormControl fullWidth>
-                                <InputLabel>{field.label}</InputLabel>
-                                <Select
-                                value={formValues[field.name]}
-                                onChange={(e) => setFormValues({ ...formValues, [field.name]: e.target.value })}
-                                label={field.label}
-                                >
-                                {field.options.map((option) => (
-                                    <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                    </MenuItem>
-                                ))}
-                                </Select>
-                            </FormControl>
-                            ) : null}
-                        </Grid>
-                        ))} */}
+                        }}>
+                            <Box sx={{ 
+                                display: 'flex', 
+                                justifyContent: 'space-between', 
+                                alignItems: 'center', 
+                                m: 2 
+                            }}>
+                                <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#00853C'}}>
+                                    Aggiungi Azienda
+                                </Typography>
+                                <IconButton onClick={handleCloseModal}>
+                                    <CloseIcon />
+                                </IconButton>
+                            </Box>
+                            <Box sx={{ overflowY: 'auto' }}>
+                                <Grid container direction="column" spacing={1} sx={{ pl: 2, pr: 2 }}>
+                                    <Grid item>
+                                        <AggiungiBox
+                                        fields={fields}
+                                        campiObbligatori={campiObbligatori}
+                                        title=''
+                                        onSave={handleSubmit}
+                                        />
 
 
-
-
-
-
-
-
-
-
-                    
-
-                </Grid>
-            </Grid>
-        </Box>
-        <Box sx={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-            m:1
-        }}>
-            <Button 
-            sx={{
-                backgroundColor: '#00853C',
-                color: 'white',
-                fontWeight: 'bold',
-                '&:hover': {
-                    backgroundColor: '#00853C',
-                    color: 'white',
-                },
-            }}>
-                Salva
-            </Button>
-        </Box>
-    </Box>
-</Modal>
+                                    </Grid>
+                                </Grid>
+                            </Box>
+                            </Box>
+                        </Modal> */}
 
                     </Box>
     );

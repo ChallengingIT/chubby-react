@@ -87,7 +87,19 @@ const AggiungiNeed = () => {
     fetchNeedOptions();
   }, []);
 
-  const campiObbligatori = [ "idAzienda", "descrizione", "priorita", "week"]; 
+
+  const pubblicazioneOptions = [
+    { value: 0, label: 'To Do' },
+    { value: 1, label: 'Done'  }
+  ];
+
+  const screeningOptions = [
+    { value: 0, label: 'To Do' },
+    { value: 1, label: 'In progress' },
+    { value: 2, label: 'Done' }
+  ];
+
+  const campiObbligatori = [ "idAzienda", "descrizione", "priorita", "week", "pubblicazione", "screening"]; 
 
   const fields = [
     { label: "Azienda*",            name: "idAzienda",                    type: "select",               options: aziendeOptions    },
@@ -106,6 +118,8 @@ const AggiungiNeed = () => {
     { label: "Location",            name: "location",                     type: "text"                                              },
     { label: "Skills 1",            name: "skills",                       type: "multipleSelectSkill",    options: skillsOptions    },
     { label: "Seniority",           name: "anniEsperienza",               type: "decimalNumber"                                     },
+    { label: 'Pubblicazione Annuncio*', name: 'pubblicazione',       type: 'select',               options: pubblicazioneOptions },
+    { label: 'Screening*',           name: 'screening',              type: 'select',               options: screeningOptions },
     { label: "Note",                name: "note",                         type: "note"                                              },
   ];
 

@@ -37,7 +37,6 @@ const FieldBoxFile = ({
     title = "",
     campiObbligatori,
     skillsOptions,
-    skills2Options,
     idCandidato,
     idStaff
 }) => {
@@ -426,7 +425,7 @@ const FieldBoxFile = ({
                     </MenuItem>
                 ))}
                 </Select>
-                {errors.skills && <FormHelperText>{errors.skills2}</FormHelperText>}
+                {errors.skills && <FormHelperText>{errors.skills}</FormHelperText>}
             </FormControl>
             );
 

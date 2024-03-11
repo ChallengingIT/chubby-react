@@ -1,7 +1,6 @@
 import React, { useEffect, useState }         from "react";
 import { useNavigate, useLocation }           from "react-router-dom";
 import axios                                  from "axios";
-import RecruitingSearchBox                    from "../components/searchBox/RecruitingSearchBox.jsx";
 import NoteButton                             from "../components/button/NoteButton.jsx";
 import EuroButton                             from "../components/button/EuroButton.jsx";
 import PersonInfoButton                       from "../components/button/PersonInfoButton.jsx";
@@ -12,9 +11,7 @@ import SmileGreenIcon                         from '../components/icone/SmileGre
 import SmileOrangeIcon                        from '../components/icone/SmileOrangeIcon.jsx';
 import SmileRedIcon                           from '../components/icone/SmileRedIcon.jsx';
 import Tabella                                from "../components/Tabella.jsx";
-import AddIcon                                from "@mui/icons-material/Add";
-import SearchIcon                                       from '@mui/icons-material/Search';
-import CloseIcon                                        from '@mui/icons-material/Close';
+
 
 
 
@@ -25,18 +22,9 @@ import {
   DialogContentText,
   DialogActions,
   Box,
-  Typography,
   Button,
-  TextField,
-  InputAdornment,
-  FormControl,
-  InputLabel,
-  IconButton,
-  Drawer,
-  MenuItem,
-  Select,
-  Grid
 } from '@mui/material';
+import RicercheRecruiting from "../components/ricerche/RicercheRecruiting.jsx";
 
 
 const Recruiting = () => {
@@ -56,9 +44,9 @@ const Recruiting = () => {
   const [ tipologiaOptions,           setTipologiaOptions     ] = useState([]);
   const [ tipoOptions,                setTipoOptions          ] = useState([]);
   const [ statoOptions,               setStatoOptions         ] = useState([]);
-  const [ page,                   setPage               ] = useState(0);
   const [ openFiltri,                 setOpenFiltri           ] = useState(false);
   const [ loading,                    setLoading              ] = useState(false);
+  const [ righeTot,  setRigheTot ] = useState(0);
   const [ filtri,                     setFiltri               ] = useState({
     nome: '',
     cognome: '',
@@ -66,6 +54,12 @@ const Recruiting = () => {
     stato: '',
     tipo:''
 });
+
+
+//stati per la paginazione
+const [ pagina,                 setPagina       ] = useState(0);
+const quantita = 10;
+
 
   
   const user = JSON.parse(localStorage.getItem('user'));
@@ -77,9 +71,24 @@ const Recruiting = () => {
 
 
   const fetchData = async () => {
+
     setLoading(true);
+
+    const filtriDaInviare = {
+      nome: filtri.nome || null,
+      cognome: filtri.cognome || null,
+      email: null,
+      tipologia: filtri.tipologia || null,
+      tipo: filtri.tipo || null,
+      stato: filtri.stato || null,
+      pagina: 0,
+      quantita: 10
+  };
+
+
+
     try {
-        const response          = await axios.get("http://89.46.67.198:8443/staffing/react/mod",          { headers: headers });
+        const response          = await axios.get("http://localhost:8080/staffing/react/mod",          { headers: headers, params: filtriDaInviare });
         const responseTipologia = await axios.get("http://localhost:8080/aziende/react/tipologia",        { headers });
         const responseTipo      = await axios.get("http://localhost:8080/staffing/react/tipo",            { headers });
         const responseStato     = await axios.get("http://localhost:8080/staffing/react/stato/candidato", { headers });
@@ -104,12 +113,19 @@ const Recruiting = () => {
         } else {
             console.error("I dati ottenuti non sono nel formato Array:", responseTipo.data);
         } 
-        if (Array.isArray(response.data)) {
-            const recruitingConId = response.data.map((recruiting) => ({...recruiting}));
-            setOriginalRecruiting(recruitingConId);
+        const { record, candidati } = response.data;
+
+    if (candidati && Array.isArray(candidati)) {
+        setOriginalRecruiting(candidati); 
+
+        if (typeof record === 'number') {
+            setRigheTot(record);
         } else {
-            console.error("I dati ottenuti non sono nel formato Array: ", response.data);
+            console.error("Il numero di record ottenuto non è un numero: ", record);
         }
+    } else {
+        console.error("I dati ottenuti non contengono 'candidati' come array: ", response.data);
+    }
         setLoading(false);
         } catch(error) {
         console.error("Errore durante il recupero dei dati: ", error);
@@ -121,6 +137,49 @@ const Recruiting = () => {
         fetchData();
         // eslint-disable-next-line
     }, []);
+
+
+
+    //funzione per la paginazione
+    const fetchMoreData = async (pagina) => {
+      const filtriDaInviare = {
+        nome: filtri.nome || null,
+        cognome: filtri.cognome || null,
+        email: null,
+        tipologia: filtri.tipologia || null,
+        tipo: filtri.tipo || null,
+        stato: filtri.stato || null,
+        pagina: pagina,
+        quantita: 10
+    };
+  
+      try{
+        const response          = await axios.get("http://localhost:8080/staffing/react/mod",          { headers: headers, params: filtriDaInviare });
+        const { record, candidati } = response.data;
+
+        if (candidati && Array.isArray(candidati)) {
+            setOriginalRecruiting(candidati); 
+    
+            if (typeof record === 'number') {
+                setRigheTot(record);
+            } else {
+                console.error("Il numero di record ottenuto non è un numero: ", record);
+            }
+        } else {
+            console.error("I dati ottenuti non contengono 'candidati' come array: ", response.data);
+        }
+      } catch(error) {
+      console.error("Errore durante il recupero dei dati: ", error);
+      }
+    };
+
+
+    //funzione per il cambio pagina
+    const handlePageChange = (newPage) => {
+      setPagina(newPage);
+      fetchMoreData(newPage);
+  };
+
 
 
   const openDeleteDialog = (id) => {
@@ -138,7 +197,7 @@ const Recruiting = () => {
 
   const handleDelete = async () => {
     try {
-      const responseDelete = await axios.delete(`http://89.46.67.198:8443/staffing/elimina/${deleteId}`, { headers: headers });
+      const responseDelete = await axios.delete(`http://localhost:8080/staffing/elimina/${deleteId}`, { headers: headers });
       setOpenDialog(false);
       fetchData();
     } catch(error) {
@@ -150,9 +209,6 @@ const Recruiting = () => {
     setNotePopup(false);
   };
 
-  const handlePageChange = (newPage) => {
-    setPage(newPage); 
-  };
 
   const getSmileIcon = (params) => {
     const rating = params.row.rating;
@@ -199,7 +255,9 @@ const handleRicerche = async () => {
         email: null,
         tipologia: filtri.tipologia || null,
         tipo: filtri.tipo || null,
-        stato: filtri.stato || null
+        stato: filtri.stato || null,
+        pagina: 0,
+        quantita: 10
     };
 
 
@@ -208,10 +266,17 @@ const handleRicerche = async () => {
     try {
         const response = await axios.get("http://localhost:8080/staffing/react/mod/ricerca", { headers: headers, params: filtriDaInviare });
 
-        if (Array.isArray(response.data)) {
-            setOriginalRecruiting(response.data);
+
+        const { record, candidati } = response.data;
+        if (candidati && Array.isArray(candidati)) {
+          setOriginalRecruiting(candidati);
+          if (typeof record === 'number') {
+            setRigheTot(record);
+          } else {
+            console.error("Il numero di record dei candidati in ricercha non è un numero: ", record);
+          }
         } else {
-            console.error("I dati ottenuti non sono nel formato Array:", response.data);
+            console.error("I dati ottenuti per la ricerca non sono nel formato Array:", response.data);
         }
     } catch (error) {
         console.error("Errore durante il recupero dei dati filtrati:", error);
@@ -219,6 +284,8 @@ const handleRicerche = async () => {
         setLoading(false);
     }
 };
+
+
 
 useEffect(() => {
     const { nome, cognome, ...otherFilters } = filtri;
@@ -249,7 +316,7 @@ const handleReset = () => {
 };
 
   const handleDownloadCV = async (fileId, fileDescrizione) => {
-    const url = `http://89.46.67.198:8443/files/react/download/file/${fileId}`;
+    const url = `http://localhost:8080/files/react/download/file/${fileId}`;
     try {
       const responseDownloadCV = await axios({
         method: 'GET',
@@ -351,269 +418,30 @@ const handleReset = () => {
                     position: 'sticky', 
                     top: 0, 
                     zIndex: 1000, 
-                    backgroundColor: '#FEFCFD', 
-                    display: 'flex', 
-                    flexDirection: 'row', 
-                    alignItems: 'center', 
-                    justifyContent: 'space-between', 
-                    borderRadius: '10px',  
-                    marginBottom: '4rem'
                 }}>
-                    <Button 
-                    variant="contained" 
-                    color="primary" 
-                    onClick={navigateToAggiungi} 
-                    sx={{
-                        minWidth: '12em',
-                        backgroundColor: '#00853C',
-                        borderRadius: '10px',
-                        textTransform: 'none',
-                        '&:hover': {
-                        backgroundColor: '#00853C',
-                        transform: 'scale(1.05)',
-                    },
-                }}>
-                    + Aggiungi Candidato
-                    </Button>
+                  <RicercheRecruiting
+                  filtri={filtri}
+                  onFilterChange={handleFilterChange}
+                  onReset={handleReset}
+                  tipologiaOptions={tipologiaOptions}
+                  statoOptions={statoOptions}
+                  tipoOptions={tipoOptions}
+                  onRicerche={handleRicerche}
+                  />
+                  </Box>
 
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        {/* Barra di ricerca */}
-                        <TextField
-                        id="search-bar"
-                        variant="outlined"
-                        placeholder="Nome"
-                        size="small"
-                        value={filtri.nome}
-                        onChange={(event) => setFiltri({ ...filtri, nome: event.target.value })}
-                        onKeyDown={(event) => {
-                            if (event.key === 'Enter') {
-                                event.preventDefault();
-                                handleRicerche();
-                            }
-                        }}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <SearchIcon sx={{ color: '#00853C' }} />
-                                </InputAdornment>
-                            ),
-                        }}
-                        sx={{
-                            width: '25em',
-                            mb: 0.5,
-                            '& .MuiOutlinedInput-root': {
-                                borderRadius: '0px', 
-                                '& fieldset': {
-                                    borderColor: '#00853C', 
-                                    borderRadius: '4px 0 0 4px', 
-                                    // borderRight: 'none',
-                                },
-                                '&:hover fieldset': {
-                                    borderColor: '#00853C', 
-                                },
-                                '&.Mui-focused fieldset': {
-                                    borderColor: '#00853C', 
-                                },
-                            },
-                        }}
-                    />
-
-
-                      <TextField
-                    id="search-location"
-                    variant="outlined"
-                    placeholder="Cognome"
-                    size="small"
-                    value={filtri.cognome}
-                    onChange={(event) => setFiltri({ ...filtri, cognome: event.target.value })}
-                    onKeyDown={(event) => {
-                        if (event.key === 'Enter') {
-                            event.preventDefault();
-                            handleRicerche();
-                        }
-                    }}
-                    sx={{
-                        borderTopLeftRadius: 0,
-                        borderBottomLeftRadius: 0,
-                        mb: 0.5,
-
-                        '& .MuiOutlinedInput-root': {
-                        borderTopLeftRadius: 0,
-                        borderBottomLeftRadius: 0,
-                        borderLeft: 0,
-                        borderColor: '#00853C',
-                        '&:hover fieldset': {
-                            borderColor: '#00853C', 
-                        },
-                        '&.Mui-focused': {
-                            borderColor: '#00853C',
-                        },
-                        },
-                        '& .MuiInputLabel-root': {
-                        color: 'black', 
-                        },
-                        '& .MuiOutlinedInput-notchedOutline': {
-                        borderColor: '#00853C',
-                        },
-                        '& .MuiOutlinedInput-input': {
-                        color: 'black', 
-                        },
-                        '& .MuiPlaceholder-root': {
-                        color: 'black', 
-                        },
-                        '& .Mui-focused .MuiOutlinedInput-notchedOutline': {
-                        borderColor: '#00853C', 
-                        },
-                    }}
-                    />
-                    </Box>
-                    <Button variant="contained" color="primary" onClick={handleOpenFiltri} sx={{
-                    minWidth: '12em',
-                    backgroundColor: '#00853C',
-                    borderRadius: '10px',
-                    textTransform: 'none',
-                    '&:hover': {
-                    backgroundColor: '#00853C',
-                    transform: 'scale(1.05)',
-                    },
-                }}>
-                    Filtra per: 
-                </Button>  
-                    </Box>
-
-              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5 , ml: -5}}>
+              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5 , ml: -5, width: '90vw'}}>
                 <Tabella
                   data={originalRecruiting} 
                   columns={columns} 
                   title="Candidati" 
                   getRowId={(row) => row.id}
-                  storageID={"RecruitingPagination"}
-                />
+                  pagina={pagina}
+                  quantita={quantita}
+                  righeTot={righeTot}
+                  onPageChange={handlePageChange} 
+                  />
               </Box>
-
-
-              <Drawer
-                anchor='right'
-                open={openFiltri}
-                onClose={handleCloseFiltri}
-                sx={{ '& .MuiDrawer-paper': { width: '250px' } }}
-            >
-                <Box
-                    sx={{ width: 250, p: 2 }}
-                    role="presentation"
-                >
-                    <Box sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between'
-                    }}>
-                    <Typography variant="h6" sx={{ mb: 2, color: 'black', fontWeight: 'bold' }}>
-                        Filtri
-                    </Typography>
-                    <IconButton
-                        onClick={handleCloseFiltri}
-                        sx={{ color: 'black', mb: 2 }}
-                    >
-                        <CloseIcon />
-                    </IconButton>
-                    </Box>
-                </Box>
-
-                <Grid container spacing={2} direction="column" sx={{ p: 2}}>
-                    <Grid item>
-
-
-                    <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel id="tipologia-label">Tipologia</InputLabel>
-                        <Select
-                            labelId="tipologia-label"
-                            displayEmpty
-                            value={filtri.tipologia || ''} 
-                            onChange={handleFilterChange('tipologia')}
-                            renderValue={(selected) => {
-                                if (selected === '') {
-                                    return <em></em>;
-                                }
-                                const selectedLabel = tipologiaOptions.find(option => option.value === selected)?.label;
-                                return selectedLabel || selected;
-                            }}
-                        >
-                            
-                            {tipologiaOptions.map((option) => (
-                            <MenuItem key={option.value} value={option.value}>
-                                {option.label}
-                            </MenuItem>
-                            ))}
-                        </Select>
-                        </FormControl>
-
-                        <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel id="stato-label">Stato</InputLabel>
-                        <Select
-                            labelId="stato-label"
-                            displayEmpty
-                            value={filtri.stato || ''} 
-                            onChange={handleFilterChange('stato')}
-                            renderValue={(selected) => {
-                                if (selected === '') {
-                                    return <em></em>;
-                                }
-                                const selectedLabel = statoOptions.find(option => option.value === selected)?.label;
-                                return selectedLabel || selected;
-                            }}
-                        >
-                            
-                            {statoOptions.map((option) => (
-                            <MenuItem key={option.value} value={option.value}>
-                                {option.label}
-                            </MenuItem>
-                            ))}
-                        </Select>
-                        </FormControl>
-
-                        <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel id="tipo-label">Tipo</InputLabel>
-                        <Select
-                            labelId="tipo-label"
-                            displayEmpty
-                            value={filtri.tipo || ''} 
-                            onChange={handleFilterChange('tipo')}
-                            renderValue={(selected) => {
-                                if (selected === '') {
-                                    return <em></em>;
-                                }
-                                const selectedLabel = tipoOptions.find(option => option.value === selected)?.label;
-                                return selectedLabel || selected;
-                            }}
-                        >
-                            
-                            {tipoOptions.map((option) => (
-                            <MenuItem key={option.value} value={option.label}>
-                                {option.label}
-                            </MenuItem>
-                            ))}
-                        </Select>
-                        </FormControl>
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
-                        <Button 
-                        onClick={handleReset}
-                        sx={{
-                            backgroundColor: 'black',
-                            color: 'white',
-                            fontWeight: 'bold',
-                            '&:hover': {
-                                backgroundColor: 'black',
-                                color: 'white',
-                                trasform: '1.05'
-                            },
-                        }}>
-                            Reset
-                        </Button>
-                        </Box>
-                    </Grid>
-                </Grid>
-                </Drawer>
-
 
               {notePopup && (
                 <Dialog open={notePopup} onClose={handleCloseNotesModal} sx={{ '& .MuiDialog-paper': { width: '400px', height: 'auto' } }}>
