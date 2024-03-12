@@ -28,7 +28,9 @@ function RicercheRecruiting({ filtri, onFilterChange, onReset, tipologiaOptions,
             alignItems: 'center', 
             justifyContent: 'space-between', 
             borderRadius: '10px',  
-            marginBottom: '4rem'
+            marginBottom: '4rem',
+            width: '100%',
+            overflow: 'hidden'
         }}
         >
         <Button 

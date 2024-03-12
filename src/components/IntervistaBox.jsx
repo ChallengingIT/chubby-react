@@ -21,6 +21,11 @@ const IntervistaBox = ({
   disableFields,
   campiObbligatori,
   showSaveButton = true,
+  statoOptions,
+  tipologiaOptions,
+  ownerOptions,
+  tipoIntervistaOptions
+  
 }) => {
   const [currentGroupIndex, setCurrentGroupIndex] = useState(0);
   const [errors, setErrors] = useState({});
@@ -117,6 +122,7 @@ const validate = () => {
     
     switch (field.type) {
       case 'select':
+        
         return (
           <Grid item xs={xs} sm={12} md={md} lg={lg} xl={xl} key={field.name}>
 

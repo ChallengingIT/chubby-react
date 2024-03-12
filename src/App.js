@@ -29,6 +29,7 @@ import Hiring                                                          from './p
 import NeedLife                                                        from './components/NeedLife.jsx';
 import NeedMatch2                                                      from './pages/NeedMatch2.jsx';
 import AziendeListaNeedCard                                            from './pages/AziendeListaNeedCard.jsx';
+import DettaglioIntervista                                             from './pages/VisualizzaPagine/DettaglioIntervista.jsx';
 
 
 
@@ -160,6 +161,11 @@ useEffect(() => {
                 <Route path="/intervista/modifica/:id" element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
                       <ModificaIntervista />
+                    </PrivateRoute>
+                  } />
+                    <Route path="/intervista/visualizza/:id" element={
+                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
+                      <DettaglioIntervista />
                     </PrivateRoute>
                   } />
                 <Route path="/hiring" element={

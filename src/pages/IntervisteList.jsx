@@ -220,44 +220,63 @@ renderCell: (params) => (
   },
   
    //dataAggiornamento e follo up si chiama intervista.tipo.descrizione
-//   { field: "azioni",         headerName: "Azioni",          flex: 1, renderCell: (params) => (
-//     <div>
-//       <Link
-//       to={`/intervista/visualizza/${params.row.id}`}
-//       state={params.row}
+  { field: "azioni",         headerName: "Azioni",          flex: 1, renderCell: (params) => (
+    <div>
+      <Link
+      to={`/intervista/visualizza/${params.row.id}`}
+      state={params.row}
   
-// >
-// <VisibilityButton />
-// </Link>
-// <Link
-// to={`/intervista/modifica/${params.row.id}`}
-// state={params.row}
-// >
-// <EditButton />
-// </Link>
+>
+<VisibilityButton />
+</Link>
+<Link
+to={`/intervista/modifica/${params.row.id}`}
+state={params.row}
+>
+<EditButton />
+</Link>
       
-// <DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
-//     </div>
-//   ), },
+<DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
+    </div>
+  ), },
 ];
 
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto', width: '100vw' }}>
-      <Box sx={{ 
-                flexGrow: 1, 
-                p: 3, 
-                marginLeft: '13.2em', 
-                marginTop: '0.5em', 
-                marginBottom: '0.8em', 
-                marginRight: '0.8em', 
-                backgroundColor: '#FEFCFD', 
-                borderRadius: '10px', 
-                minHeight: '98vh',
-                mt: 1.5,
-                width: 'vw'
-            }}>
-              <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '86vw'}}>
+    <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', flexGrow: 1, overflow: 'hidden'}}>
+      <Box sx={{
+        p: 2,
+        ml: 25,
+        mt: 1.5,
+        mb: 0.5,
+        mr: 0.8,
+        backgroundColor: '#FEFCFD',
+        borderRadius: '10px',
+        height: '99%',
+        width: '100%',
+        flexDirection: 'column',
+        overflow: 'hidden'
+      }}>
+              <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%', mt: 5}}>
+              <Button 
+                onClick={handleGoBack}
+                sx={{
+                    backgroundColor: '#00853C',
+                    color: 'white', 
+                    border: 'none', 
+                    fontSize: '0.8rem', 
+                    cursor: 'pointer', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    padding: '0.5rem 1rem', 
+                    outline: 'none', 
+                    borderRadius: '10px',
+
+                }}
+                >
+                <span style={{ marginRight: '0.5rem' }}>{"<"}</span> 
+                Indietro
+                </Button>
                 <Typography variant="h4" component="h1" sx={{  fontWeight: 'bold', fontSize: '1.4em'}}>Lista ITW di {candidatoNome} {candidatoCognome}</Typography>
                     <Button onClick={navigateToAggiungiIntervista}
                     startIcon={<AddIcon />}
@@ -283,8 +302,8 @@ renderCell: (params) => (
                         },
                     }}>Aggiungi Intervista</Button>
                     </Box>
+                    <Box sx={{ mr: 0.2, mt: 10}}>
 
-                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5, flexDirection: 'column'}}>
                     <Tabella
                         data={originalInterviste} 
                         columns={table1} 
@@ -295,24 +314,7 @@ renderCell: (params) => (
                         righeTot={righeTot}
                         onPageChange={handlePageChange}
                         />
-                        <Button
-                            color="primary"
-                            onClick={handleGoBack}
-                            sx={{
-                                backgroundColor: "black",
-                                borderRadius: '40px',
-                                color: "white",
-                                width: '250px',
-                                height: '30px', 
-                                mt: 2,
-                                "&:hover": {
-                                backgroundColor: "black",
-                                transform: "scale(1.05)",
-                                },
-                            }}
-                            >
-                            Indietro
-                            </Button>
+                        
                     </Box>
 
 

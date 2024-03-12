@@ -10,6 +10,8 @@ const ModificaIntervista = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const rowData  = location.state;
+  const candidatoID   = location.state?.candidatoID;
+
 
   const [ tipologiaOptions,         setTipologiaOptions      ] = useState([]); //jobtile
   const [ ownerOptions,             setOwnerOptions          ] = useState([]);
@@ -17,6 +19,7 @@ const ModificaIntervista = () => {
   const [ tipoIntervistaOptions,    setTipoIntervistaOptions ] = useState([]); //follow up
   const [ isDataLoaded,               setIsDataLoaded                 ] = useState(false);
   const [ alert,                      setAlert                        ] = useState(false);
+  const [ interviste, setInterviste ] = useState([]);
 
   //stati per la modifica
   const [ pagina, setPagina ] = useState([]);
@@ -41,6 +44,18 @@ useEffect(() => {
       const ownerResponse                          = await axios.get("http://localhost:8080/aziende/react/owner",             { headers: headers});
       const responseStato                          = await axios.get("http://localhost:8080/staffing/react/stato/candidato",  { headers: headers});
       const responseTipoIntervista                 = await axios.get("http://localhost:8080/intervista/react/tipointervista", { headers: headers});
+      const responseIntervista                     = await axios.get(`http://localhost:8080/intervista/react/mod/${candidatoID}`      , { headers: headers, params: paginazione });
+
+      if (Array.isArray(responseIntervista.data) && responseIntervista.data.length > 0) {
+        // Prendi l'ultima intervista (supponendo che l'array sia ordinato in base alla data)
+        const ultimaIntervista = responseIntervista.data[responseIntervista.data.length - 1];
+        setInterviste(ultimaIntervista);
+    } else if (responseIntervista.data.length === 0) {
+
+    } else {
+        console.error("I dati ottenuti non sono nel formato Array:", responseIntervista.data);
+    }
+
 
       if (Array.isArray(responseTipoIntervista.data)) {
         const tipoIntervistaOptions = responseTipoIntervista.data.map((tipoIntervista) => ({
@@ -204,7 +219,7 @@ const fields = [
         headers: headers
       });
 
-      navigate(`/staffing/intervista/${idCandidato}`);
+      navigate(`/recruiting/intervista/${idCandidato}`);
     } catch (error) {
       console.error("Errore durante il salvataggio:", error);
     }
@@ -214,14 +229,14 @@ const fields = [
   return (
     <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
         <Box sx={{ flexGrow: 1, p: 3, marginLeft: '12.2em', marginTop: '0.5em', marginBottom: '0.8em', marginRight: '0.8em', backgroundColor: '#EEEDEE', borderRadius: '10px' }}>
-        <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem', color: '#00853C'}}>Aggiungi Intervista</Typography>
+        <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem', color: '#00853C'}}>Modifica Intervista</Typography>
             
                 <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
                 <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
                     {alert.message}
                 </Alert>
             </Snackbar>
-        {isDataLoaded ? (
+        {/* {isDataLoaded ? ( */}
         <IntervistaBox 
         fields={fields} 
         initialValues={initialValues}  
@@ -229,10 +244,14 @@ const fields = [
         onSave={handleSubmit} 
         title="" 
         campiObbligatori={campiObbligatori}
+        statoOptions={statoOptions}
+        tipologiaOptions={tipologiaOptions}
+        ownerOptions={ownerOptions}
+        tipoIntervistaOptions={tipoIntervistaOptions}
         />
-        ) : (
+        {/* ) : (
             <div>Caricamento in corso...</div>
-        )}
+        )} */}
 
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Button

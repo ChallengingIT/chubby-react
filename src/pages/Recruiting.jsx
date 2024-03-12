@@ -447,56 +447,43 @@ const handleReset = () => {
     )}
   ];
 
-
-  return (
-    <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto', width: '100vw', overflowX:'hidden' }}>
-      <Box sx={{ 
-                // flexGrow: 1, 
-                p: 2, 
-                marginLeft: '13.2em', 
-                marginTop: '0.5em', 
-                marginBottom: '0.8em', 
-                marginRight: '0.8em', 
-                backgroundColor: '#FEFCFD', 
-                borderRadius: '10px', 
-                minHeight: '98vh',
-                mt: 1.5,
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'flex-start',
-                alignItems: 'center'
-            }}>
-              <Box
-              sx={{
-                width: '100%',                
-              }}>
-
-                  <RicercheRecruiting
-                  filtri={filtri}
-                  onFilterChange={handleFilterChange}
-                  onReset={handleReset}
-                  tipologiaOptions={tipologiaOptions}
-                  statoOptions={statoOptions}
-                  tipoOptions={tipoOptions}
-                  onRicerche={handleRicerche}
-                  />
-                  </Box>
-
-              <Box sx={{ ml: -3, mt: 5 ,  width: '100%'}}>
-                <Tabella
-                  data={originalRecruiting} 
-                  columns={columns} 
-                  title="Candidati" 
-                  getRowId={(row) => row.id}
-                  pagina={pagina}
-                  quantita={quantita}
-                  righeTot={righeTot}
-                  onPageChange={handlePageChange} 
-                  />
-              </Box>
-
-              {notePopup && (
+return (
+  <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', flexGrow: 1, overflow: 'hidden'}}>
+    <Box sx={{
+      p: 2,
+      ml: 26,
+      mt: 1.5,
+      mb: 0.5,
+      mr: 0.8,
+      backgroundColor: '#FEFCFD',
+      borderRadius: '10px',
+      height: '99%',
+      width: '100%',
+      flexDirection: 'column',
+      overflow: 'hidden'
+    }}>
+      <RicercheRecruiting 
+      filtri={filtri}
+      onFilterChange={handleFilterChange}
+      onReset={handleReset}
+      tipologiaOptions={tipologiaOptions}
+      statoOptions={statoOptions}
+      tipoOptions={tipoOptions}
+      onRicerche={handleRicerche}
+      />
+      <Box sx={{ mr: 0.2}}>
+      <Tabella
+        data={originalRecruiting} 
+        columns={columns} 
+        title="Candidati" 
+        getRowId={(row) => row.id}
+        pagina={pagina}
+        quantita={quantita}
+        righeTot={righeTot}
+        onPageChange={handlePageChange} 
+      />
+      </Box>
+            {notePopup && (
                 <Dialog open={notePopup} onClose={handleCloseNotesModal} sx={{ '& .MuiDialog-paper': { width: '400px', height: 'auto' } }}>
                   <DialogTitle>Note</DialogTitle>
                   <DialogContent>
@@ -563,9 +550,10 @@ const handleReset = () => {
                       </Button>
                     </DialogActions>
                   </Dialog>
-      </Box>
     </Box>
-  );
+  </Box>
+
+);
 };
 
 export default Recruiting;
