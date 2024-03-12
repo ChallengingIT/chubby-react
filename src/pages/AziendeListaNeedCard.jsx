@@ -12,6 +12,7 @@ import {
     Grid,
     CircularProgress,
     Button,
+    Typography,
     } from '@mui/material';
 
 const AziendeListaNeedCard = () => {
@@ -22,6 +23,8 @@ const AziendeListaNeedCard = () => {
 
     const { id } = params;
     const valori = location;
+
+    console.log("VALORI: ", valori);
 
 
 
@@ -35,12 +38,15 @@ const AziendeListaNeedCard = () => {
     const [ tipologiaOptions,               setTipologiaOptions         ] = useState([]);
     const [ ownerOptions,                   setOwnerOptions             ] = useState([]);
     const [ statoOptions,                   setStatoOptions             ] = useState([]);
-    const [ filtri,                         setFiltri                   ] = useState({
+    const [ filtri,                         setFiltri                   ] = useState(() => {
+        const filtriSalvati = localStorage.getItem('filtriRicercaListaNeed');
+        return filtriSalvati ? JSON.parse(filtriSalvati) : {
         owner: '',
         tipologia: '',
         stato: '',
         priorita: '',
         week: ''
+        };
     });
 
 
@@ -109,7 +115,13 @@ const AziendeListaNeedCard = () => {
     };
 
     useEffect(() => {
+        const filtriSalvati = localStorage.getItem('filtriRicercaListaNeed');
+        if(filtriSalvati) {
+            setFiltri(JSON.parse(filtriSalvati));
+            handleRicerche();
+        } else {
         fetchData();
+        }
         // eslint-disable-next-line
     }, []);
 
@@ -191,6 +203,10 @@ const AziendeListaNeedCard = () => {
         }
     }, [filtri.tipologia, filtri.stato, filtri.owner]);
 
+    useEffect(() => {
+        localStorage.setItem('filtriRicercaListaNeed', JSON.stringify(filtri));
+      }, [filtri]);
+
 
 
     //funzione di reset dei campi di ricerca
@@ -252,6 +268,7 @@ const AziendeListaNeedCard = () => {
                     onNavigate={navigateToAggiungi}
                     />
                 </Box>
+                <Typography variant='h6' sx={{ fontWeight: 'bold', color: '#00853C', display: 'flex', justifyContent: 'center', fontSize: '2em'}}>Need di {valori.state.denominazione}</Typography>
                 <InfiniteScroll
                 dataLength={originalListaNeed.length}
                 next={fetchMoreData}

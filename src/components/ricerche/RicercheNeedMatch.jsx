@@ -4,7 +4,7 @@ import CloseIcon                                        from '@mui/icons-materia
 import SearchIcon                                       from '@mui/icons-material/Search';
 import { useNavigate  }                                 from 'react-router-dom';
 
-function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, tipoOptions, seniorityOptions, onRicerche}) {
+function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, tipoOptions, seniorityOptions, onRicerche, onGoBack}) {
 
     const navigate = useNavigate();
 
@@ -31,11 +31,33 @@ function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, 
             justifyContent: 'space-between', 
             borderRadius: '10px',  
             marginBottom: '4rem',
-            p: 2
+            p: 2,
+            flexGrow: 1
         }}
         >
 
-        <Grid item xs={2}></Grid>
+        <Grid item xs={2}>
+        <Button 
+        onClick={onGoBack}
+        style={{
+            backgroundColor: '#00853C',
+            color: 'white', 
+            border: 'none', 
+            fontSize: '0.8rem', 
+            cursor: 'pointer', 
+            display: 'flex', 
+            alignItems: 'center', 
+            padding: '0.5rem 1rem', 
+            outline: 'none', 
+            borderRadius: '10px',
+
+        }}
+        >
+        <span style={{ marginRight: '0.5rem' }}>{"<"}</span> 
+        Indietro
+        </Button>
+
+        </Grid>
 
 
         <Grid item xs={8} sx={{ display: 'flex', justifyContent: 'center' }}>

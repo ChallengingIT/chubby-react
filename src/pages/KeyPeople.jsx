@@ -26,11 +26,14 @@ const Keypeople = () => {
     //stati ricerche
     const [ clienteOptions,             setClienteOptions             ] = useState([]);
     const [ ownerOptions,               setOwnerOptions               ] = useState([]);
-    const [ filtri,                     setFiltri                     ] = useState({
+    const [ filtri,                     setFiltri                     ] = useState(() => {
+        const filtriSalvati = localStorage.getItem('filtriRicercaKeypeople');
+        return filtriSalvati ? JSON.parse(filtriSalvati) : {
         nome:  '',
         azienda: '',
         stato: '',
         owner:''
+        };
     });
 
     //stati per la paginazione
@@ -95,7 +98,13 @@ const Keypeople = () => {
     };
     
     useEffect(() => {
+        const filtriSalvati = localStorage.getItem('filtriRicercaKeypeople');
+        if (filtriSalvati) {
+            setFiltri(JSON.parse(filtriSalvati));
+            handleRicerche();
+        } else {
     fetchData();
+        }
     // eslint-disable-next-line
     }, []);
 
@@ -143,6 +152,21 @@ const Keypeople = () => {
         setLoading(true);
         try {
             const response = await axios.get("http://localhost:8080/keypeople/react/ricerca/mod", { headers: headers, params: filtriDaInviare });
+            const responseCliente = await axios.get("http://localhost:8080/aziende/react/select",            { headers: headers });
+            const responseOwner   = await axios.get("http://localhost:8080/aziende/react/owner",             { headers: headers });
+
+            if (Array.isArray(responseOwner.data)) {
+                setOwnerOptions(responseOwner.data.map((owner, index) => ({ label: owner.descrizione, value: owner.id })));
+            } else {
+                console.error("I dati ottenuti non sono nel formato Array:", responseOwner.data);
+            } 
+
+
+            if (Array.isArray(responseCliente.data)) {
+                setClienteOptions(responseCliente.data.map((cliente) => ({ label: cliente.denominazione, value: cliente.id })));
+            } else {
+                console.error("I dati ottenuti non sono nel formato Array:", responseCliente.data);
+            }
 
             if (Array.isArray(response.data)) {
                 setOriginalKeypeople(response.data);
@@ -176,6 +200,11 @@ const Keypeople = () => {
             handleRicerche();
         }
     }, [filtri.azienda, filtri.stato, filtri.owner]);
+
+    useEffect(() => {
+        localStorage.setItem('filtriRicercaKeypeople', JSON.stringify(filtri));
+    }, [filtri]);
+    
 
     //funzione di reset dei campi di ricerca
 

@@ -32,12 +32,15 @@ const NeedMatch2 = () => {
     const [ tipoOptions,                setTipoOptions         ] = useState([]);
     const [ tipologiaOptions,           setTipologiaOptions          ] = useState([]);
     const [ openFiltri,                 setOpenFiltri               ] = useState(false);
-    const [ filtri,                     setFiltri                   ] = useState({
+    const [ filtri,                     setFiltri                   ] = useState(() => {
+        const filtriSalvati = localStorage.getItem('filtriRicercaNeedMatch');
+        return filtriSalvati ? JSON.parse(filtriSalvati) : {
         nome: '',
         cognome: '',
         tipologia: '',
         tipologia: '',
         seniority: ''
+        };
     }); 
     const seniority = [
         { label: 'Neo', value: '0' },
@@ -183,7 +186,13 @@ const NeedMatch2 = () => {
 
 
                 useEffect(() => {
+                    const filtriSalvati = localStorage.getItem('filtriRicercaNeedMatch');
+                    if(filtriSalvati) {
+                        setFiltri(JSON.parse(filtriSalvati));
+                        handleRicerche();
+                    } else {
                     fetchData();
+                    }
                 // eslint-disable-next-line
                 }, []);
 
@@ -303,6 +312,13 @@ const NeedMatch2 = () => {
             };
 
 
+
+            useEffect(() => {
+                localStorage.setItem('filtriRicercaNeedMatch', JSON.stringify(filtri));
+              }, [filtri]);
+            
+
+
             //funzione per le ricerche
             const handleRicerche = async () => {
                 const filtriCandidati = {
@@ -318,6 +334,24 @@ const NeedMatch2 = () => {
                 try{
                     console.log("Effettuo la ricerca per: ", filtriCandidati);
                     const response = await axios.get(`http://localhost:8080/need/react/match/associabili/ricerca/mod/${id}`, { headers: headers, params: filtriCandidati});
+                    const responseTipologia    = await axios.get("http://localhost:8080/aziende/react/tipologia",                             { headers: headers});
+                    const responseTipo        = await axios.get("http://localhost:8080/staffing/react/tipo"    ,                             { headers: headers});
+    
+                    if (Array.isArray(responseTipologia.data)) {
+                        const tipologiaOptions = responseTipologia.data.map((tipologia) => ({
+                            label: tipologia.descrizione,
+                            value: tipologia.id,
+                        }));
+                        setTipologiaOptions(tipologiaOptions);
+                        }
+                
+                        if (Array.isArray(responseTipo.data)) {
+                            const tipoOptions = responseTipo.data.map((tipo) => ({
+                            label: tipo.descrizione,
+                            value: tipo.id,
+                            }));
+                        setTipoOptions(tipoOptions);
+                        }
 
 
                     const { record, candidati } = response.data;
@@ -603,21 +637,25 @@ const NeedMatch2 = () => {
 
                 return (
                     <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto', width: '100vw' }}>
-                        <Box sx={{ 
-                                        flexGrow: 1, 
-                                        p: 3, 
-                                        marginLeft: '13.2em', 
-                                        marginBottom: '0.8em', 
-                                        marginRight: '0.8em', 
-                                        backgroundColor: '#FEFCFD', 
-                                        borderRadius: '10px', 
-                                        minHeight: '98vh',
-                                        mt: 1.5
-                                    }}>
+                   <Box sx={{ 
+                                // flexGrow: 1, 
+                                p: 2, 
+                                marginLeft: '13.2em', 
+                                marginTop: '0.5em', 
+                                marginBottom: '0.8em', 
+                                marginRight: '0.8em', 
+                                backgroundColor: '#FEFCFD', 
+                                borderRadius: '10px', 
+                                minHeight: '98vh',
+                                mt: 1.5,
+                                width: '100%',
+
+                            }}>
                                     <Box sx={{ 
                                             position: 'sticky', 
                                             top: 0, 
                                             zIndex: 1000, 
+                                            width: '100%'
                                         }}>  
                                         <RicercheNeedMatch
                                         filtri={filtri}
@@ -627,6 +665,7 @@ const NeedMatch2 = () => {
                                         tipologiaOptions={tipologiaOptions}
                                         seniorityOptions={seniority}
                                         onRicerche={handleRicerche}
+                                        onGoBack={handleGoBack}
                                         />
                                         </Box>
 
@@ -654,7 +693,7 @@ const NeedMatch2 = () => {
                             
                             />
                             </Modal>
-                            <Box sx={{ height: 'auto', mt: 2, width: '99%', mb: 3}}>
+                            <Box sx={{ height: 'auto', mt: 2, width: '100%', mb: 3}}>
                             <Tabella 
                                 data={originalCandidati} 
                                 columns={tabellaCandidati} 
@@ -667,7 +706,7 @@ const NeedMatch2 = () => {
                                 />
                             </Box>
 
-                            <Box sx={{ height: 'auto', mt: 2, width: '99%', mb: 3}}>
+                            <Box sx={{ height: 'auto', mt: 2, width: '100%', mb: 3,}}>
                             <Tabella 
                                 data={originalStorico}     
                                 columns={tabellaStorico}  
@@ -680,7 +719,7 @@ const NeedMatch2 = () => {
                                 />
                             </Box>
 
-                            <Box sx={{ height: 'auto', mt: 2, width: '99%', mb: 3}}>
+                            <Box sx={{ height: 'auto', mt: 2, width: '100%', mb: 3}}>
                             <Tabella 
                                 data={originalAssociati}    
                                 columns={tabellaAssociati} 
@@ -692,7 +731,7 @@ const NeedMatch2 = () => {
                                 onPageChange={handlePageChangeAssociati}
                                 />
                             </Box>
-                            <Box sx={{ display: 'flex', justifyContent: 'center'}}>
+                            {/* <Box sx={{ display: 'flex', justifyContent: 'center'}}>
                             <Button
                                 color="primary"
                                 onClick={handleGoBack}
@@ -713,7 +752,7 @@ const NeedMatch2 = () => {
                                 >
                                 Indietro
                             </Button>
-                            </Box>
+                            </Box> */}
                             </Box>
                     </Box>
                 );

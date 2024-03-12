@@ -17,7 +17,7 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
 
 
     const navigateToAggiungi = () => {
-        navigate('/aziende/aggiungi');
+        navigate('/need/aggiungi');
     };
 
 

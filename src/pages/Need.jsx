@@ -24,11 +24,14 @@ import {
         const [ ownerOptions,                   setOwnerOptions             ] = useState([]);
         const [ statoOptions,                   setStatoOptions             ] = useState([]);
         const [ aziendaOptions,             setAziendaOptions             ] = useState([]);
-        const [ filtri,                         setFiltri                   ] = useState({
+        const [ filtri,                         setFiltri                   ] = useState(() => {
+            const filtriSalvati = localStorage.getItem('filtriRicercaNeed');
+            return filtriSalvati ? JSON.parse(filtriSalvati) : {
             descrizione: '',
             tipologia: '',
             stato: '',
             owner: ''
+            };
         });
         const quantita = 10;
 
@@ -108,7 +111,13 @@ import {
 
 
         useEffect(() => {
+            const filtriSalvati = localStorage.getItem('filtriRicercaNeed');
+            if(filtriSalvati) {
+                setFiltri(JSON.parse(filtriSalvati));
+                handleRicerche();
+            } else {
             fetchData();
+            }
             // eslint-disable-next-line
         }, []);
 
@@ -158,6 +167,35 @@ import {
             setLoading(true);
             try {
                 const response = await axios.get("http://localhost:8080/need/react/ricerca/modificato", { headers: headers, params: filtriDaInviare });
+                const responseAzienda       = await axios.get("http://localhost:8080/aziende/react/select",          { headers: headers });
+                const responseOwner         = await axios.get("http://localhost:8080/aziende/react/owner",           { headers: headers });
+                const responseTipologia     = await axios.get("http://localhost:8080/need/react/tipologia",          { headers: headers });
+                const responseStato         = await axios.get("http://localhost:8080/need/react/stato",              { headers: headers });
+
+
+                if (Array.isArray(responseOwner.data)) {
+                    setOwnerOptions(responseOwner.data.map((owner) => ({ label: owner.descrizione, value: owner.id})));
+                } else {
+                    console.error("I dati ottenuti non sono nel formato Array; ", responseOwner.data);
+                }
+
+                if (Array.isArray(responseAzienda.data)) {
+                    setAziendaOptions(responseAzienda.data.map((azienda) => ({ label: azienda.denominazione, value: azienda.id })));
+                } else {
+                    console.error("I dati ottenuti non sono nel formato Array:", responseAzienda.data);
+                }
+
+                if (Array.isArray(responseTipologia.data)) {
+                    setTipologiaOptions(responseTipologia.data.map((tipologia) => ({ label: tipologia.descrizione, value: tipologia.id})));
+                } else {
+                    console.error("I dati ottenuti non sono nel formato Array; ", responseTipologia.data);
+                }
+
+                if (Array.isArray(responseStato.data)) {
+                    setStatoOptions(responseStato.data.map((stato) => ({ label: stato.descrizione, value: stato.id})));
+                } else {
+                    console.error("I dati ottenuti non sono nel formato Array; ", responseStato.data);
+                }
 
                 if (Array.isArray(response.data)) {
                     setOriginalNeed(response.data);
@@ -190,6 +228,11 @@ import {
                 handleRicerche();
             }
         }, [filtri.tipologia, filtri.stato, filtri.owner, filtri.azienda]);
+
+        useEffect(() => {
+            localStorage.setItem('filtriRicercaNeed', JSON.stringify(filtri));
+        }, [filtri]);
+        
 
 
 

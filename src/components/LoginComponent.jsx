@@ -118,7 +118,7 @@ const handleLogin = async (e) => {
             backgroundColor: '#FEFCFD',
             borderRadius: 8,
             boxShadow: '-10px -10px 10px 0 rgba(0.1, 0.1, 0.1, 0.1)',
-            // overflow: 'hidden'
+            overflow: 'hidden'
             }}
         >
 

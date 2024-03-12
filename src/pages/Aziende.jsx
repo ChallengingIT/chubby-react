@@ -29,12 +29,46 @@ const Aziende = () => {
     // const [ clienteOptions,             setClienteOptions             ] = useState([]);
     const [ ownerOptions,               setOwnerOptions               ] = useState([]);
     const [ provinceOptions,            setProvinceOptions            ] = useState([]);
-    const [ filtri,                     setFiltri                     ] = useState({
-        denominazione: '',
-        tipologia: '',
-        stato: '',
-        owner: ''
-    });
+    // const [ filtri,                     setFiltri                     ] = useState(() => {
+    //     const filtriSalvati = localStorage.getItem('filtriRicercaAziende');
+    //     return filtriSalvati ? JSON.parse(filtriSalvati) : {
+    //         denominazione: '',
+    //         tipologia: '',
+    //         stato: '',
+    //         owner: ''
+    //     };
+    // });
+
+
+    const getValueLabel = (value) => {
+        const option = ownerOptions.find((option) => option.value === value);
+        return option ? option.label : null;
+      };
+      
+
+
+
+
+    const [filtri, setFiltri] = useState(() => {
+        const filtriSalvati = localStorage.getItem('filtriRicercaAziende');
+        if (filtriSalvati) {
+          const filtriParsed = JSON.parse(filtriSalvati);
+          // Assicurati che ownerOptions sia definito o caricato prima di fare questa operazione
+          if (filtriParsed.owner) {
+            filtriParsed.ownerLabel = getValueLabel(filtriParsed.owner);
+          }
+          return filtriParsed;
+        }
+        return {
+          denominazione: '',
+          tipologia: '',
+          stato: '',
+          owner: '',
+          ownerLabel: '', // Aggiungi anche la label corrispondente da mostrare nell'UI
+        };
+      });
+      
+    
 
     //stato paginazione
     const [ pagina,                 setPagina       ] = useState(0);
@@ -101,7 +135,13 @@ const Aziende = () => {
         };
 
         useEffect(() => {
+            const filtriSalvati = localStorage.getItem('filtriRicercaAziende');
+            if (filtriSalvati) {
+                setFiltri(JSON.parse(filtriSalvati));
+                handleRicerche();
+            } else {
             fetchData();
+            }
             // eslint-disable-next-line
         }, []); 
 
@@ -146,12 +186,18 @@ const Aziende = () => {
                 };
                 setLoading(true);     
                 try {
-                    const response = await axios.get("http://localhost:8080/aziende/react/ricerca/mod", { headers: headers, params: filtriDaInviare });
+                    const response          = await axios.get("http://localhost:8080/aziende/react/ricerca/mod", { headers: headers, params: filtriDaInviare });
+                    const responseOwner     = await axios.get("http://localhost:8080/aziende/react/owner",   { headers });
+
+                    if (Array.isArray(responseOwner.data)) {
+                    setOwnerOptions(responseOwner.data.map((owner, index) => ({ label: owner.descrizione, value: owner.id })));
+                    } else {
+                    console.error("I dati ottenuti non sono nel formato Array:", responseOwner.data);
+                    } 
         
                     if (Array.isArray(response.data)) {
                         setOriginalAziende(response.data);
                         setHasMore(response.data.length >= quantita); 
-                        console.log("ho effettuato la ricerca con: ", filtriDaInviare);
                         } else {
                         console.error("I dati ottenuti non sono nel formato Array:", response.data);
                     }
@@ -161,6 +207,7 @@ const Aziende = () => {
                     setLoading(false);
                 }
             };
+
 
 
             //funzione cambio stato select
@@ -182,6 +229,14 @@ const Aziende = () => {
                     handleRicerche();
                 }
             }, [filtri.tipologia, filtri.stato, filtri.owner]);
+
+
+            useEffect(() => {
+                localStorage.setItem('filtriRicercaAziende', JSON.stringify(filtri));
+            }, [filtri]);
+
+
+            
 
             //funzione di reset dei campi di ricerca
             const handleReset = async() => {

@@ -16,6 +16,7 @@ const LoginPage = () => {
         alignItems: 'center', 
         justifyContent: 'center', 
         position: 'relative', 
+        owerflow: 'hidden'
         }}>
         <img
             alt="Login background"
