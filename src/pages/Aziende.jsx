@@ -97,10 +97,10 @@ const Aziende = () => {
             quantita: 10
         };
             try {
-            const responseAziende   = await axios.get("http://localhost:8080/aziende/react/mod",     { headers: headers , params: filtriDaInviare });
-            // const responseCliente   = await axios.get("http://localhost:8080/aziende/react/select",  { headers });
-            const responseOwner     = await axios.get("http://localhost:8080/aziende/react/owner",   { headers });
-            const provinceResponse = await axios.get("http://localhost:8080/aziende/react/province", { headers: headers });
+            const responseAziende   = await axios.get("http://89.46.196.60:8443/aziende/react/mod",     { headers: headers , params: filtriDaInviare });
+            // const responseCliente   = await axios.get("http://89.46.196.60:8443/aziende/react/select",  { headers });
+            const responseOwner     = await axios.get("http://89.46.196.60:8443/aziende/react/owner",   { headers });
+            const provinceResponse = await axios.get("http://89.46.196.60:8443/aziende/react/province", { headers: headers });
 
             if (Array.isArray(responseOwner.data)) {
             setOwnerOptions(responseOwner.data.map((owner, index) => ({ label: owner.descrizione, value: owner.id })));
@@ -157,7 +157,7 @@ const Aziende = () => {
                 quantita: quantita
             };
             try {
-                const responsePaginazione   = await axios.get("http://localhost:8080/aziende/react/mod",     { headers: headers , params: filtriDaInviare });
+                const responsePaginazione   = await axios.get("http://89.46.196.60:8443/aziende/react/mod",     { headers: headers , params: filtriDaInviare });
                 if (Array.isArray(responsePaginazione.data)) {
                     const aziendeConId = responsePaginazione.data
                     .map((aziende) => ({ ...aziende }));
@@ -186,8 +186,8 @@ const Aziende = () => {
                 };
                 setLoading(true);     
                 try {
-                    const response          = await axios.get("http://localhost:8080/aziende/react/ricerca/mod", { headers: headers, params: filtriDaInviare });
-                    const responseOwner     = await axios.get("http://localhost:8080/aziende/react/owner",   { headers });
+                    const response          = await axios.get("http://89.46.196.60:8443/aziende/react/ricerca/mod", { headers: headers, params: filtriDaInviare });
+                    const responseOwner     = await axios.get("http://89.46.196.60:8443/aziende/react/owner",   { headers });
 
                     if (Array.isArray(responseOwner.data)) {
                     setOwnerOptions(responseOwner.data.map((owner, index) => ({ label: owner.descrizione, value: owner.id })));
@@ -324,7 +324,7 @@ const Aziende = () => {
     //             }
     //             });
 
-    //             const response = await axios.post("http://localhost:8080/aziende/react/salva", values, {
+    //             const response = await axios.post("http://89.46.196.60:8443/aziende/react/salva", values, {
     //             headers: headers
     //             });
     //             if (response.data === "DUPLICATO") {
