@@ -23,8 +23,8 @@ const AggiungiKeypeople = () => {
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const aziendeResponse = await axios.get("http://89.46.67.198:8443/aziende/react/select",       { headers: headers });
-        const ownerResponse   = await axios.get("http://89.46.67.198:8443/aziende/react/owner",        { headers: headers });
+        const aziendeResponse = await axios.get("http://89.46.196.60:8443/aziende/react/select",       { headers: headers });
+        const ownerResponse   = await axios.get("http://89.46.196.60:8443/aziende/react/owner",        { headers: headers });
         if (Array.isArray(ownerResponse.data)) {
           const ownerOptions = ownerResponse.data.map((owner) => ({
             label: owner.descrizione,
@@ -79,7 +79,7 @@ const AggiungiKeypeople = () => {
     const hasErrors = Object.keys(errors).length > 0;
     if (!hasErrors) {
     try {
-      const response = await axios.post("http://89.46.67.198:8443/keypeople/react/salva", values, {
+      const response = await axios.post("http://89.46.196.60:8443/keypeople/react/salva", values, {
         headers: headers
       });
       if (response.data === "DUPLICATO") {
