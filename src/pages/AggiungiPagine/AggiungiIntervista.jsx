@@ -247,7 +247,7 @@ const handleSubmit = async (values) => {
       },
       headers: headers
     });
-    navigate(`/staffing/intervista/${candidatoID}`);
+    navigate(`/recruiting/intervista/${candidatoID}`);
     } catch (error) {
     console.error("Errore durante il salvataggio:", error);
     }

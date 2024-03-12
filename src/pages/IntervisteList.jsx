@@ -17,7 +17,6 @@ import {
 } from '@mui/material';
 import AddIcon from "@mui/icons-material/Add";
 import Tabella from '../components/Tabella.jsx';
-import IntervisteSearchBox from '../components/searchBox/IntervisteSearchBox.jsx';
 import DeleteButton from '../components/button/DeleteButton.jsx';
 import EditButton from '../components/button/EditButton.jsx';
 import VisibilityButton from '../components/button/VisibilityButton.jsx';
@@ -86,6 +85,8 @@ function IntervisteList() {
       console.error("Errore durante il recupero dei dati:", error);
     }
   };
+
+  console.log("originalInterviste: ", originalInterviste);
   
 
   useEffect(() => {
@@ -219,25 +220,25 @@ renderCell: (params) => (
   },
   
    //dataAggiornamento e follo up si chiama intervista.tipo.descrizione
-  { field: "azioni",         headerName: "Azioni",          flex: 1, renderCell: (params) => (
-    <div>
-      <Link
-      to={`/intervista/visualizza/${params.row.id}`}
-      state={params.row}
+//   { field: "azioni",         headerName: "Azioni",          flex: 1, renderCell: (params) => (
+//     <div>
+//       <Link
+//       to={`/intervista/visualizza/${params.row.id}`}
+//       state={params.row}
   
->
-<VisibilityButton />
-</Link>
-<Link
-to={`/intervista/modifica/${params.row.id}`}
-state={params.row}
->
-<EditButton />
-</Link>
+// >
+// <VisibilityButton />
+// </Link>
+// <Link
+// to={`/intervista/modifica/${params.row.id}`}
+// state={params.row}
+// >
+// <EditButton />
+// </Link>
       
-<DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
-    </div>
-  ), },
+// <DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
+//     </div>
+//   ), },
 ];
 
 
@@ -285,7 +286,7 @@ state={params.row}
 
                     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5, flexDirection: 'column'}}>
                     <Tabella
-                        data={filteredInterviste} 
+                        data={originalInterviste} 
                         columns={table1} 
                         title="Interviste" 
                         getRowId={(row) => row.id}
@@ -325,7 +326,7 @@ state={params.row}
                         <DialogTitle id="alert-dialog-title">{"Conferma Eliminazione"}</DialogTitle>
                         <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            Sei sicuro di voler eliminare questa azienda?
+                            Sei sicuro di voler eliminare questa intervista?
                         </DialogContentText>
                         </DialogContent>
                         <DialogActions>
