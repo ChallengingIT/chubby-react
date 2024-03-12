@@ -535,7 +535,7 @@ const handleReset = () => {
                     <DialogTitle id="alert-dialog-title">{"Conferma Eliminazione"}</DialogTitle>
                     <DialogContent>
                       <DialogContentText id="alert-dialog-description">
-                        Sei sicuro di voler eliminare questa azienda?
+                        Sei sicuro di voler eliminare questo candidato?
                       </DialogContentText>
                     </DialogContent>
                     <DialogActions>
