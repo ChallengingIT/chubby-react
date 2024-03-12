@@ -92,7 +92,8 @@ const NeedMatch2 = () => {
                 quantita: 10
             };
             try {
-                const candidatiResponse   = await axios.get(`http://localhost:8080/need/react/match/associabili/mod/${id}`,              { headers: headers, params: filtriCandidati});
+                // const candidatiResponse   = await axios.get(`http://localhost:8080/need/react/match/associabili/mod/${id}`,              { headers: headers, params: filtriCandidati});
+                const candidatiResponse   = await axios.get(`http://localhost:8080/staffing/react/mod`,              { headers: headers, params: filtriCandidati});
                 const storicoResponse     = await axios.get(`http://localhost:8080/need/react/storico/${id}`,                            { headers: headers, params: paginazione});
                 const associatiResponse   = await axios.get(`http://localhost:8080/need/react/match/associati/mod/${id}`,                { headers: headers, params: paginazione});
                 const responseTipologia    = await axios.get("http://localhost:8080/aziende/react/tipologia",                             { headers: headers});
@@ -211,7 +212,7 @@ const NeedMatch2 = () => {
             };
             
             try {
-                const candidatiResponse = await axios.get(`http://localhost:8080/need/react/match/associabili/mod/${id}`, { headers: headers, params: filtriCandidati});
+                const candidatiResponse = await axios.get(`http://localhost:8080/staffing/react/mod`, { headers: headers, params: filtriCandidati});
                 const { recordCandidati, candidati } = candidatiResponse.data;
             
                 if (candidati && Array.isArray(candidati)) {
@@ -333,7 +334,7 @@ const NeedMatch2 = () => {
 
                 try{
                     console.log("Effettuo la ricerca per: ", filtriCandidati);
-                    const response = await axios.get(`http://localhost:8080/need/react/match/associabili/ricerca/mod/${id}`, { headers: headers, params: filtriCandidati});
+                    const response = await axios.get(`http://localhost:8080/staffing/react/mod/ricerca`, { headers: headers, params: filtriCandidati});
                     const responseTipologia    = await axios.get("http://localhost:8080/aziende/react/tipologia",                             { headers: headers});
                     const responseTipo        = await axios.get("http://localhost:8080/staffing/react/tipo"    ,                             { headers: headers});
     
