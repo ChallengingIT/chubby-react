@@ -148,6 +148,13 @@ const Aziende = () => {
         //funzione per la paginazione
         const fetchMoreData = async () => {
             const paginaSuccessiva = pagina + 1;
+
+            const filtriAttivi = Object.values(filtri).some(value => value !== null && value !== '');
+
+            const url = filtriAttivi ?
+            "http://localhost:8080/aziende/react/ricerca/mod" :
+            "http://localhost:8080/aziende/react/mod";
+
             const filtriDaInviare = {
                 ragione: filtri.denominazione || null,
                 tipologia: filtri.tipologia || null,
@@ -157,7 +164,7 @@ const Aziende = () => {
                 quantita: quantita
             };
             try {
-                const responsePaginazione   = await axios.get("http://localhost:8080/aziende/react/mod",     { headers: headers , params: filtriDaInviare });
+                const responsePaginazione   = await axios.get(url,     { headers: headers , params: filtriDaInviare });
                 if (Array.isArray(responsePaginazione.data)) {
                     const aziendeConId = responsePaginazione.data
                     .map((aziende) => ({ ...aziende }));

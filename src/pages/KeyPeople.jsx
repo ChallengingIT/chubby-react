@@ -113,6 +113,12 @@ const Keypeople = () => {
     const fetchMoreData = async () => {
         const paginaSuccessiva = pagina + 1;
 
+        const filtriAttivi = Object.values(filtri).some(value => value !== null && value !== '');
+        const url = filtriAttivi ?
+        "http://localhost:8080/keypeople/react/ricerca/mod" :
+        "http://localhost:8080/keypeople/react/mod";
+
+
         const filtriDaInviare = {
             nome: filtri.nome || null,
             azienda: filtri.azienda || null,
@@ -123,7 +129,7 @@ const Keypeople = () => {
         };
         
         try {
-            const response        = await axios.get("http://localhost:8080/keypeople/react/mod",             { headers: headers, params: filtriDaInviare});
+            const response        = await axios.get(url,             { headers: headers, params: filtriDaInviare});
             if (Array.isArray(response.data)) {
                 const keypeopleConId = response.data.map((keypeople) => ({...keypeople}));
                 setOriginalKeypeople((prev) => [...prev, ...keypeopleConId]);

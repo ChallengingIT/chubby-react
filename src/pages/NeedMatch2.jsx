@@ -201,6 +201,12 @@ const NeedMatch2 = () => {
     //funzione per la paginazione
 
     const fetchMoreDataCandidati = async (paginaCandidati) => {
+        const filtriAttivi = Object.values(filtri).some(value => value !== null && value !== '');
+        const url = filtriAttivi ?
+        `http://localhost:8080/staffing/react/mod/ricerca` :
+        `http://localhost:8080/staffing/react/mod`;
+
+
             const filtriCandidati = {
                 nome: filtri.nome || null,
                 cognome: filtri.cognome || null,
@@ -212,7 +218,7 @@ const NeedMatch2 = () => {
             };
             
             try {
-                const candidatiResponse = await axios.get(`http://localhost:8080/staffing/react/mod`, { headers: headers, params: filtriCandidati});
+                const candidatiResponse = await axios.get(url, { headers: headers, params: filtriCandidati});
                 const { recordCandidati, candidati } = candidatiResponse.data;
             
                 if (candidati && Array.isArray(candidati)) {

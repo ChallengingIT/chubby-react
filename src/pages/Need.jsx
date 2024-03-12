@@ -127,6 +127,13 @@ import {
 
             const paginaSuccessiva = pagina + 1;
 
+            const filtriAttivi = Object.values(filtri).some(value => value !== null && value !== '');
+
+            const url = filtriAttivi ?
+            "http://localhost:8080/need/react/ricerca/modificato" :
+            "http://localhost:8080/need/react/modificato";
+
+
             const filtriDaInviare = {
                 descrizione: filtri.descrizione || null,
                 tipologia: filtri.tipologia || null,
@@ -137,7 +144,7 @@ import {
                 quantita: 10
             };
             try {
-                const responsePaginazione   = await axios.get("http://localhost:8080/need/react/modificato",     { headers: headers , params: filtriDaInviare });
+                const responsePaginazione   = await axios.get(url,    { headers: headers , params: filtriDaInviare });
                 if (Array.isArray(responsePaginazione.data)) {
                     const needConId = responsePaginazione.data.map((need) => ({...need }));
                     setOriginalNeed((prev) => [...prev, ...needConId]);
@@ -209,6 +216,13 @@ import {
                 setLoading(false);
             }
         };
+
+
+
+
+
+
+        
 
         //funzione cambiamento stato select
         const handleFilterChange = (name) => (event) => {

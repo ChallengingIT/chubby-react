@@ -151,6 +151,13 @@ const quantita = 10;
 
     //funzione per la paginazione
     const fetchMoreData = async (pagina) => {
+
+      const filtriAttivi = Object.values(filtri).some(value => value !== null && value !== '');
+      const url = filtriAttivi ?
+      "http://localhost:8080/staffing/react/mod/ricerca" :
+      "http://localhost:8080/staffing/react/mod";
+
+
       const filtriDaInviare = {
         nome: filtri.nome || null,
         cognome: filtri.cognome || null,
@@ -163,7 +170,7 @@ const quantita = 10;
     };
   
       try{
-        const response          = await axios.get("http://localhost:8080/staffing/react/mod",          { headers: headers, params: filtriDaInviare });
+        const response          = await axios.get(url,          { headers: headers, params: filtriDaInviare });
         const { record, candidati } = response.data;
 
         if (candidati && Array.isArray(candidati)) {

@@ -131,6 +131,12 @@ const AziendeListaNeedCard = () => {
 
     const fetchMoreData = async () => {
         const paginaSuccessiva = pagina + 1;
+        const filtriAttivi = Object.values(filtri).some(value => value !== null && value !== '');
+
+        const url = filtriAttivi ?
+        "http://localhost:8080/need/react/ricerca/modificato" :
+        `http://localhost:8080/need/react/cliente/modificato/${id}`;
+
         const filtriDaInviare = {
             owner: filtri.owner || null,
             tipologia: filtri.tipologia || null,
@@ -141,7 +147,7 @@ const AziendeListaNeedCard = () => {
             quantita: 10
         };
         try {
-            const response = await axios.get(`http://localhost:8080/need/react/cliente/modificato/${id}`, { headers: headers, params: filtriDaInviare });;
+            const response = await axios.get(url, { headers: headers, params: filtriDaInviare });;
             if (Array.isArray(response.data)) {
                 const listaNeedConId = response.data.map((need) => ({...need}));
                 setOriginalListaNeed(listaNeedConId);
