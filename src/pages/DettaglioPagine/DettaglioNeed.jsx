@@ -27,7 +27,7 @@ const DettaglioNeed = () => {
     useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseSkill        = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
+        const responseSkill        = await axios.get("http://89.46.196.60:8443/staffing/react/skill", { headers: headers });
 
       if (Array.isArray(responseSkill.data)) {
         const skillsOptions = responseSkill.data.map((skill) => ({

@@ -67,9 +67,9 @@ const Keypeople = () => {
         setLoading(true);
         try {
     
-        const response        = await axios.get("http://localhost:8080/keypeople/react/mod",             { headers: headers, params: filtriDaInviare});
-        const responseCliente = await axios.get("http://localhost:8080/aziende/react/select",            { headers: headers });
-        const responseOwner   = await axios.get("http://localhost:8080/aziende/react/owner",             { headers: headers });
+        const response        = await axios.get("http://89.46.196.60:8443/keypeople/react/mod",             { headers: headers, params: filtriDaInviare});
+        const responseCliente = await axios.get("http://89.46.196.60:8443/aziende/react/select",            { headers: headers });
+        const responseOwner   = await axios.get("http://89.46.196.60:8443/aziende/react/owner",             { headers: headers });
 
         if (Array.isArray(responseOwner.data)) {
             setOwnerOptions(responseOwner.data.map((owner, index) => ({ label: owner.descrizione, value: owner.id })));
@@ -115,8 +115,8 @@ const Keypeople = () => {
 
         const filtriAttivi = Object.values(filtri).some(value => value !== null && value !== '');
         const url = filtriAttivi ?
-        "http://localhost:8080/keypeople/react/ricerca/mod" :
-        "http://localhost:8080/keypeople/react/mod";
+        "http://89.46.196.60:8443/keypeople/react/ricerca/mod" :
+        "http://89.46.196.60:8443/keypeople/react/mod";
 
 
         const filtriDaInviare = {
@@ -157,9 +157,9 @@ const Keypeople = () => {
         };
         setLoading(true);
         try {
-            const response = await axios.get("http://localhost:8080/keypeople/react/ricerca/mod", { headers: headers, params: filtriDaInviare });
-            const responseCliente = await axios.get("http://localhost:8080/aziende/react/select",            { headers: headers });
-            const responseOwner   = await axios.get("http://localhost:8080/aziende/react/owner",             { headers: headers });
+            const response = await axios.get("http://89.46.196.60:8443/keypeople/react/ricerca/mod", { headers: headers, params: filtriDaInviare });
+            const responseCliente = await axios.get("http://89.46.196.60:8443/aziende/react/select",            { headers: headers });
+            const responseOwner   = await axios.get("http://89.46.196.60:8443/aziende/react/owner",             { headers: headers });
 
             if (Array.isArray(responseOwner.data)) {
                 setOwnerOptions(responseOwner.data.map((owner, index) => ({ label: owner.descrizione, value: owner.id })));

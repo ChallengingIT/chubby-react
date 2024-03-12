@@ -77,10 +77,10 @@ const AziendeListaNeedCard = () => {
             quantita: 10
         };
         try {
-            const response              = await axios.get(`http://localhost:8080/need/react/cliente/modificato/${id}`, { headers: headers, params: filtriDaInviare });
-            const responseOwner         = await axios.get("http://localhost:8080/aziende/react/owner",           { headers: headers });
-            const responseTipologia     = await axios.get("http://localhost:8080/need/react/tipologia",          { headers: headers });
-            const responseStato         = await axios.get("http://localhost:8080/need/react/stato",              { headers: headers });
+            const response              = await axios.get(`http://89.46.196.60:8443/need/react/cliente/modificato/${id}`, { headers: headers, params: filtriDaInviare });
+            const responseOwner         = await axios.get("http://89.46.196.60:8443/aziende/react/owner",           { headers: headers });
+            const responseTipologia     = await axios.get("http://89.46.196.60:8443/need/react/tipologia",          { headers: headers });
+            const responseStato         = await axios.get("http://89.46.196.60:8443/need/react/stato",              { headers: headers });
 
 
             if (Array.isArray(responseOwner.data)) {
@@ -134,8 +134,8 @@ const AziendeListaNeedCard = () => {
         const filtriAttivi = Object.values(filtri).some(value => value !== null && value !== '');
 
         const url = filtriAttivi ?
-        "http://localhost:8080/need/react/ricerca/modificato" :
-        `http://localhost:8080/need/react/cliente/modificato/${id}`;
+        "http://89.46.196.60:8443/need/react/ricerca/modificato" :
+        `http://89.46.196.60:8443/need/react/cliente/modificato/${id}`;
 
         const filtriDaInviare = {
             owner: filtri.owner || null,
@@ -175,7 +175,7 @@ const AziendeListaNeedCard = () => {
         };
         setLoading(true);
         try {
-            const response = await axios.get("http://localhost:8080/need/react/ricerca/modificato", { headers: headers, params: filtriDaInviare });
+            const response = await axios.get("http://89.46.196.60:8443/need/react/ricerca/modificato", { headers: headers, params: filtriDaInviare });
 
             if (Array.isArray(response.data)) {
                 setOriginalListaNeed(response.data);
