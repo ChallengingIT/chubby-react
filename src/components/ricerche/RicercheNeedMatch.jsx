@@ -13,9 +13,7 @@ function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, 
     const handleOpenFiltri = () => setOpenFiltri(true);
     const handleCloseFiltri = () => setOpenFiltri(false);
 
-    const navigateToAggiungi = () => {
-        navigate('/recruiting/aggiungi');
-    }
+ 
 
 
     
