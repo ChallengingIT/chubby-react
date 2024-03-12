@@ -413,7 +413,7 @@ const handleReset = () => {
       </Box>
     )},
     { field: 'dataUltimoContatto',    headerName: 'Contatto',     flex: 1 },
-    { field: 'noteRal',               headerName: 'Note/Ral',     flex: 0.8, renderCell: (params) => (
+    { field: 'noteRal',               headerName: 'Note/Ral',     flex: 1, renderCell: (params) => (
       <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
         <NoteButton onClick={() => {
           setNotePopup(true);

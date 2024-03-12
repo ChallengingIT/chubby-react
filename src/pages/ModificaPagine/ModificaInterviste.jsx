@@ -18,6 +18,10 @@ const ModificaIntervista = () => {
   const [ isDataLoaded,               setIsDataLoaded                 ] = useState(false);
   const [ alert,                      setAlert                        ] = useState(false);
 
+  //stati per la modifica
+  const [ pagina, setPagina ] = useState([]);
+  const quantita = 10;
+
     const user = JSON.parse(localStorage.getItem("user"));
     const accessToken = user?.accessToken;
 
@@ -27,6 +31,10 @@ const ModificaIntervista = () => {
 
 useEffect(() => {
   const fetchData = async () => {
+    const paginazione = {
+      pagina: 0,
+      quantita:10
+    };
     try {
       //jobtitle = tipologia, tipologiaIncontro = stato, owner = owner
       const responseTipologia                      = await axios.get("http://localhost:8080/aziende/react/tipologia",         { headers: headers});
