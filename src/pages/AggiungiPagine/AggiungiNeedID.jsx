@@ -130,8 +130,9 @@ const AggiungiNeedID = () => {
 
   const initialValues = {
     idAzienda:            valori?.id            || "",
-    denominazione: valori?.denominazione || "",
+    denominazione:        valori?.denominazione || "",
   };
+
 
 
   
@@ -206,6 +207,7 @@ const AggiungiNeedID = () => {
           onSubmit={handleSubmit}
           title=""
           skillsOptions={skillsOptions} 
+          initialValues={initialValues}
           />
           </Box>
     </Box>

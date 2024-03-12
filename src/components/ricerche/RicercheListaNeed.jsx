@@ -2,60 +2,16 @@ import React, { useState } from 'react';
 import { Button, Box, Grid, Select, MenuItem, FormControl, InputLabel, IconButton, Drawer, Typography, TextField, InputAdornment } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon                                       from '@mui/icons-material/Search';
-import { useNavigate  }                                 from 'react-router-dom';
 
 
 
-function RicercheKeypeople({ filtri, onFilterChange, onReset, aziendaOptions, statoOptions, ownerOptions, onRicerche }) {
+function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, statoOptions, ownerOptions, onRicerche, onNavigate }) {
 
-    const navigate = useNavigate();
 
     const [ openFiltri,                setOpenFiltri            ] = useState(false);
 
     const handleOpenFiltri = () => setOpenFiltri(true);
     const handleCloseFiltri = () => setOpenFiltri(false);
-
-
-    const navigateToAggiungi = () => {
-        navigate('/keypeople/aggiungi');
-    };
-
-
-    const renderInputField = (filtro) => {
-        switch(filtro.type) {
-            case 'select':
-                return (
-                    <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel id={`${filtro.label}-label`}>{filtro.label}</InputLabel>
-                        <Select
-                            labelId={`${filtro.label}-label`}
-                            displayEmpty
-                            value={filtri[filtro.name] || ''}
-                            onChange={onFilterChange(filtro.name)}
-                            renderValue={(selected) => selected ? filtro.options.find(option => option.value === selected)?.label : ''}
-                        >
-                            {filtro.options.map((option) => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                );
-            case 'text':
-                return (
-                    <TextField
-                        fullWidth
-                        label={filtro.label}
-                        value={filtri[filtro.name] || ''}
-                        onChange={onFilterChange(filtro.name)}
-                        sx={{ mb: 2 }}
-                    />
-                );
-            default:
-                return null;
-        }
-    };
 
 
 
@@ -70,25 +26,26 @@ function RicercheKeypeople({ filtri, onFilterChange, onReset, aziendaOptions, st
             alignItems: 'center', 
             justifyContent: 'space-between', 
             borderRadius: '10px',  
-            marginBottom: '4rem'
+            marginBottom: '4rem',
+            
         }}
         >
             <Button 
                         variant="contained" 
                         color="primary" 
-                        onClick={navigateToAggiungi} 
+                        onClick={onNavigate} 
                         sx={{
+                            mt: 2,
                             minWidth: '12em',
                             backgroundColor: '#00853C',
                             borderRadius: '10px',
                             textTransform: 'none',
-                            mt: 2,
                             '&:hover': {
                             backgroundColor: '#00853C',
                             transform: 'scale(1.05)',
                         },
                     }}>
-                        + Aggiungi Contatto
+                        + Aggiungi Need
                         </Button>
     
                         <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
@@ -96,10 +53,10 @@ function RicercheKeypeople({ filtri, onFilterChange, onReset, aziendaOptions, st
                             <TextField
                                 id="search-bar"
                                 variant="outlined"
-                                placeholder="Cerca Contatto"
+                                placeholder="Cerca Need"
                                 size="small"
-                                value={filtri.nome}
-                                onChange={onFilterChange('nome')}
+                                value={filtri.descrizione}
+                                onChange={onFilterChange('descrizione')}
                                 onKeyDown={(event) => {
                                     if (event.key === 'Enter') {
                                         event.preventDefault();
@@ -135,10 +92,10 @@ function RicercheKeypeople({ filtri, onFilterChange, onReset, aziendaOptions, st
                     </Box>
                     <Button variant="contained" color="primary" onClick={handleOpenFiltri} sx={{
                         backgroundColor: '#00853C',
+                        mt:2,
                         minWidth: '12em',
                         borderRadius: '10px',
                         textTransform: 'none',
-                        mt: 2,
                         '&:hover': {
                         backgroundColor: '#00853C',
                         transform: 'scale(1.05)',
@@ -179,7 +136,7 @@ function RicercheKeypeople({ filtri, onFilterChange, onReset, aziendaOptions, st
         </Box>
         <Grid container spacing={2} direction="column" sx={{ p: 2}}>
             <Grid item>
-            <FormControl fullWidth sx={{ mb: 2 }}>
+            {/* <FormControl fullWidth sx={{ mb: 2 }}>
                             <InputLabel id="azienda-label">Azienda</InputLabel>
                             <Select
                                 labelId="azienda-label"
@@ -196,6 +153,30 @@ function RicercheKeypeople({ filtri, onFilterChange, onReset, aziendaOptions, st
                             >
                                 
                                 {aziendaOptions.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                    {option.label}
+                                </MenuItem>
+                                ))}
+                            </Select>
+                            </FormControl> */}
+
+            <FormControl fullWidth sx={{ mb: 2 }}>
+                            <InputLabel id="tipologia-label">Tipologia</InputLabel>
+                            <Select
+                                labelId="tipologia-label"
+                                displayEmpty
+                                value={filtri.tipologia || ''} 
+                                onChange={onFilterChange('tipologia')}
+                                renderValue={(selected) => {
+                                    if (selected === '') {
+                                        return <em></em>;
+                                    }
+                                    const selectedLabel = tipologiaOptions.find(option => option.value === selected)?.label;
+                                    return selectedLabel || selected;
+                                }}
+                            >
+                                
+                                {tipologiaOptions.map((option) => (
                                 <MenuItem key={option.value} value={option.value}>
                                     {option.label}
                                 </MenuItem>
@@ -277,4 +258,4 @@ function RicercheKeypeople({ filtri, onFilterChange, onReset, aziendaOptions, st
     );
 };
 
-export default RicercheKeypeople;
+export default RicercheNeed;

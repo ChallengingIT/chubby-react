@@ -32,12 +32,15 @@ const NeedMatch2 = () => {
     const [ tipoOptions,                setTipoOptions         ] = useState([]);
     const [ tipologiaOptions,           setTipologiaOptions          ] = useState([]);
     const [ openFiltri,                 setOpenFiltri               ] = useState(false);
-    const [ filtri,                     setFiltri                   ] = useState({
+    const [ filtri,                     setFiltri                   ] = useState(() => {
+        const filtriSalvati = localStorage.getItem('filtriRicercaNeedMatch');
+        return filtriSalvati ? JSON.parse(filtriSalvati) : {
         nome: '',
         cognome: '',
         tipologia: '',
         tipologia: '',
         seniority: ''
+        };
     }); 
     const seniority = [
         { label: 'Neo', value: '0' },
@@ -89,11 +92,11 @@ const NeedMatch2 = () => {
                 quantita: 10
             };
             try {
-                const candidatiResponse   = await axios.get(`http://89.46.196.60:8443/need/react/match/associabili/mod/${id}`,              { headers: headers, params: filtriCandidati});
-                const storicoResponse     = await axios.get(`http://89.46.196.60:8443/need/react/storico/${id}`,                            { headers: headers, params: paginazione});
-                const associatiResponse   = await axios.get(`http://89.46.196.60:8443/need/react/match/associati/mod/${id}`,                { headers: headers, params: paginazione});
-                const responseTipologia    = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia",                             { headers: headers});
-                const responseTipo        = await axios.get("http://89.46.196.60:8443/staffing/react/tipo"    ,                             { headers: headers});
+                const candidatiResponse   = await axios.get(`http://localhost:8080/need/react/match/associabili/mod/${id}`,              { headers: headers, params: filtriCandidati});
+                const storicoResponse     = await axios.get(`http://localhost:8080/need/react/storico/${id}`,                            { headers: headers, params: paginazione});
+                const associatiResponse   = await axios.get(`http://localhost:8080/need/react/match/associati/mod/${id}`,                { headers: headers, params: paginazione});
+                const responseTipologia    = await axios.get("http://localhost:8080/aziende/react/tipologia",                             { headers: headers});
+                const responseTipo        = await axios.get("http://localhost:8080/staffing/react/tipo"    ,                             { headers: headers});
 
                 if (Array.isArray(responseTipologia.data)) {
                     const tipologiaOptions = responseTipologia.data.map((tipologia) => ({
@@ -173,13 +176,25 @@ const NeedMatch2 = () => {
                 } catch(error) {
                     console.error("Errore durante il recupero dei dati: ", error);
                 }
-    };
+            };
 
 
-    useEffect(() => {
-        fetchData();
-    // eslint-disable-next-line
-    }, []);
+            console.log("RIGHE DI CANDIDATI: ", righeTotCandidati);
+            console.log("RIGHE DI Storico: ", righeTotStorico);
+            console.log("RIGHE DI Associati: ", righeTotAssociati);
+
+
+
+                useEffect(() => {
+                    const filtriSalvati = localStorage.getItem('filtriRicercaNeedMatch');
+                    if(filtriSalvati) {
+                        setFiltri(JSON.parse(filtriSalvati));
+                        handleRicerche();
+                    } else {
+                    fetchData();
+                    }
+                // eslint-disable-next-line
+                }, []);
 
 
     //funzione per la paginazione
@@ -196,7 +211,7 @@ const NeedMatch2 = () => {
             };
             
             try {
-                const candidatiResponse = await axios.get(`http://89.46.196.60:8443/need/react/match/associabili/mod/${id}`, { headers: headers, params: filtriCandidati});
+                const candidatiResponse = await axios.get(`http://localhost:8080/need/react/match/associabili/mod/${id}`, { headers: headers, params: filtriCandidati});
                 const { recordCandidati, candidati } = candidatiResponse.data;
             
                 if (candidati && Array.isArray(candidati)) {
@@ -223,7 +238,7 @@ const NeedMatch2 = () => {
                     };
                 
                     try {
-                    const storicoResponse     = await axios.get(`http://89.46.196.60:8443/need/react/storico/${id}`, { headers: headers, params: paginazione});
+                    const storicoResponse     = await axios.get(`http://localhost:8080/need/react/storico/${id}`, { headers: headers, params: paginazione});
                     const { recordStorico, storico } = storicoResponse.data;
                 
                             if (storico && Array.isArray(storico)) {
@@ -248,7 +263,7 @@ const NeedMatch2 = () => {
                     quantita: 10
                     };
                     try {
-                    const associatiResponse   = await axios.get(`http://89.46.196.60:8443/need/react/match/associati/mod/${id}`, { headers: headers, params: paginazione});
+                    const associatiResponse   = await axios.get(`http://localhost:8080/need/react/match/associati/mod/${id}`, { headers: headers, params: paginazione});
                     const { recordAssociati, associati } = associatiResponse.data;
                 
                     if (associati && Array.isArray(associati)) {
@@ -297,6 +312,13 @@ const NeedMatch2 = () => {
             };
 
 
+
+            useEffect(() => {
+                localStorage.setItem('filtriRicercaNeedMatch', JSON.stringify(filtri));
+              }, [filtri]);
+            
+
+
             //funzione per le ricerche
             const handleRicerche = async () => {
                 const filtriCandidati = {
@@ -311,7 +333,25 @@ const NeedMatch2 = () => {
 
                 try{
                     console.log("Effettuo la ricerca per: ", filtriCandidati);
-                    const response = await axios.get(`http://89.46.196.60:8443/need/react/match/associabili/ricerca/mod/${id}`, { headers: headers, params: filtriCandidati});
+                    const response = await axios.get(`http://localhost:8080/need/react/match/associabili/ricerca/mod/${id}`, { headers: headers, params: filtriCandidati});
+                    const responseTipologia    = await axios.get("http://localhost:8080/aziende/react/tipologia",                             { headers: headers});
+                    const responseTipo        = await axios.get("http://localhost:8080/staffing/react/tipo"    ,                             { headers: headers});
+    
+                    if (Array.isArray(responseTipologia.data)) {
+                        const tipologiaOptions = responseTipologia.data.map((tipologia) => ({
+                            label: tipologia.descrizione,
+                            value: tipologia.id,
+                        }));
+                        setTipologiaOptions(tipologiaOptions);
+                        }
+                
+                        if (Array.isArray(responseTipo.data)) {
+                            const tipoOptions = responseTipo.data.map((tipo) => ({
+                            label: tipo.descrizione,
+                            value: tipo.id,
+                            }));
+                        setTipoOptions(tipoOptions);
+                        }
 
 
                     const { record, candidati } = response.data;
@@ -332,28 +372,28 @@ const NeedMatch2 = () => {
 
 
             
-useEffect(() => {
-    const { nome, cognome, ...otherFilters } = filtri;
-    const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x != null);
+            useEffect(() => {
+                const { nome, cognome, ...otherFilters } = filtri;
+                const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x != null);
 
-    if (filtriHasValues) {
-        handleRicerche();
-    }
-}, [filtri.tipo, filtri.tipologia, filtri.seniority]);
+                if (filtriHasValues) {
+                    handleRicerche();
+                }
+            }, [filtri.tipo, filtri.tipologia, filtri.seniority]);
 
 
-const handleReset = () => {
-    setFiltri({
-        nome: '', 
-        cognome: '',
-        tipo: '',
-        tipologia: '',
-        seniority: ''
-    });
-    setPaginaCandidati(0);
-    fetchData();
-};
-            
+            const handleReset = () => {
+                setFiltri({
+                    nome: '', 
+                    cognome: '',
+                    tipo: '',
+                    tipologia: '',
+                    seniority: ''
+                });
+                setPaginaCandidati(0);
+                fetchData();
+            };
+                        
 
 
             const handleGoBack = () => {
@@ -365,7 +405,7 @@ const handleReset = () => {
                 try {
                     const idNeed = parseInt(id);
                     const idCandidato = row;
-                    const url = `http://89.46.196.60:8443/associazioni/react/rimuovi/candidato/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
+                    const url = `http://localhost:8080/associazioni/react/rimuovi/candidato/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
                     const responseDeleteAssociati = await axios.delete(url, {headers: headers});
                     fetchData();
                 } catch(error) {
@@ -377,7 +417,7 @@ const handleReset = () => {
             const handleDeleteStorico = async (row) => {
                 try {
                     const idAssociazione = row;
-                    const url = `http://89.46.196.60:8443/associazioni/react/rimuovi/associa/${idAssociazione}`;
+                    const url = `http://localhost:8080/associazioni/react/rimuovi/associa/${idAssociazione}`;
                     const responseDeleteStorico = await axios.delete(url, { headers: headers });
                     fetchData();
                 } catch(error) {
@@ -389,7 +429,7 @@ const handleReset = () => {
                 try{
                     const idNeed = parseInt(id);
                     const idCandidato = row.id;
-                    const url = `http://89.46.196.60:8443/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
+                    const url = `http://localhost:8080/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
                     const responseAssocia = await axios.post(url, { headers: headers });
                     fetchData();
                 } catch(error) {
@@ -433,7 +473,7 @@ const handleReset = () => {
                         delete updateValues.candidato;
                         delete updateValues.cliente;
 
-                        const response = await axios.post(`http://89.46.196.60:8443/associazioni/salva`, updateValues, { headers: headers });;
+                        const response = await axios.post(`http://localhost:8080/associazioni/salva`, updateValues, { headers: headers });;
                         fetchData();
                     } catch(error) {
                         console.error("Errore durante il recupero dei dati: ", error);
@@ -597,21 +637,25 @@ const handleReset = () => {
 
                 return (
                     <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto', width: '100vw' }}>
-                        <Box sx={{ 
-                                        flexGrow: 1, 
-                                        p: 3, 
-                                        marginLeft: '13.2em', 
-                                        marginBottom: '0.8em', 
-                                        marginRight: '0.8em', 
-                                        backgroundColor: '#FEFCFD', 
-                                        borderRadius: '10px', 
-                                        minHeight: '98vh',
-                                        mt: 1.5
-                                    }}>
+                   <Box sx={{ 
+                                // flexGrow: 1, 
+                                p: 2, 
+                                marginLeft: '13.2em', 
+                                marginTop: '0.5em', 
+                                marginBottom: '0.8em', 
+                                marginRight: '0.8em', 
+                                backgroundColor: '#FEFCFD', 
+                                borderRadius: '10px', 
+                                minHeight: '98vh',
+                                mt: 1.5,
+                                width: '100%',
+
+                            }}>
                                     <Box sx={{ 
                                             position: 'sticky', 
                                             top: 0, 
                                             zIndex: 1000, 
+                                            width: '100%'
                                         }}>  
                                         <RicercheNeedMatch
                                         filtri={filtri}
@@ -621,6 +665,7 @@ const handleReset = () => {
                                         tipologiaOptions={tipologiaOptions}
                                         seniorityOptions={seniority}
                                         onRicerche={handleRicerche}
+                                        onGoBack={handleGoBack}
                                         />
                                         </Box>
 
@@ -648,42 +693,45 @@ const handleReset = () => {
                             
                             />
                             </Modal>
-                            <Box sx={{ height: 'auto', mt: 2, width: '99%', mb: 3}}>
+                            <Box sx={{ height: 'auto', mt: 2, width: '100%', mb: 3}}>
                             <Tabella 
                                 data={originalCandidati} 
                                 columns={tabellaCandidati} 
                                 title="Candidati"             
                                 getRowId={(row) => row.id}
                                 pagina={paginaCandidati}
+                                quantita={quantita}
                                 righeTot={righeTotCandidati}
                                 onPageChange={handlePageChangeCandidati}
                                 />
                             </Box>
 
-                            <Box sx={{ height: 'auto', mt: 2, width: '99%', mb: 3}}>
+                            <Box sx={{ height: 'auto', mt: 2, width: '100%', mb: 3,}}>
                             <Tabella 
                                 data={originalStorico}     
                                 columns={tabellaStorico}  
                                 title="Storico"              
                                 getRowId={(row) => row.id}
                                 pagina={paginaStorico}
+                                quantita={quantita}
                                 righeTot={righeTotStorico}
                                 onPageChange={handlePageChangeStorico}
                                 />
                             </Box>
 
-                            <Box sx={{ height: 'auto', mt: 2, width: '99%', mb: 3}}>
+                            <Box sx={{ height: 'auto', mt: 2, width: '100%', mb: 3}}>
                             <Tabella 
                                 data={originalAssociati}    
                                 columns={tabellaAssociati} 
                                 title="Candidati Associati"   
                                 getRowId={(row) => row.id}
                                 pagina={paginaAssociati}
+                                quantita={quantita}
                                 righeTot={righeTotAssociati}
                                 onPageChange={handlePageChangeAssociati}
                                 />
                             </Box>
-                            <Box sx={{ display: 'flex', justifyContent: 'center'}}>
+                            {/* <Box sx={{ display: 'flex', justifyContent: 'center'}}>
                             <Button
                                 color="primary"
                                 onClick={handleGoBack}
@@ -704,7 +752,7 @@ const handleReset = () => {
                                 >
                                 Indietro
                             </Button>
-                            </Box>
+                            </Box> */}
                             </Box>
                     </Box>
                 );

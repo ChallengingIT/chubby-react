@@ -32,27 +32,30 @@ const Recruiting = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [ originalRecruiting,     setOriginalRecruiting ] = useState([]);
-  const [ filteredRecruiting,     setFilteredRecruiting ] = useState([]);
-  const [ searchText,             setSearchText         ] = useState([]);
-  const [ notePopup,              setNotePopup          ] = useState(false);
-  const [ ralPopup,               setRalPopup           ] = useState(false);
-  const [ openDialog,             setOpenDialog         ] = useState(false);
-  const [ selectedNote,           setSelectedNote       ] = useState('');
-  const [ selectedRal,            setSelectedRal        ] = useState('');
-  const [ deleteId,               setDeleteId           ] = useState(null);
+  const [ originalRecruiting,         setOriginalRecruiting   ] = useState([]);
+  const [ filteredRecruiting,         setFilteredRecruiting   ] = useState([]);
+  const [ searchText,                 setSearchText           ] = useState([]);
+  const [ notePopup,                  setNotePopup            ] = useState(false);
+  const [ ralPopup,                   setRalPopup             ] = useState(false);
+  const [ openDialog,                 setOpenDialog           ] = useState(false);
+  const [ selectedNote,               setSelectedNote         ] = useState('');
+  const [ selectedRal,                setSelectedRal          ] = useState('');
+  const [ deleteId,                   setDeleteId             ] = useState(null);
   const [ tipologiaOptions,           setTipologiaOptions     ] = useState([]);
   const [ tipoOptions,                setTipoOptions          ] = useState([]);
   const [ statoOptions,               setStatoOptions         ] = useState([]);
   const [ openFiltri,                 setOpenFiltri           ] = useState(false);
   const [ loading,                    setLoading              ] = useState(false);
-  const [ righeTot,  setRigheTot ] = useState(0);
-  const [ filtri,                     setFiltri               ] = useState({
+  const [ righeTot,                   setRigheTot             ] = useState(0);
+  const [ filtri,                     setFiltri               ] = useState(() => {
+    const filtriSalvati = localStorage.getItem('filtriRicercaRecruiting');
+    return filtriSalvati ? JSON.parse(filtriSalvati) : {
     nome: '',
     cognome: '',
     tipologia: '',
     stato: '',
     tipo:''
+    };
 });
 
 
@@ -88,10 +91,10 @@ const quantita = 10;
 
 
     try {
-        const response          = await axios.get("http://89.46.196.60:8443/staffing/react/mod",          { headers: headers, params: filtriDaInviare });
-        const responseTipologia = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia",        { headers });
-        const responseTipo      = await axios.get("http://89.46.196.60:8443/staffing/react/tipo",            { headers });
-        const responseStato     = await axios.get("http://89.46.196.60:8443/staffing/react/stato/candidato", { headers });
+        const response          = await axios.get("http://localhost:8080/staffing/react/mod",          { headers: headers, params: filtriDaInviare });
+        const responseTipologia = await axios.get("http://localhost:8080/aziende/react/tipologia",        { headers });
+        const responseTipo      = await axios.get("http://localhost:8080/staffing/react/tipo",            { headers });
+        const responseStato     = await axios.get("http://localhost:8080/staffing/react/stato/candidato", { headers });
 
 
         if (Array.isArray(responseStato.data)) {
@@ -134,7 +137,13 @@ const quantita = 10;
     
     
     useEffect(() => {
+      const filtriSalvati = localStorage.getItem('filtriRicercaRecruiting');
+      if(filtriSalvati) {
+        setFiltri(JSON.parse(filtriSalvati));
+        handleRicerche();
+      } else {
         fetchData();
+      }
         // eslint-disable-next-line
     }, []);
 
@@ -154,7 +163,7 @@ const quantita = 10;
     };
   
       try{
-        const response          = await axios.get("http://89.46.196.60:8443/staffing/react/mod",          { headers: headers, params: filtriDaInviare });
+        const response          = await axios.get("http://localhost:8080/staffing/react/mod",          { headers: headers, params: filtriDaInviare });
         const { record, candidati } = response.data;
 
         if (candidati && Array.isArray(candidati)) {
@@ -197,7 +206,7 @@ const quantita = 10;
 
   const handleDelete = async () => {
     try {
-      const responseDelete = await axios.delete(`http://89.46.196.60:8443/staffing/elimina/${deleteId}`, { headers: headers });
+      const responseDelete = await axios.delete(`http://localhost:8080/staffing/elimina/${deleteId}`, { headers: headers });
       setOpenDialog(false);
       fetchData();
     } catch(error) {
@@ -247,6 +256,14 @@ const quantita = 10;
 };
 
 
+
+
+useEffect(() => {
+  localStorage.setItem('filtriRicercaRecruiting', JSON.stringify(filtri));
+}, [filtri]);
+
+
+
 const handleRicerche = async () => {
 
     const filtriDaInviare = {
@@ -264,7 +281,31 @@ const handleRicerche = async () => {
     setLoading(true);
  
     try {
-        const response = await axios.get("http://89.46.196.60:8443/staffing/react/mod/ricerca", { headers: headers, params: filtriDaInviare });
+        const response = await axios.get("http://localhost:8080/staffing/react/mod/ricerca", { headers: headers, params: filtriDaInviare });
+        const responseTipologia = await axios.get("http://localhost:8080/aziende/react/tipologia",        { headers });
+        const responseTipo      = await axios.get("http://localhost:8080/staffing/react/tipo",            { headers });
+        const responseStato     = await axios.get("http://localhost:8080/staffing/react/stato/candidato", { headers });
+
+
+        if (Array.isArray(responseStato.data)) {
+            setStatoOptions(responseStato.data.map((stato, index) => ({ label: stato.descrizione, value: stato.id })));
+        } else {
+            console.error("I dati ottenuti non sono nel formato Array:", responseStato.data);
+        } 
+
+
+        if (Array.isArray(responseTipologia.data)) {
+            setTipologiaOptions(responseTipologia.data.map((tipologia, index) => ({ label: tipologia.descrizione, value: tipologia.id })));
+    
+        } else {
+            console.error("I dati ottenuti non sono nel formato Array:", responseTipologia.data);
+        } 
+
+        if (Array.isArray(responseTipo.data)) {
+            setTipoOptions(responseTipo.data.map((tipo, index) => ({ label: tipo.descrizione, value: tipo.id })));
+        } else {
+            console.error("I dati ottenuti non sono nel formato Array:", responseTipo.data);
+        } 
 
 
         const { record, candidati } = response.data;
@@ -316,7 +357,7 @@ const handleReset = () => {
 };
 
   const handleDownloadCV = async (fileId, fileDescrizione) => {
-    const url = `http://89.46.196.60:8443/files/react/download/file/${fileId}`;
+    const url = `http://localhost:8080/files/react/download/file/${fileId}`;
     try {
       const responseDownloadCV = await axios({
         method: 'GET',
@@ -401,10 +442,10 @@ const handleReset = () => {
 
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto', width: '100vw' }}>
+    <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto', width: '100vw', overflowX:'hidden' }}>
       <Box sx={{ 
-                flexGrow: 1, 
-                p: 3, 
+                // flexGrow: 1, 
+                p: 2, 
                 marginLeft: '13.2em', 
                 marginTop: '0.5em', 
                 marginBottom: '0.8em', 
@@ -412,13 +453,18 @@ const handleReset = () => {
                 backgroundColor: '#FEFCFD', 
                 borderRadius: '10px', 
                 minHeight: '98vh',
-                mt: 1.5
+                mt: 1.5,
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-start',
+                alignItems: 'center'
             }}>
-              <Box sx={{ 
-                    position: 'sticky', 
-                    top: 0, 
-                    zIndex: 1000, 
-                }}>
+              <Box
+              sx={{
+                width: '100%',                
+              }}>
+
                   <RicercheRecruiting
                   filtri={filtri}
                   onFilterChange={handleFilterChange}
@@ -430,7 +476,7 @@ const handleReset = () => {
                   />
                   </Box>
 
-              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5 , ml: -5, width: '90vw'}}>
+              <Box sx={{ ml: -3, mt: 5 ,  width: '100%'}}>
                 <Tabella
                   data={originalRecruiting} 
                   columns={columns} 

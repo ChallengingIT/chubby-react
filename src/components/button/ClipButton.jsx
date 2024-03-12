@@ -25,9 +25,9 @@ function ClipButton({ onClick, idFile, fileDescrizione }) {
               backgroundColor: '#00853C',
               color: 'black',
               borderRadius: '50%',
-              minWidth: '40px',
-              width: '40px',
-              height: '40px',
+              minWidth: '2em',
+              width: '2em',
+              height: '2em',
               padding: '0',
               '& .MuiButton-startIcon': {
                 margin: '0',

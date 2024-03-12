@@ -6,7 +6,7 @@ import { useNavigate  }                                 from 'react-router-dom';
 
 
 
-function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, statoOptions, ownerOptions, onRicerche }) {
+function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, statoOptions, aziendaOptions, ownerOptions, onRicerche }) {
 
     const navigate = useNavigate();
 
@@ -17,8 +17,9 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
 
 
     const navigateToAggiungi = () => {
-        navigate('/aziende/aggiungi');
+        navigate('/need/aggiungi');
     };
+
 
 
     return (
@@ -30,7 +31,8 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
             alignItems: 'center', 
             justifyContent: 'space-between', 
             borderRadius: '10px',  
-            marginBottom: '4rem'
+            marginBottom: '4rem',
+            
         }}
         >
             <Button 
@@ -38,6 +40,7 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
                         color="primary" 
                         onClick={navigateToAggiungi} 
                         sx={{
+                            mt: 2,
                             minWidth: '12em',
                             backgroundColor: '#00853C',
                             borderRadius: '10px',
@@ -50,7 +53,7 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
                         + Aggiungi Need
                         </Button>
     
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
                             {/* Barra di ricerca */}
                             <TextField
                                 id="search-bar"
@@ -94,6 +97,7 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
                     </Box>
                     <Button variant="contained" color="primary" onClick={handleOpenFiltri} sx={{
                         backgroundColor: '#00853C',
+                        mt:2,
                         minWidth: '12em',
                         borderRadius: '10px',
                         textTransform: 'none',
@@ -137,6 +141,30 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
         </Box>
         <Grid container spacing={2} direction="column" sx={{ p: 2}}>
             <Grid item>
+            <FormControl fullWidth sx={{ mb: 2 }}>
+                            <InputLabel id="azienda-label">Azienda</InputLabel>
+                            <Select
+                                labelId="azienda-label"
+                                displayEmpty
+                                value={filtri.azienda || ''} 
+                                onChange={onFilterChange('azienda')}
+                                renderValue={(selected) => {
+                                    if (selected === '') {
+                                        return <em></em>;
+                                    }
+                                    const selectedLabel = aziendaOptions.find(option => option.value === selected)?.label;
+                                    return selectedLabel || selected;
+                                }}
+                            >
+                                
+                                {aziendaOptions.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                    {option.label}
+                                </MenuItem>
+                                ))}
+                            </Select>
+                            </FormControl>
+
             <FormControl fullWidth sx={{ mb: 2 }}>
                             <InputLabel id="tipologia-label">Tipologia</InputLabel>
                             <Select
