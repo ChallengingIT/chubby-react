@@ -91,10 +91,10 @@ const quantita = 10;
 
 
     try {
-        const response          = await axios.get("http://89.46.196.60:8443/staffing/react/mod",          { headers: headers, params: filtriDaInviare });
-        const responseTipologia = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia",        { headers });
-        const responseTipo      = await axios.get("http://89.46.196.60:8443/staffing/react/tipo",            { headers });
-        const responseStato     = await axios.get("http://89.46.196.60:8443/staffing/react/stato/candidato", { headers });
+        const response          = await axios.get("http://localhost:8080/staffing/react/mod",          { headers: headers, params: filtriDaInviare });
+        const responseTipologia = await axios.get("http://localhost:8080/aziende/react/tipologia",        { headers });
+        const responseTipo      = await axios.get("http://localhost:8080/staffing/react/tipo",            { headers });
+        const responseStato     = await axios.get("http://localhost:8080/staffing/react/stato/candidato", { headers });
 
 
         if (Array.isArray(responseStato.data)) {
@@ -151,6 +151,13 @@ const quantita = 10;
 
     //funzione per la paginazione
     const fetchMoreData = async (pagina) => {
+
+      const filtriAttivi = Object.values(filtri).some(value => value !== null && value !== '');
+      const url = filtriAttivi ?
+      "http://localhost:8080/staffing/react/mod/ricerca" :
+      "http://localhost:8080/staffing/react/mod";
+
+
       const filtriDaInviare = {
         nome: filtri.nome || null,
         cognome: filtri.cognome || null,
@@ -163,7 +170,7 @@ const quantita = 10;
     };
   
       try{
-        const response          = await axios.get("http://89.46.196.60:8443/staffing/react/mod",          { headers: headers, params: filtriDaInviare });
+        const response          = await axios.get(url,          { headers: headers, params: filtriDaInviare });
         const { record, candidati } = response.data;
 
         if (candidati && Array.isArray(candidati)) {
@@ -206,7 +213,7 @@ const quantita = 10;
 
   const handleDelete = async () => {
     try {
-      const responseDelete = await axios.delete(`http://89.46.196.60:8443/staffing/elimina/${deleteId}`, { headers: headers });
+      const responseDelete = await axios.delete(`http://localhost:8080/staffing/elimina/${deleteId}`, { headers: headers });
       setOpenDialog(false);
       fetchData();
     } catch(error) {
@@ -281,10 +288,10 @@ const handleRicerche = async () => {
     setLoading(true);
  
     try {
-        const response = await axios.get("http://89.46.196.60:8443/staffing/react/mod/ricerca", { headers: headers, params: filtriDaInviare });
-        const responseTipologia = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia",        { headers });
-        const responseTipo      = await axios.get("http://89.46.196.60:8443/staffing/react/tipo",            { headers });
-        const responseStato     = await axios.get("http://89.46.196.60:8443/staffing/react/stato/candidato", { headers });
+        const response = await axios.get("http://localhost:8080/staffing/react/mod/ricerca", { headers: headers, params: filtriDaInviare });
+        const responseTipologia = await axios.get("http://localhost:8080/aziende/react/tipologia",        { headers });
+        const responseTipo      = await axios.get("http://localhost:8080/staffing/react/tipo",            { headers });
+        const responseStato     = await axios.get("http://localhost:8080/staffing/react/stato/candidato", { headers });
 
 
         if (Array.isArray(responseStato.data)) {
@@ -357,7 +364,7 @@ const handleReset = () => {
 };
 
   const handleDownloadCV = async (fileId, fileDescrizione) => {
-    const url = `http://89.46.196.60:8443/files/react/download/file/${fileId}`;
+    const url = `http://localhost:8080/files/react/download/file/${fileId}`;
     try {
       const responseDownloadCV = await axios({
         method: 'GET',
@@ -528,7 +535,7 @@ const handleReset = () => {
                     <DialogTitle id="alert-dialog-title">{"Conferma Eliminazione"}</DialogTitle>
                     <DialogContent>
                       <DialogContentText id="alert-dialog-description">
-                        Sei sicuro di voler eliminare questa azienda?
+                        Sei sicuro di voler eliminare questo candidato?
                       </DialogContentText>
                     </DialogContent>
                     <DialogActions>
