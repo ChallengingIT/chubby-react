@@ -28,9 +28,18 @@ const headers = {
   const [ alert,                      setAlert                        ] = useState(false);
 
 
+  //stati per la paginazione
+  const [ pagina, setPagina ] = useState([]);
+  const quantita = 10;
+
+
 
 useEffect(() => {
 const fetchData = async () => {
+  const paginazione = {
+    pagina: 0,
+    quantita: 10,
+  }
     try {
 
 
@@ -39,7 +48,7 @@ const fetchData = async () => {
     const ownerResponse                          = await axios.get("http://localhost:8080/aziende/react/owner"                      , { headers: headers });
     const responseStato                          = await axios.get("http://localhost:8080/staffing/react/stato/candidato"           , { headers: headers });
     const responseTipoIntervista                 = await axios.get("http://localhost:8080/intervista/react/tipointervista"          , { headers: headers });
-    const responseIntervista                     = await axios.get(`http://localhost:8080/intervista/react/mod/${candidatoID}`      , { headers: headers });
+    const responseIntervista                     = await axios.get(`http://localhost:8080/intervista/react/mod/${candidatoID}`      , { headers: headers, params: paginazione });
     const responseCandidato                      = await axios.get(`http://localhost:8080/staffing/react/${candidatoID}`            , { headers: headers });
 
 
