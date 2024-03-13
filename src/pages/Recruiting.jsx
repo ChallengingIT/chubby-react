@@ -91,10 +91,10 @@ const quantita = 10;
 
 
     try {
-        const response          = await axios.get("http://localhost:8080/staffing/react/mod",          { headers: headers, params: filtriDaInviare });
-        const responseTipologia = await axios.get("http://localhost:8080/aziende/react/tipologia",        { headers });
-        const responseTipo      = await axios.get("http://localhost:8080/staffing/react/tipo",            { headers });
-        const responseStato     = await axios.get("http://localhost:8080/staffing/react/stato/candidato", { headers });
+        const response          = await axios.get("http://89.46.196.60:8443/staffing/react/mod",          { headers: headers, params: filtriDaInviare });
+        const responseTipologia = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia",        { headers });
+        const responseTipo      = await axios.get("http://89.46.196.60:8443/staffing/react/tipo",            { headers });
+        const responseStato     = await axios.get("http://89.46.196.60:8443/staffing/react/stato/candidato", { headers });
 
 
         if (Array.isArray(responseStato.data)) {
@@ -154,8 +154,8 @@ const quantita = 10;
 
       const filtriAttivi = Object.values(filtri).some(value => value !== null && value !== '');
       const url = filtriAttivi ?
-      "http://localhost:8080/staffing/react/mod/ricerca" :
-      "http://localhost:8080/staffing/react/mod";
+      "http://89.46.196.60:8443/staffing/react/mod/ricerca" :
+      "http://89.46.196.60:8443/staffing/react/mod";
 
 
       const filtriDaInviare = {
@@ -213,7 +213,7 @@ const quantita = 10;
 
   const handleDelete = async () => {
     try {
-      const responseDelete = await axios.delete(`http://localhost:8080/staffing/elimina/${deleteId}`, { headers: headers });
+      const responseDelete = await axios.delete(`http://89.46.196.60:8443/staffing/elimina/${deleteId}`, { headers: headers });
       setOpenDialog(false);
       fetchData();
     } catch(error) {
@@ -288,10 +288,10 @@ const handleRicerche = async () => {
     setLoading(true);
  
     try {
-        const response          = await axios.get("http://localhost:8080/staffing/react/mod/ricerca", { headers: headers, params: filtriDaInviare });
-        const responseTipologia = await axios.get("http://localhost:8080/aziende/react/tipologia",        { headers });
-        const responseTipo      = await axios.get("http://localhost:8080/staffing/react/tipo",            { headers });
-        const responseStato     = await axios.get("http://localhost:8080/staffing/react/stato/candidato", { headers });
+        const response          = await axios.get("http://89.46.196.60:8443/staffing/react/mod/ricerca", { headers: headers, params: filtriDaInviare });
+        const responseTipologia = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia",        { headers });
+        const responseTipo      = await axios.get("http://89.46.196.60:8443/staffing/react/tipo",            { headers });
+        const responseStato     = await axios.get("http://89.46.196.60:8443/staffing/react/stato/candidato", { headers });
 
 
         if (Array.isArray(responseStato.data)) {
@@ -365,7 +365,7 @@ const handleReset = () => {
 };
 
   const handleDownloadCV = async (idFile, fileDescrizione) => {
-    const url = `http://localhost:8080/files/react/download/file/${idFile}`;
+    const url = `http://89.46.196.60:8443/files/react/download/file/${idFile}`;
     try {
       const responseDownloadCV = await axios({
         method: 'GET',
