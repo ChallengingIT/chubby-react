@@ -30,7 +30,6 @@ function IntervisteList() {
   const candidatoID             = id;
 
 
-  console.log("RECRUITING DATA: ", recruitingData);
 
 
 
@@ -94,7 +93,6 @@ function IntervisteList() {
     }
   };
 
-  console.log("originalInterviste: ", originalInterviste);
   
 
   useEffect(() => {

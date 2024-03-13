@@ -5,13 +5,7 @@ import { Box } from '@mui/material';
 
 const Homepage = () => {
 
-    // const currentUser = authService.getCurrentUser(); 
-    // console.log=("utente: ", currentUser);
 
-    // useEffect(() => {
-    //     const userData = localStorage.getItem('user');
-    //     const user = userData ? JSON.parse(userData) : null;
-    // }, []);
 
 
 

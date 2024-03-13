@@ -24,7 +24,6 @@ const AziendeListaNeedCard = () => {
     const { id } = params;
     const valori = location;
 
-    console.log("VALORI: ", valori);
 
 
 

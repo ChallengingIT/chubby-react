@@ -73,7 +73,6 @@ const handleLogin = async (e) => {
             eventBus.dispatch("loginSuccess");
             const userRole = response.roles[0];
 
-            console.log("userRole: ", userRole);
 
             if (userRole === "ROLE_ADMIN" || userRole === "ROLE_RECRUITER" || userRole === "ROLE_BM") {
                 navigate("/homepage");

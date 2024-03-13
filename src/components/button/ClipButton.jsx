@@ -6,6 +6,9 @@ import { useNavigate } from "react-router-dom";
 function ClipButton({ onClick, idFile, fileDescrizione }) {
     const navigate = useNavigate();
 
+  
+
+
     const handleDownload = () => {
       if (onClick && idFile && fileDescrizione) {
         onClick(idFile, fileDescrizione);  

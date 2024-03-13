@@ -29,7 +29,6 @@ const AggiungiBox = ({
     // const [ currentGroupInde,   setCurrentGroupIndex    ] = useState(0);
 
 
-    console.log("DATI: ", fields);
 
 
     const handleInputChange = (event) => {

@@ -141,7 +141,6 @@ const AggiungiNeed = () => {
           },
           headers: headers
         });
-        console.log("values inviati: ", values);
         navigate("/need");
       } catch (error) {
         console.error("Errore durante il salvataggio:", error);
