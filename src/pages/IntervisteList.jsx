@@ -30,11 +30,11 @@ function IntervisteList() {
   const candidatoID             = id;
 
 
+  console.log("RECRUITING DATA: ", recruitingData);
 
-  const [ interviste,               setInterviste           ] = useState([]);
-  const [ searchText,               setSearchText           ] = useState("");
+
+
   const [ originalInterviste,       setOriginalInterviste   ] = useState([]);
-  const [ filteredInterviste,       setFilteredInterviste   ] = useState([]);
   const [ candidatoData,            setCandidatoData        ] = useState([]);
   const [ openDialog,               setOpenDialog           ] = useState(false);
   const [ deleteId,                 setDeleteId             ] = useState(null);
@@ -57,17 +57,25 @@ function IntervisteList() {
 
   const fetchData = async () => {
     setLoading(true);
-    const filtriDaInviare = {
+    const paginazione = {
       pagina: 0,
       quantita: 10
     };
 
-    try {
-      const response                = await axios.get(`http://localhost:8080/intervista/react/mod/${id}`       , { headers: headers, params: filtriDaInviare});
-      const candidatoResponse       = await axios.get(`http://localhost:8080/staffing/react/${candidatoID}`, { headers: headers});
+    const filtriDaInviare = {
+      nome: recruitingData.nome,
+      cognome: recruitingData.cognome,
+      email: recruitingData.email,
+      pagina: 0,
+      quantita: 1
+    }
 
-      if (typeof candidatoResponse.data === 'object') {
-        setCandidatoData([candidatoResponse.data]); 
+    try {
+      const response                           = await axios.get(`http://localhost:8080/intervista/react/mod/${id}`       , { headers: headers, params: paginazione});  //queste sono le interviste effettive
+      const responseCandidatoFiltrato          = await axios.get("http://localhost:8080/staffing/react/mod/ricerca",        { headers: headers, params: filtriDaInviare }); //questo è il candidato
+
+      if (typeof responseCandidatoFiltrato.data === 'object') {
+        setCandidatoData([responseCandidatoFiltrato.data]); 
       }
 
       const { record, interviste } = response.data;
@@ -97,14 +105,23 @@ function IntervisteList() {
 
    //funzione per la paginazione
    const fetchMoreData = async (pagina) => {
-    const filtriDaInviare = {
+    const paginazione = {
       pagina: pagina,
       quantita: 10
   };
+  const filtriDaInviare = {
+    nome: recruitingData.nome,
+    cognome: recruitingData.cognome,
+    email: recruitingData.email,
+    pagina: 0,
+    quantita: 1
+  }
 
     try{
-      const response                = await axios.get(`http://localhost:8080/intervista/react/mod/${id}`       , { headers: headers, params: filtriDaInviare});
-      const { record, interviste } = response.data;
+      const responseIntervista                = await axios.get(`http://localhost:8080/intervista/react/mod/${id}`       , { headers: headers, params: paginazione});
+      const responseCandidatoFiltrato          = await axios.get("http://localhost:8080/staffing/react/mod/ricerca", { headers: headers, params: filtriDaInviare });
+
+      const { record, interviste } = responseIntervista.data;
 
       if (interviste && Array.isArray(interviste)) {
           setOriginalInterviste(interviste); 
@@ -115,7 +132,7 @@ function IntervisteList() {
               console.error("Il numero di record ottenuto non è un numero: ", record);
           }
       } else {
-          console.error("I dati ottenuti non contengono 'interviste' come array: ", response.data);
+          console.error("I dati ottenuti non contengono 'interviste' come array: ", responseIntervista.data);
       }
     } catch(error) {
     console.error("Errore durante il recupero dei dati: ", error);
@@ -149,14 +166,6 @@ navigate("/recruiting");
   };
 
 
-
-  const handleSearch = (filteredData) => {
-    setFilteredInterviste(filteredData);
-  };
-  const handleReset = () => {
-    setSearchText(""); 
-    setFilteredInterviste(originalInterviste);
-  };
 
   const handleDelete = async (id) => {
     try {
@@ -202,7 +211,7 @@ const table1 = [
   { field: "candidato",           headerName: "Intervistatore", flex: 1,
 renderCell: (params) => (
   <div style={{ textAlign: "start" }}>
-        {params.row.candidato?.owner?.descrizione || "N/A"}
+        {params.row.owner?.descrizione || "N/A"}
       </div>
     ),
 },
@@ -271,13 +280,17 @@ state={params.row}
                     padding: '0.5rem 1rem', 
                     outline: 'none', 
                     borderRadius: '10px',
-
+                    '&:hover': {
+                      backgroundColor: '#00853C',
+                      color: 'white',
+                      transform: 'scale(1.05)'
+                    }
                 }}
                 >
                 <span style={{ marginRight: '0.5rem' }}>{"<"}</span> 
                 Indietro
                 </Button>
-                <Typography variant="h4" component="h1" sx={{  fontWeight: 'bold', fontSize: '1.4em'}}>Lista ITW di {candidatoNome} {candidatoCognome}</Typography>
+                <Typography variant="h4" component="h1" sx={{  fontWeight: 'bold', fontSize: '1.4em'}}>Lista ITW di {recruitingData.nome} {recruitingData.cognome}</Typography>
                     <Button onClick={navigateToAggiungiIntervista}
                     startIcon={<AddIcon />}
                     sx={{

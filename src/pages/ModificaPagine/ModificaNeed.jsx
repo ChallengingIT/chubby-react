@@ -12,6 +12,8 @@ const ModificaNeed = () => {
 
   const valori = location.state;
 
+  console.log("VALORI: ", valori);
+
   const [ aziendeOptions,         setAziendeOptions   ] = useState([]);
   const [ skillsOptions,          setSkillsOptions    ] = useState([]);
   const [ ownerOptions,           setOwnerOptions     ] = useState([]);
@@ -38,7 +40,6 @@ const ModificaNeed = () => {
       try {
         const responseAziende      = await axios.get("http://localhost:8080/aziende/react/select",  { headers: headers });
         const responseSkill        = await axios.get("http://localhost:8080/staffing/react/skill",  { headers: headers });
-        const responseSkill2       = await axios.get("http://localhost:8080/staffing/react/skill",  { headers: headers });
         const ownerResponse        = await axios.get("http://localhost:8080/aziende/react/owner",   { headers: headers });
         const tipologiaResponse    = await axios.get("http://localhost:8080/need/react/tipologia",  { headers: headers });
         const statoResponse        = await axios.get("http://localhost:8080/need/react/stato",      { headers: headers });
@@ -146,7 +147,7 @@ const ModificaNeed = () => {
     anniEsperienza:             valori.anniEsperienza                                     || null,
     pubblicazione:              valori.pubblicazione                                      || null,
     screening:                  valori.screening                                          || null,
-    note:                       valori.note                                               || null,          
+    note:                       valori.note                                               || null,        
   };
 
   const handleSubmit = async (values) => {

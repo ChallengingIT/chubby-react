@@ -1,15 +1,46 @@
 import React, { useState, useEffect }               from "react";
 import { useNavigate, useLocation, useParams }      from "react-router-dom";
 import { Button, Box, Typography }                                   from "@mui/material";
-import IntervistaBox from "../../components/IntervistaBox";
+import IntervistaBox                                from "../../components/IntervistaBox";
+import axios from "axios";
 
 const DettaglioIntervista = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const rowData  = location.state;
-  const params   = useParams();
+  const candidatoID = rowData.candidato.id;
 
   const [ isDataLoaded,               setIsDataLoaded                 ] = useState(false);
+  const [ candidato, setCandidato ] = useState([]);
+  const [ loading, setLoading ] = useState(false);
+
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const accessToken = user?.accessToken;
+
+  const headers = {
+    Authorization: `Bearer ${accessToken}`
+  };
+
+
+  const fetchData = async () => {
+    try{
+      const responseCandidato                      = await axios.get(`http://localhost:8080/staffing/react/${candidatoID}`            , { headers: headers }); //questo è il candidato
+      if (responseCandidato.data && typeof responseCandidato.data === 'object' && !Array.isArray(responseCandidato.data)) {
+        setCandidato(responseCandidato.data);
+    } else {
+        console.error("I dati ottenuti non sono in formato oggetto:", responseCandidato.data);
+    }
+    setIsDataLoaded(true);
+    } catch(error) {
+      console.error("Errore durante il recupero dei dati: ", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
 
 
   const handleGoBack = () => {
@@ -72,16 +103,16 @@ const DettaglioIntervista = () => {
 
 
 const initialValues = {
-  stato:                            rowData.stato?.id                         || "",
+  stato:                            rowData.stato?.descrizione                || "",
   nome:                             rowData.candidato?.nome                   || "",
   cognome:                          rowData.candidato?.cognome                || "",
-  dataNascita:                      rowData.candidato?.dataNascita            || "",
-  location:                         rowData.candidato?.citta                  || "", 
-  tipologia:                        rowData.candidato?.tipologia?.descrizione || "",
-  anniEsperienza:                   rowData.candidato?.anniEsperienza         || "",
+  dataNascita:                      rowData.dataNascita                       || "",
+  location:                         candidato.citta                           || "", 
+  tipologia:                        candidato?.tipologia?.descrizione         || "",
+  anniEsperienza:                   rowData.anniEsperienza                    || "",
   dataColloquio:                    rowData.dataColloquio                     || "",
-  cellulare:                        rowData.candidato?.cellulare              || "",
-  owner:                            rowData.owner?.descrizione                || "",
+  cellulare:                        candidato?.cellulare                      || "",
+  idOwner:                          rowData.owner?.descrizione                || "",
   aderenza:                         rowData.aderenza                          || "",
   coerenza:                         rowData.coerenza                          || "",
   motivazione:                      rowData.motivazione                       || "",
@@ -93,15 +124,15 @@ const initialValues = {
   valutazione:                      rowData.valutazione                       || "",
   descrizioneCandidatoUna:          rowData.descrizioneCandidatoUna           || "",
   teamSiNo:                         rowData.teamSiNo                          || "",
-  note:                             rowData.candidato?.note                   || "",
+  note:                             candidato?.note                           || "",
   disponibilita:                    rowData.disponibilita                     || "",
   attuale:                          rowData.attuale                           || "",
   desiderata:                       rowData.desiderata                        || "",
   proposta:                         rowData.proposta                          || "",
-  idTipo:                           rowData.tipo?.descrizione                 || "",
+  tipo:                             rowData.tipo?.descrizione                 || "",
   preavviso:                        rowData.preavviso                         || "",
   dataAggiornamento:                rowData.dataAggiornamento                 || "", 
-  idNextOwner:                      rowData.candidato?.owner?.descrizione     || ""
+  idNextOwner:                      rowData.nextOwner?.descrizione            || ""
 };
 
 
@@ -137,12 +168,12 @@ const disableFields = {
   preavviso:                  true,
   dataAggiornamento:          true,
   idNextOwner:                true,
-  idTipo:                     true,
+  tipo:                       true,
+  idOwner:                    true
 
 };
 
 
-console.log("valori: ", initialValues);
 
 return (
     <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
@@ -150,7 +181,7 @@ return (
         <Typography variant="h4" component="h1" sx={{ mt: 3, fontWeight: 'bold', fontSize: '1.8rem', color: '#00853C'}}>Dettaglio Intervista</Typography>
             
     
-       
+        {isDataLoaded ? (
         <IntervistaBox 
         fields={fields} 
         initialValues={initialValues}  
@@ -158,6 +189,9 @@ return (
         title="" 
         showSaveButton={false}
         />
+        ) : (
+          <div>Caricamento in corso...</div>
+        )}
 
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Button

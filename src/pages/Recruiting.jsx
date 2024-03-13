@@ -288,7 +288,7 @@ const handleRicerche = async () => {
     setLoading(true);
  
     try {
-        const response = await axios.get("http://localhost:8080/staffing/react/mod/ricerca", { headers: headers, params: filtriDaInviare });
+        const response          = await axios.get("http://localhost:8080/staffing/react/mod/ricerca", { headers: headers, params: filtriDaInviare });
         const responseTipologia = await axios.get("http://localhost:8080/aziende/react/tipologia",        { headers });
         const responseTipo      = await axios.get("http://localhost:8080/staffing/react/tipo",            { headers });
         const responseStato     = await axios.get("http://localhost:8080/staffing/react/stato/candidato", { headers });
@@ -359,6 +359,7 @@ const handleReset = () => {
         stato: ''
     });
     localStorage.removeItem("RicercheRecruiting");
+    setPagina(0);
 
     fetchData();
 };
@@ -428,7 +429,7 @@ const handleReset = () => {
     { field: 'schedaITW',             headerName: 'Scheda ITW',    flex: 0.8, renderCell: (params) => (
       <Link
       to={`/recruiting/intervista/${params.row.id}`}
-      state = {{ recruitingData: params.row.id}}
+      state = {{ recruitingData: params.row}}
       >
         <PersonInfoButton />
       </Link>

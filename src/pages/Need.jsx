@@ -10,6 +10,7 @@ import {
     Grid,
     CircularProgress,
     } from '@mui/material';
+import { original } from '@reduxjs/toolkit';
 
     const Need = () => {
 
@@ -19,6 +20,7 @@ import {
         const [ loading,                   setLoading               ] = useState(false);
         const [                            setAlert                 ] = useState(false);
 
+        
         //stati per le ricerche
         const [ tipologiaOptions,               setTipologiaOptions         ] = useState([]);
         const [ ownerOptions,                   setOwnerOptions             ] = useState([]);
@@ -98,8 +100,11 @@ import {
             }
             if (Array.isArray(responseNeed.data)) {
                 const needConId = responseNeed.data.map((need) => ({...need}));
-                setOriginalNeed(needConId);
+                const sortedNeed = needConId.sort((a, b) => b.id - a.id);
+
+                setOriginalNeed(sortedNeed);
                 setHasMore(needConId.length >= quantita);
+
             } else {
                 console.error("I dati ottenuti non sono nel formato Array; ", responseNeed.data);
             }
@@ -121,6 +126,8 @@ import {
             // eslint-disable-next-line
         }, []);
 
+
+        console.log('originalNEed: ',originalNeed);
 
         //caricamento dati con paginazione
         const fetchMoreData = async () => {
@@ -284,6 +291,9 @@ import {
         const handleRefresh = async () => {
             await fetchData(0);
         };
+
+
+
 
 
 

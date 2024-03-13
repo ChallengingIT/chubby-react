@@ -89,13 +89,13 @@ const AggiungiNeed = () => {
 
 
   const pubblicazioneOptions = [
-    { value: 0, label: 'To Do' },
-    { value: 1, label: 'Done'  }
+    { value: 1, label: 'To Do' },
+    { value: 2, label: 'Done'  }
   ];
 
   const screeningOptions = [
-    { value: 0, label: 'To Do' },
-    { value: 1, label: 'In progress' },
+    { value: 1, label: 'To Do' },
+    { value: 3, label: 'In progress' },
     { value: 2, label: 'Done' }
   ];
 

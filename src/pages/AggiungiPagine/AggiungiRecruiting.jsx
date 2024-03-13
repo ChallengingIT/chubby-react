@@ -125,7 +125,7 @@ const handleCloseAlert = (event, reason) => {
 const campiObbligatori = ["nome", "cognome", "email", "anniEsperienzaRuolo", "tipologia", "dataUltimoContatto", "tipo" ];
 
 const fields = [
-    { label: "Tipologia",                     name: "tipo",                     type: "select",          options: tipologiaOptions                      },
+    { label: "Tipologia*",                     name: "tipo",                     type: "select",          options: tipologiaOptions                      },
     { label: "Fornitore",                     name: "fornitore",                type: "select",          options: fornitoriOptions                      },
     { label: "Tipo Ricerca",                  name: "ricerca",                  type: "select",          options: [
         { value: "C", label: "C"},
@@ -190,14 +190,9 @@ const handleSubmit = async (values, fileCV, fileCF, fileMultipli, fileAllegati) 
             setAlert({ open: true, message: "Email già utilizzata!" });
             console.error("L'email fornita è già in uso.");
             return; 
-          }
+        }
         const candidatoId = datiResponse.data;
 
-        const config = {
-            headers: {
-            Authorization: `Bearer ${accessToken}`,
-            }
-        };
     try{
     if (fileCV) {
         const formDataCV = new FormData();

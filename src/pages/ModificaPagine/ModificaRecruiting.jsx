@@ -30,6 +30,9 @@ const ModificaStaffing = () => {
   const [loading,                   setLoading                   ] = useState(true);
 
 
+  console.log("recruitingData: ", recruitingData);
+
+
 
 
   // Recupera l'accessToken da localStorage
@@ -182,10 +185,10 @@ const ModificaStaffing = () => {
     livelloScolastico:                  recruitingData.livelloScolastico          && recruitingData.livelloScolastico.id    || null,
     facolta:                            recruitingData.facolta                    && recruitingData.facolta.id              || null,
     tipologia:                          recruitingData.tipologia                  && recruitingData.tipologia.id            || null,
-    dataUltimoContatto:                 recruitingData.dataUltimoContatto                                                || null,
+    dataUltimoContatto:                 recruitingData.dataUltimoContatto                                                   || null,
     stato:                              recruitingData.stato                      && recruitingData.stato.id                || null,
     owner:                              recruitingData.owner                      && recruitingData.owner.id                || null,
-    skills:                            (recruitingData.skills?.map(skill => skill?.id))                                     || null,
+    skills:                             staffing.skills ? staffing.skills.map((skill) => skill.id) :                        [],
     ral:                                recruitingData.ral                                                                  || null,
     disponibilita:                      recruitingData.disponibilita                                                        || null,
     cv:                                 recruitingData.files?.find(file => file.tipologia.descrizione === 'CV')             || null,
@@ -193,8 +196,9 @@ const ModificaStaffing = () => {
     note:                               recruitingData.note                                                                 || null,
 
   };
-  
-  console.log("initial values: ", recruitingData);
+  console.log('staffing: ', staffing );
+  console.log("skills: ", initialValues.skills);
+  console.log("altre skills: ", staffing.skills);
 
 
 const handleSubmit = async (values, fileCV, fileCF) => {
