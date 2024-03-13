@@ -71,8 +71,8 @@ function IntervisteList() {
     }
 
     try {
-      const response                           = await axios.get(`http://localhost:8080/intervista/react/mod/${id}`       , { headers: headers, params: paginazione});  //queste sono le interviste effettive
-      const responseCandidatoFiltrato          = await axios.get("http://localhost:8080/staffing/react/mod/ricerca",        { headers: headers, params: filtriDaInviare }); //questo è il candidato
+      const response                           = await axios.get(`http://89.46.196.60:8443/intervista/react/mod/${id}`       , { headers: headers, params: paginazione});  //queste sono le interviste effettive
+      const responseCandidatoFiltrato          = await axios.get("http://89.46.196.60:8443/staffing/react/mod/ricerca",        { headers: headers, params: filtriDaInviare }); //questo è il candidato
 
       if (typeof responseCandidatoFiltrato.data === 'object') {
         setCandidatoData([responseCandidatoFiltrato.data]); 
@@ -118,8 +118,8 @@ function IntervisteList() {
   }
 
     try{
-      const responseIntervista                = await axios.get(`http://localhost:8080/intervista/react/mod/${id}`       , { headers: headers, params: paginazione});
-      const responseCandidatoFiltrato          = await axios.get("http://localhost:8080/staffing/react/mod/ricerca", { headers: headers, params: filtriDaInviare });
+      const responseIntervista                = await axios.get(`http://89.46.196.60:8443/intervista/react/mod/${id}`       , { headers: headers, params: paginazione});
+      const responseCandidatoFiltrato          = await axios.get("http://89.46.196.60:8443/staffing/react/mod/ricerca", { headers: headers, params: filtriDaInviare });
 
       const { record, interviste } = responseIntervista.data;
 
@@ -170,7 +170,7 @@ navigate("/recruiting");
   const handleDelete = async (id) => {
     try {
 
-        const response = await axios.delete(`http://localhost:8080/intervista/react/elimina/${deleteId}`, { headers: headers});
+        const response = await axios.delete(`http://89.46.196.60:8443/intervista/react/elimina/${deleteId}`, { headers: headers});
         setOpenDialog(false);
 
   

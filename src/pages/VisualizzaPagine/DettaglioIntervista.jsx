@@ -25,7 +25,7 @@ const DettaglioIntervista = () => {
 
   const fetchData = async () => {
     try{
-      const responseCandidato                      = await axios.get(`http://localhost:8080/staffing/react/${candidatoID}`            , { headers: headers }); //questo è il candidato
+      const responseCandidato                      = await axios.get(`http://89.46.196.60:8443/staffing/react/${candidatoID}`            , { headers: headers }); //questo è il candidato
       if (responseCandidato.data && typeof responseCandidato.data === 'object' && !Array.isArray(responseCandidato.data)) {
         setCandidato(responseCandidato.data);
     } else {
