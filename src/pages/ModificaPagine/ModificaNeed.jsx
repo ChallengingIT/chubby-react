@@ -99,30 +99,30 @@ const ModificaNeed = () => {
 
 
   const pubblicazioneOptions = [
-    { value: 0, label: 'To Do' },
-    { value: 1, label: 'Done'  }
+    { value: 1, label: 'To Do' },
+    { value: 2, label: 'Done'  }
   ];
 
   const screeningOptions = [
-    { value: 0, label: 'To Do' },
-    { value: 1, label: 'In progress' },
-    { value: 2, label: 'Done' }
+    { value: 1, label: 'To Do' },
+    { value: 2, label: 'In progress' },
+    { value: 3, label: 'Done' }
   ];
 
-  const campiObbligatori = [ "descrizione", "priorita", "week", "pubblicazione", "screening"]; 
+  const campiObbligatori = [ "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner"]; 
 
   const fields = [
     { label: "Descrizione*",        name: "descrizione",            type: "text"                                            },
     { label: "Priorità*",           name: "priorita",               type: "number"                                          },
     { label: "Week*",               name: "week",                   type: "weekPicker"                                      },
-    { label: "Tipologia",           name: "tipologia",              type: "select",               options: tipologiaOptions },
+    { label: "Tipologia*",           name: "tipologia",              type: "select",               options: tipologiaOptions },
     { label: "Tipologia Azienda",   name: "tipo",                   type: "select",               options: [ 
       { value: 1, label: "Cliente"},
       { value: 2, label: "Consulenza"}, 
       { value: 3, label: "Prospect" },
       ] },
-    { label: "Owner",               name: "owner",                  type: "select",               options: ownerOptions     },
-    { label: "Stato",               name: "stato",                  type: "select",               options: statoOptions     },
+    { label: "Owner*",               name: "idOwner",                  type: "select",               options: ownerOptions     },
+    { label: "Stato*",               name: "stato",                  type: "select",               options: statoOptions     },
     { label: "Headcount",           name: "numeroRisorse",          type: "text"                                            },
     { label: "Location",            name: "location",               type: "text"                                            },
     { label: "Skills 1",            name: "skills",                 type: "multipleSelectSkill",  options: skillsOptions    },
@@ -139,7 +139,7 @@ const ModificaNeed = () => {
     week:                       valori.week                                               || null,
     tipologia:                  valori.tipologia && valori.tipologia.id                   || null,
     tipo:                       valori.tipo                                               || null,
-    owner:                      valori.owner     && valori.owner.id                       || null,
+    idOwner:                    valori.owner     && valori.owner.id                       || null,
     stato:                      valori.stato     && valori.stato.id                       || null,
     numeroRisorse:              valori.numeroRisorse                                      || null,
     location:                   valori.location                                           || null,

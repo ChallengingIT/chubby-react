@@ -11,16 +11,18 @@ const AggiungiAziende = () => {
   const [ ownerOptions,    setOwnerOptions   ] = useState([]);
   const [                  setAlert          ] = useState(false);
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  const accessToken = user?.accessToken;
+
+  const headers = {
+    Authorization: `Bearer ${accessToken}`
+  };
+
 
   useEffect(() => {
     const fetchProvinceOptions = async () => {
       try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      const accessToken = user?.accessToken;
-  
-      const headers = {
-        Authorization: `Bearer ${accessToken}`
-      };
+
         const provinceResponse = await axios.get("http://localhost:8080/aziende/react/province", { headers: headers });
         const ownerResponse    = await axios.get("http://localhost:8080/aziende/react/owner",    { headers: headers }   );
 
@@ -38,8 +40,6 @@ const AggiungiAziende = () => {
               value: province.nomeProvince,
             }));
             setProvinceOptions(provinceOptions);
-
-
         } else {
           console.error("I dati ottenuti non sono nel formato Array:", provinceResponse.data);
         }
@@ -81,7 +81,7 @@ const AggiungiAziende = () => {
       { value: 3, label: "Rosso" },
     ]  },
     
-    { label: "Note", name: "note", type: "note" },
+    { label: "Note",                            name: "note",                      type: "note" },
 
   ];
 
@@ -129,9 +129,7 @@ const AggiungiAziende = () => {
         navigate("/aziende");
       } catch (error) {
         console.error("Errore durante il salvataggio:", error);
-
       }
-    
     }
   };
   
@@ -147,7 +145,20 @@ const AggiungiAziende = () => {
 
   return (
     <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
-            <Box sx={{ flexGrow: 1, p: 3, marginLeft: '12.2em', marginTop: '0.5em', marginBottom: '0.8em', marginRight: '0.8em', backgroundColor: '#FEFCFD', borderRadius: '10px', display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+            <Box sx={{ 
+              flexGrow: 1, 
+              p: 3, 
+              marginLeft: '12.2em', 
+              marginTop: '0.5em', 
+              marginBottom: '0.8em', 
+              marginRight: '0.8em', 
+              backgroundColor: '#FEFCFD', 
+              borderRadius: '10px', 
+              display: 'flex', 
+              justifyContent: 'center', 
+              flexDirection: 'column' 
+          }}
+            >
           <Typography variant="h4" component="h1" sx={{mt:3, fontWeight: 'bold', fontSize: '1.8rem', color: '#00853C'}}>Aggiungi una nuova Azienda</Typography>
 
           <FieldBoxFile

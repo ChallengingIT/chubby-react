@@ -1,10 +1,11 @@
-import React, { useState, useEffect }   from "react";
-import { useNavigate, useLocation }     from "react-router-dom";
-import axios                            from "axios";
-import { Button, Box, Typography, Alert, Snackbar } from "@mui/material";
-import IntervistaBox from "../../components/IntervistaBox";
+import React, { useState, useEffect }                                   from "react";
+import { useNavigate, useLocation }                                     from "react-router-dom";
+import axios                                                            from "axios";
+import { Button, Box, Typography, Alert, Snackbar }                     from "@mui/material";
+import IntervistaBox                                                    from "../../components/IntervistaBox";
 
 const AggiungiIntervista = () => {
+
 const navigate      = useNavigate();
 const location      = useLocation();
 const candidatoID   = location.state?.candidatoID;
@@ -41,8 +42,6 @@ const fetchData = async () => {
     quantita: 10,
   }
     try {
-
-
       //jobtitle = tipologia, tipologiaIncontro = stato, owner = owner
     const responseTipologia                      = await axios.get("http://localhost:8080/aziende/react/tipologia"                  , { headers: headers });
     const ownerResponse                          = await axios.get("http://localhost:8080/aziende/react/owner"                      , { headers: headers });
@@ -270,7 +269,20 @@ const validateFields = (values) => {
 
 return (
     <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
-            <Box sx={{ flexGrow: 1, p: 3, marginLeft: '12.2em', marginTop: '0.5em', marginBottom: '0.8em', marginRight: '0.8em', backgroundColor: '#FEFCFD', borderRadius: '10px', display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+            <Box sx={{ 
+              flexGrow: 1, 
+              p: 3, 
+              marginLeft: '12.2em', 
+              marginTop: '0.5em', 
+              marginBottom: '0.8em', 
+              marginRight: '0.8em', 
+              backgroundColor: '#FEFCFD', 
+              borderRadius: '10px', 
+              display: 'flex', 
+              justifyContent: 'center', 
+              flexDirection: 'column' 
+            }}
+            >
         <Typography variant="h4" component="h1" sx={{ mt: 3, fontWeight: 'bold', fontSize: '1.8rem', color: '#00853C'}}>Aggiungi Intervista</Typography>
             
                 <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>

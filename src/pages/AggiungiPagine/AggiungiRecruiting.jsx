@@ -122,7 +122,7 @@ const handleCloseAlert = (event, reason) => {
 };
 
 
-const campiObbligatori = ["nome", "cognome", "email", "anniEsperienzaRuolo", "tipologia", "dataUltimoContatto", "tipo" ];
+const campiObbligatori = ["nome", "cognome", "email", "anniEsperienzaRuolo", "tipologia", "dataUltimoContatto", "tipo", "stato", "livelloScolastico" ];
 
 const fields = [
     { label: "Tipologia*",                     name: "tipo",                     type: "select",          options: tipologiaOptions                      },
@@ -145,11 +145,11 @@ const fields = [
         { value: 3, label: "On Site"},
     ] },
     { label: "Anni di Esperienza nel Ruolo*",   name: "anniEsperienzaRuolo",      type: "decimalNumber"                                                            },
-    { label: "Livello Scolastico",              name: "livelloScolastico",        type: "select",               options: livelloScolasticoOptions         },
+    { label: "Livello Scolastico*",              name: "livelloScolastico",        type: "select",               options: livelloScolasticoOptions         },
     { label: "Facoltà",                         name: "facolta",                  type: "select",               options: facoltaOptions                   },
     { label: "Job Title*",                      name: "tipologia",                type: "select",               options: jobTitleOptions                  },
     { label: "Data Inserimento*",               name: "dataUltimoContatto",       type: "date"                                                            },
-    { label: "Stato",                           name: "stato",                    type: "select",               options: statoOptions                     },
+    { label: "Stato*",                           name: "stato",                    type: "select",               options: statoOptions                     },
     { label: "Owner",                           name: "owner",                    type: "select",               options: ownerOptions                     },
     { label: "Seleziona le Skills",             name: "skills",                   type: "multipleSelectSkill",  options: skillsOptions                    },
     { label: "RAL/Tariffa",                     name: "ral",                      type: "text"                                                            },

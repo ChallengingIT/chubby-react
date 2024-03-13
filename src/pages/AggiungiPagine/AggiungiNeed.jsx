@@ -95,32 +95,32 @@ const AggiungiNeed = () => {
 
   const screeningOptions = [
     { value: 1, label: 'To Do' },
-    { value: 3, label: 'In progress' },
-    { value: 2, label: 'Done' }
+    { value: 2, label: 'In progress' },
+    { value: 3, label: 'Done' }
   ];
 
-  const campiObbligatori = [ "idAzienda", "descrizione", "priorita", "week", "pubblicazione", "screening"]; 
+  const campiObbligatori = [ "idAzienda", "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "owner"]; 
 
   const fields = [
     { label: "Azienda*",            name: "idAzienda",                    type: "select",               options: aziendeOptions    },
     { label: "Descrizione Need*",   name: "descrizione",                  type: "text"                                             },
     { label: "Priorità*",           name: "priorita",                     type: "number"                                           },
     { label: "Week*",               name: "week",                         type: "weekPicker"                                       },
-    { label: "Tipologia",           name: "tipologia",                    type: "select",               options: tipologiaOptions  },
+    { label: "Tipologia*",           name: "tipologia",                    type: "select",               options: tipologiaOptions  },
     { label: "Tipologia Azienda",   name: "tipo",                         type: "select",               options: [
     { value: 1,                   label: "Cliente" },
     { value: 2,                   label: "Consulenza" },
     { value: 3,                   label: "Prospect" }
   ] },
-    { label: "Owner",               name: "idOwner",                      type: "select",                options: ownerOptions      },
-    { label: "Stato",               name: "stato",                        type: "select",                options: statoOptions      },
-    { label: "Headcount",           name: "numeroRisorse",                type: "number"                                            },
-    { label: "Location",            name: "location",                     type: "text"                                              },
-    { label: "Skills 1",            name: "skills",                       type: "multipleSelectSkill",    options: skillsOptions    },
-    { label: "Seniority",           name: "anniEsperienza",               type: "decimalNumber"                                     },
-    { label: 'Pubblicazione Annuncio*', name: 'pubblicazione',       type: 'select',               options: pubblicazioneOptions },
-    { label: 'Screening*',           name: 'screening',              type: 'select',               options: screeningOptions },
-    { label: "Note",                name: "note",                         type: "note"                                              },
+    { label: "Owner*",                     name: "idOwner",                      type: "select",                 options: ownerOptions         },
+    { label: "Stato*",                     name: "stato",                        type: "select",                 options: statoOptions         },
+    { label: "Headcount",                 name: "numeroRisorse",                type: "number"                                                },
+    { label: "Location",                  name: "location",                     type: "text"                                                  },
+    { label: "Skills 1",                  name: "skills",                       type: "multipleSelectSkill",    options: skillsOptions        },
+    { label: "Seniority",                 name: "anniEsperienza",               type: "decimalNumber"                                         },
+    { label: 'Pubblicazione Annuncio*',   name: 'pubblicazione',                type: 'select',                 options: pubblicazioneOptions },
+    { label: 'Screening*',                name: 'screening',                    type: 'select',                 options: screeningOptions     },
+    { label: "Note",                      name: "note",                         type: "note"                                                  },
   ];
 
 
@@ -141,7 +141,7 @@ const AggiungiNeed = () => {
           },
           headers: headers
         });
-  
+        console.log("values inviati: ", values);
         navigate("/need");
       } catch (error) {
         console.error("Errore durante il salvataggio:", error);
