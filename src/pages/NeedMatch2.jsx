@@ -661,26 +661,25 @@ const NeedMatch2 = () => {
                 ];
 
                 return (
-                    <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto', width: '100vw' }}>
-                   <Box sx={{ 
-                                // flexGrow: 1, 
-                                p: 2, 
-                                marginLeft: '13.2em', 
-                                marginTop: '0.5em', 
-                                marginBottom: '0.8em', 
-                                marginRight: '0.8em', 
-                                backgroundColor: '#FEFCFD', 
-                                borderRadius: '10px', 
-                                minHeight: '98vh',
-                                mt: 1.5,
-                                width: '100%',
-
+                    <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto', flexGrow: 1}}>
+                    <Box sx={{ 
+                            p: 2,
+                            ml: 25,
+                            mt: 1.5,
+                            mb: 0.5,
+                            mr: 0.8,
+                            backgroundColor: '#FEFCFD',
+                            borderRadius: '10px',
+                            height: 'auto',
+                            width: '100%',
+                            flexDirection: 'column',
+                            overflow: 'hidden'
+                            
                             }}>
                                     <Box sx={{ 
                                             position: 'sticky', 
                                             top: 0, 
                                             zIndex: 1000, 
-                                            width: '100%'
                                         }}>  
                                         <RicercheNeedMatch
                                         filtri={filtri}

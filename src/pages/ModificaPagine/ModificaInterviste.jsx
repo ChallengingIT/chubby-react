@@ -10,6 +10,8 @@ const ModificaIntervista = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const rowData  = location.state;
+  const candidatoID   = rowData.candidato.id;
+
 
   const [ tipologiaOptions,         setTipologiaOptions      ] = useState([]); //jobtile
   const [ ownerOptions,             setOwnerOptions          ] = useState([]);
@@ -17,6 +19,8 @@ const ModificaIntervista = () => {
   const [ tipoIntervistaOptions,    setTipoIntervistaOptions ] = useState([]); //follow up
   const [ isDataLoaded,               setIsDataLoaded                 ] = useState(false);
   const [ alert,                      setAlert                        ] = useState(false);
+  const [ interviste, setInterviste ] = useState([]);
+  const [ candidato, setCandidato ] = useState([]);
 
   //stati per la modifica
   const [ pagina, setPagina ] = useState([]);
@@ -35,12 +39,32 @@ useEffect(() => {
       pagina: 0,
       quantita:10
     };
+
     try {
       //jobtitle = tipologia, tipologiaIncontro = stato, owner = owner
-      const responseTipologia                      = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia",         { headers: headers});
-      const ownerResponse                          = await axios.get("http://89.46.196.60:8443/aziende/react/owner",             { headers: headers});
-      const responseStato                          = await axios.get("http://89.46.196.60:8443/staffing/react/stato/candidato",  { headers: headers});
-      const responseTipoIntervista                 = await axios.get("http://89.46.196.60:8443/intervista/react/tipointervista", { headers: headers});
+      const responseTipologia                      = await axios.get("http://localhost:8080/aziende/react/tipologia",         { headers: headers});
+      const ownerResponse                          = await axios.get("http://localhost:8080/aziende/react/owner",             { headers: headers});
+      const responseStato                          = await axios.get("http://localhost:8080/staffing/react/stato/candidato",  { headers: headers});
+      const responseTipoIntervista                 = await axios.get("http://localhost:8080/intervista/react/tipointervista", { headers: headers});
+      const responseIntervista                     = await axios.get(`http://localhost:8080/intervista/react/mod/${candidatoID}`      , { headers: headers, params: paginazione });
+      const responseCandidato                      = await axios.get(`http://localhost:8080/staffing/react/${candidatoID}`            , { headers: headers }); //questo è il candidato
+
+      if (responseCandidato.data && typeof responseCandidato.data === 'object' && !Array.isArray(responseCandidato.data)) {
+        setCandidato(responseCandidato.data);
+    } else {
+        console.error("I dati ottenuti non sono in formato oggetto:", responseCandidato.data);
+    }
+
+      if (Array.isArray(responseIntervista.data) && responseIntervista.data.length > 0) {
+        // Prendi l'ultima intervista (supponendo che l'array sia ordinato in base alla data)
+        const ultimaIntervista = responseIntervista.data[responseIntervista.data.length - 1];
+        setInterviste(ultimaIntervista);
+    } else if (responseIntervista.data.length === 0) {
+
+    } else {
+        console.error("I dati ottenuti non sono nel formato Array:", responseIntervista.data);
+    }
+
 
       if (Array.isArray(responseTipoIntervista.data)) {
         const tipoIntervistaOptions = responseTipoIntervista.data.map((tipoIntervista) => ({
@@ -48,6 +72,7 @@ useEffect(() => {
           value: tipoIntervista.id,
         }));
         setTipoIntervistaOptions(tipoIntervistaOptions);
+      }
 
 
       if (Array.isArray(responseStato.data)) {
@@ -56,6 +81,7 @@ useEffect(() => {
           value: stato.id,
         }));
         setStatoOptions(statoOptions);
+      }
 
       if (Array.isArray(ownerResponse.data)) {
         const ownerOptions = ownerResponse.data.map((owner) => ({
@@ -63,6 +89,7 @@ useEffect(() => {
           value: owner.id,
         }));
         setOwnerOptions(ownerOptions);
+      }
 
       if (Array.isArray(responseTipologia.data)) {
         const tipologiaOptions = responseTipologia.data.map((tipologia) => ({
@@ -71,15 +98,17 @@ useEffect(() => {
         }));
         setTipologiaOptions(tipologiaOptions);
       }
-    }
-  }
-}
+      setIsDataLoaded(true);
     } catch (error) {
       console.error("Errore durante il recupero delle province:", error);
     }
   };
   fetchData();
 }, []);
+
+
+
+console.log("dati del candidato: ", candidato);
 
 const handleGoBack = () => {
   navigate(-1); 
@@ -153,11 +182,11 @@ const fields = [
     nome:                             rowData.candidato?.nome                     || null,
     cognome:                          rowData.candidato?.cognome                  || null,
     dataNascita:                      rowData.candidato?.dataNascita              || null,
-    location:                         rowData.candidato?.citta                    || null, 
-    tipologia:                        rowData.candidato?.tipologia?.id            || null,
-    anniEsperienzaRuolo:              rowData.candidato?.anniEsperienzaRuolo      || null,
+    location:                         candidato?.citta                            || null, 
+    tipologia:                        candidato?.tipologia?.id                    || null,
+    anniEsperienza:                   candidato?.anniEsperienza                   || null,
     dataColloquio:                    rowData.dataColloquio                       || null,
-    cellulare:                        rowData.candidato?.cellulare                || null,
+    cellulare:                        candidato?.cellulare                        || null,
     idOwner:                          rowData.owner?.id                           || null,
     aderenza:                         rowData.aderenza                            || null,
     coerenza:                         rowData.coerenza                            || null,
@@ -170,7 +199,7 @@ const fields = [
     valutazione:                      rowData.valutazione                         || null,
     descrizioneCandidatoUna:          rowData.descrizioneCandidatoUna             || null,
     teamSiNo:                         rowData.teamSiNo                            || null,
-    note:                             rowData.candidato?.note                     || null,
+    note:                             candidato?.note                             || null,
     disponibilita:                    rowData.disponibilita                       || null,
     attuale:                          rowData.attuale                             || null,
     desiderata:                       rowData.desiderata                          || null,
@@ -188,6 +217,8 @@ const fields = [
     tipologia:          true,
     anniEsperienza:     true,
     cellulare:          true,
+    location:           true,
+
   };
 
   const handleSubmit = async (values) => {
@@ -195,7 +226,7 @@ const fields = [
       const idCandidato = rowData.candidato?.id;
       const note        = values.note;
       const modifica    = 1; 
-      const response = await axios.post("http://89.46.196.60:8443/intervista/react/salva", values, {
+      const response = await axios.post("http://localhost:8080/intervista/react/salva", values, {
         params: {
           idCandidato: idCandidato,
           note: note,
@@ -204,7 +235,7 @@ const fields = [
         headers: headers
       });
 
-      navigate(`/staffing/intervista/${idCandidato}`);
+      navigate(`/recruiting/intervista/${idCandidato}`);
     } catch (error) {
       console.error("Errore durante il salvataggio:", error);
     }
@@ -214,7 +245,7 @@ const fields = [
   return (
     <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
         <Box sx={{ flexGrow: 1, p: 3, marginLeft: '12.2em', marginTop: '0.5em', marginBottom: '0.8em', marginRight: '0.8em', backgroundColor: '#EEEDEE', borderRadius: '10px' }}>
-        <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem', color: '#00853C'}}>Aggiungi Intervista</Typography>
+        <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem', color: '#00853C'}}>Modifica Intervista</Typography>
             
                 <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
                 <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
@@ -229,6 +260,10 @@ const fields = [
         onSave={handleSubmit} 
         title="" 
         campiObbligatori={campiObbligatori}
+        statoOptions={statoOptions}
+        tipologiaOptions={tipologiaOptions}
+        ownerOptions={ownerOptions}
+        tipoIntervistaOptions={tipoIntervistaOptions}
         />
         ) : (
             <div>Caricamento in corso...</div>

@@ -9,8 +9,6 @@ function VisibilityButton({onClick, to, recruitingData}) {
     const handleEditAction = () => {
       if (to) {
         navigate(to);
-      } else {
-        console.warn("L'URL non è definito");
       }
         };
 

@@ -12,6 +12,8 @@ const ModificaNeed = () => {
 
   const valori = location.state;
 
+  console.log("VALORI: ", valori);
+
   const [ aziendeOptions,         setAziendeOptions   ] = useState([]);
   const [ skillsOptions,          setSkillsOptions    ] = useState([]);
   const [ ownerOptions,           setOwnerOptions     ] = useState([]);
@@ -36,12 +38,11 @@ const ModificaNeed = () => {
   useEffect(() => {
     const fetchAziendeOptions = async () => {
       try {
-        const responseAziende      = await axios.get("http://89.46.196.60:8443/aziende/react/select",  { headers: headers });
-        const responseSkill        = await axios.get("http://89.46.196.60:8443/staffing/react/skill",  { headers: headers });
-        const responseSkill2       = await axios.get("http://89.46.196.60:8443/staffing/react/skill",  { headers: headers });
-        const ownerResponse        = await axios.get("http://89.46.196.60:8443/aziende/react/owner",   { headers: headers });
-        const tipologiaResponse    = await axios.get("http://89.46.196.60:8443/need/react/tipologia",  { headers: headers });
-        const statoResponse        = await axios.get("http://89.46.196.60:8443/need/react/stato",      { headers: headers });
+        const responseAziende      = await axios.get("http://localhost:8080/aziende/react/select",  { headers: headers });
+        const responseSkill        = await axios.get("http://localhost:8080/staffing/react/skill",  { headers: headers });
+        const ownerResponse        = await axios.get("http://localhost:8080/aziende/react/owner",   { headers: headers });
+        const tipologiaResponse    = await axios.get("http://localhost:8080/need/react/tipologia",  { headers: headers });
+        const statoResponse        = await axios.get("http://localhost:8080/need/react/stato",      { headers: headers });
 
 
         if (Array.isArray(statoResponse.data)) {
@@ -98,30 +99,30 @@ const ModificaNeed = () => {
 
 
   const pubblicazioneOptions = [
-    { value: 0, label: 'To Do' },
-    { value: 1, label: 'Done'  }
+    { value: 1, label: 'To Do' },
+    { value: 2, label: 'Done'  }
   ];
 
   const screeningOptions = [
-    { value: 0, label: 'To Do' },
-    { value: 1, label: 'In progress' },
-    { value: 2, label: 'Done' }
+    { value: 1, label: 'To Do' },
+    { value: 2, label: 'In progress' },
+    { value: 3, label: 'Done' }
   ];
 
-  const campiObbligatori = [ "descrizione", "priorita", "week", "pubblicazione", "screening"]; 
+  const campiObbligatori = [ "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner"]; 
 
   const fields = [
     { label: "Descrizione*",        name: "descrizione",            type: "text"                                            },
     { label: "Priorità*",           name: "priorita",               type: "number"                                          },
     { label: "Week*",               name: "week",                   type: "weekPicker"                                      },
-    { label: "Tipologia",           name: "tipologia",              type: "select",               options: tipologiaOptions },
+    { label: "Tipologia*",           name: "tipologia",              type: "select",               options: tipologiaOptions },
     { label: "Tipologia Azienda",   name: "tipo",                   type: "select",               options: [ 
       { value: 1, label: "Cliente"},
       { value: 2, label: "Consulenza"}, 
       { value: 3, label: "Prospect" },
       ] },
-    { label: "Owner",               name: "owner",                  type: "select",               options: ownerOptions     },
-    { label: "Stato",               name: "stato",                  type: "select",               options: statoOptions     },
+    { label: "Owner*",               name: "idOwner",                  type: "select",               options: ownerOptions     },
+    { label: "Stato*",               name: "stato",                  type: "select",               options: statoOptions     },
     { label: "Headcount",           name: "numeroRisorse",          type: "text"                                            },
     { label: "Location",            name: "location",               type: "text"                                            },
     { label: "Skills 1",            name: "skills",                 type: "multipleSelectSkill",  options: skillsOptions    },
@@ -138,7 +139,7 @@ const ModificaNeed = () => {
     week:                       valori.week                                               || null,
     tipologia:                  valori.tipologia && valori.tipologia.id                   || null,
     tipo:                       valori.tipo                                               || null,
-    owner:                      valori.owner     && valori.owner.id                       || null,
+    idOwner:                    valori.owner     && valori.owner.id                       || null,
     stato:                      valori.stato     && valori.stato.id                       || null,
     numeroRisorse:              valori.numeroRisorse                                      || null,
     location:                   valori.location                                           || null,
@@ -146,7 +147,7 @@ const ModificaNeed = () => {
     anniEsperienza:             valori.anniEsperienza                                     || null,
     pubblicazione:              valori.pubblicazione                                      || null,
     screening:                  valori.screening                                          || null,
-    note:                       valori.note                                               || null,          
+    note:                       valori.note                                               || null,        
   };
 
   const handleSubmit = async (values) => {
@@ -159,7 +160,7 @@ const ModificaNeed = () => {
     const skills = values.skills ? values.skills.join(',') : null;
     delete values.skills;
 
-    const response = await axios.post("http://89.46.196.60:8443/need/react/salva", values, {
+    const response = await axios.post("http://localhost:8080/need/react/salva", values, {
       params: { skill1: skills },
       headers: headers
     });

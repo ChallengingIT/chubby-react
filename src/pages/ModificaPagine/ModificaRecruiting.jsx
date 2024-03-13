@@ -30,6 +30,9 @@ const ModificaStaffing = () => {
   const [loading,                   setLoading                   ] = useState(true);
 
 
+  console.log("dati in staffing: ", staffing);
+
+
 
 
   // Recupera l'accessToken da localStorage
@@ -128,10 +131,10 @@ const ModificaStaffing = () => {
     fetchData();
   }, []);
 
-  const campiObbligatori = ["nome", "cognome", "email", "anniEsperienzaRuolo", "tipologia", "dataUltimoContatto" ];
+  const campiObbligatori = ["nome", "cognome", "email", "anniEsperienzaRuolo", "tipologia", "dataUltimoContatto", "tipo", "stato", "livelloScolastico" ];
 
   const fields = [
-    { label: "Tipologia",                           name: "tipo",                   type: "select",         options: tipologiaOptions },
+    { label: "Tipologia*",                           name: "tipo",                   type: "select",         options: tipologiaOptions },
     { label: "Tipo Ricerca",                        name: "ricerca",                type: "select",         options: [
       { label: "C", value: "C" },
       { label: "R", value: "R"},
@@ -142,20 +145,20 @@ const ModificaStaffing = () => {
     { label: "Data di Nascita",                     name: "dataNascita",                type: "date" },
     { label: "Email*",                              name: "email",                      type: "text" },
     { label: "Cellulare",                           name: "cellulare",                  type: "text" },
-    { label: "Anni di Esperienza*",                 name: "anniEsperienza",             type: "decimalNumber" },
+    { label: "Anni di Esperienza",                 name: "anniEsperienza",             type: "decimalNumber" },
     { label: "Residenza",                           name: "citta",                      type: "text" },
     { label: "Modalità di lavoro",                  name: "modalita",                   type: "select",            options: [
     { value: 1, label: "Full Remote" },
     { value: 2, label: "Ibrido" },
     { value: 3, label: "On Site"},
   ] },
-    { label: "Anni di Esperienza nel Ruolo",        name: "anniEsperienzaRuolo",        type: "decimalNumber" },
-    { label: "Livello Scolastico",                  name: "livelloScolastico",          type: "select",              options: livelloScolasticoOptions },
+    { label: "Anni di Esperienza nel Ruolo*",        name: "anniEsperienzaRuolo",        type: "decimalNumber" },
+    { label: "Livello Scolastico*",                  name: "livelloScolastico",          type: "select",              options: livelloScolasticoOptions },
     { label: "Facoltà",                             name: "facolta",                    type: "select",              options: facoltaOptions },
     { label: "Job Title*",                          name: "tipologia",                  type: "select",              options: jobTitleOptions },
     { label: "Data Inserimento*",                   name: "dataUltimoContatto",         type: "date" },
-    { label: "Stato",                               name: "stato",                      type: "select",              options: statoOptions },
-    { label: "Owner",                               name: "owner",                      type: "select",              options: ownerOptions },
+    { label: "Stato*",                               name: "stato",                      type: "select",              options: statoOptions },
+    { label: "Owner*",                               name: "owner",                      type: "select",              options: ownerOptions },
     { label: "Seleziona le Skills",                 name: "skills",                     type: "multipleSelectSkill", options: skillsOptions },
     { label: "RAL/Tariffa",                         name: "ral",                        type: "text" },
     { label: "Disponibilità",                       name: "disponibilita",              type: "text" },
@@ -167,34 +170,34 @@ const ModificaStaffing = () => {
   ];
 
   const initialValues = {
-    id:                                 recruitingData.id                                                                   ,
-    tipo:                               recruitingData.tipo                      && recruitingData.tipo.id                  || null,
-    ricerca:                            recruitingData.ricerca                                                              || null,
-    nome:                               recruitingData.nome                                                                 || null,
-    cognome:                            recruitingData.cognome                                                              || null,
-    dataNascita:                        recruitingData.dataNascita                                                          || null,
-    email:                              recruitingData.email                                                                || null,
-    cellulare:                          recruitingData.cellulare                                                            || null,
-    anniEsperienza:                     recruitingData.anniEsperienza                                                       || null,
-    citta:                              recruitingData.citta                                                                || null,
-    modalita:                           recruitingData.modalita                                                             || null,
-    anniEsperienzaRuolo:                recruitingData.anniEsperienzaRuolo                                                  || null,
-    livelloScolastico:                  recruitingData.livelloScolastico          && recruitingData.livelloScolastico.id    || null,
-    facolta:                            recruitingData.facolta                    && recruitingData.facolta.id              || null,
-    tipologia:                          recruitingData.tipologia                  && recruitingData.tipologia.id            || null,
-    dataUltimoContatto:                 recruitingData.dataUltimoContatto                                                || null,
-    stato:                              recruitingData.stato                      && recruitingData.stato.id                || null,
-    owner:                              recruitingData.owner                      && recruitingData.owner.id                || null,
-    skills:                            (recruitingData.skills?.map(skill => skill?.id))                                     || null,
-    ral:                                recruitingData.ral                                                                  || null,
-    disponibilita:                      recruitingData.disponibilita                                                        || null,
-    cv:                                 recruitingData.files?.find(file => file.tipologia.descrizione === 'CV')             || null,
-    cf:                                 recruitingData.files?.find(file => file.tipologia.descrizione === 'CF')             || null,
+    id:                                 staffing.id                                                                   ,
+    tipo:                               staffing.tipo                      && staffing.tipo.id                  || null,
+    ricerca:                            staffing.ricerca                                                              || null,
+    nome:                               staffing.nome                                                                 || null,
+    cognome:                            staffing.cognome                                                              || null,
+    dataNascita:                        staffing.dataNascita                                                          || null,
+    email:                              staffing.email                                                                || null,
+    cellulare:                          staffing.cellulare                                                            || null,
+    anniEsperienza:                     staffing.anniEsperienza                                                       || null,
+    citta:                              staffing.citta                                                                || null,
+    modalita:                           staffing.modalita                                                             || null,
+    anniEsperienzaRuolo:                staffing.anniEsperienzaRuolo                                                  || null,
+    livelloScolastico:                  staffing.livelloScolastico          && staffing.livelloScolastico.id    || null,
+    facolta:                            staffing.facolta                    && staffing.facolta.id              || null,
+    tipologia:                          staffing.tipologia                  && staffing.tipologia.id            || null,
+    dataUltimoContatto:                 staffing.dataUltimoContatto                                                   || null,
+    stato:                              staffing.stato                      && staffing.stato.id                || null,
+    owner:                              staffing.owner                      && staffing.owner.id                || null,
+    skills:                             staffing.skills ? staffing.skills.map((skill) => skill.id) :                        [],
+    ral:                                staffing.ral                                                                  || null,
+    disponibilita:                      staffing.disponibilita                                                        || null,
+    // cv:                                 recruitingData.files?.find(file => file.tipologia.descrizione === 'CV')             || null,
+    cv:                                 staffing.files?.find(file => file.tipologia.descrizione === 'CV')                   || null,
+    cf:                                 staffing.files?.find(file => file.tipologia.descrizione === 'CF')                   || null,
     note:                               recruitingData.note                                                                 || null,
 
   };
-  
-  console.log("initial values: ", recruitingData);
+
 
 
 const handleSubmit = async (values, fileCV, fileCF) => {
@@ -297,6 +300,7 @@ if(fileCF) {
           onSubmit={handleSubmit}
           title=""
           skillsOptions={skillsOptions} 
+          idCandidato={idCandidato}
 
           />
           </Box>

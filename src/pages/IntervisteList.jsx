@@ -30,11 +30,11 @@ function IntervisteList() {
   const candidatoID             = id;
 
 
+  console.log("RECRUITING DATA: ", recruitingData);
 
-  const [ interviste,               setInterviste           ] = useState([]);
-  const [ searchText,               setSearchText           ] = useState("");
+
+
   const [ originalInterviste,       setOriginalInterviste   ] = useState([]);
-  const [ filteredInterviste,       setFilteredInterviste   ] = useState([]);
   const [ candidatoData,            setCandidatoData        ] = useState([]);
   const [ openDialog,               setOpenDialog           ] = useState(false);
   const [ deleteId,                 setDeleteId             ] = useState(null);
@@ -57,17 +57,25 @@ function IntervisteList() {
 
   const fetchData = async () => {
     setLoading(true);
-    const filtriDaInviare = {
+    const paginazione = {
       pagina: 0,
       quantita: 10
     };
 
-    try {
-      const response                = await axios.get(`http://89.46.196.60:8443/intervista/react/mod/${id}`       , { headers: headers, params: filtriDaInviare});
-      const candidatoResponse       = await axios.get(`http://89.46.196.60:8443/staffing/react/${candidatoID}`, { headers: headers});
+    const filtriDaInviare = {
+      nome: recruitingData.nome,
+      cognome: recruitingData.cognome,
+      email: recruitingData.email,
+      pagina: 0,
+      quantita: 1
+    }
 
-      if (typeof candidatoResponse.data === 'object') {
-        setCandidatoData([candidatoResponse.data]); 
+    try {
+      const response                           = await axios.get(`http://localhost:8080/intervista/react/mod/${id}`       , { headers: headers, params: paginazione});  //queste sono le interviste effettive
+      const responseCandidatoFiltrato          = await axios.get("http://localhost:8080/staffing/react/mod/ricerca",        { headers: headers, params: filtriDaInviare }); //questo è il candidato
+
+      if (typeof responseCandidatoFiltrato.data === 'object') {
+        setCandidatoData([responseCandidatoFiltrato.data]); 
       }
 
       const { record, interviste } = response.data;
@@ -97,14 +105,23 @@ function IntervisteList() {
 
    //funzione per la paginazione
    const fetchMoreData = async (pagina) => {
-    const filtriDaInviare = {
+    const paginazione = {
       pagina: pagina,
       quantita: 10
   };
+  const filtriDaInviare = {
+    nome: recruitingData.nome,
+    cognome: recruitingData.cognome,
+    email: recruitingData.email,
+    pagina: 0,
+    quantita: 1
+  }
 
     try{
-      const response                = await axios.get(`http://89.46.196.60:8443/intervista/react/mod/${id}`       , { headers: headers, params: filtriDaInviare});
-      const { record, interviste } = response.data;
+      const responseIntervista                = await axios.get(`http://localhost:8080/intervista/react/mod/${id}`       , { headers: headers, params: paginazione});
+      const responseCandidatoFiltrato          = await axios.get("http://localhost:8080/staffing/react/mod/ricerca", { headers: headers, params: filtriDaInviare });
+
+      const { record, interviste } = responseIntervista.data;
 
       if (interviste && Array.isArray(interviste)) {
           setOriginalInterviste(interviste); 
@@ -115,7 +132,7 @@ function IntervisteList() {
               console.error("Il numero di record ottenuto non è un numero: ", record);
           }
       } else {
-          console.error("I dati ottenuti non contengono 'interviste' come array: ", response.data);
+          console.error("I dati ottenuti non contengono 'interviste' come array: ", responseIntervista.data);
       }
     } catch(error) {
     console.error("Errore durante il recupero dei dati: ", error);
@@ -150,18 +167,10 @@ navigate("/recruiting");
 
 
 
-  const handleSearch = (filteredData) => {
-    setFilteredInterviste(filteredData);
-  };
-  const handleReset = () => {
-    setSearchText(""); 
-    setFilteredInterviste(originalInterviste);
-  };
-
   const handleDelete = async (id) => {
     try {
 
-        const response = await axios.delete(`http://89.46.196.60:8443/intervista/react/elimina/${deleteId}`, { headers: headers});
+        const response = await axios.delete(`http://localhost:8080/intervista/react/elimina/${deleteId}`, { headers: headers});
         setOpenDialog(false);
 
   
@@ -202,7 +211,7 @@ const table1 = [
   { field: "candidato",           headerName: "Intervistatore", flex: 1,
 renderCell: (params) => (
   <div style={{ textAlign: "start" }}>
-        {params.row.candidato?.owner?.descrizione || "N/A"}
+        {params.row.owner?.descrizione || "N/A"}
       </div>
     ),
 },
@@ -220,45 +229,68 @@ renderCell: (params) => (
   },
   
    //dataAggiornamento e follo up si chiama intervista.tipo.descrizione
-//   { field: "azioni",         headerName: "Azioni",          flex: 1, renderCell: (params) => (
-//     <div>
-//       <Link
-//       to={`/intervista/visualizza/${params.row.id}`}
-//       state={params.row}
+  { field: "azioni",         headerName: "Azioni",          flex: 1, renderCell: (params) => (
+    <div>
+      <Link
+      to={`/intervista/visualizza/${params.row.id}`}
+      state={params.row}
   
-// >
-// <VisibilityButton />
-// </Link>
-// <Link
-// to={`/intervista/modifica/${params.row.id}`}
-// state={params.row}
-// >
-// <EditButton />
-// </Link>
+>
+<VisibilityButton />
+</Link>
+<Link
+to={`/intervista/modifica/${params.row.id}`}
+state={params.row}
+>
+<EditButton />
+</Link>
       
-// <DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
-//     </div>
-//   ), },
+<DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
+    </div>
+  ), },
 ];
 
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto', width: '100vw' }}>
-      <Box sx={{ 
-                flexGrow: 1, 
-                p: 3, 
-                marginLeft: '13.2em', 
-                marginTop: '0.5em', 
-                marginBottom: '0.8em', 
-                marginRight: '0.8em', 
-                backgroundColor: '#FEFCFD', 
-                borderRadius: '10px', 
-                minHeight: '98vh',
-                mt: 1.5,
-                width: 'vw'
-            }}>
-              <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '86vw'}}>
-                <Typography variant="h4" component="h1" sx={{  fontWeight: 'bold', fontSize: '1.4em'}}>Lista ITW di {candidatoNome} {candidatoCognome}</Typography>
+    <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', flexGrow: 1, overflow: 'hidden'}}>
+      <Box sx={{
+        p: 2,
+        ml: 25,
+        mt: 1.5,
+        mb: 0.5,
+        mr: 0.8,
+        backgroundColor: '#FEFCFD',
+        borderRadius: '10px',
+        height: '99%',
+        width: '100%',
+        flexDirection: 'column',
+        overflow: 'hidden'
+      }}>
+              <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%', mt: 5}}>
+              <Button 
+                onClick={handleGoBack}
+                sx={{
+                    backgroundColor: '#00853C',
+                    color: 'white', 
+                    border: 'none', 
+                    fontSize: '0.8rem', 
+                    cursor: 'pointer', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    padding: '0.5rem 1rem', 
+                    outline: 'none', 
+                    borderRadius: '10px',
+                    '&:hover': {
+                      backgroundColor: '#00853C',
+                      color: 'white',
+                      transform: 'scale(1.05)'
+                    }
+                }}
+                >
+                <span style={{ marginRight: '0.5rem' }}>{"<"}</span> 
+                Indietro
+                </Button>
+                <Typography variant="h4" component="h1" sx={{  fontWeight: 'bold', fontSize: '1.4em'}}>Lista ITW di {recruitingData.nome} {recruitingData.cognome}</Typography>
                     <Button onClick={navigateToAggiungiIntervista}
                     startIcon={<AddIcon />}
                     sx={{
@@ -283,8 +315,8 @@ renderCell: (params) => (
                         },
                     }}>Aggiungi Intervista</Button>
                     </Box>
+                    <Box sx={{ mr: 0.2, mt: 10}}>
 
-                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5, flexDirection: 'column'}}>
                     <Tabella
                         data={originalInterviste} 
                         columns={table1} 
@@ -295,24 +327,7 @@ renderCell: (params) => (
                         righeTot={righeTot}
                         onPageChange={handlePageChange}
                         />
-                        <Button
-                            color="primary"
-                            onClick={handleGoBack}
-                            sx={{
-                                backgroundColor: "black",
-                                borderRadius: '40px',
-                                color: "white",
-                                width: '250px',
-                                height: '30px', 
-                                mt: 2,
-                                "&:hover": {
-                                backgroundColor: "black",
-                                transform: "scale(1.05)",
-                                },
-                            }}
-                            >
-                            Indietro
-                            </Button>
+                        
                     </Box>
 
 

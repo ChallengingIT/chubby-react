@@ -91,10 +91,10 @@ const quantita = 10;
 
 
     try {
-        const response          = await axios.get("http://89.46.196.60:8443/staffing/react/mod",          { headers: headers, params: filtriDaInviare });
-        const responseTipologia = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia",        { headers });
-        const responseTipo      = await axios.get("http://89.46.196.60:8443/staffing/react/tipo",            { headers });
-        const responseStato     = await axios.get("http://89.46.196.60:8443/staffing/react/stato/candidato", { headers });
+        const response          = await axios.get("http://localhost:8080/staffing/react/mod",          { headers: headers, params: filtriDaInviare });
+        const responseTipologia = await axios.get("http://localhost:8080/aziende/react/tipologia",        { headers });
+        const responseTipo      = await axios.get("http://localhost:8080/staffing/react/tipo",            { headers });
+        const responseStato     = await axios.get("http://localhost:8080/staffing/react/stato/candidato", { headers });
 
 
         if (Array.isArray(responseStato.data)) {
@@ -154,8 +154,8 @@ const quantita = 10;
 
       const filtriAttivi = Object.values(filtri).some(value => value !== null && value !== '');
       const url = filtriAttivi ?
-      "http://89.46.196.60:8443/staffing/react/mod/ricerca" :
-      "http://89.46.196.60:8443/staffing/react/mod";
+      "http://localhost:8080/staffing/react/mod/ricerca" :
+      "http://localhost:8080/staffing/react/mod";
 
 
       const filtriDaInviare = {
@@ -213,7 +213,7 @@ const quantita = 10;
 
   const handleDelete = async () => {
     try {
-      const responseDelete = await axios.delete(`http://89.46.196.60:8443/staffing/elimina/${deleteId}`, { headers: headers });
+      const responseDelete = await axios.delete(`http://localhost:8080/staffing/elimina/${deleteId}`, { headers: headers });
       setOpenDialog(false);
       fetchData();
     } catch(error) {
@@ -288,10 +288,10 @@ const handleRicerche = async () => {
     setLoading(true);
  
     try {
-        const response = await axios.get("http://89.46.196.60:8443/staffing/react/mod/ricerca", { headers: headers, params: filtriDaInviare });
-        const responseTipologia = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia",        { headers });
-        const responseTipo      = await axios.get("http://89.46.196.60:8443/staffing/react/tipo",            { headers });
-        const responseStato     = await axios.get("http://89.46.196.60:8443/staffing/react/stato/candidato", { headers });
+        const response          = await axios.get("http://localhost:8080/staffing/react/mod/ricerca", { headers: headers, params: filtriDaInviare });
+        const responseTipologia = await axios.get("http://localhost:8080/aziende/react/tipologia",        { headers });
+        const responseTipo      = await axios.get("http://localhost:8080/staffing/react/tipo",            { headers });
+        const responseStato     = await axios.get("http://localhost:8080/staffing/react/stato/candidato", { headers });
 
 
         if (Array.isArray(responseStato.data)) {
@@ -359,12 +359,13 @@ const handleReset = () => {
         stato: ''
     });
     localStorage.removeItem("RicercheRecruiting");
+    setPagina(0);
 
     fetchData();
 };
 
   const handleDownloadCV = async (fileId, fileDescrizione) => {
-    const url = `http://89.46.196.60:8443/files/react/download/file/${fileId}`;
+    const url = `http://localhost:8080/files/react/download/file/${fileId}`;
     try {
       const responseDownloadCV = await axios({
         method: 'GET',
@@ -428,7 +429,7 @@ const handleReset = () => {
     { field: 'schedaITW',             headerName: 'Scheda ITW',    flex: 0.8, renderCell: (params) => (
       <Link
       to={`/recruiting/intervista/${params.row.id}`}
-      state = {{ recruitingData: params.row.id}}
+      state = {{ recruitingData: params.row}}
       >
         <PersonInfoButton />
       </Link>
@@ -447,56 +448,43 @@ const handleReset = () => {
     )}
   ];
 
-
-  return (
-    <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto', width: '100vw', overflowX:'hidden' }}>
-      <Box sx={{ 
-                // flexGrow: 1, 
-                p: 2, 
-                marginLeft: '13.2em', 
-                marginTop: '0.5em', 
-                marginBottom: '0.8em', 
-                marginRight: '0.8em', 
-                backgroundColor: '#FEFCFD', 
-                borderRadius: '10px', 
-                minHeight: '98vh',
-                mt: 1.5,
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'flex-start',
-                alignItems: 'center'
-            }}>
-              <Box
-              sx={{
-                width: '100%',                
-              }}>
-
-                  <RicercheRecruiting
-                  filtri={filtri}
-                  onFilterChange={handleFilterChange}
-                  onReset={handleReset}
-                  tipologiaOptions={tipologiaOptions}
-                  statoOptions={statoOptions}
-                  tipoOptions={tipoOptions}
-                  onRicerche={handleRicerche}
-                  />
-                  </Box>
-
-              <Box sx={{ ml: -3, mt: 5 ,  width: '100%'}}>
-                <Tabella
-                  data={originalRecruiting} 
-                  columns={columns} 
-                  title="Candidati" 
-                  getRowId={(row) => row.id}
-                  pagina={pagina}
-                  quantita={quantita}
-                  righeTot={righeTot}
-                  onPageChange={handlePageChange} 
-                  />
-              </Box>
-
-              {notePopup && (
+return (
+  <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', flexGrow: 1, overflow: 'hidden'}}>
+    <Box sx={{
+      p: 2,
+      ml: 26,
+      mt: 1.5,
+      mb: 0.5,
+      mr: 0.8,
+      backgroundColor: '#FEFCFD',
+      borderRadius: '10px',
+      height: '99%',
+      width: '100%',
+      flexDirection: 'column',
+      overflow: 'hidden'
+    }}>
+      <RicercheRecruiting 
+      filtri={filtri}
+      onFilterChange={handleFilterChange}
+      onReset={handleReset}
+      tipologiaOptions={tipologiaOptions}
+      statoOptions={statoOptions}
+      tipoOptions={tipoOptions}
+      onRicerche={handleRicerche}
+      />
+      <Box sx={{ mr: 0.2}}>
+      <Tabella
+        data={originalRecruiting} 
+        columns={columns} 
+        title="Candidati" 
+        getRowId={(row) => row.id}
+        pagina={pagina}
+        quantita={quantita}
+        righeTot={righeTot}
+        onPageChange={handlePageChange} 
+      />
+      </Box>
+            {notePopup && (
                 <Dialog open={notePopup} onClose={handleCloseNotesModal} sx={{ '& .MuiDialog-paper': { width: '400px', height: 'auto' } }}>
                   <DialogTitle>Note</DialogTitle>
                   <DialogContent>
@@ -563,9 +551,10 @@ const handleReset = () => {
                       </Button>
                     </DialogActions>
                   </Dialog>
-      </Box>
     </Box>
-  );
+  </Box>
+
+);
 };
 
 export default Recruiting;

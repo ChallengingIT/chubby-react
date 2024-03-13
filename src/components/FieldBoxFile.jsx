@@ -178,6 +178,7 @@ const FieldBoxFile = ({
 
         const handleDeleteCVCF = async (fileId, idCandidato, fileType) => {
             const idc = idCandidato;
+            console.log("idCandidato: ", idc);
             try {
             const response = await axios.delete(`http://89.46.196.60:8443/files/react/elimina/file/candidato/${fileId}/${idc}`, { headers: headers })
             if(response.data === "OK") {

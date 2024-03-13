@@ -18,9 +18,8 @@ function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, 
 
     
     return (
-        <>
-        <Grid container
-        spacing={2}
+        
+        <Box
         sx={{
             backgroundColor: '#FEFCFD', 
             display: 'flex', 
@@ -29,12 +28,10 @@ function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, 
             justifyContent: 'space-between', 
             borderRadius: '10px',  
             marginBottom: '4rem',
-            p: 2,
-            flexGrow: 1
+            width: '100%',
+            overflow: 'hidden'
         }}
         >
-
-        <Grid item xs={2}>
         <Button 
         onClick={onGoBack}
         style={{
@@ -55,10 +52,8 @@ function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, 
         Indietro
         </Button>
 
-        </Grid>
 
-
-        <Grid item xs={8} sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                         {/* Barra di ricerca */}
                         <TextField
                         id="search-bar"
@@ -148,8 +143,7 @@ function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, 
                         },
                     }}
                     />
-                    </Grid>
-                        <Grid item xs={2} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    </Box>
 
                     <Button variant="contained" color="primary" onClick={handleOpenFiltri} sx={{
                     minWidth: '12em',
@@ -163,8 +157,7 @@ function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, 
                 }}>
                     Filtra per: 
                 </Button>  
-                </Grid>
-                </Grid>
+                
                 
 
         
@@ -289,10 +282,7 @@ function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, 
                     </Grid>
                 </Grid>
                 </Drawer>
-    {/* </Box> */}
-    </>
-
-
+    </Box>
     );
 };
 export default RicercheNeedMatch;

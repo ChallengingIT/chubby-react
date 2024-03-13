@@ -1,10 +1,11 @@
-import React, { useState, useEffect }   from "react";
-import { useNavigate, useLocation }     from "react-router-dom";
-import axios                            from "axios";
-import { Button, Box, Typography, Alert, Snackbar } from "@mui/material";
-import IntervistaBox from "../../components/IntervistaBox";
+import React, { useState, useEffect }                                   from "react";
+import { useNavigate, useLocation }                                     from "react-router-dom";
+import axios                                                            from "axios";
+import { Button, Box, Typography, Alert, Snackbar }                     from "@mui/material";
+import IntervistaBox                                                    from "../../components/IntervistaBox";
 
 const AggiungiIntervista = () => {
+
 const navigate      = useNavigate();
 const location      = useLocation();
 const candidatoID   = location.state?.candidatoID;
@@ -41,20 +42,18 @@ const fetchData = async () => {
     quantita: 10,
   }
     try {
-
-
       //jobtitle = tipologia, tipologiaIncontro = stato, owner = owner
-    const responseTipologia                      = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia"                  , { headers: headers });
-    const ownerResponse                          = await axios.get("http://89.46.196.60:8443/aziende/react/owner"                      , { headers: headers });
-    const responseStato                          = await axios.get("http://89.46.196.60:8443/staffing/react/stato/candidato"           , { headers: headers });
-    const responseTipoIntervista                 = await axios.get("http://89.46.196.60:8443/intervista/react/tipointervista"          , { headers: headers });
-    const responseIntervista                     = await axios.get(`http://89.46.196.60:8443/intervista/react/mod/${candidatoID}`      , { headers: headers, params: paginazione });
-    const responseCandidato                      = await axios.get(`http://89.46.196.60:8443/staffing/react/${candidatoID}`            , { headers: headers });
+    const responseTipologia                      = await axios.get("http://localhost:8080/aziende/react/tipologia"                  , { headers: headers });
+    const ownerResponse                          = await axios.get("http://localhost:8080/aziende/react/owner"                      , { headers: headers });
+    const responseStato                          = await axios.get("http://localhost:8080/staffing/react/stato/candidato"           , { headers: headers });
+    const responseTipoIntervista                 = await axios.get("http://localhost:8080/intervista/react/tipointervista"          , { headers: headers });
+    const responseIntervista                     = await axios.get(`http://localhost:8080/intervista/react/mod/${candidatoID}`      , { headers: headers, params: paginazione }); //questa è la lista delle interviste di cui devo prendere sempre l'ultima
+    const responseCandidato                      = await axios.get(`http://localhost:8080/staffing/react/${candidatoID}`            , { headers: headers }); //questo è il candidato
 
 
 
     if (Array.isArray(responseIntervista.data) && responseIntervista.data.length > 0) {
-        // Prendi l'ultima intervista (supponendo che l'array sia ordinato in base alla data)
+        // Prendo l'ultima intervista per data
         const ultimaIntervista = responseIntervista.data[responseIntervista.data.length - 1];
         setInterviste(ultimaIntervista);
     } else if (responseIntervista.data.length === 0) {
@@ -222,6 +221,7 @@ tipologia:          true,
 location:           true,
 anniEsperienza:     true,
 cellulare:          true,
+stato:              true
 };
 
 const handleSubmit = async (values) => {
@@ -239,7 +239,7 @@ const handleSubmit = async (values) => {
     try {
     const note = values.note;
     const modifica = 0; 
-    const response = await axios.post("http://89.46.196.60:8443/intervista/react/salva",  values, {
+    const response = await axios.post("http://localhost:8080/intervista/react/salva",  values, {
       params: {
         idCandidato: candidatoID,
         note: note,
@@ -248,6 +248,8 @@ const handleSubmit = async (values) => {
       headers: headers
     });
     navigate(`/recruiting/intervista/${candidatoID}`);
+    console.log('DATI INVIATI: ', response.data);
+
     } catch (error) {
     console.error("Errore durante il salvataggio:", error);
     }
@@ -267,7 +269,20 @@ const validateFields = (values) => {
 
 return (
     <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
-            <Box sx={{ flexGrow: 1, p: 3, marginLeft: '12.2em', marginTop: '0.5em', marginBottom: '0.8em', marginRight: '0.8em', backgroundColor: '#FEFCFD', borderRadius: '10px', display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+            <Box sx={{ 
+              flexGrow: 1, 
+              p: 3, 
+              marginLeft: '12.2em', 
+              marginTop: '0.5em', 
+              marginBottom: '0.8em', 
+              marginRight: '0.8em', 
+              backgroundColor: '#FEFCFD', 
+              borderRadius: '10px', 
+              display: 'flex', 
+              justifyContent: 'center', 
+              flexDirection: 'column' 
+            }}
+            >
         <Typography variant="h4" component="h1" sx={{ mt: 3, fontWeight: 'bold', fontSize: '1.8rem', color: '#00853C'}}>Aggiungi Intervista</Typography>
             
                 <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>

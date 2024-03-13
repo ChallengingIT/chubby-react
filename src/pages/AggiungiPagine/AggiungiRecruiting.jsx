@@ -122,10 +122,10 @@ const handleCloseAlert = (event, reason) => {
 };
 
 
-const campiObbligatori = ["nome", "cognome", "email", "anniEsperienzaRuolo", "tipologia", "dataUltimoContatto", "tipo" ];
+const campiObbligatori = ["nome", "cognome", "email", "anniEsperienzaRuolo", "tipologia", "dataUltimoContatto", "tipo", "stato", "livelloScolastico" ];
 
 const fields = [
-    { label: "Tipologia",                     name: "tipo",                     type: "select",          options: tipologiaOptions                      },
+    { label: "Tipologia*",                     name: "tipo",                     type: "select",          options: tipologiaOptions                      },
     { label: "Fornitore",                     name: "fornitore",                type: "select",          options: fornitoriOptions                      },
     { label: "Tipo Ricerca",                  name: "ricerca",                  type: "select",          options: [
         { value: "C", label: "C"},
@@ -145,11 +145,11 @@ const fields = [
         { value: 3, label: "On Site"},
     ] },
     { label: "Anni di Esperienza nel Ruolo*",   name: "anniEsperienzaRuolo",      type: "decimalNumber"                                                            },
-    { label: "Livello Scolastico",              name: "livelloScolastico",        type: "select",               options: livelloScolasticoOptions         },
+    { label: "Livello Scolastico*",              name: "livelloScolastico",        type: "select",               options: livelloScolasticoOptions         },
     { label: "Facoltà",                         name: "facolta",                  type: "select",               options: facoltaOptions                   },
     { label: "Job Title*",                      name: "tipologia",                type: "select",               options: jobTitleOptions                  },
     { label: "Data Inserimento*",               name: "dataUltimoContatto",       type: "date"                                                            },
-    { label: "Stato",                           name: "stato",                    type: "select",               options: statoOptions                     },
+    { label: "Stato*",                           name: "stato",                    type: "select",               options: statoOptions                     },
     { label: "Owner",                           name: "owner",                    type: "select",               options: ownerOptions                     },
     { label: "Seleziona le Skills",             name: "skills",                   type: "multipleSelectSkill",  options: skillsOptions                    },
     { label: "RAL/Tariffa",                     name: "ral",                      type: "text"                                                            },
@@ -190,14 +190,9 @@ const handleSubmit = async (values, fileCV, fileCF, fileMultipli, fileAllegati) 
             setAlert({ open: true, message: "Email già utilizzata!" });
             console.error("L'email fornita è già in uso.");
             return; 
-          }
+        }
         const candidatoId = datiResponse.data;
 
-        const config = {
-            headers: {
-            Authorization: `Bearer ${accessToken}`,
-            }
-        };
     try{
     if (fileCV) {
         const formDataCV = new FormData();
