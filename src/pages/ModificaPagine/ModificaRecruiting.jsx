@@ -30,7 +30,6 @@ const ModificaStaffing = () => {
   const [loading,                   setLoading                   ] = useState(true);
 
 
-  console.log("dati in staffing: ", staffing);
 
 
 

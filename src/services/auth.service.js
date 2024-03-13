@@ -58,14 +58,12 @@ class AuthService {
 
   getCurrentUser() {
     const user = JSON.parse(localStorage.getItem('user'));
-    // console.log('Caricato utente:', user);
     return user;
   }
   
 
   isAuthenticated() {
     const user = this.getCurrentUser();
-    // console.log("utente autenticato: ", user);
     return user && user.accessToken ? true : false;
 
   }

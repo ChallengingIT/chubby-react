@@ -198,9 +198,6 @@ const NeedMatch2 = () => {
             };
 
 
-            console.log("RIGHE DI CANDIDATI: ", righeTotCandidati);
-            console.log("RIGHE DI Storico: ", righeTotStorico);
-            console.log("RIGHE DI Associati: ", righeTotAssociati);
 
 
 
@@ -237,18 +234,24 @@ const NeedMatch2 = () => {
             
             try {
                 const candidatiResponse = await axios.get(url, { headers: headers, params: filtriCandidati});
-                const { recordCandidati, candidati } = candidatiResponse.data;
-            
-                if (candidati && Array.isArray(candidati)) {
+                const { data: candidatiData } = candidatiResponse;
+                const recordCandidati = candidatiData.record;
+                const candidati = candidatiData.candidati; 
+        
+                setRigheTotCandidati(recordCandidati);
                 setOriginalCandidati(candidati);
-                if (typeof recordCandidati === 'number' ) {
-                    setRigheTotAssociati(recordCandidati);
-                } else {
-                    console.error("Il numero di record di associabili ottenuto non è un numero: ", recordCandidati);
-                }
-                } else {
-                console.error("I dati ottenuti da associabili non sono nel formato Array:", candidatiResponse.data);
-                }
+                // const { recordCandidati, candidati } = candidatiResponse.data;
+            
+                // if (candidati && Array.isArray(candidati)) {
+                // setOriginalCandidati(candidati);
+                // if (typeof recordCandidati === 'number' ) {
+                //     setRigheTotAssociati(recordCandidati);
+                // } else {
+                //     console.error("Il numero di record di associabili ottenuto non è un numero: ", recordCandidati);
+                // }
+                // } else {
+                // console.error("I dati ottenuti da associabili non sono nel formato Array:", candidatiResponse.data);
+                //}
             } catch(error) {
                 console.error("Errore durante il recupero dei dati: ", error);
                 }
@@ -346,6 +349,10 @@ const NeedMatch2 = () => {
 
             //funzione per le ricerche
             const handleRicerche = async () => {
+                const paginazione = {
+                    pagina: 0,
+                    quantita: 10
+                };
                 const filtriCandidati = {
                     nome: filtri.nome || null,
                     cognome: filtri.cognome || null,
@@ -357,8 +364,9 @@ const NeedMatch2 = () => {
                 };
 
                 try{
-                    console.log("Effettuo la ricerca per: ", filtriCandidati);
-                    const response = await axios.get(`http://localhost:8080/staffing/react/mod/ricerca`, { headers: headers, params: filtriCandidati});
+                    const candidatiResponse = await axios.get(`http://localhost:8080/staffing/react/mod/ricerca`, { headers: headers, params: filtriCandidati});
+                    const storicoResponse     = await axios.get(`http://localhost:8080/need/react/storico/${id}`,                            { headers: headers, params: paginazione});
+                    const associatiResponse   = await axios.get(`http://localhost:8080/need/react/match/associati/mod/${id}`,                { headers: headers, params: paginazione});
                     const responseTipologia    = await axios.get("http://localhost:8080/aziende/react/tipologia",                             { headers: headers});
                     const responseTipo        = await axios.get("http://localhost:8080/staffing/react/tipo"    ,                             { headers: headers});
     
@@ -379,17 +387,27 @@ const NeedMatch2 = () => {
                         }
 
 
-                    const { record, candidati } = response.data;
-                    if( candidati && Array.isArray(candidati)) {
+                        const { data: candidatiData } = candidatiResponse;
+                        const { data: storicoData   } = storicoResponse;
+                        const { data: associatiData } = associatiResponse;
+    
+                        const recordCandidati = candidatiData.record;
+                        const candidati = candidatiData.candidati;
+    
+                        const recordStorico = storicoData.record;
+                        const associazioni = storicoData.associazioni;
+    
+                        const recordAssociati = associatiData.record;
+                        const associati = associatiData.candidati;
+    
+                        setRigheTotCandidati(recordCandidati);
                         setOriginalCandidati(candidati);
-                        if ( typeof record === 'number' ) {
-                            setRigheTotCandidati(record);
-                        } else {
-                            console.error("Il numero di candidati in ricerca non è un numero: ", record);
-                        }
-                    } else {
-                        console.error("I dati ottenuti non sono nel formato array: ", response.data);
-                    }
+    
+                        setRigheTotStorico(recordStorico);
+                        setOriginalStorico(associazioni);
+    
+                        setRigheTotAssociati(recordAssociati);
+                        setOriginalAssociati(associati);
                 } catch(error) {
                     console.error("Errore durante il recupero dei dati filtrati: ", error);
                 }

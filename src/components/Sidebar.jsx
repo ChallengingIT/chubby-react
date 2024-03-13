@@ -41,7 +41,6 @@ function Sidebar() {
 
     const handleLogout = () => {
         localStorage.clear();
-        console.log("Logout da confirmLogout");
         navigate('/login', { replace: true });
         closeLogoutPopup();
     };

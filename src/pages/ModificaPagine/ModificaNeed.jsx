@@ -12,7 +12,6 @@ const ModificaNeed = () => {
 
   const valori = location.state;
 
-  console.log("VALORI: ", valori);
 
   const [ aziendeOptions,         setAziendeOptions   ] = useState([]);
   const [ skillsOptions,          setSkillsOptions    ] = useState([]);

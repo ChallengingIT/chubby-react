@@ -248,7 +248,6 @@ const handleSubmit = async (values) => {
       headers: headers
     });
     navigate(`/recruiting/intervista/${candidatoID}`);
-    console.log('DATI INVIATI: ', response.data);
 
     } catch (error) {
     console.error("Errore durante il salvataggio:", error);

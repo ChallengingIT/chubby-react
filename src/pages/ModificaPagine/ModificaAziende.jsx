@@ -8,14 +8,12 @@ import FieldBoxFile from "../../components/FieldBoxFile";
 
 const ModificaAziende = () => {
 
-console.log("localStorageAziende: ", localStorage.getItem("searchTermsAzienda"));
 
 
 const navigate             = useNavigate();
 const location             = useLocation();
 const valori               = location.state;
 
-console.log("VALORI: ", valori);
 
 
 const [ provinceOptions, setProvinceOptions] = useState([]);

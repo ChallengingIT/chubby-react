@@ -185,7 +185,6 @@ const handleSubmit = async (values, fileCV, fileCF, fileMultipli, fileAllegati) 
         params: { skill: skills },
         headers: headers,
         });
-        console.log("dati inviati: ", values);
         if (datiResponse.data === "DUPLICATO") {
             setAlert({ open: true, message: "Email già utilizzata!" });
             console.error("L'email fornita è già in uso.");

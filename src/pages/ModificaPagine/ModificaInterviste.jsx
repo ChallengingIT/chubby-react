@@ -108,7 +108,6 @@ useEffect(() => {
 
 
 
-console.log("dati del candidato: ", candidato);
 
 const handleGoBack = () => {
   navigate(-1); 

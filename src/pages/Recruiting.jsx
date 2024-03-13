@@ -364,8 +364,8 @@ const handleReset = () => {
     fetchData();
 };
 
-  const handleDownloadCV = async (fileId, fileDescrizione) => {
-    const url = `http://localhost:8080/files/react/download/file/${fileId}`;
+  const handleDownloadCV = async (idFile, fileDescrizione) => {
+    const url = `http://localhost:8080/files/react/download/file/${idFile}`;
     try {
       const responseDownloadCV = await axios({
         method: 'GET',
@@ -438,8 +438,9 @@ const handleReset = () => {
       <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
         <ClipButton
         onClick={handleDownloadCV}
-        idFile={params.row.files && params.row.files.length > 0 ? params.row.fils[0].id : null }
-        fileDescrizione={params.row.files && params.row.files.length > 0 ? params.row.files[0].descrizione : null }
+        idFile={params.row.file?.id}
+        // idFile={params.row.files && params.row.files.length > 0 ? params.row.fils[0].id : null }
+        fileDescrizione={params.row.file?.descrizione}
         />
         <DeleteButton 
         onClick={() => openDeleteDialog(params.row.id )}
@@ -447,6 +448,9 @@ const handleReset = () => {
       </Box>
     )}
   ];
+
+
+
 
 return (
   <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', flexGrow: 1, overflow: 'hidden'}}>

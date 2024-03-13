@@ -127,7 +127,6 @@ import { original } from '@reduxjs/toolkit';
         }, []);
 
 
-        console.log('originalNEed: ',originalNeed);
 
         //caricamento dati con paginazione
         const fetchMoreData = async () => {
