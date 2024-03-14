@@ -52,6 +52,7 @@ const FieldBoxFile = ({
 
 
 
+
     const user = JSON.parse(localStorage.getItem("user"));
     const accessToken = user?.accessToken;
 
@@ -121,9 +122,12 @@ const FieldBoxFile = ({
         const isValid = validate();
 
         if (isValid) {
-            onSubmit(values, fileCV, fileCF, fileMultipli, fileAllegati);
+            onSubmit(values, fileCV, fileCF, fileMultipli);
         }
     };
+
+
+    
 
     const [isWeekPickerVisible, setIsWeekPickerVisible] = useState(false);
 

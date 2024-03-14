@@ -99,7 +99,7 @@ const AggiungiNeed = () => {
     { value: 3, label: 'Done' }
   ];
 
-  const campiObbligatori = [ "idAzienda", "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "owner"]; 
+  const campiObbligatori = [ "idAzienda", "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner"]; 
 
   const fields = [
     { label: "Azienda*",            name: "idAzienda",                    type: "select",               options: aziendeOptions    },
@@ -125,31 +125,34 @@ const AggiungiNeed = () => {
 
 
 
+
   const handleSubmit = async (values) => {
     const errors = validateFields(values);
     const hasErrors = Object.keys(errors).length > 0;
-  
-    if (!hasErrors) {
-      try {
-        const skills = values.skills ? values.skills.join(',') : '';
 
-        delete values.skills;
-  
-        const response = await axios.post("http://localhost:8080/need/react/salva", values, {
-          params: {
-            skill1: skills,
-          },
-          headers: headers
+    if(!hasErrors) {
+      try {
+        Object.keys(values).forEach(key => {
+          if (!campiObbligatori.includes(key) && !values[key]) {
+            values[key] = null;
+          }
         });
-        navigate("/need");
-      } catch (error) {
-        console.error("Errore durante il salvataggio:", error);
-        if (error.response) {
-          console.error("Dettagli dell'errore:", error.response.data);
+        const skills = values.skills ? values.skills.join(',') : '';
+        delete values.skills;
+
+        if (!accessToken) {
+          console.error("nessun token di accesso disponibile");
+          return;
         }
+
+        const responseSaveNeed = await axios.post("http://localhost:8080/need/react/salva", values, { params: { skill1: skills }, headers: headers});
+        navigate('/need');
+      } catch(error) {
+        console.error("Errore durante il salvataggio", error);
       }
     }
   };
+
   
 
   const validateFields = (values) => {

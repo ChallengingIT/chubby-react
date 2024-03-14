@@ -11,6 +11,7 @@ const navigate = useNavigate();
 const location = useLocation();
 const valori   = location.state;
 
+
 const [ aziendeOptions, setAziendeOptions] = useState([]);
 const [ ownerOptions,   setOwnerOptions  ] = useState([]);
 
