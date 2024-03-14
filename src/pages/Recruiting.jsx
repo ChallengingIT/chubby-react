@@ -453,7 +453,7 @@ const handleReset = () => {
 
 
 return (
-  <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', flexGrow: 1, overflow: 'hidden'}}>
+  <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', flexGrow: 1}}>
     <Box sx={{
       p: 2,
       ml: 26,
