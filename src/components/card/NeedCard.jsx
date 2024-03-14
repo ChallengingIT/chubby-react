@@ -28,7 +28,7 @@ import {
         const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
 
         if (diffInDays < 7) {
-            return `${Math.round(diffInDays)} giorno${Math.round(diffInDays) !== 1 ? 'i' : ''} fa`;
+            return `${Math.round(diffInDays)} giorn${Math.round(diffInDays) !== 1 ? 'i' : ''} fa`;
         } else {
             const diffInWeeks = diffInDays / 7;
             return `${Math.round(diffInWeeks)} settiman${Math.round(diffInWeeks) !== 1 ? 'e' : ''} fa`;

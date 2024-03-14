@@ -70,6 +70,7 @@ const AggiungiKeypeople = () => {
     
     { label: "Ruolo*",                name: "ruolo",               type: "text" },
     { label: "Data di Creazione*",    name: "dataCreazione",       type: "date" },
+    { label: 'Ultima attività',       name: 'dataUltimaAttivita',  type: 'date' },
     { label: "Note",                  name: "note",                type: "note" },
   ];
 

@@ -125,7 +125,6 @@ const AggiungiAziende = () => {
           console.error("L'email fornita è già in uso.");
           return; 
         }
-  
         navigate("/aziende");
       } catch (error) {
         console.error("Errore durante il salvataggio:", error);
