@@ -376,7 +376,7 @@ const handleReset = () => {
       const fileURL = window.URL.createObjectURL(new Blob([responseDownloadCV.data], { type: 'application/pdf' }));
       const link = document.createElement('a');
       link.href = fileURL;
-      link.setAttribute('download', `${fileDescrizione}.pdf`);
+      link.setAttribute('download', `${fileDescrizione}`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -386,67 +386,79 @@ const handleReset = () => {
   };
 
   const columns = [
-    { field: 'nome',        headerName: 'Nome',         flex: 1.3, renderCell: (params) => (
-      <Box sx={{ textAlign: 'left' }}>
-        <Link
+    // { field: "id",            headerName: "ID",             width: 70  },
+    { field: "nome",         headerName: "Nome",           flex: 1.3, renderCell: (params) => (
+      <div style={{ textAlign: "left"  }}>
+      <Link
       to={`/recruiting/modifica/${params.row.id}`}
       state={{ recruitingData: params.row }}
-      >
-        {params.row.nome}<br />{params.row.cognome}
-      </Link>
-      </Box>
-    )},
-    { field: 'email',       headerName: 'Email',      flex: 2 },
-    { field: 'tipologia',   headerName: 'Tipologia',  flex: 1.4, renderCell: (params) => (
-      <Box sx={{ textAlign: 'left' }}>
-        {params.row.tipologia && params.row.tipologia.descrizione ? params.row.tipologia.descrizione : 'N/A' }
-      </Box>
-    )},
-    { field: 'rating',      headerName: 'Rating',     flex: 0.6, renderCell: (params) => getSmileIcon(params) },
-    { field: 'owner',       headerName: 'Owner',      flex: 0.6, renderCell: (params) => (
-      <Box sx={{ textAlign: 'left' }}>
-        {params.row.owner && params.row.owner.descrizione ? params.row.owner.descrizione : 'N/A'}
-      </Box>
-    )},
-    { field: 'stato',       headerName: 'Stato',      flex: 0.6, renderCell: (params) => (
-      <Box sx={{ textAlign: 'left' }}>
-        {params.row.stato && params.row.stato.descrizione ? params.row.stato.descrizione : 'N/A'}
-      </Box>
-    )},
-    { field: 'dataUltimoContatto',    headerName: 'Contatto',     flex: 1 },
-    { field: 'noteRal',               headerName: 'Note/Ral',     flex: 1, renderCell: (params) => (
-      <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
+    >
+      {params.row.nome}<br />{params.row.cognome}
+    </Link>
+    </div>
+      ),
+    },
+    { field: "email",          headerName: "Email",          flex: 2},
+    { field: "tipologia",      headerName: "Job Title",      flex: 1.4, renderCell: (params) => (
+      <div style={{ textAlign: "start" }}>
+        {params.row.tipologia && params.row.tipologia.descrizione
+          ? params.row.tipologia.descrizione
+          : "N/A"}
+      </div>
+    ),
+  }, 
+    { field: "rating",        headerName: "Rating",         flex: 0.6, renderCell: (params) => getSmileIcon(params), }, //fino a 1.9 è rosso, da 2 a 3 giallo, sopra 3 è verde
+    // { field: "nrating",       headerName: "N. Rating",      width: 90  },
+    { field: "owner",         headerName: "Owner",         flex: 0.6, renderCell: (params) => (
+        <div style={{ textAlign: "start" }}>
+          {params.row.owner && params.row.owner.descrizione
+            ? params.row.owner.descrizione
+            : "N/A"}
+        </div>
+      ),
+    },
+    {
+      field: "stato",
+      headerName: "Stato",
+      flex: 0.6,
+      renderCell: (params) => (
+        <div style={{ textAlign: "start" }}>
+          {params.row.stato && params.row.stato.descrizione
+            ? params.row.stato.descrizione
+            : "N/A"}
+        </div>
+      ),
+    },
+    { field: "dataUltimoContatto",      headerName: "Contatto",       flex: 1 },
+    { field: "azioni",        headerName: "Azioni",          flex: 1.6, renderCell: (params) => (
+      <Box>
         <NoteButton onClick={() => {
           setNotePopup(true);
           setSelectedNote(params.row.note);
         }} />
+
         <EuroButton onClick={() => {
           setRalPopup(true);
-          setSelectedRal(params.row.ral);
-        }} />
-      </Box>
-    )},
-    { field: 'schedaITW',             headerName: 'Scheda ITW',    flex: 0.8, renderCell: (params) => (
+          setSelectedRal(params.row.ral)
+        }}
+        />
       <Link
       to={`/recruiting/intervista/${params.row.id}`}
-      state = {{ recruitingData: params.row}}
+      state = {{ recruitingData: params.row.id}}
       >
-        <PersonInfoButton />
-      </Link>
-    )},
-    { field: 'azioni',                headerName: 'Azioni',       flex: 1, renderCell: (params) => (
-      <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
-        <ClipButton
-        onClick={handleDownloadCV}
-        idFile={params.row.file?.id}
-        // idFile={params.row.files && params.row.files.length > 0 ? params.row.fils[0].id : null }
-        fileDescrizione={params.row.file?.descrizione}
-        />
-        <DeleteButton 
-        onClick={() => openDeleteDialog(params.row.id )}
-        />
-      </Box>
+    <PersonInfoButton /> 
+    </Link>
+    <ClipButton 
+    idFile={params.row.file ? params.row.file.id : null} 
+    fileDescrizione={params.row.file ? params.row.file.descrizione : null}
+    onClick={() => handleDownloadCV(
+        params.row.file ? params.row.file.id : null,
+        params.row.file ? params.row.file.descrizione : null
     )}
+/>
+        <DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
+      </Box>
+    ), },
   ];
 
 
@@ -461,7 +473,7 @@ return (
       mb: 0.5,
       mr: 0.8,
       backgroundColor: '#FEFCFD',
-      borderRadius: '10px',
+      borderRadius: '20px',
       height: '99%',
       width: '100%',
       flexDirection: 'column',

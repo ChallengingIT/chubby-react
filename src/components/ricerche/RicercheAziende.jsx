@@ -258,6 +258,7 @@ function RicercheAziende({ filtri, onFilterChange, onReset, tipologiaOptions, st
                                 backgroundColor: 'black',
                                 color: 'white',
                                 fontWeight: 'bold',
+                                textTransform: 'lowercase',
                                 '&:hover': {
                                     backgroundColor: 'black',
                                     color: 'white',

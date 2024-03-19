@@ -96,6 +96,11 @@ const KeypeopleCard = ({valori}) => {
                 {valori.citta}
             </Typography> */}
 
+            <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
+                <BusinessCenterIcon sx={{ color: '#00853C', mr: 1 }} />
+                {valori.ruolo}
+            </Typography>
+
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
                     <EmailIcon sx={{ color: '#00853C', mr: 1 }} />
                     {valori.email}
@@ -106,10 +111,6 @@ const KeypeopleCard = ({valori}) => {
                 {valori.cellulare}
             </Typography>
 
-            <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
-                <BusinessCenterIcon sx={{ color: '#00853C', mr: 1 }} />
-                {valori.ruolo}
-            </Typography>
 
         </CardContent>
         <CardActions>
@@ -133,11 +134,14 @@ const KeypeopleCard = ({valori}) => {
             size="small"
             onClick={(event) => navigateToAggiorna(valori.id, event)}
             sx={{
-                backgroundColor: '#00853C',
+                backgroundColor: 'black',
                 color: 'white',
                 ml: 1,
+                mb: 1,
+                textTransform: 'lowercase',
+                fontWeight: 'bold',
                 '&:hover': {
-                    backgroundColor: '#00853C',
+                    backgroundColor: 'black',
                     transform: 'scale(1.05)',
                     },
                 }}>Aggiorna</Button>

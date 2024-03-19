@@ -219,6 +219,25 @@ const validate = () => {
           
         );
 
+        case 'number':
+          return (
+          <Grid item xs={xs} sm={12} md={md} lg={lg} xl={xl} key={field.name}>
+          <TextField
+            label={field.label}
+            name={field.name}
+            value={values[field.name] || ''}
+            onChange={handleInputChange}
+            disabled={isDisabled}
+            multiline={field.type === 'note'}
+            fullWidth
+            InputLabelProps={field.type === 'date' ? { shrink: true } : undefined}
+            type={field.type === 'date' ? 'date' : 'number'}
+            sx={{  marginBottom: '1.5em', marginTop: '1.5em'}}
+            />
+        </Grid>
+        
+      );
+
         case 'note':
           return (
             <Grid item  key={field.name} sx={{ width: '100%' }}>

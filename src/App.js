@@ -30,6 +30,8 @@ import NeedLife                                                        from './c
 import NeedMatch2                                                      from './pages/NeedMatch2.jsx';
 import AziendeListaNeedCard                                            from './pages/AziendeListaNeedCard.jsx';
 import DettaglioIntervista                                             from './pages/VisualizzaPagine/DettaglioIntervista.jsx';
+import PaginaProva from './pages/PaginaProva.jsx';
+import NuovoNeed from './pages/AggiungiPagine/NuovoNeed.jsx';
 
 
 
@@ -115,7 +117,7 @@ useEffect(() => {
                   } />
                 <Route path="/need/aggiungi"element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
-                      <AggiungiNeed />
+                      <NuovoNeed />
                     </PrivateRoute>
                   } />
                 <Route path="/need/modifica/:id"element={

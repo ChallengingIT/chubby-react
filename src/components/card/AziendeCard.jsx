@@ -2,6 +2,7 @@ import React                 from 'react';
 import { useNavigate }                      from 'react-router-dom';
 import EmailIcon                            from '@mui/icons-material/Email';
 import BusinessCenterIcon                   from '@mui/icons-material/BusinessCenter';
+import FactoryIcon                          from '@mui/icons-material/Factory';
 import { 
     Card, 
     CardContent, 
@@ -42,12 +43,12 @@ const AziendeCard = ({valori}) => {
                     margin: 'auto', 
                     cursor: 'pointer', 
                     height: 'auto',
-                    borderColor: '2px solid #0B3A4F', // Blu navy
+                    borde: '2px solid #ffae44', // Blu navy
                     transition: 'transform 0.3s ease, border-width 0.3s ease', 
 
                     '&:hover': {
                         transform: 'scale(1.05)', 
-                        border: '4px solid #0B3A4F'
+                        border: '4px solid #ffae44'
                     }
                 };
                 case 'Prospect':
@@ -58,14 +59,15 @@ const AziendeCard = ({valori}) => {
                     margin: 'auto', 
                     cursor: 'pointer', 
                     height: 'auto',
-                    borderColor: '2px solid #0B3A4F', // Blu navy
+                    border: '2px solid #ffae44', // Blu navy
                     transition: 'transform 0.3s ease, border-width 0.3s ease', 
 
                     '&:hover': {
                         transform: 'scale(1.05)', 
-                        border: '4px solid #0B3A4F'
+                        border: '4px solid #ffae44'
                     }
                 };
+                
             case 'CONSULENZA':
                 return {
                     backgroundColor: '#f0f0f0', // Grigio Chiaro
@@ -117,10 +119,10 @@ const AziendeCard = ({valori}) => {
     // };
 
 
-    const navigateToAssocia = (id, event) => {
-        event.stopPropagation();
+    const navigateToAssocia = (id) => {
         navigate(`/need/${valori.id}`, { state: {...valori}});
     };
+    
 
     const navigateToAggiorna = (id, event) => {
         event.stopPropagation();
@@ -138,7 +140,11 @@ const AziendeCard = ({valori}) => {
     // };
 
     return (
-        <Card raised sx={cardStyle}>
+        <Card
+            raised 
+            sx={cardStyle}
+            onClick={() => navigateToAssocia(valori.id)}
+            >
         <CardContent>
             {/* Contenuto della Card */}
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -182,7 +188,7 @@ const AziendeCard = ({valori}) => {
             </Typography>
 
             <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
-                <BusinessCenterIcon sx={{ color: '#00853C', mr: 1 }} />
+                <FactoryIcon sx={{ color: '#00853C', mr: 1 }} />
                 {valori.tipologia}
             </Typography>
 
@@ -208,15 +214,18 @@ const AziendeCard = ({valori}) => {
             size="small"
             onClick={(event) => navigateToAggiorna(valori.id, event)}
             sx={{
-                backgroundColor: '#00853C',
+                backgroundColor: 'black',
                 color: 'white',
                 ml: 1,
+                mb: 1,
+                textTransform: 'lowercase',
+                fontWeight: 'bold',
                 '&:hover': {
-                    backgroundColor: '#00853C',
+                    backgroundColor: 'black',
                     transform: 'scale(1.05)',
                     },
                 }}>Aggiorna</Button>
-                <Button
+                {/* <Button
                     size="small"
                     onClick={(event) => navigateToAssocia(valori.id, event)}
                     sx={{
@@ -226,7 +235,7 @@ const AziendeCard = ({valori}) => {
                         backgroundColor: '#000000',
                         transform: 'scale(1.05)',
                     },
-                    }}>List</Button>
+                    }}>List</Button> */}
                     </Box>
                     </Box>
         </CardActions>

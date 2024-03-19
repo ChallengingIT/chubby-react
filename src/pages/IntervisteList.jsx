@@ -277,7 +277,7 @@ state={params.row}
                     alignItems: 'center', 
                     padding: '0.5rem 1rem', 
                     outline: 'none', 
-                    borderRadius: '10px',
+                    borderRadius: '20px',
                     '&:hover': {
                       backgroundColor: '#00853C',
                       color: 'white',

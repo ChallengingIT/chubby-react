@@ -10,7 +10,7 @@ function DeleteButton({ onClick, id }) {
       startIcon={<DeleteIcon />}
       sx={{
         marginRight: '10%',
-        backgroundColor: 'black',
+        backgroundColor: '#00853C',
         color: 'white',
         borderRadius: '50%', 
         minWidth: '2em', 
@@ -26,7 +26,7 @@ function DeleteButton({ onClick, id }) {
         '&:hover': {
           backgroundColor: 'red',
           transform:'scale(1.05)',
-          color: 'black',
+          color: 'white',
           cursor: 'pointer',
           borderRadius: '50%',
           borderStyle: 'none',

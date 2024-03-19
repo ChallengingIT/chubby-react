@@ -243,6 +243,7 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
                             sx={{
                                 backgroundColor: 'black',
                                 color: 'white',
+                                textTransform: 'lowercase',
                                 fontWeight: 'bold',
                                 '&:hover': {
                                     backgroundColor: 'black',

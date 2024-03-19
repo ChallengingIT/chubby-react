@@ -158,7 +158,7 @@ const AggiungiAziende = () => {
               flexDirection: 'column' 
           }}
             >
-          <Typography variant="h4" component="h1" sx={{mt:3, fontWeight: 'bold', fontSize: '1.8rem', color: '#00853C'}}>Aggiungi una nuova Azienda</Typography>
+          <Typography variant="h4" component="h1" sx={{ mt: 3, fontWeight: 'bold', fontSize: '1.8rem', color: '#00853C'}}>Aggiungi Azienda</Typography>
 
           <FieldBoxFile
           fields={fields}

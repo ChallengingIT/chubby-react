@@ -257,6 +257,7 @@ function RicercheKeypeople({ filtri, onFilterChange, onReset, aziendaOptions, st
                             sx={{
                                 backgroundColor: 'black',
                                 color: 'white',
+                                textTransform: 'lowercase',
                                 fontWeight: 'bold',
                                 '&:hover': {
                                     backgroundColor: 'black',

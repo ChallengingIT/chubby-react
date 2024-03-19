@@ -527,20 +527,46 @@ const FieldBoxFile = ({
 
             case "modificaFileCV":
                 return(
-                    <Box>
-                        <Typography variant="subtitle1" gutterBottom>{field.label}</Typography>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '10px 0'}}>
-                        <Typography variant="body2" style={{ marginRight: '10px' }}>
-                        {values.cv?.descrizione || 'Nessun file selezionato'}
-                            </Typography>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', width: '90%', overflow: 'hidden'}}>
+                            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', mb: 4}}>
+                            <Typography variant="subtitle1" gutterBottom sx={{ display: 'flex', textAlign: 'center', justifyContent: 'center'}}>{field.label}</Typography>
                             <Button
                                     variant="contained"
                                     color="primary"
                                     sx={{ 
-                                    marginLeft: '10px', 
-                                    marginBottom: "10px", 
-                                    marginTop: "10px", 
                                     justifyContent:"flex-end", 
+                                    backgroundColor: 'black', 
+                                    color: 'white',
+                                    mr: 3,
+                                    ':hover': {
+                                        backgroundColor: 'black',
+                                    }
+                                }}
+                                    startIcon={<CloudUploadIcon />}
+                                    component="label"
+                                >
+                                    <input
+                                        type="file"
+                                        hidden
+                                        onChange={handleChangeCV(field.name)}
+                                    />
+                                </Button>
+                            </Box> 
+                        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around'}}>
+                        <Typography variant="body2">
+                        {values.cv?.descrizione || 'Nessun file selezionato'}
+                            </Typography>
+                            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', gap: 3}}>
+                            <Button
+                                    variant="contained"
+                                    color="primary"
+                                    sx={{ 
+                                    justifyContent:"flex-end",
+                                    backgroundColor: 'black',
+                                    color: 'white',
+                                    '&:hover': {
+                                        backgroundColor: 'black'
+                                    }  
                                 }}
                                 startIcon={<CloudDownloadIcon />}
                                 disabled={!values[field.name]}
@@ -553,34 +579,8 @@ const FieldBoxFile = ({
                                     variant="contained"
                                     color="primary"
                                     sx={{ 
-                                    marginLeft: '10px', 
-                                    marginBottom: "10px", 
-                                    marginTop: "10px", 
-                                    justifyContent:"flex-end", 
-                                    backgroundColor: 'green', 
-                                    color: 'white',
-                                    ':hover': {
-                                        backgroundColor: 'green',
-                                    }
-                                }}
-                                    startIcon={<CloudUploadIcon />}
-                                    component="label"
-                                >
-                                    <input
-                                        type="file"
-                                        hidden
-                                        onChange={handleChangeCV(field.name)}
-                                    />
-                                </Button>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    sx={{ 
-                                        marginLeft: '10px', 
-                                        marginBottom: "10px", 
-                                        marginTop: "10px", 
                                         justifyContent:"flex-end", 
-                                        backgroundColor: 'red', 
+                                        backgroundColor: '#00853C', 
                                         color: 'white',
                                         ':hover': {
                                             backgroundColor: 'red',
@@ -593,6 +593,7 @@ const FieldBoxFile = ({
                                     onClick={() => handleOpenDeleteDialogCVCF(values.cv.id, 'cv')}
                                 >
                                 </Button>
+                                </Box>
                         </Box>
                     </Box>
                 );
@@ -602,42 +603,21 @@ const FieldBoxFile = ({
 
                 case "modificaFileCF":
                     return(
-                        <Box>
-                            <Typography variant="subtitle1" gutterBottom>{field.label}</Typography>
-                            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '10px 0'}}>
-                            <Typography variant="body2" style={{ marginRight: '10px' }}>
-                            {values.cf?.descrizione || 'Nessun file selezionato'}
-                                </Typography>
-                                <Button
+                        <Box sx={{ display: 'flex', flexDirection: 'column', width: '90%', overflow: 'hidden'}}>
+                            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', mb: 4}}>
+                            <Typography variant="subtitle1" gutterBottom sx={{ display: 'flex', textAlign: 'center', justifyContent: 'center'}}>{field.label}</Typography>
+                            <Button
                                     variant="contained"
                                     color="primary"
                                     sx={{ 
-                                    marginLeft: '10px', 
-                                    marginBottom: "10px", 
-                                    marginTop: "10px", 
-                                    justifyContent:"flex-end", 
-                                }}
-                                    startIcon={<CloudDownloadIcon />}
-                                    disabled={!values[field.name]}
-                                    component="label"
-                                    onClick={() => handleDownloadCVCF(values.cf.id, values.cf.descrizione)}
-                                    >
-
-                                </Button>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    sx={{ 
-                                    marginLeft: '10px', 
-                                    marginBottom: "10px", 
-                                    marginTop: "10px", 
-                                    justifyContent:"flex-end", 
-                                    backgroundColor: 'green', 
-                                    color: 'white',
-                                    ':hover': {
-                                        backgroundColor: 'green',
-                                    }
-                                }}
+                                        justifyContent:"flex-end", 
+                                        backgroundColor: 'black', 
+                                        color: 'white',
+                                        mr: 2,
+                                        ':hover': {
+                                            backgroundColor: 'black',
+                                        }
+                                    }}
                                     startIcon={<CloudUploadIcon />}
                                     component="label"
                                 >
@@ -647,15 +627,38 @@ const FieldBoxFile = ({
                                         onChange={handleChangeCF(field.name)}
                                     />
                                 </Button>
+                            </Box>
+                            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around'}}>
+                            <Typography variant="body2" style={{ marginRight: '10px' }}>
+                            {values.cf?.descrizione || 'Nessun file selezionato'}
+                                </Typography>
+                                <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', gap: 3}}>
+
                                 <Button
                                     variant="contained"
                                     color="primary"
                                     sx={{ 
-                                        marginLeft: '10px', 
-                                        marginBottom: "10px", 
-                                        marginTop: "10px", 
+                                    justifyContent:"flex-end",
+                                    backgroundColor: 'black',
+                                    color: 'white',
+                                    '&:hover': {
+                                        backgroundColor: 'black'
+                                    } 
+                                }}
+                                    startIcon={<CloudDownloadIcon />}
+                                    disabled={!values[field.name]}
+                                    component="label"
+                                    onClick={() => handleDownloadCVCF(values.cf.id, values.cf.descrizione)}
+                                    >
+
+                                </Button>
+                                
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    sx={{ 
                                         justifyContent:"flex-end", 
-                                        backgroundColor: 'red', 
+                                        backgroundColor: '#00853C', 
                                         color: 'white',
                                         ':hover': {
                                             backgroundColor: 'red',
@@ -670,6 +673,8 @@ const FieldBoxFile = ({
                                 >
                                 </Button>
                             </Box>
+                            </Box>
+
                         </Box>
                     );
 

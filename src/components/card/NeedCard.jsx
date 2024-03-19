@@ -4,6 +4,7 @@ import ChecklistIcon                        from '@mui/icons-material/Checklist'
 import WorkIcon                             from '@mui/icons-material/Work';
 import axios from 'axios';
 import CloseIcon from '@mui/icons-material/Close';
+import Torcia from "../../images/torciaSF.png";
 
 import { 
     Card, 
@@ -14,7 +15,8 @@ import {
     CardActions,
     Modal,
     Select,
-    MenuItem
+    MenuItem,
+    Popover
     } from '@mui/material';
 
 
@@ -45,6 +47,22 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
     const [ idNeed,            setIdNeed          ] = useState(null);
 
 
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const openPopover = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const closePopover = () => {
+        setAnchorEl(null);
+    };
+
+    const isPopoverOpen = Boolean(anchorEl);
+
+    const popoverId = isPopoverOpen ? 'popover-id' : undefined;
+
+
+
     const user = JSON.parse(localStorage.getItem('user'));
     const accessToken = user?.accessToken;
 
@@ -72,12 +90,12 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
 
 
     const navigateToAssocia = (id, event) => {
-        event.stopPropagation();
+        // event.stopPropagation();
         navigate(`/need/match/${valori.id}`, { state: {...valori}});
     };
 
     const navigateToAggiorna = (id, event) => {
-        event.stopPropagation();
+        // event.stopPropagation();
         navigate(`/need/modifica/${valori.id}`, { state: { ...valori } });
     };
 
@@ -188,7 +206,7 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
             >
                 {valori.descrizione}
             </Typography>
-                    <Button
+                    {/* <Button
                     onClick={handleOpenModalDelete}
                     size='small'
                     sx={{
@@ -203,7 +221,7 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
                     }}
                     >
                         <CloseIcon />
-                    </Button>
+                    </Button> */}
             </Box>
 
             <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, color: 'black' }}>
@@ -232,75 +250,97 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
                 </InputAdornment>
             </Typography> */}
         </CardContent>
-        <CardActions>
-            <Box
-            sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                width: '100%',
-                mr:2
-            }} >
-                <Box
-                sx={{
-                    display: 'flex',
-                    gap: 1.5,
-                    mr:3
-                    
-                }}>
-            <Button 
-            size="small"
-            onClick={(event) => navigateToAggiorna(valori.id, event)}
-            sx={{
-                backgroundColor: '#00853C',
-                color: 'white',
-                ml: 1,
-                '&:hover': {
-                    backgroundColor: '#00853C',
-                    transform: 'scale(1.05)',
-                    },
-                }}>Modifica</Button>
+
+
+         {/* Icona di torcia */}
                 <Button
-                    size="small"
-                    onClick={(event) => navigateToAssocia(valori.id, event)}
-                    sx={{
-                    backgroundColor: '#000000',
-                    color: 'white',
+                    onClick={openPopover} 
+                    size='small' 
+                    disableTouchRipple 
+                    sx={{ 
+                    mb:1,
+                    backgroundColor: 'transparent',
+                    display: 'flex', 
+                    justifyContent: 'flex-start',
+                    width: 'auto',
+                    m: 0,
+                    p: 0,
                     '&:hover': {
-                        backgroundColor: '#000000',
-                        transform: 'scale(1.05)',
+                        backgroundColor: 'transparent',
+                        transform: 'scaleY(1.1)'
                     },
-                    }}>Match</Button>
+                    '&:focus': {
+                        outline: 'none',
+                    },
+                    '& .MuiTouchRipple-root': {
+                        width: '20%', 
+                    },
+                    }}>
+                    <img src={Torcia} alt="Torcia" style={{ width: '20%', height: '100%', display: 'flex', justifyContent: 'flex-start' }} />
+                </Button>
+
+            <Popover
+                id={popoverId}
+                open={isPopoverOpen}
+                anchorEl={anchorEl}
+                onClose={closePopover}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+                transformOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+            >
+                <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection:'column' }}>
                     <Button 
-                    size="small"
-                    onClick={(event) => handleOpenModalStato(valori.id, event)}
+                    onClick={() => navigateToAggiorna(valori.id)}
                     sx={{
-                        backgroundColor: '#00853C',
-                        color: 'white',
-                        
-                        '&:hover': {
-                            backgroundColor: '#00853C',
-                            transform: 'scale(1.05)',
-                            },
-                        }}>Stato</Button>
-                    </Box>
-                    <Typography
-                    gutterBottom
-                    variant="h6"
-                    component="div"
-                    sx={{
-                    // color: 'black',
+                    m: 1,
+                    color: 'black',
                     fontWeight: 'bold',
-                    overflow: 'hidden',
-                    whiteSpace: 'nowrap',
-                    textOverflow: 'ellipsis',
-                    maxWidth: '70%',
-                    color: '#00853C',
+                    textTransform: 'lowercase',
                     }}
-                >
-                    {valori.cliente.denominazione}
-                </Typography>
+                    >
+                        Modifica
+                    </Button>
+                    <Button 
+                    onClick={() => navigateToAssocia(valori.id)}
+                    sx={{
+                    m: 1,
+                    color: 'black',
+                    fontWeight: 'bold',
+                    textTransform: 'lowercase',
+                    }}
+                    >
+                        Match
+                    </Button>
+                    <Button 
+                    onClick={handleOpenModalStato}
+                    sx={{
+                    m: 1,
+                    color: 'black',
+                    fontWeight: 'bold',
+                    textTransform: 'lowercase',
+                    }}
+                    >
+                        Stato
+                    </Button>
+                    <Button
+                    onClick={handleOpenModalDelete}
+                    sx={{
+                        m: 1,
+                        color: 'red',
+                        fontWeight: 'bold',
+                        textTransform: 'lowercase'
+                    }}
+                    >
+                        Cancella
+                    </Button>
+                </Box>
+            </Popover>
+
 
                 <Modal
                 open={modalDelete}
@@ -448,10 +488,6 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
                             </Box>
                         </Box>
                         </Modal>
-
-
-                    </Box>
-        </CardActions>
     </Card>
     );
 };

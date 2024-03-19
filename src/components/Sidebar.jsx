@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Torcia from '../images/LogoBianco.png'; 
+import Logo from '../images/LogoBianco.png';
+import Torcia from "../images/torciaSF.png";
+
 import {
     Box,
     Drawer,
@@ -14,7 +16,8 @@ import {
     DialogContent,
     DialogTitle,
     Button,
-    DialogContentText
+    DialogContentText,
+    Popover
 } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonIcon from '@mui/icons-material/Person';
@@ -23,10 +26,18 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import ExploreIcon from '@mui/icons-material/Explore';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import ChecklistRtlIcon from '@mui/icons-material/ChecklistRtl';
+import PersonAddIcon from '@mui/icons-material/PersonAdd'; //aggiungi candidato
+import AddCircleIcon from '@mui/icons-material/AddCircle'; //aggiungi need
+import AddIcCallIcon from '@mui/icons-material/AddIcCall'; //aggiungi appuntamento
+import EmailIcon from '@mui/icons-material/Email'; //email
+
+
+
 
 function Sidebar() {
     const [activeLink, setActiveLink] = useState(null);
     const [isLogoutPopupOpen, setIsLogoutPopupOpen] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null); // Nuovo stato per l'ancoraggio del Popover
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -49,6 +60,54 @@ function Sidebar() {
         setActiveLink(location.pathname);
     }, [location.pathname]);
 
+    const handleTorciaClick = (event) => {
+        setAnchorEl(event.currentTarget); 
+    };
+
+    const handleAdditionalDrawerClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleAggiungiCandidatoClick = () => {
+        navigate('/recruiting/aggiungi');
+        handleAdditionalDrawerClose(); // Chiudi il drawer aggiuntivo dopo la navigazione
+    };
+
+    const handleAggiungiNeedClick = () => {
+        navigate('/need/aggiungi');
+        handleAdditionalDrawerClose();
+    };
+
+
+    const additionalDrawerContent = (
+        <List>
+            <ListItem button onClick={handleAggiungiCandidatoClick}>
+                <ListItemText primary="Aggiungi candidato" />
+                <ListItemIcon>
+                    <PersonAddIcon sx={{ color: '#00853C'}} />
+                </ListItemIcon>
+            </ListItem>
+            <ListItem button onClick={handleAggiungiNeedClick}>
+                <ListItemText primary="Aggiungi need" />
+                <ListItemIcon>
+                    <AddCircleIcon sx={{ color: '#00853C'}} />
+                </ListItemIcon>
+            </ListItem>
+            <ListItem button onClick={() => {/* Azioni per "Aggiungi Appuntamento" */}}>
+                <ListItemText primary="Appuntamento" />
+                <ListItemIcon>
+                    <AddIcCallIcon sx={{ color: '#00853C'}} />
+                </ListItemIcon>
+            </ListItem>
+            <ListItem button onClick={() => {/* Azioni per "Email" */}}>
+                <ListItemText primary="Email" />
+                <ListItemIcon>
+                    <EmailIcon sx={{ color: '#00853C'}} />
+                </ListItemIcon>
+            </ListItem>
+        </List>
+    );
+
     const sidebarData = [
         {
             title: 'Dashboard',
@@ -70,7 +129,7 @@ function Sidebar() {
             title: 'Recruiting',
             icon: <PersonSearchIcon />,
         },
-        { 
+        {
             title: 'Hiring',
             icon: <ChecklistRtlIcon />,
         }
@@ -97,9 +156,13 @@ function Sidebar() {
                     },
                 }}
             >
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px', flexDirection: 'row' }}>
-                <IconButton onClick={() => navigate('/dashboard')} style={{ padding: 0 }}>
-                    <img src={Torcia} alt="Torcia" style={{ width: '6vw', marginTop: '1em' }} />
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px', flexDirection: 'column' }}>
+                    <IconButton onClick={() => navigate('/dashboard')} style={{ padding: 0 }}>
+                        <img src={Logo} alt="Logo" style={{ width: '6vw', marginTop: '1em' }} />
+                    </IconButton>
+
+                    <IconButton onClick={handleTorciaClick} sx={{ padding: 0, '&:hover': { transform: 'scale(1.1)'}  }}> 
+                        <img src={Torcia} alt="Torcia" style={{ width: '4vw', marginTop: '1em' }} />
                     </IconButton>
                 </Box>
                 <List>
@@ -136,7 +199,7 @@ function Sidebar() {
                         </ListItem>
                     ))}
                 </List>
-                <List sx={{ marginTop: 'auto' }}> {/* Questo List contiene solo l'elemento di logout e ha margin-top auto */}
+                <List sx={{ marginTop: 'auto' }}>
                     <ListItem
                         selected={activeLink === '/logout'}
                         onClick={handleLogoutClick}
@@ -166,75 +229,92 @@ function Sidebar() {
                     </ListItem>
                 </List>
             </Drawer>
+            <Popover
+                open={Boolean(anchorEl)}
+                anchorEl={anchorEl}
+                onClose={handleAdditionalDrawerClose}
+                anchorOrigin={{
+                    vertical: 'center',
+                    horizontal: 'right',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right 10px',
+                }}
+            >
+                <Box sx={{ width: 250 }}>
+                    {additionalDrawerContent}
+                </Box>
+            </Popover>
             <Dialog
-                    open={isLogoutPopupOpen}
-                    onClose={closeLogoutPopup}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                    PaperProps={{
-                        style: { backgroundColor: '#FEFCFD', color: '#00853C' },
-                    }}
-                >
-                    <DialogTitle id="alert-dialog-title"
+                open={isLogoutPopupOpen}
+                onClose={closeLogoutPopup}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                PaperProps={{
+                    style: { backgroundColor: '#FEFCFD', color: '#00853C' },
+                }}
+            >
+                <DialogTitle id="alert-dialog-title"
                     sx={{
                         color: '#00853C',
                         fontSize: '24px',
                         textAlign: 'center',
                         fontWeight: 'bold',
                     }}>
-                        {"Conferma Logout"}
-                    </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description"
+                    {"Conferma Logout"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description"
                         sx={{
                             color: 'white',
                             fontSize: '18px',
                             textAlign: 'center',
                             color: 'black'
                         }}>
-                            Sei sicuro di voler effettuare il logout?
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Box sx={{ 
-                            display: 'flex', 
-                            justifyContent: 'center', 
-                            alignItems: 'center', 
-                            flexDirection: 'row', 
-                            marginBottom: '10px' 
-                            }}>
+                        Sei sicuro di voler effettuare il logout?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Box sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        marginBottom: '10px'
+                    }}>
                         <Button onClick={closeLogoutPopup}
-                        variant="contained"
-                        sx={{
-                            backgroundColor: "#000000",
-                            color: "#white",
-                            marginRight: "5px",
-                            marginTop: "10px",
-                            "&:hover": {
-                                transform: "scale(1.05)",
-                                backgroundColor: '#000000',
-                                color: 'white'
-                            },
+                            variant="contained"
+                            sx={{
+                                backgroundColor: "#000000",
+                                color: "#white",
+                                marginRight: "5px",
+                                marginTop: "10px",
+                                "&:hover": {
+                                    transform: "scale(1.05)",
+                                    backgroundColor: '#000000',
+                                    color: 'white'
+                                },
                             }}>Annulla</Button>
                         <Button onClick={handleLogout}
-                        variant="contained"
-                        sx={{
-                            backgroundColor: "#00853C",
-                            marginLeft: "5px",
-                            marginTop: "10px",
-                            marginRight: '50px',
-                            color: "white",
-                            "&:hover": {
+                            variant="contained"
+                            sx={{
                                 backgroundColor: "#00853C",
-                                transform: "scale(1.05)",
-                            },
+                                marginLeft: "5px",
+                                marginTop: "10px",
+                                marginRight: '50px',
+                                color: "white",
+                                "&:hover": {
+                                    backgroundColor: "#00853C",
+                                    transform: "scale(1.05)",
+                                },
                             }}
                             autoFocus>
                             Conferma
                         </Button>
-                        </Box>
-                    </DialogActions>
-                </Dialog>
+                    </Box>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 }

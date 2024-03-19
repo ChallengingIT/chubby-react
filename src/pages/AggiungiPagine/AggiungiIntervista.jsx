@@ -142,19 +142,19 @@ const fields = [
 
 
     { type: "titleGroups",                label: "Soft Skills", xs: 12, sm: 12                          },
-    { label: "Aderenza Posizione",        name: "aderenza",                type: "text", xs: 12, sm: 4},
-    { label: "Coerenza Percorso",         name: "coerenza",                type: "text", xs: 12, sm: 4},
-    { label: "Motivazione Posizione",     name: "motivazione",             type: "text", xs: 12, sm: 4},
-    { label: "Standing",                  name: "standing",                type: "text", xs: 12, sm: 4},
-    { label: "Energia",                   name: "energia",                 type: "text", xs: 12, sm: 4},
-    { label: "Comunicazione",             name: "comunicazione",           type: "text", xs: 12, sm: 4},
-    { label: "Livello di Inglese",        name: "inglese",                 type: "text", xs: 12, sm: 4},
+    { label: "Aderenza Posizione",        name: "aderenza",                type: "number", xs: 12, sm: 4},
+    { label: "Coerenza Percorso",         name: "coerenza",                type: "number", xs: 12, sm: 4},
+    { label: "Motivazione Posizione",     name: "motivazione",             type: "number", xs: 12, sm: 4},
+    { label: "Standing",                  name: "standing",                type: "number", xs: 12, sm: 4},
+    { label: "Energia",                   name: "energia",                 type: "number", xs: 12, sm: 4},
+    { label: "Comunicazione",             name: "comunicazione",           type: "number", xs: 12, sm: 4},
+    { label: "Livello di Inglese",        name: "inglese",                 type: "number", xs: 12, sm: 4},
 
 
 
     { type: "titleGroups",                label: "Hard Skills", xs: 12, sm: 12                          },
-    { label: "Competenze vs ruolo",       name: "competenze",              type: "text", xs: 12, sm: 6},
-    { label: "Valutazione",               name: "valutazione",             type: "text", xs: 12, sm: 6},
+    { label: "Competenze vs ruolo",       name: "competenze",              type: "number", xs: 12, sm: 6},
+    { label: "Valutazione",               name: "valutazione",             type: "number", xs: 12, sm: 6},
 
 
 
