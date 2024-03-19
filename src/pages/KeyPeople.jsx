@@ -229,9 +229,9 @@ const Keypeople = () => {
 
 
     const statoOptions = [
-        { label: 'Verde', value: '1' },
-        { label: 'Giallo', value: '2' },
-        { label: 'Rosso', value: '3' }
+        { label: 'Caldo', value: '1' },
+        { label: 'Tiepido', value: '2' },
+        { label: 'Freddo', value: '3' }
     ];
 
 

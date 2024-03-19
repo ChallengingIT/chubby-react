@@ -5,6 +5,11 @@ import WorkIcon                             from '@mui/icons-material/Work';
 import axios from 'axios';
 import CloseIcon from '@mui/icons-material/Close';
 import Torcia from "../../images/torciaSF.png";
+import EditIcon from '@mui/icons-material/Edit'; //modifica
+import JoinInnerIcon from '@mui/icons-material/JoinInner'; //match
+import AutorenewIcon from '@mui/icons-material/Autorenew'; //stato
+import DeleteIcon from '@mui/icons-material/Delete'; //cancella
+
 
 import { 
     Card, 
@@ -16,7 +21,8 @@ import {
     Modal,
     Select,
     MenuItem,
-    Popover
+    Popover,
+    IconButton
     } from '@mui/material';
 
 
@@ -184,13 +190,14 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
             transition: 'transform 0.3s ease, border-width 0.3s ease', 
             '&:hover': {
             transform: 'scale(1.05)', 
-            border: '4px solid #00853C' 
+            border: '4px solid #00853C',
+            p: 1
         }}
     }
     >
-        <CardContent>
+        <CardContent sx={{ p: 1 }}>
             {/* Contenuto della Card */}
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography
                 gutterBottom
                 variant="h5"
@@ -201,7 +208,8 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
                 textOverflow: 'ellipsis',
-                width: '100%' 
+                width: '100%', 
+                p: 1
                 }}
             >
                 {valori.descrizione}
@@ -224,21 +232,21 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
                     </Button> */}
             </Box>
 
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, color: 'black' }}>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, color: 'black', pl: 1 }}>
                 {valori.location}
             </Typography>
-            <Typography variant="body2" color="text.primary" sx={{ mb: 0.5, color: 'black' }}>
+            <Typography variant="body2" color="text.primary" sx={{ mb: 0.5, color: 'black', pl: 1 }}>
                 {timeDifference}
             </Typography>
 
-            <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
+            <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
                     <WorkIcon sx={{ color: '#00853C', mr: 1 }} />
                     {valori.tipologia && valori.tipologia.descrizione
                     ? valori.tipologia.descrizione
                     : "N/A"}
                     </Typography>
 
-            <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
+            <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
                     <ChecklistIcon sx={{ color: '#00853C', mr: 1 }} />
                     Competenze: {skillsToShow} {additionalSkillsCount}
             </Typography>
@@ -253,9 +261,9 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
 
 
          {/* Icona di torcia */}
+         <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center',  width: 'auto', overflow: 'hidden', m: 0, pl: 1 }}>
                 <Button
                     onClick={openPopover} 
-                    size='small' 
                     disableTouchRipple 
                     sx={{ 
                     mb:1,
@@ -278,6 +286,7 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
                     }}>
                     <img src={Torcia} alt="Torcia" style={{ width: '20%', height: '100%', display: 'flex', justifyContent: 'flex-start' }} />
                 </Button>
+               
 
             <Popover
                 id={popoverId}
@@ -286,11 +295,11 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
                 onClose={closePopover}
                 anchorOrigin={{
                     vertical: 'top',
-                    horizontal: 'left',
+                    horizontal: 'center',
                 }}
                 transformOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
+                    vertical: 'top',
+                    horizontal: 'center',
                 }}
             >
                 <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection:'column' }}>
@@ -301,9 +310,14 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
                     color: 'black',
                     fontWeight: 'bold',
                     textTransform: 'lowercase',
+                    justifyContent: 'space-between', 
+                    alignItems: 'center', 
                     }}
                     >
                         Modifica
+                        <IconButton>
+                            <EditIcon sx={{color: '#00853C'}} />
+                        </IconButton>
                     </Button>
                     <Button 
                     onClick={() => navigateToAssocia(valori.id)}
@@ -312,9 +326,14 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
                     color: 'black',
                     fontWeight: 'bold',
                     textTransform: 'lowercase',
+                    justifyContent: 'space-between', 
+                    alignItems: 'center', 
                     }}
                     >
                         Match
+                        <IconButton>
+                            <JoinInnerIcon sx={{color: '#00853C'}} />
+                        </IconButton>
                     </Button>
                     <Button 
                     onClick={handleOpenModalStato}
@@ -323,9 +342,14 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
                     color: 'black',
                     fontWeight: 'bold',
                     textTransform: 'lowercase',
+                    justifyContent: 'space-between', 
+                    alignItems: 'center', 
                     }}
                     >
                         Stato
+                        <IconButton>
+                            <AutorenewIcon sx={{color: '#00853C'}} />
+                        </IconButton>
                     </Button>
                     <Button
                     onClick={handleOpenModalDelete}
@@ -333,13 +357,19 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
                         m: 1,
                         color: 'red',
                         fontWeight: 'bold',
-                        textTransform: 'lowercase'
+                        textTransform: 'lowercase',
+                        justifyContent: 'space-between', 
+                        alignItems: 'center', 
                     }}
                     >
                         Cancella
+                        <IconButton>
+                        <DeleteIcon sx={{ color: 'red'}} />
+                        </IconButton>
                     </Button>
                 </Box>
             </Popover>
+            </Box>
 
 
                 <Modal
