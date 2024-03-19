@@ -1,23 +1,26 @@
-import React from 'react';
-import GIF from '../images/zeb-zeb89.gif';
-import { Box, Typography } from '@mui/material';
+import React from 'react'
+import { Box, Typography } from '@mui/material'
 
 function Dashboard() {
   return (
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', flexDirection: 'column', ml: 10 }}>
-
-       <Typography>EH! VOLEVI!!</Typography>
-      <img src={GIF} alt="Loading..." />
-      <Typography sx={{ml: 17, mt: 8}}>Mi dispiace, ancora questa pagina non è disponibile, cioè, ancora dobbiamo
-        definire cosa verrà visualizzato qui, poi decidere pure in quale forma, i colori, la disposizione,
-        poi lo devo programmare, è ancora lunga car* mi*, però vabbè... per il resto tutto bene? che mi racconti?
-       
-        
-      </Typography>
-     
-      
+    <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto', width: '100vw' }}>
+         <Box sx={{ 
+                flexGrow: 1, 
+                p: 3, 
+                marginLeft: '13.2em', 
+                marginTop: '0.5em', 
+                marginBottom: '0.8em', 
+                marginRight: '0.8em', 
+                backgroundColor: '#FEFCFD', 
+                borderRadius: '10px', 
+                minHeight: '98vh',
+                mt: 1.5 
+            }}>
+                        <Typography variant='h6'>WORK IN PROGRESS</Typography>
+            </Box>
     </Box>
+
   );
-}
+};
 
 export default Dashboard;

@@ -107,6 +107,7 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
 
 
     const handleOpenModalStato = (id) => {
+        console.log("id: ", id);
         setModalStato(true);
         setIdNeed(id);
     };
@@ -144,6 +145,9 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
     };
 
 
+    console.log("valori: ", valori);    
+
+
 
     const additionalDrawerContent = (
         <List>
@@ -159,13 +163,13 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
                     <JoinInnerIcon sx={{ color: '#00853C'}} />
                 </ListItemIcon>
             </ListItem>
-            <ListItem button onClick={handleOpenModalStato} sx={{ gap: 3}}>
+            <ListItem button onClick={() => handleOpenModalStato(valori.id)} sx={{ gap: 3}}>
                 <ListItemText primary="Stato" />
                 <ListItemIcon>
                     <AutorenewIcon sx={{ color: '#00853C'}} />
                 </ListItemIcon>
             </ListItem>
-            <ListItem button onClick={handleOpenModalDelete} sx={{ gap: 3}}>
+            <ListItem button onClick={() => handleOpenModalDelete(valori.id)} sx={{ gap: 3}}>
                 <ListItemText primary="Cancella" />
                 <ListItemIcon>
                     <DeleteIcon sx={{ color: 'red'}} />
@@ -236,6 +240,17 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
                     Competenze: {skillsToShow} {additionalSkillsCount}
             </Typography>
 
+
+            <Box
+            sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                mt: 1,
+                mb: 1,
+                pl: 1,
+                gap: 1,
+            }}>
             <IconButton 
             onClick={openPopover} 
             disableRipple={true}
@@ -260,6 +275,9 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
             >
                     <img src={Torcia} alt="Torcia" style={{ width: '4vw', marginTop: '1em' }} />
             </IconButton>
+            <Typography variant="h6" color="text.primary" sx={{ color: '#00853C', fontWeight: 'bold', display: 'flex', mr: 1, mt: 2 }}>{valori.cliente.denominazione}</Typography>
+            </Box>
+
 
             <Popover
                 id={popoverId}

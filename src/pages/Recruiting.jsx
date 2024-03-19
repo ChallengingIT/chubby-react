@@ -389,11 +389,12 @@ const handleReset = () => {
     // { field: "id",            headerName: "ID",             width: 70  },
     { field: "nome",         headerName: "Nome",           flex: 1.3, renderCell: (params) => (
       <div style={{ textAlign: "left"  }}>
-      <Link
+      <Link 
       to={`/recruiting/modifica/${params.row.id}`}
       state={{ recruitingData: params.row }}
+      style={{ color: 'black' }}
     >
-      {params.row.nome}<br />{params.row.cognome}
+      {params.row.nome} {params.row.cognome}
     </Link>
     </div>
       ),
@@ -465,7 +466,7 @@ const handleReset = () => {
 
 
 return (
-  <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', flexGrow: 1}}>
+  <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto', minHeight: '100vh', flexGrow: 1}}>
     <Box sx={{
       p: 2,
       ml: 26,
@@ -474,10 +475,9 @@ return (
       mr: 0.8,
       backgroundColor: '#FEFCFD',
       borderRadius: '20px',
-      height: '99%',
+      height: '97vh',
       width: '100%',
       flexDirection: 'column',
-      overflow: 'hidden'
     }}>
       <RicercheRecruiting 
       filtri={filtri}
