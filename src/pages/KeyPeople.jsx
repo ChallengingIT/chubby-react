@@ -229,9 +229,9 @@ const Keypeople = () => {
 
 
     const statoOptions = [
-        { label: 'Verde', value: '1' },
-        { label: 'Giallo', value: '2' },
-        { label: 'Rosso', value: '3' }
+        { label: 'Caldo', value: '1' },
+        { label: 'Tiepido', value: '2' },
+        { label: 'Freddo', value: '3' }
     ];
 
 
@@ -245,7 +245,7 @@ const Keypeople = () => {
                 marginBottom: '0.8em', 
                 marginRight: '0.8em', 
                 backgroundColor: '#FEFCFD', 
-                borderRadius: '10px', 
+                borderRadius: '20px', 
                 minHeight: '98vh',
                 mt: 1.5
             }}>

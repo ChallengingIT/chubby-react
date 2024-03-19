@@ -1,11 +1,8 @@
 import React, { useState, useEffect }                   from 'react';
 import { useNavigate  }                                 from 'react-router-dom';
 import axios                                            from 'axios';
-import SearchIcon                                       from '@mui/icons-material/Search';
-import CloseIcon                                        from '@mui/icons-material/Close';
 import AziendeCard                                      from '../components/card/AziendeCard';
 import InfiniteScroll                                   from "react-infinite-scroll-component";
-import AggiungiBox                                      from '../components/AggiungiBox';   
 import RicercheAziende                                  from '../components/ricerche/RicercheAziende';    
 
 import { 
@@ -221,6 +218,7 @@ const Aziende = () => {
             const handleFilterChange = (name) => (event) => {
                 const newValue = event.target.value;
                 setFiltri({ ...filtri, [name]: newValue });
+                
                 if (name === 'denominazione' && newValue === '') {
                     fetchData();
                 } else {
@@ -274,9 +272,9 @@ const Aziende = () => {
         ];
 
         const statoOptions = [
-            { label: 'Verde', value: '1' },
-            { label: 'Giallo', value:'2'},
-            { label: 'Rosso', value: '3' }
+            { label: 'Caldo', value: '1' },
+            { label: 'Tiepido', value:'2'},
+            { label: 'Freddo', value: '3' }
         ];
 
 
@@ -368,7 +366,7 @@ const Aziende = () => {
                 marginBottom: '0.8em', 
                 marginRight: '0.8em', 
                 backgroundColor: '#FEFCFD', 
-                borderRadius: '10px', 
+                borderRadius: '20px', 
                 minHeight: '98vh',
                 mt: 1.5 
             }}>

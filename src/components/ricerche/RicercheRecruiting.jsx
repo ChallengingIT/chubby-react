@@ -263,6 +263,7 @@ function RicercheRecruiting({ filtri, onFilterChange, onReset, tipologiaOptions,
                         sx={{
                             backgroundColor: 'black',
                             color: 'white',
+                            textTransform: 'lowercase',
                             fontWeight: 'bold',
                             '&:hover': {
                                 backgroundColor: 'black',

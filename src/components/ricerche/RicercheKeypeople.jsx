@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState }                                                                                                         from 'react';
 import { Button, Box, Grid, Select, MenuItem, FormControl, InputLabel, IconButton, Drawer, Typography, TextField, InputAdornment } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import SearchIcon                                       from '@mui/icons-material/Search';
-import { useNavigate  }                                 from 'react-router-dom';
+import CloseIcon                                                                                                                   from '@mui/icons-material/Close';
+import SearchIcon                                                                                                                  from '@mui/icons-material/Search';
+import { useNavigate  }                                                                                                            from 'react-router-dom';
 
 
 
@@ -21,41 +21,41 @@ function RicercheKeypeople({ filtri, onFilterChange, onReset, aziendaOptions, st
     };
 
 
-    const renderInputField = (filtro) => {
-        switch(filtro.type) {
-            case 'select':
-                return (
-                    <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel id={`${filtro.label}-label`}>{filtro.label}</InputLabel>
-                        <Select
-                            labelId={`${filtro.label}-label`}
-                            displayEmpty
-                            value={filtri[filtro.name] || ''}
-                            onChange={onFilterChange(filtro.name)}
-                            renderValue={(selected) => selected ? filtro.options.find(option => option.value === selected)?.label : ''}
-                        >
-                            {filtro.options.map((option) => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                );
-            case 'text':
-                return (
-                    <TextField
-                        fullWidth
-                        label={filtro.label}
-                        value={filtri[filtro.name] || ''}
-                        onChange={onFilterChange(filtro.name)}
-                        sx={{ mb: 2 }}
-                    />
-                );
-            default:
-                return null;
-        }
-    };
+    // const renderInputField = (filtro) => {
+    //     switch(filtro.type) {
+    //         case 'select':
+    //             return (
+    //                 <FormControl fullWidth sx={{ mb: 2 }}>
+    //                     <InputLabel id={`${filtro.label}-label`}>{filtro.label}</InputLabel>
+    //                     <Select
+    //                         labelId={`${filtro.label}-label`}
+    //                         displayEmpty
+    //                         value={filtri[filtro.name] || ''}
+    //                         onChange={onFilterChange(filtro.name)}
+    //                         renderValue={(selected) => selected ? filtro.options.find(option => option.value === selected)?.label : ''}
+    //                     >
+    //                         {filtro.options.map((option) => (
+    //                             <MenuItem key={option.value} value={option.value}>
+    //                                 {option.label}
+    //                             </MenuItem>
+    //                         ))}
+    //                     </Select>
+    //                 </FormControl>
+    //             );
+    //         case 'text':
+    //             return (
+    //                 <TextField
+    //                     fullWidth
+    //                     label={filtro.label}
+    //                     value={filtri[filtro.name] || ''}
+    //                     onChange={onFilterChange(filtro.name)}
+    //                     sx={{ mb: 2 }}
+    //                 />
+    //             );
+    //         default:
+    //             return null;
+    //     }
+    // };
 
 
 
@@ -92,7 +92,6 @@ function RicercheKeypeople({ filtri, onFilterChange, onReset, aziendaOptions, st
                         </Button>
     
                         <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
-                            {/* Barra di ricerca */}
                             <TextField
                                 id="search-bar"
                                 variant="outlined"
@@ -257,6 +256,7 @@ function RicercheKeypeople({ filtri, onFilterChange, onReset, aziendaOptions, st
                             sx={{
                                 backgroundColor: 'black',
                                 color: 'white',
+                                textTransform: 'lowercase',
                                 fontWeight: 'bold',
                                 '&:hover': {
                                     backgroundColor: 'black',

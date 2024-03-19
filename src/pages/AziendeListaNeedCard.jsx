@@ -253,7 +253,7 @@ const AziendeListaNeedCard = () => {
                 marginBottom: '0.8em', 
                 marginRight: '0.8em', 
                 backgroundColor: '#FEFCFD', 
-                borderRadius: '10px', 
+                borderRadius: '20px', 
                 minHeight: '98vh',
                 mt: 1.5 
             }}>

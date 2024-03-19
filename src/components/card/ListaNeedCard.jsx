@@ -1,7 +1,5 @@
-import React                 from 'react';
+import React                                from 'react';
 import { useNavigate }                      from 'react-router-dom';
-import EmailIcon                            from '@mui/icons-material/Email';
-import BusinessCenterIcon                   from '@mui/icons-material/BusinessCenter';
 import { 
     Card, 
     CardContent, 
@@ -101,11 +99,14 @@ import {
                 size="small"
                 onClick={(event) => navigateToAggiorna(valori.id, event)}
                 sx={{
-                    backgroundColor: '#00853C',
+                    backgroundColor: 'black',
                     color: 'white',
                     ml: 1,
+                    mb: 1,
+                    textTransform: 'lowercase',
+                    fontWeight: 'bold',
                     '&:hover': {
-                        backgroundColor: '#00853C',
+                        backgroundColor: 'black',
                         transform: 'scale(1.05)',
                         },
                     }}>Modifica</Button>

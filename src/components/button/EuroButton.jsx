@@ -12,8 +12,8 @@ function EuroButton({onClick}) {
         onClick={onClick}
         sx={{
             marginRight: '10%',
-            backgroundColor: '#00853C',
-            color: 'black',
+            backgroundColor: 'black',
+            color: 'white',
             borderRadius: '50%',
             minWidth: '2em',
             width: '2em',
@@ -26,9 +26,9 @@ function EuroButton({onClick}) {
               justifyContent: 'center'
             },
             '&:hover': {
-              backgroundColor: '#00853C',
+              backgroundColor: 'black',
               transform:'scale(1.05)',
-              color: 'black',
+              color: 'white',
               cursor: 'pointer',
               borderRadius: '50%',
               borderStyle: 'none',

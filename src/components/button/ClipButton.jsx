@@ -1,21 +1,17 @@
 import React from 'react';
 import AttachmentIcon from '@mui/icons-material/Attachment';
 import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom";
 
-function ClipButton({ onClick, idFile, fileDescrizione }) {
-    const navigate = useNavigate();
-
-  
-
-
+function ClipButton({ idFile, fileDescrizione, onClick }) {
     const handleDownload = () => {
-      if (onClick && idFile && fileDescrizione) {
-        onClick(idFile, fileDescrizione);  
-      } else {
-        console.warn("L'azione di download o l'ID del file non sono definiti");
-      }
+        if (onClick && idFile && fileDescrizione) {
+            onClick();
+        } else {
+            console.warn("La funzione di download non è definita");
+        }
     };
+
+
 
     return (
         <Button 
@@ -25,8 +21,8 @@ function ClipButton({ onClick, idFile, fileDescrizione }) {
             onClick={handleDownload} 
             sx={{
               marginRight: '10%',
-              backgroundColor: '#00853C',
-              color: 'black',
+              backgroundColor: 'black',
+              color: 'white',
               borderRadius: '50%',
               minWidth: '2em',
               width: '2em',
@@ -39,9 +35,9 @@ function ClipButton({ onClick, idFile, fileDescrizione }) {
                 justifyContent: 'center'
               },
               '&:hover': {
-                backgroundColor: '#00853C',
+                backgroundColor: 'balck',
                 transform:'scale(1.05)',
-                color: 'black',
+                color: 'white',
                 cursor: 'pointer',
                 borderRadius: '50%',
                 borderStyle: 'none',

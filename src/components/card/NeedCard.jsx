@@ -1,9 +1,15 @@
 import React, {useState, useEffect}                 from 'react';
-import { useNavigate }                      from 'react-router-dom';
-import ChecklistIcon                        from '@mui/icons-material/Checklist';
-import WorkIcon                             from '@mui/icons-material/Work';
-import axios from 'axios';
-import CloseIcon from '@mui/icons-material/Close';
+import { useNavigate }                              from 'react-router-dom';
+import ChecklistIcon                                from '@mui/icons-material/Checklist';
+import WorkIcon                                     from '@mui/icons-material/Work';
+import axios                                        from 'axios';
+import Torcia                                       from "../../images/torciaSF.png";
+import JoinInnerIcon                                from '@mui/icons-material/JoinInner'; //match
+import AutorenewIcon                                from '@mui/icons-material/Autorenew'; //stato
+import DeleteIcon                                   from '@mui/icons-material/Delete'; //cancella
+import { Edit }                                     from '@mui/icons-material';
+
+
 
 import { 
     Card, 
@@ -11,10 +17,15 @@ import {
     Box,
     Typography,
     Button,
-    CardActions,
     Modal,
     Select,
-    MenuItem
+    MenuItem,
+    Popover,
+    IconButton,
+    List,
+    ListItem,
+    ListItemText,
+    ListItemIcon
     } from '@mui/material';
 
 
@@ -41,8 +52,24 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
     const navigate = useNavigate();
     const [ modalStato,        setModalStato      ] = useState(false);
     const [ modalDelete,       setModalDelete     ] = useState(false);
-    const [ newStato,          setNewStato] = useState(valori.stato?.id); 
+    const [ newStato,          setNewStato        ] = useState(valori.stato?.id); 
     const [ idNeed,            setIdNeed          ] = useState(null);
+
+
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const openPopover = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const closePopover = () => {
+        setAnchorEl(null);
+    };
+
+    const isPopoverOpen = Boolean(anchorEl);
+
+    const popoverId = isPopoverOpen ? 'popover-id' : undefined;
+
 
 
     const user = JSON.parse(localStorage.getItem('user'));
@@ -59,42 +86,16 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
     
 
 
-
-
-
-
-    // const [ setOpenStato        ] = useState(false);
-
-
-    // const handleCardClick = (id) => {
-    //     navigate(`/need/dettaglio/${valori.id}`, { state: { ...valori } });
-    // };
-
-
     const navigateToAssocia = (id, event) => {
-        event.stopPropagation();
+        // event.stopPropagation();
         navigate(`/need/match/${valori.id}`, { state: {...valori}});
     };
 
     const navigateToAggiorna = (id, event) => {
-        event.stopPropagation();
+        // event.stopPropagation();
         navigate(`/need/modifica/${valori.id}`, { state: { ...valori } });
     };
 
-    // const handleOpenStato = (event) => {
-    //     event.stopPropagation();
-    //     setOpenStato(true);
-    // };
-
-    // const handleCloseStato = (event) => {
-    //     event.stopPropagation();
-    //     setOpenStato(false);
-    // };
-
-    // const handleOpenSkillsDialog = (event) => {
-    //     event.stopPropagation();
-    //     setOpenSkillsDialog(true);
-    // };
 
     const skillsToShow = valori.skills.slice(0, 3).map(skill => skill.descrizione).join(', ');
     const additionalSkillsCount = valori.skills.length > 3 ? `e altre ${valori.skills.length - 3}` : '';
@@ -117,7 +118,7 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
 
 
 
-      const handleUpdateStato = async () => {
+    const handleUpdateStato = async () => {
         const idStato = newStato;
         const params = new URLSearchParams({ stato: idStato });
 
@@ -129,7 +130,7 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
         } catch(error) {
             console.error("Errore durante l'aggiornamento dello stato: ", error);
         }
-      };
+    };
 
 
 
@@ -144,11 +145,35 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
 
 
 
+    const additionalDrawerContent = (
+        <List>
+            <ListItem button onClick={() => navigateToAggiorna(valori.id)} sx={{ gap: 3}}>
+                <ListItemText primary="Modifica" />
+                <ListItemIcon>
+                    <Edit sx={{ color: '#00853C'}} />
+                </ListItemIcon>
+            </ListItem>
+            <ListItem button onClick={() => navigateToAssocia(valori.id)} sx={{ gap: 3}}>
+                <ListItemText primary="Match" />
+                <ListItemIcon>
+                    <JoinInnerIcon sx={{ color: '#00853C'}} />
+                </ListItemIcon>
+            </ListItem>
+            <ListItem button onClick={handleOpenModalStato} sx={{ gap: 3}}>
+                <ListItemText primary="Stato" />
+                <ListItemIcon>
+                    <AutorenewIcon sx={{ color: '#00853C'}} />
+                </ListItemIcon>
+            </ListItem>
+            <ListItem button onClick={handleOpenModalDelete} sx={{ gap: 3}}>
+                <ListItemText primary="Cancella" />
+                <ListItemIcon>
+                    <DeleteIcon sx={{ color: 'red'}} />
+                </ListItemIcon>
+            </ListItem>
+        </List>
+    );
 
-
-
-
-    
 
 
     return (
@@ -166,13 +191,14 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
             transition: 'transform 0.3s ease, border-width 0.3s ease', 
             '&:hover': {
             transform: 'scale(1.05)', 
-            border: '4px solid #00853C' 
+            border: '4px solid #00853C',
+            p: 1
         }}
     }
     >
-        <CardContent>
+        <CardContent sx={{ p: 1 }}>
             {/* Contenuto della Card */}
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography
                 gutterBottom
                 variant="h5"
@@ -183,124 +209,72 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
                 textOverflow: 'ellipsis',
-                width: '100%' 
+                width: '100%', 
+                p: 1
                 }}
             >
                 {valori.descrizione}
             </Typography>
-                    <Button
-                    onClick={handleOpenModalDelete}
-                    size='small'
-                    sx={{
-                        color: '#000000',
-                        minWidth: 'auto',
-                        borderRadius:'50%',
-                        '&:hover': {
-                            backgroundColor: 'black',
-                            color: 'white',
-                            borderRadius:'50%',
-                        },
-                    }}
-                    >
-                        <CloseIcon />
-                    </Button>
             </Box>
 
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, color: 'black' }}>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, color: 'black', pl: 1 }}>
                 {valori.location}
             </Typography>
-            <Typography variant="body2" color="text.primary" sx={{ mb: 0.5, color: 'black' }}>
+            <Typography variant="body2" color="text.primary" sx={{ mb: 0.5, color: 'black', pl: 1 }}>
                 {timeDifference}
             </Typography>
 
-            <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
+            <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
                     <WorkIcon sx={{ color: '#00853C', mr: 1 }} />
                     {valori.tipologia && valori.tipologia.descrizione
                     ? valori.tipologia.descrizione
                     : "N/A"}
                     </Typography>
 
-            <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
+            <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
                     <ChecklistIcon sx={{ color: '#00853C', mr: 1 }} />
                     Competenze: {skillsToShow} {additionalSkillsCount}
             </Typography>
 
-            {/* <Typography variant="body2" color="text.primary"  sx={{ mt: 4, color: 'black' }}>
-                <InputAdornment position="start">
-                    <WorkIcon sx={{ color: '#00853C', mr: 1 }} />
-                    Tipologia: {valori.tipo}
-                </InputAdornment>
-            </Typography> */}
+            <IconButton 
+            onClick={openPopover} 
+            disableTouchRipple
+            sx={{ p: 0,
+                '&:hover':
+                { 
+                    transform: 'scale(1.1)'
+                },
+                '&:focus': {
+                    outline: 'none',
+                },
+                '& .MuiTouchRipple-root': {
+                    width: '20%', 
+                },
+            }}
+            >
+                    <img src={Torcia} alt="Torcia" style={{ width: '4vw', marginTop: '1em' }} />
+            </IconButton>
+
+            <Popover
+                id={popoverId}
+                open={Boolean(anchorEl)}
+                anchorEl={anchorEl}
+                onClose={closePopover}
+                anchorOrigin={{
+                    vertical: 'center',
+                    horizontal: 'right',
+                }}
+                transformOrigin={{
+                    vertical: 'center',
+                    horizontal: 'left',
+                }}
+            >
+                <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection:'column' }}>
+                {additionalDrawerContent}
+                </Box>
+            </Popover>
         </CardContent>
-        <CardActions>
-            <Box
-            sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                width: '100%',
-                mr:2
-            }} >
-                <Box
-                sx={{
-                    display: 'flex',
-                    gap: 1.5,
-                    mr:3
-                    
-                }}>
-            <Button 
-            size="small"
-            onClick={(event) => navigateToAggiorna(valori.id, event)}
-            sx={{
-                backgroundColor: '#00853C',
-                color: 'white',
-                ml: 1,
-                '&:hover': {
-                    backgroundColor: '#00853C',
-                    transform: 'scale(1.05)',
-                    },
-                }}>Modifica</Button>
-                <Button
-                    size="small"
-                    onClick={(event) => navigateToAssocia(valori.id, event)}
-                    sx={{
-                    backgroundColor: '#000000',
-                    color: 'white',
-                    '&:hover': {
-                        backgroundColor: '#000000',
-                        transform: 'scale(1.05)',
-                    },
-                    }}>Match</Button>
-                    <Button 
-                    size="small"
-                    onClick={(event) => handleOpenModalStato(valori.id, event)}
-                    sx={{
-                        backgroundColor: '#00853C',
-                        color: 'white',
-                        
-                        '&:hover': {
-                            backgroundColor: '#00853C',
-                            transform: 'scale(1.05)',
-                            },
-                        }}>Stato</Button>
-                    </Box>
-                    <Typography
-                    gutterBottom
-                    variant="h6"
-                    component="div"
-                    sx={{
-                    // color: 'black',
-                    fontWeight: 'bold',
-                    overflow: 'hidden',
-                    whiteSpace: 'nowrap',
-                    textOverflow: 'ellipsis',
-                    maxWidth: '70%',
-                    color: '#00853C',
-                    }}
-                >
-                    {valori.cliente.denominazione}
-                </Typography>
+
 
                 <Modal
                 open={modalDelete}
@@ -448,10 +422,6 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
                             </Box>
                         </Box>
                         </Modal>
-
-
-                    </Box>
-        </CardActions>
     </Card>
     );
 };

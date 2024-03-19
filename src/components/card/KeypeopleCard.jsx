@@ -17,27 +17,10 @@ const KeypeopleCard = ({valori}) => {
 
     const navigate = useNavigate();
 
-
-    // const handleCardClick = (id) => {
-    //     navigate(`/need/dettaglio/${valori.id}`, { state: { ...valori } });
-    // };
-
-
     const navigateToAggiorna = (id, event) => {
         event.stopPropagation();
         navigate(`/keypeople/modifica/${valori.id}`, { state: { ...valori } });
     };
-
-    // const handleOpenStato = (event) => {
-    //     event.stopPropagation();
-    //     setOpenStato(true);
-    // };
-
-    // const handleCloseStato = (event) => {
-    //     event.stopPropagation();
-    //     setOpenStato(false);
-    // };
-
 
 
     return (
@@ -77,24 +60,12 @@ const KeypeopleCard = ({valori}) => {
             >
                 {valori.nome} {valori.cognome}
             </Typography>
-                    {/* <Button
-                    onClick={handleOpenStato}
-                    size='small'
-                    sx={{
-                        color: '#000000',
-                        minWidth: 'auto',
-                        '&:hover': {
-                            backgroundColor: 'transparent'
-                        },
-                    }}
-                    >
-                        <InfoButton />
-                    </Button> */}
             </Box>
 
-            {/* <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, color: 'black' }}>
-                {valori.citta}
-            </Typography> */}
+            <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
+                <BusinessCenterIcon sx={{ color: '#00853C', mr: 1 }} />
+                {valori.ruolo}
+            </Typography>
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
                     <EmailIcon sx={{ color: '#00853C', mr: 1 }} />
@@ -104,11 +75,6 @@ const KeypeopleCard = ({valori}) => {
             <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1}}>
                 <LocalPhoneIcon sx={{ color: '#00853C', mr: 1}} />
                 {valori.cellulare}
-            </Typography>
-
-            <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
-                <BusinessCenterIcon sx={{ color: '#00853C', mr: 1 }} />
-                {valori.ruolo}
             </Typography>
 
         </CardContent>
@@ -133,11 +99,14 @@ const KeypeopleCard = ({valori}) => {
             size="small"
             onClick={(event) => navigateToAggiorna(valori.id, event)}
             sx={{
-                backgroundColor: '#00853C',
+                backgroundColor: 'black',
                 color: 'white',
                 ml: 1,
+                mb: 1,
+                textTransform: 'lowercase',
+                fontWeight: 'bold',
                 '&:hover': {
-                    backgroundColor: '#00853C',
+                    backgroundColor: 'black',
                     transform: 'scale(1.05)',
                     },
                 }}>Aggiorna</Button>
@@ -147,7 +116,6 @@ const KeypeopleCard = ({valori}) => {
                     variant="h6"
                     component="div"
                     sx={{
-                    // color: 'black',
                     fontWeight: 'bold',
                     overflow: 'hidden',
                     whiteSpace: 'nowrap',

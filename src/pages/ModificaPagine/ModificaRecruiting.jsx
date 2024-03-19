@@ -191,8 +191,8 @@ const ModificaStaffing = () => {
     ral:                                staffing.ral                                                                  || null,
     disponibilita:                      staffing.disponibilita                                                        || null,
     // cv:                                 recruitingData.files?.find(file => file.tipologia.descrizione === 'CV')             || null,
-    cv:                                 staffing.files?.find(file => file.tipologia.descrizione === 'CV')                   || null,
-    cf:                                 staffing.files?.find(file => file.tipologia.descrizione === 'CF')                   || null,
+    cv:                                 staffing.files ? staffing.files.find(file => file.tipologia.descrizione === 'CV') || null : null,
+    cf:                                 staffing.files ? staffing.files.find(file => file.tipologia.descrizione === 'CF') || null : null,
     note:                               recruitingData.note                                                                 || null,
 
   };
@@ -290,7 +290,7 @@ if(fileCF) {
       <CircularProgress /> // Mostra un indicatore di caricamento o un messaggio mentre i dati sono in caricamento
     ) : (
           <Box sx={{ flexGrow: 1, p: 3, marginLeft: '12.2em', marginTop: '0.5em', marginBottom: '0.8em', marginRight: '0.8em', backgroundColor: '#FEFCFD', borderRadius: '10px' }}>
-          <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem', color: '#00853C'}}>Modifica di {nomeCandidato} {cognomeCandidato}</Typography>
+          <Typography variant="h4" component="h1" sx={{ mb: 4, fontWeight: 'bold', fontSize: '1.8rem', color: '#00853C'}}>{nomeCandidato} {cognomeCandidato}</Typography>
 
           <FieldBoxFile
           fields={fields}
