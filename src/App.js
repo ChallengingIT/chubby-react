@@ -117,7 +117,7 @@ useEffect(() => {
                   } />
                 <Route path="/need/aggiungi"element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
-                      <NuovoNeed />
+                      <AggiungiNeed />
                     </PrivateRoute>
                   } />
                 <Route path="/need/modifica/:id"element={

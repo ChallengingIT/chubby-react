@@ -1,14 +1,14 @@
 import React, {useState, useEffect}                 from 'react';
-import { useNavigate }                      from 'react-router-dom';
-import ChecklistIcon                        from '@mui/icons-material/Checklist';
-import WorkIcon                             from '@mui/icons-material/Work';
-import axios from 'axios';
-import CloseIcon from '@mui/icons-material/Close';
-import Torcia from "../../images/torciaSF.png";
-import EditIcon from '@mui/icons-material/Edit'; //modifica
-import JoinInnerIcon from '@mui/icons-material/JoinInner'; //match
-import AutorenewIcon from '@mui/icons-material/Autorenew'; //stato
-import DeleteIcon from '@mui/icons-material/Delete'; //cancella
+import { useNavigate }                              from 'react-router-dom';
+import ChecklistIcon                                from '@mui/icons-material/Checklist';
+import WorkIcon                                     from '@mui/icons-material/Work';
+import axios                                        from 'axios';
+import Torcia                                       from "../../images/torciaSF.png";
+import JoinInnerIcon                                from '@mui/icons-material/JoinInner'; //match
+import AutorenewIcon                                from '@mui/icons-material/Autorenew'; //stato
+import DeleteIcon                                   from '@mui/icons-material/Delete'; //cancella
+import { Edit }                                     from '@mui/icons-material';
+
 
 
 import { 
@@ -17,12 +17,15 @@ import {
     Box,
     Typography,
     Button,
-    CardActions,
     Modal,
     Select,
     MenuItem,
     Popover,
-    IconButton
+    IconButton,
+    List,
+    ListItem,
+    ListItemText,
+    ListItemIcon
     } from '@mui/material';
 
 
@@ -49,7 +52,7 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
     const navigate = useNavigate();
     const [ modalStato,        setModalStato      ] = useState(false);
     const [ modalDelete,       setModalDelete     ] = useState(false);
-    const [ newStato,          setNewStato] = useState(valori.stato?.id); 
+    const [ newStato,          setNewStato        ] = useState(valori.stato?.id); 
     const [ idNeed,            setIdNeed          ] = useState(null);
 
 
@@ -83,18 +86,6 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
     
 
 
-
-
-
-
-    // const [ setOpenStato        ] = useState(false);
-
-
-    // const handleCardClick = (id) => {
-    //     navigate(`/need/dettaglio/${valori.id}`, { state: { ...valori } });
-    // };
-
-
     const navigateToAssocia = (id, event) => {
         // event.stopPropagation();
         navigate(`/need/match/${valori.id}`, { state: {...valori}});
@@ -105,20 +96,6 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
         navigate(`/need/modifica/${valori.id}`, { state: { ...valori } });
     };
 
-    // const handleOpenStato = (event) => {
-    //     event.stopPropagation();
-    //     setOpenStato(true);
-    // };
-
-    // const handleCloseStato = (event) => {
-    //     event.stopPropagation();
-    //     setOpenStato(false);
-    // };
-
-    // const handleOpenSkillsDialog = (event) => {
-    //     event.stopPropagation();
-    //     setOpenSkillsDialog(true);
-    // };
 
     const skillsToShow = valori.skills.slice(0, 3).map(skill => skill.descrizione).join(', ');
     const additionalSkillsCount = valori.skills.length > 3 ? `e altre ${valori.skills.length - 3}` : '';
@@ -141,7 +118,7 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
 
 
 
-      const handleUpdateStato = async () => {
+    const handleUpdateStato = async () => {
         const idStato = newStato;
         const params = new URLSearchParams({ stato: idStato });
 
@@ -153,7 +130,7 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
         } catch(error) {
             console.error("Errore durante l'aggiornamento dello stato: ", error);
         }
-      };
+    };
 
 
 
@@ -168,11 +145,35 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
 
 
 
+    const additionalDrawerContent = (
+        <List>
+            <ListItem button onClick={() => navigateToAggiorna(valori.id)} sx={{ gap: 3}}>
+                <ListItemText primary="Modifica" />
+                <ListItemIcon>
+                    <Edit sx={{ color: '#00853C'}} />
+                </ListItemIcon>
+            </ListItem>
+            <ListItem button onClick={() => navigateToAssocia(valori.id)} sx={{ gap: 3}}>
+                <ListItemText primary="Match" />
+                <ListItemIcon>
+                    <JoinInnerIcon sx={{ color: '#00853C'}} />
+                </ListItemIcon>
+            </ListItem>
+            <ListItem button onClick={handleOpenModalStato} sx={{ gap: 3}}>
+                <ListItemText primary="Stato" />
+                <ListItemIcon>
+                    <AutorenewIcon sx={{ color: '#00853C'}} />
+                </ListItemIcon>
+            </ListItem>
+            <ListItem button onClick={handleOpenModalDelete} sx={{ gap: 3}}>
+                <ListItemText primary="Cancella" />
+                <ListItemIcon>
+                    <DeleteIcon sx={{ color: 'red'}} />
+                </ListItemIcon>
+            </ListItem>
+        </List>
+    );
 
-
-
-
-    
 
 
     return (
@@ -214,22 +215,6 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
             >
                 {valori.descrizione}
             </Typography>
-                    {/* <Button
-                    onClick={handleOpenModalDelete}
-                    size='small'
-                    sx={{
-                        color: '#000000',
-                        minWidth: 'auto',
-                        borderRadius:'50%',
-                        '&:hover': {
-                            backgroundColor: 'black',
-                            color: 'white',
-                            borderRadius:'50%',
-                        },
-                    }}
-                    >
-                        <CloseIcon />
-                    </Button> */}
             </Box>
 
             <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, color: 'black', pl: 1 }}>
@@ -251,125 +236,44 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
                     Competenze: {skillsToShow} {additionalSkillsCount}
             </Typography>
 
-            {/* <Typography variant="body2" color="text.primary"  sx={{ mt: 4, color: 'black' }}>
-                <InputAdornment position="start">
-                    <WorkIcon sx={{ color: '#00853C', mr: 1 }} />
-                    Tipologia: {valori.tipo}
-                </InputAdornment>
-            </Typography> */}
-        </CardContent>
-
-
-         {/* Icona di torcia */}
-         <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center',  width: 'auto', overflow: 'hidden', m: 0, pl: 1 }}>
-                <Button
-                    onClick={openPopover} 
-                    disableTouchRipple 
-                    sx={{ 
-                    mb:1,
-                    backgroundColor: 'transparent',
-                    display: 'flex', 
-                    justifyContent: 'flex-start',
-                    width: 'auto',
-                    m: 0,
-                    p: 0,
-                    '&:hover': {
-                        backgroundColor: 'transparent',
-                        transform: 'scaleY(1.1)'
-                    },
-                    '&:focus': {
-                        outline: 'none',
-                    },
-                    '& .MuiTouchRipple-root': {
-                        width: '20%', 
-                    },
-                    }}>
-                    <img src={Torcia} alt="Torcia" style={{ width: '20%', height: '100%', display: 'flex', justifyContent: 'flex-start' }} />
-                </Button>
-               
+            <IconButton 
+            onClick={openPopover} 
+            disableTouchRipple
+            sx={{ p: 0,
+                '&:hover':
+                { 
+                    transform: 'scale(1.1)'
+                },
+                '&:focus': {
+                    outline: 'none',
+                },
+                '& .MuiTouchRipple-root': {
+                    width: '20%', 
+                },
+            }}
+            >
+                    <img src={Torcia} alt="Torcia" style={{ width: '4vw', marginTop: '1em' }} />
+            </IconButton>
 
             <Popover
                 id={popoverId}
-                open={isPopoverOpen}
+                open={Boolean(anchorEl)}
                 anchorEl={anchorEl}
                 onClose={closePopover}
                 anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'center',
+                    vertical: 'center',
+                    horizontal: 'right',
                 }}
                 transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'center',
+                    vertical: 'center',
+                    horizontal: 'left',
                 }}
             >
                 <Box sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection:'column' }}>
-                    <Button 
-                    onClick={() => navigateToAggiorna(valori.id)}
-                    sx={{
-                    m: 1,
-                    color: 'black',
-                    fontWeight: 'bold',
-                    textTransform: 'lowercase',
-                    justifyContent: 'space-between', 
-                    alignItems: 'center', 
-                    }}
-                    >
-                        Modifica
-                        <IconButton>
-                            <EditIcon sx={{color: '#00853C'}} />
-                        </IconButton>
-                    </Button>
-                    <Button 
-                    onClick={() => navigateToAssocia(valori.id)}
-                    sx={{
-                    m: 1,
-                    color: 'black',
-                    fontWeight: 'bold',
-                    textTransform: 'lowercase',
-                    justifyContent: 'space-between', 
-                    alignItems: 'center', 
-                    }}
-                    >
-                        Match
-                        <IconButton>
-                            <JoinInnerIcon sx={{color: '#00853C'}} />
-                        </IconButton>
-                    </Button>
-                    <Button 
-                    onClick={handleOpenModalStato}
-                    sx={{
-                    m: 1,
-                    color: 'black',
-                    fontWeight: 'bold',
-                    textTransform: 'lowercase',
-                    justifyContent: 'space-between', 
-                    alignItems: 'center', 
-                    }}
-                    >
-                        Stato
-                        <IconButton>
-                            <AutorenewIcon sx={{color: '#00853C'}} />
-                        </IconButton>
-                    </Button>
-                    <Button
-                    onClick={handleOpenModalDelete}
-                    sx={{
-                        m: 1,
-                        color: 'red',
-                        fontWeight: 'bold',
-                        textTransform: 'lowercase',
-                        justifyContent: 'space-between', 
-                        alignItems: 'center', 
-                    }}
-                    >
-                        Cancella
-                        <IconButton>
-                        <DeleteIcon sx={{ color: 'red'}} />
-                        </IconButton>
-                    </Button>
+                {additionalDrawerContent}
                 </Box>
             </Popover>
-            </Box>
+        </CardContent>
 
 
                 <Modal

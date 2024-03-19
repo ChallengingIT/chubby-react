@@ -1,4 +1,4 @@
-import React                 from 'react';
+import React                                from 'react';
 import { useNavigate }                      from 'react-router-dom';
 import ChecklistIcon                        from '@mui/icons-material/Checklist';
 import WorkIcon                             from '@mui/icons-material/Work';
@@ -89,24 +89,7 @@ import {
                 >
                     {valori.nome} {valori.cognome}
                 </Typography>
-                        {/* <Button
-                        onClick={handleOpenStato}
-                        size='small'
-                        sx={{
-                            color: '#000000',
-                            minWidth: 'auto',
-                            '&:hover': {
-                                backgroundColor: 'transparent'
-                            },
-                        }}
-                        >
-                            <InfoButton />
-                        </Button> */}
                 </Box>
-    
-                {/* <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, color: 'black' }}>
-                    {valori.location}
-                </Typography> */}
                 <Typography variant="body2" color="text.primary" sx={{ mb: 0.5, color: 'black' }}>
                     {timeDifference}
                 </Typography>
@@ -122,19 +105,12 @@ import {
                         ? valori.tipologia.descrizione
                         : "N/A"}
                         </Typography>
-               
+
     
                 <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
                         <ChecklistIcon sx={{ color: '#00853C', mr: 1 }} />
                         Competenze: {skillsToShow} {additionalSkillsCount}
                 </Typography>
-    
-                {/* <Typography variant="body2" color="text.primary"  sx={{ mt: 4, color: 'black' }}>
-                    <InputAdornment position="start">
-                        <WorkIcon sx={{ color: '#00853C', mr: 1 }} />
-                        Tipologia: {valori.tipo}
-                    </InputAdornment>
-                </Typography> */}
             </CardContent>
             <CardActions>
                 <Box

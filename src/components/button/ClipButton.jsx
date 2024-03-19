@@ -6,7 +6,6 @@ function ClipButton({ idFile, fileDescrizione, onClick }) {
     const handleDownload = () => {
         if (onClick && idFile && fileDescrizione) {
             onClick();
-            console.log("si è attivato il bottone per scaricare il cv");
         } else {
             console.warn("La funzione di download non è definita");
         }

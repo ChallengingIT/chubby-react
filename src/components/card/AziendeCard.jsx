@@ -1,7 +1,6 @@
-import React                 from 'react';
+import React                                from 'react';
 import { useNavigate }                      from 'react-router-dom';
 import EmailIcon                            from '@mui/icons-material/Email';
-import BusinessCenterIcon                   from '@mui/icons-material/BusinessCenter';
 import FactoryIcon                          from '@mui/icons-material/Factory';
 import { 
     Card, 
@@ -19,22 +18,7 @@ const AziendeCard = ({valori}) => {
 
     const getCardStyle = (tipologia) => {
         switch (tipologia) {
-            // case 'CLIENTE':
-            //     return {
-            //         borderRadius: '20px', 
-            //         maxWidth: '80%', 
-            //         justifyContent: 'center', 
-            //         margin: 'auto', 
-            //         cursor: 'pointer', 
-            //         height: 'auto',
-            //         borderColor: '2px solid #00853C', // Verde
-            //         transition: 'transform 0.3s ease, border-width 0.3s ease', 
 
-            //         '&:hover': {
-            //             transform: 'scale(1.05)', 
-            //             border: '4px solid #00853C'
-            //         }
-            //     };
             case 'PROSPECT':
                 return {
                     borderRadius: '20px', 
@@ -112,13 +96,6 @@ const AziendeCard = ({valori}) => {
     };
 
 
-
-
-    // const handleCardClick = (id) => {
-    //     navigate(`/need/dettaglio/${valori.id}`, { state: { ...valori } });
-    // };
-
-
     const navigateToAssocia = (id) => {
         navigate(`/need/${valori.id}`, { state: {...valori}});
     };
@@ -128,16 +105,6 @@ const AziendeCard = ({valori}) => {
         event.stopPropagation();
         navigate(`/aziende/modifica/${valori.id}`, { state: { ...valori } });
     };
-
-    // const handleOpenStato = (event) => {
-    //     event.stopPropagation();
-    //     setOpenStato(true);
-    // };
-
-    // const handleCloseStato = (event) => {
-    //     event.stopPropagation();
-    //     setOpenStato(false);
-    // };
 
     return (
         <Card
@@ -163,19 +130,6 @@ const AziendeCard = ({valori}) => {
             >
                 {valori.denominazione}
             </Typography>
-                    {/* <Button
-                    onClick={handleOpenStato}
-                    size='small'
-                    sx={{
-                        color: '#000000',
-                        minWidth: 'auto',
-                        '&:hover': {
-                            backgroundColor: 'transparent'
-                        },
-                    }}
-                    >
-                        <InfoButton />
-                    </Button> */}
             </Box>
 
             <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, color: 'black' }}>
@@ -225,17 +179,6 @@ const AziendeCard = ({valori}) => {
                     transform: 'scale(1.05)',
                     },
                 }}>Aggiorna</Button>
-                {/* <Button
-                    size="small"
-                    onClick={(event) => navigateToAssocia(valori.id, event)}
-                    sx={{
-                    backgroundColor: '#000000',
-                    color: 'white',
-                    '&:hover': {
-                        backgroundColor: '#000000',
-                        transform: 'scale(1.05)',
-                    },
-                    }}>List</Button> */}
                     </Box>
                     </Box>
         </CardActions>

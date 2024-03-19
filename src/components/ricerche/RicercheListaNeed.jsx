@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState }                                                                                                         from 'react';
 import { Button, Box, Grid, Select, MenuItem, FormControl, InputLabel, IconButton, Drawer, Typography, TextField, InputAdornment } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import SearchIcon                                       from '@mui/icons-material/Search';
+import CloseIcon                                                                                                                   from '@mui/icons-material/Close';
+import SearchIcon                                                                                                                  from '@mui/icons-material/Search';
 
 
 
@@ -49,7 +49,6 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
                         </Button>
     
                         <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
-                            {/* Barra di ricerca */}
                             <TextField
                                 id="search-bar"
                                 variant="outlined"
@@ -136,29 +135,6 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
         </Box>
         <Grid container spacing={2} direction="column" sx={{ p: 2}}>
             <Grid item>
-            {/* <FormControl fullWidth sx={{ mb: 2 }}>
-                            <InputLabel id="azienda-label">Azienda</InputLabel>
-                            <Select
-                                labelId="azienda-label"
-                                displayEmpty
-                                value={filtri.azienda || ''} 
-                                onChange={onFilterChange('azienda')}
-                                renderValue={(selected) => {
-                                    if (selected === '') {
-                                        return <em></em>;
-                                    }
-                                    const selectedLabel = aziendaOptions.find(option => option.value === selected)?.label;
-                                    return selectedLabel || selected;
-                                }}
-                            >
-                                
-                                {aziendaOptions.map((option) => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                </MenuItem>
-                                ))}
-                            </Select>
-                            </FormControl> */}
 
             <FormControl fullWidth sx={{ mb: 2 }}>
                             <InputLabel id="tipologia-label">Tipologia</InputLabel>
