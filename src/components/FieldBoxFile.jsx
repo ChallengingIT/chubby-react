@@ -834,7 +834,8 @@ const FieldBoxFile = ({
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            margin: 'auto'
+            margin: 'auto',
+            flexDirection: 'column',
         }}
         >
             <Dialog
@@ -896,6 +897,8 @@ const FieldBoxFile = ({
                 </Grid>
             ))}
             </Grid>
+            <Typography variant="h6" sx={{ mt: 2, color: '#666565', fontSize: '1em'}}>* Campo Obbligatorio</Typography>
+
             <div
             className="bottoni"
             style={{

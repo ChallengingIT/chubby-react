@@ -32,6 +32,7 @@ import AziendeListaNeedCard                                            from './p
 import DettaglioIntervista                                             from './pages/VisualizzaPagine/DettaglioIntervista.jsx';
 import PaginaProva from './pages/PaginaProva.jsx';
 import NuovoNeed from './pages/AggiungiPagine/NuovoNeed.jsx';
+import Dashboard from './pages/Dashboard.jsx';
 
 
 
@@ -67,7 +68,7 @@ useEffect(() => {
                   } />
                 <Route path="/dashboard" element={
                     <PrivateRoute roles={['ROLE_ADMIN',  'ROLE_RECRUITER']}>
-                      <NeedLife />
+                      <Dashboard />
                     </PrivateRoute>
                   } />
                 <Route path="/aziende" element={
