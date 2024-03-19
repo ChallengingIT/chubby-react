@@ -181,21 +181,23 @@ const ModificaStaffing = () => {
     citta:                              staffing.citta                                                                || null,
     modalita:                           staffing.modalita                                                             || null,
     anniEsperienzaRuolo:                staffing.anniEsperienzaRuolo                                                  || null,
-    livelloScolastico:                  staffing.livelloScolastico          && staffing.livelloScolastico.id    || null,
-    facolta:                            staffing.facolta                    && staffing.facolta.id              || null,
-    tipologia:                          staffing.tipologia                  && staffing.tipologia.id            || null,
+    livelloScolastico:                  staffing.livelloScolastico          && staffing.livelloScolastico.id          || null,
+    facolta:                            staffing.facolta                    && staffing.facolta.id                    || null,
+    tipologia:                          staffing.tipologia                  && staffing.tipologia.id                  || null,
     dataUltimoContatto:                 staffing.dataUltimoContatto                                                   || null,
-    stato:                              staffing.stato                      && staffing.stato.id                || null,
-    owner:                              staffing.owner                      && staffing.owner.id                || null,
-    skills:                             staffing.skills ? staffing.skills.map((skill) => skill.id) :                        [],
+    stato:                              staffing.stato                      && staffing.stato.id                      || null,
+    owner:                              staffing.owner                      && staffing.owner.id                      || null,
+    skills:                             staffing.skills ? staffing.skills.map((skill) => skill.id) :                  [],
     ral:                                staffing.ral                                                                  || null,
     disponibilita:                      staffing.disponibilita                                                        || null,
     // cv:                                 recruitingData.files?.find(file => file.tipologia.descrizione === 'CV')             || null,
-    cv:                                 staffing.files ? staffing.files.find(file => file.tipologia.descrizione === 'CV') || null : null,
-    cf:                                 staffing.files ? staffing.files.find(file => file.tipologia.descrizione === 'CF') || null : null,
+    cv:                                 staffing.files ? staffing.files.find(file => file && file.tipologia && file.tipologia.descrizione === 'CV') || null : null,
+    cf:                                 staffing.files ? staffing.files.find(file => file && file.tipologia && file.tipologia.descrizione === 'CF') || null : null,
     note:                               recruitingData.note                                                                 || null,
 
   };
+
+  console.log("valori iniziali da staffing", staffing);  
 
 
 

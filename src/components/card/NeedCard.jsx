@@ -238,11 +238,16 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
 
             <IconButton 
             onClick={openPopover} 
-            disableTouchRipple
+            disableRipple={true}
+            disableFocusRipple={true}
             sx={{ p: 0,
+                borderRadius: 0,
+                border: 0,
+                overflow: 'hidden',
                 '&:hover':
                 { 
-                    transform: 'scale(1.1)'
+                    backgroundColor: 'transparent',
+                    transform: 'scale(1.1)',
                 },
                 '&:focus': {
                     outline: 'none',
@@ -250,6 +255,7 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
                 '& .MuiTouchRipple-root': {
                     width: '20%', 
                 },
+                
             }}
             >
                     <img src={Torcia} alt="Torcia" style={{ width: '4vw', marginTop: '1em' }} />
