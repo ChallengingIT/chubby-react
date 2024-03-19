@@ -191,8 +191,8 @@ const ModificaStaffing = () => {
     ral:                                staffing.ral                                                                  || null,
     disponibilita:                      staffing.disponibilita                                                        || null,
     // cv:                                 recruitingData.files?.find(file => file.tipologia.descrizione === 'CV')             || null,
-    cv:                                 staffing.files?.find(file => file.tipologia.descrizione === 'CV')                   || null,
-    cf:                                 staffing.files?.find(file => file.tipologia.descrizione === 'CF')                   || null,
+    cv:                                 staffing.files ? staffing.files.find(file => file.tipologia.descrizione === 'CV') || null : null,
+    cf:                                 staffing.files ? staffing.files.find(file => file.tipologia.descrizione === 'CF') || null : null,
     note:                               recruitingData.note                                                                 || null,
 
   };
