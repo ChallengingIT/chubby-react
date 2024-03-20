@@ -131,6 +131,7 @@ const Aziende = () => {
             }
         };
 
+
         useEffect(() => {
             const filtriSalvati = localStorage.getItem('filtriRicercaAziende');
             if (filtriSalvati) {

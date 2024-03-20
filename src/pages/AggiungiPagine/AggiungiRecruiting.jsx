@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate }                from "react-router-dom";
 import axios                          from "axios";
 import FieldBoxFile from "../../components/FieldBoxFile";
-import { Box,Typography } from "@mui/material";
+import { Box,Typography, Alert, Snackbar } from "@mui/material";
 
 
 const AggiungiRecruiting = () => {
@@ -16,7 +16,7 @@ const [ skillsOptions,            setSkillsOptions            ] = useState([]);
 const [ ownerOptions,             setOwnerOptions             ] = useState([]);
 const [ facoltaOptions,           setFacoltaOptions           ] = useState([]);
 const [ livelloScolasticoOptions, setLivelloScolasticoOptions ] = useState([]);
-const [ alert,                    setAlert                    ] = useState(false);
+const [ alert,           setAlert          ] = useState({ open: false, message: '' });
 
 
 const user = JSON.parse(localStorage.getItem("user"));
@@ -239,6 +239,11 @@ const validateFields = (values) => {
 return (
     <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto',minHeight: '100vh', width: '100vw', flexDirection: 'column' }}>
       <Box sx={{ flexGrow: 1, p: 3, marginLeft: '12.2em', marginTop: '0.5em', marginBottom: '0.8em', marginRight: '0.8em', backgroundColor: '#FEFCFD', borderRadius: '10px', display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+      <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+                <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
+                    {alert.message}
+                </Alert>
+            </Snackbar>
         <Typography variant="h4" component="h1" sx={{  mb: 4, fontWeight: 'bold', fontSize: '1.8rem', color: '#00853C'}}>Aggiungi candidato</Typography>
 
         

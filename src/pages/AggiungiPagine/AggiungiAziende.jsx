@@ -1,7 +1,7 @@
 import React, { useState, useEffect }               from "react";
 import { useNavigate }                              from "react-router-dom";
 import axios                                        from "axios";
-import { Box,Typography }                           from "@mui/material";
+import { Box,Typography, Alert, Snackbar }          from "@mui/material";
 import FieldBoxFile                                 from "../../components/FieldBoxFile";
 
 const AggiungiAziende = () => {
@@ -9,7 +9,7 @@ const AggiungiAziende = () => {
 
   const [ provinceOptions, setProvinceOptions] = useState([]);
   const [ ownerOptions,    setOwnerOptions   ] = useState([]);
-  const [                  setAlert          ] = useState(false);
+  const [ alert,           setAlert          ] = useState({ open: false, message: '' });
 
   const user = JSON.parse(localStorage.getItem("user"));
   const accessToken = user?.accessToken;
@@ -51,7 +51,7 @@ const AggiungiAziende = () => {
     fetchProvinceOptions();
   }, []);
 
-  const campiObbligatori = [ "denominazione", "ragioneSociale", "email", "idOwner", "status", "citta", "provincia" ];
+  const campiObbligatori = [ "denominazione", "email", "idOwner", "status", "citta", "provincia", "sedeOperativa", "settoreMercato" ];
 
   const fields = [
     { label: "Nome Azienda*",                   name: "denominazione",            type: "text"                             },
@@ -64,11 +64,11 @@ const AggiungiAziende = () => {
     { label: "Paese",                           name: "paese",                    type: "text"                             },
     { label: "Provincia*",                      name: "provincia",                type: "select", options: provinceOptions },
     { label: "Pec",                             name: "pec",                      type: "text"                             },
-    { label: "Sede Operativa",                  name: "sedeOperativa",            type: "text"                             },
+    { label: "Sede Operativa*",                  name: "sedeOperativa",            type: "text"                             },
     { label: "Sede Legale",                     name: "sedeLegale",               type: "text"                             },
     { label: "Codice Destinatario",             name: "codiceDestinatario",       type: "text"                             },
     { label: "Sito Web",                        name: "sito",                     type: "text"                             },
-    { label: "Settore di mercato",              name: "settoreMercato",           type: "text"                             },
+    { label: "Settore di mercato*",              name: "settoreMercato",           type: "text"                             },
     { label: "Owner*",                          name: "idOwner",                  type: "select", options: ownerOptions    },
     { label: "Tipologia",                       name: "tipologia",                type: "select", options: [
       { value: "Cliente", label: "Cliente" },
@@ -82,8 +82,15 @@ const AggiungiAziende = () => {
     ]  },
     
     { label: "Note",                            name: "note",                      type: "note" },
-
   ];
+
+
+  const handleCloseAlert = (event, reason) => {
+    if (reason === 'clickaway') {
+        return;
+    }
+    setAlert({ ...alert, open: false });
+};
 
 
   const handleSubmit = async (values) => {
@@ -121,8 +128,8 @@ const AggiungiAziende = () => {
           headers: headers
         });
         if (response.data === "DUPLICATO") {
-          setAlert({ open: true, message: "Email già utilizzata!" });
-          console.error("L'email fornita è già in uso.");
+          setAlert({ open: true, message: "azienda già esistente!" });
+          console.error("L'azienda è già stata salvata.");
           return; 
         }
         navigate("/aziende");
@@ -145,6 +152,11 @@ const AggiungiAziende = () => {
   return (
     <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto',minHeight: '100vh', width: '100vw', flexDirection: 'column' }}>
       <Box sx={{ flexGrow: 1, p: 3, marginLeft: '12.2em', marginTop: '0.5em', marginBottom: '0.8em', marginRight: '0.8em', backgroundColor: '#FEFCFD', borderRadius: '10px', display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+      <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+                <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
+                    {alert.message}
+                </Alert>
+            </Snackbar>
 
           <Typography variant="h4" component="h1" sx={{ mt: 3, fontWeight: 'bold', fontSize: '1.8rem', color: '#00853C'}}>Aggiungi Azienda</Typography>
 
