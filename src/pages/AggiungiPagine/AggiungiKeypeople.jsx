@@ -91,7 +91,7 @@ const AggiungiKeypeople = () => {
       const response = await axios.post("http://localhost:8080/keypeople/react/salva", values, {
         headers: headers
       });
-      if (response.data === "ERRORE") {
+      if (response.data === "DUPLICATO") {
         setAlert({ open: true, message: "Email già utilizzata!" });
         console.error("L'email fornita è già in uso.");
         return; 
