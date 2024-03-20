@@ -106,6 +106,7 @@ const AziendeCard = ({valori}) => {
         navigate(`/aziende/modifica/${valori.id}`, { state: { ...valori } });
     };
 
+
     return (
         <Card
             raised 
@@ -133,8 +134,12 @@ const AziendeCard = ({valori}) => {
             </Box>
 
             <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, color: 'black' }}>
-                {valori.citta}
+                {valori.citta}, {valori.sedeOperativa}
             </Typography>
+
+            {/* <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, color: 'black' }}>
+                {valori.sedeOperativa}
+            </Typography> */}
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
                     <EmailIcon sx={{ color: '#00853C', mr: 1 }} />
@@ -143,7 +148,7 @@ const AziendeCard = ({valori}) => {
 
             <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
                 <FactoryIcon sx={{ color: '#00853C', mr: 1 }} />
-                {valori.tipologia}
+                {valori.settoreMercato}
             </Typography>
 
         </CardContent>

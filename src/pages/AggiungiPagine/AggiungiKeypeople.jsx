@@ -1,7 +1,7 @@
 import React, { useState, useEffect }   from "react";
 import { useNavigate }                  from "react-router-dom";
 import axios                            from "axios";
-import { Box, Typography }              from "@mui/material";
+import { Box, Typography, Alert, Snackbar }              from "@mui/material";
 import FieldBoxFile                     from "../../components/FieldBoxFile";
 
 
@@ -11,7 +11,7 @@ const AggiungiKeypeople = () => {
 
   const [ aziendeOptions, setAziendeOptions] = useState([]);
   const [ ownerOptions,   setOwnerOptions  ] = useState([]);
-  const [ alert,          setAlert         ] = useState(false);
+  const [ alert,           setAlert          ] = useState({ open: false, message: '' });
 
   const user = JSON.parse(localStorage.getItem("user"));
       const accessToken = user?.accessToken;
@@ -52,6 +52,14 @@ const AggiungiKeypeople = () => {
 
     fetchAziendeOptions();
   }, []);
+
+
+  const handleCloseAlert = (event, reason) => {
+    if (reason === 'clickaway') {
+        return;
+    }
+    setAlert({ ...alert, open: false });
+};
 
 
   const campiObbligatori = ["nome", "idAzienda", "email", "idOwner", "status", "ruolo", "dataCreazione"];
@@ -110,6 +118,11 @@ const AggiungiKeypeople = () => {
   return (
     <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto',minHeight: '100vh', width: '100vw', flexDirection: 'column' }}>
       <Box sx={{ flexGrow: 1, p: 3, marginLeft: '12.2em', marginTop: '0.5em', marginBottom: '0.8em', marginRight: '0.8em', backgroundColor: '#FEFCFD', borderRadius: '10px', display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+      <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+                <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
+                    {alert.message}
+                </Alert>
+            </Snackbar>
           <Typography variant="h4" component="h1" sx={{ mt: 3, fontWeight: 'bold', fontSize: '1.8rem', color: '#00853C'}}>Aggiungi contatto</Typography>
 
           <FieldBoxFile

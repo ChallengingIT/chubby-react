@@ -13,6 +13,7 @@ const ModificaAziende = () => {
 const navigate             = useNavigate();
 const location             = useLocation();
 const valori               = location.state;
+const id = valori.id;
 
 
 
@@ -20,6 +21,10 @@ const valori               = location.state;
 const [ provinceOptions, setProvinceOptions] = useState([]);
 const [ ownerOptions,    setOwnerOptions   ] = useState([]);
 const [ aziendeOptions,  setAziendeOptions ] = useState([]);
+const [ datiModifica,    setDatiModifica   ] = useState({});
+const [ loading,         setLoading        ] = useState(true);
+
+
 
 const user = JSON.parse(localStorage.getItem("user"));
 const accessToken = user?.accessToken;
@@ -43,6 +48,8 @@ const headers = {
             const responseProvince = await axios.get("http://89.46.196.60:8443/aziende/react/province", { headers: headers });
             const responseOwner    = await axios.get("http://89.46.196.60:8443/aziende/react/owner", { headers: headers });
             const responseAziende  = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers: headers });
+            const responseModifica = await axios.get(`http://89.46.196.60:8443/aziende/react/${id}`, {headers: headers});
+
 
             if (Array.isArray(responseAziende.data)) {
             const aziendeOptions = responseAziende.data.map((aziende) => ({
@@ -69,6 +76,11 @@ const headers = {
                 }));
                 setProvinceOptions(provinceOptions);
             }
+
+            const modificaData = responseModifica.data;
+            setDatiModifica(modificaData);
+            setLoading(false);
+
         } catch (error) {
             console.error("Errore durante il recupero delle province:", error);
         }
@@ -77,7 +89,11 @@ const headers = {
         fetchProvinceOptions();
     }, []);
 
-const campiObbligatori = [ "denominazione", "email", "idOwner", "status", "citta", "provincia" ];
+
+    console.log("valori: ", datiModifica);
+
+
+const campiObbligatori = [ "denominazione", "email", "idOwner", "status", "citta", "provincia", "sedeOperativa", "settoreMercato" ];
 
 const fields = [
     { label: "Nome Azienda*",           name: "denominazione",        type: "text",       disabled: true                                  },
@@ -90,11 +106,11 @@ const fields = [
     { label: "Paese",                   name: "paese",                type: "text"                                                        },
     { label: "Provincia*",              name: "provincia",            type: "select",     options: provinceOptions                        },
     { label: "Pec",                     name: "pec",                  type: "text"                                                        },
-    { label: "Sede Operativa",          name: "sedeOperativa",        type: "text"                                                        },
+    { label: "Sede Operativa*",          name: "sedeOperativa",        type: "text"                                                        },
     { label: "Sede Legale",             name: "sedeLegale",           type: "text"                                                        },
     { label: "Codice Destinatario",     name: "codiceDestinatario",   type: "text"                                                        },
     { label: "Sito Web",                name: "sito",                 type: "text"                                                        },
-    { label: "Settore di mercato",      name: "settoreMercato",       type: "text"                                                        },
+    { label: "Settore di mercato*",      name: "settoreMercato",       type: "text"                                                        },
     { label: "Owner*",                  name: "idOwner",              type: "select",      options: ownerOptions                          },
     { label: "Tipologia",               name: "tipologia",            type: "select",      options: [ 
         { label: "Cliente",    value: "Cliente" },
@@ -110,26 +126,26 @@ const fields = [
 ];
 
 const initialValues = {
-    id:                           valori.id                              ,
-    denominazione:                valori.denominazione                   || null,
-    email:                        valori.email                           || null,
-    pi:                           valori.pi                              || null,
-    cf:                           valori.cf                              || null,
-    citta:                        valori.citta                           || null,
-    cap:                          valori.cap                             || null,
-    paese:                        valori.paese                           || null,
-    provincia:                    valori.provincia                       || null,
-    pec:                          valori.pec                             || null,
-    sedeOperativa:                valori.sedeOperativa                   || null,
-    sedeLegale:                   valori.sedeLegale                      || null,
-    codicePa:                     valori.codicePa                        || null,
-    codiceDestinatario:           valori.codiceDestinatario              || null,
-    sito:                         valori.sito                            || null,
-    settoreMercato:               valori.settoreMercato                  || null,
-    tipologia:                    valori.tipologia                       || null,
-    status:                       valori.status                          || null,
-    idOwner:                     (valori.owner && valori.owner.id)       || null,
-    note:                         valori.note                            || null,
+    id:                           datiModifica.id                              ,
+    denominazione:                datiModifica.denominazione                   || null,
+    email:                        datiModifica.email                           || null,
+    pi:                           datiModifica.pi                              || null,
+    cf:                           datiModifica.cf                              || null,
+    citta:                        datiModifica.citta                           || null,
+    cap:                          datiModifica.cap                             || null,
+    paese:                        datiModifica.paese                           || null,
+    provincia:                    datiModifica.provincia                       || null,
+    pec:                          datiModifica.pec                             || null,
+    sedeOperativa:                datiModifica.sedeOperativa                   || null,
+    sedeLegale:                   datiModifica.sedeLegale                      || null,
+    codicePa:                     datiModifica.codicePa                        || null,
+    codiceDestinatario:           datiModifica.codiceDestinatario              || null,
+    sito:                         datiModifica.sito                            || null,
+    settoreMercato:               datiModifica.settoreMercato                  || null,
+    tipologia:                    datiModifica.tipologia                       || null,
+    status:                       datiModifica.status                          || null,
+    idOwner:                     (datiModifica.owner && datiModifica.owner.id)       || null,
+    note:                         datiModifica.note                            || null,
 };
 
 
@@ -170,14 +186,17 @@ const initialValues = {
         <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto',minHeight: '100vh', width: '100vw', flexDirection: 'column' }}>
             <Box sx={{ flexGrow: 1, p: 3, marginLeft: '12.2em', marginTop: '0.5em', marginBottom: '0.8em', marginRight: '0.8em', backgroundColor: '#FEFCFD', borderRadius: '10px', display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
             <Typography variant="h4" component="h1" sx={{ mt:3, fontWeight: 'bold', fontSize: '1.8rem', color: '#00853C'}}>{valori.denominazione}</Typography>
-        
-            <FieldBoxFile
-            fields={fields}
-            initialValues={initialValues}
-            campiObbligatori={campiObbligatori}
-            onSubmit={handleSubmit}
-            title=""
-            />
+            { loading ? (
+            <Typography variant="body1" sx={{ margin: '30px' }}>Caricamento...</Typography>
+                ) : (
+                    <FieldBoxFile
+                fields={fields}
+                initialValues={initialValues}
+                onSubmit={handleSubmit}
+                title=""
+                campiObbligatori={campiObbligatori}
+                />
+                )}
             </Box>
         </Box>
     
