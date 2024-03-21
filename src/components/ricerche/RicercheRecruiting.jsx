@@ -73,7 +73,8 @@ function RicercheRecruiting({ filtri, onFilterChange, onReset, tipologiaOptions,
                             ),
                         }}
                         sx={{
-                            width: '25em',
+                            width: '20em',
+                            minWidth: '10em', 
                             mb: 0.5,
                             '& .MuiOutlinedInput-root': {
                                 borderRadius: '0px', 
@@ -110,6 +111,8 @@ function RicercheRecruiting({ filtri, onFilterChange, onReset, tipologiaOptions,
                         borderTopLeftRadius: 0,
                         borderBottomLeftRadius: 0,
                         mb: 0.5,
+                        width: '20em',
+                        minWidth: '10em',
 
                         '& .MuiOutlinedInput-root': {
                         borderTopLeftRadius: 0,

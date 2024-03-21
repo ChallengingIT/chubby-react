@@ -25,7 +25,7 @@ const KeypeopleCard = ({valori}) => {
 
     return (
         <Card
-        // onClick={handleCardClick}
+        onClick={(event) => navigateToAggiorna(valori.id, event)}
         raised
         sx={{
             borderRadius: '20px', 
@@ -95,7 +95,7 @@ const KeypeopleCard = ({valori}) => {
                     mr:3
                     
                 }}>
-            <Button 
+            {/* <Button 
             size="small"
             onClick={(event) => navigateToAggiorna(valori.id, event)}
             sx={{
@@ -109,7 +109,7 @@ const KeypeopleCard = ({valori}) => {
                     backgroundColor: 'black',
                     transform: 'scale(1.05)',
                     },
-                }}>Aggiorna</Button>
+                }}>Aggiorna</Button> */}
                     </Box>
                     <Typography
                     gutterBottom

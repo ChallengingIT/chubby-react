@@ -3,6 +3,9 @@ import { Button, Box, Grid, Select, MenuItem, FormControl, InputLabel, IconButto
 import CloseIcon                                        from '@mui/icons-material/Close';
 import SearchIcon                                       from '@mui/icons-material/Search';
 import { useNavigate  }                                 from 'react-router-dom';
+import ClearIcon from '@mui/icons-material/Clear';
+import Autocomplete from '@mui/material/Autocomplete';
+
 
 function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, tipoOptions, seniorityOptions, onRicerche, onGoBack}) {
 
@@ -12,6 +15,10 @@ function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, 
 
     const handleOpenFiltri = () => setOpenFiltri(true);
     const handleCloseFiltri = () => setOpenFiltri(false);
+
+    const handleReset = (filter) => {
+        onFilterChange(filter)('');
+    };
 
  
 
@@ -76,7 +83,8 @@ function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, 
                             ),
                         }}
                         sx={{
-                            width: '25em',
+                            width: '20em',
+                            minWidth: '10em',
                             mb: 0.5,
                             '& .MuiOutlinedInput-root': {
                                 borderRadius: '0px', 
@@ -113,6 +121,9 @@ function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, 
                         borderTopLeftRadius: 0,
                         borderBottomLeftRadius: 0,
                         mb: 0.5,
+                        width: '20em',
+                        minWidth: '10em',
+
 
                         '& .MuiOutlinedInput-root': {
                         borderTopLeftRadius: 0,
@@ -193,7 +204,7 @@ function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, 
 
 
                     <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel id="tipo-label">Tipo</InputLabel>
+                        <InputLabel id="tipo-label">Tipologia</InputLabel>
                         <Select
                             labelId="tipo-label"
                             displayEmpty
@@ -206,10 +217,12 @@ function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, 
                                 const selectedLabel = tipoOptions.find(option => option.value === selected)?.label;
                                 return selectedLabel || selected;
                             }}
+                            
                         >
                             
                             {tipoOptions.map((option) => (
-                            <MenuItem key={option.value} value={option.value}>
+                            <MenuItem key={option.value} value={option.value}
+                            >
                                 {option.label}
                             </MenuItem>
                             ))}
@@ -230,10 +243,12 @@ function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, 
                                 const selectedLabel = tipologiaOptions.find(option => option.value === selected)?.label;
                                 return selectedLabel || selected;
                             }}
+                            
                         >
                             
                             {tipologiaOptions.map((option) => (
-                            <MenuItem key={option.value} value={option.value}>
+                            <MenuItem key={option.value} value={option.value}
+                            >
                                 {option.label}
                             </MenuItem>
                             ))}

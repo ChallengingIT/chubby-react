@@ -115,7 +115,7 @@ const fields = [
     { label: "Tipologia",               name: "tipologia",            type: "select",      options: [ 
         { label: "Cliente",    value: "Cliente" },
         { label: "Prospect",   value: "Prospect" },
-        { label: "Consulenza", value: "Consulenza" },
+        { label: "EXCLIENTE", value: "Ex Cliente" },
     ] },
     { label: "Stato*",                  name: "status",               type: "selectValue", options: [
         { value: 1, label: "Verde" },

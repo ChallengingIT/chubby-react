@@ -92,8 +92,8 @@ const NeedMatch2 = () => {
                 quantita: 10
             };
             try {
-                // const candidatiResponse   = await axios.get(`http://localhost:8080/need/react/match/associabili/mod/${id}`,              { headers: headers, params: filtriCandidati});
-                const candidatiResponse   = await axios.get(`http://localhost:8080/staffing/react/mod`,                                  { headers: headers, params: filtriCandidati});
+                const candidatiResponse   = await axios.get(`http://localhost:8080/need/react/match/associabili/mod/${id}`,              { headers: headers, params: filtriCandidati});
+                // const candidatiResponse   = await axios.get(`http://localhost:8080/staffing/react/mod`,                                  { headers: headers, params: filtriCandidati});
                 const storicoResponse     = await axios.get(`http://localhost:8080/need/react/storico/${id}`,                            { headers: headers, params: paginazione});
                 const associatiResponse   = await axios.get(`http://localhost:8080/need/react/match/associati/mod/${id}`,                { headers: headers, params: paginazione});
                 const responseTipologia   = await axios.get("http://localhost:8080/aziende/react/tipologia",                             { headers: headers});
@@ -218,8 +218,8 @@ const NeedMatch2 = () => {
     const fetchMoreDataCandidati = async (paginaCandidati) => {
         const filtriAttivi = Object.values(filtri).some(value => value !== null && value !== '');
         const url = filtriAttivi ?
-        `http://localhost:8080/staffing/react/mod/ricerca` :
-        `http://localhost:8080/staffing/react/mod`;
+        `http://localhost:8080/need/react/match/associabili/ricerca/mod/${id}` :
+        `http://localhost:8080/need/react/match/associabili/mod/${id}`;
 
 
             const filtriCandidati = {
@@ -362,9 +362,10 @@ const NeedMatch2 = () => {
                     pagina: 0,
                     quantita: 10
                 };
+                console.log("ricerca per : ", filtriCandidati);
 
                 try{
-                    const candidatiResponse = await axios.get(`http://localhost:8080/staffing/react/mod/ricerca`, { headers: headers, params: filtriCandidati});
+                    const candidatiResponse = await axios.get(`http://localhost:8080/need/react/match/associabili/ricerca/mod/${id}`, { headers: headers, params: filtriCandidati});
                     const storicoResponse     = await axios.get(`http://localhost:8080/need/react/storico/${id}`,                            { headers: headers, params: paginazione});
                     const associatiResponse   = await axios.get(`http://localhost:8080/need/react/match/associati/mod/${id}`,                { headers: headers, params: paginazione});
                     const responseTipologia    = await axios.get("http://localhost:8080/aziende/react/tipologia",                             { headers: headers});

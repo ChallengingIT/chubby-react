@@ -1,6 +1,6 @@
 import React, {useState, useEffect}                 from 'react';
 import { useNavigate }                              from 'react-router-dom';
-import ChecklistIcon                                from '@mui/icons-material/Checklist';
+// import ChecklistIcon                                from '@mui/icons-material/Checklist';
 import WorkIcon                                     from '@mui/icons-material/Work';
 import axios                                        from 'axios';
 import Torcia                                       from "../../images/torciaSF.png";
@@ -8,6 +8,7 @@ import JoinInnerIcon                                from '@mui/icons-material/Jo
 import AutorenewIcon                                from '@mui/icons-material/Autorenew'; //stato
 import DeleteIcon                                   from '@mui/icons-material/Delete'; //cancella
 import { Edit }                                     from '@mui/icons-material';
+import CircleOutlinedIcon                           from '@mui/icons-material/CircleOutlined'; //stato
 
 
 
@@ -69,6 +70,7 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
     const isPopoverOpen = Boolean(anchorEl);
 
     const popoverId = isPopoverOpen ? 'popover-id' : undefined;
+
 
 
 
@@ -236,9 +238,14 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
                     </Typography>
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
+                    <CircleOutlinedIcon sx={{ color: '#00853C', mr: 1 }} />
+                    {valori.stato.descrizione}
+            </Typography>
+
+            {/* <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
                     <ChecklistIcon sx={{ color: '#00853C', mr: 1 }} />
                     Competenze: {skillsToShow} {additionalSkillsCount}
-            </Typography>
+            </Typography> */}
 
 
             <Box

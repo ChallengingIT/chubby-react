@@ -73,7 +73,7 @@ const AggiungiAziende = () => {
     { label: "Tipologia",                       name: "tipologia",                type: "select", options: [
       { value: "Cliente", label: "Cliente" },
       { value: "Prospect", label: "Prospect" },
-      { value: "Consulenza", label: "Consulenza" }
+      { value: "EXCLIENTE", label: "Ex Cliente" }
     ]  },
     { label: "Stato*",                          name: "status",                    type: "select", options: [
       { value: 1, label: "Verde" },

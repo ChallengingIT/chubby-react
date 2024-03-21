@@ -62,10 +62,10 @@ useEffect(() => {
       <Route path="/login" element={<LoginPage />} />
       <Route element={<Layout />}>
 
-                <Route path="/homepage"  element={<PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
+                {/* <Route path="/homepage"  element={<PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
                       <Homepage />
                     </PrivateRoute>
-                  } />
+                  } /> */}
                 <Route path="/dashboard" element={
                     <PrivateRoute roles={['ROLE_ADMIN',  'ROLE_RECRUITER']}>
                       <Dashboard />
