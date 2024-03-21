@@ -109,7 +109,6 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
 
 
     const handleOpenModalStato = (id) => {
-        console.log("id: ", id);
         setModalStato(true);
         setIdNeed(id);
     };
@@ -147,7 +146,6 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
     };
 
 
-    console.log("valori: ", valori);    
 
 
 

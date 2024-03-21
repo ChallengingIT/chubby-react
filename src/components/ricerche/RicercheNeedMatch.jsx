@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { Button, Box, Grid, Select, MenuItem, FormControl, InputLabel, IconButton, Drawer, Typography, TextField, InputAdornment } from '@mui/material';
+import { Button, Box, Grid, Select, MenuItem, FormControl, InputLabel, IconButton, Drawer, Typography, TextField, InputAdornment, Autocomplete } from '@mui/material';
 import CloseIcon                                        from '@mui/icons-material/Close';
 import SearchIcon                                       from '@mui/icons-material/Search';
 import { useNavigate  }                                 from 'react-router-dom';
-import ClearIcon from '@mui/icons-material/Clear';
-import Autocomplete from '@mui/material/Autocomplete';
 
 
 function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, tipoOptions, seniorityOptions, onRicerche, onGoBack}) {
@@ -204,7 +202,17 @@ function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, 
 
 
                     <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel id="tipo-label">Tipologia</InputLabel>
+                    <Autocomplete
+                                id="tipo-combo-box"
+                                options={tipoOptions}
+                                getOptionLabel={(option) => option.label}
+                                value={tipoOptions.find(option => option.value === filtri.tipo) || null}
+                                onChange={(event, newValue) => {
+                                    onFilterChange('tipo')({ target: { value: newValue?.value || null } });
+                                }}
+                                renderInput={(params) => <TextField {...params} label="Tipologia" />}
+                            />
+                        {/* <InputLabel id="tipo-label">Tipologia</InputLabel>
                         <Select
                             labelId="tipo-label"
                             displayEmpty
@@ -226,11 +234,21 @@ function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, 
                                 {option.label}
                             </MenuItem>
                             ))}
-                        </Select>
+                        </Select> */}
                         </FormControl>
 
                         <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel id="tipologia-label">JobTitle</InputLabel>
+                        <Autocomplete
+                                id="tipologia-combo-box"
+                                options={tipologiaOptions}
+                                getOptionLabel={(option) => option.label}
+                                value={tipologiaOptions.find(option => option.value === filtri.tipologia) || null}
+                                onChange={(event, newValue) => {
+                                    onFilterChange('tipologia')({ target: { value: newValue?.value || null } });
+                                }}
+                                renderInput={(params) => <TextField {...params} label="Jobtitle" />}
+                            />
+                        {/* <InputLabel id="tipologia-label">JobTitle</InputLabel>
                         <Select
                             labelId="tipologia-label"
                             displayEmpty
@@ -252,11 +270,21 @@ function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, 
                                 {option.label}
                             </MenuItem>
                             ))}
-                        </Select>
+                        </Select> */}
                         </FormControl>
 
                         <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel id="seniority-label">Seniority</InputLabel>
+                        <Autocomplete
+                                id="seniority-combo-box"
+                                options={seniorityOptions}
+                                getOptionLabel={(option) => option.label}
+                                value={seniorityOptions.find(option => option.value === filtri.seniority) || null}
+                                onChange={(event, newValue) => {
+                                    onFilterChange('seniority')({ target: { value: newValue?.value || null } });
+                                }}
+                                renderInput={(params) => <TextField {...params} label="Seniority" />}
+                            />
+                        {/* <InputLabel id="seniority-label">Seniority</InputLabel>
                         <Select
                             labelId="seniority-label"
                             displayEmpty
@@ -276,7 +304,7 @@ function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, 
                                 {option.label}
                             </MenuItem>
                             ))}
-                        </Select>
+                        </Select> */}
                         </FormControl>
                         <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
                         <Button 

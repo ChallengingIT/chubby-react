@@ -90,7 +90,6 @@ const headers = {
     }, []);
 
 
-    console.log("valori: ", datiModifica);
 
 
 const campiObbligatori = [ "denominazione", "idOwner", "status", "citta", "provincia", "sedeOperativa", "settoreMercato" ];

@@ -362,7 +362,6 @@ const NeedMatch2 = () => {
                     pagina: 0,
                     quantita: 10
                 };
-                console.log("ricerca per : ", filtriCandidati);
 
                 try{
                     const candidatiResponse = await axios.get(`http://localhost:8080/need/react/match/associabili/ricerca/mod/${id}`, { headers: headers, params: filtriCandidati});
