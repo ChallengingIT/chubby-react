@@ -49,7 +49,6 @@ const Keypeople = () => {
         Authorization: `Bearer ${accessToken}`
     };
     
-    console.log("filtri: ", filtri);
 
 
 
