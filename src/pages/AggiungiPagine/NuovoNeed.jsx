@@ -54,13 +54,13 @@ function NuovoNeed() {
 
     return (
         <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
-            <Box sx={{ flexGrow: 1, p: 3, ml: '12.2em', mt: '0.5em', mb: '0.8em', mr: '0.8em', borderRadius: '20px', display: 'flex', justifyContent: 'flex-start', background: 'linear-gradient(to right, #191919 20%, #FEFCFD 20%)' }}>
+            <Box sx={{ flexGrow: 1, p: 3, ml: '12.2em', mt: '0.5em', mb: '0.8em', mr: '0.8em', borderRadius: '20px', display: 'flex', justifyContent: 'flex-start', background: 'linear-gradient(to right, #ADC6BA 20%, #FEFCFD 20%)' }}>
                 {/* Box con gradiente lineare */}
                 <Box sx={{ height: '100%', display: 'flex', mt: 4, justifyContent: 'flex-start', alignItems: 'start', flexDirection: 'column', gap: 5, overflow: 'hidden', width: '20%' }}>
                     {/* Menu */}
                     <Button
                         style={{
-                            color: 'white',
+                            color: 'black',
                             border: 'none',
                             fontSize: '0.8rem',
                             cursor: 'pointer',
@@ -85,21 +85,21 @@ function NuovoNeed() {
                                         gap: 0,
                                         mb: 4,
                                         '&:hover, &.Mui-selected': {
-                                            backgroundColor: '#00853C',
+                                            backgroundColor: 'trasparent',
                                             cursor: 'pointer',
                                             '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-                                                color: 'white',
+                                                color: '#00853C',
                                             },
                                             borderRadius: '10px',
                                         },
                                         borderRadius: '10px',
-                                        backgroundColor: activeSection === `/${item.title.toLowerCase()}` ? '#00853C' : '',
+                                        backgroundColor: activeSection === `/${item.title.toLowerCase()}` ? 'trasparent' : '',
                                         '& .MuiListItemIcon-root': {
-                                            color: activeSection === `/${item.title.toLowerCase()}` ? 'white' : '#00853C',
+                                            color: activeSection === `/${item.title.toLowerCase()}` ? 'black' : 'black',
                                             minWidth: '2.2em',
                                         },
                                         '& .MuiListItemText-primary': {
-                                            color: activeSection === `/${item.title.toLowerCase()}` ? 'white' : 'white',
+                                            color: activeSection === `/${item.title.toLowerCase()}` ? '#00853C' : 'black',
                                         },
                                     }}
                                 >
@@ -112,10 +112,10 @@ function NuovoNeed() {
                         </List>
                         
                     </Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4}}>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4, ml: 10}}>
                             <Button
                                 style={{
-                                    backgroundColor: '#00853C',
+                                    backgroundColor: 'trasparent',
                                     color: 'white',
                                     border: 'none',
                                     fontSize: '0.8rem',

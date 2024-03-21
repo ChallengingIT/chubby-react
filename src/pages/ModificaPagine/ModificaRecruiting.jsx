@@ -197,7 +197,6 @@ const ModificaStaffing = () => {
 
   };
 
-  console.log("valori iniziali da staffing", staffing);  
 
 
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Box, Grid, Select, MenuItem, FormControl, InputLabel, IconButton, Drawer, Typography, TextField, InputAdornment } from '@mui/material';
+import { Button, Box, Grid, Select, MenuItem, FormControl, InputLabel, IconButton, Drawer, Typography, TextField, InputAdornment, Autocomplete } from '@mui/material';
 import CloseIcon                                        from '@mui/icons-material/Close';
 import SearchIcon                                       from '@mui/icons-material/Search';
 import { useNavigate  }                                 from 'react-router-dom';
@@ -73,7 +73,8 @@ function RicercheRecruiting({ filtri, onFilterChange, onReset, tipologiaOptions,
                             ),
                         }}
                         sx={{
-                            width: '25em',
+                            width: '20em',
+                            minWidth: '10em', 
                             mb: 0.5,
                             '& .MuiOutlinedInput-root': {
                                 borderRadius: '0px', 
@@ -110,6 +111,8 @@ function RicercheRecruiting({ filtri, onFilterChange, onReset, tipologiaOptions,
                         borderTopLeftRadius: 0,
                         borderBottomLeftRadius: 0,
                         mb: 0.5,
+                        width: '20em',
+                        minWidth: '10em',
 
                         '& .MuiOutlinedInput-root': {
                         borderTopLeftRadius: 0,
@@ -187,7 +190,17 @@ function RicercheRecruiting({ filtri, onFilterChange, onReset, tipologiaOptions,
 
 
                     <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel id="tipologia-label">Tipologia</InputLabel>
+                    <Autocomplete
+                                id="tipologia-combo-box"
+                                options={tipologiaOptions}
+                                getOptionLabel={(option) => option.label}
+                                value={tipologiaOptions.find(option => option.value === filtri.tipologia) || null}
+                                onChange={(event, newValue) => {
+                                    onFilterChange('tipologia')({ target: { value: newValue?.value || null } });
+                                }}
+                                renderInput={(params) => <TextField {...params} label="Tipologia" />}
+                            />
+                        {/* <InputLabel id="tipologia-label">Tipologia</InputLabel>
                         <Select
                             labelId="tipologia-label"
                             displayEmpty
@@ -207,11 +220,21 @@ function RicercheRecruiting({ filtri, onFilterChange, onReset, tipologiaOptions,
                                 {option.label}
                             </MenuItem>
                             ))}
-                        </Select>
+                        </Select> */}
                         </FormControl>
 
                         <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel id="stato-label">Stato</InputLabel>
+                        <Autocomplete
+                                id="stato-combo-box"
+                                options={statoOptions}
+                                getOptionLabel={(option) => option.label}
+                                value={statoOptions.find(option => option.value === filtri.stato) || null}
+                                onChange={(event, newValue) => {
+                                    onFilterChange('stato')({ target: { value: newValue?.value || null } });
+                                }}
+                                renderInput={(params) => <TextField {...params} label="Stato" />}
+                            />
+                        {/* <InputLabel id="stato-label">Stato</InputLabel>
                         <Select
                             labelId="stato-label"
                             displayEmpty
@@ -231,11 +254,21 @@ function RicercheRecruiting({ filtri, onFilterChange, onReset, tipologiaOptions,
                                 {option.label}
                             </MenuItem>
                             ))}
-                        </Select>
+                        </Select> */}
                         </FormControl>
 
                         <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel id="tipo-label">Tipo</InputLabel>
+                        <Autocomplete
+                                id="tipo-combo-box"
+                                options={tipoOptions}
+                                getOptionLabel={(option) => option.label}
+                                value={tipoOptions.find(option => option.value === filtri.tipo) || null}
+                                onChange={(event, newValue) => {
+                                    onFilterChange('tipo')({ target: { value: newValue?.value || null } });
+                                }}
+                                renderInput={(params) => <TextField {...params} label="Tipo" />}
+                            />
+                        {/* <InputLabel id="tipo-label">Tipo</InputLabel>
                         <Select
                             labelId="tipo-label"
                             displayEmpty
@@ -255,7 +288,7 @@ function RicercheRecruiting({ filtri, onFilterChange, onReset, tipologiaOptions,
                                 {option.label}
                             </MenuItem>
                             ))}
-                        </Select>
+                        </Select> */}
                         </FormControl>
                         <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
                         <Button 

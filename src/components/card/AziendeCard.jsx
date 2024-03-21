@@ -2,6 +2,7 @@ import React                                from 'react';
 import { useNavigate }                      from 'react-router-dom';
 import EmailIcon                            from '@mui/icons-material/Email';
 import FactoryIcon                          from '@mui/icons-material/Factory';
+import PlaceIcon                            from '@mui/icons-material/Place';
 import { 
     Card, 
     CardContent, 
@@ -137,19 +138,19 @@ const AziendeCard = ({valori}) => {
                 {valori.citta}
             </Typography>
 
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2, color: 'black' }}>
+            {/* <Typography variant="body2" color="text.secondary" sx={{ mb: 2, color: 'black' }}>
                 {valori.sedeOperativa}
-            </Typography>
+            </Typography> */}
 
 
             {/* <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, color: 'black' }}>
                 {valori.sedeOperativa}
             </Typography> */}
 
-            {/* <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
-                    <EmailIcon sx={{ color: '#00853C', mr: 1 }} />
-                    {valori.email}
-            </Typography> */}
+            <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
+                    <PlaceIcon sx={{ color: '#00853C', mr: 1 }} />
+                    {valori.sedeOperativa}
+            </Typography>
 
             <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
                 <FactoryIcon sx={{ color: '#00853C', mr: 1 }} />
