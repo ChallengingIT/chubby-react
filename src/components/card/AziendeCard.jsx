@@ -134,17 +134,22 @@ const AziendeCard = ({valori}) => {
             </Box>
 
             <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, color: 'black' }}>
-                {valori.citta}, {valori.sedeOperativa}
+                {valori.citta}
             </Typography>
+
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2, color: 'black' }}>
+                {valori.sedeOperativa}
+            </Typography>
+
 
             {/* <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, color: 'black' }}>
                 {valori.sedeOperativa}
             </Typography> */}
 
-            <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
+            {/* <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
                     <EmailIcon sx={{ color: '#00853C', mr: 1 }} />
                     {valori.email}
-            </Typography>
+            </Typography> */}
 
             <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
                 <FactoryIcon sx={{ color: '#00853C', mr: 1 }} />

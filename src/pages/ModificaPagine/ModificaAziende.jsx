@@ -93,12 +93,12 @@ const headers = {
     console.log("valori: ", datiModifica);
 
 
-const campiObbligatori = [ "denominazione", "email", "idOwner", "status", "citta", "provincia", "sedeOperativa", "settoreMercato" ];
+const campiObbligatori = [ "denominazione", "idOwner", "status", "citta", "provincia", "sedeOperativa", "settoreMercato" ];
 
 const fields = [
     { label: "Nome Azienda*",           name: "denominazione",        type: "text",       disabled: true                                  },
     { label: "Ragione Sociale*",        name: "ragioneSociale",       type: "text",                                                       },
-    { label: "Email*",                  name: "email",                type: "text"                                                        },
+    { label: "Email",                  name: "email",                type: "text"                                                        },
     { label: "Partita IVA",             name: "pi",                   type: "text"                                                        },
     { label: "Codice Fiscale",          name: "cf",                   type: "text"                                                        },
     { label: "Città*",                  name: "citta",                type: "text"                                                        },
