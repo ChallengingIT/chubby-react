@@ -14,7 +14,7 @@ import {
     } from '@mui/material';
 
 
-const AziendeCard = ({valori, onDelete, onRefresh}) => {
+const AziendeCard = ({valori, onDelete}) => {
 
 
     const [ modalDelete,       setModalDelete     ] = useState(false);
