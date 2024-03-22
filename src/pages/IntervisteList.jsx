@@ -33,6 +33,8 @@ function IntervisteList() {
 
 
 
+
+
   const [ originalInterviste,       setOriginalInterviste   ] = useState([]);
   const [ candidatoData,            setCandidatoData        ] = useState([]);
   const [ openDialog,               setOpenDialog           ] = useState(false);

@@ -17,6 +17,7 @@ const ModificaIntervista = () => {
   const [ ownerOptions,             setOwnerOptions          ] = useState([]);
   const [ statoOptions,             setStatoOptions          ] = useState([]); //tipologiaIncontro
   const [ tipoIntervistaOptions,    setTipoIntervistaOptions ] = useState([]); //follow up
+  
   const [ isDataLoaded,               setIsDataLoaded                 ] = useState(false);
   const [ alert,                      setAlert                        ] = useState(false);
   const [ interviste, setInterviste ] = useState([]);
@@ -128,7 +129,7 @@ const fields = [
   { label: "Tipologia Incontro",        name: "stato",                  type: "select", options: statoOptions, xs: 12, sm: 4 },
   { label: "Nome",                      name: "nome",                   type: "text", xs: 12, sm: 4},
   { label: "Cognome",                   name: "cognome",                type: "text", xs: 12, sm: 4},
-  { label: "Data di Nasciata",          name: "dataNascita",            type: "date", xs: 12, sm: 4},
+  { label: "Data di Nascita",           name: "dataNascita",            type: "date", xs: 12, sm: 4},
   { label: "Location",                  name: "location",               type: "text", xs: 12, sm: 4},
   { label: "Job Title",                 name: "tipologia",              type: "select", options: tipologiaOptions, xs: 12, sm: 4 },
   { label: "Anni di Esperienza",        name: "anniEsperienza",         type: "text", xs: 12, sm: 4},
@@ -177,15 +178,14 @@ const fields = [
 
   const initialValues = {
     id:                               rowData.id                                  ,  
-    stato:                            rowData.candidato.stato?.id                 || null,
-    nome:                             rowData.candidato?.nome                     || null,
-    cognome:                          rowData.candidato?.cognome                  || null,
-    dataNascita:                      rowData.candidato?.dataNascita              || null,
-    location:                         candidato?.citta                            || null, 
-    tipologia:                        candidato?.tipologia?.id                    || null,
-    anniEsperienza:                   candidato?.anniEsperienza                   || null,
+    nome:                             candidato?.nome                               || null,
+    cognome:                          candidato.cognome                             || null,
+    dataNascita:                      candidato.dataNascita                         || null,
+    location:                         candidato.citta                               || null, 
+    tipologia:                        candidato.tipologia?.id                       || null,
+    anniEsperienza:                   candidato.anniEsperienza                      || null,
     dataColloquio:                    rowData.dataColloquio                       || null,
-    cellulare:                        candidato?.cellulare                        || null,
+    cellulare:                        candidato.cellulare                           || null,
     idOwner:                          rowData.owner?.id                           || null,
     aderenza:                         rowData.aderenza                            || null,
     coerenza:                         rowData.coerenza                            || null,
@@ -209,16 +209,17 @@ const fields = [
     idNextOwner:                      rowData.nextOwner?.id                       || null
   };
 
+
   const disableFields = {
     nome:               true,
     cognome:            true,
     dataNascita:        true,
     tipologia:          true,
+    location:           true,
     anniEsperienza:     true,
     cellulare:          true,
-    location:           true,
-
-  };
+    stato:              true
+    };
 
   const handleSubmit = async (values) => {
     try {

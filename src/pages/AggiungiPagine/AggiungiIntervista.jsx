@@ -130,7 +130,7 @@ const fields = [
     { label: "Tipologia Incontro",        name: "stato",                  type: "select", options: statoOptions, xs: 12, sm: 4 },
     { label: "Nome",                      name: "nome",                   type: "text", xs: 12, sm: 4},
     { label: "Cognome",                   name: "cognome",                type: "text", xs: 12, sm: 4},
-    { label: "Data di Nasciata",          name: "dataNascita",            type: "date", xs: 12, sm: 4},
+    { label: "Data di Nascita",           name: "dataNascita",            type: "date", xs: 12, sm: 4},
     { label: "Location",                  name: "location",               type: "text", xs: 12, sm: 4},
     { label: "Job Title",                 name: "tipologia",              type: "select", options: tipologiaOptions, xs: 12, sm: 4 },
     { label: "Anni di Esperienza",        name: "anniEsperienza",         type: "text", xs: 12, sm: 4},
