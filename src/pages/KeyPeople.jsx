@@ -236,6 +236,17 @@ const Keypeople = () => {
     ];
 
 
+     //funzione per cancellare l'azienda
+    const handleDelete = async (id) => {
+        try{
+            const responseDelete = await axios.delete(`http://localhost:8080/keypeople/react/elimina/${id}`, {headers: headers});
+            await fetchData(0);
+        } catch(error) {
+            console.error("Errore durante la cancellazione: ", error);
+        }
+    };
+
+
     return(
         <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto', width: '100vw' }}>
             <Box sx={{ 
@@ -286,7 +297,9 @@ const Keypeople = () => {
                     ) : (
                         originalKeypeople.map((keypeople, index) => (
                             <Grid item xs={12} md={6} key={index}>
-                                <KeypeopleCard valori={keypeople}/>
+                                <KeypeopleCard 
+                                valori={keypeople}
+                                onDelete={() => handleDelete(keypeople.id)}/>
                             </Grid>
                         ))
                     )

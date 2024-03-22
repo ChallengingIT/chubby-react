@@ -1,8 +1,10 @@
-import React                                from 'react';
+import React, {useState, useEffect}                 from 'react';
 import { useNavigate }                      from 'react-router-dom';
 import EmailIcon                            from '@mui/icons-material/Email';
 import BusinessCenterIcon                   from '@mui/icons-material/BusinessCenter';
 import LocalPhoneIcon                       from '@mui/icons-material/LocalPhone';
+import CloseIcon                            from '@mui/icons-material/Close';
+
 import { 
     Card, 
     CardContent, 
@@ -10,16 +12,40 @@ import {
     Typography,
     Button,
     CardActions,
+    Modal
     } from '@mui/material';
 
 
-const KeypeopleCard = ({valori}) => {
+const KeypeopleCard = ({valori, onDelete}) => {
 
     const navigate = useNavigate();
+
+
+
+
+    const [ modalDelete,       setModalDelete     ] = useState(false);
+
 
     const navigateToAggiorna = (id, event) => {
         event.stopPropagation();
         navigate(`/keypeople/modifica/${valori.id}`, { state: { ...valori } });
+    };
+
+
+    const handleOpenModalDelete = (event) => {
+        event.stopPropagation();
+        setModalDelete(true);
+    };
+
+    const handleCloseModalDelete = (event) => {
+        setModalDelete(false);
+    };
+    
+
+
+    const confirmDelete = (id, event) => {
+        onDelete();
+        handleCloseModalDelete(true);
     };
 
 
@@ -60,6 +86,9 @@ const KeypeopleCard = ({valori}) => {
             >
                 {valori.nome} {valori.cognome}
             </Typography>
+
+            <Button onClick={handleOpenModalDelete} variant="outlined" sx={{backgroundColor: 'transparent', border: 'none', color: '#898989', '&:hover': { border: 'none', color: 'red', transform: 'scale(1.1)'}}}startIcon={<CloseIcon sx={{backgroundColor: 'transparent'}}/>}/>
+
             </Box>
 
             <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
@@ -78,6 +107,73 @@ const KeypeopleCard = ({valori}) => {
             </Typography>
 
         </CardContent>
+
+        <Modal
+                open={modalDelete}
+                onClose={handleCloseModalDelete}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                onClick={(event) => event.stopPropagation()}
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+                >
+                    <Box
+                            sx={{
+                            backgroundColor: 'white',
+                            p: 4,
+                            borderRadius: 2,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flexDirection: 'column',
+                            gap: 2,
+                            width: '40vw',
+                            }}
+                            >
+                            <Typography id="modal-modal-title" variant="h6" component="h2">
+                            Sei sicuro di voler eliminare il contatto?
+                            </Typography>
+                            <Box 
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                gap: 3
+                            }}>
+                                <Button
+                                onClick={handleCloseModalDelete}
+                                sx={{
+                                    backgroundColor: 'black',
+                                    color: 'white',
+                                    borderRadius: '5px',
+                                    '&:hover': {
+                                        backgroundColor: 'black',
+                                        color: 'white',
+                                        transform: 'scale(1.05)'
+                                    },
+                                }}>
+                                Indietro
+                            </Button>
+                            <Button
+                            onClick={confirmDelete}
+                            sx={{
+                                backgroundColor: '#00853C',
+                                color: 'white',
+                                borderRadius: '5px',
+                                '&:hover': {
+                                    backgroundColor: '#00853C',
+                                    color: 'white',
+                                    transform: 'scale(1.05)'
+                                },
+                            }}>
+                                Conferma
+                            </Button>
+                            </Box>
+                            </Box>
+                </Modal>
         <CardActions>
         <Box
             sx={{
