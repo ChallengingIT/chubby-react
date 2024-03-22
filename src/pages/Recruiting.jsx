@@ -23,6 +23,7 @@ import {
   DialogActions,
   Box,
   Button,
+  Typography
 } from '@mui/material';
 import RicercheRecruiting from "../components/ricerche/RicercheRecruiting.jsx";
 
@@ -252,16 +253,6 @@ const quantita = 10;
 
 
 
-  const handleFilterChange = (name) => (event) => {
-    const newValue = event.target.value;
-    setFiltri({ ...filtri, [name]: newValue });
-    if (name === 'denominazione' && newValue === '') {
-        fetchData();
-    } else {
-        handleRicerche();
-    }
-};
-
 
 
 
@@ -273,6 +264,7 @@ useEffect(() => {
 
 const handleRicerche = async () => {
 
+  if (!Object.values(filtri).every(value => value === '')) {
     const filtriDaInviare = {
         nome: filtri.nome || null,
         cognome: filtri.cognome || null,
@@ -283,6 +275,7 @@ const handleRicerche = async () => {
         pagina: 0,
         quantita: 10
     };
+
 
 
     setLoading(true);
@@ -331,18 +324,32 @@ const handleRicerche = async () => {
     } finally {
         setLoading(false);
     }
+}
 };
 
 
-
 useEffect(() => {
-    const { nome, cognome, ...otherFilters } = filtri;
-    const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x != null);
+  const { nome, cognome, ...otherFilters } = filtri;
+  const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x != null);
 
-    if (filtriHasValues) {
-        handleRicerche();
-    }
-}, [filtri.tipologia, filtri.stato, filtri.tipo]);
+  if (filtriHasValues) {
+      handleRicerche();
+  }
+}, [filtri.tipologia, filtri.stato, filtri.tipo, filtri.nome, filtri.cognome]);
+
+
+
+const handleFilterChange = (name) => (event) => {
+  const newValue = event.target.value;
+  setFiltri({ ...filtri, [name]: newValue });
+  if (name === 'denominazione' && newValue === '') {
+      fetchData();
+  } else {
+      handleRicerche();
+  }
+};
+
+
 
 
 const handleOpenFiltri = () => setOpenFiltri(true);
@@ -465,6 +472,8 @@ const handleReset = () => {
 
 
 
+
+
 return (
   <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto', minHeight: '100vh', flexGrow: 1}}>
     <Box sx={{
@@ -489,16 +498,20 @@ return (
       onRicerche={handleRicerche}
       />
       <Box sx={{ mr: 0.2}}>
-      <Tabella
-        data={originalRecruiting} 
-        columns={columns} 
-        title="Candidati" 
-        getRowId={(row) => row.id}
-        pagina={pagina}
-        quantita={quantita}
-        righeTot={righeTot}
-        onPageChange={handlePageChange} 
-      />
+        { loading ? (
+          <Typography variant="body1" sx={{ margin: '30px' }}>Caricamento...</Typography>
+        ) : ( 
+          <Tabella
+          data={originalRecruiting} 
+          columns={columns} 
+          title="Candidati" 
+          getRowId={(row) => row.id}
+          pagina={pagina}
+          quantita={quantita}
+          righeTot={righeTot}
+          onPageChange={handlePageChange} 
+        />
+        )}
       </Box>
             {notePopup && (
                 <Dialog open={notePopup} onClose={handleCloseNotesModal} sx={{ '& .MuiDialog-paper': { width: '400px', height: 'auto' } }}>

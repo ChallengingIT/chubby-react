@@ -1,14 +1,14 @@
 import React, {useState, useEffect}                 from 'react';
 import { useNavigate }                              from 'react-router-dom';
 // import ChecklistIcon                                from '@mui/icons-material/Checklist';
-import WorkIcon                                     from '@mui/icons-material/Work';
+import BusinessCenterIcon                   from '@mui/icons-material/BusinessCenter';
 import axios                                        from 'axios';
 import Torcia                                       from "../../images/torciaSF.png";
 import JoinInnerIcon                                from '@mui/icons-material/JoinInner'; //match
 import AutorenewIcon                                from '@mui/icons-material/Autorenew'; //stato
 import DeleteIcon                                   from '@mui/icons-material/Delete'; //cancella
 import { Edit }                                     from '@mui/icons-material';
-import CircleOutlinedIcon                           from '@mui/icons-material/CircleOutlined'; //stato
+import AutoModeIcon                                 from '@mui/icons-material/AutoMode'; //stato
 
 
 
@@ -229,14 +229,14 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
             </Typography>
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
-                    <WorkIcon sx={{ color: '#00853C', mr: 1 }} />
+                    <BusinessCenterIcon sx={{ color: '#00853C', mr: 1 }} />
                     {valori.tipologia && valori.tipologia.descrizione
                     ? valori.tipologia.descrizione
                     : "N/A"}
                     </Typography>
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
-                    <CircleOutlinedIcon sx={{ color: '#00853C', mr: 1 }} />
+                    <AutoModeIcon sx={{ color: '#00853C', mr: 1 }} />
                     {valori.stato.descrizione}
             </Typography>
 
