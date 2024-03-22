@@ -1,5 +1,7 @@
 import React                                from 'react';
 import { useNavigate }                      from 'react-router-dom';
+import AutoModeIcon                         from '@mui/icons-material/AutoMode'; //stato
+
 import { 
     Card, 
     CardContent, 
@@ -41,7 +43,10 @@ import {
 
 
         return (
-            <Card raised sx={{
+            <Card
+                raised
+                onClick={(event) => navigateToAggiorna(valori.id, event)}
+                sx={{
                 borderRadius: '20px', 
                 maxWidth: '80%', 
                 justifyContent: 'center', 
@@ -57,7 +62,7 @@ import {
             }>
             <CardContent>
                 {/* Contenuto della Card */}
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Typography
                     gutterBottom
                     variant="h5"
@@ -68,7 +73,8 @@ import {
                     overflow: 'hidden',
                     whiteSpace: 'nowrap',
                     textOverflow: 'ellipsis',
-                    width: '100%' 
+                    width: '100%',
+                    p: 1
                     }}
                 >
                     {valori.descrizione}
@@ -76,13 +82,18 @@ import {
                 </Box>
 
 
-                <Typography variant="body2" color="text.primary" sx={{ mb: 0.5, color: 'black' }}>
+                <Typography variant="body2" color="text.primary" sx={{ mb: 0.5, color: 'black', pl: 1 }}>
                 {timeDifference}
                 </Typography>
 
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, color: 'black' }}>
+                {/* <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, color: 'black' }}>
                 {valori.stato && valori.stato.descrizione}
-                </Typography>
+                </Typography> */}
+
+                <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
+                    <AutoModeIcon sx={{ color: '#00853C', mr: 1 }} />
+                    {valori.stato && valori.stato.descrizione}
+            </Typography>
 
             </CardContent>
             <CardActions>
@@ -95,7 +106,7 @@ import {
                 width: '100%',
                 mr:2
             }} >
-                <Button 
+                {/* <Button 
                 size="small"
                 onClick={(event) => navigateToAggiorna(valori.id, event)}
                 sx={{
@@ -109,7 +120,7 @@ import {
                         backgroundColor: 'black',
                         transform: 'scale(1.05)',
                         },
-                    }}>Modifica</Button>
+                    }}>Modifica</Button> */}
             </Box>
 
             </CardActions>

@@ -43,10 +43,10 @@ const NeedMatch2 = () => {
         };
     }); 
     const seniority = [
-        { label: 'Neo', value: '0' },
-        { label: 'Junior', value: '1' },
-        { label: 'Middle', value: '2' },
-        { label: 'Senior', value: '3' }
+        { label: 'Neo', value: '0', min: 0, max: 1 },
+        { label: 'Junior', value: '1', min: 1, max: 2 },
+        { label: 'Middle', value: '2', min: 2, max: 3 },
+        { label: 'Senior', value: '3', min: 3 }
       ];
 
 
@@ -328,17 +328,26 @@ const NeedMatch2 = () => {
             };
 
 
-            //funzione per il cambio stato dei select
-            const handleFilterChange = (name) => (event) => {
-                const newValue = event.target.value;
-                setFiltri({ ...filtri, [name]: newValue });
-                if (name === 'denominazione' && newValue === '') {
-                    fetchData();
-                } else {
-                    handleRicerche();
-                }
-            };
+             //funzione per il cambio stato dei select
+                const handleFilterChange = (name) => (event) => {
+                    const newValue = event.target.value;
+                
+                    if (name === 'seniority') {
+                    const selectedOption = seniority.find(option => option.value === newValue);
+                
+                    const min = selectedOption.min ?? parseInt(newValue);
+                    const max = selectedOption.max ?? Infinity;
 
+
+                
+                    setFiltri({ ...filtri, [name]: newValue, minimo: min, massimo: max });
+                    } else {
+                    setFiltri({ ...filtri, [name]: newValue });
+                    }
+                
+                    // Esegui la ricerca
+                    handleRicerche();
+                };
 
 
             useEffect(() => {
@@ -348,7 +357,7 @@ const NeedMatch2 = () => {
 
 
             //funzione per le ricerche
-            const handleRicerche = async () => {
+            const handleRicerche = async (minimo, massimo) => {
                 const paginazione = {
                     pagina: 0,
                     quantita: 10
@@ -358,7 +367,8 @@ const NeedMatch2 = () => {
                     cognome: filtri.cognome || null,
                     tipologia: filtri.tipologia || null,
                     tipo: filtri.tipo || null,
-                    seniority: filtri.seniority || null,
+                    minimo: filtri.minimo || null,
+                    massimo: filtri.massimo || null,
                     pagina: 0,
                     quantita: 10
                 };
@@ -431,7 +441,9 @@ const NeedMatch2 = () => {
                     cognome: '',
                     tipo: '',
                     tipologia: '',
-                    seniority: ''
+                    seniority: '',
+                    minimo: '',
+                    massimo: ''
                 });
                 setPaginaCandidati(0);
                 fetchData();

@@ -22,6 +22,7 @@ const Aziende = () => {
 
 
 
+
     //stati ricerche
     // const [ clienteOptions,             setClienteOptions             ] = useState([]);
     const [ ownerOptions,               setOwnerOptions               ] = useState([]);
@@ -260,6 +261,24 @@ const Aziende = () => {
                 };
 
 
+
+        //funzione per cancellare l'azienda
+        const handleDelete = async (id) => {
+            try{
+                const responseDelete = await axios.delete(`http://localhost:8080/aziende/react/elimina/${id}`, {headers: headers});
+                await fetchData(0);
+            } catch(error) {
+                console.error("Errore durante la cancellazione: ", error);
+            }
+        };
+
+
+        //funzione per il refresh
+        const handleRefresh = async () => {
+        await fetchData(0);
+        };
+
+
                 //funzione per il refresh
                 // const handleRefresh = async () => {
                 //     await fetchData(0);
@@ -410,6 +429,10 @@ const Aziende = () => {
                             <Grid item xs={12} md={6} key={index}>
                                 <AziendeCard
                                 valori={aziende}
+                                onDelete={() => handleDelete(aziende.id)}
+                                onRefresh={handleRefresh}
+
+
                                 />
                             </Grid>
                         ))

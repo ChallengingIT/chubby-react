@@ -67,7 +67,7 @@ useEffect(() => {
                     </PrivateRoute>
                   } /> */}
                 <Route path="/dashboard" element={
-                    <PrivateRoute roles={['ROLE_ADMIN',  'ROLE_RECRUITER']}>
+                    <PrivateRoute roles={['ROLE_ADMIN',  'ROLE_RECRUITER', 'ROLE_BM']}>
                       <Dashboard />
                     </PrivateRoute>
                   } />

@@ -60,6 +60,7 @@ return (
             rows={data}
             columns={columns}
             paginationMode='server'
+            pageSizeOptions={[10]}
             rowCount={righeTot}
             autoHeight
             paginationModel={ {page: pagina, pageSize: quantita}}
