@@ -33,7 +33,6 @@ const IntervistaBox = ({
   const navigate = useNavigate();
 
 
-
 const getDisabledStyles = (isDisabled) => {
   return isDisabled ? { color: 'black' } : {};
 };
@@ -121,6 +120,7 @@ const validate = () => {
     const isDisabled = disableFields[field.name];
     
     switch (field.type) {
+
       case 'select':
         
         return (

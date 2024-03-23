@@ -30,7 +30,6 @@ import NeedLife                                                        from './c
 import NeedMatch2                                                      from './pages/NeedMatch2.jsx';
 import AziendeListaNeedCard                                            from './pages/AziendeListaNeedCard.jsx';
 import DettaglioIntervista                                             from './pages/VisualizzaPagine/DettaglioIntervista.jsx';
-import PaginaProva from './pages/PaginaProva.jsx';
 import NuovoNeed from './pages/AggiungiPagine/NuovoNeed.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 

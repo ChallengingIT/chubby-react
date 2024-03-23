@@ -1,56 +1,283 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect }               from "react";
+import { useNavigate }                                     from "react-router-dom";
 
-import { Box, Typography, Checkbox, TextField, Select, MenuItem, Button, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+
+import { Box, Typography, TextField, Select, MenuItem, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Grid, FormControl, Autocomplete } from '@mui/material';
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
+import axios from "axios";
+import FieldBoxFile from "../../components/FieldBoxFileNuovo";
+
 
 function NuovoNeed() {
-    const [activeSection, setActiveSection] = useState('Informazioni Generali');
+
+
+    const navigate      = useNavigate();
+
+    const [activeSection, setActiveSection] = useState('Profilo');
+    const [currentPageIndex, setCurrentPageIndex] = useState(0);
+
+
+
+
+    const [ provinceOptions, setProvinceOptions] = useState([]);
+    const [ ownerOptions,    setOwnerOptions   ] = useState([]);
+    const [ alert,           setAlert          ] = useState({ open: false, message: '' });
+
+    const user = JSON.parse(localStorage.getItem("user"));
+    const accessToken = user?.accessToken;
+
+    const headers = {
+        Authorization: `Bearer ${accessToken}`
+    };
+
+
+
+
+        useEffect(() => {
+            const fetchProvinceOptions = async () => {
+            try {
+        
+                const provinceResponse = await axios.get("http://localhost:8080/aziende/react/province", { headers: headers });
+                const ownerResponse    = await axios.get("http://localhost:8080/aziende/react/owner",    { headers: headers }   );
+        
+                if (Array.isArray(ownerResponse.data)) {
+                const ownerOptions = ownerResponse.data.map((owner) => ({
+                    label: owner.descrizione,
+                    value: owner.id,
+                }));
+                setOwnerOptions(ownerOptions);
+                }
+                
+                if (Array.isArray(provinceResponse.data)) {
+                    const provinceOptions = provinceResponse.data.map((province) => ({
+                    label: province.nomeProvince,
+                    value: province.nomeProvince,
+                    }));
+                    setProvinceOptions(provinceOptions);
+                } else {
+                console.error("I dati ottenuti non sono nel formato Array:", provinceResponse.data);
+                }
+            } catch (error) {
+                console.error("Errore durante il recupero delle province:", error);
+            }
+            };
+        
+            fetchProvinceOptions();
+        }, []);
+
+
+        const handleBackButton = () => {}
 
     const menu = [
         { 
-            title: 'Informazioni Generali',
+            title: 'Profilo',
             icon: <CircleOutlinedIcon />
         },
         {
-            title: 'Locazione',
+            title: 'Location',
             icon: <CircleOutlinedIcon />
         },
         {
-            title: 'Competenze',
+            title: 'Contatti',
             icon: <CircleOutlinedIcon />
         }
     ];
 
+
+    const handleBackButtonClick = () => {
+        const currentIndex = menu.findIndex(item => item.title.toLowerCase() === activeSection.toLowerCase());
+        if (currentIndex > 0) {
+            setActiveSection(menu[currentIndex - 1].title);
+            setCurrentPageIndex(currentIndex - 1);
+        }
+    };
+
+    const handleNextButtonClick = () => {
+        const currentIndex = menu.findIndex(item => item.title.toLowerCase() === activeSection.toLowerCase());
+        if (currentIndex < menu.length - 1) {
+            setActiveSection(menu[currentIndex + 1].title);
+            setCurrentPageIndex(currentIndex + 1);
+        }
+    };
+
+
+    const handleGoBack = () => {
+        navigate(-1); 
+      };
+
+
+
+        const handleSubmit = async (values) => {
+            const errors    = validateFields(values);
+            const hasErrors = Object.keys(errors).length > 0;
+        
+            if (!hasErrors) {
+            try {
+        
+                Object.keys(values).forEach(key => {
+                if (!campiObbligatori.includes(key) && !values[key]) {
+                    values[key] = null;
+                }
+                });
+        
+        
+                const userString = localStorage.getItem("user");
+                if (!userString) {
+                console.error("Nessun utente o token trovato in localStorage");
+                return;
+                }
+                const user = JSON.parse(userString);
+                const accessToken = user?.accessToken;
+                
+                if (!accessToken) {
+                console.error("Nessun token di accesso disponibile");
+                return;
+                }
+        
+                const headers = {
+                Authorization: `Bearer ${accessToken}`
+                };
+        
+                const response = await axios.post("http://localhost:8080/aziende/react/salva", values, {
+                headers: headers
+                });
+                if (response.data === "DUPLICATO") {
+                setAlert({ open: true, message: "azienda già esistente!" });
+                console.error("L'azienda è già stata salvata.");
+                return; 
+                }
+                navigate("/aziende");
+            } catch (error) {
+                console.error("Errore durante il salvataggio:", error);
+            }
+            }
+        };
+        
+        const validateFields = (values) => {
+            let errors = {};
+            campiObbligatori.forEach(field => {
+            if (!values[field]) {
+                errors[field] = 'Questo campo è obbligatorio';
+            }
+            });
+            return errors;
+        };
+
+
+
+
+
+    const campiObbligatoriProfilo = [ "denominazione", "idOwner", "staus"];
+    const campiProfilo = [
+        { label: 'Nome Azienda*',                   name: 'denominazione',            type:'text'                              },
+        { label: "Email",                           name: "email",                    type: "text"                             },
+        { label: "Partita IVA",                     name: "pi",                       type: "text"                             },
+        { label: "Codice Fiscale",                  name: "cf",                       type: "text"                             },
+        { label: "Owner*",                          name: "idOwner",                  type: "select", options: ownerOptions    },
+        { label: "Tipologia",                       name: "tipologia",                type: "select", options: [
+            { value: "Cliente", label: "Cliente" },
+            { value: "Prospect", label: "Prospect" },
+            { value: "EXCLIENTE", label: "Ex Cliente" }
+        ]  },
+        { label: "Stato*",                          name: "status",                    type: "select", options: [
+            { value: 1, label: "Verde" },
+            { value: 2, label: "Giallo" },
+            { value: 3, label: "Rosso" },
+        ]  },
+    ];
+
+    const campiObbligatoriLocation = [ "citta", "provincia", "sedeOperativa", "cap"];
+    const campiLocation = [
+        { label: "Città*",                          name: "citta",                    type: "text"                             },
+        { label: "Paese",                           name: "paese",                    type: "text"                             },
+        { label: "Provincia*",                      name: "provincia",                type: "select", options: provinceOptions },
+        { label: "Sede Operativa*",                  name: "sedeOperativa",            type: "text"                            },
+        { label: "Sede Legale",                     name: "sedeLegale",               type: "text"                             },
+        { label: "CAP",                             name: "cap",                      type: "text"                             },
+    ];
+
+
+    const campiContatti = [
+        { label: "Pec",                             name: "pec",                      type: "text"                             },
+        { label: "Codice Destinatario",             name: "codiceDestinatario",       type: "text"                             },
+        { label: "Sito Web",                        name: "sito",                     type: "text"                             },
+        { label: "Note",                            name: "note",                     type: "note"                             },
+    ];
+
+    const campiObbligatori = [...campiObbligatoriProfilo, ...campiObbligatoriLocation];
+
+
+    const renderNavigationButtons = () => {
+        return (
+            <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center', gap: 4}}>
+                {currentPageIndex > 0 && (
+                    <Button onClick={() => handleBackButtonClick()} variant="contained" sx={{ width: '6em', backgroundColor: 'black', borderRadius: '5px', '&:hover': { backgroundColor: 'black', color: 'white', transform: 'scale(1.04)'}}}>Indietro</Button>
+                )}
+                {currentPageIndex < menu.length - 1 ? (
+                    <Button onClick={() => handleNextButtonClick()} variant="contained" sx={{ width: '6em', backgroundColor: 'black', borderRadius: '5px', '&:hover': { backgroundColor: 'black', color: 'white', transform: 'scale(1.04)'}}}>Avanti</Button>
+                ) : (
+                    <Button onClick={() => handleSubmit()} variant="contained" sx={{ width: '6em', backgroundColor: '#B2C5BB', color: 'black', fontWeight: '600', borderRadius: '5px', '&:hover': { backgroundColor: '#B2C5BB', color: 'black', transform: 'scale(1.04)'}}}>Salva</Button>
+                )}
+            </Box>
+        );
+    };
+
     const renderFormFields = () => {
-        switch (activeSection) {
-            case 'Informazioni Generali':
+        switch (activeSection.toLowerCase()) {
+            case 'profilo':
                 return (
-                    <Box sx={{ display: 'flex', flexDirection: 'row', gap: '2em', justifyContent:'space-between', alignItems: 'center' }}>
-                        {/* Campi per Informazioni Generali */}
-                        <Select fullWidth type="text" placeholder="Campo 1" />
-                        <TextField fullWidth type="text" placeholder="Campo 2" />
-                    </Box>
+                    <>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: 2}}>
+                        <FieldBoxFile
+                        fields={campiProfilo}
+                        campiObbligatori={campiObbligatoriProfilo}
+                        />
+                        <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center'}}>
+                        {renderNavigationButtons()}
+                        </Box>
+                        </Box>
+
+                    </>
                 );
-            case 'Locazione':
+            case 'location':
                 return (
-                    <Box>
-                        {/* Campi per Locazione */}
-                        <Select type="text" placeholder="Campo 3" />
-                        <Select type="text" placeholder="Campo 4" />
-                    </Box>
+                    <>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: 2}}>
+                    <FieldBoxFile
+                        fields={campiLocation}
+                        campiObbligatori={campiObbligatoriLocation}
+                        />
+                        <Box sx={{ mt: 10, display: 'flex', justifyContent: 'center', gap: 4}}>
+                        {renderNavigationButtons()}
+                        </Box>
+                        </Box>
+
+                    </>
                 );
-            case 'Competenze':
-                return (
-                    <Box>
-                        {/* Campi per Competenze */}
-                        <Select type="text" placeholder="Campo 5" />
-                        <Select type="text" placeholder="Campo 6" />
-                    </Box>
-                );
+                case 'contatti':
+                    return (
+                        <>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: 2}}>
+                        <FieldBoxFile
+                        fields={campiContatti}
+                        />
+                            <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center'}}>
+                            {renderNavigationButtons()}
+                            </Box>
+                            </Box>
+    
+                        </>
+                    );
             default:
                 return null;
         }
     };
+
+    
+    
+    
+    
+    
 
     return (
         <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
@@ -62,7 +289,9 @@ function NuovoNeed() {
                         justifyContent: 'flex-start',
                         width: '100%'
                     }}>
-                        <Button sx={{
+                        <Button 
+                        onClick={handleGoBack}
+                        sx={{
                             color: 'black',
                             border:'none',
                             fontSize: '0.8em',
@@ -70,13 +299,15 @@ function NuovoNeed() {
                             outline: 'none',
                             borderRadius: '10px',
                             mt: 4,
-                            ml: 2
+                            ml: 2,
+                            fontSize: '0.9em'
                         }}
                         >
                             <span style={{ marginRight: '0.5em'}}>{"<"}</span>
                             Indietro
                         </Button>
                     </Box>
+                    <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, fontSize: '1.8em'}}>  Aggiungi <br /> Azienda </Typography>
 
 
                 <Box sx={{
@@ -87,32 +318,22 @@ function NuovoNeed() {
                     ml: 2,
                     mt: 5
                 }}>
-                <List sx={{ display: 'flex', flexDirection: 'column', width: '90%'}}>
+               <List sx={{ display: 'flex', flexDirection: 'column', width: '90%'}}>
                     {menu.map((item) => (
                         <ListItem
                             key={item.title}
                             selected={activeSection === item.title}
-                            onClick={() => setActiveSection(item.title)}
                             sx={{
                                 gap: 0,
                                 mb: 4,
                                 '&:hover, &.Mui-selected': {
-                                    backgroundColor: 'trasparent',
-                                    cursor: 'pointer',
+                                    backgroundColor: activeSection === item.title ? 'black' : 'transparent',
                                     '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-                                        color: '#00853C',
+                                        color: activeSection === item.title ? 'white' : 'black',
                                     },
                                     borderRadius: '10px',
                                 },
                                 borderRadius: '10px',
-                                backgroundColor: activeSection === `/${item.title.toLowerCase()}` ? 'trasparent' : '',
-                                '& .MuiListItemIcon-root': {
-                                    color: activeSection === `/${item.title.toLowerCase()}` ? 'black' : 'black',
-                                    minWidth: '2.2em',
-                                },
-                                '& .MuiListItemText-primary': {
-                                    color: activeSection === `/${item.title.toLowerCase()}` ? '#00853C' : 'black',
-                                },
                             }}
                         >
                             <ListItemIcon>
@@ -122,29 +343,16 @@ function NuovoNeed() {
                         </ListItem>
                     ))}
                 </List>
-                </Box>
-
-                <Box sx={{
-                    display: 'flex',
-                    width: '100%',
-                    justifyContent: 'center'
-                }}>
-                    <Button sx={{
-                        color:'black',
-                        '&:hover': {
-                            transform:'scale(1.1)',
-                        },
-                    }}>
-                        Salva
-                    </Button>
-                </Box>
-
-
 
                 </Box>
-                <Box sx={{ flexGrow: 1, height: '100%', background: '#FEFCFD', p: 2,  display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
+
+                </Box>
+                <Box sx={{ flexGrow: 1, height: '100%', background: '#FEFCFD', p: 2,  display: 'flex', flexDirection: 'column' }}>
                     {/* Contenuto della seconda Box */}
-                        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '5em' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, mb: 6}}>
+                    <Typography variant="h4" component="h1" sx={{ mt:1, mb: 3, fontWeight: 'bold', fontSize: '1.8'}}>{activeSection}</Typography>
+                    </Box>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                             {renderFormFields()}
                         </Box>
                     </Box>
@@ -157,99 +365,3 @@ function NuovoNeed() {
 }
 
 export default NuovoNeed;
-
-
-
-
-
-
-// <Box sx={{ flexGrow: 1, p: 3, ml: '12.2em', mt: '0.5em', mb: '0.8em', mr: '0.8em', borderRadius: '20px', display: 'flex', justifyContent: 'center', background: 'linear-gradient(to right, #80b791 22%, #FEFCFD 22%)' }}>
-// <Box sx={{ height: '100%', display: 'flex', mt: 4, flexDirection: 'column', gap: 5, overflow: 'hidden', width: '17%', pb: 5 }}>
-//     <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', width: '100%'}}>
-//         <Button
-//         sx={{
-//             color: 'black',
-//             border: 'none',
-//             fontSize: '0.8rem',
-//             cursor: 'pointer',
-//             display: 'flex',
-//             alignItems: 'center',
-//             padding: '0.5rem 1rem',
-//             outline: 'none',
-//             borderRadius: '10px',
-//         }}
-//         >
-//             <span style={{ marginRight: '0.5em' }}>{"<"}</span>
-//             Indietro
-//         </Button>
-//     </Box>
-
-// +
-//     <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', width: '100%', mr: 5 }}>
-//         <List sx={{ display: 'flex', flexDirection: 'column', width: '90%'}}>
-//             {menu.map((item) => (
-//                 <ListItem
-//                     key={item.title}
-//                     selected={activeSection === item.title}
-//                     onClick={() => setActiveSection(item.title)}
-//                     sx={{
-//                         gap: 0,
-//                         mb: 4,
-//                         '&:hover, &.Mui-selected': {
-//                             backgroundColor: 'trasparent',
-//                             cursor: 'pointer',
-//                             '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-//                                 color: '#00853C',
-//                             },
-//                             borderRadius: '10px',
-//                         },
-//                         borderRadius: '10px',
-//                         backgroundColor: activeSection === `/${item.title.toLowerCase()}` ? 'trasparent' : '',
-//                         '& .MuiListItemIcon-root': {
-//                             color: activeSection === `/${item.title.toLowerCase()}` ? 'black' : 'black',
-//                             minWidth: '2.2em',
-//                         },
-//                         '& .MuiListItemText-primary': {
-//                             color: activeSection === `/${item.title.toLowerCase()}` ? '#00853C' : 'black',
-//                         },
-//                     }}
-//                 >
-//                     <ListItemIcon>
-//                         {item.icon}
-//                     </ListItemIcon>
-//                     <ListItemText primary={item.title} />
-//                 </ListItem>
-//             ))}
-//         </List>
-        
-//     </Box>
-//     <Box sx={{ display: 'flex', justifyContent: 'center', mr: 2}}>
-//             <Button
-//                 style={{
-//                     backgroundColor: 'trasparent',
-//                     color: 'black',
-//                     border: 'none',
-//                     fontSize: '0.8rem',
-//                     cursor: 'pointer',
-//                     display: 'flex',
-//                     alignItems: 'center',
-//                     padding: '0.5rem 1rem',
-//                     outline: 'none',
-//                     borderRadius: '10px',
-                    
-//                 }}
-//             >
-//                 Salva
-//             </Button>
-//             </Box>
-//             </Box>
-
-// <Box sx={{ width: '80%', height: '100%', display: 'flex', flexDirection: 'column', pl: 2, left: '5em' }}>
-//     {/* Form di inserimento dati */}
-//     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: '25%' }}>
-//         <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '5em' }}>
-//             {renderFormFields()}
-//         </Box>
-//     </Box>
-// </Box>
-// </Box>

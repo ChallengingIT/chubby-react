@@ -51,11 +51,11 @@ const Recruiting = () => {
   const [ filtri,                     setFiltri               ] = useState(() => {
     const filtriSalvati = localStorage.getItem('filtriRicercaRecruiting');
     return filtriSalvati ? JSON.parse(filtriSalvati) : {
-    nome: '',
-    cognome: '',
-    tipologia: '',
-    stato: '',
-    tipo:''
+    nome: null,
+    cognome: null,
+    tipologia: null,
+    stato: null,
+    tipo:null
     };
 });
 
@@ -88,6 +88,7 @@ const quantita = 10;
       pagina: 0,
       quantita: 10
   };
+
 
 
 
@@ -139,14 +140,23 @@ const quantita = 10;
     
     useEffect(() => {
       const filtriSalvati = localStorage.getItem('filtriRicercaRecruiting');
-      if(filtriSalvati) {
-        setFiltri(JSON.parse(filtriSalvati));
-        handleRicerche();
+      const filtriVuoti = Object.values(filtri).every(value => value === '');
+      if (!filtriSalvati && filtriVuoti) {
+          fetchData();
       } else {
-        fetchData();
+          setFiltri(JSON.parse(filtriSalvati));
+          handleRicerche();
       }
-        // eslint-disable-next-line
-    }, []);
+  }, []);
+  
+    //   if(filtriSalvati) {
+    //     setFiltri(JSON.parse(filtriSalvati));
+    //     handleRicerche();
+    //   } else {
+    //     fetchData();
+    //   }
+    //     // eslint-disable-next-line
+    // }, []);
 
 
 
@@ -278,6 +288,7 @@ const handleRicerche = async () => {
 
 
 
+
     setLoading(true);
  
     try {
@@ -344,8 +355,8 @@ const handleFilterChange = (name) => (event) => {
   setFiltri({ ...filtri, [name]: newValue });
   if (name === 'denominazione' && newValue === '') {
       fetchData();
-  } else {
-      handleRicerche();
+  // } else {
+  //     handleRicerche();
   }
 };
 
@@ -359,13 +370,13 @@ const handleCloseFiltri = () => setOpenFiltri(false);
 
 const handleReset = () => {
     setFiltri({
-        nome: '',
-        cognome: '',
-        tipo:'',
-        tipologia:'',
-        stato: ''
+        nome: null,
+        cognome: null,
+        tipo:null,
+        tipologia:null,
+        stato: null
     });
-    localStorage.removeItem("RicercheRecruiting");
+    localStorage.removeItem("filtriRicercaRecruiting");
     setPagina(0);
 
     fetchData();
