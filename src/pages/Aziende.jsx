@@ -265,7 +265,7 @@ const Aziende = () => {
         //funzione per cancellare l'azienda
         const handleDelete = async (id) => {
             try{
-                const responseDelete = await axios.delete(`http://localhost:8080/aziende/react/elimina/${id}`, {headers: headers});
+                const responseDelete = await axios.delete(`http://89.46.196.60:8443/aziende/react/elimina/${id}`, {headers: headers});
                 await fetchData(0);
             } catch(error) {
                 console.error("Errore durante la cancellazione: ", error);

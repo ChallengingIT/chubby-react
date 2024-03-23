@@ -154,7 +154,7 @@ const FieldBoxFile = ({
 
 
     const handleDownloadCVCF = async (fileId, fileDescrizione) => {
-        const url = `http://localhost:8080/files/react/download/file/${fileId}`;
+        const url = `http://89.46.196.60:8443/files/react/download/file/${fileId}`;
         try {
             const response = await axios({
                 method: 'GET',
@@ -180,7 +180,7 @@ const FieldBoxFile = ({
         const handleDeleteCVCF = async (fileId, idCandidato, fileType) => {
             const idc = idCandidato;
             try {
-            const response = await axios.delete(`http://localhost:8080/files/react/elimina/file/candidato/${fileId}/${idc}`, { headers: headers })
+            const response = await axios.delete(`http://89.46.196.60:8443/files/react/elimina/file/candidato/${fileId}/${idc}`, { headers: headers })
             if(response.data === "OK") {
             } else {
                 console.error("Errore dal server: ", response.data);
