@@ -51,11 +51,11 @@ const Recruiting = () => {
   const [ filtri,                     setFiltri               ] = useState(() => {
     const filtriSalvati = localStorage.getItem('filtriRicercaRecruiting');
     return filtriSalvati ? JSON.parse(filtriSalvati) : {
-    nome: null,
-    cognome: null,
-    tipologia: null,
-    stato: null,
-    tipo:null
+    nome: '',
+    cognome: '',
+    tipologia: '',
+    stato: '',
+    tipo:''
     };
 });
 
@@ -88,7 +88,6 @@ const quantita = 10;
       pagina: 0,
       quantita: 10
   };
-
 
 
 
@@ -139,24 +138,9 @@ const quantita = 10;
     
     
     useEffect(() => {
-      const filtriSalvati = localStorage.getItem('filtriRicercaRecruiting');
-      const filtriVuoti = Object.values(filtri).every(value => value === '');
-      if (!filtriSalvati && filtriVuoti) {
-          fetchData();
-      } else {
-          setFiltri(JSON.parse(filtriSalvati));
-          handleRicerche();
-      }
-  }, []);
-  
-    //   if(filtriSalvati) {
-    //     setFiltri(JSON.parse(filtriSalvati));
-    //     handleRicerche();
-    //   } else {
-    //     fetchData();
-    //   }
-    //     // eslint-disable-next-line
-    // }, []);
+        fetchData();
+        // eslint-disable-next-line
+    }, []);
 
 
 
@@ -274,7 +258,7 @@ useEffect(() => {
 
 const handleRicerche = async () => {
 
-  if (!Object.values(filtri).every(value => value === '')) {
+  // if (!Object.values(filtri).every(value => value === '')) {
     const filtriDaInviare = {
         nome: filtri.nome || null,
         cognome: filtri.cognome || null,
@@ -285,7 +269,6 @@ const handleRicerche = async () => {
         pagina: 0,
         quantita: 10
     };
-
 
 
 
@@ -335,7 +318,7 @@ const handleRicerche = async () => {
     } finally {
         setLoading(false);
     }
-}
+// }
 };
 
 
@@ -353,11 +336,11 @@ useEffect(() => {
 const handleFilterChange = (name) => (event) => {
   const newValue = event.target.value;
   setFiltri({ ...filtri, [name]: newValue });
-  if (name === 'denominazione' && newValue === '') {
-      fetchData();
+  // if (name === 'denominazione' && newValue === '') {
+  //     fetchData();
   // } else {
   //     handleRicerche();
-  }
+  // }
 };
 
 
@@ -370,13 +353,13 @@ const handleCloseFiltri = () => setOpenFiltri(false);
 
 const handleReset = () => {
     setFiltri({
-        nome: null,
-        cognome: null,
-        tipo:null,
-        tipologia:null,
-        stato: null
+        nome: '',
+        cognome: '',
+        tipo:'',
+        tipologia:'',
+        stato: ''
     });
-    localStorage.removeItem("filtriRicercaRecruiting");
+    localStorage.removeItem("RicercheRecruiting");
     setPagina(0);
 
     fetchData();
@@ -463,7 +446,7 @@ const handleReset = () => {
         />
       <Link
       to={`/recruiting/intervista/${params.row.id}`}
-      state = {{ recruitingData: params.row}}
+      state = {{ recruitingData: params.row.id}}
       >
     <PersonInfoButton /> 
     </Link>
