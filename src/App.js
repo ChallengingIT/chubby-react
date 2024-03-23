@@ -32,6 +32,7 @@ import AziendeListaNeedCard                                            from './p
 import DettaglioIntervista                                             from './pages/VisualizzaPagine/DettaglioIntervista.jsx';
 import NuovoNeed from './pages/AggiungiPagine/NuovoNeed.jsx';
 import Dashboard from './pages/Dashboard.jsx';
+import NeedForm from './pages/NeedForm.jsx';
 
 
 
