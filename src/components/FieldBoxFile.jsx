@@ -37,6 +37,7 @@ const FieldBoxFile = ({
     title = "",
     campiObbligatori,
     skillsOptions,
+    skills2Options,
     idCandidato,
     idStaff
 }) => {
@@ -46,10 +47,9 @@ const FieldBoxFile = ({
     const [ fileCV,               setFileCV             ] = useState(null);
     const [ fileCF,               setFileCF             ] = useState(null);
     const [ fileAllegati,         setFileAllegati       ] = useState(initialValues.files || []);
-    const [ fileMultipli,                               ] = useState([]);
+    const [ fileMultipli,         setFileMultipli       ] = useState([]);
     const [ openDialog,           setOpenDialog         ] = useState(false);
     const [ selectedFileId,       setSelectedFileId     ] = useState(null);
-
 
 
 
@@ -83,8 +83,14 @@ const FieldBoxFile = ({
         setValues({ ...values, skills: selectedSkills }); 
     };
     
+
+    const handleChangeSkills2 = (event) => {
+        const selectedSkills2 = event.target ? event.target.value : [];
+        setValues({ ...values, skills2: selectedSkills2 });
+    };
+
     const handleChange = (name) => (event) => {
-        const { value } = event.target;
+        const { type, value } = event.target;
         let fileValue = value;
         setValues({ ...values, [name]: fileValue });
         if (errors[name]) {
@@ -122,18 +128,14 @@ const FieldBoxFile = ({
         const isValid = validate();
 
         if (isValid) {
-            onSubmit(values, fileCV, fileCF, fileMultipli);
+            onSubmit(values, fileCV, fileCF, fileMultipli, fileAllegati);
         }
     };
 
-
-    
-
     const [isWeekPickerVisible, setIsWeekPickerVisible] = useState(false);
-
-    // const handleWeekPickerClick = () => {
-    //     setIsWeekPickerVisible(!isWeekPickerVisible);
-    // };
+    const handleWeekPickerClick = () => {
+        setIsWeekPickerVisible(!isWeekPickerVisible);
+    };
     const weekPickerRef = useRef(null);
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -284,17 +286,17 @@ const FieldBoxFile = ({
 
 
 
-        // //in aggiungi dipendente
-        // const handleChangeFileMultipli = (event) => {
-        //     const newFiles = event.target.files;
-        //     if (newFiles && newFiles.length > 0) {
-        //         setFileMultipli([...fileMultipli, ...Array.from(newFiles)]);
-        //     }
-        // };
+        //in aggiungi dipendente
+        const handleChangeFileMultipli = (event) => {
+            const newFiles = event.target.files;
+            if (newFiles && newFiles.length > 0) {
+                setFileMultipli([...fileMultipli, ...Array.from(newFiles)]);
+            }
+        };
     
-        // const handleDeleteFileMultipli = (index) => {
-        //     setFileMultipli(fileMultipli.filter((_, i) => i !== index));
-        // };
+        const handleDeleteFileMultipli = (index) => {
+            setFileMultipli(fileMultipli.filter((_, i) => i !== index));
+        };
 
 
 
@@ -331,7 +333,7 @@ const FieldBoxFile = ({
                     fullWidth
                     error={!!errors[field.name]}
                     helperText={errors[field.name]}
-                    disabled={field.disabled}
+                    // disabled={field.disabled}
                     />
                 );
 
@@ -429,7 +431,48 @@ const FieldBoxFile = ({
                     </MenuItem>
                 ))}
                 </Select>
-                {errors.skills && <FormHelperText>{errors.skills}</FormHelperText>}
+                {errors.skills && <FormHelperText>{errors.skills2}</FormHelperText>}
+            </FormControl>
+            );
+
+        case "multipleSelectSkill2":
+            return (
+            <FormControl
+                fullWidth
+                error={!!errors[field.name]}
+                disabled={isDisabled}
+            >
+                <InputLabel>{field.label}</InputLabel>
+                <Select
+                multiple
+                name="skills2"
+                value={values.skills2 || []}
+                onChange={handleChangeSkills2}
+                disabled={field.disabled}
+                style={{ width: "100%", textAlign: "left" }}
+                renderValue={(selected) =>
+                    selected
+                    .map((skillId) => {
+                        const foundOption = skills2Options.find(
+                        (option) => option.value === skillId
+                        );
+                        return foundOption ? foundOption.label : "";
+                    })
+                    .join(", ")
+                }
+                >
+                {skills2Options.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                    <Checkbox
+                        checked={(values.skills2 || []).indexOf(option.value) > -1}
+                    />
+                    <ListItemText primary={option.label} />
+                    </MenuItem>
+                ))}
+                </Select>
+                {errors.skills2 && (
+                <FormHelperText>{errors.skills2}</FormHelperText>
+                )}
             </FormControl>
             );
 
@@ -527,46 +570,20 @@ const FieldBoxFile = ({
 
             case "modificaFileCV":
                 return(
-                    <Box sx={{ display: 'flex', flexDirection: 'column', width: '90%', overflow: 'hidden'}}>
-                            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', mb: 4}}>
-                            <Typography variant="subtitle1" gutterBottom sx={{ display: 'flex', textAlign: 'center', justifyContent: 'center'}}>{field.label}</Typography>
-                            <Button
-                                    variant="contained"
-                                    color="primary"
-                                    sx={{ 
-                                    justifyContent:"flex-end", 
-                                    backgroundColor: 'black', 
-                                    color: 'white',
-                                    mr: 3,
-                                    ':hover': {
-                                        backgroundColor: 'black',
-                                    }
-                                }}
-                                    startIcon={<CloudUploadIcon />}
-                                    component="label"
-                                >
-                                    <input
-                                        type="file"
-                                        hidden
-                                        onChange={handleChangeCV(field.name)}
-                                    />
-                                </Button>
-                            </Box> 
-                        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around'}}>
-                        <Typography variant="body2">
+                    <Box>
+                        <Typography variant="subtitle1" gutterBottom>{field.label}</Typography>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '10px 0'}}>
+                        <Typography variant="body2" style={{ marginRight: '10px' }}>
                         {values.cv?.descrizione || 'Nessun file selezionato'}
                             </Typography>
-                            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', gap: 3}}>
                             <Button
                                     variant="contained"
                                     color="primary"
                                     sx={{ 
-                                    justifyContent:"flex-end",
-                                    backgroundColor: 'black',
-                                    color: 'white',
-                                    '&:hover': {
-                                        backgroundColor: 'black'
-                                    }  
+                                    marginLeft: '10px', 
+                                    marginBottom: "10px", 
+                                    marginTop: "10px", 
+                                    justifyContent:"flex-end", 
                                 }}
                                 startIcon={<CloudDownloadIcon />}
                                 disabled={!values[field.name]}
@@ -579,8 +596,34 @@ const FieldBoxFile = ({
                                     variant="contained"
                                     color="primary"
                                     sx={{ 
+                                    marginLeft: '10px', 
+                                    marginBottom: "10px", 
+                                    marginTop: "10px", 
+                                    justifyContent:"flex-end", 
+                                    backgroundColor: 'green', 
+                                    color: 'white',
+                                    ':hover': {
+                                        backgroundColor: 'green',
+                                    }
+                                }}
+                                    startIcon={<CloudUploadIcon />}
+                                    component="label"
+                                >
+                                    <input
+                                        type="file"
+                                        hidden
+                                        onChange={handleChangeCV(field.name)}
+                                    />
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    sx={{ 
+                                        marginLeft: '10px', 
+                                        marginBottom: "10px", 
+                                        marginTop: "10px", 
                                         justifyContent:"flex-end", 
-                                        backgroundColor: '#00853C', 
+                                        backgroundColor: 'red', 
                                         color: 'white',
                                         ':hover': {
                                             backgroundColor: 'red',
@@ -593,7 +636,6 @@ const FieldBoxFile = ({
                                     onClick={() => handleOpenDeleteDialogCVCF(values.cv.id, 'cv')}
                                 >
                                 </Button>
-                                </Box>
                         </Box>
                     </Box>
                 );
@@ -603,21 +645,42 @@ const FieldBoxFile = ({
 
                 case "modificaFileCF":
                     return(
-                        <Box sx={{ display: 'flex', flexDirection: 'column', width: '90%', overflow: 'hidden'}}>
-                            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', mb: 4}}>
-                            <Typography variant="subtitle1" gutterBottom sx={{ display: 'flex', textAlign: 'center', justifyContent: 'center'}}>{field.label}</Typography>
-                            <Button
+                        <Box>
+                            <Typography variant="subtitle1" gutterBottom>{field.label}</Typography>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '10px 0'}}>
+                            <Typography variant="body2" style={{ marginRight: '10px' }}>
+                            {values.cf?.descrizione || 'Nessun file selezionato'}
+                                </Typography>
+                                <Button
                                     variant="contained"
                                     color="primary"
                                     sx={{ 
-                                        justifyContent:"flex-end", 
-                                        backgroundColor: 'black', 
-                                        color: 'white',
-                                        mr: 2,
-                                        ':hover': {
-                                            backgroundColor: 'black',
-                                        }
-                                    }}
+                                    marginLeft: '10px', 
+                                    marginBottom: "10px", 
+                                    marginTop: "10px", 
+                                    justifyContent:"flex-end", 
+                                }}
+                                    startIcon={<CloudDownloadIcon />}
+                                    disabled={!values[field.name]}
+                                    component="label"
+                                    onClick={() => handleDownloadCVCF(values.cf.id, values.cf.descrizione)}
+                                    >
+
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    sx={{ 
+                                    marginLeft: '10px', 
+                                    marginBottom: "10px", 
+                                    marginTop: "10px", 
+                                    justifyContent:"flex-end", 
+                                    backgroundColor: 'green', 
+                                    color: 'white',
+                                    ':hover': {
+                                        backgroundColor: 'green',
+                                    }
+                                }}
                                     startIcon={<CloudUploadIcon />}
                                     component="label"
                                 >
@@ -627,38 +690,15 @@ const FieldBoxFile = ({
                                         onChange={handleChangeCF(field.name)}
                                     />
                                 </Button>
-                            </Box>
-                            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around'}}>
-                            <Typography variant="body2" style={{ marginRight: '10px' }}>
-                            {values.cf?.descrizione || 'Nessun file selezionato'}
-                                </Typography>
-                                <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', gap: 3}}>
-
                                 <Button
                                     variant="contained"
                                     color="primary"
                                     sx={{ 
-                                    justifyContent:"flex-end",
-                                    backgroundColor: 'black',
-                                    color: 'white',
-                                    '&:hover': {
-                                        backgroundColor: 'black'
-                                    } 
-                                }}
-                                    startIcon={<CloudDownloadIcon />}
-                                    disabled={!values[field.name]}
-                                    component="label"
-                                    onClick={() => handleDownloadCVCF(values.cf.id, values.cf.descrizione)}
-                                    >
-
-                                </Button>
-                                
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    sx={{ 
+                                        marginLeft: '10px', 
+                                        marginBottom: "10px", 
+                                        marginTop: "10px", 
                                         justifyContent:"flex-end", 
-                                        backgroundColor: '#00853C', 
+                                        backgroundColor: 'red', 
                                         color: 'white',
                                         ':hover': {
                                             backgroundColor: 'red',
@@ -673,8 +713,6 @@ const FieldBoxFile = ({
                                 >
                                 </Button>
                             </Box>
-                            </Box>
-
                         </Box>
                     );
 
@@ -822,21 +860,14 @@ const FieldBoxFile = ({
         // sx={{
         //     display: "flex",
         //     flexDirection: "column",
-        //     width: "87vw",
-        //     height: 'auto',
-        //     padding: "2em",
+        //     width: "100%",
+        //     margin: "auto",
+        //     padding: "30px",
         //     backgroundColor: "white",
         //     borderRadius: "20px",
         //     justifyItems: "center",
         //     boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.5)",
         // }}
-        sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            margin: 'auto',
-            flexDirection: 'column',
-        }}
         >
             <Dialog
     open={openDialog}
@@ -877,7 +908,7 @@ const FieldBoxFile = ({
         autoFocus 
         sx={{
             backgroundColor: '#00853C',
-            color: 'black',
+            color: 'white',
             "&:hover": {
                 backgroundColor: '#00853C',
             }
@@ -897,9 +928,7 @@ const FieldBoxFile = ({
                 </Grid>
             ))}
             </Grid>
-            <Typography variant="h6" sx={{ mt: 2, color: '#666565', fontSize: '1em'}}>* Campo Obbligatorio</Typography>
-
-            <div
+            <Box
             className="bottoni"
             style={{
                 display: "flex",
@@ -946,7 +975,7 @@ const FieldBoxFile = ({
                 Salva
                 </Button>
             )}
-            </div>
+            </Box>
         </form>
         </Box>
     );
