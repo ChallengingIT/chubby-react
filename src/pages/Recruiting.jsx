@@ -79,12 +79,12 @@ const quantita = 10;
     setLoading(true);
 
     const filtriDaInviare = {
-      nome: filtri.nome || null,
-      cognome: filtri.cognome || null,
+      nome: null,
+      cognome: null,
       email: null,
-      tipologia: filtri.tipologia || null,
-      tipo: filtri.tipo || null,
-      stato: filtri.stato || null,
+      tipologia: null,
+      tipo: null,
+      stato: null,
       pagina: 0,
       quantita: 10
   };
