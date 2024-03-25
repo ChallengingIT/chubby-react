@@ -65,7 +65,7 @@ const onClose = () => {
 
   const optionSelect = async() => {
     try{
-        const ownerResponse    = await axios.get("http://localhost:8080/aziende/react/owner",    { headers: headers }   );
+        const ownerResponse    = await axios.get("http://89.46.196.60:8443/aziende/react/owner",    { headers: headers }   );
         if (Array.isArray(ownerResponse.data)) {
             const ownerOptions = ownerResponse.data.map((owner) => ({
               label: owner.descrizione,
@@ -99,7 +99,7 @@ const onClose = () => {
         ownerIds: formData.owner
       };
       try {
-        const responseInviaAppuntamento = await axios.post("http://localhost:8080/calendar/insert", datiDaInviare, { headers: headers });
+        const responseInviaAppuntamento = await axios.post("http://89.46.196.60:8443/calendar/insert", datiDaInviare, { headers: headers });
         if (responseInviaAppuntamento.data === 'OK') {
           onClose();
         }

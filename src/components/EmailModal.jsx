@@ -65,7 +65,7 @@ const onClose = () => {
         destinatari: formData.destinatari ,
       };
       try {
-        const responseInviaEmail = await axios.post("http://localhost:8080/email/send", datiDaInviare, { headers: headers });
+        const responseInviaEmail = await axios.post("http://89.46.196.60:8443/email/send", datiDaInviare, { headers: headers });
         if (responseInviaEmail.data === 'OK') {
           onClose();
         }
