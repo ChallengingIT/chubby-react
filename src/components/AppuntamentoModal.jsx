@@ -81,7 +81,6 @@ const onClose = () => {
     optionSelect()
   }, []);
 
-  console.log("form data: ", formData);
 
 
   const handleSubmitAppuntamento = async () => {
@@ -89,7 +88,6 @@ const onClose = () => {
         const fine = dayjs(inizio).add(1, 'hour').format('YYYY-MM-DDTHH:mm:ss') + '.000+01:00';
 
 
-        console.log("inizio: ", inizio);
       const datiDaInviare = {
         oggetto: formData.oggetto ,
         luogo: formData.luogo ,
