@@ -17,7 +17,8 @@ import {
     DialogTitle,
     Button,
     DialogContentText,
-    Popover
+    Popover,
+    Modal
 } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonIcon from '@mui/icons-material/Person';
@@ -30,6 +31,8 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd'; //aggiungi candidato
 import AddCircleIcon from '@mui/icons-material/AddCircle'; //aggiungi need
 import AddIcCallIcon from '@mui/icons-material/AddIcCall'; //aggiungi appuntamento
 import EmailIcon from '@mui/icons-material/Email'; //email
+import AppuntamentoModal from './AppuntamentoModal';
+import EmailModal from './EmailModal';
 
 
 
@@ -38,6 +41,8 @@ function Sidebar() {
     const [activeLink, setActiveLink] = useState(null);
     const [isLogoutPopupOpen, setIsLogoutPopupOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null); // Nuovo stato per l'ancoraggio del Popover
+    const [appuntamentoModal,  setAppuntamentoModal ] = useState(false);
+    const [emailModal, setEmailModal ] = useState(false);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -55,6 +60,24 @@ function Sidebar() {
         navigate('/login', { replace: true });
         closeLogoutPopup();
     };
+
+    const handleAppuntamentoClick = () => {
+        setAppuntamentoModal(true);
+    };
+
+    const closeAppuntamentoModal = () => {
+        setAppuntamentoModal(false);
+    };
+
+    
+    const handleEmailClick = () => {
+        setEmailModal(true);
+    };
+
+    const closeEmailModal = () => {
+        setEmailModal(false);
+    };
+
 
     useEffect(() => {
         setActiveLink(location.pathname);
@@ -93,13 +116,13 @@ function Sidebar() {
                     <AddCircleIcon sx={{ color: '#00853C'}} />
                 </ListItemIcon>
             </ListItem>
-            <ListItem button onClick={() => {/* Azioni per "Aggiungi Appuntamento" */}}>
+            <ListItem button onClick={handleAppuntamentoClick}>
                 <ListItemText primary="Appuntamento" />
                 <ListItemIcon>
                     <AddIcCallIcon sx={{ color: '#00853C'}} />
                 </ListItemIcon>
             </ListItem>
-            <ListItem button onClick={() => {/* Azioni per "Email" */}}>
+            <ListItem button onClick={handleEmailClick}>
                 <ListItemText primary="Email" />
                 <ListItemIcon>
                     <EmailIcon sx={{ color: '#00853C'}} />
@@ -229,6 +252,9 @@ function Sidebar() {
                     </ListItem>
                 </List>
             </Drawer>
+
+
+            
             <Popover
                 open={Boolean(anchorEl)}
                 anchorEl={anchorEl}
@@ -246,6 +272,9 @@ function Sidebar() {
                     {additionalDrawerContent}
                 </Box>
             </Popover>
+
+
+
             <Dialog
                 open={isLogoutPopupOpen}
                 onClose={closeLogoutPopup}
@@ -315,6 +344,21 @@ function Sidebar() {
                     </Box>
                 </DialogActions>
             </Dialog>
+
+
+            <AppuntamentoModal
+        open={appuntamentoModal}
+        handleClose={closeAppuntamentoModal}
+      />
+      
+
+      <EmailModal
+      open={emailModal}
+      handleClose={closeEmailModal}
+      />
+
+
+
         </Box>
     );
 }
