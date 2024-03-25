@@ -76,15 +76,24 @@ const onClose = () => {
 
 
   return (
-    <Dialog open={open} onClose={handleClose} sx={{ width: 'auto'}}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <Dialog 
+    open={open} 
+    onClose={handleClose} 
+    sx={{ 
+        '& .MuiDialog-paper': {
+        width: '70%',
+        maxWidth: '70%',
+        },
+    }}
+    >
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
 
         <Box sx={{ display:'flex', justifyContent: 'flex-end'}}>
         <Button onClick={onClose} variant="outlined" sx={{mt: 3, mr: 3 ,backgroundColor: 'transparent', border: 'none', color: '#898989', '&:hover': { border: 'none', color: 'red', transform: 'scale(1.1)'}}}startIcon={<CloseIcon sx={{backgroundColor: 'transparent'}}/>}/>
 
         </Box>
       <DialogTitle sx={{ mb: 2, display: 'flex', justifyContent: 'center', mt: 0.5, fontWeight: '600'}}>Invia Email</DialogTitle>
-      <DialogContent  >
+      <DialogContent sx={{ p: 12}}  >
         <Box>
         <TextField
           id="destinatari-box"

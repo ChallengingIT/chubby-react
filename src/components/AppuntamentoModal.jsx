@@ -112,7 +112,16 @@ const onClose = () => {
 
 
   return (
-    <Dialog open={open} onClose={handleClose} sx={{ width: 'auto'}}>
+        <Dialog 
+        open={open} 
+        onClose={handleClose} 
+        sx={{ 
+            '& .MuiDialog-paper': {
+            width: '70%',
+            maxWidth: '70%',
+            },
+        }}
+        >
         <LocalizationProvider dateAdapter={AdapterDayjs}>
 
         <Box sx={{ display:'flex', justifyContent: 'flex-end'}}>
@@ -120,7 +129,7 @@ const onClose = () => {
 
         </Box>
       <DialogTitle sx={{ mb: 2, display: 'flex', justifyContent: 'center', mt: 0.5, fontWeight: '600'}}>Aggiungi Appuntamento</DialogTitle>
-      <DialogContent  >
+      <DialogContent sx={{ p: 12}}  >
         <Box>
         <TextField
           id="destinatari-box"
@@ -131,7 +140,7 @@ const onClose = () => {
           value={formData.destinatari}
           onChange={handleChange('destinatari')}
           sx={{
-            mb: 2,
+            mb: 3,
             p: 1,
             borderRadius: '40px', 
             backgroundColor: '#EDEDED', 
