@@ -570,20 +570,22 @@ const FieldBoxFile = ({
 
             case "modificaFileCV":
                 return(
-                    <Box>
+                    <Box sx={{ width: '25em', overflow: 'hidden', mr: 10}}>
+                        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',margin: '10px 0'}}>
                         <Typography variant="subtitle1" gutterBottom>{field.label}</Typography>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '10px 0'}}>
-                        <Typography variant="body2" style={{ marginRight: '10px' }}>
-                        {values.cv?.descrizione || 'Nessun file selezionato'}
-                            </Typography>
-                            <Button
+                        <Button
                                     variant="contained"
-                                    color="primary"
                                     sx={{ 
+                                    backgroundColor: 'black',
                                     marginLeft: '10px', 
                                     marginBottom: "10px", 
                                     marginTop: "10px", 
-                                    justifyContent:"flex-end", 
+                                    justifyContent:"flex-end",
+                                    mr: 0.5,
+                                    '&:hover': {
+                                        backgroundColor: 'black',
+                                        transform: 'scale(1.1)'
+                                    }
                                 }}
                                 startIcon={<CloudDownloadIcon />}
                                 disabled={!values[field.name]}
@@ -592,18 +594,24 @@ const FieldBoxFile = ({
                                 >
 
                                 </Button>
+                                </Box>
+                        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', margin: '10px 0'}}>
+                        <Typography variant="body2">
+                        {values.cv?.descrizione || 'Nessun file selezionato'}
+                            </Typography>
+                            <Box sx={{ display: 'flex', gap: 2, mr: 0.5}}>
                                 <Button
                                     variant="contained"
-                                    color="primary"
                                     sx={{ 
+                                    backgroundColor: 'black',
                                     marginLeft: '10px', 
                                     marginBottom: "10px", 
                                     marginTop: "10px", 
                                     justifyContent:"flex-end", 
-                                    backgroundColor: 'green', 
                                     color: 'white',
                                     ':hover': {
-                                        backgroundColor: 'green',
+                                        backgroundColor: 'black',
+                                        transform: 'scale(1.1)'
                                     }
                                 }}
                                     startIcon={<CloudUploadIcon />}
@@ -623,10 +631,11 @@ const FieldBoxFile = ({
                                         marginBottom: "10px", 
                                         marginTop: "10px", 
                                         justifyContent:"flex-end", 
-                                        backgroundColor: 'red', 
+                                        backgroundColor: '#246f55', 
                                         color: 'white',
                                         ':hover': {
                                             backgroundColor: 'red',
+                                            transform: 'scale(1.1)'
                                         }
                                     }}
                                     startIcon={<DeleteIcon />}
@@ -636,6 +645,7 @@ const FieldBoxFile = ({
                                     onClick={() => handleOpenDeleteDialogCVCF(values.cv.id, 'cv')}
                                 >
                                 </Button>
+                                </Box>
                         </Box>
                     </Box>
                 );
@@ -645,20 +655,22 @@ const FieldBoxFile = ({
 
                 case "modificaFileCF":
                     return(
-                        <Box>
+                        <Box sx={{ width: '20em'}}>
+                            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',margin: '10px 0'}}>
                             <Typography variant="subtitle1" gutterBottom>{field.label}</Typography>
-                            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '10px 0'}}>
-                            <Typography variant="body2" style={{ marginRight: '10px' }}>
-                            {values.cf?.descrizione || 'Nessun file selezionato'}
-                                </Typography>
-                                <Button
+                            <Button
                                     variant="contained"
-                                    color="primary"
                                     sx={{ 
+                                    backgroundColor: 'black',
                                     marginLeft: '10px', 
                                     marginBottom: "10px", 
                                     marginTop: "10px", 
+                                    mr: 0.5,
                                     justifyContent:"flex-end", 
+                                    '&:hover': {
+                                        backgroundColor: 'black',
+                                        transform: 'scale(1.1)'
+                                    }
                                 }}
                                     startIcon={<CloudDownloadIcon />}
                                     disabled={!values[field.name]}
@@ -667,6 +679,13 @@ const FieldBoxFile = ({
                                     >
 
                                 </Button>
+                                </Box>
+                            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center',justifyContent: 'space-between', margin: '10px 0'}}>
+                            <Typography variant="body2" >
+                            {values.cf?.descrizione || 'Nessun file selezionato'}
+                                </Typography>
+                                <Box sx={{ display: 'flex', gap: 2, mr: 0.5}}>
+                                
                                 <Button
                                     variant="contained"
                                     color="primary"
@@ -675,10 +694,12 @@ const FieldBoxFile = ({
                                     marginBottom: "10px", 
                                     marginTop: "10px", 
                                     justifyContent:"flex-end", 
-                                    backgroundColor: 'green', 
+                                    backgroundColor: 'black', 
                                     color: 'white',
                                     ':hover': {
-                                        backgroundColor: 'green',
+                                        backgroundColor: 'black',
+                                        transform: 'scale(1.1)'
+
                                     }
                                 }}
                                     startIcon={<CloudUploadIcon />}
@@ -698,10 +719,11 @@ const FieldBoxFile = ({
                                         marginBottom: "10px", 
                                         marginTop: "10px", 
                                         justifyContent:"flex-end", 
-                                        backgroundColor: 'red', 
+                                        backgroundColor: '#246f55', 
                                         color: 'white',
                                         ':hover': {
                                             backgroundColor: 'red',
+                                            transform: 'scale(1.1)'
                                         }
                                     }}
                                     startIcon={<DeleteIcon />}
@@ -712,6 +734,7 @@ const FieldBoxFile = ({
 
                                 >
                                 </Button>
+                                </Box>
                             </Box>
                         </Box>
                     );
@@ -928,6 +951,8 @@ const FieldBoxFile = ({
                 </Grid>
             ))}
             </Grid>
+            <Typography variant="h6" sx={{ mt: 2, color: '#666565', fontSize: '1em'}}>* Campo Obbligatorio</Typography>
+
             <Box
             className="bottoni"
             style={{
@@ -976,6 +1001,7 @@ const FieldBoxFile = ({
                 </Button>
             )}
             </Box>
+
         </form>
         </Box>
     );

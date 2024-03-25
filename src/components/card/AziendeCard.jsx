@@ -62,14 +62,14 @@ const AziendeCard = ({valori, onDelete}) => {
                     }
                 };
                 
-            case 'CONSULENZA':
+            case 'EXCLIENTE':
                 return {
                     backgroundColor: '#f0f0f0', // Grigio Chiaro
                     borderColor: '#f0f0f0'
                     // pointerEvents: 'none', // Disabilita interazioni
                     // opacity: 0.5 
                 };
-                case 'Consulenza':
+                case 'Ex cliente':
                 return {
                     backgroundColor: '#f0f0f0', // Grigio Chiaro
                     borderColor: '#f0f0f0'

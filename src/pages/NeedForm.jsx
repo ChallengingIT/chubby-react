@@ -129,7 +129,6 @@ function NeedForm() {
         }
     };
 
-    console.log("pagina corrente: ", currentPageIndex);
 
 
     const handleGoBack = () => {
@@ -208,7 +207,6 @@ function NeedForm() {
         }));
     };
 
-    console.log("valori: ", values);
 
 
     const campiObbligatoriProfilo = ["denominazione", "idOwner", 'status'];
