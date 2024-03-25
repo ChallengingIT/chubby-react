@@ -10,6 +10,7 @@ import {
   FormControl,
   Autocomplete,
   Box,
+  Typography,
   
 } from '@mui/material';
 import CloseIcon                            from '@mui/icons-material/Close';
@@ -97,14 +98,13 @@ const onClose = () => {
         <Box>
         <TextField
           id="destinatari-box"
-          label="Destinatari"
+          label="Destinatari*"
           fullWidth
           variant='filled'
           name="destinatari"
           value={formData.destinatari}
           onChange={handleChange('destinatari')}
           sx={{
-            mb: 2,
             p: 1,
             borderRadius: '40px', 
             backgroundColor: '#EDEDED', 
@@ -122,6 +122,8 @@ const onClose = () => {
             } 
             }} 
         />
+        <Typography variant="h6" sx={{ mb: 3, mt: 0.3, ml: 1, color: '#666565', fontSize: '1em'}}>* Inserire i destinatari separati da " ; "</Typography>
+
 
         <TextField
         id='oggetto-box'

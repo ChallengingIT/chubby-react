@@ -10,6 +10,7 @@ import {
   FormControl,
   Autocomplete,
   Box,
+  Typography,
   
 } from '@mui/material';
 import CloseIcon                            from '@mui/icons-material/Close';
@@ -126,19 +127,19 @@ const onClose = () => {
         <Button onClick={onClose} variant="outlined" sx={{mt: 3, mr: 3 ,backgroundColor: 'transparent', border: 'none', color: '#898989', '&:hover': { border: 'none', color: 'red', transform: 'scale(1.1)'}}}startIcon={<CloseIcon sx={{backgroundColor: 'transparent'}}/>}/>
 
         </Box>
-      <DialogTitle sx={{ mb: 2, display: 'flex', justifyContent: 'center', mt: 0.5, fontWeight: '600'}}>Aggiungi Appuntamento</DialogTitle>
+      <DialogTitle sx={{ mb: 2, display: 'flex', justifyContent: 'center', fontWeight: '600'}}>Aggiungi Appuntamento</DialogTitle>
       <DialogContent sx={{ p: 12}}  >
         <Box>
         <TextField
           id="destinatari-box"
-          label="Destinatari"
+          label="Destinatari*"
           fullWidth
           variant='filled'
           name="destinatari"
           value={formData.destinatari}
           onChange={handleChange('destinatari')}
           sx={{
-            mb: 3,
+            
             p: 1,
             borderRadius: '40px', 
             backgroundColor: '#EDEDED', 
@@ -156,6 +157,8 @@ const onClose = () => {
             } 
             }} 
         />
+        <Typography variant="h6" sx={{ mb: 3, mt: 0.3, ml: 1, color: '#666565', fontSize: '1em'}}>* Inserire i destinatari separati da " ; "</Typography>
+
 
         <TextField
         id='oggetto-box'
@@ -346,7 +349,7 @@ id='data-box'
                 label="Testo del messaggio"
                 name="note"
                 multiline
-                rows={4}
+                rows={3}
                 onChange={handleChange('note')}
                 value={formData.note}
                 fullWidth
@@ -368,7 +371,8 @@ id='data-box'
                     '&:hover .MuiFilledInput-root::before': {
                         borderBottom: 'none', 
                     } 
-                    }}             />
+                    }}
+                    />
             <Box sx={{ display: 'flex', justifyContent: 'center'}}>
         <Button onClick={handleSubmitAppuntamento} variant="contained" sx={{ borderRadius: '5px', backgroundColor: '#00853C', '&:hover': { backgroundColor: '#00853C', transform: 'scale(1.1)'}}}>
           Invia

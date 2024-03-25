@@ -951,6 +951,8 @@ const FieldBoxFile = ({
                 </Grid>
             ))}
             </Grid>
+            <Typography variant="h6" sx={{ mt: 2, color: '#666565', fontSize: '1em'}}>* Campo Obbligatorio</Typography>
+
             <Box
             className="bottoni"
             style={{
@@ -999,6 +1001,7 @@ const FieldBoxFile = ({
                 </Button>
             )}
             </Box>
+
         </form>
         </Box>
     );
