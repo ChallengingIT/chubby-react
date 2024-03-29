@@ -3,6 +3,8 @@ import { useNavigate }                      from 'react-router-dom';
 import CloseIcon                            from '@mui/icons-material/Close';
 import FactoryIcon                          from '@mui/icons-material/Factory';
 import PlaceIcon                            from '@mui/icons-material/Place';
+import Torcia                                       from "../../images/torciaSF.png";
+
 import { 
     Card, 
     CardContent, 
@@ -10,7 +12,8 @@ import {
     Typography,
     Button,
     CardActions,
-    Modal
+    Modal,
+    IconButton
     } from '@mui/material';
 
 
@@ -131,7 +134,7 @@ const AziendeCard = ({valori, onDelete}) => {
         onDelete();
         handleCloseModalDelete(true);
     };
-
+    
 
     return (
         <Card
@@ -262,16 +265,16 @@ const AziendeCard = ({valori, onDelete}) => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 width: '100%',
-                mr:2
+                mr:4,
             }} >
-                <Box
+                {/* <Box
                 sx={{
                     display: 'flex',
                     gap: 3,
-                    mr:3
+                    mr:3,
                     
-                }}>
-            <Button 
+                }}> */}
+            {/* <Button 
             size="small"
             onClick={(event) => navigateToAggiorna(valori.id, event)}
             sx={{
@@ -285,9 +288,41 @@ const AziendeCard = ({valori, onDelete}) => {
                     backgroundColor: 'black',
                     transform: 'scale(1.05)',
                     },
-                }}>Aggiorna</Button>
+                }}>Aggiorna</Button> */}
+                <IconButton
+                onClick={(event) => navigateToAggiorna(valori.id, event)}
+                disableRipple={true}
+                disableFocusRipple={true}
+                sx={{ p: 0,
+                    mt: -3,
+                    borderRadius: 0,
+                    border: 0,
+                    overflow: 'hidden',
+                    '&:hover':
+                    { 
+                        backgroundColor: 'transparent',
+                        transform: 'scale(1.1)',
+                    },
+                    '&:focus': {
+                        outline: 'none',
+                    },
+                    '& .MuiTouchRipple-root': {
+                        width: '20%', 
+                    },
+                    
+                }}
+                >
+                        <img src={Torcia} alt="Torcia" style={{ width: '4vw', marginTop: '1em' }} />
+                </IconButton>
+
+                
+                <Box sx={{ display: 'flex', mt: -4, mb: 2}}>
+                <img src={`data:image/png;base64,${valori.logo}`} alt="Logo" style={{width: '80px', height: '80px', borderRadius: '50%'}} />
+                </Box>
+
+
                     </Box>
-                    </Box>
+                    
         </CardActions>
     </Card>
     );

@@ -4,36 +4,31 @@ import React, { useEffect }                                           from 'reac
 import PrivateRoute                                                   from './components/PrivateRoute.jsx';
 
 
-import Homepage                                                        from './pages/Homepage';
 import Aziende                                                         from './pages/Aziende.jsx';
 import Need                                                            from './pages/Need.jsx';
 import Recruiting                                                      from './pages/Recruiting.jsx';
-import AggiungiAziende                                                 from './pages/AggiungiPagine/AggiungiAziende.jsx';
 import AggiungiNeed                                                    from './pages/AggiungiPagine/AggiungiNeed';
-import ModificaKeypeople                                               from './pages/ModificaPagine/ModificaKeypeople.jsx';
 import ModificaNeed                                                    from './pages/ModificaPagine/ModificaNeed.jsx';
 import DettaglioNeed                                                   from './pages/DettaglioPagine/DettaglioNeed.jsx';
 import Layout                                                          from './components/Layout.jsx';
 // import Dashboard                                                       from './pages/Dashboard.jsx';
-import AggiungiKeypeople                                               from './pages/AggiungiPagine/AggiungiKeypeople.jsx';
-import AggiungiRecruiting                                              from './pages/AggiungiPagine/AggiungiRecruiting.jsx';
-import ModificaRecruiting                                              from './pages/ModificaPagine/ModificaRecruiting.jsx';
 import LoginPage                                                       from './pages/LoginPage.jsx';
 import IntervisteList                                                  from './pages/IntervisteList.jsx';
 import AggiungiIntervista                                              from './pages/AggiungiPagine/AggiungiIntervista.jsx';
 import ModificaIntervista                                              from './pages/ModificaPagine/ModificaInterviste.jsx';
 import AggiungiNeedID                                                  from './pages/AggiungiPagine/AggiungiNeedID.jsx';
-import ModificaAziende                                                 from './pages/ModificaPagine/ModificaAziende.jsx';
 import Keypeople                                                       from './pages/Keypeople.jsx';
 import Hiring                                                          from './pages/Hiring.jsx';
-import NeedLife                                                        from './components/NeedLife.jsx';
 import NeedMatch2                                                      from './pages/NeedMatch2.jsx';
 import AziendeListaNeedCard                                            from './pages/AziendeListaNeedCard.jsx';
 import DettaglioIntervista                                             from './pages/VisualizzaPagine/DettaglioIntervista.jsx';
-import NuovoNeed from './pages/AggiungiPagine/NuovoNeed.jsx';
 import Dashboard from './pages/Dashboard.jsx';
-import NeedForm from './pages/NeedForm.jsx';
-
+import AggiungiAziendaGrafica from './pages/NuoveGrafiche/AggiungiAziendaGrafica.jsx';
+import ModificaAziendaGrafica from './pages/NuoveGrafiche/ModificaAziendaGrafica.jsx';
+import AggiungiKeypeopleGrafica from './pages/NuoveGrafiche/AggiungiKeypeopleGrafica.jsx';
+import ModificaKeypeopleGrafica from './pages/NuoveGrafiche/ModificaKeypeopleGrafica.jsx';
+import AggiungiRecruitingGrafica from './pages/NuoveGrafiche/AggiungiRecruitingGrafica.jsx';
+import ModificaRecruitingGrafica from './pages/NuoveGrafiche/ModificaRecruitingGrafica.jsx';
 
 
 
@@ -78,12 +73,12 @@ useEffect(() => {
                   } />
                 <Route path="/aziende/aggiungi"element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
-                      <AggiungiAziende />
+                      <AggiungiAziendaGrafica />
                     </PrivateRoute>
                   } />
                 <Route path="/aziende/modifica/:id"element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
-                      <ModificaAziende />
+                      <ModificaAziendaGrafica />
                     </PrivateRoute>
                   } />
                 <Route path="/need/:id"element={
@@ -103,12 +98,12 @@ useEffect(() => {
                   } />
                 <Route path="/keypeople/aggiungi"element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
-                      <AggiungiKeypeople />
+                      <AggiungiKeypeopleGrafica />
                     </PrivateRoute>
                   } />
                 <Route path="/keypeople/modifica/:id" element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
-                      <ModificaKeypeople />
+                      <ModificaKeypeopleGrafica />
                     </PrivateRoute>
                   } />
                 <Route path="/need" element={
@@ -143,12 +138,12 @@ useEffect(() => {
                   } />
                 <Route path="/recruiting/aggiungi" element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
-                      <AggiungiRecruiting />
+                      <AggiungiRecruitingGrafica />
                     </PrivateRoute>
                   } />
                 <Route path="/recruiting/modifica/:id"element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
-                      <ModificaRecruiting />
+                      <ModificaRecruitingGrafica />
                     </PrivateRoute>
                   } />
                 <Route path="/recruiting/intervista/:id"element={

@@ -160,7 +160,7 @@ const fields = [
 ];
 
 
-const handleSubmit = async (values, fileCV, fileCF, fileMultipli, fileAllegati) => {
+const handleSubmit = async (values, fileCV, fileCF, fileIMG) => {
     const errors = validateFields(values);
     const hasErrors = Object.keys(errors).length > 0;
 

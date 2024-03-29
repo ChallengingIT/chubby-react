@@ -39,8 +39,9 @@ function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, 
         >
         <Button 
         onClick={onGoBack}
-        style={{
+        sx={{
             backgroundColor: '#00853C',
+            minWidth: '12em',
             color: 'white', 
             border: 'none', 
             fontSize: '0.8rem', 
@@ -50,7 +51,12 @@ function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, 
             padding: '0.5rem 1rem', 
             outline: 'none', 
             borderRadius: '10px',
-
+            ml: 2,
+            '&:hover': {
+                backgroundColor: '#00853C',
+                color: 'white',
+                transform: 'scale(1.02)'
+            }
         }}
         >
         <span style={{ marginRight: '0.5rem' }}>{"<"}</span> 
@@ -159,6 +165,7 @@ function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, 
                     backgroundColor: '#00853C',
                     borderRadius: '10px',
                     textTransform: 'none',
+                    mr: 2,
                     '&:hover': {
                     backgroundColor: '#00853C',
                     transform: 'scale(1.05)',
