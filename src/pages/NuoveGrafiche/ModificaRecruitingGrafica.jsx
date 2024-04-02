@@ -912,7 +912,7 @@ console.log('values:',values);
             </Snackbar>
             <Typography variant="h4" component="h1" sx={{ mt:1, fontWeight: 'bold', fontSize: '1.8'}}>{activeSection}</Typography>
                 </Box>
-                <Box sx={{ display: 'flex', flexDirection: 'column', p: 2, overflow: 'auto'}}>
+                <Box sx={{ display: 'flex', width: '100%', height: '100%', flexDirection: 'column', pl: 5, pr: 5, overflow: 'auto'}}>
                 {renderFieldsGroups(groupedFields)}
                 </Box>   
                 <Typography variant="h6" sx={{ mt: 2, color: '#666565', fontSize: '1em', ml: 16}}>* Campo Obbligatorio</Typography>

@@ -1,9 +1,12 @@
-import React, {useState, useEffect}                 from 'react';
+import React, {useState, useEffect}         from 'react';
 import { useNavigate }                      from 'react-router-dom';
 import CloseIcon                            from '@mui/icons-material/Close';
 import FactoryIcon                          from '@mui/icons-material/Factory';
 import PlaceIcon                            from '@mui/icons-material/Place';
-import Torcia                                       from "../../images/torciaSF.png";
+import Torcia                               from "../../images/torciaSF.png";
+import TrendingDownIcon                     from '@mui/icons-material/TrendingDown';
+import TrendingFlatIcon                     from '@mui/icons-material/TrendingFlat';
+import TrendingUpIcon                       from '@mui/icons-material/TrendingUp';
 
 import { 
     Card, 
@@ -24,6 +27,23 @@ const AziendeCard = ({valori, onDelete}) => {
 
 
     const navigate = useNavigate();
+
+
+
+    const mediaIda = (ida) => {
+        if (ida >= 3 && ida <= 5) {
+            return { icon: <TrendingDownIcon />, text: "Basso" };
+        } else if (ida > 5 && ida <= 7) {
+            return { icon: <TrendingFlatIcon />, text: "Medio" };
+        } else if (ida > 7 && ida <= 9) {
+            return { icon: <TrendingUpIcon />, text: "Alto" };
+        } else {
+            return { icon: null, text: "" }; 
+        }
+    };
+
+    const { icon, text } = mediaIda(valori.ida);
+
 
 
 
@@ -167,14 +187,6 @@ const AziendeCard = ({valori, onDelete}) => {
                 {valori.citta}
             </Typography>
 
-            {/* <Typography variant="body2" color="text.secondary" sx={{ mb: 2, color: 'black' }}>
-                {valori.sedeOperativa}
-            </Typography> */}
-
-
-            {/* <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, color: 'black' }}>
-                {valori.sedeOperativa}
-            </Typography> */}
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
                     <PlaceIcon sx={{ color: '#00853C', mr: 1 }} />
@@ -185,6 +197,14 @@ const AziendeCard = ({valori, onDelete}) => {
                 <FactoryIcon sx={{ color: '#00853C', mr: 1 }} />
                 {valori.settoreMercato}
             </Typography>
+
+
+            <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', color: 'black', mt: 1 }}>
+                {icon}
+                {text}
+            </Typography>
+
+
 
         </CardContent>
 

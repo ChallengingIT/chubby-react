@@ -2,7 +2,7 @@ import React from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 
-function CustomAutocomplete({ name, label, options, value, onChange }) {
+function CustomAutocomplete({ name, label, options, value, onChange, disabled }) {
   const handleChange = (event, newValue) => {
     onChange({ [name]: newValue ? newValue.value : null });
   };
@@ -29,6 +29,7 @@ function CustomAutocomplete({ name, label, options, value, onChange }) {
         {...params} 
         variant='filled'
         label={label} 
+        disabled={disabled}
         sx={{ 
           m: 2,
           width: "100%",

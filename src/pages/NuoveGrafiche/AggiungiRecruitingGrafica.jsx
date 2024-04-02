@@ -32,7 +32,10 @@ const AggiungiRecruitingGrafica = () => {
     const [ ownerOptions,       setOwnerOptions         ] = useState([]);
     const [ facoltaOptions,     setFacoltaOptions       ] = useState([]);
     const [ values,             setValues               ] = useState([]);
+    const [ jobTitleEnable,     setJobTitleEnable       ] = useState(false);    
     const [ livelloScolasticoOptions, setLivelloScolasticoOptions ] = useState([]);
+    const [ funzioneAziendaleOptions, setFunzioneAziendaleOptions ] = useState([]);
+
 
 
 
@@ -49,13 +52,14 @@ const AggiungiRecruitingGrafica = () => {
     useEffect(() => {
         const fetchAziendeOptions = async () => {
         try {
-            const responseStato               = await axios.get("http://localhost:8080/staffing/react/stato/candidato", { headers: headers });
-            const responseJobTitle            = await axios.get("http://localhost:8080/aziende/react/tipologia"       , { headers: headers });
-            const responseTipologia           = await axios.get("http://localhost:8080/staffing/react/tipo"           , { headers: headers });
-            const responseNeedSkills          = await axios.get("http://localhost:8080/staffing/react/skill"          , { headers: headers });
-            const ownerResponse               = await axios.get("http://localhost:8080/aziende/react/owner"           , { headers: headers });
-            const facoltaResponse             = await axios.get("http://localhost:8080/staffing/react/facolta"        , { headers: headers });
-            const livelloScolasticoResponse   = await axios.get("http://localhost:8080/staffing/react/livello"        , { headers: headers });
+            const responseStato               = await axios.get("http://localhost:8080/staffing/react/stato/candidato"  , { headers: headers });
+            const responseJobTitle            = await axios.get("http://localhost:8080/aziende/react/tipologia"         , { headers: headers });
+            const responseTipologia           = await axios.get("http://localhost:8080/staffing/react/tipo"             , { headers: headers });
+            const responseNeedSkills          = await axios.get("http://localhost:8080/staffing/react/skill"            , { headers: headers });
+            const ownerResponse               = await axios.get("http://localhost:8080/aziende/react/owner"             , { headers: headers });
+            const facoltaResponse             = await axios.get("http://localhost:8080/staffing/react/facolta"          , { headers: headers });
+            const livelloScolasticoResponse   = await axios.get("http://localhost:8080/staffing/react/livello"          , { headers: headers });
+            const funzioneAziendaleResponse   = await axios.get("http://localhost:8080/staffing/react/funzioneAziendale", { headers: headers }); 
     
             if (Array.isArray(livelloScolasticoResponse.data)) {
             const livelloScolasticoOptions = livelloScolasticoResponse.data.map((livelloScolastico) => ({
@@ -73,6 +77,7 @@ const AggiungiRecruitingGrafica = () => {
             }));
             setFacoltaOptions(facoltaOptions);
         }
+
     
             if (Array.isArray(ownerResponse.data)) {
         const ownerOptions = ownerResponse.data.map((owner) => ({
@@ -113,6 +118,14 @@ const AggiungiRecruitingGrafica = () => {
                         value: stato.id,
                     }));
                     setStatoOptions(statoOptions);
+                }
+
+                if (Array.isArray(funzioneAziendaleResponse.data)) {
+                    const funzioneAziendaleOptions = funzioneAziendaleResponse.data.map((funzioneAziendale) => ({
+                        label: funzioneAziendale.descrizione,
+                        value: funzioneAziendale.id,
+                    }));
+                    setFunzioneAziendaleOptions(funzioneAziendaleOptions);
                 }
             
             } catch (error) {
@@ -157,7 +170,7 @@ const AggiungiRecruitingGrafica = () => {
             case 1:
                 return [ "anniEsperienzaRuolo", "livelloScolastico"]; 
             case 2: 
-                return ["tipo", "tipologia", "dataUltimoContatto", "stato"];
+                return ["tipo", "tipologia", "dataUltimoContatto", "stato", "funzioneAziendale"];
             default:
                 return [];
         }
@@ -225,7 +238,16 @@ const AggiungiRecruitingGrafica = () => {
     //       }));
     //     }
     //   };
-      
+
+
+    //funzione per abilitare il select dei jobtitle solo dopo aver selezionato una options dal select funzione aziendale
+    useEffect(() => {
+        if (values.funzioneAziendale) {
+            setJobTitleEnable(true);
+        } else {
+            setJobTitleEnable(false);
+        }
+    }, [values.funzioneAziendale]);
 
 
     //funzioni per cambiare pagina del form
@@ -333,7 +355,7 @@ const AggiungiRecruitingGrafica = () => {
     };
     
 
-        const fieldObbligatori = [ "nome", "cognome", "email", "anniEsperienzaRuolo", "tipologia", "dataUltimoContatto", "tipo", "stato", "livelloScolastico" ];
+        const fieldObbligatori = [ "nome", "cognome", "email", "anniEsperienzaRuolo", "tipologia", "dataUltimoContatto", "tipo", "stato", "livelloScolastico", "funzioneAziendale" ];
 
         const fields =[
             { type: "titleGroups",                label: "Profilo Candidato"            },
@@ -364,7 +386,8 @@ const AggiungiRecruitingGrafica = () => {
                 { value: 2, label: "Ibrido" },
                 { value: 3, label: "On Site"},
             ] },
-            { label: "Job Title*",                     name: "tipologia",                type: "select",               options: jobTitleOptions                  },
+        { label: "Funzione Aziendale*",                name: "funzioneAziendale",        type: "select",               options: funzioneAziendaleOptions         },
+        { label: "Job Title*",                         name: "tipologia",                type: "select",               options: jobTitleOptions                  },
         { label: "Data Inserimento*",                  name: "dataUltimoContatto",       type: "date"                                                            },
         { label: "Stato*",                             name: "stato",                    type: "select",               options: statoOptions                     },
         { label: "Owner",                              name: "owner",                    type: "select",               options: ownerOptions                     },
@@ -461,6 +484,7 @@ const AggiungiRecruitingGrafica = () => {
                     );
 
                     case 'select': 
+                    if ( field.name === 'tipologia' ) {
                     return (
                         <CustomAutocomplete
                         name={field.name}
@@ -469,8 +493,21 @@ const AggiungiRecruitingGrafica = () => {
                         value={values[field.name] || null}
                         onChange={handleChange}
                         getOptionSelected={(option, value) => option.value === value.value}
+                        disabled={!jobTitleEnable}
                         />
                     );
+                    } else {
+                        return (
+                            <CustomAutocomplete
+                                name={field.name}
+                                label={field.label}
+                                options={field.options || []}
+                                value={values[field.name] || null}
+                                onChange={handleChange}
+                                getOptionSelected={(option, value) => option.value === value.value}
+                            />
+                        );
+                    }
 
 
                 case 'date':
@@ -684,7 +721,7 @@ const AggiungiRecruitingGrafica = () => {
             </Snackbar>
             <Typography variant="h4" component="h1" sx={{ mt:1, fontWeight: 'bold', fontSize: '1.8'}}>{activeSection}</Typography>
                 </Box>
-                <Box sx={{ display: 'flex', flexDirection: 'column', p: 2, overflow: 'auto'}}>
+                <Box sx={{ display: 'flex', width: '100%', height: '100%', flexDirection: 'column', pl: 5, pr: 5, overflow: 'auto'}}>
                 {renderFieldsGroups(groupedFields)}
                 </Box>   
                 <Typography variant="h6" sx={{ mt: 2, color: '#666565', fontSize: '1em', ml: 16}}>* Campo Obbligatorio</Typography>
@@ -692,6 +729,7 @@ const AggiungiRecruitingGrafica = () => {
                 {currentPageIndex > 0 && (
                         <Button onClick={handleBackButtonClick}
                             sx={{
+                            mb: 4,
                             width: '250px',
                             backgroundColor: "black",
                             color: "white",
@@ -708,7 +746,9 @@ const AggiungiRecruitingGrafica = () => {
                         )}
                         {currentPageIndex < groupedFields.length - 1 && (
                             <Button onClick={handleNextButtonClick}
-                                sx={{ width: '250px',
+                                sx={{
+                                mb: 4, 
+                                width: '250px',
                                 backgroundColor: "black",
                                 color: "white",
                                 fontWeight:"bold",
@@ -729,6 +769,7 @@ const AggiungiRecruitingGrafica = () => {
                             onClick={() => handleSubmit(values)}
                             type="submit"
                             sx={{
+                                mb: 4,
                                 width: '250px',
                                 backgroundColor: "#5F8671",
                                 color: "#EDEDED",

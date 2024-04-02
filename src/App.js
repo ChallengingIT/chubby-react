@@ -11,7 +11,6 @@ import AggiungiNeed                                                    from './p
 import ModificaNeed                                                    from './pages/ModificaPagine/ModificaNeed.jsx';
 import DettaglioNeed                                                   from './pages/DettaglioPagine/DettaglioNeed.jsx';
 import Layout                                                          from './components/Layout.jsx';
-// import Dashboard                                                       from './pages/Dashboard.jsx';
 import LoginPage                                                       from './pages/LoginPage.jsx';
 import IntervisteList                                                  from './pages/IntervisteList.jsx';
 import AggiungiIntervista                                              from './pages/AggiungiPagine/AggiungiIntervista.jsx';
@@ -22,13 +21,14 @@ import Hiring                                                          from './p
 import NeedMatch2                                                      from './pages/NeedMatch2.jsx';
 import AziendeListaNeedCard                                            from './pages/AziendeListaNeedCard.jsx';
 import DettaglioIntervista                                             from './pages/VisualizzaPagine/DettaglioIntervista.jsx';
-import Dashboard from './pages/Dashboard.jsx';
-import AggiungiAziendaGrafica from './pages/NuoveGrafiche/AggiungiAziendaGrafica.jsx';
-import ModificaAziendaGrafica from './pages/NuoveGrafiche/ModificaAziendaGrafica.jsx';
-import AggiungiKeypeopleGrafica from './pages/NuoveGrafiche/AggiungiKeypeopleGrafica.jsx';
-import ModificaKeypeopleGrafica from './pages/NuoveGrafiche/ModificaKeypeopleGrafica.jsx';
-import AggiungiRecruitingGrafica from './pages/NuoveGrafiche/AggiungiRecruitingGrafica.jsx';
-import ModificaRecruitingGrafica from './pages/NuoveGrafiche/ModificaRecruitingGrafica.jsx';
+import Dashboard                                                       from './pages/Dashboard.jsx';
+import AggiungiAziendaGrafica                                          from './pages/NuoveGrafiche/AggiungiAziendaGrafica.jsx';
+import ModificaAziendaGrafica                                          from './pages/NuoveGrafiche/ModificaAziendaGrafica.jsx';
+import AggiungiKeypeopleGrafica                                        from './pages/NuoveGrafiche/AggiungiKeypeopleGrafica.jsx';
+import ModificaKeypeopleGrafica                                        from './pages/NuoveGrafiche/ModificaKeypeopleGrafica.jsx';
+import AggiungiRecruitingGrafica                                       from './pages/NuoveGrafiche/AggiungiRecruitingGrafica.jsx';
+import ModificaRecruitingGrafica                                       from './pages/NuoveGrafiche/ModificaRecruitingGrafica.jsx';
+import AggiungiIntervistaGrafica from './pages/NuoveGrafiche/AggiungiIntervistaGrafica.jsx';
 
 
 
@@ -153,7 +153,7 @@ useEffect(() => {
                   } />
                 <Route path="/intervista/aggiungi"element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
-                      <AggiungiIntervista />
+                      <AggiungiIntervistaGrafica />
                     </PrivateRoute>
                   } />
                 <Route path="/intervista/modifica/:id" element={

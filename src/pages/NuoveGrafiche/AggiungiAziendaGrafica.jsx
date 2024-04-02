@@ -96,7 +96,7 @@ const AggiungiAziendaGrafica = () => {
     const getMandatoryFields = (index) => {
         switch (index) {
             case 0: 
-                return [ "denominazione", "settoreMercato", "idOwner", "status" ];
+                return [ "denominazione", "settoreMercato", "idOwner", "semplicita", "potenzialita", "stato" ];
             case 1: 
                 return [ "citta", "provincia", "sedeOperativa", "cap" ];
             default: 
@@ -247,7 +247,7 @@ const AggiungiAziendaGrafica = () => {
 
 
 
-        const campiObbligatori = [ "denominazione", "ragioneSociale", "idOwner", "status", "citta", "provincia", "sedeOperativa", "cap" ];
+        const campiObbligatori = [ "denominazione", "ragioneSociale", "idOwner", "potenzialita", "semplicita", "stato", "citta", "provincia", "sedeOperativa", "cap" ];
 
         const fields =[
             { type: "titleGroups",                label: "Profilo"            },
@@ -262,10 +262,20 @@ const AggiungiAziendaGrafica = () => {
                 { value: "Prospect", label: "Prospect" },
                 { value: "EXCLIENTE", label: "Ex Cliente" }
             ]  },
-            { label: "Stato*",                          name: "status",                    type: "select", options: [
-                { value: 1, label: "Verde" },
-                { value: 2, label: "Giallo" },
-                { value: 3, label: "Rosso" },
+            { label: "Potenzialita*",                          name: "potenzialita",                    type: "select", options: [
+                { value: 1, label: "1" },
+                { value: 2, label: "2" },
+                { value: 3, label: "3" },
+            ]  },
+            { label: "Semplicita*",                            name: "semplicita",                    type: "select", options: [
+                { value: 1, label: "1" },
+                { value: 2, label: "2" },
+                { value: 3, label: "3" },
+            ]  },
+            { label: "Stato*",                                 name: "stato",                    type: "select", options: [
+                { value: 1, label: "1" },
+                { value: 2, label: "2" },
+                { value: 3, label: "3" },
             ]  },
     
             { type: "titleGroups",                label: "Location"            },
@@ -439,7 +449,9 @@ const AggiungiAziendaGrafica = () => {
             </Snackbar>
             <Typography variant="h4" component="h1" sx={{ mt:1, fontWeight: 'bold', fontSize: '1.8'}}>{activeSection}</Typography>
                 </Box>
+                <Box sx={{ display: 'flex', width: '100%', height: '100%', flexDirection: 'column', pl: 5, pr: 5, overflow: 'auto'}}>
                 {renderFieldsGroups(groupedFields)}
+                </Box>
                 <Typography variant="h6" sx={{ mt: 2, color: '#666565', fontSize: '1em', ml: 16}}>* Campo Obbligatorio</Typography>
 
 
@@ -447,6 +459,7 @@ const AggiungiAziendaGrafica = () => {
                 {currentPageIndex > 0 && (
                         <Button onClick={handleBackButtonClick}
                             sx={{
+                            mb: 4,
                             width: '250px',
                             backgroundColor: "black",
                             color: "white",
@@ -463,7 +476,9 @@ const AggiungiAziendaGrafica = () => {
                         )}
                         {currentPageIndex < groupedFields.length - 1 && (
                             <Button onClick={handleNextButtonClick}
-                                sx={{ width: '250px',
+                                sx={{ 
+                                mb: 4,
+                                width: '250px',
                                 backgroundColor: "black",
                                 color: "white",
                                 fontWeight:"bold",
@@ -484,6 +499,7 @@ const AggiungiAziendaGrafica = () => {
                             onClick={() => handleSubmit(values)}
                             type="submit"
                             sx={{
+                                mb: 4,
                                 width: '250px',
                                 backgroundColor: "#5F8671",
                                 color: "#EDEDED",
