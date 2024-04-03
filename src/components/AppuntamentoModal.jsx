@@ -87,6 +87,8 @@ const onClose = () => {
   const handleSubmitAppuntamento = async () => {
         const inizio = `${dayjs(formData.data).format('YYYY-MM-DDTHH:mm')}:00.000+01:00`;
         const fine = dayjs(inizio).add(1, 'hour').format('YYYY-MM-DDTHH:mm:ss') + '.000+01:00';
+        const ownerString = formData.owner.join(';');
+
 
 
       const datiDaInviare = {
@@ -96,7 +98,7 @@ const onClose = () => {
         destinatari: formData.destinatari ,
         inizio: inizio ,
         fine: fine ,
-        ownerIds: formData.owner
+        ownerIds: ownerString
       };
       try {
         const responseInviaAppuntamento = await axios.post("http://89.46.196.60:8443/calendar/insert", datiDaInviare, { headers: headers });
@@ -129,7 +131,7 @@ const onClose = () => {
         </Box>
       <DialogTitle sx={{ mb: 2, display: 'flex', justifyContent: 'center', fontWeight: '600'}}>Aggiungi Appuntamento</DialogTitle>
       <DialogContent sx={{ p: 12}}  >
-        <Box>
+        <Box >
         <TextField
           id="destinatari-box"
           label="Destinatari*"
@@ -139,9 +141,9 @@ const onClose = () => {
           value={formData.destinatari}
           onChange={handleChange('destinatari')}
           sx={{
-            
+            height: '4em',
             p: 1,
-            borderRadius: '40px', 
+            borderRadius: '20px', 
             backgroundColor: '#EDEDED', 
             '& .MuiFilledInput-root': {
                 backgroundColor: 'transparent',
@@ -157,7 +159,7 @@ const onClose = () => {
             } 
             }} 
         />
-        <Typography variant="h6" sx={{ mb: 3, mt: 0.3, ml: 1, color: '#666565', fontSize: '1em'}}>* Inserire i destinatari separati da " ; "</Typography>
+        <Typography variant="h6" sx={{ mb: 1, mt: 0.3, ml: 1, color: '#666565', fontSize: '1em'}}>* Inserire i destinatari separati da " ; "</Typography>
 
 
         <TextField
@@ -169,9 +171,10 @@ const onClose = () => {
           value={formData.oggetto}
           onChange={handleChange('oggetto')}
           sx={{
-            mb: 8,
+            height: '4em',
+            mb: 4,
             p: 1,
-            borderRadius: '40px', 
+            borderRadius: '20px', 
             backgroundColor: '#EDEDED', 
             '& .MuiFilledInput-root': {
                 backgroundColor: 'transparent',
@@ -197,9 +200,10 @@ const onClose = () => {
           value={formData.luogo}
           onChange={handleChange('luogo')}
           sx={{
+            height: '4em',
             mb: 2,
             p: 1,
-            borderRadius: '40px', 
+            borderRadius: '20px', 
             backgroundColor: '#EDEDED', 
             '& .MuiFilledInput-root': {
                 backgroundColor: 'transparent',
@@ -291,9 +295,10 @@ id='data-box'
     fullWidth
     variant='filled'
     sx={{
+        height: '4em',
         mb: 2,
         p: 1,
-        borderRadius: '40px', 
+        borderRadius: '20px', 
         backgroundColor: '#EDEDED', 
         '& .MuiFilledInput-root': {
             backgroundColor: 'transparent',
@@ -313,35 +318,46 @@ id='data-box'
 
 
 
-        <FormControl fullWidth sx={{ mb: 2, p: 1 }}>
-            <Autocomplete
-            id="owner-combo-box"
-            options={ownerOptions}
-            getOptionLabel={(option) => option.label}
-            value={ownerOptions.find(option => option.value === formData.owner) || null}
-            onChange={(event, newValue) => {
-                handleChange('owner')({ target: { value: newValue?.value || null}});
-            }}
-            renderInput={(params) => <TextField {...params} label="Owner" variant='filled' sx={{
-                mb: 2,
-                p: 1,
-                borderRadius: '40px', 
-                backgroundColor: '#EDEDED', 
-                '& .MuiFilledInput-root': {
-                    backgroundColor: 'transparent',
-                },
-                '& .MuiFilledInput-underline:after': {
-                    borderBottomColor: 'transparent',
-                },
-                '& .MuiFilledInput-root::before': {
-                    borderBottom: 'none', 
-                },
-                '&:hover .MuiFilledInput-root::before': {
-                    borderBottom: 'none', 
-                } 
-                }}  />}
+<FormControl fullWidth >
+    <Autocomplete
+        id="owner-combo-box"
+        options={ownerOptions}
+        getOptionLabel={(option) => option.label}
+        multiple 
+        value={ownerOptions.filter(option => (formData.owner ?? []).includes(option.value)) || []} 
+        onChange={(event, newValues) => {
+            const selectedValues = newValues.map(newValue => newValue.value); 
+            handleChange('owner')({ target: { value: selectedValues || [] }}); 
+        }}
+        renderInput={(params) => (
+            <TextField 
+                {...params} 
+                label="Owner" 
+                variant='filled' 
+                sx={{
+                    height: '4em',
+                    mb: 2,
+                    p: 1,
+                    borderRadius: '20px', 
+                    backgroundColor: '#EDEDED', 
+                    '& .MuiFilledInput-root': {
+                        backgroundColor: 'transparent',
+                    },
+                    '& .MuiFilledInput-underline:after': {
+                        borderBottomColor: 'transparent',
+                    },
+                    '& .MuiFilledInput-root::before': {
+                        borderBottom: 'none', 
+                    },
+                    '&:hover .MuiFilledInput-root::before': {
+                        borderBottom: 'none', 
+                    } 
+                }}  
             />
-        </FormControl>
+        )}
+    />
+</FormControl>
+
 
 
         <TextField
@@ -357,7 +373,7 @@ id='data-box'
                 sx={{
                     mb: 2,
                     p: 1,
-                    borderRadius: '40px', 
+                    borderRadius: '20px', 
                     backgroundColor: '#EDEDED', 
                     '& .MuiFilledInput-root': {
                         backgroundColor: 'transparent',

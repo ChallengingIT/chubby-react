@@ -37,17 +37,17 @@ const FieldBoxFile = ({
     title = "",
     campiObbligatori,
     skillsOptions,
-    skills2Options,
     idCandidato,
-    idStaff
 }) => {
     const [values, setValues] = useState(initialValues || {});
     const [errors, setErrors] = useState({});
 
     const [ fileCV,               setFileCV             ] = useState(null);
     const [ fileCF,               setFileCF             ] = useState(null);
+    const [ fileIMG,              setFileIMG            ] = useState(null);
+    const [ imagePreviewUrl,      setImagePreviewUrl    ] = useState(null);
+
     const [ fileAllegati,         setFileAllegati       ] = useState(initialValues.files || []);
-    const [ fileMultipli,         setFileMultipli       ] = useState([]);
     const [ openDialog,           setOpenDialog         ] = useState(false);
     const [ selectedFileId,       setSelectedFileId     ] = useState(null);
 
@@ -61,11 +61,6 @@ const FieldBoxFile = ({
     };
 
 
-    //apertura popup eliminazione file
-    const handleOpenDeleteAllegatiDialog = (fileId, fileType) => {
-        setSelectedFileId(fileId, fileType);
-        setOpenDialog(true);
-    };
     
     //apertura popup eliminazione cv e cf
     const handleOpenDeleteDialogCVCF = (fileId, fileType) => {
@@ -83,11 +78,6 @@ const FieldBoxFile = ({
         setValues({ ...values, skills: selectedSkills }); 
     };
     
-
-    const handleChangeSkills2 = (event) => {
-        const selectedSkills2 = event.target ? event.target.value : [];
-        setValues({ ...values, skills2: selectedSkills2 });
-    };
 
     const handleChange = (name) => (event) => {
         const { type, value } = event.target;
@@ -128,7 +118,7 @@ const FieldBoxFile = ({
         const isValid = validate();
 
         if (isValid) {
-            onSubmit(values, fileCV, fileCF, fileMultipli, fileAllegati);
+            onSubmit(values, fileCV, fileCF, fileIMG);
         }
     };
 
@@ -159,7 +149,7 @@ const FieldBoxFile = ({
 
 
     const handleDownloadCVCF = async (fileId, fileDescrizione) => {
-        const url = `http://89.46.196.60:8443/files/react/download/file/${fileId}`;
+        const url = `http://localhost:8080/files/react/download/file/${fileId}`;
         try {
             const response = await axios({
                 method: 'GET',
@@ -185,7 +175,7 @@ const FieldBoxFile = ({
         const handleDeleteCVCF = async (fileId, idCandidato, fileType) => {
             const idc = idCandidato;
             try {
-            const response = await axios.delete(`http://89.46.196.60:8443/files/react/elimina/file/candidato/${fileId}/${idc}`, { headers: headers })
+            const response = await axios.delete(`http://localhost:8080/files/react/elimina/file/candidato/${fileId}/${idc}`, { headers: headers })
             if(response.data === "OK") {
             } else {
                 console.error("Errore dal server: ", response.data);
@@ -220,83 +210,16 @@ const FieldBoxFile = ({
         };
 
 
-        const handleDownloadAllegati = async (fileID, fileDescrizione) => {
-            const url = `http://89.46.196.60:8443/files/react/download/file/${fileID}`;
-            try {
-                const response = await axios({
-                    method: 'GET',
-                    url: url,
-                    responseType: 'blob', 
-                    headers: headers
-                });
-        
-                const fileURL = window.URL.createObjectURL(new Blob([response.data]));
-                const link = document.createElement('a');
-                link.href = fileURL;
-                link.setAttribute('download', `${fileDescrizione}.pdf`); 
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            } catch (error) {
-                console.error('Si è verificato un errore durante il download del file:', error);
-            }
-        };
-
-        const handleDeleteAllegati = async (fileId, idStaff) => {
-            
-            try {
-                const ids = idStaff; 
-                const url = `http://89.46.196.60:8443/files/react/elimina/file/${fileId}/${ids}`;
-        
-                const responseDeleteFile = await axios.delete(url, { headers: headers });
-                if(responseDeleteFile.status === 200 || responseDeleteFile.data === "OK") {
-                    const updatedFiles = fileAllegati.filter(file => file.id !== fileId);
-                    setFileAllegati(updatedFiles);
-                // setValues(prevValues => ({
-                //     ...prevValues,
-                //     files: prevValues.files.filter(file => file.id !== fileId)
-                // }));     
-                }  
-                setOpenDialog(false); 
-                setSelectedFileId(null);  
-            } catch (error) {
-                console.error('Errore durante l\'eliminazione del file:', error);
-            }
-        };
-
-        const handleCaricaAllegati = (event) => {
-            const nuovoAllegato = event.target.files;
-            if (nuovoAllegato && nuovoAllegato.length > 0) {
-                const updatedFileList = [...fileAllegati, ...Array.from(nuovoAllegato).map(file => {
-                    return {
-                        file: file,
-                        descrizione: file.name,
-                        isNew: true 
-                    };
-                })];
-                setFileAllegati(updatedFileList);
+        const handleChangeIMG = (name) => (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                setFileIMG(file);
+                setValues({ ...values, image: file });
+                setImagePreviewUrl(URL.createObjectURL(file));
             }
         };
 
 
-        const handleDeleteFileCaricato = (fileIndex) => {
-            const updatedFileList = fileAllegati.filter((_, index) => index !== fileIndex);
-            setFileAllegati(updatedFileList);
-        };
-
-
-
-        //in aggiungi dipendente
-        const handleChangeFileMultipli = (event) => {
-            const newFiles = event.target.files;
-            if (newFiles && newFiles.length > 0) {
-                setFileMultipli([...fileMultipli, ...Array.from(newFiles)]);
-            }
-        };
-    
-        const handleDeleteFileMultipli = (index) => {
-            setFileMultipli(fileMultipli.filter((_, i) => i !== index));
-        };
 
 
 
@@ -432,47 +355,6 @@ const FieldBoxFile = ({
                 ))}
                 </Select>
                 {errors.skills && <FormHelperText>{errors.skills2}</FormHelperText>}
-            </FormControl>
-            );
-
-        case "multipleSelectSkill2":
-            return (
-            <FormControl
-                fullWidth
-                error={!!errors[field.name]}
-                disabled={isDisabled}
-            >
-                <InputLabel>{field.label}</InputLabel>
-                <Select
-                multiple
-                name="skills2"
-                value={values.skills2 || []}
-                onChange={handleChangeSkills2}
-                disabled={field.disabled}
-                style={{ width: "100%", textAlign: "left" }}
-                renderValue={(selected) =>
-                    selected
-                    .map((skillId) => {
-                        const foundOption = skills2Options.find(
-                        (option) => option.value === skillId
-                        );
-                        return foundOption ? foundOption.label : "";
-                    })
-                    .join(", ")
-                }
-                >
-                {skills2Options.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                    <Checkbox
-                        checked={(values.skills2 || []).indexOf(option.value) > -1}
-                    />
-                    <ListItemText primary={option.label} />
-                    </MenuItem>
-                ))}
-                </Select>
-                {errors.skills2 && (
-                <FormHelperText>{errors.skills2}</FormHelperText>
-                )}
             </FormControl>
             );
 
@@ -740,138 +622,49 @@ const FieldBoxFile = ({
                     );
 
 
-                    case 'modificaAllegati':
-                    
-                    return (
-                        <Box>
-                            <Typography variant="subtitle1" gutterBottom>{field.label}</Typography>
-                {fileAllegati.map((file, index) => (
-                <Box key={index} style={{
-                    display: 'flex', 
-                    flexDirection: "row", 
-                    alignItems: 'center', 
-                    justifyContent: 'space-between',
-                    margin: '10px 0'
-                    }}>
-                    <Typography variant="body1">{file.descrizione}</Typography>
-                    {/* Mostra bottoni solo per i file esistenti */}
-                    {!file.isNew && (
-                        <>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            startIcon={<CloudDownloadIcon />}
-                            sx={{ marginLeft: '10px', marginBottom: "10px", marginTop: "10px", justifyContent:"flex-end" }}
-                            onClick={() => handleDownloadAllegati(file.id, file.descrizione)}
-                                >
-                        </Button>
-                        <Button
-                            variant="contained"
-                            startIcon={<DeleteIcon />}
-                            sx={{ 
-                            marginLeft: '10px', 
-                            marginBottom: "10px", 
-                            marginTop: "10px", 
-                            justifyContent:"flex-end", 
-                            backgroundColor: "red", 
-                            color: "white",
-                            "&:hover": {
-                                backgroundColor: "red",
-                                transform: "scale(1.05)",
-                            }, }}
-                            // onClick={() => handleDeleteAllegati(file.id, idStaff)}
-                            onClick={() => handleOpenDeleteAllegatiDialog(file.id, "allegato")}
-                            disabled={!values[field.name]}  
-                            >
-                        </Button>
-                        </>
-                    )}
-                    {/* Mostra bottoni per cancellare i nuovi file */}
-                    {file.isNew && (
-                        <Button 
-                        onClick={() => handleDeleteFileCaricato(index)}
-                        variant="contained"
-                        startIcon={<DeleteIcon />}
-                        sx={{ 
-                        marginLeft: '10px', 
-                        marginBottom: "10px", 
-                        marginTop: "10px", 
-                        justifyContent:"flex-end", 
-                        backgroundColor: "red", 
-                        color: "white",
-                        "&:hover": {
-                            backgroundColor: "red",
-                            transform: "scale(1.05)",
-                        },
-                    }}
-                        >
-                    </Button>
-                    )}
-                </Box>
-            ))}
-                    <Box sx={{ display: 'flex', flexDirection: "row", alignItems: 'center', justifyContent: 'center',  }}>
-                            <Button
-                            variant="contained"
-                            component="label"
-                            startIcon={<CloudUploadIcon />}
-                            sx={{ 
-                            display:"flex", 
-                            justifyContent:"center", 
-                            marginLeft: '10px',
-                            backgroundColor: "green", 
-                            color: "white",  
-                            marginBottom: "10px", 
-                            width: '70%',
-                            ':hover': {
-                                backgroundColor: 'green',
-                            }
-                        }}
-                            >
-                            <input
-                            type="file"
-                            hidden
-                            multiple
-                            name={field.name}
-                            onChange={handleCaricaAllegati}
-                            />
-                            inserisci allegati
-                        </Button>
-                        <input
-                        type="file"
-                        hidden
-                        multiple
-                        />
-                        </Box>
-                        </Box>
 
-                    );
-
-
-                    case 'soloDownloadAllegati': 
-                    return (
-                        <Box>
-                        <Typography variant="subtitle1" gutterBottom>{field.label}</Typography>
-                        {fileAllegati.map((file, index) => (
-                            <Box key={index} style={{
-                                display: 'flex', 
-                                flexDirection: "row", 
-                                alignItems: 'center', 
-                                justifyContent: 'space-between',
-                                margin: '10px 0'
-                                }}>
-                                <Typography variant="body1">{file.descrizione}</Typography>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        startIcon={<CloudDownloadIcon />}
-                                        sx={{ marginLeft: '10px', marginBottom: "10px", marginTop: "10px", justifyContent:"flex-end" }}
-                                        onClick={() => handleDownloadAllegati(file.id, file.descrizione)}
-                                            >
-                                    </Button>
+                    case "aggiungiImmagine":
+                        return(
+                            <Box sx={{ width: '25em', overflow: 'hidden', mr: 10}}>
+                                <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',margin: '10px 0'}}>
+                                <Typography variant="subtitle1" gutterBottom>{field.label}</Typography>
+                                        </Box>
+                                <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', margin: '10px 0'}}>
+                                <Typography variant="body2">
+                                        {imagePreviewUrl ? (
+                                            <img src={imagePreviewUrl} alt="Immagine Caricata" style={{ width: '80px', height: '80px', objectFit: 'cover' }} />
+                                        ) : (
+                                            'Nessun file selezionato'
+                                        )}
+                                    </Typography>
+                                    <Box sx={{ display: 'flex', gap: 2, mr: 0.5}}>
+                                        <Button
+                                            variant="contained"
+                                            sx={{ 
+                                            backgroundColor: 'black',
+                                            marginLeft: '10px', 
+                                            marginBottom: "10px", 
+                                            marginTop: "10px", 
+                                            justifyContent:"flex-end", 
+                                            color: 'white',
+                                            ':hover': {
+                                                backgroundColor: 'black',
+                                                transform: 'scale(1.1)'
+                                            }
+                                        }}
+                                            startIcon={<CloudUploadIcon />}
+                                            component="label"
+                                        >
+                                            <input
+                                                type="file"
+                                                hidden
+                                                onChange={handleChangeIMG(field.name)}
+                                            />
+                                        </Button>
+                                        </Box>
+                                </Box>
                             </Box>
-                        ))}
-                        </Box>
-                    );
+                        );
 
         default:
             return null;
@@ -879,19 +672,7 @@ const FieldBoxFile = ({
     };
 
     return (
-        <Box
-        // sx={{
-        //     display: "flex",
-        //     flexDirection: "column",
-        //     width: "100%",
-        //     margin: "auto",
-        //     padding: "30px",
-        //     backgroundColor: "white",
-        //     borderRadius: "20px",
-        //     justifyItems: "center",
-        //     boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.5)",
-        // }}
-        >
+        <Box>
             <Dialog
     open={openDialog}
     onClose={() => setOpenDialog(false)}
@@ -923,8 +704,6 @@ const FieldBoxFile = ({
                 handleDeleteCVCF(selectedFileId.id, idCandidato, 'cv');
             } else if (selectedFileId.type === 'cf') {
                 handleDeleteCVCF(selectedFileId.id, idCandidato, 'cf');
-            } else if (selectedFileId.type === 'allegato') {
-                handleDeleteAllegati(selectedFileId.id, idStaff);
             }
             setOpenDialog(false);
         }} 

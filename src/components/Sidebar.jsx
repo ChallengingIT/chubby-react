@@ -180,9 +180,9 @@ function Sidebar() {
                 }}
             >
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px', flexDirection: 'column' }}>
-                    <IconButton onClick={() => navigate('/dashboard')} style={{ padding: 0 }}>
+                    {/* <IconButton  style={{ padding: 0 }}> */}
                         <img src={Logo} alt="Logo" style={{ width: '6vw', marginTop: '1em' }} />
-                    </IconButton>
+                    {/* </IconButton> */}
 
                     <IconButton onClick={handleTorciaClick} sx={{ padding: 0, '&:hover': { transform: 'scale(1.1)'}  }}> 
                         <img src={Torcia} alt="Torcia" style={{ width: '4vw', marginTop: '1em' }} />

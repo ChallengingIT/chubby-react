@@ -23,7 +23,8 @@ import {
   DialogActions,
   Box,
   Button,
-  Typography
+  Grid,
+  Skeleton
 } from '@mui/material';
 import RicercheRecruiting from "../components/ricerche/RicercheRecruiting.jsx";
 
@@ -446,7 +447,7 @@ const handleReset = () => {
         />
       <Link
       to={`/recruiting/intervista/${params.row.id}`}
-      state = {{ recruitingData: params.row.id}}
+      state = {{ recruitingData: params.row}}
       >
     <PersonInfoButton /> 
     </Link>
@@ -493,7 +494,18 @@ return (
       />
       <Box sx={{ mr: 0.2}}>
         { loading ? (
-          <Typography variant="body1" sx={{ margin: '30px' }}>Caricamento...</Typography>
+            <>
+            {Array.from(new Array(1)).map((_, index) => (
+                <Grid item xs={12} md={6} key={index}>
+                    <Box sx={{ marginRight: 2, marginBottom: 2 }}>
+                        <Skeleton variant="rectangular" width="100%" height={118} />
+                        <Skeleton variant="text" />
+                        <Skeleton variant="text" />
+                        <Skeleton variant="text" width="60%" />
+                    </Box>
+                </Grid>
+            ))}
+            </>   
         ) : ( 
           <Tabella
           data={originalRecruiting} 

@@ -95,7 +95,7 @@ const onClose = () => {
         </Box>
       <DialogTitle sx={{ mb: 2, display: 'flex', justifyContent: 'center', mt: 0.5, fontWeight: '600'}}>Invia Email</DialogTitle>
       <DialogContent sx={{ p: 12}}  >
-        <Box>
+        <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'hidden'}}>
         <TextField
           id="destinatari-box"
           label="Destinatari*"
@@ -105,8 +105,9 @@ const onClose = () => {
           value={formData.destinatari}
           onChange={handleChange('destinatari')}
           sx={{
+            height: '4em',
             p: 1,
-            borderRadius: '40px', 
+            borderRadius: '20px', 
             backgroundColor: '#EDEDED', 
             '& .MuiFilledInput-root': {
                 backgroundColor: 'transparent',
@@ -122,7 +123,7 @@ const onClose = () => {
             } 
             }} 
         />
-        <Typography variant="h6" sx={{ mb: 3, mt: 0.3, ml: 1, color: '#666565', fontSize: '1em'}}>* Inserire i destinatari separati da " ; "</Typography>
+        <Typography variant="h6" sx={{ mb: 1, mt: 0.3, ml: 1, color: '#666565', fontSize: '1em'}}>* Inserire i destinatari separati da " ; "</Typography>
 
 
         <TextField
@@ -134,9 +135,10 @@ const onClose = () => {
           value={formData.oggetto}
           onChange={handleChange('oggetto')}
           sx={{
+            height: '4em',
             mb: 8,
             p: 1,
-            borderRadius: '40px', 
+            borderRadius: '20px', 
             backgroundColor: '#EDEDED', 
             '& .MuiFilledInput-root': {
                 backgroundColor: 'transparent',
@@ -167,7 +169,7 @@ const onClose = () => {
                 sx={{
                     mb: 2,
                     p: 1,
-                    borderRadius: '40px', 
+                    borderRadius: '20px', 
                     backgroundColor: '#EDEDED', 
                     '& .MuiFilledInput-root': {
                         backgroundColor: 'transparent',

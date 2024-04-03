@@ -4,6 +4,7 @@ import EmailIcon                            from '@mui/icons-material/Email';
 import BusinessCenterIcon                   from '@mui/icons-material/BusinessCenter';
 import LocalPhoneIcon                       from '@mui/icons-material/LocalPhone';
 import CloseIcon                            from '@mui/icons-material/Close';
+import BusinessIcon                         from '@mui/icons-material/Business'; //azienda
 
 import { 
     Card, 
@@ -91,6 +92,14 @@ const KeypeopleCard = ({valori, onDelete}) => {
 
             </Box>
 
+
+            <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
+                <BusinessIcon sx={{ color: '#00853C', mr: 1 }} />
+                {valori.cliente.denominazione}
+            </Typography>
+
+
+           
             <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
                 <BusinessCenterIcon sx={{ color: '#00853C', mr: 1 }} />
                 {valori.ruolo}
@@ -218,9 +227,13 @@ const KeypeopleCard = ({valori, onDelete}) => {
                     textOverflow: 'ellipsis',
                     maxWidth: '70%',
                     color: '#00853C',
+                    mt: -3,
+                    mb: 2
                     }}
                 >
-                    {valori.cliente.denominazione}
+                <img src={`data:image/png;base64,${valori.cliente.logo}`} alt="Logo" style={{width: '50px', height: '50px', borderRadius: '50%'}} />
+
+                    {/* {valori.cliente.logo} */}
                 </Typography>
                     </Box>
         </CardActions>

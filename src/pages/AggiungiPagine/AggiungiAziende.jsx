@@ -23,8 +23,8 @@ const AggiungiAziende = () => {
     const fetchProvinceOptions = async () => {
       try {
 
-        const provinceResponse = await axios.get("http://89.46.196.60:8443/aziende/react/province", { headers: headers });
-        const ownerResponse    = await axios.get("http://89.46.196.60:8443/aziende/react/owner",    { headers: headers }   );
+        const provinceResponse = await axios.get("http://localhost:8080/aziende/react/province", { headers: headers });
+        const ownerResponse    = await axios.get("http://localhost:8080/aziende/react/owner",    { headers: headers }   );
 
         if (Array.isArray(ownerResponse.data)) {
           const ownerOptions = ownerResponse.data.map((owner) => ({
@@ -82,6 +82,8 @@ const AggiungiAziende = () => {
     ]  },
     
     { label: "Note",                            name: "note",                      type: "note" },
+    { label: 'Logo',                            name: 'logo',                      type: 'aggiungiImmagine'}
+    
   ];
 
 
@@ -93,7 +95,7 @@ const AggiungiAziende = () => {
 };
 
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, fileCV, fileCF, fileIMG) => {
     const errors    = validateFields(values);
     const hasErrors = Object.keys(errors).length > 0;
   
@@ -124,13 +126,34 @@ const AggiungiAziende = () => {
           Authorization: `Bearer ${accessToken}`
         };
 
-        const response = await axios.post("http://89.46.196.60:8443/aziende/react/salva", values, {
+        delete values.image;
+
+        const response = await axios.post("http://localhost:8080/aziende/react/salva", values, {
           headers: headers
         });
         if (response.data === "DUPLICATO") {
           setAlert({ open: true, message: "azienda già esistente!" });
           console.error("L'azienda è già stata salvata.");
           return; 
+        }
+
+        const aziendaID = response.data;
+
+        try {
+          if (fileIMG) {
+            const formDataIMG = new FormData();
+            formDataIMG.append('logo', fileIMG);
+        
+            const responseIMG = await axios.post(`http://localhost:8080/aziende/react/salva/file/${aziendaID}`, formDataIMG, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${accessToken}`
+              }
+            });
+        
+          }
+        } catch (error) {
+          console.error("Errore nell'invio dell'immagine: ", error);
         }
         navigate("/aziende");
       } catch (error) {

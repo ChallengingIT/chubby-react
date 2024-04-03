@@ -9,6 +9,7 @@ import {
     Box,
     Grid,
     CircularProgress,
+    Skeleton
     } from '@mui/material';
 
     const Need = () => {
@@ -338,15 +339,27 @@ import {
                                 {/* Main Content Area */}
                     <Grid container spacing={2} sx={{ mt: 1, mb: 4}}>
                         { loading ? (
-                            <Box
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                height: '100%'
-                            }}>
-                                <CircularProgress sx={{ color: '#00853C'}}/> 
-                            </Box>
+                            // <Box
+                            // sx={{
+                            //     display: 'flex',
+                            //     justifyContent: 'center',
+                            //     alignItems: 'center',
+                            //     height: '100%'
+                            // }}>
+                            //     <CircularProgress sx={{ color: '#00853C'}}/> 
+                            // </Box>
+                            <>
+                            {Array.from(new Array(quantita)).map((_, index) => (
+                                <Grid item xs={12} md={6} key={index}>
+                                    <Box sx={{ marginRight: 2, marginBottom: 2 }}>
+                                        <Skeleton variant="rectangular" width="100%" height={118} />
+                                        <Skeleton variant="text" />
+                                        <Skeleton variant="text" />
+                                        <Skeleton variant="text" width="60%" />
+                                    </Box>
+                                </Grid>
+                            ))}
+                        </>
                         ) : (
                             originalNeed.map((need, index) => (
                                 <Grid item xs={12} md={6} key={index}>
