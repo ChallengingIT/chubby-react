@@ -13,8 +13,6 @@ import DettaglioNeed                                                   from './p
 import Layout                                                          from './components/Layout.jsx';
 import LoginPage                                                       from './pages/LoginPage.jsx';
 import IntervisteList                                                  from './pages/IntervisteList.jsx';
-import AggiungiIntervista                                              from './pages/AggiungiPagine/AggiungiIntervista.jsx';
-import ModificaIntervista                                              from './pages/ModificaPagine/ModificaInterviste.jsx';
 import AggiungiNeedID                                                  from './pages/AggiungiPagine/AggiungiNeedID.jsx';
 import Keypeople                                                       from './pages/Keypeople.jsx';
 import Hiring                                                          from './pages/Hiring.jsx';
@@ -28,7 +26,8 @@ import AggiungiKeypeopleGrafica                                        from './p
 import ModificaKeypeopleGrafica                                        from './pages/NuoveGrafiche/ModificaKeypeopleGrafica.jsx';
 import AggiungiRecruitingGrafica                                       from './pages/NuoveGrafiche/AggiungiRecruitingGrafica.jsx';
 import ModificaRecruitingGrafica                                       from './pages/NuoveGrafiche/ModificaRecruitingGrafica.jsx';
-import AggiungiIntervistaGrafica from './pages/NuoveGrafiche/AggiungiIntervistaGrafica.jsx';
+import AggiungiIntervistaGrafica                                       from './pages/NuoveGrafiche/AggiungiIntervistaGrafica.jsx';
+import ModificaIntervistaGrafica                                       from './pages/NuoveGrafiche/ModificaIntervistaGrafica.jsx';
 
 
 
@@ -158,7 +157,7 @@ useEffect(() => {
                   } />
                 <Route path="/intervista/modifica/:id" element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
-                      <ModificaIntervista />
+                      <ModificaIntervistaGrafica />
                     </PrivateRoute>
                   } />
                     <Route path="/intervista/visualizza/:id" element={

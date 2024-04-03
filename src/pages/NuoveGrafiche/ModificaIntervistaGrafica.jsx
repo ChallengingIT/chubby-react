@@ -9,12 +9,14 @@ import CustomDecimalNumberAggiungi from '../../components/fields/CustomDecimalNu
 import CustomTextFieldModifica from '../../components/fields/CustomTextFieldModifica';
 import CustomDatePickerHoursAggiungi from '../../components/fields/CustomDatePickerHoursAggiungi';
 import CustomDatePickerModifica from '../../components/fields/CustomDatePickerModifica';
+import CustomNoteModifica from '../../components/fields/CustomNoteModifica';
 
-const AggiungiIntervistaGrafica = () => {
+const ModificaIntervistaGrafica = () => {
     const navigate = useNavigate();
 
     const location      = useLocation();
-    const candidatoID   = location.state?.candidatoID;
+    const rowData  = location.state;
+    const candidatoID   = rowData.candidato.id;
 
     //stati della pagina
     const [ activeSection,      setActiveSection        ] = useState('Informazioni Candidato');
@@ -28,9 +30,8 @@ const AggiungiIntervistaGrafica = () => {
     const [ ownerOptions,               setOwnerOptions                 ] = useState([]);
     const [ tipoIntervistaOptions,      setTipoIntervistaOptions        ] = useState([]); //follow up
     const [ interviste,                 setInterviste                   ] = useState([]);
-    const [ candidato,                  setCandidato                    ] = useState([]);
+    const [ candidatoData,              setCandidatoData                ] = useState([]);
     const [ values,                     setValues                       ] = useState([]);
-    const [ statoCaricato,              setStatoCaricato                ] = useState(false);
 
     const user = JSON.parse(localStorage.getItem("user"));
     const accessToken = user?.accessToken;
@@ -54,6 +55,7 @@ const AggiungiIntervistaGrafica = () => {
             const responseCandidato                      = await axios.get(`http://localhost:8080/staffing/react/${candidatoID}`            , { headers: headers }); //questo è il candidato
             const responseStato                          = await axios.get("http://localhost:8080/staffing/react/stato/candidato"           , { headers: headers });
 
+        
         
         
             if (responseIntervista.data && typeof responseIntervista.data === 'object') {
@@ -80,7 +82,6 @@ const AggiungiIntervistaGrafica = () => {
                 setTipoIntervistaOptions(tipoIntervistaOptions);
             }
 
-
             if (Array.isArray(responseStato.data)) {
                 const statoOptions = responseStato.data.map((stato) => ({
                 label: stato.descrizione,
@@ -100,12 +101,11 @@ const AggiungiIntervistaGrafica = () => {
             }
     
             if (responseCandidato.data && typeof responseCandidato.data === 'object') {
-                setCandidato(responseCandidato.data);
-                setStatoCaricato(true);
+                setCandidatoData(responseCandidato.data);
+                setLoading(false);
             }
             
         
-        setLoading(false);
             } catch (error) {
             console.error("Errore durante il recupero delle province:", error);
             }
@@ -113,8 +113,6 @@ const AggiungiIntervistaGrafica = () => {
         
         fetchData();
         }, []);
-
-
 
 
     const menu = [
@@ -256,7 +254,6 @@ const AggiungiIntervistaGrafica = () => {
             }
             
             };
-
     
 
     const campiObbligatori = [ "dataColloquio"];
@@ -265,7 +262,7 @@ const AggiungiIntervistaGrafica = () => {
         { type: "titleGroups",                label: "Informazioni candidato"             },
         { label: "Data Incontro*",            name: "dataColloquio",          type: "date"},
         { label: "Intervistatore",            name: "idOwner",                type: "select", options: ownerOptions },
-        { label: "Tipologia Incontro",        name: "stato",                  type: "text"},
+        { label: "Tipologia Incontro",        name: "stato",                type: "text"},
         { label: "Nome",                      name: "nome",                   type: "text"},
         { label: "Cognome",                   name: "cognome",                type: "text"},
         { label: "Data di Nascita",           name: "dataNascita",            type: "date"},
@@ -301,7 +298,7 @@ const AggiungiIntervistaGrafica = () => {
         { label: "RAL Attuale",               name: "attuale",                 type: "text"},
         { label: "RAL Desiderata",            name: "desiderata",              type: "text"},
         { label: "Proposta economica",        name: "proposta",                type: "text"},
-        { label: "Follow Up",                 name: "tipo",                    type: "select", options: tipoIntervistaOptions },
+        { label: "Follow Up",                 name: "idTipo",                    type: "select", options: tipoIntervistaOptions },
         { label: "Preavviso",                 name: "preavviso",               type: "text"},
         { label: "Next Deadline",             name: "dataAggiornamento",       type: "dateOra"},
         { label: "Owner next Deadline",       name: "idNextOwner",             type: "select", options: ownerOptions },
@@ -309,41 +306,43 @@ const AggiungiIntervistaGrafica = () => {
 
 
     const initialValues = {
-        stato:                            candidato.stato && candidato.stato.descrizione        || null,
-        nome:                             candidato?.nome                               || null,
-        cognome:                          candidato.cognome                             || null,
-        dataNascita:                      candidato.dataNascita                         || null,
-        location:                         candidato.citta                               || null, 
-        tipologia:                        candidato.tipologia?.descrizione              || null,
-        anniEsperienza:                   candidato.anniEsperienza                      || null,
-        cellulare:                        candidato.cellulare                           || null,
-        idOwner:                          interviste.owner?.id                          || null,
-        aderenza:                         interviste.aderenza                           || null,
-        coerenza:                         interviste.coerenza                           || null,
-        motivazione:                      interviste.motivazione                        || null,
-        standing:                         interviste.standing                           || null,
-        energia:                          interviste.energia                            || null,
-        comunicazione:                    interviste.comunicazione                      || null,
-        inglese:                          interviste.inglese                            || null,
-        competenze:                       interviste.competenze                         || null,
-        valutazione:                      interviste.valutazione                        || null,
-        descrizioneCandidatoUna:          interviste.descrizioneCandidatoUna            || null,
-        teamSiNo:                         interviste.teamSiNo                           || null,
-        note:                             interviste.note                               || null,
-        disponibilita:                    interviste.disponibilita                      || null,
-        attuale:                          interviste.attuale                            || null,
-        desiderata:                       interviste.desiderata                         || null,
-        proposta:                         interviste.proposta                           || null,
-        tipo:                             interviste.tipo?.id                           || null,
-        preavviso:                        interviste.preavviso                          || null,
-        dataAggiornamento:                interviste.dataAggiornamento                  || null,
-        idNextOwner:                      interviste.nextOwner?.id                      || null
+        id:                               rowData.id                                  ,  
+        stato:                            candidatoData.stato && candidatoData.stato.descrizione                              || null,  
+        nome:                             candidatoData?.nome                               || null,
+        cognome:                          candidatoData.cognome                             || null,
+        dataNascita:                      candidatoData.dataNascita                         || null,
+        location:                         candidatoData.citta                               || null, 
+        tipologia:                        candidatoData.tipologia?.descrizione              || null,
+        anniEsperienza:                   candidatoData.anniEsperienza                      || null,
+        dataColloquio:                    rowData.dataColloquio                         || null,
+        cellulare:                        candidatoData.cellulare                           || null,
+        idOwner:                          rowData.owner?.id                           || null,
+        aderenza:                         rowData.aderenza                            || null,
+        coerenza:                         rowData.coerenza                            || null,
+        motivazione:                      rowData.motivazione                         || null,
+        standing:                         rowData.standing                            || null,
+        energia:                          rowData.energia                             || null,
+        comunicazione:                    rowData.comunicazione                       || null,
+        inglese:                          rowData.inglese                             || null,
+        competenze:                       rowData.competenze                          || null,
+        valutazione:                      rowData.valutazione                         || null,
+        descrizioneCandidatoUna:          rowData.descrizioneCandidatoUna             || null,
+        teamSiNo:                         rowData.teamSiNo                            || null,
+        note:                             candidatoData.note                         || null,
+        disponibilita:                    rowData.disponibilita                       || null,
+        attuale:                          rowData.attuale                             || null,
+        desiderata:                       rowData.desiderata                          || null,
+        proposta:                         rowData.proposta                            || null,
+        idTipo:                           rowData.tipo?.id                            || null,
+        preavviso:                        rowData.preavviso                           || null,
+        dataAggiornamento:                rowData.dataAggiornamento                   || null, 
+        idNextOwner:                      rowData.nextOwner?.id                       || null
     };
 
 
 
 
-
+    
     
     const disableFields = {
     nome:               true,
@@ -405,10 +404,33 @@ const AggiungiIntervistaGrafica = () => {
 
 
 
+         //funzione per caricare i dati nei campi solo dopo aver terminato la chiamata
+         useEffect(() => {
+            if (Object.keys(rowData).length !== 0) {
+                const updatedvalues = { ...initialValues };
+        
+                Object.keys(rowData).forEach(key => {
+                    if (initialValues.hasOwnProperty(key)) {
+                        updatedvalues[key] = rowData[key];
+                    }
+                });
+        
+                setValues(updatedvalues);
+            }
+        }, [rowData]); 
+
+
+        useEffect(() => {
+            if (Object.keys(values).length > 0) {
+                setLoading(false);
+            }
+        }, [values]); 
+
+
 
         //funzione per richiamare i vari field
         const renderFields = (field) => {
-            if (!statoCaricato) {
+            if (loading) {
                 return renderFieldSkeleton(field.type);
             } else {
             const { type, ...otherProps } = field;
@@ -433,12 +455,13 @@ const AggiungiIntervistaGrafica = () => {
 
                     case 'note':
                     return (
-                        <CustomNoteAggiungi
+                        <CustomNoteModifica
                         name={field.name}
                         label={field.label}
                         type={field.type}
                         values={values}
                         onChange={handleChange}
+                        initialValues={initialValues}
                         />
                     );
 
@@ -448,11 +471,9 @@ const AggiungiIntervistaGrafica = () => {
                         name={field.name}
                         label={field.label}
                         options={field.options || []}
-                        // value={values[field.name] || null}
-                        value={initialValues.stato}
+                        value={values[field.name] || null}
                         onChange={handleChange}
                         getOptionSelected={(option, value) => option.value === value.value}
-                        
                         />
                     );
 
@@ -468,7 +489,6 @@ const AggiungiIntervistaGrafica = () => {
                         onChange={handleChange}
                         initialValues={initialValues}
                         disabled={!!dateDisabled}
-
                         />
                     );
 
@@ -543,7 +563,7 @@ const AggiungiIntervistaGrafica = () => {
                         Indietro
                     </Button>
                 </Box>
-                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: '#EDEDED'}}>  Aggiungi <br /> Intervista </Typography>
+                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: '#EDEDED'}}>  Modifica <br /> Intervista </Typography>
                 <List sx={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
                             {menu.map((item) => (
                                 <ListItem
@@ -649,4 +669,4 @@ const AggiungiIntervistaGrafica = () => {
     )
 }
 
-export default AggiungiIntervistaGrafica;
+export default ModificaIntervistaGrafica;

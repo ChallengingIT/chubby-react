@@ -1,11 +1,13 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
 
-function CustomTextFieldModifica({ name, label, type, onChange, values, initialValues }) {
+function CustomTextFieldModifica({ name, label, type, onChange, values, initialValues, disabled }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     onChange({ [name]: value });
   };
+
+
 
 
 
@@ -18,6 +20,7 @@ function CustomTextFieldModifica({ name, label, type, onChange, values, initialV
       fullWidth
       value={values[name] || initialValues[name] || ''}
       onChange={handleChange}
+      disabled={disabled}
       sx={{ 
         m: 2,
         width: "100%",
@@ -35,7 +38,15 @@ function CustomTextFieldModifica({ name, label, type, onChange, values, initialV
     },
     '&:hover .MuiFilledInput-root::before': {
         borderBottom: 'none', 
-    }
+    },
+    '& .MuiFilledInput-underline:hover:before': {
+      borderBottomStyle: 'trasparent', 
+    },
+    '& .Mui-disabled': {
+      WebkitTextFillColor: 'black', // Questo sovrascrive il colore del testo per i browser basati su Webkit come Chrome e Safari
+      color: 'black', 
+      cursor: 'not-allowed', 
+    },
 
         }}
     />

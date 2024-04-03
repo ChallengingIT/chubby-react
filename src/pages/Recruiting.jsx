@@ -447,7 +447,7 @@ const handleReset = () => {
         />
       <Link
       to={`/recruiting/intervista/${params.row.id}`}
-      state = {{ recruitingData: params.row.id}}
+      state = {{ recruitingData: params.row}}
       >
     <PersonInfoButton /> 
     </Link>

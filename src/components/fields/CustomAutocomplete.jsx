@@ -15,7 +15,6 @@ function CustomAutocomplete({ name, label, options, value, onChange, disabled })
 
 
 
-
   return (
     <Autocomplete
       fullWidth
@@ -47,7 +46,12 @@ function CustomAutocomplete({ name, label, options, value, onChange, disabled })
           },
           '&:hover .MuiFilledInput-root::before': {
               borderBottom: 'none', 
-          }
+          },
+          '& .Mui-disabled': {
+            WebkitTextFillColor: '#a09f9f', // Questo sovrascrive il colore del testo per i browser basati su Webkit come Chrome e Safari
+            color: '#a09f9f', 
+            cursor: 'not-allowed', 
+          },
           }}
         />
       }

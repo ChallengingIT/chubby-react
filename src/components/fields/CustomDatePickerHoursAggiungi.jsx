@@ -1,7 +1,7 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
 
-function CustomDatePickerModifica({ name, label, type, onChange, values, initialValues, disabled }) {
+function CustomDatePickerHoursAggiungi({ name, label, type, onChange, values }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     onChange({ [name]: value });
@@ -15,10 +15,9 @@ function CustomDatePickerModifica({ name, label, type, onChange, values, initial
   label={label}
   variant="filled"
   fullWidth
-  type='date'
-  value={values[name] || initialValues[name] || ''}
+  type='datetime-local'
+  value={values[name] || ''}
   onChange={handleChange}
-  disabled={disabled}
   sx={{ 
     m: 2,
     height: '4em',
@@ -43,16 +42,11 @@ function CustomDatePickerModifica({ name, label, type, onChange, values, initial
     },
     '& .MuiInputLabel-filled.MuiInputLabel-shrink': { 
         transform: 'translate(12px, 10px) scale(0.75)',
-    },
-    '& .Mui-disabled': {
-      WebkitTextFillColor: 'black', // Questo sovrascrive il colore del testo per i browser basati su Webkit come Chrome e Safari
-      color: 'black', 
-      cursor: 'not-allowed', 
-    },
+    }
   }}
 />
 
   );
 }
 
-export default CustomDatePickerModifica;
+export default CustomDatePickerHoursAggiungi;

@@ -10,7 +10,6 @@ const CustomMultipleSelectModifica = ({ name, label, options, value, onChange, s
         onChange({ [name]: value });
     };
 
-    console.log("value", value);
 
 
 

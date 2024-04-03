@@ -19,7 +19,7 @@ import AddIcon from "@mui/icons-material/Add";
 import Tabella from '../components/Tabella.jsx';
 import DeleteButton from '../components/button/DeleteButton.jsx';
 import EditButton from '../components/button/EditButton.jsx';
-import VisibilityButton from '../components/button/VisibilityButton.jsx';
+// import VisibilityButton from '../components/button/VisibilityButton.jsx';
 
 function IntervisteList() {
   const navigate                = useNavigate();
@@ -29,16 +29,12 @@ function IntervisteList() {
   const { recruitingData = {} } = location.state || {};
   const candidatoID             = id;
 
-
-
-
-
-
-
   const [ originalInterviste,       setOriginalInterviste   ] = useState([]);
   const [ candidatoData,            setCandidatoData        ] = useState([]);
   const [ openDialog,               setOpenDialog           ] = useState(false);
   const [ deleteId,                 setDeleteId             ] = useState(null);
+  const [ intervistaCaricata,       setIntervistaCaricata   ] = useState(false);
+  const [ candidato,                setCandidato            ] = useState([]);
 
 
   //stati per la paginazione
@@ -46,7 +42,6 @@ function IntervisteList() {
   const [ pagina,                   setPagina               ] = useState(0);
   const [ loading,                  setLoading              ] = useState(false);
   const quantita = 10;
-  
 
 
     const user = JSON.parse(localStorage.getItem("user"));
@@ -63,33 +58,43 @@ function IntervisteList() {
       quantita: 10
     };
 
-    const filtriDaInviare = {
-      nome: recruitingData.nome,
-      cognome: recruitingData.cognome,
-      email: recruitingData.email,
-      pagina: 0,
-      quantita: 1
-    }
-
     try {
       const response                           = await axios.get(`http://localhost:8080/intervista/react/mod/${id}`       , { headers: headers, params: paginazione});  //queste sono le interviste effettive
-      const responseCandidatoFiltrato          = await axios.get("http://localhost:8080/staffing/react/mod/ricerca",        { headers: headers, params: filtriDaInviare }); //questo è il candidato
+      const responseCandidato                  = await axios.get(`http://localhost:8080/staffing/react/${candidatoID}`            , { headers: headers }); //questo è il candidato
 
-      if (typeof responseCandidatoFiltrato.data === 'object') {
-        setCandidatoData([responseCandidatoFiltrato.data]); 
-      }
+
+
+      if (responseCandidato.data && typeof responseCandidato.data === 'object') {
+        setCandidato(responseCandidato.data);
+    }
 
       const { record, interviste } = response.data;
       if (interviste && Array.isArray(interviste)) {
         setOriginalInterviste(interviste);
         if (typeof record === 'number') {
           setRigheTot(record);
+          setIntervistaCaricata(true);
         } else {
           console.error("Il numero di recordo ottenuto non è un numero: ", record);
         }
       } else {
         console.error("I dati non contengono interviste in formato array: ", response.data);
       }
+
+      if (intervistaCaricata) {
+      const filtriDaInviare = {
+        nome: recruitingData.nome,
+        cognome: recruitingData.cognome,
+        email: recruitingData.email,
+        pagina: 0,
+        quantita: 1
+      }
+      const responseCandidatoFiltrato          = await axios.get("http://localhost:8080/staffing/react/mod/ricerca",        { headers: headers, params: filtriDaInviare }); //questo è il candidato
+
+      if (typeof responseCandidatoFiltrato.data === 'object') {
+        setCandidatoData([responseCandidatoFiltrato.data]); 
+      }
+    }
     } catch (error) {
       console.error("Errore durante il recupero dei dati:", error);
     }
@@ -124,7 +129,7 @@ function IntervisteList() {
       const { record, interviste } = responseIntervista.data;
 
       if (interviste && Array.isArray(interviste)) {
-          setOriginalInterviste(interviste); 
+          setOriginalInterviste(interviste);
   
           if (typeof record === 'number') {
               setRigheTot(record);
@@ -195,15 +200,15 @@ const candidatoCognome = candidatoData.length > 0 ? candidatoData[0].cognome : '
       candidatoData,
     };
   };
+
+
   
 const table1 = [
   // { field: "id", headerName: "Id", width: 70},
   { field: "stato",               headerName: "Stato",          flex: 1,
     renderCell: (params) => (
       <div style={{ textAlign: "start" }}>
-        {params.row.stato && params.row.stato.descrizione
-          ? params.row.stato.descrizione
-          : "N/A"}
+      {params.row.stato?.descrizione || "N/A"}
       </div>
     ),
   },
@@ -231,13 +236,13 @@ renderCell: (params) => (
    //dataAggiornamento e follo up si chiama intervista.tipo.descrizione
   { field: "azioni",         headerName: "Azioni",          flex: 1, renderCell: (params) => (
     <div>
-      <Link
+      {/* <Link
       to={`/intervista/visualizza/${params.row.id}`}
       state={params.row}
   
 >
 <VisibilityButton />
-</Link>
+</Link> */}
 <Link
 to={`/intervista/modifica/${params.row.id}`}
 state={params.row}
@@ -290,7 +295,8 @@ state={params.row}
                 <span style={{ marginRight: '0.5rem' }}>{"<"}</span> 
                 Indietro
                 </Button>
-                <Typography variant="h4" component="h1" sx={{  fontWeight: 'bold', fontSize: '1.4em'}}>Lista ITW di {recruitingData.nome} {recruitingData.cognome}</Typography>
+                
+                <Typography variant="h4" component="h1" sx={{  fontWeight: 'bold', fontSize: '1.4em'}}>Lista ITW di {candidato.nome} {candidato.cognome}</Typography>
                     <Button onClick={navigateToAggiungiIntervista}
                     startIcon={<AddIcon />}
                     sx={{

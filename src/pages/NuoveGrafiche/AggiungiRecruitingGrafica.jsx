@@ -34,7 +34,7 @@ const AggiungiRecruitingGrafica = () => {
     const [ values,             setValues               ] = useState([]);
     const [ jobTitleEnable,     setJobTitleEnable       ] = useState(false);    
     const [ livelloScolasticoOptions, setLivelloScolasticoOptions ] = useState([]);
-    const [ funzioneAziendaleOptions, setFunzioneAziendaleOptions ] = useState([]);
+    const [ funzioniAziendaliOptions, setFunzioniAziendaliOptions ] = useState([]);
 
 
 
@@ -53,13 +53,13 @@ const AggiungiRecruitingGrafica = () => {
         const fetchAziendeOptions = async () => {
         try {
             const responseStato               = await axios.get("http://localhost:8080/staffing/react/stato/candidato"  , { headers: headers });
-            const responseJobTitle            = await axios.get("http://localhost:8080/aziende/react/tipologia"         , { headers: headers });
+            // const responseJobTitle            = await axios.get(`http://localhost:8080/aziende/react/tipologia/${id}`   , { headers: headers });
             const responseTipologia           = await axios.get("http://localhost:8080/staffing/react/tipo"             , { headers: headers });
             const responseNeedSkills          = await axios.get("http://localhost:8080/staffing/react/skill"            , { headers: headers });
             const ownerResponse               = await axios.get("http://localhost:8080/aziende/react/owner"             , { headers: headers });
             const facoltaResponse             = await axios.get("http://localhost:8080/staffing/react/facolta"          , { headers: headers });
             const livelloScolasticoResponse   = await axios.get("http://localhost:8080/staffing/react/livello"          , { headers: headers });
-            const funzioneAziendaleResponse   = await axios.get("http://localhost:8080/staffing/react/funzioneAziendale", { headers: headers }); 
+            const funzioniAziendaliResponse   = await axios.get("http://localhost:8080/staffing/react/funzioni"         , { headers: headers }); 
     
             if (Array.isArray(livelloScolasticoResponse.data)) {
             const livelloScolasticoOptions = livelloScolasticoResponse.data.map((livelloScolastico) => ({
@@ -104,13 +104,13 @@ const AggiungiRecruitingGrafica = () => {
             }
     
     
-                if (Array.isArray(responseJobTitle.data)) {
-                const jobTitleOptions = responseJobTitle.data.map((jobTitle) => ({
-                    label: jobTitle.descrizione,
-                    value: jobTitle.id,
-                }));
-                setJobTitleOptions(jobTitleOptions);
-            }
+            //     if (Array.isArray(responseJobTitle.data)) {
+            //     const jobTitleOptions = responseJobTitle.data.map((jobTitle) => ({
+            //         label: jobTitle.descrizione,
+            //         value: jobTitle.id,
+            //     }));
+            //     setJobTitleOptions(jobTitleOptions);
+            // }
     
                     if (Array.isArray(responseStato.data)) {
                     const statoOptions = responseStato.data.map((stato) => ({
@@ -120,12 +120,12 @@ const AggiungiRecruitingGrafica = () => {
                     setStatoOptions(statoOptions);
                 }
 
-                if (Array.isArray(funzioneAziendaleResponse.data)) {
-                    const funzioneAziendaleOptions = funzioneAziendaleResponse.data.map((funzioneAziendale) => ({
-                        label: funzioneAziendale.descrizione,
-                        value: funzioneAziendale.id,
+                if (Array.isArray(funzioniAziendaliResponse.data)) {
+                    const funzioneAziendaleOptions = funzioniAziendaliResponse.data.map((funzioni) => ({
+                        label: funzioni.descrizione,
+                        value: funzioni.id,
                     }));
-                    setFunzioneAziendaleOptions(funzioneAziendaleOptions);
+                    setFunzioniAziendaliOptions(funzioneAziendaleOptions);
                 }
             
             } catch (error) {
@@ -240,16 +240,6 @@ const AggiungiRecruitingGrafica = () => {
     //   };
 
 
-    //funzione per abilitare il select dei jobtitle solo dopo aver selezionato una options dal select funzione aziendale
-    useEffect(() => {
-        if (values.funzioneAziendale) {
-            setJobTitleEnable(true);
-        } else {
-            setJobTitleEnable(false);
-        }
-    }, [values.funzioneAziendale]);
-
-
     //funzioni per cambiare pagina del form
     const handleBackButtonClick = () => {
         const currentIndex = menu.findIndex(item => item.title.toLowerCase() === activeSection.toLowerCase());
@@ -353,6 +343,38 @@ const AggiungiRecruitingGrafica = () => {
             setAlert({ open: true, message: "Compilare tutti i field obbligatori presenti prima di avanzare" });
         }
     };
+
+    //useEffect che controlla il cambiamento di stato di funzioneAziendale, abilita la select di jobTitle e attiva la chiamata per popolarlo correttamente
+    useEffect(() => {
+        if (values.funzioneAziendale && values.funzioneAziendale.length !== 0) {
+            const funzioneAziendaleId = values.funzioneAziendale; 
+    
+            setJobTitleEnable(true);
+            fetchJobTitleOptions(funzioneAziendaleId);
+        } else {
+            setJobTitleEnable(false);
+            setJobTitleOptions([]);
+        }
+    }, [values.funzioneAziendale]); 
+
+
+
+
+    const fetchJobTitleOptions = async (funzioneAziendaleId) => {
+        try {
+            const response = await axios.get(`http://localhost:8080/aziende/react/tipologia/${funzioneAziendaleId}`, { headers: headers });
+            const jobTitleOptions = response.data.map(jobTitle => ({
+                label: jobTitle.descrizione,
+                value: jobTitle.id,
+            }));
+            setJobTitleOptions(jobTitleOptions);
+        } catch (error) {
+            console.error("Errore nel caricamento dei jobTitle:", error);
+        }
+    };
+
+
+    
     
 
         const fieldObbligatori = [ "nome", "cognome", "email", "anniEsperienzaRuolo", "tipologia", "dataUltimoContatto", "tipo", "stato", "livelloScolastico", "funzioneAziendale" ];
@@ -386,7 +408,7 @@ const AggiungiRecruitingGrafica = () => {
                 { value: 2, label: "Ibrido" },
                 { value: 3, label: "On Site"},
             ] },
-        { label: "Funzione Aziendale*",                name: "funzioneAziendale",        type: "select",               options: funzioneAziendaleOptions         },
+        { label: "Funzione Aziendale*",                name: "funzioneAziendale",        type: "select",               options: funzioniAziendaliOptions         },
         { label: "Job Title*",                         name: "tipologia",                type: "select",               options: jobTitleOptions                  },
         { label: "Data Inserimento*",                  name: "dataUltimoContatto",       type: "date"                                                            },
         { label: "Stato*",                             name: "stato",                    type: "select",               options: statoOptions                     },

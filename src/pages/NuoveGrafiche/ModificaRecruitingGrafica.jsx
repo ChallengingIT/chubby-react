@@ -39,9 +39,11 @@ const ModificaRecruitingGrafica = () => {
     const [ ownerOptions,       setOwnerOptions         ] = useState([]);
     const [ facoltaOptions,     setFacoltaOptions       ] = useState([]);
     const [ values,             setValues               ] = useState([]);
+    const [ jobTitleEnable,     setJobTitleEnable       ] = useState(false);    
     const [ livelloScolasticoOptions, setLivelloScolasticoOptions ] = useState([]);
+    const [ funzioniAziendaliOptions, setFunzioniAziendaliOptions ] = useState([]);
 
-    // console.log("valori: ", values);
+
     
 
 
@@ -67,6 +69,8 @@ const ModificaRecruitingGrafica = () => {
             const ownerResponse               = await axios.get("http://localhost:8080/aziende/react/owner"           , { headers: headers });
             const facoltaResponse             = await axios.get("http://localhost:8080/staffing/react/facolta"        , { headers: headers });
             const livelloScolasticoResponse   = await axios.get("http://localhost:8080/staffing/react/livello"        , { headers: headers });
+            const funzioniAziendaliResponse   = await axios.get("http://localhost:8080/staffing/react/funzioni"         , { headers: headers }); 
+
 
 
             
@@ -130,6 +134,15 @@ const ModificaRecruitingGrafica = () => {
                     setStatoOptions(statoOptions);
                 }
 
+                if (Array.isArray(funzioniAziendaliResponse.data)) {
+                    const funzioneAziendaleOptions = funzioniAziendaliResponse.data.map((funzioni) => ({
+                        label: funzioni.descrizione,
+                        value: funzioni.id,
+                    }));
+                    setFunzioniAziendaliOptions(funzioneAziendaleOptions);
+                }
+            
+
                 const modificaData = responseStaffing.data;
                 setDatiModifica(modificaData);
                 setLoading(false);
@@ -142,6 +155,41 @@ const ModificaRecruitingGrafica = () => {
     
         fetchAziendeOptions();
     }, []);
+
+
+    
+
+
+    //useEffect che controlla il cambiamento di stato di funzioneAziendale, abilita la select di jobTitle e attiva la chiamata per popolarlo correttamente
+    useEffect(() => {
+        if (values.idFunzioneAziendale && values.idFunzioneAziendale.length !== 0) {
+            const funzioneAziendaleId = values.idFunzioneAziendale; 
+
+    
+            setJobTitleEnable(true);
+            fetchJobTitleOptions(funzioneAziendaleId);
+        } else {
+            setJobTitleEnable(false);
+            setJobTitleOptions([]);
+        }
+    }, [values.idFunzioneAziendale]); 
+
+
+
+
+    const fetchJobTitleOptions = async (funzioneAziendaleId) => {
+        try {
+            const response = await axios.get(`http://localhost:8080/aziende/react/tipologia/${funzioneAziendaleId}`, { headers: headers });
+            const jobTitleOptions = response.data.map(jobTitle => ({
+                label: jobTitle.descrizione,
+                value: jobTitle.id,
+            }));
+            setJobTitleOptions(jobTitleOptions);
+        } catch (error) {
+            console.error("Errore nel caricamento dei jobTitle:", error);
+        }
+    };
+
 
 
 
@@ -176,7 +224,7 @@ const ModificaRecruitingGrafica = () => {
             case 1:
                 return [ "anniEsperienzaRuolo", "idLivelloScolastico"]; 
             case 2: 
-                return ["idTipo", "idTipologia", "dataUltimoContatto", "idStato"];
+                return ["idTipo", "idTipologia", "dataUltimoContatto", "idStato", "idFunzioneAziendale"];
             default:
                 return [];
         }
@@ -243,7 +291,6 @@ const ModificaRecruitingGrafica = () => {
                 };
             });
         };
-console.log('values:',values);        
 
 
     //funzioni per cambiare pagina del form
@@ -413,7 +460,7 @@ console.log('values:',values);
 
 
 
-        const campiObbligatori = [ "nome", "cognome", "email", "anniEsperienzaRuolo", "idTipologia", "dataUltimoContatto", "idTipo", "idStato", "idLivelloScolastico" ];
+        const campiObbligatori = [ "nome", "cognome", "email", "anniEsperienzaRuolo", "idTipologia", "dataUltimoContatto", "idTipo", "idStato", "idLivelloScolastico", "idFunzioneAziendale" ];
 
         const fields =[
             { type: "titleGroups",                label: "Profilo Candidato"            },
@@ -444,14 +491,15 @@ console.log('values:',values);
                 { value: 2, label: "Ibrido" },
                 { value: 3, label: "On Site"},
             ] },
-            { label: "Job Title*",                     name: "idTipologia",                type: "select",               options: jobTitleOptions                  },
-        { label: "Data Inserimento*",                  name: "dataUltimoContatto",       type: "date"                                                            },
+        { label: "Funzione Aziendale*",                name: "idFunzioneAziendale",        type: "select",               options: funzioniAziendaliOptions         },
+        { label: "Job Title*",                         name: "idTipologia",                type: "select",               options: jobTitleOptions                  },
+        { label: "Data Inserimento*",                  name: "dataUltimoContatto",         type: "date"                                                            },
         { label: "Stato*",                             name: "idStato",                    type: "select",               options: statoOptions                     },
         { label: "Owner",                              name: "idOwner",                    type: "select",               options: ownerOptions                     },
-        { label: "Skills",                             name: "idSkills",                    type: "multipleSelect",  options: skillsOptions                    },
-        { label: "RAL/Tariffa",                        name: "ral",                      type: "text"                                                            },
-        { label: "Disponibilità",                      name: "disponibilita",            type: "text"                                                            },
-        { label: "Note",                               name: "note",                     type: "note"                                                            },
+        { label: "Skills",                             name: "idSkills",                   type: "multipleSelect",  options: skillsOptions                    },
+        { label: "RAL/Tariffa",                        name: "ral",                        type: "text"                                                            },
+        { label: "Disponibilità",                      name: "disponibilita",              type: "text"                                                            },
+        { label: "Note",                               name: "note",                       type: "note"                                                            },
     
     
             { type: "titleGroups",                label: "Allegati"            },
@@ -464,7 +512,7 @@ console.log('values:',values);
         const initialValues = {
 
             id:                                 datiModifica.id                                                                   ,
-            idTipo:                               (datiModifica.tipo && datiModifica.tipo.id)                                       || null,
+            idTipo:                            (datiModifica.tipo && datiModifica.tipo.id)                                       || null,
             ricerca:                            datiModifica.ricerca                                                              || null,
             nome:                               datiModifica.nome                                                                 || null,
             cognome:                            datiModifica.cognome                                                              || null,
@@ -475,13 +523,14 @@ console.log('values:',values);
             citta:                              datiModifica.citta                                                                || null,
             modalita:                           datiModifica.modalita                                                             || null,
             anniEsperienzaRuolo:                datiModifica.anniEsperienzaRuolo                                                  || null,
-            idLivelloScolastico:                  (datiModifica.livelloScolastico && datiModifica.livelloScolastico.id)             || null,
-            idFacolta:                            (datiModifica.facolta && datiModifica.facolta.id)                                 || null,
-            idTipologia:                          (datiModifica.tipologia && datiModifica.tipologia.id)                             || null,
+            idLivelloScolastico:               (datiModifica.livelloScolastico && datiModifica.livelloScolastico.id)             || null,
+            idFacolta:                         (datiModifica.facolta && datiModifica.facolta.id)                                 || null,
+            idFunzioneAziendale:               (datiModifica.tipologia?.funzione && datiModifica.tipologia.funzione?.id)             || null,
+            idTipologia:                       (datiModifica.tipologia && datiModifica.tipologia.id)                             || null,
             dataUltimoContatto:                 datiModifica.dataUltimoContatto                                                   || null,
-            idStato:                              (datiModifica.stato && datiModifica.stato.id)                                     || null,
-            idOwner:                     (datiModifica.owner && datiModifica.owner.id) || null,
-            idSkills:                             datiModifica.skills ? datiModifica.skills.map((skills) => skills.id) :               [],
+            idStato:                           (datiModifica.stato && datiModifica.stato.id)                                     || null,
+            idOwner:                           (datiModifica.owner && datiModifica.owner.id) || null,
+            idSkills:                           datiModifica.skills ? datiModifica.skills.map((skills) => skills.id) :               [],
             ral:                                datiModifica.ral                                                                  || null,
             disponibilita:                      datiModifica.disponibilita                                                        || null,
             cv:                                 datiModifica.files ? datiModifica.files.find(file => file && file.tipologia && file.tipologia.descrizione === 'CV') || null : null,
@@ -598,19 +647,30 @@ console.log('values:',values);
                     );
 
                     case 'select': 
-                    // const initialValue = field.options.find(option => option.value === values[field.name]);
-                    return <CustomAutocomplete
-                    
-
+                    if ( field.name === 'tipologia' ) {
+                    return (
+                        <CustomAutocomplete
+                        name={field.name}
+                        label={field.label}
+                        options={field.options || []}
+                        value={values[field.name] || null}
+                        onChange={handleChange}
+                        getOptionSelected={(option, value) => option.value === value.value}
+                        disabled={!jobTitleEnable}
+                        />
+                    );
+                    } else {
+                        return (
+                            <CustomAutocomplete
                                 name={field.name}
                                 label={field.label}
-                                options={field.options}
+                                options={field.options || []}
                                 value={values[field.name] || null}
                                 onChange={handleChange}
-                                // initialValue={initialValue}
-                                
-                            />;
-
+                                getOptionSelected={(option, value) => option.value === value.value}
+                            />
+                        );
+                    }
 
                 case 'date':
                     return (
