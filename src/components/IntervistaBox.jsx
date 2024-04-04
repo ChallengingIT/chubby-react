@@ -328,14 +328,14 @@ const validate = () => {
           )}
           {currentGroupIndex < groupedFields.length - 1 && (
             <Button onClick={() => setCurrentGroupIndex(currentGroupIndex + 1)} sx={{ width: '250px',
-                  backgroundColor: "#00853C",
+                  backgroundColor: "#00B401",
                   color: "white",
                   fontWeight:"bold",
                   boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                   borderRadius: '10px',
                   
                   "&:hover": {
-                    backgroundColor: "#00853C",
+                    backgroundColor: "#00B401",
                     color: "white",
                     transform: "scale(1.05)",
                     boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
@@ -345,14 +345,14 @@ const validate = () => {
           {currentGroupIndex === groupedFields.length - 1 && showSaveButton && (
             <Button type="submit" sx={{
                 width: '250px',
-                backgroundColor: "#00853C",
+                backgroundColor: "#00B401",
                 color: "white",
                 fontWeight:"bold",
                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                 borderRadius: '10px',
                 
                 "&:hover": {
-                  backgroundColor: "#00853C",
+                  backgroundColor: "#00B401",
                   color: "white",
                   transform: "scale(1.05)",
                   boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',

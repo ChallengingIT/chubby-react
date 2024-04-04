@@ -230,11 +230,11 @@ const AggiungiBox = ({
                                     mt: 4,
                                     mr:3,
                                     mb:4,
-                                    backgroundColor: '#00853C',
+                                    backgroundColor: '#00B401',
                                     color: 'white',
                                     fontWeight: 'bold',
                                     '&:hover': {
-                                        backgroundColor: '#00853C',
+                                        backgroundColor: '#00B401',
                                         color: 'white',
                                     },
                                 }}>

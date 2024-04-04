@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Logo from '../images/LogoBianco.png';
 import Torcia from "../images/torciaSF.png";
+import NuovaTorcia from "../images/nuovaTorcia.svg";
+import NuovoLogo from "../images/nuovoLogo.svg";
 
 import {
     Box,
@@ -107,25 +109,25 @@ function Sidebar() {
             <ListItem button onClick={handleAggiungiCandidatoClick}>
                 <ListItemText primary="Aggiungi candidato" />
                 <ListItemIcon>
-                    <PersonAddIcon sx={{ color: '#00853C'}} />
+                    <PersonAddIcon sx={{ color: '#00B401'}} />
                 </ListItemIcon>
             </ListItem>
             <ListItem button onClick={handleAggiungiNeedClick}>
                 <ListItemText primary="Aggiungi need" />
                 <ListItemIcon>
-                    <AddCircleIcon sx={{ color: '#00853C'}} />
+                    <AddCircleIcon sx={{ color: '#00B401'}} />
                 </ListItemIcon>
             </ListItem>
             <ListItem button onClick={handleAppuntamentoClick}>
                 <ListItemText primary="Appuntamento" />
                 <ListItemIcon>
-                    <AddIcCallIcon sx={{ color: '#00853C'}} />
+                    <AddIcCallIcon sx={{ color: '#00B401'}} />
                 </ListItemIcon>
             </ListItem>
             <ListItem button onClick={handleEmailClick}>
                 <ListItemText primary="Email" />
                 <ListItemIcon>
-                    <EmailIcon sx={{ color: '#00853C'}} />
+                    <EmailIcon sx={{ color: '#00B401'}} />
                 </ListItemIcon>
             </ListItem>
         </List>
@@ -185,7 +187,7 @@ function Sidebar() {
                     {/* </IconButton> */}
 
                     <IconButton onClick={handleTorciaClick} sx={{ padding: 0, '&:hover': { transform: 'scale(1.1)'}  }}> 
-                        <img src={Torcia} alt="Torcia" style={{ width: '4vw', marginTop: '1em' }} />
+                        <img src={NuovaTorcia} alt="Torcia" style={{ width: '5vw', marginTop: '0.5em', transform: 'rotate(90deg)' }} />
                     </IconButton>
                 </Box>
                 <List>
@@ -197,7 +199,7 @@ function Sidebar() {
                             sx={{
                                 gap: 0,
                                 '&:hover, &.Mui-selected': {
-                                    backgroundColor: '#00853C',
+                                    backgroundColor: '#00B401',
                                     cursor: 'pointer',
                                     '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
                                         color: 'white',
@@ -205,9 +207,9 @@ function Sidebar() {
                                     borderRadius: '10px',
                                 },
                                 borderRadius: '10px',
-                                backgroundColor: activeLink === `/${item.title.toLowerCase()}` ? '#00853C' : '',
+                                backgroundColor: activeLink === `/${item.title.toLowerCase()}` ? '#00B401' : '',
                                 '& .MuiListItemIcon-root': {
-                                    color: activeLink === `/${item.title.toLowerCase()}` ? 'white' : '#00853C',
+                                    color: activeLink === `/${item.title.toLowerCase()}` ? 'white' : '#00B401',
                                     minWidth: '2.2em',
                                 },
                                 '& .MuiListItemText-primary': {
@@ -228,7 +230,7 @@ function Sidebar() {
                         onClick={handleLogoutClick}
                         sx={{
                             '&:hover, &.Mui-selected': {
-                                backgroundColor: '#00853C',
+                                backgroundColor: '#00B401',
                                 cursor: 'pointer',
                                 '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
                                     color: 'white',
@@ -237,7 +239,7 @@ function Sidebar() {
                             },
                             borderRadius: '10px',
                             '& .MuiListItemIcon-root': {
-                                color: '#00853C',
+                                color: '#00B401',
                                 minWidth: '2.2em',
                             },
                             '& .MuiListItemText-primary': {
@@ -281,12 +283,12 @@ function Sidebar() {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
                 PaperProps={{
-                    style: { backgroundColor: '#FEFCFD', color: '#00853C' },
+                    style: { backgroundColor: '#FEFCFD', color: '#00B401' },
                 }}
             >
                 <DialogTitle id="alert-dialog-title"
                     sx={{
-                        color: '#00853C',
+                        color: '#00B401',
                         fontSize: '24px',
                         textAlign: 'center',
                         fontWeight: 'bold',
@@ -328,13 +330,13 @@ function Sidebar() {
                         <Button onClick={handleLogout}
                             variant="contained"
                             sx={{
-                                backgroundColor: "#00853C",
+                                backgroundColor: "#00B401",
                                 marginLeft: "5px",
                                 marginTop: "10px",
                                 marginRight: '50px',
                                 color: "white",
                                 "&:hover": {
-                                    backgroundColor: "#00853C",
+                                    backgroundColor: "#00B401",
                                     transform: "scale(1.05)",
                                 },
                             }}

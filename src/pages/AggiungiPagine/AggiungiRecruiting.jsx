@@ -244,7 +244,7 @@ return (
                     {alert.message}
                 </Alert>
             </Snackbar>
-        <Typography variant="h4" component="h1" sx={{  mb: 4, fontWeight: 'bold', fontSize: '1.8rem', color: '#00853C'}}>Aggiungi candidato</Typography>
+        <Typography variant="h4" component="h1" sx={{  mb: 4, fontWeight: 'bold', fontSize: '1.8rem', color: '#00B401'}}>Aggiungi candidato</Typography>
 
         
         <FieldBoxFile

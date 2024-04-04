@@ -587,11 +587,11 @@ const NeedMatch2 = () => {
                             <div>
                             <Button
                             onClick={() => handleAssocia(params.row)}
-                            sx={{ backgroundColor: '#00853C',
+                            sx={{ backgroundColor: '#00B401',
                             fontWeight: 'bold',
                             color: 'white',
                             "&:hover": {
-                                backgroundColor: "#00853C",
+                                backgroundColor: "#00B401",
                                 transform: "scale(1.05)",
                                 color: 'white',
                             },
@@ -676,11 +676,11 @@ const NeedMatch2 = () => {
                             <div>
                             <Button
                             onClick={() => handleOpenModal(params.row)}
-                            sx={{ backgroundColor: '#00853C',
+                            sx={{ backgroundColor: '#00B401',
                             fontWeight: 'bold',
                             color: 'white',
                             "&:hover": {
-                                backgroundColor: "#00853C",
+                                backgroundColor: "#00B401",
                                 transform: "scale(1.05)",
                                 color: 'white',
                                 
@@ -723,7 +723,7 @@ const NeedMatch2 = () => {
                                         />
                                         </Box>
 
-                            <Typography variant="h4" component="h1" sx={{ ml: 5, fontWeight: 'bold', fontSize: '1.8rem', color: '#00853C'}}>{descrizione} {nomeAzienda}</Typography>
+                            <Typography variant="h4" component="h1" sx={{ ml: 5, fontWeight: 'bold', fontSize: '1.8rem', color: '#00B401'}}>{descrizione} {nomeAzienda}</Typography>
                             <Modal
                             open={isModalOpen}
                             onClose={handleCloseModal}

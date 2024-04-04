@@ -53,11 +53,11 @@ import {
                 margin: 'auto', 
                 cursor: 'pointer', 
                 height: 'auto', 
-                border: '2px solid #00853C', 
+                border: '2px solid #00B401', 
                 transition: 'transform 0.3s ease, border-width 0.3s ease', 
                 '&:hover': {
                 transform: 'scale(1.05)', 
-                border: '4px solid #00853C' 
+                border: '4px solid #00B401' 
             }}
             }>
             <CardContent>
@@ -91,7 +91,7 @@ import {
                 </Typography> */}
 
                 <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
-                    <AutoModeIcon sx={{ color: '#00853C', mr: 1 }} />
+                    <AutoModeIcon sx={{ color: '#00B401', mr: 1 }} />
                     {valori.stato && valori.stato.descrizione}
             </Typography>
 

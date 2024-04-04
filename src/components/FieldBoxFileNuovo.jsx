@@ -595,7 +595,7 @@
 //                                     color="primary"
 //                                     sx={{ 
 //                                         justifyContent:"flex-end", 
-//                                         backgroundColor: '#00853C', 
+//                                         backgroundColor: '#00B401', 
 //                                         color: 'white',
 //                                         ':hover': {
 //                                             backgroundColor: 'red',
@@ -672,7 +672,7 @@
 //                                     color="primary"
 //                                     sx={{ 
 //                                         justifyContent:"flex-end", 
-//                                         backgroundColor: '#00853C', 
+//                                         backgroundColor: '#00B401', 
 //                                         color: 'white',
 //                                         ':hover': {
 //                                             backgroundColor: 'red',
@@ -742,10 +742,10 @@
 //         }} 
 //         autoFocus 
 //         sx={{
-//             backgroundColor: '#00853C',
+//             backgroundColor: '#00B401',
 //             color: 'black',
 //             "&:hover": {
-//                 backgroundColor: '#00853C',
+//                 backgroundColor: '#00B401',
 //             }
 //         }}>
 //             Elimina

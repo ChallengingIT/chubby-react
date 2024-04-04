@@ -574,10 +574,10 @@ return (
                       </Button>
                       <Button onClick={handleDelete} color="primary" variant="contained" type="submit"
                                 style={{
-                                  backgroundColor: "#00853C",
+                                  backgroundColor: "#00B401",
                                   color: "white",
                                   "&:hover": {
-                                    backgroundColor: "#00853C",
+                                    backgroundColor: "#00B401",
                                     color: "white",
                                     transform: "scale(1.05)",
                                   },

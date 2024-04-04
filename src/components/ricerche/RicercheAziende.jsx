@@ -76,12 +76,12 @@ function RicercheAziende({ filtri, onFilterChange, onReset, tipologiaOptions, st
                         onClick={navigateToAggiungi} 
                         sx={{
                             minWidth: '12em',
-                            backgroundColor: '#00853C',
+                            backgroundColor: '#00B401',
                             borderRadius: '10px',
                             textTransform: 'none',
                             mt: 2,
                             '&:hover': {
-                            backgroundColor: '#00853C',
+                            backgroundColor: '#00B401',
                             transform: 'scale(1.05)',
                         },
                     }}>
@@ -105,7 +105,7 @@ function RicercheAziende({ filtri, onFilterChange, onReset, tipologiaOptions, st
                                 InputProps={{
                                     startAdornment: (
                                         <InputAdornment position="start">
-                                            <SearchIcon sx={{ color: '#00853C' }} />
+                                            <SearchIcon sx={{ color: '#00B401' }} />
                                         </InputAdornment>
                                     ),
                                 }}
@@ -115,14 +115,14 @@ function RicercheAziende({ filtri, onFilterChange, onReset, tipologiaOptions, st
                                     '& .MuiOutlinedInput-root': {
                                         borderRadius: '0px', 
                                         '& fieldset': {
-                                            borderColor: '#00853C', 
+                                            borderColor: '#00B401', 
                                             borderRadius: '4px 0 0 4px', 
                                         },
                                         '&:hover fieldset': {
-                                            borderColor: '#00853C', 
+                                            borderColor: '#00B401', 
                                         },
                                         '&.Mui-focused fieldset': {
-                                            borderColor: '#00853C', 
+                                            borderColor: '#00B401', 
                                         },
                                     },
                                 }}
@@ -130,13 +130,13 @@ function RicercheAziende({ filtri, onFilterChange, onReset, tipologiaOptions, st
     
                     </Box>
                     <Button variant="contained" color="primary" onClick={handleOpenFiltri} sx={{
-                        backgroundColor: '#00853C',
+                        backgroundColor: '#00B401',
                         minWidth: '12em',
                         borderRadius: '10px',
                         textTransform: 'none',
                         mt: 2,
                         '&:hover': {
-                        backgroundColor: '#00853C',
+                        backgroundColor: '#00B401',
                         transform: 'scale(1.05)',
                         },
                     }}>

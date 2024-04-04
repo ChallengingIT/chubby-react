@@ -45,7 +45,7 @@ const ProvaCardFlip = ({valori, onDelete}) => {
         marginLeft: '2em',
         marginRight: '2em',
         minHeight: '16em',
-        border: 'solid 2px #00853C',
+        border: 'solid 2px #00B401',
         '&:hover': {
             cursor: 'pointer',
             transform: 'scale(1.05)',
@@ -81,11 +81,11 @@ const ProvaCardFlip = ({valori, onDelete}) => {
 
     const mediaIda = (ida) => {
         if (ida >= 0 && ida <= 1) {
-            return { icon: <TrendingDownIcon sx={{ color: '#00853C', mr: 1}}/>, text: "Basso" };
+            return { icon: <TrendingDownIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Basso" };
         } else if (ida > 1 && ida <= 2) {
-            return { icon: <TrendingFlatIcon sx={{ color: '#00853C', mr: 1}}/>, text: "Medio" };
+            return { icon: <TrendingFlatIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Medio" };
         } else if (ida >= 3) {
-            return { icon: <TrendingUpIcon sx={{ color: '#00853C', mr: 1}}/>, text: "Alto" };
+            return { icon: <TrendingUpIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Alto" };
         } else {
             return { icon: null, text: "" }; 
         }
@@ -156,11 +156,11 @@ const ProvaCardFlip = ({valori, onDelete}) => {
                 margin: 'auto', 
                 cursor: 'pointer', 
                 height: 'auto', 
-                border: '2px solid #00853C', 
+                border: '2px solid #00B401', 
                 transition: 'transform 0.3s ease, border-width 0.3s ease', 
                 '&:hover': {
                 transform: 'scale(1.05)', 
-                border: '4px solid #00853C'
+                border: '4px solid #00B401'
                 }};
         }
     };
@@ -243,12 +243,12 @@ const ProvaCardFlip = ({valori, onDelete}) => {
 
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
-                    <PlaceIcon sx={{ color: '#00853C', mr: 1 }} />
+                    <PlaceIcon sx={{ color: '#00B401', mr: 1 }} />
                     {valori.sedeOperativa}
             </Typography>
 
             <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
-                <FactoryIcon sx={{ color: '#00853C', mr: 1 }} />
+                <FactoryIcon sx={{ color: '#00B401', mr: 1 }} />
                 {valori.settoreMercato}
             </Typography>
 
@@ -306,7 +306,7 @@ const ProvaCardFlip = ({valori, onDelete}) => {
                 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', flexDirection: 'row', mb: 1 }}>
                 <ListItemIcon>
-                    <JoinInnerIcon sx={{ color: '#00853C'}} />
+                    <JoinInnerIcon sx={{ color: '#00B401'}} />
                 </ListItemIcon>
                 <ListItemText primary="Associa azienda" />
                 </Box>
@@ -319,7 +319,7 @@ const ProvaCardFlip = ({valori, onDelete}) => {
                 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', flexDirection: 'row', mb: 1 }}>
                 <ListItemIcon>
-                    <SettingsIcon sx={{ color: '#00853C'}} />
+                    <SettingsIcon sx={{ color: '#00B401'}} />
                 </ListItemIcon>
                 <ListItemText primary="Aggiorna azienda" />
 
@@ -333,7 +333,7 @@ const ProvaCardFlip = ({valori, onDelete}) => {
                 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', flexDirection: 'row', mb: 1 }}>
                 <ListItemIcon >
-                    <DeleteIcon sx={{ color: '#00853C'}} />
+                    <DeleteIcon sx={{ color: '#00B401'}} />
                 </ListItemIcon>
                 <ListItemText primary="Elimina azienda" />
                 </Box>
@@ -400,11 +400,11 @@ const ProvaCardFlip = ({valori, onDelete}) => {
                             <Button
                             onClick={confirmDelete}
                             sx={{
-                                backgroundColor: '#00853C',
+                                backgroundColor: '#00B401',
                                 color: 'white',
                                 borderRadius: '5px',
                                 '&:hover': {
-                                    backgroundColor: '#00853C',
+                                    backgroundColor: '#00B401',
                                     color: 'white',
                                     transform: 'scale(1.05)'
                                 },

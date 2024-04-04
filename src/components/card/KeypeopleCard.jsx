@@ -61,11 +61,11 @@ const KeypeopleCard = ({valori, onDelete}) => {
             margin: 'auto', 
             cursor: 'pointer', 
             height: 'auto', 
-            border: '2px solid #00853C', 
+            border: '2px solid #00B401', 
             transition: 'transform 0.3s ease, border-width 0.3s ease', 
             '&:hover': {
             transform: 'scale(1.05)', 
-            border: '4px solid #00853C' 
+            border: '4px solid #00B401' 
         }}
     }
     >
@@ -94,24 +94,24 @@ const KeypeopleCard = ({valori, onDelete}) => {
 
 
             <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
-                <BusinessIcon sx={{ color: '#00853C', mr: 1 }} />
+                <BusinessIcon sx={{ color: '#00B401', mr: 1 }} />
                 {valori.cliente.denominazione}
             </Typography>
 
 
            
             <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
-                <BusinessCenterIcon sx={{ color: '#00853C', mr: 1 }} />
+                <BusinessCenterIcon sx={{ color: '#00B401', mr: 1 }} />
                 {valori.ruolo}
             </Typography>
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
-                    <EmailIcon sx={{ color: '#00853C', mr: 1 }} />
+                    <EmailIcon sx={{ color: '#00B401', mr: 1 }} />
                     {valori.email}
             </Typography>
 
             <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1}}>
-                <LocalPhoneIcon sx={{ color: '#00853C', mr: 1}} />
+                <LocalPhoneIcon sx={{ color: '#00B401', mr: 1}} />
                 {valori.cellulare}
             </Typography>
 
@@ -169,11 +169,11 @@ const KeypeopleCard = ({valori, onDelete}) => {
                             <Button
                             onClick={confirmDelete}
                             sx={{
-                                backgroundColor: '#00853C',
+                                backgroundColor: '#00B401',
                                 color: 'white',
                                 borderRadius: '5px',
                                 '&:hover': {
-                                    backgroundColor: '#00853C',
+                                    backgroundColor: '#00B401',
                                     color: 'white',
                                     transform: 'scale(1.05)'
                                 },
@@ -226,7 +226,7 @@ const KeypeopleCard = ({valori, onDelete}) => {
                     whiteSpace: 'nowrap',
                     textOverflow: 'ellipsis',
                     maxWidth: '70%',
-                    color: '#00853C',
+                    color: '#00B401',
                     mt: -3,
                     mb: 2
                     }}
