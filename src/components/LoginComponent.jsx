@@ -6,6 +6,7 @@ import { Box, Button, Typography, TextField, ThemeProvider, createTheme, IconBut
 import Torcia from "../images/torciaSF.png";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import nuovaTorcia from "../images/nuovaTorcia.svg";
 
 
 const LoginComponent
@@ -132,8 +133,8 @@ const handleLogin = async (e) => {
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
 
 
-                <Typography variant="h5" component="h2" sx={{  mb: 5, color: "#00853C", fontSize: '3em', alignSelf: 'flex-start', mt: 8 }}>Sign in</Typography>
-                <img src={Torcia} alt="Torcia" style={{ maxWidth: '100%',transform: 'rotate(180deg)', width: '30%', alignSelf: 'flex-end', marginBottom: '2em' }} />
+                <Typography variant="h5" component="h2" sx={{  mb: 5, color: "#00B401", fontSize: '3em', alignSelf: 'flex-start', mt: 8, fontWeight: 600 }}>Sign in</Typography>
+                <img src={nuovaTorcia} alt="Torcia" style={{ maxWidth: '100%', width: '30%', alignSelf: 'flex-end', marginBottom: '2em' }} />
                 {/* </Box> */}
                 </Box>
                     <Typography variant="h6" component="h2" sx={{ alignSelf: 'flex-start', fontSize: '1em' }}>Enter your username</Typography>
@@ -196,10 +197,10 @@ const handleLogin = async (e) => {
                         width: '100%'
                     }}>
                 <Typography variant="h6" component="h2" sx={{  fontSize: '1em' }}>No Account?</Typography>
-                <Typography variant="h6" component="h2" sx={{  fontSize: '1em', color: '#00853C' }}>Forgot password</Typography>
+                <Typography variant="h6" component="h2" sx={{  fontSize: '1em', color: '#00B401' }}>Forgot password</Typography>
 
                 </Box>
-                <Typography variant="h6" component="h2" sx={{ alignSelf: 'flex-start', fontSize: '1em', color: '#00853C' }}>Sign up</Typography>
+                <Typography variant="h6" component="h2" sx={{ alignSelf: 'flex-start', fontSize: '1em', color: '#00B401' }}>Sign up</Typography>
                 <Button
                 color="primary"
                 variant="contained"
@@ -209,14 +210,14 @@ const handleLogin = async (e) => {
                     justifyContent: 'center',
                     alignItems: 'center',
                     width: '100%',
-                    backgroundColor: '#00853C',
+                    backgroundColor: '#00B401',
                     color: 'white',
                     fontWeight: 'bold',
                     borderRadius: 2,
                     marginTop: 8,
                     marginBottom: 10,
                     "&:hover": {
-                        backgroundColor: '#00853C',
+                        backgroundColor: '#00B401',
                         color: 'white',
                         transform: 'scale(1.05)'
                     },

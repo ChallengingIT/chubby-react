@@ -22,7 +22,7 @@ function DashboardProva() {
             }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 3 }}>
                 <AttivitaBox />
-                <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, border: 'solid 1px #00853C', borderRadius: '10px', width: '100%', height: '100%', p: 2 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, border: 'solid 1px #00B401', borderRadius: '10px', width: '100%', height: '100%', p: 2 }}>
                 </Box>
                 </Box>
         </Box>

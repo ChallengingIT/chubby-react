@@ -42,11 +42,11 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
                         sx={{
                             mt: 2,
                             minWidth: '12em',
-                            backgroundColor: '#00853C',
+                            backgroundColor: '#00B401',
                             borderRadius: '10px',
                             textTransform: 'none',
                             '&:hover': {
-                            backgroundColor: '#00853C',
+                            backgroundColor: '#00B401',
                             transform: 'scale(1.05)',
                         },
                     }}>
@@ -71,7 +71,7 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
                                 InputProps={{
                                     startAdornment: (
                                         <InputAdornment position="start">
-                                            <SearchIcon sx={{ color: '#00853C' }} />
+                                            <SearchIcon sx={{ color: '#00B401' }} />
                                         </InputAdornment>
                                     ),
                                 }}
@@ -81,14 +81,14 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
                                     '& .MuiOutlinedInput-root': {
                                         borderRadius: '0px', 
                                         '& fieldset': {
-                                            borderColor: '#00853C', 
+                                            borderColor: '#00B401', 
                                             borderRadius: '4px 0 0 4px', 
                                         },
                                         '&:hover fieldset': {
-                                            borderColor: '#00853C', 
+                                            borderColor: '#00B401', 
                                         },
                                         '&.Mui-focused fieldset': {
-                                            borderColor: '#00853C', 
+                                            borderColor: '#00B401', 
                                         },
                                     },
                                 }}
@@ -96,13 +96,13 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
     
                     </Box>
                     <Button variant="contained" color="primary" onClick={handleOpenFiltri} sx={{
-                        backgroundColor: '#00853C',
+                        backgroundColor: '#00B401',
                         mt:2,
                         minWidth: '12em',
                         borderRadius: '10px',
                         textTransform: 'none',
                         '&:hover': {
-                        backgroundColor: '#00853C',
+                        backgroundColor: '#00B401',
                         transform: 'scale(1.05)',
                         },
                     }}>

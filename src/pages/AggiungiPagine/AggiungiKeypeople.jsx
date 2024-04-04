@@ -123,7 +123,7 @@ const AggiungiKeypeople = () => {
                     {alert.message}
                 </Alert>
             </Snackbar>
-          <Typography variant="h4" component="h1" sx={{ mt: 3, fontWeight: 'bold', fontSize: '1.8rem', color: '#00853C'}}>Aggiungi contatto</Typography>
+          <Typography variant="h4" component="h1" sx={{ mt: 3, fontWeight: 'bold', fontSize: '1.8rem', color: '#00B401'}}>Aggiungi contatto</Typography>
 
           <FieldBoxFile
           fields={fields}

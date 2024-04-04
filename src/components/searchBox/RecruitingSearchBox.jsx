@@ -291,13 +291,13 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
           sx={{
             width: '2rem',
             height: "40px",
-            backgroundColor: "#00853C",
+            backgroundColor: "#00B401",
             color: "white",
             borderRadius: "10px",
             fontSize: "0.8rem",
             fontWeight: "bolder",
             "&:hover": {
-              backgroundColor: "#00853C",
+              backgroundColor: "#00B401",
               color: "white",
               transform: "scale(1.05)",
             },

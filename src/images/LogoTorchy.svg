@@ -41,8 +41,8 @@
 <stop offset="1" stop-color="#0C0C0C" stop-opacity="0.51"/>
 </linearGradient>
 <linearGradient id="paint1_linear_71_484" x1="249.5" y1="124.5" x2="365.849" y2="18.3136" gradientUnits="userSpaceOnUse">
-<stop stop-color="#00853C"/>
-<stop offset="1" stop-color="#00853C" stop-opacity="0.1"/>
+<stop stop-color="#00B401"/>
+<stop offset="1" stop-color="#00B401" stop-opacity="0.1"/>
 </linearGradient>
 <linearGradient id="paint2_linear_71_484" x1="389" y1="190" x2="369.125" y2="12.0923" gradientUnits="userSpaceOnUse">
 <stop/>

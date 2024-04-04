@@ -7,6 +7,7 @@ import Torcia                               from "../../images/torciaSF.png";
 import TrendingDownIcon                     from '@mui/icons-material/TrendingDown';
 import TrendingFlatIcon                     from '@mui/icons-material/TrendingFlat';
 import TrendingUpIcon                       from '@mui/icons-material/TrendingUp';
+import NuovaTorcia                          from "../../images/nuovaTorcia.svg";
 
 import { 
     Card, 
@@ -32,22 +33,17 @@ const AziendeCard = ({valori, onDelete}) => {
 
     const mediaIda = (ida) => {
         if (ida >= 0 && ida <= 1) {
-            return { icon: <TrendingDownIcon sx={{ color: '#00853C', mr: 1}}/>, text: "Basso" };
+            return { icon: <TrendingDownIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Basso" };
         } else if (ida > 1 && ida <= 2) {
-            return { icon: <TrendingFlatIcon sx={{ color: '#00853C', mr: 1}}/>, text: "Medio" };
+            return { icon: <TrendingFlatIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Medio" };
         } else if (ida >= 3) {
-            return { icon: <TrendingUpIcon sx={{ color: '#00853C', mr: 1}}/>, text: "Alto" };
+            return { icon: <TrendingUpIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Alto" };
         } else {
             return { icon: null, text: "" }; 
         }
     };
 
     const { icon, text } = mediaIda(valori.ida);
-
-
-
-
-
 
     const getCardStyle = (tipologia) => {
         switch (tipologia) {
@@ -89,15 +85,11 @@ const AziendeCard = ({valori, onDelete}) => {
                 return {
                     backgroundColor: '#f0f0f0', // Grigio Chiaro
                     borderColor: '#f0f0f0'
-                    // pointerEvents: 'none', // Disabilita interazioni
-                    // opacity: 0.5 
                 };
                 case 'Ex cliente':
                 return {
                     backgroundColor: '#f0f0f0', // Grigio Chiaro
                     borderColor: '#f0f0f0'
-                    // pointerEvents: 'none', // Disabilita interazioni
-                    // opacity: 0.5 
                 };
             default:
                 return { 
@@ -107,11 +99,11 @@ const AziendeCard = ({valori, onDelete}) => {
                 margin: 'auto', 
                 cursor: 'pointer', 
                 height: 'auto', 
-                border: '2px solid #00853C', 
+                border: '2px solid #00B401', 
                 transition: 'transform 0.3s ease, border-width 0.3s ease', 
                 '&:hover': {
                 transform: 'scale(1.05)', 
-                border: '4px solid #00853C'
+                border: '4px solid #00B401'
                 }};
         }
     };
@@ -189,12 +181,12 @@ const AziendeCard = ({valori, onDelete}) => {
 
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
-                    <PlaceIcon sx={{ color: '#00853C', mr: 1 }} />
+                    <PlaceIcon sx={{ color: '#00B401', mr: 1 }} />
                     {valori.sedeOperativa}
             </Typography>
 
             <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
-                <FactoryIcon sx={{ color: '#00853C', mr: 1 }} />
+                <FactoryIcon sx={{ color: '#00B401', mr: 1 }} />
                 {valori.settoreMercato}
             </Typography>
 
@@ -203,9 +195,6 @@ const AziendeCard = ({valori, onDelete}) => {
                 {icon}
                 ida: {text}
             </Typography>
-
-
-
         </CardContent>
 
 
@@ -261,11 +250,11 @@ const AziendeCard = ({valori, onDelete}) => {
                             <Button
                             onClick={confirmDelete}
                             sx={{
-                                backgroundColor: '#00853C',
+                                backgroundColor: '#00B401',
                                 color: 'white',
                                 borderRadius: '5px',
                                 '&:hover': {
-                                    backgroundColor: '#00853C',
+                                    backgroundColor: '#00B401',
                                     color: 'white',
                                     transform: 'scale(1.05)'
                                 },
@@ -332,7 +321,7 @@ const AziendeCard = ({valori, onDelete}) => {
                     
                 }}
                 >
-                        <img src={Torcia} alt="Torcia" style={{ width: '4vw', marginTop: '1em' }} />
+                        <img src={NuovaTorcia} alt="Torcia" style={{ width: '5.5vw', marginTop: '-0.5em', transform: 'rotate(90deg)' }} />
                 </IconButton>
 
                 

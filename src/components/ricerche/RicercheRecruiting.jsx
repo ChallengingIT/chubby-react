@@ -39,12 +39,12 @@ function RicercheRecruiting({ filtri, onFilterChange, onReset, tipologiaOptions,
                     onClick={navigateToAggiungi} 
                     sx={{
                         minWidth: '12em',
-                        backgroundColor: '#00853C',
+                        backgroundColor: '#00B401',
                         borderRadius: '10px',
                         textTransform: 'none',
                         ml: 2,
                         '&:hover': {
-                        backgroundColor: '#00853C',
+                        backgroundColor: '#00B401',
                         transform: 'scale(1.05)',
                     },
                 }}>
@@ -69,7 +69,7 @@ function RicercheRecruiting({ filtri, onFilterChange, onReset, tipologiaOptions,
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
-                                    <SearchIcon sx={{ color: '#00853C' }} />
+                                    <SearchIcon sx={{ color: '#00B401' }} />
                                 </InputAdornment>
                             ),
                         }}
@@ -80,15 +80,15 @@ function RicercheRecruiting({ filtri, onFilterChange, onReset, tipologiaOptions,
                             '& .MuiOutlinedInput-root': {
                                 borderRadius: '0px', 
                                 '& fieldset': {
-                                    borderColor: '#00853C', 
+                                    borderColor: '#00B401', 
                                     borderRadius: '4px 0 0 4px', 
                                     // borderRight: 'none',
                                 },
                                 '&:hover fieldset': {
-                                    borderColor: '#00853C', 
+                                    borderColor: '#00B401', 
                                 },
                                 '&.Mui-focused fieldset': {
-                                    borderColor: '#00853C', 
+                                    borderColor: '#00B401', 
                                 },
                             },
                         }}
@@ -119,19 +119,19 @@ function RicercheRecruiting({ filtri, onFilterChange, onReset, tipologiaOptions,
                         borderTopLeftRadius: 0,
                         borderBottomLeftRadius: 0,
                         borderLeft: 0,
-                        borderColor: '#00853C',
+                        borderColor: '#00B401',
                         '&:hover fieldset': {
-                            borderColor: '#00853C', 
+                            borderColor: '#00B401', 
                         },
                         '&.Mui-focused': {
-                            borderColor: '#00853C',
+                            borderColor: '#00B401',
                         },
                         },
                         '& .MuiInputLabel-root': {
                         color: 'black', 
                         },
                         '& .MuiOutlinedInput-notchedOutline': {
-                        borderColor: '#00853C',
+                        borderColor: '#00B401',
                         },
                         '& .MuiOutlinedInput-input': {
                         color: 'black', 
@@ -140,19 +140,19 @@ function RicercheRecruiting({ filtri, onFilterChange, onReset, tipologiaOptions,
                         color: 'black', 
                         },
                         '& .Mui-focused .MuiOutlinedInput-notchedOutline': {
-                        borderColor: '#00853C', 
+                        borderColor: '#00B401', 
                         },
                     }}
                     />
                     </Box>
                     <Button variant="contained" color="primary" onClick={handleOpenFiltri} sx={{
                     minWidth: '12em',
-                    backgroundColor: '#00853C',
+                    backgroundColor: '#00B401',
                     borderRadius: '10px',
                     textTransform: 'none',
                     mr: 2,
                     '&:hover': {
-                    backgroundColor: '#00853C',
+                    backgroundColor: '#00B401',
                     transform: 'scale(1.05)',
                     },
                 }}>

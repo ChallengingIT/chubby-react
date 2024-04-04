@@ -423,7 +423,7 @@ const Aziende = () => {
                         //     alignItems: 'center',
                         //     height: '100%'
                         // }}>
-                        //     <CircularProgress sx={{ color: '#00853C'}}/> 
+                        //     <CircularProgress sx={{ color: '#00B401'}}/> 
                         // </Box>
                         <>
                         {Array.from(new Array(quantita)).map((_, index) => (
@@ -477,7 +477,7 @@ const Aziende = () => {
                             height: '70vh', 
                             borderRadius: '20px', 
                             overflow: 'hidden',
-                            // border: '2px solid #00853C'
+                            // border: '2px solid #00B401'
 
                         }}>
                             <Box sx={{ 
@@ -486,7 +486,7 @@ const Aziende = () => {
                                 alignItems: 'center', 
                                 m: 2 
                             }}>
-                                <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#00853C'}}>
+                                <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#00B401'}}>
                                     Aggiungi Azienda
                                 </Typography>
                                 <IconButton onClick={handleCloseModal}>

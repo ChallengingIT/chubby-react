@@ -273,7 +273,7 @@ const AziendeListaNeedCard = () => {
                     onNavigate={navigateToAggiungi}
                     />
                 </Box>
-                <Typography variant='h6' sx={{ fontWeight: 'bold', color: '#00853C', display: 'flex', justifyContent: 'center', fontSize: '2em'}}>Need di {valori.state.denominazione}</Typography>
+                <Typography variant='h6' sx={{ fontWeight: 'bold', color: '#00B401', display: 'flex', justifyContent: 'center', fontSize: '2em'}}>Need di {valori.state.denominazione}</Typography>
                 <InfiniteScroll
                 dataLength={originalListaNeed.length}
                 next={fetchMoreData}
@@ -288,7 +288,7 @@ const AziendeListaNeedCard = () => {
                                 alignItems: 'center',
                                 height: '100%'
                             }}>
-                                <CircularProgress sx={{ color: '#00853C'}}/>
+                                <CircularProgress sx={{ color: '#00B401'}}/>
                             </Box>
                         ) : (
                             originalListaNeed.map((need, index) => (

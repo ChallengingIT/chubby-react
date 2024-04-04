@@ -709,10 +709,10 @@ const FieldBoxFile = ({
         }} 
         autoFocus 
         sx={{
-            backgroundColor: '#00853C',
+            backgroundColor: '#00B401',
             color: 'white',
             "&:hover": {
-                backgroundColor: '#00853C',
+                backgroundColor: '#00B401',
             }
         }}>
             Elimina
@@ -765,12 +765,12 @@ const FieldBoxFile = ({
                 variant="contained"
                 type="submit"
                 style={{
-                    backgroundColor: "#00853C",
+                    backgroundColor: "#00B401",
                     color: "white",
                     fontWeight: "bold",
 
                     "&:hover": {
-                    backgroundColor: "#00853C",
+                    backgroundColor: "#00B401",
                     color: "white",
                     transform: "scale(1.05)",
                     },

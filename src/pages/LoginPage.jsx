@@ -4,6 +4,7 @@ import loginTorchy from '../images/loginTorchy.svg';
 import { Box } from '@mui/material';
 import LogoTorchySVG from '../images/LogoTorchy.svg';
 import LoginComponent from '../components/LoginComponent';
+import TorchyChallenging from '../images/tochyChallenging.svg';
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -33,15 +34,15 @@ const LoginPage = () => {
         />
         <Box sx={{
             position: 'absolute', 
-            top: '5%', 
-            left: '5%', 
+            top: '-5%', 
+            left: '2.5%', 
         }}>
             <img
             alt="Torchy logo"
-            src={LogoTorchySVG}
+            src={TorchyChallenging}
             style={{
                 height: '100%',
-                width: '45%', 
+                width: '100%', 
             }}
             />
         </Box>

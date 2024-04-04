@@ -35,7 +35,7 @@ return (
         height: 'auto',
         display: 'flex',
         mt: 2,
-        border: '1.5px solid #00853C',
+        border: '1.5px solid #00B401',
         flexDirection: 'column',
         fontSize: '1.4em',
     }}
@@ -73,7 +73,7 @@ return (
                 showNoDataMessage ? ( 
                     <h1>Nessun dato</h1>
                 ) : (
-                <CircularProgress style={{ color: '#00853C' }} />
+                <CircularProgress style={{ color: '#00B401' }} />
                 )
             }  
             getRowClassName={(params) => 
@@ -134,7 +134,7 @@ return (
     //         boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.6)",
     //         fontSize: '1.4rem',
     //         fontWeight: 'bolder',
-    //         border: '1.5px solid #00853C'
+    //         border: '1.5px solid #00B401'
     //     }}
     //     >
     //         <Box
@@ -183,7 +183,7 @@ return (
     //             showNoDataMessage ? ( 
     //                 <h1>Nessun dato</h1>
     //             ) : (
-    //             <CircularProgress style={{ color: '#00853C' }} />
+    //             <CircularProgress style={{ color: '#00B401' }} />
     //             )
     //         }  
     //         getRowClassName={(params) => 

@@ -11,7 +11,6 @@ import RicercheKeypeople                                from '../components/rice
 import { 
     Box,
     Grid,
-    CircularProgress,
     Skeleton
     } from '@mui/material';
 

@@ -63,11 +63,11 @@ import {
                 margin: 'auto', 
                 cursor: 'pointer', 
                 height: 'auto', 
-                border: '2px solid #00853C', 
+                border: '2px solid #00B401', 
                 transition: 'transform 0.3s ease, border-width 0.3s ease', 
                 '&:hover': {
                 transform: 'scale(1.05)', 
-                border: '4px solid #00853C' 
+                border: '4px solid #00B401' 
             }}
         }
         >
@@ -95,12 +95,12 @@ import {
                 </Typography>
 
                 <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
-                    <EmailIcon sx={{ color: '#00853C', mr: 1 }} />
+                    <EmailIcon sx={{ color: '#00B401', mr: 1 }} />
                     {valori.email}
                 </Typography>
     
                 <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
-                        <WorkIcon sx={{ color: '#00853C', mr: 1 }} />
+                        <WorkIcon sx={{ color: '#00B401', mr: 1 }} />
                         {valori.tipologia && valori.tipologia.descrizione
                         ? valori.tipologia.descrizione
                         : "N/A"}
@@ -108,7 +108,7 @@ import {
 
     
                 <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
-                        <ChecklistIcon sx={{ color: '#00853C', mr: 1 }} />
+                        <ChecklistIcon sx={{ color: '#00B401', mr: 1 }} />
                         Competenze: {skillsToShow} {additionalSkillsCount}
                 </Typography>
             </CardContent>
@@ -133,11 +133,11 @@ import {
                 size="small"
                 onClick={(event) => navigateToAggiorna(valori.id, event)}
                 sx={{
-                    backgroundColor: '#00853C',
+                    backgroundColor: '#00B401',
                     color: 'white',
                     ml: 1,
                     '&:hover': {
-                        backgroundColor: '#00853C',
+                        backgroundColor: '#00B401',
                         transform: 'scale(1.05)',
                         },
                     }}>Aggiorna</Button>
@@ -164,7 +164,7 @@ import {
                         whiteSpace: 'nowrap',
                         textOverflow: 'ellipsis',
                         maxWidth: '70%',
-                        color: '#00853C',
+                        color: '#00B401',
                         }}
                     >
                         {valori.cliente.denominazione}

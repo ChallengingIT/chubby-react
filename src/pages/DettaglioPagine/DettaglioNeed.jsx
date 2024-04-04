@@ -82,7 +82,7 @@ const DettaglioNeed = () => {
 
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#00853C', height: '100%', width: '100%', overflow: 'hidden'}}>
+    <Box sx={{ display: 'flex', backgroundColor: '#00B401', height: '100%', width: '100%', overflow: 'hidden'}}>
           <Box sx={{height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
           <Typography variant="h4" component="h1" sx={{ margin: '30px', fontWeight: 'bold', fontSize: '1.8rem'}}>Dettaglio Need di {needData.cliente.denominazione}</Typography>
           <FieldBoxFile

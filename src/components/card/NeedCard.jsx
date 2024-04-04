@@ -9,6 +9,7 @@ import AutorenewIcon                                from '@mui/icons-material/Au
 import DeleteIcon                                   from '@mui/icons-material/Delete'; //cancella
 import { Edit }                                     from '@mui/icons-material';
 import AutoModeIcon                                 from '@mui/icons-material/AutoMode'; //stato
+import NuovaTorcia                                  from "../../images/nuovaTorcia.svg";
 
 
 
@@ -154,19 +155,19 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
             <ListItem button onClick={() => navigateToAggiorna(valori.id)} sx={{ gap: 3}}>
                 <ListItemText primary="Modifica" />
                 <ListItemIcon>
-                    <Edit sx={{ color: '#00853C'}} />
+                    <Edit sx={{ color: '#00B401'}} />
                 </ListItemIcon>
             </ListItem>
             <ListItem button onClick={() => navigateToAssocia(valori.id)} sx={{ gap: 3}}>
                 <ListItemText primary="Match" />
                 <ListItemIcon>
-                    <JoinInnerIcon sx={{ color: '#00853C'}} />
+                    <JoinInnerIcon sx={{ color: '#00B401'}} />
                 </ListItemIcon>
             </ListItem>
             <ListItem button onClick={() => handleOpenModalStato(valori.id)} sx={{ gap: 3}}>
                 <ListItemText primary="Stato" />
                 <ListItemIcon>
-                    <AutorenewIcon sx={{ color: '#00853C'}} />
+                    <AutorenewIcon sx={{ color: '#00B401'}} />
                 </ListItemIcon>
             </ListItem>
             <ListItem button onClick={() => handleOpenModalDelete(valori.id)} sx={{ gap: 3}}>
@@ -191,11 +192,11 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
             margin: 'auto', 
             cursor: 'pointer', 
             height: 'auto', 
-            border: '2px solid #00853C', 
+            border: '2px solid #00B401', 
             transition: 'transform 0.3s ease, border-width 0.3s ease', 
             '&:hover': {
             transform: 'scale(1.05)', 
-            border: '4px solid #00853C',
+            border: '4px solid #00B401',
             p: 1
         }}
     }
@@ -229,19 +230,19 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
             </Typography>
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
-                    <BusinessCenterIcon sx={{ color: '#00853C', mr: 1 }} />
+                    <BusinessCenterIcon sx={{ color: '#00B401', mr: 1 }} />
                     {valori.tipologia && valori.tipologia.descrizione
                     ? valori.tipologia.descrizione
                     : "N/A"}
                     </Typography>
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
-                    <AutoModeIcon sx={{ color: '#00853C', mr: 1 }} />
+                    <AutoModeIcon sx={{ color: '#00B401', mr: 1 }} />
                     {valori.stato.descrizione}
             </Typography>
 
             {/* <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
-                    <ChecklistIcon sx={{ color: '#00853C', mr: 1 }} />
+                    <ChecklistIcon sx={{ color: '#00B401', mr: 1 }} />
                     Competenze: {skillsToShow} {additionalSkillsCount}
             </Typography> */}
 
@@ -278,9 +279,9 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
                 
             }}
             >
-                    <img src={Torcia} alt="Torcia" style={{ width: '4vw', marginTop: '1em' }} />
+                    <img src={NuovaTorcia} alt="Torcia" style={{ width: '5.5vw', marginTop: '-0.5em', marginLeft: '-0.5em', transform: 'rotate(90deg)' }} />
             </IconButton>
-            <Typography variant="h6" color="text.primary" sx={{ color: '#00853C', fontWeight: 'bold', display: 'flex', mr: 1, mt: 2 }}>{valori.cliente.denominazione}</Typography>
+            <Typography variant="h6" color="text.primary" sx={{ color: '#00B401', fontWeight: 'bold', display: 'flex', mr: 1, mt: 2 }}>{valori.cliente.denominazione}</Typography>
             </Box>
 
 
@@ -356,11 +357,11 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
                             <Button
                             onClick={confirmDelete}
                             sx={{
-                                backgroundColor: '#00853C',
+                                backgroundColor: '#00B401',
                                 color: 'white',
                                 borderRadius: '5px',
                                 '&:hover': {
-                                    backgroundColor: '#00853C',
+                                    backgroundColor: '#00B401',
                                     color: 'white',
                                     transform: 'scale(1.05)'
                                 },
@@ -439,7 +440,7 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
                             <Button
                                 onClick={handleUpdateStato}
                                 sx={{
-                                backgroundColor: '#00853C',
+                                backgroundColor: '#00B401',
                                 color: 'white',
                                 '&:hover': {
                                     backgroundColor: '#006b2b',

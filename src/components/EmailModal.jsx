@@ -185,7 +185,7 @@ const onClose = () => {
                     } 
                     }}             />
             <Box sx={{ display: 'flex', justifyContent: 'center'}}>
-        <Button onClick={handleSubmitEmail} variant="contained" sx={{ borderRadius: '5px', backgroundColor: '#00853C', '&:hover': { backgroundColor: '#00853C', transform: 'scale(1.1)'}}}>
+        <Button onClick={handleSubmitEmail} variant="contained" sx={{ borderRadius: '5px', backgroundColor: '#00B401', '&:hover': { backgroundColor: '#00B401', transform: 'scale(1.1)'}}}>
           Invia
         </Button>
         </Box>
