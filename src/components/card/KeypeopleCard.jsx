@@ -231,8 +231,7 @@ const KeypeopleCard = ({valori, onDelete}) => {
                     mb: 2
                     }}
                 >
-                <img src={`data:image/png;base64,${valori.cliente.logo}`} alt="Logo" style={{width: '50px', height: '50px', borderRadius: '50%'}} />
-
+                <img src={`data:image/png;base64,${valori.cliente.logo}`} alt="Logo" style={{width: '80px', height: '80px', borderRadius: '50%'}} />
                     {/* {valori.cliente.logo} */}
                 </Typography>
                     </Box>
