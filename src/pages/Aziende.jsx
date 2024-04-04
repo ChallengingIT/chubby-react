@@ -10,7 +10,7 @@ import {
     Grid,
     Skeleton
     } from '@mui/material';
-// import ProvaCardFlip from '../components/card/ProvaCardFlip';
+import ProvaCardFlip from '../components/card/ProvaCardFlip';
 
 
 const Aziende = () => {

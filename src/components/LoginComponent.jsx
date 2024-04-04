@@ -134,7 +134,7 @@ const handleLogin = async (e) => {
 
 
                 <Typography variant="h5" component="h2" sx={{  mb: 5, color: "#00B401", fontSize: '3em', alignSelf: 'flex-start', mt: 8, fontWeight: 600 }}>Sign in</Typography>
-                <img src={nuovaTorcia} alt="Torcia" style={{ maxWidth: '100%', width: '30%', alignSelf: 'flex-end', marginBottom: '2em' }} />
+                <img src={nuovaTorcia} alt="Torcia" style={{ maxWidth: '100%', width: '30%', alignSelf: 'flex-end', height: '8em' }} />
                 {/* </Box> */}
                 </Box>
                     <Typography variant="h6" component="h2" sx={{ alignSelf: 'flex-start', fontSize: '1em' }}>Enter your username</Typography>
