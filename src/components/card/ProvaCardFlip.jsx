@@ -39,10 +39,11 @@ const ProvaCardFlip = ({valori, onDelete}) => {
 
 
     const cardContainerStyle = {
+        width: '80%',
         perspective: '1000px',
         borderRadius: '20px',
         display: 'flex',
-        marginLeft: '2em',
+        marginLeft: '4em',
         marginRight: '2em',
         minHeight: '16em',
         border: 'solid 2px #00B401',
