@@ -415,7 +415,7 @@ const AggiungiAziendaGrafica = () => {
                         Indietro
                     </Button>
                 </Box>
-                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: 'black'}}>  Aggiungi <br /> Azienda </Typography>
+                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: '#212121'}}>  Aggiungi <br /> Azienda </Typography>
                 <List sx={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
                             {menu.map((item) => (
                                 <ListItem
@@ -501,14 +501,14 @@ const AggiungiAziendaGrafica = () => {
                             sx={{
                                 mb: 4,
                                 width: '250px',
-                                backgroundColor: "#5F8671",
+                                backgroundColor: "#00B400",
                                 color: "#EDEDED",
                                 fontWeight:"bold",
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                 borderRadius: '10px',
                                 
                                 "&:hover": {
-                                backgroundColor: "#5F8671",
+                                backgroundColor: "#00B400",
                                 color: "#EDEDED",
                                 transform: "scale(1.05)",
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',

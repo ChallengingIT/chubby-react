@@ -1022,14 +1022,14 @@ const ModificaRecruitingGrafica = () => {
                             sx={{
                                 width: '250px',
                                 mb: 4,
-                                backgroundColor: "#5F8671",
+                                backgroundColor: "#00B400",
                                 color: "#EDEDED",
                                 fontWeight:"bold",
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                 borderRadius: '10px',
                                 
                                 "&:hover": {
-                                backgroundColor: "#5F8671",
+                                backgroundColor: "#00B400",
                                 color: "#EDEDED",
                                 transform: "scale(1.05)",
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',

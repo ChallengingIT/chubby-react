@@ -28,6 +28,7 @@ import AggiungiRecruitingGrafica                                       from './p
 import ModificaRecruitingGrafica                                       from './pages/NuoveGrafiche/ModificaRecruitingGrafica.jsx';
 import AggiungiIntervistaGrafica                                       from './pages/NuoveGrafiche/AggiungiIntervistaGrafica.jsx';
 import ModificaIntervistaGrafica                                       from './pages/NuoveGrafiche/ModificaIntervistaGrafica.jsx';
+import DashboardProva from './pages/DashboardProva.jsx';
 
 
 

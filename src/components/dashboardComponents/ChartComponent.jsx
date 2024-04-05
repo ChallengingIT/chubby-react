@@ -1,13 +1,21 @@
-// import React from 'react'
-// import { Gauge } from '@mui/x-charts/Gauge';
-// import { Stack } from '@mui/material';
-
+// import React from 'react';
+// import { Flex, Progress } from 'antd';
 
 // const ChartComponent = () => {
+//   const customWidth = 15; 
+
 //   return (
-// <Stack direction={{ xs: 'column', md: 'row' }} spacing={{ xs: 1, md: 3 }}>
-//       <Gauge width={100} height={100} value={60} startAngle={-90} endAngle={90} />
-//     </Stack>  )
+//     <Flex gap="small" wrap="wrap">
+//       <Progress
+//         type="dashboard"
+//         percent={75}
+//         strokeColor="#00b400"
+//         strokeWidth={customWidth}
+//         gapDegree={180} 
+//         gapPosition="bottom"
+//       />
+//     </Flex>
+//   );
 // }
 
 // export default ChartComponent;
