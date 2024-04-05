@@ -96,7 +96,7 @@ const AggiungiAziendaGrafica = () => {
     const getMandatoryFields = (index) => {
         switch (index) {
             case 0: 
-                return [ "denominazione", "settoreMercato", "idOwner" ];
+                return [ "denominazione", "settoreMercato", "idOwner", "tipologia" ];
             case 1: 
                 return [ "citta", "provincia", "sedeOperativa", "cap" ];
             default: 
@@ -247,7 +247,7 @@ const AggiungiAziendaGrafica = () => {
 
 
 
-        const campiObbligatori = [ "denominazione", "ragioneSociale", "idOwner", "citta", "provincia", "sedeOperativa", "cap" ];
+        const campiObbligatori = [ "denominazione", "ragioneSociale", "idOwner", "citta", "provincia", "sedeOperativa", "cap", "tipologia" ];
 
         const fields =[
             { type: "titleGroups",                label: "Profilo"            },
@@ -257,7 +257,7 @@ const AggiungiAziendaGrafica = () => {
             { label: "Partita IVA",                     name: "pi",                       type: "text"                             },
             { label: "Codice Fiscale",                  name: "cf",                       type: "text"                             },
             { label: "Owner*",                          name: "idOwner",                  type: "select", options: ownerOptions    },
-            { label: "Tipologia",                       name: "tipologia",                type: "select", options: [
+            { label: "Tipologia*",                       name: "tipologia",                type: "select", options: [
                 { value: "Cliente", label: "Cliente" },
                 { value: "Prospect", label: "Prospect" },
                 { value: "EXCLIENTE", label: "Ex Cliente" }
