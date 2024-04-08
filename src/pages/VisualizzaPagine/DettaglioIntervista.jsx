@@ -16,10 +16,10 @@ const DettaglioIntervista = () => {
 
 
   const user = JSON.parse(localStorage.getItem("user"));
-  const accessToken = user?.accessToken;
+  const token = user?.token;
 
   const headers = {
-    Authorization: `Bearer ${accessToken}`
+    Authorization: `Bearer ${token}`
   };
 
 

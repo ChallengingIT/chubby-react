@@ -3,12 +3,21 @@ import { Button, Box, Grid, FormControl, InputLabel, IconButton, Drawer, Typogra
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from 'react-router-dom';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+
 
 function RicercheKeypeople({ filtri, onFilterChange, onReset, aziendaOptions, statoOptions, ownerOptions, onRicerche }) {
 
     const navigate = useNavigate();
 
-    const [openFiltri, setOpenFiltri] = useState(false);
+    const [ openFiltri,                setOpenFiltri            ] = useState(false);
+    const [ isRotated,                 setIsRotated             ] = useState(false);
+
+    const handleClickReset = () => {
+        onReset();
+        setIsRotated(true);
+        setTimeout(() => setIsRotated(false), 500);
+    };
 
     const handleOpenFiltri = () => setOpenFiltri(true);
     const handleCloseFiltri = () => setOpenFiltri(false);
@@ -173,8 +182,8 @@ function RicercheKeypeople({ filtri, onFilterChange, onReset, aziendaOptions, st
                             />
                         </FormControl>
 
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                            <Button
+                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                            {/* <Button
                                 onClick={onReset}
                                 sx={{
                                     backgroundColor: 'black',
@@ -188,7 +197,29 @@ function RicercheKeypeople({ filtri, onFilterChange, onReset, aziendaOptions, st
                                     },
                                 }}>
                                 Reset
-                            </Button>
+                            </Button> */}
+                            <IconButton
+                            onClick={handleClickReset}
+                            disableRipple={true}
+                            disableFocusRipple={true}
+                            sx={{
+                                backgroundColor: 'black',
+                                color: 'white',
+                                textTransform: 'lowercase',
+                                fontWeight: 'bold',
+                                '&:hover': {
+                                    backgroundColor: 'black',
+                                    color: 'white',
+                                    trasform: 'scale(1.1)'
+                                },
+                            }}>
+                            <RestartAltIcon 
+                                sx={{
+                                transition: 'transform 0.5s ease-in-out',
+                                transform: isRotated ? 'rotate(720deg)' : 'none',
+                            }} 
+                            />
+                            </IconButton>
                         </Box>
                     </Grid>
                 </Grid>

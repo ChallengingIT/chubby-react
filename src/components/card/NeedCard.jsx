@@ -76,10 +76,10 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
 
 
     const user = JSON.parse(localStorage.getItem('user'));
-    const accessToken = user?.accessToken;
+    const token = user?.token;
 
     const headers = {
-        Authorization: `Bearer ${accessToken}`
+        Authorization: `Bearer ${token}`
     };
 
 
@@ -187,7 +187,7 @@ const NeedCard = ({valori, statoOptions, onDelete, onRefresh }) => {
         raised
         sx={{
             borderRadius: '20px', 
-            maxWidth: '80%', 
+            maxWidth: '75%', 
             justifyContent: 'center', 
             margin: 'auto', 
             cursor: 'pointer', 

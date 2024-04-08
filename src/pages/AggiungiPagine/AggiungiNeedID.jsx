@@ -20,13 +20,13 @@ const AggiungiNeedID = () => {
   
 
 
-  // Recupera l'accessToken da localStorage
+  // Recupera l'token da localStorage
   const user = JSON.parse(localStorage.getItem("user"));
-  const accessToken = user?.accessToken;
+  const token = user?.token;
 
   // Configura gli headers della richiesta con l'Authorization token
   const headers = {
-    Authorization: `Bearer ${accessToken}`
+    Authorization: `Bearer ${token}`
   };
 
   const navigateBack = () => {

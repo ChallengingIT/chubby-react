@@ -5,6 +5,7 @@ import { Box } from '@mui/material';
 import LogoTorchySVG from '../images/LogoTorchy.svg';
 import LoginComponent from '../components/LoginComponent';
 import TorchyChallenging from '../images/tochyChallenging.svg';
+import LoginSignupComponent from '../components/LoginSignupComponent';
 
 const LoginPage = () => {
     const navigate = useNavigate();

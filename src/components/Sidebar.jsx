@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Logo from '../images/LogoBianco.png';
-import Torcia from "../images/torciaSF.png";
-import NuovaTorcia from "../images/nuovaTorcia.svg";
-import NuovoLogo from "../images/nuovoLogo.svg";
+import LogoBianco from "../images/logoTorchyChallengingBianco.png";
+import TorciaBianca from '../images/torciaBianca.svg';
 
 import {
     Box,
@@ -20,7 +18,8 @@ import {
     Button,
     DialogContentText,
     Popover,
-    Modal
+    Modal,
+    Typography
 } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonIcon from '@mui/icons-material/Person';
@@ -103,6 +102,49 @@ function Sidebar() {
         handleAdditionalDrawerClose();
     };
 
+    const ruolo = () => {
+        const userString = localStorage.getItem('user');
+            if (userString) {
+            const userObj = JSON.parse(userString);
+            const rolesArray = userObj.roles;
+            const rolesReadable = rolesArray.map(role => {
+                switch (role) {
+                    case 'ROLE_ADMIN':
+                        return 'Admin';
+                    case 'ROLE_BM':
+                        return 'Business Manager';
+                    default:
+                        return 'Utente';
+                }
+            });
+            return rolesReadable.join(', ');
+        } else {
+            return 'Utente';
+        }
+    };
+
+
+    const nome = () => {
+        const userString = localStorage.getItem('user');
+        if(userString) {
+            const userObj = JSON.parse(userString);
+            return userObj.nome;
+        } else {
+            return '';
+        }
+    };
+
+    const cognome = () => {
+        const userString = localStorage.getItem('user');
+        if(userString) {
+            const userObj = JSON.parse(userString);
+            return userObj.cognome;
+        } else {
+            return '';
+        }
+    };
+    
+
 
     const additionalDrawerContent = (
         <List>
@@ -183,11 +225,11 @@ function Sidebar() {
             >
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px', flexDirection: 'column' }}>
                     {/* <IconButton  style={{ padding: 0 }}> */}
-                        <img src={Logo} alt="Logo" style={{ width: '6vw', marginTop: '1em' }} />
+                        <img src={LogoBianco} alt="Logo" style={{ width: '6.5vw', marginTop: '1em' }} />
                     {/* </IconButton> */}
 
                     <IconButton onClick={handleTorciaClick} sx={{ padding: 0, '&:hover': { transform: 'scale(1.1)'}  }}> 
-                        <img src={NuovaTorcia} alt="Torcia" style={{ width: '5vw', marginTop: '0.5em', transform: 'rotate(90deg)' }} />
+                        <img src={TorciaBianca} alt="Torcia" style={{ width: '3vw', marginTop: '1em', marginBottom: '1em' }} />
                     </IconButton>
                 </Box>
                 <List>
@@ -225,6 +267,7 @@ function Sidebar() {
                     ))}
                 </List>
                 <List sx={{ marginTop: 'auto' }}>
+                    <Typography variant="h8" sx={{ display: 'flex', justifyContent: 'center',color: '#EDEDED', textAlign: 'start', mb: 1 }}>{ruolo()}: <br /> {nome()} {cognome()}</Typography>
                     <ListItem
                         selected={activeLink === '/logout'}
                         onClick={handleLogoutClick}

@@ -193,7 +193,7 @@ const AziendeCard = ({valori, onDelete}) => {
 
             <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', color: 'black', mt: 1 }}>
                 {icon}
-                ida: {text}
+                IDA: {text}
             </Typography>
         </CardContent>
 
