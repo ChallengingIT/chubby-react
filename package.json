@@ -48,7 +48,6 @@
     "web-vitals": "^2.1.4",
     "yup": "^0.28.5"
   },
-  "proxy": "http://89.46.196.60:8443",
   
   "scripts": {
     "start": "set port=80 && react-scripts start",
