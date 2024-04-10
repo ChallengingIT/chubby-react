@@ -120,7 +120,7 @@ const ModificaAziendaGrafica = () => {
     const getMandatoryFields = (index) => {
         switch (index) {
             case 0: 
-            return [ "denominazione", "settoreMercato", "idOwner" ];
+            return [ "denominazione", "settoreMercato", "idOwner", "tipologia", "status", "potenzialita", "semplicita" ];
             case 1: 
                 return [ "citta", "provincia", "sedeOperativa", "cap" ];
             default: 
@@ -267,7 +267,7 @@ const ModificaAziendaGrafica = () => {
 
 
 
-        const campiObbligatori = [ "denominazione", "ragioneSociale", "idOwner", "citta", "provincia", "sedeOperativa", "cap" ];
+        const campiObbligatori = [ "denominazione", "ragioneSociale", "idOwner", "citta", "provincia", "sedeOperativa", "cap", "tipologia", "status", "potenzialita", "semplicita" ];
 
         const fields =[
             { type: "titleGroups",                label: "Profilo"            },

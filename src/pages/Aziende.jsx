@@ -1,5 +1,4 @@
 import React, { useState, useEffect }                   from 'react';
-import { useNavigate  }                                 from 'react-router-dom';
 import axios                                            from 'axios';
 import AziendeCard                                      from '../components/card/AziendeCard';
 import InfiniteScroll                                   from "react-infinite-scroll-component";
@@ -15,28 +14,14 @@ import ProvaCardFlip from '../components/card/ProvaCardFlip';
 
 const Aziende = () => {
 
-    const navigate = useNavigate();
-
     const [ originalAziende,   setOriginalAziende ] = useState([]);
     const [ loading,           setLoading         ] = useState(false);
-    const [                    setAlert           ] = useState(false);
-
-
 
 
     //stati ricerche
     // const [ clienteOptions,             setClienteOptions             ] = useState([]);
     const [ ownerOptions,               setOwnerOptions               ] = useState([]);
     const [ provinceOptions,            setProvinceOptions            ] = useState([]);
-    // const [ filtri,                     setFiltri                     ] = useState(() => {
-    //     const filtriSalvati = localStorage.getItem('filtriRicercaAziende');
-    //     return filtriSalvati ? JSON.parse(filtriSalvati) : {
-    //         denominazione: '',
-    //         tipologia: '',
-    //         stato: '',
-    //         owner: ''
-    //     };
-    // });
 
 
     const getValueLabel = (value) => {
@@ -45,14 +30,10 @@ const Aziende = () => {
       };
       
 
-
-
-
     const [filtri, setFiltri] = useState(() => {
         const filtriSalvati = localStorage.getItem('filtriRicercaAziende');
         if (filtriSalvati) {
           const filtriParsed = JSON.parse(filtriSalvati);
-          // Assicurati che ownerOptions sia definito o caricato prima di fare questa operazione
           if (filtriParsed.owner) {
             filtriParsed.ownerLabel = getValueLabel(filtriParsed.owner);
           }
@@ -63,7 +44,7 @@ const Aziende = () => {
           tipologia: '',
           stato: '',
           owner: '',
-          ownerLabel: '', // Aggiungi anche la label corrispondente da mostrare nell'UI
+          ownerLabel: '', 
         };
       });
       
@@ -93,12 +74,12 @@ const Aziende = () => {
             owner: filtri.owner || null,
             stato: filtri.stato || null,
             pagina: 0,
-            quantita: 10
+            quantita: 10,
         };
             try {
             const responseAziende   = await axios.get("http://localhost:8080/aziende/react/mod",     { headers: headers , params: filtriDaInviare });
             // const responseCliente   = await axios.get("http://localhost:8080/aziende/react/select",  { headers });
-            const responseOwner     = await axios.get("http://localhost:8080/aziende/react/owner",   { headers });
+            const responseOwner     = await axios.get("http://localhost:8080/aziende/react/owner",   { headers: headers });
             const provinceResponse = await axios.get("http://localhost:8080/aziende/react/province", { headers: headers });
 
             if (Array.isArray(responseOwner.data)) {
@@ -280,11 +261,6 @@ const Aziende = () => {
         };
 
 
-                //funzione per il refresh
-                // const handleRefresh = async () => {
-                //     await fetchData(0);
-                // };
-
 
         const tipologiaOptions = [
             { label: "Cliente", value: "CLIENTE" },
@@ -297,84 +273,6 @@ const Aziende = () => {
             { label: 'Tiepido', value:'2'},
             { label: 'Freddo', value: '3' }
         ];
-
-
-    // const campiObbligatori = [ "denominazione", "ragioneSociale", "email", "idOwner", "status", "citta", "provincia" ];
-
-    // const fields = [
-    //     { type: 'titleGroups',                  label: 'Informazioni Generali',         xs: 12, sm: 12                      },
-    //     { label: "Nome Azienda*",                   name: "denominazione",            type: "text", xs: 12, sm: 12                             },
-    //     { label: "Ragione Sociale*",                name: "ragioneSociale",           type: "text", xs: 12, sm: 12                             },
-    //     { label: "Email*",                          name: "email",                    type: "text", xs: 12, sm: 12                             },
-    //     { label: "Sito Web",                        name: "sito",                     type: "text", xs: 12, sm: 12                             },
-
-    //     { type: 'titleGroups',                  label: 'Posizione',         xs: 12, sm: 12                      },
-    //     { label: "Città*",                          name: "citta",                    type: "text", xs: 12, sm: 12                             },
-    //     { label: "CAP",                             name: "cap",                      type: "text", xs: 12, sm: 12                             },
-    //     { label: "Paese",                           name: "paese",                    type: "text", xs: 12, sm: 12                             },
-    //     { label: "Provincia*",                      name: "provincia",                type: "select", options: provinceOptions, xs: 12, sm: 12 },
-    //     { label: "Sede Operativa",                  name: "sedeOperativa",            type: "text", xs: 12, sm: 12                             },
-    //     { label: "Sede Legale",                     name: "sedeLegale",               type: "text", xs: 12, sm: 12                             },
-    //     { type: 'titleGroups',                  label: 'altro', xs: 12, sm: 12 },
-    //     { label: "Pec",                             name: "pec",                      type: "text", xs: 12, sm: 12                             },
-    //     { label: "Partita IVA",                     name: "pi",                       type: "text", xs: 12, sm: 12                             },
-    //     { label: "Codice Fiscale",                  name: "cf",                       type: "text", xs: 12, sm: 12                             },
-    //     { label: "Codice Destinatario",             name: "codiceDestinatario",       type: "text", xs: 12, sm: 12                             },
-    //     { label: "Settore di mercato",              name: "settoreMercato",           type: "text", xs: 12, sm: 12                             },
-    //     { label: "Owner*",                          name: "idOwner",                  type: "select", options: ownerOptions, xs: 12, sm: 12    },
-    //     { label: "Tipologia",                       name: "tipologia",                type: "select", options: [
-    //         { value: "Cliente", label: "Cliente" },
-    //         { value: "Prospect", label: "Prospect" },
-    //         { value: "Ex cliente", label: "Ex cliente" }
-    //     ], xs: 12, sm: 12  },
-    //     { label: "Stato*",                          name: "status",                    type: "select", options: [
-    //         { value: 1, label: "Verde" },
-    //         { value: 2, label: "Giallo" },
-    //         { value: 3, label: "Rosso" },
-    //     ], xs: 12, sm: 12  },
-        
-    //     { label: "Note", name: "note", type: "note", xs: 12, sm: 12 },
-    // ];
-
-
-
-    // const handleSubmit = async (values) => {
-    //     const errors    = validateFields(values);
-    //     const hasErrors = Object.keys(errors).length > 0;
-    //     if (!hasErrors) {
-    //         try {
-        
-    //             Object.keys(values).forEach(key => {
-    //             if (!campiObbligatori.includes(key) && !values[key]) {
-    //                 values[key] = null;
-    //             }
-    //             });
-
-    //             const response = await axios.post("http://localhost:8080/aziende/react/salva", values, {
-    //             headers: headers
-    //             });
-    //             if (response.data === "DUPLICATO") {
-    //             setAlert({ open: true, message: "Email già utilizzata!" });
-    //             console.error("L'email fornita è già in uso.");
-    //             return; 
-    //             }
-    //             handleCloseModal(true);
-    //             fetchData();
-    //         } catch (error) {
-    //             console.error("Errore durante il salvataggio:", error);
-    //         }
-    //         }
-    //     };
-        
-    //     const validateFields = (values) => {
-    //         let errors = {};
-    //         campiObbligatori.forEach(field => {
-    //         if (!values[field]) {
-    //             errors[field] = 'Questo campo è obbligatorio';
-    //         }
-    //         });
-    //         return errors;
-    //     };
 
 
     return(
@@ -416,15 +314,6 @@ const Aziende = () => {
                             {/* Main Content Area */}
                 <Grid container spacing={2} sx={{ mt: 1, mb: 4}}>
                     { loading ? (
-                        // <Box
-                        // sx={{
-                        //     display: 'flex',
-                        //     justifyContent: 'center',
-                        //     alignItems: 'center',
-                        //     height: '100%'
-                        // }}>
-                        //     <CircularProgress sx={{ color: '#00B401'}}/> 
-                        // </Box>
                         <>
                         {Array.from(new Array(quantita)).map((_, index) => (
                             <Grid item xs={12} md={6} key={index}>
@@ -454,62 +343,6 @@ const Aziende = () => {
                     </Grid>
                     </InfiniteScroll>
                     </Box>
-{/* 
-                <Modal  
-                        open={openModal}
-                        onClose={(event, reason) => {
-                            if (reason !== 'backdropClick') {
-                                handleCloseModal();
-                            }   
-                        }}
-                        aria-labelledby="modal-title"
-                        aria-describedby="modal-description"
-                        sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}>
-                        <Box sx={{ 
-                            display: 'flex', 
-                            flexDirection: 'column', 
-                            backgroundColor: 'white', 
-                            width: '40vw', 
-                            height: '70vh', 
-                            borderRadius: '20px', 
-                            overflow: 'hidden',
-                            // border: '2px solid #00B401'
-
-                        }}>
-                            <Box sx={{ 
-                                display: 'flex', 
-                                justifyContent: 'space-between', 
-                                alignItems: 'center', 
-                                m: 2 
-                            }}>
-                                <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#00B401'}}>
-                                    Aggiungi Azienda
-                                </Typography>
-                                <IconButton onClick={handleCloseModal}>
-                                    <CloseIcon />
-                                </IconButton>
-                            </Box>
-                            <Box sx={{ overflowY: 'auto' }}>
-                                <Grid container direction="column" spacing={1} sx={{ pl: 2, pr: 2 }}>
-                                    <Grid item>
-                                        <AggiungiBox
-                                        fields={fields}
-                                        campiObbligatori={campiObbligatori}
-                                        title=''
-                                        onSave={handleSubmit}
-                                        />
-
-
-                                    </Grid>
-                                </Grid>
-                            </Box>
-                            </Box>
-                        </Modal> */}
-
                     </Box>
     );
 };

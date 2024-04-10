@@ -48,6 +48,8 @@
     "web-vitals": "^2.1.4",
     "yup": "^0.28.5"
   },
+  "proxy": "http://localhost:8080",
+  
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
