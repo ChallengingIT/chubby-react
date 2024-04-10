@@ -12,10 +12,10 @@ const AggiungiAziende = () => {
   const [ alert,           setAlert          ] = useState({ open: false, message: '' });
 
   const user = JSON.parse(localStorage.getItem("user"));
-  const accessToken = user?.accessToken;
+  const token = user?.token;
 
   const headers = {
-    Authorization: `Bearer ${accessToken}`
+    Authorization: `Bearer ${token}`
   };
 
 
@@ -115,15 +115,15 @@ const AggiungiAziende = () => {
           return;
         }
         const user = JSON.parse(userString);
-        const accessToken = user?.accessToken;
+        const token = user?.token;
         
-        if (!accessToken) {
+        if (!token) {
           console.error("Nessun token di accesso disponibile");
           return;
         }
   
         const headers = {
-          Authorization: `Bearer ${accessToken}`
+          Authorization: `Bearer ${token}`
         };
 
         delete values.image;
@@ -147,7 +147,7 @@ const AggiungiAziende = () => {
             const responseIMG = await axios.post(`http://89.46.196.60:8443/aziende/react/salva/file/${aziendaID}`, formDataIMG, {
               headers: {
                 'Content-Type': 'multipart/form-data',
-                Authorization: `Bearer ${accessToken}`
+                Authorization: `Bearer ${token}`
               }
             });
         

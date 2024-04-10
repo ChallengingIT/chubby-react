@@ -30,9 +30,9 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
   const [ selectedDate, setSelectedDate ] = useState('');
 
 
-  const accessToken = localStorage.getItem("accessToken"); 
+  const token = localStorage.getItem("token"); 
   const headers = {
-    Authorization: `Bearer ${accessToken}`,
+    Authorization: `Bearer ${token}`,
   };
 
   const handleKeyDown = (e) => {

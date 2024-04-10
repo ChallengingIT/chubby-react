@@ -34,9 +34,9 @@ const AziendeCard = ({valori, onDelete}) => {
     const mediaIda = (ida) => {
         if (ida >= 0 && ida <= 1) {
             return { icon: <TrendingDownIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Basso" };
-        } else if (ida > 1 && ida <= 2) {
+        } else if (ida > 1.1 && ida <= 2) {
             return { icon: <TrendingFlatIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Medio" };
-        } else if (ida >= 3) {
+        } else if (ida >= 2.1) {
             return { icon: <TrendingUpIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Alto" };
         } else {
             return { icon: null, text: "" }; 
@@ -193,7 +193,7 @@ const AziendeCard = ({valori, onDelete}) => {
 
             <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', color: 'black', mt: 1 }}>
                 {icon}
-                ida: {text}
+                IDA: {text}
             </Typography>
         </CardContent>
 

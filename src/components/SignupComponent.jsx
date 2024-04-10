@@ -9,7 +9,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import nuovaTorcia from "../images/nuovaTorcia.svg";
 
 
-const LoginComponent
+const SignupComponent
  = () => {
     
 
@@ -48,24 +48,13 @@ const LoginComponent
 }, []);
 
 const navigate = useNavigate();
+const [ nome,               setNome               ] = useState("");     
+const [ cognome,            setCognome            ] = useState(""); 
 const [ username,           setUsername           ] = useState("");
 const [ password,           setPassword           ] = useState("");
 const [ loginError,         setLoginError         ] = useState({ username: false, password: false });
 const [ showPassword,       setShowPassword       ] = useState(false);
-const [ isFlipped,          setIsFlipped          ] = useState(false);
 
-
-const toggleFlip = () => {
-    setIsFlipped(!isFlipped);
-};
-
-// Stile per l'effetto di rotazione
-const flipStyles = {
-    transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
-    transition: 'transform 0.6s',
-    transformStyle: 'preserve-3d',
-    position: 'relative'
-};
 
 useEffect(() => {
     const lastRegisteredUsername = localStorage.getItem("lastRegisteredUsername");
@@ -75,40 +64,47 @@ useEffect(() => {
     }
 }, []);
 
-const handleLogin = async (e) => {
-    if (e) {
-        e.preventDefault();
+// const handleLogin = async (e) => {
+//     if (e) {
+//         e.preventDefault();
+//     }
+//     try {
+//         const response = await authService.login(username, password);
+//         if (response && response.token) {
+//             localStorage.setItem("token", response.token);
+//             localStorage.setItem("user", JSON.stringify(response));
+//             eventBus.dispatch("loginSuccess");
+//             const userRole = response.roles[0];
+
+
+//             if (userRole === "ROLE_ADMIN" || userRole === "ROLE_RECRUITER" || userRole === "ROLE_BM") {
+//                 navigate("/dashboard");
+//             } else if (userRole === "ROLE_USER") {
+//                 navigate("/userHompage");
+//             }
+//         }
+//         } catch (error) {
+//             console.error('Errore durante il login:', error);
+//             if (error.message.includes("username")) {
+//                 setLoginError(errors => ({ ...errors, username: true }));
+//             } else if (error.message.includes("password")) {
+//                 setLoginError(errors => ({ ...errors, password: true }));
+//             } else {
+//                 setLoginError({ username: true, password: true });
+//             }
+//         }
+//     };
+
+
+const handleRegister = async (event) => {
+    if (event) {
+        event.preventDefault();
     }
-    try {
-        const response = await authService.login(username, password);
-        if (response && response.token) {
-            localStorage.setItem("token", response.token);
-            localStorage.setItem("user", JSON.stringify(response));
-            eventBus.dispatch("loginSuccess");
-            const userRole = response.roles[0];
-
-
-            if (userRole === "ROLE_ADMIN" || userRole === "ROLE_RECRUITER" || userRole === "ROLE_BM") {
-                navigate("/dashboard");
-            } else if (userRole === "ROLE_USER") {
-                navigate("/userHompage");
-            }
-        }
-        } catch (error) {
-            console.error('Errore durante il login:', error);
-            if (error.message.includes("username")) {
-                setLoginError(errors => ({ ...errors, username: true }));
-            } else if (error.message.includes("password")) {
-                setLoginError(errors => ({ ...errors, password: true }));
-            } else {
-                setLoginError({ username: true, password: true });
-            }
-        }
-    };
+};
 
     const handleKeyDown = (e) => {
         if (e.keyCode === 13) {
-            handleLogin();
+            handleRegister();
         }
     };
 
@@ -125,7 +121,7 @@ const handleLogin = async (e) => {
             alignItems: 'center',
             justifyContent: 'center',
             width: '100%',
-            height: '90vh',
+            height: '85vh',
             p: 3,
             m: 2,
             backgroundColor: '#FEFCFD',
@@ -137,19 +133,53 @@ const handleLogin = async (e) => {
 
             <Box
             component="form"
-            onSubmit={handleLogin}
+            onSubmit={handleRegister}
             noValidate
-            sx={{  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '90%'}}
+            sx={{ mt: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '90%'}}
             >
                 <ThemeProvider theme={theme}>
                 {/* <Box sx={{  display: 'flex', alignSelf: 'flex-start', marginTop: 6, flexGrow: 1 }}> */}
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
 
 
-                <Typography variant="h5" component="h2" sx={{  mb: 5, color: "#00B401", fontSize: '3em', alignSelf: 'flex-start', mt: 2, fontWeight: 600 }}>Sign in</Typography>
+                <Typography variant="h5" component="h2" sx={{  mb: 5, color: "#00B401", fontSize: '3em', alignSelf: 'flex-start', mt: 8, fontWeight: 600 }}>Sign in</Typography>
                 <img src={nuovaTorcia} alt="Torcia" style={{ maxWidth: '100%', width: '30%', alignSelf: 'flex-end', height: '8em' }} />
                 {/* </Box> */}
                 </Box>
+
+                <Typography variant="h6" component="h2" sx={{ alignSelf: 'flex-start', fontSize: '1em' }}>Nome</Typography>
+                    <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="nome"
+                    label="Nome"
+                    autoFocus
+                    value={nome}
+                    onKeyDown={handleKeyDown}
+                    onChange={(e) => {
+                        setNome(e.target.value);
+                    }}
+                    sx={{ mb: 4 }}
+                    />
+
+
+                <Typography variant="h6" component="h2" sx={{ alignSelf: 'flex-start', fontSize: '1em' }}>Cognome</Typography>
+                    <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="cognome"
+                    label="Cognome"
+                    autoFocus
+                    value={cognome}
+                    onKeyDown={handleKeyDown}
+                    onChange={(e) => {
+                        setCognome(e.target.value);
+                    }}
+                    sx={{ mb: 4 }}
+                    />
+
                     <Typography variant="h6" component="h2" sx={{ alignSelf: 'flex-start', fontSize: '1em' }}>Enter your username</Typography>
                     <TextField
                     margin="normal"
@@ -203,10 +233,11 @@ const handleLogin = async (e) => {
                             }}
                     sx={{  mb: 2 }}
                     />
+                
                 <Button
                 color="primary"
                 variant="contained"
-                onClick={handleLogin}
+                onClick={handleRegister}
                 sx={{
                     display: 'flex',
                     justifyContent: 'center',
@@ -216,8 +247,8 @@ const handleLogin = async (e) => {
                     color: 'white',
                     fontWeight: 'bold',
                     borderRadius: 2,
-                    mt: 5,
-                    mb:1,
+                    marginTop: 8,
+                    marginBottom: 10,
                     "&:hover": {
                         backgroundColor: '#00B401',
                         color: 'white',
@@ -225,34 +256,11 @@ const handleLogin = async (e) => {
                     },
                 }}
                 >
-                    Accedi
-                </Button>
-                <Typography variant="h6" component="h2" sx={{  fontSize: '1em', color: '#00B401', mb: 1 }}>Forgot password</Typography>
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', border: 'solid 1px #00B401', borderRadius: 2, mt: 2, mb: 1 }}/>    
-                <Button 
-                on
-                sx={{  display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '80%',
-                backgroundColor: 'black',
-                color: 'white',
-                fontWeight: 'bold',
-                borderRadius: 2,
-                mt: 5,
-                mb:1,
-                "&:hover": {
-                    backgroundColor: 'black',
-                    color: 'white',
-                    transform: 'scale(1.05)'
-                },
-                }}
-                >
-                    Registrati
+                    Sign up
                 </Button>
                 </ThemeProvider>
             </Box>
         </Box>
     );
 };
-export default LoginComponent
+export default SignupComponent

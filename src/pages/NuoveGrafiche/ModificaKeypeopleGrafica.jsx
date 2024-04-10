@@ -30,10 +30,10 @@ const ModificaKeypeopleGrafica = () => {
 
 
     const user = JSON.parse(localStorage.getItem("user"));
-    const accessToken = user?.accessToken;
+    const token = user?.token;
 
     const headers = {
-        Authorization: `Bearer ${accessToken}`
+        Authorization: `Bearer ${token}`
     };
 
     //chiamata per ricevere i dati dal db
@@ -375,7 +375,7 @@ const ModificaKeypeopleGrafica = () => {
   return (
     <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
         <Box sx={{ display: 'flex', height: '98%', width: '100vw', flexDirection: 'row', ml: '12.5em', mt: '0.5em', mb: '0.5em', mr: '0.8em', borderRadius: '20px', overflow: 'hidden' }}>
-            <Box sx={{ width: '22%', height: '100%', background: '#5F8671', p:2, overflow: 'hidden' }}>
+            <Box sx={{ width: '22%', height: '100%', background: '#00B400', p:2, overflow: 'hidden' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%'}}>
                     <Button
                     onClick={handleGoBack}
@@ -397,7 +397,7 @@ const ModificaKeypeopleGrafica = () => {
                         Indietro
                     </Button>
                 </Box>
-                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: '#EDEDED'}}>  Modifica <br /> Contatto </Typography>
+                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: 'black'}}>  Modifica <br /> Contatto </Typography>
                 <List sx={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
                             {menu.map((item) => (
                                 <ListItem
@@ -483,14 +483,14 @@ const ModificaKeypeopleGrafica = () => {
                             sx={{
                                 mb: 4,
                                 width: '250px',
-                                backgroundColor: "#5F8671",
+                                backgroundColor: "#00B400",
                                 color: "#EDEDED",
                                 fontWeight:"bold",
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                 borderRadius: '10px',
                                 
                                 "&:hover": {
-                                backgroundColor: "#5F8671",
+                                backgroundColor: "#00B400",
                                 color: "#EDEDED",
                                 transform: "scale(1.05)",
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',

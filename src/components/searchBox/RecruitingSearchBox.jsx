@@ -34,11 +34,11 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
   };
 
   const user = JSON.parse(localStorage.getItem("user"));
-  const accessToken = user?.accessToken;
+  const token = user?.token;
 
 
      const headers = {
-     Authorization: `Bearer ${accessToken}`
+     Authorization: `Bearer ${token}`
  };
 
 
@@ -95,7 +95,7 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
   
     try {
       const user = JSON.parse(localStorage.getItem("user"));
-      const accessToken = user?.accessToken;
+      const token = user?.token;
   
       const response = await axios.post("http://89.46.196.60:8443/staffing/react/mod/ricerca",{ headers: headers, params: filtriDaInviare });
   

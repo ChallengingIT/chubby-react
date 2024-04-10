@@ -2,6 +2,7 @@ import React, { useState }                                                      
 import { Button, Box, Grid, Select, MenuItem, FormControl, InputLabel, IconButton, Drawer, Typography, TextField, InputAdornment, Autocomplete } from '@mui/material';
 import CloseIcon                                                                                                                   from '@mui/icons-material/Close';
 import SearchIcon                                                                                                                  from '@mui/icons-material/Search';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
 
 
@@ -9,6 +10,13 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
 
 
     const [ openFiltri,                setOpenFiltri            ] = useState(false);
+    const [ isRotated,                 setIsRotated             ] = useState(false);
+
+    const handleClickReset = () => {
+        onReset();
+        setIsRotated(true);
+        setTimeout(() => setIsRotated(false), 500);
+    };
 
     const handleOpenFiltri = () => setOpenFiltri(true);
     const handleCloseFiltri = () => setOpenFiltri(false);
@@ -238,8 +246,8 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
                             </Select> */}
                             </FormControl>
     
-                            <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
-                            <Button 
+                            <Box sx={{ display: 'flex', justifyContent: 'center'}}>
+                            {/* <Button 
                             onClick={onReset}
                             sx={{
                                 backgroundColor: 'black',
@@ -253,7 +261,29 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
                                 },
                             }}>
                                 Reset
-                            </Button>
+                            </Button> */}
+                            <IconButton
+                            onClick={handleClickReset}
+                            disableRipple={true}
+                            disableFocusRipple={true}
+                            sx={{
+                                backgroundColor: 'black',
+                                color: 'white',
+                                textTransform: 'lowercase',
+                                fontWeight: 'bold',
+                                '&:hover': {
+                                    backgroundColor: 'black',
+                                    color: 'white',
+                                    trasform: 'scale(1.1)'
+                                },
+                            }}>
+                            <RestartAltIcon 
+                                sx={{
+                                transition: 'transform 0.5s ease-in-out',
+                                transform: isRotated ? 'rotate(720deg)' : 'none',
+                            }} 
+                            />
+                            </IconButton>
                             </Box>
             </Grid>
         </Grid>

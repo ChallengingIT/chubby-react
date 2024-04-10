@@ -34,10 +34,10 @@ const ModificaAziendaGrafica = () => {
 
 
     const user = JSON.parse(localStorage.getItem("user"));
-    const accessToken = user?.accessToken;
+    const token = user?.token;
 
     const headers = {
-        Authorization: `Bearer ${accessToken}`
+        Authorization: `Bearer ${token}`
     };
 
     //chiamata per ricevere i dati dal db
@@ -120,7 +120,7 @@ const ModificaAziendaGrafica = () => {
     const getMandatoryFields = (index) => {
         switch (index) {
             case 0: 
-            return [ "denominazione", "settoreMercato", "idOwner" ];
+            return [ "denominazione", "settoreMercato", "idOwner", "tipologia", "status", "potenzialita", "semplicita" ];
             case 1: 
                 return [ "citta", "provincia", "sedeOperativa", "cap" ];
             default: 
@@ -212,15 +212,15 @@ const ModificaAziendaGrafica = () => {
                         return;
                     }
                     const user = JSON.parse(userString);
-                    const accessToken = user?.accessToken;
+                    const token = user?.token;
         
-                    if (!accessToken) {
+                    if (!token) {
                         console.error("Nessun token di accesso disponibile");
                         return;
                     }
         
                     const headers = {
-                        Authorization: `Bearer ${accessToken}`
+                        Authorization: `Bearer ${token}`
                     };
                     delete values.image;
                     delete values.logo;
@@ -244,7 +244,7 @@ const ModificaAziendaGrafica = () => {
                         const responseIMG = await axios.post(`http://89.46.196.60:8443/aziende/react/salva/file/${aziendaID}`, formDataIMG, {
                             headers: {
                             'Content-Type': 'multipart/form-data',
-                            Authorization: `Bearer ${accessToken}`
+                            Authorization: `Bearer ${token}`
                             }
                         });
                     
@@ -267,7 +267,7 @@ const ModificaAziendaGrafica = () => {
 
 
 
-        const campiObbligatori = [ "denominazione", "ragioneSociale", "idOwner", "citta", "provincia", "sedeOperativa", "cap" ];
+        const campiObbligatori = [ "denominazione", "ragioneSociale", "idOwner", "citta", "provincia", "sedeOperativa", "cap", "tipologia", "status", "potenzialita", "semplicita" ];
 
         const fields =[
             { type: "titleGroups",                label: "Profilo"            },
@@ -481,7 +481,7 @@ const ModificaAziendaGrafica = () => {
   return (
     <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
         <Box sx={{ display: 'flex', height: '98%', width: '100vw', flexDirection: 'row', ml: '12.5em', mt: '0.5em', mb: '0.5em', mr: '0.8em', borderRadius: '20px', overflow: 'hidden' }}>
-            <Box sx={{ width: '22%', height: '100%', background: '#5F8671', p:2, overflow: 'hidden' }}>
+            <Box sx={{ width: '22%', height: '100%', background: '#00B400', p:2, overflow: 'hidden' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%'}}>
                     <Button
                     onClick={handleGoBack}
@@ -503,7 +503,7 @@ const ModificaAziendaGrafica = () => {
                         Indietro
                     </Button>
                 </Box>
-                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: '#EDEDED'}}>  Modifica <br /> Azienda </Typography>
+                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: 'black'}}>  Modifica <br /> Azienda </Typography>
                 <List sx={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
                             {menu.map((item) => (
                                 <ListItem
@@ -589,14 +589,14 @@ const ModificaAziendaGrafica = () => {
                             sx={{
                                 mb: 4,
                                 width: '250px',
-                                backgroundColor: "#5F8671",
+                                backgroundColor: "#00B400",
                                 color: "#EDEDED",
                                 fontWeight:"bold",
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                 borderRadius: '10px',
                                 
                                 "&:hover": {
-                                backgroundColor: "#5F8671",
+                                backgroundColor: "#00B400",
                                 color: "#EDEDED",
                                 transform: "scale(1.05)",
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',

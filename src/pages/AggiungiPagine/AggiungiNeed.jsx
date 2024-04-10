@@ -16,10 +16,10 @@ const AggiungiNeed = () => {
   const [ statoOptions,         setStatoOptions       ] = useState([]);
 
   const user = JSON.parse(localStorage.getItem("user"));
-  const accessToken = user?.accessToken;
+  const token = user?.token;
 
   const headers = {
-    Authorization: `Bearer ${accessToken}`
+    Authorization: `Bearer ${token}`
   };
 
 
@@ -140,7 +140,7 @@ const AggiungiNeed = () => {
         const skills = values.skills ? values.skills.join(',') : '';
         delete values.skills;
 
-        if (!accessToken) {
+        if (!token) {
           console.error("nessun token di accesso disponibile");
           return;
         }

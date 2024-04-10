@@ -15,8 +15,10 @@ class AuthService {
         password
       })
       .then(response => {
-        if (response.data.accessToken) {
+        if (response.data) {
           localStorage.setItem("user", JSON.stringify(response.data));
+        } else {
+          console.log("login fallito!");
         }
 
         return response.data;
@@ -26,11 +28,11 @@ class AuthService {
   logout() {
     
     const user = JSON.parse(localStorage.getItem("user"));
-    const accessToken = user?.accessToken;
+    const token = user?.token;
 
     const config = {
       headers: {
-          Authorization: `Bearer ${accessToken}`
+          Authorization: `Bearer ${token}`
       }
   };
     
@@ -48,11 +50,20 @@ class AuthService {
 
   }
 
-  register(username, email, password) {
-    return axios.post(API_URL + "signup", {
+  register( nome, cognome, username, password, role) {
+    return axios
+    .post(API_URL + "signup", {
+      nome,
+      cognome,
       username,
-      email,
-      password
+      password,
+      role
+
+    })
+    .then(response => {
+      if (response.data) {
+      console.log("registrazione effettuata!");
+      }
     });
   }
 
@@ -64,7 +75,7 @@ class AuthService {
 
   isAuthenticated() {
     const user = this.getCurrentUser();
-    return user && user.accessToken ? true : false;
+    return user && user.token ? true : false;
 
   }
 }
