@@ -280,7 +280,7 @@ const Aziende = () => {
             <Box sx={{ 
                 flexGrow: 1, 
                 p: 3, 
-                marginLeft: '13.2em', 
+                marginLeft: '12.8em', 
                 marginTop: '0.5em', 
                 marginBottom: '0.8em', 
                 marginRight: '0.8em', 

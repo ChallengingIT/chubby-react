@@ -696,11 +696,11 @@ const NeedMatch2 = () => {
                             p: 2,
                             ml: 25,
                             mt: 1.5,
-                            mb: 0.5,
+                            marginBottom: '0.8em', 
                             mr: 0.8,
                             backgroundColor: '#FEFCFD',
                             borderRadius: '10px',
-                            height: 'auto',
+                            minHeight: '97vh',
                             width: '100%',
                             flexDirection: 'column',
                             overflow: 'hidden'
