@@ -29,6 +29,8 @@ import ModificaRecruitingGrafica                                       from './p
 import AggiungiIntervistaGrafica                                       from './pages/NuoveGrafiche/AggiungiIntervistaGrafica.jsx';
 import ModificaIntervistaGrafica                                       from './pages/NuoveGrafiche/ModificaIntervistaGrafica.jsx';
 import DashboardProva from './pages/DashboardProva.jsx';
+import AggiungiNeedGrafica from './pages/NuoveGrafiche/AggiungiNeedGrafica.jsx';
+import ModificaNeedGrafica from './pages/NuoveGrafiche/ModificaNeedGrafica.jsx';
 
 
 
@@ -66,17 +68,17 @@ useEffect(() => {
                       <Dashboard />
                     </PrivateRoute>
                   } />
-                <Route path="/aziende" element={
+                <Route path="/business" element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
                       <Aziende />
                     </PrivateRoute>
                   } />
-                <Route path="/aziende/aggiungi"element={
+                <Route path="/business/aggiungi"element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
                       <AggiungiAziendaGrafica />
                     </PrivateRoute>
                   } />
-                <Route path="/aziende/modifica/:id"element={
+                <Route path="/business/modifica/:id"element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
                       <ModificaAziendaGrafica />
                     </PrivateRoute>
@@ -91,17 +93,17 @@ useEffect(() => {
                       <AggiungiNeedID />
                     </PrivateRoute>
                   } />
-                <Route path="/keypeople"element={
+                <Route path="/contacts"element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
                       <Keypeople />
                     </PrivateRoute>
                   } />
-                <Route path="/keypeople/aggiungi"element={
+                <Route path="/contacts/aggiungi"element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
                       <AggiungiKeypeopleGrafica />
                     </PrivateRoute>
                   } />
-                <Route path="/keypeople/modifica/:id" element={
+                <Route path="/contacts/modifica/:id" element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
                       <ModificaKeypeopleGrafica />
                     </PrivateRoute>
@@ -113,12 +115,12 @@ useEffect(() => {
                   } />
                 <Route path="/need/aggiungi"element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
-                      <AggiungiNeed />
+                      <AggiungiNeedGrafica />
                     </PrivateRoute>
                   } />
                 <Route path="/need/modifica/:id"element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
-                      <ModificaNeed />
+                      <ModificaNeedGrafica />
                     </PrivateRoute>
                   } />
                 <Route path="/need/dettaglio/:id" element={

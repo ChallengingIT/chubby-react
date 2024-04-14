@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useState, useEffect }                                                                               from 'react';
+import { useNavigate, useParams }                                                                                   from 'react-router-dom';
 import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Skeleton, Snackbar, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Grid } from '@mui/material';
-import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
-import axios from 'axios';
-import CustomTextFieldModifica from '../../components/fields/CustomTextFieldModifica';
-import CustomNoteModifica from '../../components/fields/CustomNoteModifica';
-import CustomDatePickerModifica from '../../components/fields/CustomDatePickerModifica';
-import CustomDecimalNumberModifica from '../../components/fields/CustomDecimalNumberModifica';
-import CloudUploadIcon  from "@mui/icons-material/CloudUpload";
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
-import DeleteIcon       from "@mui/icons-material/Delete";
-import CustomMultipleSelectModifica from '../../components/fields/CustomMultipleSelectModifica';
-import CustomAutocomplete from '../../components/fields/CustomAutocomplete';
+import CircleOutlinedIcon                                                                                           from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
+import axios                                                                                                        from 'axios';
+import CustomTextFieldModifica                                                                                      from '../../components/fields/CustomTextFieldModifica';
+import CustomNoteModifica                                                                                           from '../../components/fields/CustomNoteModifica';
+import CustomDatePickerModifica                                                                                     from '../../components/fields/CustomDatePickerModifica';
+import CustomDecimalNumberModifica                                                                                  from '../../components/fields/CustomDecimalNumberModifica';
+import CloudUploadIcon                                                                                              from "@mui/icons-material/CloudUpload";
+import CloudDownloadIcon                                                                                            from "@mui/icons-material/CloudDownload";
+import DeleteIcon                                                                                                   from "@mui/icons-material/Delete";
+import CustomMultipleSelectModifica                                                                                 from '../../components/fields/CustomMultipleSelectModifica';
+import CustomAutocomplete                                                                                           from '../../components/fields/CustomAutocomplete';
 
 const ModificaRecruitingGrafica = () => {
     const navigate = useNavigate();
@@ -44,7 +44,6 @@ const ModificaRecruitingGrafica = () => {
     const [ funzioniAziendaliOptions, setFunzioniAziendaliOptions ] = useState([]);
 
 
-    
 
 
 

@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useState, useEffect }                                                                           from 'react';
+import { useNavigate, useLocation }                                                                             from 'react-router-dom';
 import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Skeleton, Snackbar, Grid } from '@mui/material';
-import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
-import axios from 'axios';
-import CustomAutocomplete from '../../components/fields/CustomAutocomplete';
-import CustomNoteAggiungi from '../../components/fields/CustomNoteAggiungi';
-import CustomDecimalNumberAggiungi from '../../components/fields/CustomDecimalNumberAggiungi';
-import CustomTextFieldModifica from '../../components/fields/CustomTextFieldModifica';
-import CustomDatePickerHoursAggiungi from '../../components/fields/CustomDatePickerHoursAggiungi';
-import CustomDatePickerModifica from '../../components/fields/CustomDatePickerModifica';
+import CircleOutlinedIcon                                                                                       from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
+import axios                                                                                                    from 'axios';
+import CustomAutocomplete                                                                                       from '../../components/fields/CustomAutocomplete';
+import CustomNoteAggiungi                                                                                       from '../../components/fields/CustomNoteAggiungi';
+import CustomDecimalNumberAggiungi                                                                              from '../../components/fields/CustomDecimalNumberAggiungi';
+import CustomTextFieldModifica                                                                                  from '../../components/fields/CustomTextFieldModifica';
+import CustomDatePickerHoursAggiungi                                                                            from '../../components/fields/CustomDatePickerHoursAggiungi';
+import CustomDatePickerModifica                                                                                 from '../../components/fields/CustomDatePickerModifica';
 
 const AggiungiIntervistaGrafica = () => {
     const navigate = useNavigate();

@@ -8,7 +8,7 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
 
 
-function RicercheAziende({ filtri, onFilterChange, onReset, tipologiaOptions, statoOptions, ownerOptions, onRicerche }) {
+function RicercheAziende({ filtri, onFilterChange, onReset, tipologiaOptions, statoOptions, ownerOptions, onRicerche, idaOptions }) {
 
     const navigate = useNavigate();
 
@@ -26,7 +26,7 @@ function RicercheAziende({ filtri, onFilterChange, onReset, tipologiaOptions, st
 
 
     const navigateToAggiungi = () => {
-        navigate('/aziende/aggiungi');
+        navigate('/business/aggiungi');
     };
 
 
@@ -221,6 +221,20 @@ function RicercheAziende({ filtri, onFilterChange, onReset, tipologiaOptions, st
                                 </MenuItem>
                                 ))}
                             </Select> */}
+                            </FormControl>
+
+
+                            <FormControl fullWidth sx={{ mb: 2 }}>
+                            <Autocomplete
+                                id="ida-combo-box"
+                                options={idaOptions}
+                                getOptionLabel={(option) => option.label}
+                                value={idaOptions.find(option => option.value === filtri.ida) || null}
+                                onChange={(event, newValue) => {
+                                    onFilterChange('ida')({ target: { value: newValue?.value || null } });
+                                }}
+                                renderInput={(params) => <TextField {...params} label="IDA" />}
+                            />
                             </FormControl>
     
                             <FormControl fullWidth sx={{ mb: 2 }}>

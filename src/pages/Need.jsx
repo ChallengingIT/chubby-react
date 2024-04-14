@@ -4,6 +4,7 @@ import axios                                            from 'axios';
 import NeedCard                                         from '../components/card/NeedCard';
 import InfiniteScroll                                   from 'react-infinite-scroll-component';
 import RicercheNeed from '../components/ricerche/RicercheNeed';
+import NeedCardFlip from '../components/card/NeedCardFlip';
 
 import { 
     Box,
@@ -363,7 +364,7 @@ import {
                         ) : (
                             originalNeed.map((need, index) => (
                                 <Grid item xs={12} md={6} key={index}>
-                                    <NeedCard valori={need}
+                                    <NeedCardFlip valori={need}
                                     statoOptions={statoOptions}
                                     onDelete={() => handleDelete(need.id)}
                                     onRefresh={handleRefresh}

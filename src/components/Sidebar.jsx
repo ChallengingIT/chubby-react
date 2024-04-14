@@ -181,11 +181,11 @@ function Sidebar() {
             icon: <DashboardIcon />,
         },
         {
-            title: 'Aziende',
+            title: 'Business',
             icon: <BusinessCenterIcon />,
         },
         {
-            title: 'Keypeople',
+            title: 'Contacts',
             icon: <PersonIcon />,
         },
         {

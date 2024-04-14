@@ -1,31 +1,42 @@
 import React, { useState, useEffect }                                                                           from 'react';
-import { useNavigate, useLocation }                                                                             from 'react-router-dom';
-import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Snackbar, Skeleton, Grid } from '@mui/material';
+import { useNavigate }                                                                                          from 'react-router-dom';
+import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Skeleton, Snackbar, Grid } from '@mui/material';
 import CircleOutlinedIcon                                                                                       from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
 import axios                                                                                                    from 'axios';
 import CustomAutocomplete                                                                                       from '../../components/fields/CustomAutocomplete';
-import CustomTextFieldModifica                                                                                  from '../../components/fields/CustomTextFieldModifica';
-import CustomNoteModifica                                                                                       from '../../components/fields/CustomNoteModifica';
-import CustomDatePickerModifica                                                                                 from '../../components/fields/CustomDatePickerModifica';
+import CustomTextFieldAggiungi                                                                                  from '../../components/fields/CustomTextFieldAggiungi';
+import CustomNoteAggiungi                                                                                       from '../../components/fields/CustomNoteAggiungi';
+import CustomDatePickerAggiungi                                                                                 from '../../components/fields/CustomDatePickerAggiungi';
+import CustomDecimalNumberAggiungi                                                                              from '../../components/fields/CustomDecimalNumberAggiungi';
+import CustomMultipleSelectAggiunta                                                                             from '../../components/fields/CustomMultipleSelectAggiunta';
+import CloudUploadIcon                                                                                          from "@mui/icons-material/CloudUpload";
+import CustomWeekDateAggiungi from '../../components/fields/CustomWeekDateAggiungi';
 
-
-const ModificaKeypeopleGrafica = () => {
+const AggiungiNeedGrafica = () => {
     const navigate = useNavigate();
-    const location = useLocation();
-    const valori = location.state;
-
 
     //stati della pagina
-    const [ activeSection,      setActiveSection        ] = useState('Anagrafica');
+    const [ activeSection,      setActiveSection        ] = useState('Descrizione Need');
     const [ currentPageIndex,   setCurrentPageIndex     ] = useState(0);
     const [ alert,              setAlert                ] = useState({ open: false, message: ''});
     const [ errors,             setErrors               ] = useState({});
-    const [ loading,            setLoading              ] = useState(true);
+    const [ loading,            setLoading              ] = useState(true);    
 
     //stati per i valori
-    const [ aziendeOptions, setAziendeOptions] = useState([]);
-    const [ ownerOptions,   setOwnerOptions  ] = useState([]);
-    const [ values,             setValues               ] = useState({});
+    const [ idCandidato,        setIdCandidato          ] = useState([]);
+
+
+    const [ aziendeOptions,       setAziendeOptions     ] = useState([]);
+    const [ skillsOptions,        setSkillsOptions      ] = useState([]);
+    const [ ownerOptions,         setOwnerOptions       ] = useState([]);
+    const [ tipologiaOptions,     setTipologiaOptions   ] = useState([]);
+    const [ statoOptions,         setStatoOptions       ] = useState([]);
+  
+    const [ values,             setValues               ] = useState([]);
+
+
+
+
 
 
 
@@ -38,42 +49,87 @@ const ModificaKeypeopleGrafica = () => {
 
     //chiamata per ricevere i dati dal db
     useEffect(() => {
-        const fetchAziendeOptions = async () => {
+      const fetchNeedOptions = async () => {
         try {
-            const aziendeResponse = await axios.get("http://localhost:8080/aziende/react/select",       { headers: headers });
-            const ownerResponse   = await axios.get("http://localhost:8080/aziende/react/owner",        { headers: headers });
-            if (Array.isArray(ownerResponse.data)) {
+          const responseAziende       = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
+          const responseSkill         = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
+          const ownerResponse         = await axios.get("http://localhost:8080/aziende/react/owner" , { headers: headers });
+          const tipologiaResponse     = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
+          const statoResponse         = await axios.get("http://localhost:8080/need/react/stato"    , { headers: headers});
+  
+  
+          if (Array.isArray(statoResponse.data)) {
+            const statoOptions = statoResponse.data.map((stato) => ({
+              label: stato.descrizione,
+              value: stato.id,
+            }));
+            setStatoOptions(statoOptions);
+          }
+  
+  
+  
+          if (Array.isArray(tipologiaResponse.data)) {
+            const tipologiaOptions = tipologiaResponse.data.map((tipologia) => ({
+              label: tipologia.descrizione,
+              value: tipologia.id,
+            }));
+            setTipologiaOptions(tipologiaOptions);
+          }
+  
+  
+  
+          if (Array.isArray(ownerResponse.data)) {
             const ownerOptions = ownerResponse.data.map((owner) => ({
-                label: owner.descrizione,
-                value: owner.id,
+              label: owner.descrizione,
+              value: owner.id,
             }));
             setOwnerOptions(ownerOptions);
-            } else {
-            console.error("I dati ottenuti non sono nel formato Array:", ownerResponse.data);
-            }
-    
-    
-            if (Array.isArray(aziendeResponse.data)) {
-            const aziendeOptions = aziendeResponse.data.map((aziende) => ({
-                label: aziende.denominazione,
-                value: aziende.id,
-            }));
-            setAziendeOptions(aziendeOptions);
-            setLoading(false);
-            } else {
-            console.error("I dati ottenuti non sono nel formato Array:", aziendeResponse.data);
-            }
-        } catch (error) {
-            console.error("Errore durante il recupero delle province:", error);
+          }
+  
+  
+        if (Array.isArray(responseSkill.data)) {
+          const skillsOptions = responseSkill.data.map((skill) => ({
+            value: skill.id,
+            label: skill.descrizione
+          }));
+          setSkillsOptions(skillsOptions);
         }
-        };
-    
-        fetchAziendeOptions();
+  
+  
+          if (Array.isArray(responseAziende.data)) {
+            const ownerOptions = responseAziende.data.map((aziende) => ({
+              label: aziende.denominazione,
+              value: aziende.id,
+            }));
+            setAziendeOptions(ownerOptions);
+          }
+        } catch (error) {
+          console.error("Errore durante il recupero delle aziende:", error);
+        }
+        setLoading(false);
+
+      };
+  
+      fetchNeedOptions();
     }, []);
+  
+  
+    const pubblicazioneOptions = [
+      { value: 1, label: 'To Do' },
+      { value: 2, label: 'Done'  }
+    ];
+  
+    const screeningOptions = [
+      { value: 1, label: 'To Do' },
+      { value: 2, label: 'In progress' },
+      { value: 3, label: 'Done' }
+    ];
+
+
 
     const menu = [
         {
-            title: 'Anagrafica',
+            title: 'Descrizione Need',
             icon: <CircleOutlinedIcon />
         },
     ];
@@ -82,18 +138,18 @@ const ModificaKeypeopleGrafica = () => {
         navigate(-1);
     };
 
-    //funzione per campire quali campi sono obbligatori nel form corrente
+    //funzione per fieldre quali field sono obbligatori nel form corrente
     const getMandatoryFields = (index) => {
         switch (index) {
             case 0:
-                return ["nome", "idAzienda", "idOwner", "email", "status", "ruolo", "dataCreazione"]; 
+                return ["idAzienda", "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location"]; 
             default:
                 return [];
         }
     };
 
 
-    //funzione per la validazione dei campi
+    //funzione per la validazione dei field
     const validateFields = (values, mandatoryFields) => {
         let errors = {};
         mandatoryFields.forEach(field => {
@@ -105,6 +161,39 @@ const ModificaKeypeopleGrafica = () => {
     };
 
 
+
+     // Funzione per il cambio stato degli input
+     const handleChange = (fieldValue) => {
+        setValues(prevValues => ({
+            ...prevValues,
+            ...fieldValue
+        }));
+        };
+
+        //funzione per il cambio stato delle skill
+        const handleChangeSkill = (fieldValue) => {
+            const fieldName = Object.keys(fieldValue)[0]; 
+            const newValues = fieldValue[fieldName];
+        
+            setValues(prevValues => ({
+                ...prevValues,
+                [fieldName]: [...newValues]
+            }));
+        };
+        
+
+
+
+    //funzione di change per decimalNumber
+    // const handleChangeDecimal = (fieldName, fieldValue) => {
+    //     const value = fieldValue.replace(/,/g, '.');
+    //     if (!value || value.match(/^\d+(\.\d{0,2})?$/)) {
+    //       setValues(prevValues => ({
+    //         ...prevValues,
+    //         [fieldName]: value  
+    //       }));
+    //     }
+    //   };
 
 
     //funzioni per cambiare pagina del form
@@ -128,19 +217,12 @@ const ModificaKeypeopleGrafica = () => {
                 setActiveSection(menu[currentIndex + 1].title);
                 setCurrentPageIndex(currentIndex + 1);
             } else {
-                setAlert({ open: true, message: 'Compilare tutti i campi obbligatori presenti per poter avanzare'});
+                setAlert({ open: true, message: 'Compilare tutti i field obbligatori presenti per poter avanzare'});
             }
         }
     };
 
 
-        // Funzione per il cambio stato degli input
-    const handleChange = (fieldValue) => {
-        setValues(prevValues => ({
-            ...prevValues,
-            ...fieldValue
-        }));
-    };
 
         //funzione per la chiusura dell'alert
         const handleCloseAlert = (reason) => {
@@ -151,130 +233,61 @@ const ModificaKeypeopleGrafica = () => {
         };
 
 
-        //funzione per il salvataggio
-        const handleSubmit = async (values) => {
-            const currentIndex = menu.findIndex(item => item.title.toLowerCase() === activeSection.toLowerCase());
-            const mandatoryFields = getMandatoryFields(currentIndex); 
-            const errors = validateFields(values, mandatoryFields);
-            const hasErrors = Object.keys(errors).length > 0;
-        
-            if (!hasErrors) {
-                try {
-                    Object.keys(values).forEach(key => {
-                        if (!campiObbligatori.includes(key) && !values[key]) {
-                            values[key] = null;
-                        }
-                    });
+        //funzione per il salvataggio     
+    const handleSubmit = async (values) => {
+        const currentIndex = menu.findIndex(item => item.title.toLowerCase() === activeSection.toLowerCase());
+        const mandatoryFields = getMandatoryFields(currentIndex); 
+        const errors = validateFields(values, mandatoryFields);
+        const hasErrors = Object.keys(errors).length > 0;
     
-                    const response = await axios.post("http://localhost:8080/keypeople/react/salva", values, {
-                        headers: headers
-                    });
-                    if (response.data === "DUPLICATO") {
-                        setAlert({ open: true, message: "contatto già esistente!" });
-                        console.error("il contatto è già stata salvato.");
-                        return; 
-                    }
-                    navigate("/keyPeople");
-                } catch (error) {
-                    console.error("Errore durante il salvataggio:", error);
-                }
-            } else {
-                setErrors(errors);
-                setAlert({ open: true, message: "Compilare tutti i campi obbligatori presenti prima di avanzare" });
-            }
-        };
-        
-
-
-
-        const campiObbligatori = [ "nome", "idAzienda", "email", "idOwner", "status", "ruolo", "dataCreazione" ];
-
-        const fields =[
-            { type: "titleGroups",                label: "Anagrafica"            },
-            { label: "Nome Contatto*",        name: "nome",                 type: "text" },
-            { label: "Ruolo*",                name: "ruolo",               type: "text" },
-            { label: "Azienda*",              name: "idAzienda",            type: "select",      options: aziendeOptions },
-            { label: 'Tipo',                  name: 'tipo',                type: 'select',      options: [
-                { value: 1, label: "Keypeople" },
-                { value: 2, label: "Hook" },
-                { value: 3, label: 'Link'}
-              ] },
-              { label: "Stato*",                name: "status",              type: "select",      options: [
-                { value: "1", label: "Gold" },
-                { value: "2", label: "Silver" },
-                { value: "3", label: "Bronze" },
-                { value: "4", label: "Wood" },
-                { value: null, label: "Nessuna Azione" },
-              ] },
-              { label: "Owner*",                name: "idOwner",              type: "select",      options: ownerOptions},
-            { label: "Email*",                name: "email",                type: "text" },
-            { label: "Cellulare",             name: "cellulare",            type: "text" },
-           
-            
-            { label: "Data di Creazione*",    name: "dataCreazione",       type: "date" },
-            { label: 'Ultima attività',       name: 'dataUltimaAttivita',  type: 'date' },
-            { label: "Note",                  name: "note",                type: "note" },
-        ];
-
-
-
-        const initialValues = {
-            id:                 valori.id                                                  ,
-            nome:               valori.nome                                                || null,
-            idAzienda:          valori.cliente && valori.cliente.id                        || null,
-            idOwner:            valori.owner   && valori.owner.id                          || null,
-            email:              valori.email                                               || null,
-            cellulare:          valori.cellulare                                           || null,
-            ruolo:              valori.ruolo                                               || null,
-            dataCreazione:      valori.dataCreazione                                       || null,
-            dataUltimaAttivita: valori.dataUltimaAttivita                                  || null,
-            status:             valori.status                                              || null,
-            note:               valori.note                                                || null,
-        };
-
-
-         //funzione per caricare i dati nei campi solo dopo aver terminato la chiamata
-         useEffect(() => {
-            if (Object.keys(valori).length !== 0) {
-                const updatedFormValues = { ...initialValues };
-        
-                Object.keys(valori).forEach(key => {
-                    if (initialValues.hasOwnProperty(key)) {
-                        updatedFormValues[key] = valori[key];
+        if (!hasErrors) {
+            try {
+                Object.keys(values).forEach(key => {
+                    if (!fieldObbligatori.includes(key) && !values[key]) {
+                        values[key] = null;
                     }
                 });
-        
-                setValues(updatedFormValues);
-            }
-        }, [valori]); 
-    
+
+                const skills = values.skills ? values.skills.join(',') : '';
 
 
-        const renderFieldSkeleton = (type) => {
-            switch (type) {
-                case 'text':
-                    return <Skeleton variant="text" sx={{ fontSize: '3rem' }} />
+                delete values.skills;
 
-                case 'date':
-                    return <Skeleton variant="text" sx={{ fontSize: '3rem' }} />
+                const responseSaveNeed = await axios.post("http://localhost:8080/need/react/salva", values, { params: { skill1: skills }, headers: headers});
+                navigate('/need');
+              } catch(error) {
+                console.error("Errore durante il salvataggio", error);
+              }
+        } else {
+            setErrors(errors);
+            setAlert({ open: true, message: "Compilare tutti i field obbligatori presenti prima di avanzare" });
+        }
+    };
 
-                case 'decimalNumber':
-                    return <Skeleton variant="text" sx={{ fontSize: '3rem' }} />
+        const fieldObbligatori = [ "idAzienda", "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location" ];
 
-                case 'select':
-                case 'multipleSelectSkill':
-                    return <Skeleton variant="text" sx={{ fontSize: '3rem' }} />
-
-                case 'note':
-                    return <Skeleton variant="text" width={710} height={120} />;
-                default:
-                    return <Skeleton variant="text" sx={{ fontSize: '3rem' }} />
-
-            }
-        };
-
-
-        
+        const fields =[
+          { label: "Azienda*",            name: "idAzienda",                    type: "select",               options: aziendeOptions    },
+          { label: "Descrizione Need*",   name: "descrizione",                  type: "text"                                             },
+          { label: "Priorità*",           name: "priorita",                     type: "decimalNumber"                                           },
+          { label: "Week*",               name: "week",                         type: "week"                                       },
+          { label: "Tipologia*",           name: "tipologia",                    type: "select",               options: tipologiaOptions  },
+          { label: "Tipologia Azienda",   name: "tipo",                         type: "select",               options: [
+          { value: 1,                   label: "Cliente" },
+          { value: 2,                   label: "Consulenza" },
+          { value: 3,                   label: "Prospect" }
+        ] },
+          { label: "Owner*",                     name: "idOwner",                      type: "select",                 options: ownerOptions         },
+          { label: "Stato*",                     name: "stato",                        type: "select",                 options: statoOptions         },
+          { label: "Headcount",                 name: "numeroRisorse",                type: "decimalNumber"                                                },
+          { label: "Location*",                  name: "location",                     type: "text"                                                  },
+          { label: "Skills",                    name: "skills",                       type: "multipleSelect",    options: skillsOptions        },
+          { label: "Seniority",                 name: "anniEsperienza",               type: "decimalNumber"                                         },
+          { label: 'Pubblicazione Annuncio*',   name: 'pubblicazione',                type: 'select',                 options: pubblicazioneOptions },
+          { label: 'Screening*',                name: 'screening',                    type: 'select',                 options: screeningOptions     },
+          { label: "Note",                      name: "note",                         type: "note"                                                  },
+        ];
+      
 
         //funzione per suddividere fields nelle varie pagine in base a titleGroups
         const groupFields = (fields) => {
@@ -298,9 +311,35 @@ const ModificaKeypeopleGrafica = () => {
 
         const groupedFields = groupFields(fields); //questo è l'array suddiviso
 
-        //funzione per richiamare i vari campi
+
+        const renderFieldSkeleton = (type) => {
+            switch (type) {
+                case 'text':
+                    return <Skeleton variant="text" sx={{ fontSize: '3rem' }} />
+
+                case 'date':
+                    return <Skeleton variant="text" sx={{ fontSize: '3rem' }} />
+
+                case 'decimalNumber':
+                    return <Skeleton variant="text" sx={{ fontSize: '3rem' }} />
+
+                case 'select':
+                case 'multipleSelect':
+                    return <Skeleton variant="text" sx={{ fontSize: '3rem' }} />
+
+                case 'note':
+                    return <Skeleton variant="text" width={710} height={120} />;
+                default:
+                    return <Skeleton variant="text" sx={{ fontSize: '3rem' }} />
+
+            }
+        };
+
+
+
+        //funzione per richiamare i vari field
         const renderFields = (field) => {
-            if (loading ) {
+            if (loading) {
                 return renderFieldSkeleton(field.type);
             } else {
             const { type, ...otherProps } = field;
@@ -310,54 +349,90 @@ const ModificaKeypeopleGrafica = () => {
             switch (type) {
                 case 'text':
                     return (
-                        <CustomTextFieldModifica
+                        <CustomTextFieldAggiungi
                         name={field.name}
                         label={field.label}
                         type={field.type}
                         values={values}
                         onChange={handleChange}
-                        initialValues={initialValues}
                         />
                     );
 
 
                     case 'note':
-                        return (
-                            <CustomNoteModifica
-                            name={field.name}
-                            label={field.label}
-                            type={field.type}
-                            values={values}
-                            onChange={handleChange}
-                            initialValues={initialValues}
-                            />
-                        );
+                    return (
+                        <CustomNoteAggiungi
+                        name={field.name}
+                        label={field.label}
+                        type={field.type}
+                        values={values}
+                        onChange={handleChange}
+                        />
+                    );
 
-                    case 'date':
-                        return (
-                            <CustomDatePickerModifica
-                            name={field.name}
-                            label={field.label}
-                            type={field.type}
-                            values={values}
-                            onChange={handleChange}
-                            initialValues={initialValues}
-                            />
-                        )
+                    case 'select': 
+                    return (
+                        <CustomAutocomplete
+                        name={field.name}
+                        label={field.label}
+                        options={field.options}
+                        value={values[field.name] || null}
+                        onChange={handleChange}
+                        getOptionSelected={(option, value) => option.value === value.value}
+                        />
+                    );
 
-                case 'select': 
-                        return (
-                            <CustomAutocomplete
+
+                    case 'week': 
+                    return (
+                      <CustomWeekDateAggiungi
+                      name={field.name}
+                      label={field.label}
+                      values={values}
+                      onChange={handleChange}
+                      />
+                    )
+
+
+
+                case 'date':
+                    return (
+                        <CustomDatePickerAggiungi
+                        name={field.name}
+                        label={field.label}
+                        type={field.type}
+                        values={values}
+                        onChange={handleChange}
+                        />
+                    );
+
+
+                case 'decimalNumber':
+                return (
+                    <CustomDecimalNumberAggiungi
+                    name={field.name}
+                    label={field.label}
+                    type={field.type}
+                    values={values}
+                    onChange={handleChange}
+                    />
+                );
+
+
+                case 'multipleSelect':
+                    return ( 
+                        <CustomMultipleSelectAggiunta
                             name={field.name}
                             label={field.label}
                             options={field.options}
                             value={values[field.name] || null}
-                            onChange={handleChange}
+                            onChange={handleChangeSkill}
                             getOptionSelected={(option, value) => option.value === value.value}
-                            initialValues={initialValues}
-                            />
-                        );
+                            skillsOptions={skillsOptions}
+                        />
+                    );
 
+                
                     default:
                         return null;
             }
@@ -410,8 +485,6 @@ const ModificaKeypeopleGrafica = () => {
             );
         };
 
-
-
   return (
     <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
         <Box sx={{ display: 'flex', height: '98%', width: '100vw', flexDirection: 'row', ml: '12.5em', mt: '0.5em', mb: '0.5em', mr: '0.8em', borderRadius: '20px', overflow: 'hidden' }}>
@@ -437,7 +510,7 @@ const ModificaKeypeopleGrafica = () => {
                         Indietro
                     </Button>
                 </Box>
-                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: 'black'}}>  Modifica <br /> Contatto </Typography>
+                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: 'black'}}>  Aggiungi <br /> Candidato </Typography>
                 <List sx={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
                             {menu.map((item) => (
                                 <ListItem
@@ -462,7 +535,7 @@ const ModificaKeypeopleGrafica = () => {
                             ))}
                         </List>
             </Box>
-            <Box sx={{ flexGrow: 1, height: '100%', background: '#FEFCFD',  display: 'flex', flexDirection: 'column', ml: '280px' }}>
+            <Box sx={{ flexGrow: 1, height: '100%', background: '#FEFCFD',  display: 'flex', flexDirection: 'column', ml: '280px'}}>
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, mb: 3}}>
                 <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
                 <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
@@ -473,10 +546,8 @@ const ModificaKeypeopleGrafica = () => {
                 </Box>
                 <Box sx={{ display: 'flex', width: '100%', height: '100%', flexDirection: 'column', pl: 5, pr: 5, overflow: 'auto'}}>
                 {renderFieldsGroups(groupedFields)}
-                </Box>
+                </Box>   
                 <Typography variant="h6" sx={{ mt: 2, color: '#666565', fontSize: '1em', ml: 16}}>* Campo Obbligatorio</Typography>
-
-
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5, gap: 6 }}>
                 {currentPageIndex > 0 && (
                         <Button onClick={handleBackButtonClick}
@@ -498,8 +569,8 @@ const ModificaKeypeopleGrafica = () => {
                         )}
                         {currentPageIndex < groupedFields.length - 1 && (
                             <Button onClick={handleNextButtonClick}
-                                sx={{ 
-                                mb: 4,
+                                sx={{
+                                mb: 4, 
                                 width: '250px',
                                 backgroundColor: "black",
                                 color: "white",
@@ -545,4 +616,4 @@ const ModificaKeypeopleGrafica = () => {
     )
 }
 
-export default ModificaKeypeopleGrafica;
+export default AggiungiNeedGrafica;

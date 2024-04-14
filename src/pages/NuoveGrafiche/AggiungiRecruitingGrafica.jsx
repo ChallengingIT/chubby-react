@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect }                                                                           from 'react';
+import { useNavigate }                                                                                          from 'react-router-dom';
 import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Skeleton, Snackbar, Grid } from '@mui/material';
-import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
-import axios from 'axios';
-import CustomAutocomplete from '../../components/fields/CustomAutocomplete';
-import CustomTextFieldAggiungi from '../../components/fields/CustomTextFieldAggiungi';
-import CustomNoteAggiungi from '../../components/fields/CustomNoteAggiungi';
-import CustomDatePickerAggiungi from '../../components/fields/CustomDatePickerAggiungi';
-import CustomDecimalNumberAggiungi from '../../components/fields/CustomDecimalNumberAggiungi';
-import CustomMultipleSelectAggiunta from '../../components/fields/CustomMultipleSelectAggiunta';
-import CloudUploadIcon  from "@mui/icons-material/CloudUpload";
+import CircleOutlinedIcon                                                                                       from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
+import axios                                                                                                    from 'axios';
+import CustomAutocomplete                                                                                       from '../../components/fields/CustomAutocomplete';
+import CustomTextFieldAggiungi                                                                                  from '../../components/fields/CustomTextFieldAggiungi';
+import CustomNoteAggiungi                                                                                       from '../../components/fields/CustomNoteAggiungi';
+import CustomDatePickerAggiungi                                                                                 from '../../components/fields/CustomDatePickerAggiungi';
+import CustomDecimalNumberAggiungi                                                                              from '../../components/fields/CustomDecimalNumberAggiungi';
+import CustomMultipleSelectAggiunta                                                                             from '../../components/fields/CustomMultipleSelectAggiunta';
+import CloudUploadIcon                                                                                          from "@mui/icons-material/CloudUpload";
 
 const AggiungiRecruitingGrafica = () => {
     const navigate = useNavigate();

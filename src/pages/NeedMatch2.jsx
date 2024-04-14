@@ -1,8 +1,8 @@
 import React, { useEffect, useState}                  from 'react'
-import { useParams }                                  from 'react-router-dom';
+import { Link, useParams }                                  from 'react-router-dom';
 import { useNavigate }                                from "react-router-dom";
 import axios                                          from 'axios';
-import { Modal, Box, Button, Typography, selectClasses }             from '@mui/material';
+import { Modal, Box, Button, Typography, selectClasses}             from '@mui/material';
 import { useLocation }                                from 'react-router-dom';
 import Tabella from '../components/Tabella.jsx';
 import DeleteButton from '../components/button/DeleteButton.jsx';
@@ -641,15 +641,18 @@ const NeedMatch2 = () => {
 
 
                 const tabellaAssociati = [
-                        { field: "nome",                    headerName: "Nome",         flex: 1, renderCell: (params) => (
-                            <div style={{ textAlign: "left"  }}>
-                            <div onClick={() => navigateToCercaCandidato(params.row)}>
-                                    
-                                    {params.row.nome} {params.row.cognome}
-                                </div>
-                        
-                        </div>
-                            ),},
+                    { field: "nome",         headerName: "Nome",           flex: 1.3, renderCell: (params) => (
+                        <div style={{ textAlign: "left"  }}>
+                        <Link 
+                        to={`/recruiting/modifica/${params.row.id}`}
+                        state={{ recruitingData: params.row }}
+                        style={{ color: 'black' }}
+                      >
+                        {params.row.nome} {params.row.cognome}
+                      </Link>
+                      </div>
+                        ),
+                      },
                         { field: "email",                   headerName: "E-Mail",        flex: 1.4},
                         { field: "tipologia",               headerName: "Job Title",     flex: 1, renderCell: (params) => (
                             <div style={{ textAlign: "start" }}>

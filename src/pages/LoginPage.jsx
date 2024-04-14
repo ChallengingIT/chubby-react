@@ -2,10 +2,10 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import loginTorchy from '../images/loginTorchy.svg';
 import { Box } from '@mui/material';
-import LogoTorchySVG from '../images/LogoTorchy.svg';
+// import LogoTorchySVG from '../images/LogoTorchy.svg';
 import LoginComponent from '../components/LoginComponent';
 import TorchyChallenging from '../images/tochyChallenging.svg';
-import LoginSignupComponent from '../components/LoginSignupComponent';
+// import LoginSignupComponent from '../components/LoginSignupComponent';
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -17,7 +17,7 @@ const LoginPage = () => {
         height: '100vh',
         alignItems: 'center', 
         justifyContent: 'center', 
-        position: 'relative', 
+        position: 'absolute', 
         owerflow: 'hidden'
         }}>
         <img
@@ -37,14 +37,16 @@ const LoginPage = () => {
             position: 'absolute', 
             top: '-5%', 
             left: '2.5%', 
+            height: '10%',
+            width: '20%',
         }}>
             <img
             alt="Torchy logo"
             src={TorchyChallenging}
-            style={{
-                height: '100%',
-                width: '100%', 
-            }}
+            // style={{
+            //     height: '30%',
+            //     width: '100%', 
+            // }}
             />
         </Box>
 

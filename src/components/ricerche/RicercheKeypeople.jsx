@@ -23,7 +23,7 @@ function RicercheKeypeople({ filtri, onFilterChange, onReset, aziendaOptions, st
     const handleCloseFiltri = () => setOpenFiltri(false);
 
     const navigateToAggiungi = () => {
-        navigate('/keypeople/aggiungi');
+        navigate('/contacts/aggiungi');
     };
 
     return (

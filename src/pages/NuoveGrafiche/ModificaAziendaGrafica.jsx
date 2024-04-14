@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useState, useEffect }                                                                           from 'react';
+import { useNavigate, useLocation }                                                                             from 'react-router-dom';
 import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Snackbar, Skeleton, Grid } from '@mui/material';
-import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
-import axios from 'axios';
-import CustomAutocomplete from '../../components/fields/CustomAutocomplete';
-import CustomTextFieldModifica from '../../components/fields/CustomTextFieldModifica';
-import CustomImgFieldModifica from '../../components/fields/CustomImgFieldModifica';
+import CircleOutlinedIcon                                                                                       from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
+import axios                                                                                                    from 'axios';
+import CustomAutocomplete                                                                                       from '../../components/fields/CustomAutocomplete';
+import CustomTextFieldModifica                                                                                  from '../../components/fields/CustomTextFieldModifica';
+import CustomImgFieldModifica                                                                                   from '../../components/fields/CustomImgFieldModifica';
 
 
 const ModificaAziendaGrafica = () => {

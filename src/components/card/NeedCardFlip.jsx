@@ -1,0 +1,477 @@
+import React, {useState, useEffect}                 from 'react';
+import { useNavigate }                              from 'react-router-dom';
+// import ChecklistIcon                                from '@mui/icons-material/Checklist';
+import BusinessCenterIcon                   from '@mui/icons-material/BusinessCenter';
+import axios                                        from 'axios';
+import Torcia                                       from "../../images/torciaSF.png";
+import JoinInnerIcon                                from '@mui/icons-material/JoinInner'; //match
+import AutorenewIcon                                from '@mui/icons-material/Autorenew'; //stato
+import DeleteIcon                                   from '@mui/icons-material/Delete'; //cancella
+import { Edit }                                     from '@mui/icons-material';
+import AutoModeIcon                                 from '@mui/icons-material/AutoMode'; //stato
+import NuovaTorcia                                  from "../../images/nuovaTorcia.svg";
+import PlaceIcon                            from '@mui/icons-material/Place';
+
+
+
+
+import { 
+    Card, 
+    CardContent, 
+    Box,
+    Typography,
+    Button,
+    Modal,
+    Select,
+    MenuItem,
+    Popover,
+    IconButton,
+    List,
+    ListItem,
+    ListItemText,
+    ListItemIcon
+    } from '@mui/material';
+
+
+
+
+
+const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
+
+    const navigate = useNavigate();
+    const [ modalStato,        setModalStato      ] = useState(false);
+    const [ modalDelete,       setModalDelete     ] = useState(false);
+    const [ newStato,          setNewStato        ] = useState(valori.stato?.id); 
+    const [ idNeed,            setIdNeed          ] = useState(null);
+    const [isFlipped, setIsFlipped] = useState(false);
+    const [activeLink, setActiveLink] = useState(null);
+
+
+
+    const user = JSON.parse(localStorage.getItem('user'));
+    const token = user?.token;
+
+    const headers = {
+        Authorization: `Bearer ${token}`
+    };
+
+
+    useEffect(() => {
+        setNewStato(valori.stato?.id);
+    }, [valori.stato?.id]);
+    
+    const toggleFlip = () => {
+        setIsFlipped(!isFlipped);
+    };
+
+    const navigateToAssocia = (id, event) => {
+        // event.stopPropagation();
+        navigate(`/need/match/${valori.id}`, { state: {...valori}});
+    };
+
+    const navigateToAggiorna = (id, event) => {
+        // event.stopPropagation();
+        navigate(`/need/modifica/${valori.id}`, { state: { ...valori } });
+    };
+
+
+
+    const handleOpenModalStato = (id) => {
+        setModalStato(true);
+        setIdNeed(id);
+    };
+    const handleCloseModalStato = () => setModalStato(false);
+
+    const handleChangeStato = (event) => {
+        setNewStato(event.target.value); 
+    };
+
+
+
+    const handleUpdateStato = async () => {
+        const idStato = newStato;
+        const params = new URLSearchParams({ stato: idStato });
+
+
+        try {
+            const responseUpdateStato = await axios.post(`http://localhost:8080/need/react/salva/stato/${idNeed}?${params.toString()}`, { headers: headers});
+            setModalStato(false);
+            onRefresh();
+        } catch(error) {
+            console.error("Errore durante l'aggiornamento dello stato: ", error);
+        }
+    };
+
+
+
+
+    const handleOpenModalDelete = () => setModalDelete(true);
+    const handleCloseModalDelete = () => setModalDelete(false);
+
+    const confirmDelete = () => {
+        onDelete();
+        handleCloseModalDelete(true);
+    };
+
+
+    const cardContainerStyle = {
+        width: '80%',
+        borderRadius: '20px',
+        marginLeft: '4em',
+        marginRight: '2em',
+        border: 'solid 2px #00B400',
+            '&:hover': {
+            cursor: 'pointer',
+            transform: 'scale(1.05)',
+        }
+        
+       
+        
+    };
+
+    const cardStyle = {
+        transformStyle: 'preserve-3d',
+        transition: 'transform 0.6s',
+        transform: isFlipped ? 'rotateY(180deg)' : 'none',
+        width: '100%',
+        perspective: '1000px',
+        borderRadius: '20px',
+        display: 'flex',
+
+        minHeight: '16em',
+        // border: 'solid 2px #00B401',
+        
+    };
+
+    const cardFrontStyle = {
+        backfaceVisibility: 'hidden',
+    };
+
+    const cardBackStyle = {
+        backfaceVisibility: 'hidden',
+        transform: 'rotateY(180deg)',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+    };
+
+    const menuData = [
+        {
+            title: 'Aggiorna Need',
+            icon: <Edit />,
+            onClick: (event) => {
+                navigateToAggiorna(valori.id, event);
+            }
+        },
+        {
+            title: 'Match',
+            icon: <JoinInnerIcon />,
+            onClick: (event) => {
+                navigateToAssocia(valori.id, event);
+            }
+        },
+        { 
+            title: 'Cambia stato',
+            icon: <AutorenewIcon />,
+            onClick: (event) => {
+                handleOpenModalStato(valori.id);
+            }
+        },
+        {
+            title: 'Elimina Need',
+            icon: <DeleteIcon />,
+            onClick: (event) => {
+                handleOpenModalDelete(event);
+            }
+        }
+    ];
+
+
+    return (
+        <Card
+            raised 
+            sx={cardContainerStyle}
+            onClick={toggleFlip}
+            >
+            <div style={cardStyle}>
+            <div style={cardFrontStyle}>
+
+
+        <CardContent sx={{ backfaceVisibility: 'hidden'}}>
+            {/* Contenuto della Card */}
+            <Box sx={{ display: 'flex', alignItems: 'start', justifyContent: 'space-between', flexDirection: 'column', mb: 1 }}>
+
+            <Box sx={{ display: 'flex', alignItems: 'start', justifyContent: 'flex-start', flexDirection: 'column', mb: 1 }}>
+            <Typography
+                gutterBottom
+                variant="h5"
+                component="div"
+                sx={{
+                color: 'black',
+                fontWeight: 'bold',
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+                textOverflow: 'ellipsis',
+                width: '100%' 
+                }}
+            >
+                {valori.descrizione}
+            </Typography>
+
+
+            <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
+                    <PlaceIcon sx={{ color: '#00B401', mr: 1 }} />
+                    {valori.location}
+            </Typography>
+
+
+            <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
+                    <BusinessCenterIcon sx={{ color: '#00B401', mr: 1 }} />
+                    {valori.tipologia && valori.tipologia.descrizione
+                    ? valori.tipologia.descrizione
+                    : "N/A"}
+                    </Typography>
+
+            <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
+                    <AutoModeIcon sx={{ color: '#00B401', mr: 1 }} />
+                    {valori.stato.descrizione}
+            </Typography>
+                </Box>
+                <Box sx={{ 
+            position: 'absolute', 
+            bottom: 0, 
+            right: 0, 
+            display: 'flex', 
+            justifyContent: 'flex-end', 
+            alignItems: 'end', 
+            paddingRight: '16px', 
+            paddingBottom: '16px' 
+        }}>
+            <Typography variant="h6" color="text.primary" sx={{ color: 'black', fontWeight: 'bold', display: 'flex', mr: 1, mt: 2 }}>{valori.cliente.denominazione}</Typography>
+        </Box>
+                </Box>
+        </CardContent>
+        </div>
+
+
+
+        <div style={cardBackStyle}>
+        <CardContent sx={{ backfaceVisibility: 'hidden'}}>
+            {/* Contenuto della Card */}
+            <Typography
+                gutterBottom
+                variant="h5"
+                component="div"
+                sx={{
+                color: 'black',
+                fontWeight: 'bold',
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+                textOverflow: 'ellipsis',
+                width: '100%',
+                
+                }}
+            >
+                Menu
+            </Typography>
+
+            <Box sx={{ display: 'flex', alignItems: 'start', justifyContent: 'flex-start', flexDirection: 'column', mb: 1 }}>
+            <List>
+                    {menuData.map((item, index) => (
+                        <ListItem
+                            key={item.title}
+                            selected={activeLink === `/${item.title.toLowerCase()}`}
+                            onClick={item.onClick}  
+                            sx={{
+                                gap: 0,
+                                '&:hover, &.Mui-selected': {
+                                    backgroundColor: '#00B401',
+                                    cursor: 'pointer',
+                                    '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+                                        color: 'white',
+                                    },
+                                    borderRadius: '10px',
+                                },
+                                borderRadius: '10px',
+                                backgroundColor: activeLink === `/${item.title.toLowerCase()}` ? '#00B401' : '',
+                                '& .MuiListItemIcon-root': {
+                                    color: activeLink === `/${item.title.toLowerCase()}` ? '#00B400' : '#00B401',
+                                    minWidth: '2.2em',
+                                },
+                                '& .MuiListItemText-primary': {
+                                    color: activeLink === `/${item.title.toLowerCase()}` ? '#00B400' : 'black',
+                                },
+                            }}
+                        >
+                            <ListItemIcon>
+                                {item.icon}
+                            </ListItemIcon>
+                            <ListItemText primary={item.title} />
+                        </ListItem>
+                    ))}
+                </List>
+        </Box>
+
+
+
+        </CardContent>
+
+        </div>
+        </div>
+
+        <Modal
+                open={modalDelete}
+                onClose={handleCloseModalDelete}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+                >
+                    <Box
+                            sx={{
+                            backgroundColor: 'white',
+                            p: 4,
+                            borderRadius: 2,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flexDirection: 'column',
+                            gap: 2,
+                            width: '40vw',
+                            }}
+                            >
+                            <Typography id="modal-modal-title" variant="h6" component="h2">
+                            Sei sicuro di voler eliminare il need?
+                            </Typography>
+                            <Box 
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                gap: 3
+                            }}>
+                                <Button
+                                onClick={handleCloseModalDelete}
+                                sx={{
+                                    backgroundColor: 'black',
+                                    color: 'white',
+                                    borderRadius: '5px',
+                                    '&:hover': {
+                                        backgroundColor: 'black',
+                                        color: 'white',
+                                        transform: 'scale(1.05)'
+                                    },
+                                }}>
+                                Indietro
+                            </Button>
+                            <Button
+                            onClick={confirmDelete}
+                            sx={{
+                                backgroundColor: '#00B401',
+                                color: 'white',
+                                borderRadius: '5px',
+                                '&:hover': {
+                                    backgroundColor: '#00B401',
+                                    color: 'white',
+                                    transform: 'scale(1.05)'
+                                },
+                            }}>
+                                Conferma
+                            </Button>
+                            </Box>
+                            </Box>
+                </Modal>
+                
+
+
+                <Modal
+                        open={modalStato}
+                        onClose={() => setModalStato(false)}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                        >
+                        <Box
+                            sx={{
+                            backgroundColor: 'white',
+                            p: 4,
+                            borderRadius: 2,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flexDirection: 'column',
+                            gap: 2,
+                            width: '40vw',
+                            }}
+                        >
+                            <Typography id="modal-modal-title" variant="h6" component="h2">
+                            Cambia stato al need
+                            </Typography>
+
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={newStato}
+                                onChange={handleChangeStato}
+                                sx={{ width: '30%' }}
+                            >
+                                {statoOptions.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+
+                            <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                pt: 2,
+                                gap: 3
+                            }}
+                            >
+                            <Button
+                                onClick={handleCloseModalStato}
+                                sx={{
+                                backgroundColor: 'black',
+                                color: 'white',
+                                '&:hover': {
+                                    backgroundColor: '#333',
+                                },
+                                }}
+                            >
+                                Indietro
+                            </Button>
+
+                            <Button
+                                onClick={handleUpdateStato}
+                                sx={{
+                                backgroundColor: '#00B401',
+                                color: 'white',
+                                '&:hover': {
+                                    backgroundColor: '#006b2b',
+                                },
+                                }}
+                            >
+                                Salva
+                            </Button>
+                            </Box>
+                        </Box>
+                        </Modal>
+
+
+
+    </Card>
+    );
+};
+
+export default NeedCardFlip;

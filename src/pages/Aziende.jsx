@@ -9,7 +9,8 @@ import {
     Grid,
     Skeleton
     } from '@mui/material';
-import ProvaCardFlip from '../components/card/ProvaCardFlip';
+import ProvaCardFlip from '../components/card/AziendeCardFlip';
+import AziendeCardFlip from '../components/card/AziendeCardFlip';
 
 
 const Aziende = () => {
@@ -44,6 +45,7 @@ const Aziende = () => {
           tipologia: '',
           stato: '',
           owner: '',
+          ida: '',
           ownerLabel: '', 
         };
       });
@@ -217,7 +219,7 @@ const Aziende = () => {
                 if (filtriHasValues) {
                     handleRicerche();
                 }
-            }, [filtri.tipologia, filtri.stato, filtri.owner]);
+            }, [filtri.tipologia, filtri.stato, filtri.owner, filtri.ida]);
 
 
             useEffect(() => {
@@ -233,7 +235,8 @@ const Aziende = () => {
                     denominazione: '',
                     stato: '',
                     owner:'',
-                    tipologia:''
+                    tipologia:'',
+                    ida: ''
                 });
                 setPagina(0);
                 setOriginalAziende([]);
@@ -274,6 +277,12 @@ const Aziende = () => {
             { label: 'Freddo', value: '3' }
         ];
 
+        const idaOptions = [
+            { label: "1", value: 1 },
+            { label: "2", value: 2 },
+            { label: "3", value: 3 }
+        ];
+
 
     return(
         <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto', width: '100vw' }}>
@@ -302,6 +311,7 @@ const Aziende = () => {
                     statoOptions={statoOptions}
                     ownerOptions={ownerOptions}
                     onRicerche={handleRicerche}
+                    idaOptions={idaOptions}
                     />
                     </Box>
                         <InfiniteScroll
@@ -329,7 +339,7 @@ const Aziende = () => {
                     ) : (
                         originalAziende.map((aziende, index) => (
                             <Grid item xs={12} md={6} key={index}>
-                                <AziendeCard
+                                <AziendeCardFlip
                                 valori={aziende}
                                 onDelete={() => handleDelete(aziende.id)}
                                 onRefresh={handleRefresh}

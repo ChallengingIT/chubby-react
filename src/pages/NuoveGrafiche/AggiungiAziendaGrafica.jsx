@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Box, Typography, TextField, Select, MenuItem, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Grid, FormControl, Autocomplete, InputLabel, FormHelperText, Snackbar } from '@mui/material';
-import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
-import axios from 'axios';
-import CustomAutocomplete from '../../components/fields/CustomAutocomplete';
-import CustomTextFieldAggiungi from '../../components/fields/CustomTextFieldAggiungi';
-import CustomNoteAggiungi from '../../components/fields/CustomNoteAggiungi';
-import CustomImgFieldAggiunta from '../../components/fields/CustomImgFieldAggiunta';
+import React, { useState, useEffect }                                                                 from 'react';
+import { useNavigate }                                                                                from 'react-router-dom';
+import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Grid, Snackbar } from '@mui/material';
+import CircleOutlinedIcon                                                                             from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
+import axios                                                                                          from 'axios';
+import CustomAutocomplete                                                                             from '../../components/fields/CustomAutocomplete';
+import CustomTextFieldAggiungi                                                                        from '../../components/fields/CustomTextFieldAggiungi';
+import CustomNoteAggiungi                                                                             from '../../components/fields/CustomNoteAggiungi';
+import CustomImgFieldAggiunta                                                                         from '../../components/fields/CustomImgFieldAggiunta';
 
 
 const AggiungiAziendaGrafica = () => {

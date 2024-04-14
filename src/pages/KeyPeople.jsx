@@ -13,6 +13,7 @@ import {
     Grid,
     Skeleton
     } from '@mui/material';
+import KeypeopleCardFlip from '../components/card/KeypeopleCardFlip';
 
 
 const Keypeople = () => {
@@ -309,7 +310,7 @@ const Keypeople = () => {
                     ) : (
                         originalKeypeople.map((keypeople, index) => (
                             <Grid item xs={12} md={6} key={index}>
-                                <KeypeopleCard 
+                                <KeypeopleCardFlip 
                                 valori={keypeople}
                                 onDelete={() => handleDelete(keypeople.id)}/>
                             </Grid>

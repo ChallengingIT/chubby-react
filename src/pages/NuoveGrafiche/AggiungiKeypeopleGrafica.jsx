@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Snackbar, Grid } from '@mui/material';
-import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
-import axios from 'axios';
-import CustomAutocomplete from '../../components/fields/CustomAutocomplete';
-import CustomTextFieldAggiungi from '../../components/fields/CustomTextFieldAggiungi';
-import CustomNoteAggiungi from '../../components/fields/CustomNoteAggiungi';
-import CustomDatePickerAggiungi from '../../components/fields/CustomDatePickerAggiungi';
+import React, { useState, useEffect }                                                                 from 'react';
+import { useNavigate, useLocation }                                                                   from 'react-router-dom';
+import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Snackbar, Grid, Popover, IconButton } from '@mui/material';
+import CircleOutlinedIcon                                                                             from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
+import axios                                                                                          from 'axios';
+import CustomAutocomplete                                                                             from '../../components/fields/CustomAutocomplete';
+import CustomTextFieldAggiungi                                                                        from '../../components/fields/CustomTextFieldAggiungi';
+import CustomNoteAggiungi                                                                             from '../../components/fields/CustomNoteAggiungi';
+import CustomDatePickerAggiungi                                                                       from '../../components/fields/CustomDatePickerAggiungi';
+import InfoIcon                                                                                       from '@mui/icons-material/Info';
+import CustomSelectAggiungi from '../../components/fields/CustomSelectAggiungi';
 
 
 const AggiungiKeypeopleGrafica = () => {
@@ -180,6 +182,20 @@ const AggiungiKeypeopleGrafica = () => {
                 setAlert({ open: true, message: "Compilare tutti i campi obbligatori presenti prima di avanzare" });
             }
         };
+
+        //funzione per il popover
+        const [anchorEl, setAnchorEl] = useState(null);
+
+        const handlePopoverOpen = (event) => {
+            setAnchorEl(event.currentTarget);
+        };
+
+        const handlePopoverClose = () => {
+            setAnchorEl(null);
+        };
+
+        const open = Boolean(anchorEl);
+
         
 
 
@@ -188,18 +204,26 @@ const AggiungiKeypeopleGrafica = () => {
 
         const fields =[
             { type: "titleGroups",                label: "Anagrafica"            },
-            { label: "Nome Contatto*",        name: "nome",                 type: "text" },
-            { label: "Azienda*",              name: "idAzienda",            type: "select",      options: aziendeOptions },
+            { label: "Nome Contatto*",        name: "nome",                type: "text" },
+            { label: "Ruolo*",                name: "ruolo",               type: "text" },
+            { label: "Azienda*",              name: "idAzienda",           type: "select",      options: aziendeOptions },
+            { label: 'Tipo',                  name: 'tipo',                type: 'select',      options: [
+                { value: 1, label: "Keypeople" },
+                { value: 2, label: "Hook" },
+                { value: 3, label: 'Link'}
+              ] },
+            { label: "Stato*",                name: "status",              type: "select",      options: [
+                { value: "1", label: "Gold" },
+                { value: "2", label: "Silver" },
+                { value: "3", label: "Bronze" },
+                { value: "4", label: "Wood" },
+                { value: null, label: "Nessuna Azione" },
+              ] },
+              { label: "Owner*",                name: "idOwner",              type: "select",      options: ownerOptions},
             { label: "Email*",                name: "email",                type: "text" },
             { label: "Cellulare",             name: "cellulare",            type: "text" },
-            { label: "Owner*",                name: "idOwner",              type: "select",      options: ownerOptions},
-            { label: "Stato*",                name: "status",               type: "select",      options: [
-              { value: "1", label: "Verde" },
-              { value: "2", label: "Giallo" },
-              { value: "3", label: "Rosso" },
-            ] },
+           
             
-            { label: "Ruolo*",                name: "ruolo",               type: "text" },
             { label: "Data di Creazione*",    name: "dataCreazione",       type: "date" },
             { label: 'Ultima attività',       name: 'dataUltimaAttivita',  type: 'date' },
             { label: "Note",                  name: "note",                type: "note" },
@@ -268,18 +292,102 @@ const AggiungiKeypeopleGrafica = () => {
                             />
                         )
 
-                case 'select': 
-                        return (
-                            <CustomAutocomplete
-                            name={field.name}
-                            label={field.label}
-                            options={field.options}
-                            value={values[field.name] || null}
-                            onChange={handleChange}
-                            getOptionSelected={(option, value) => option.value === value.value}
-                            />
-                        );
+                        case 'select':
+                            if (field.name === 'status') {
+                                return (
+                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                        <CustomAutocomplete
+                                            name={field.name}
+                                            label={field.label}
+                                            options={field.options}
+                                            value={values[field.name] || null}
+                                            onChange={handleChange}
+                                            getOptionSelected={(option, value) => option.value === value.value}
+                                        />
+                                        <IconButton onClick={handlePopoverOpen} sx={{ mr: -3, ml: 2 }}>
+                                            <InfoIcon />
+                                        </IconButton>
+                                        <Popover
+                                            open={open}
+                                            anchorEl={anchorEl}
+                                            onClose={handlePopoverClose}
+                                            anchorOrigin={{
+                                                vertical: 'bottom',
+                                                horizontal: 'right',
+                                            }}
+                                            transformOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'right',
+                                            }}
+                                            >
+                                            <List dense>
+                                                <ListItem>
+                                                <ListItemText 
+                                                    primary={
+                                                    <Box>
+                                                        <Typography component="span" sx={{ fontWeight: 'bold' }}>Gold:</Typography>
+                                                        {" ho ricevuto un’esigenza di business"}
+                                                    </Box>
+                                                    } 
+                                                />
+                                                </ListItem>
+                                                <ListItem>
+                                                <ListItemText 
+                                                    primary={
+                                                    <Box>
+                                                        <Typography component="span" sx={{ fontWeight: 'bold' }}>Silver:</Typography>
+                                                        {" è stata fissata una prospection"}
+                                                    </Box>
+                                                    } 
+                                                />
+                                                </ListItem>
+                                                <ListItem>
+                                                <ListItemText 
+                                                    primary={
+                                                    <Box>
+                                                        <Typography component="span" sx={{ fontWeight: 'bold' }}>Bronze:</Typography>
+                                                        {" entrati in contatto"}
+                                                    </Box>
+                                                    } 
+                                                />
+                                                </ListItem>
+                                                <ListItem>
+                                                <ListItemText 
+                                                    primary={
+                                                    <Box>
+                                                        <Typography component="span" sx={{ fontWeight: 'bold' }}>Wood:</Typography>
+                                                        {" ho effettuato un’azione senza esito"}
+                                                    </Box>
+                                                    } 
+                                                />
+                                                </ListItem>
+                                                <ListItem>
+                                                <ListItemText 
+                                                    primary={
+                                                    <Box>
+                                                        <Typography component="span" sx={{ fontWeight: 'bold' }}>Nessuna Azione:</Typography>
+                                                        {" non ho ancora effettuato azioni commerciali"}
+                                                    </Box>
+                                                    } 
+                                                />
+                                                </ListItem>
+                                            </List>
+                                            </Popover>
 
+                                    </Box>
+                                );
+                            }
+                            return (
+                                <CustomAutocomplete
+                                    name={field.name}
+                                    label={field.label}
+                                    options={field.options}
+                                    value={values[field.name] || null}
+                                    onChange={handleChange}
+                                    getOptionSelected={(option, value) => option.value === value.value}
+                                />
+                            );
+                        
                     default:
                         return null;
             }
