@@ -10,6 +10,10 @@ import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import AutoModeIcon                         from '@mui/icons-material/AutoMode'; //stato
 import ExploreIcon from '@mui/icons-material/Explore'; //need
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow'; //azioni
+import CloseIcon from '@mui/icons-material/Close';
+import axios from 'axios';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination } from '@mui/material';
+
 
 
 
@@ -28,27 +32,50 @@ import {
     ListItemText,
     Select,
     MenuItem,
-    TextField
+    TextField,
+    Popover,
+    Autocomplete,
+    FormControl,
+    
     } from '@mui/material';
 
 
 const KeypeopleCardFlip = ({valori, onDelete}) => {
 
+
+    //stati per la paginazione
+    const [ pagina,             setPagina        ] = useState(0);
+    const [righePerPagina,      setRighePerPagina] = useState(10);
+    const quantita = 10;
+
     const [ modalStorico,        setModalStorico      ] = useState(false);
     const [ modalAzioni,         setModalAzioni       ] = useState(false);
-    const [ modalDelete,       setModalDelete     ] = useState(false);
-    const [isFlipped, setIsFlipped] = useState(false);
-    const [activeLink, setActiveLink] = useState(null);
-    const [ newAzione,          setNewAzione        ] = useState(valori.azione?.id); 
-    const [ newData,          setNewData        ] = useState(valori.date);
-    const [ newNota,          setNewNota        ] = useState(valori.note);
-
+    const [ modalDelete,         setModalDelete       ] = useState(false);
+    const [ modalNeed,           setModalNeed         ] = useState(false);
+    const [ isFlipped,           setIsFlipped         ] = useState(false);
+    const [ activeLink,          setActiveLink        ] = useState(null);
+    const [ newAzione,           setNewAzione         ] = useState(valori.azione?.id); 
+    const [ newData,             setNewData           ] = useState(valori.date);
+    const [ newNota,             setNewNota           ] = useState(valori.note);
+    const [ needAssociati,       setNeedAssociati     ] = useState([]);
+    const [ tipologieOptions,    setTipologieOptions  ] = useState([]);
+    const [ azioni, setAzioni            ] = useState([]);
+    const [values, setValues] = useState({
+        tipologie: '',
+        data: '',
+        note: ''
+    });
+    
 
 
 
     const toggleFlip = () => {
-        setIsFlipped(!isFlipped);
+        if (modalStorico || modalAzioni || modalDelete || modalNeed) {
+            return; 
+        }
+        setIsFlipped(!isFlipped); 
     };
+    
 
 
     const navigateToAggiorna = (id, event) => {
@@ -56,25 +83,31 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
         navigate(`/contacts/modifica/${valori.id}`, { state: { ...valori } });
     };
 
-    const handleOpenModalStorico = () => {
+    const handleOpenModalStorico = (event) => {
         setModalStorico(true);
+        azioniKeypeople(valori.id, event)
     };
     const handleCloseModalStorico = () => setModalStorico(false);
 
-    const handleOpenModalAzioni = () => {
+    const handleOpenModalAzioni = (event) => {
+        event.stopPropagation();
         setModalAzioni(true);
+        azioniData();
     };
     const handleCloseModalAzioni = () => setModalAzioni(false);
 
     const handleChangeAzione = (event) => {
+        event.stopPropagation();
         setNewAzione(event.target.value); 
     };
 
     const handleChangeData = (event) => {
+        event.stopPropagation();
         setNewData(event.target.value); 
     };
 
     const handleChangeNota = (event) => {
+        event.stopPropagation();
         setNewNota(event.target.value); 
     };
 
@@ -88,11 +121,111 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
         setModalDelete(false);
     };
     
-
-
     const confirmDelete = (id, event) => {
         onDelete();
         handleCloseModalDelete(true);
+    };
+
+
+    const user = JSON.parse(localStorage.getItem('user'));
+    const token = user?.token;
+
+    const headers = {
+        Authorization: `Bearer ${token}`
+    };
+
+
+    const azioniKeypeople = async(id, event) => {
+        const datiDaInviare = {
+            pagina: 0,
+            quantita: 10
+        };
+        try{
+            const responseAzioni = await axios.get(`http://localhost:8080/azioni/react/${id}`, { header: headers, params: datiDaInviare });
+            if (Array.isArray(responseAzioni.data)) {
+                const azioni = responseAzioni.data.map((azione) => ({ ...azione}));
+                setAzioni(azioni);
+            } else {
+                console.error("I dati per le azioni ottenuti non sono nel formato Array:", responseAzioni.data);
+            }
+        } catch(error) {
+            console.error("Errore durante il recupero delle azioni:", error);
+        }
+    };
+
+
+    const needKeypeople = async(id, event) => {
+        const datiDaInviare = {
+            pagina: 0,
+            quantita: 10
+        };
+        try {
+            const responseNeed = await axios.get(`http://localhost:8080/need/react/keypeople/modificato/${id}`, { headers: headers, params: datiDaInviare });
+            if (Array.isArray(responseNeed.data)) {
+                const needDaAssociare = responseNeed.data.map((keypeople) => ({ ...keypeople}));
+                setNeedAssociati(needDaAssociare);
+            } else {
+                console.error("I dati per i need ottenuti non sono nel formato Array:", responseNeed.data);
+            }
+
+
+        } catch(error) {
+            console.error("Errore durante il recupero dei dati: ", error);
+        }
+    };
+
+
+        //funzione per il cambio pagina
+        const handlePageChange = (newPage) => {
+            setPagina(newPage);
+            handleChangePagina(newPage);
+        };
+
+
+        const handleChangePagina = async(newPage, id) => {
+            const datiDaInviare = {
+                pagina: newPage,
+                quantita: 10
+            };
+            try {
+                const responseNeed = await axios.get(`http://localhost:8080/need/react/keypeople/modificato/${id}`, { headers: headers, params: datiDaInviare });
+                if (Array.isArray(responseNeed.data)) {
+                    const needDaAssociare = responseNeed.data.map((keypeople) => ({ ...keypeople }));
+                    setNeedAssociati(needDaAssociare);
+                } else {
+                    console.error("I dati per i need ottenuti non sono nel formato Array:", responseNeed.data);
+                }
+            } catch(error) {
+                console.error("Errore durante il recupero dei dati: ", error);
+            }
+            setPagina(newPage); 
+        };
+        
+    
+
+    
+    
+    const handleOpenModalNeed = (event) => {
+        event.stopPropagation();
+        setModalNeed(true);
+        needKeypeople(valori.id, event);
+    };
+    const handleCloseModalNeed = (event) => {
+        setModalNeed(false);
+    };
+
+
+    const azioniData = async(id, event) => {
+        try{
+            const responseAzioni = await axios.get(`http://localhost:8080/azioni/react/tipologie`, { headers: headers });
+            if (Array.isArray(responseAzioni.data)) {
+                setTipologieOptions(responseAzioni.data.map((tipologie) => ({ label: tipologie.descrizione, value: tipologie.id })));
+            } else {
+                console.error("I dati degli stati ottenuti non sono nel formato Array:", responseAzioni.data);
+            }
+        } catch(error) {
+            console.error("Errore durante il recupero dei dati: ", error);
+        }
     };
 
 
@@ -108,9 +241,6 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
             cursor: 'pointer',
             transform: 'scale(1.05)',
         }
-        
-       
-        
     };
 
     const cardStyle = {
@@ -160,6 +290,16 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
     // };
 
 
+    const userHasRole = (roleToCheck) => {
+        const userString = localStorage.getItem('user');
+        if (!userString) {
+            return false;
+        }
+        const userObj = JSON.parse(userString);
+        return userObj.roles.includes(roleToCheck);
+    };
+
+
     const menuData = [
         {
             title: 'Azione',
@@ -171,6 +311,9 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
         {
             title: 'Need',
             icon : <ExploreIcon />,
+            onClick: (event) => {
+                handleOpenModalNeed(event);
+            }
         },
         
         {
@@ -192,18 +335,57 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
             icon: <DeleteIcon />,
             onClick: (event) => {
                 handleOpenModalDelete(event);
-            }
+            },
+            isVisible: !userHasRole('ROLE_USER'),
+
         }
     ];
 
 
-    const azioniOptions = [
-        { value: 1, label: 'Cold Call'},
-        { value: 2, label: 'Call'},
-        { value: 3, label: 'Messaggio'},
-        { value: 4, label: 'Prospection '},
-        { value: 5, label: 'Follow up'},
-    ];
+    // const azioniOptions = [
+    //     { value: 1, label: 'Cold Call'},
+    //     { value: 2, label: 'Call'},
+    //     { value: 3, label: 'Messaggio'},
+    //     { value: 4, label: 'Prospection '},
+    //     { value: 5, label: 'Follow up'},
+    // ];
+
+const handleAzioniSubmit = async(id) => {
+    const valoriDaInviare = {
+        data: values.data,
+        idTipologia: values.tipologie,
+        note: values.note,
+    };
+        try {
+            const responseSubmitAzione = await axios.post(`http://localhost:8080/azioni/react/salva/${id}`, valoriDaInviare, { headers: headers });
+            if (responseSubmitAzione.data && responseSubmitAzione.data.message === 'OK') {
+                setValues({
+                    data: '',
+                    tipologie: '',
+                    note: ''
+                })
+                handleCloseModalAzioni();
+            }
+        } catch(error) {
+            console.error("Errore durante l'invio dei dati: ", error);
+        }
+    };
+
+
+    const handleValueChange = (name, value) => {
+        setValues(prevValues => ({
+            ...prevValues,
+            [name]: value
+        }));
+    };
+
+
+    // const handleChangeRighePerPagina = (event) => {
+    //     setRighePerPagina(+event.target.value);
+    //     setPagina(0); 
+    // };
+    
+
     
 
     return (
@@ -312,7 +494,9 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
 
             <Box sx={{ display: 'flex', alignItems: 'start', justifyContent: 'flex-start', flexDirection: 'column', mb: 1 }}>
             <List>
-                    {menuData.map((item, index) => (
+                    {menuData
+                    .filter(item => item.isVisible !== false)
+                    .map((item, index) => (
                         <ListItem
                             key={item.title}
                             selected={activeLink === `/${item.title.toLowerCase()}`}
@@ -346,15 +530,12 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
                     ))}
                 </List>
         </Box>
-
-
-
         </CardContent>
-
         </div>
         </div>
 
-
+        
+        { /* MODAL PER IL CANCELLA */ }
         <Modal
                 open={modalDelete}
                 onClose={handleCloseModalDelete}
@@ -423,148 +604,268 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
                 </Modal>
 
 
-
+                { /* MODAL PER LO STORICO */ }
                 <Modal
                 open={modalStorico}
-                onClose={handleCloseModalStorico}
+                onClose={() => setModalStorico(false)}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
-                onClick={(event) => event.stopPropagation()}
                 sx={{
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                }}
+                }}>
+                    <Box sx={{ display:'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: '#EDEDED'}}>
+                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', mb: 2, textAlign: 'center', p: 3}}>Storico delle azioni</Typography>
+                            <IconButton sx={{ mr: 2, backgroundColor: 'transparent', border: 'none' }} onClick={() => setModalStorico(false)}>
+                                <CloseIcon sx={{ backgroundColor: 'transparent' }}/>
+                            </IconButton>
+                        </Box>
+                        <TableContainer component={Paper}>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell sx={{ fontWeight: 'bold', fontSize: 'large'}}>#</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', fontSize: 'large'}}>Descrizione</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {needAssociati.slice(pagina * righePerPagina, pagina * righePerPagina + righePerPagina).map((need) => (
+                                    <TableRow key={need.id}>
+                                        <TableCell>{need.id}</TableCell>
+                                        <TableCell>{need.descrizione}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <TablePagination
+                        // rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={needAssociati.length}
+                        rowsPerPage={righePerPagina}
+                        page={pagina}
+                        onPageChange={(event, newPage) => handleChangePagina(newPage, valori.id)}
+                        // onRowsPerPageChange={handleChangeRighePerPagina}
+                    />
+                    </Box>
+                </Modal>
+
+
+                { /* MODAL DELLE AZIONI */ }
+                <Modal
+                    open={modalAzioni}
+                    onClose={() => setModalAzioni(false)}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
                 >
                     <Box
-                            sx={{
+                        sx={{
                             backgroundColor: 'white',
                             p: 4,
-                            borderRadius: '20px',
+                            borderRadius: 2,
                             display: 'flex',
+                            position: 'relative', 
                             justifyContent: 'center',
                             alignItems: 'center',
                             flexDirection: 'column',
                             gap: 2,
                             width: '40vw',
                             height: 'auto',
-                            border: 'solid 2px #00B400'
-                            }}
-                            >
-                            <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ fontWeight: 'bold', fontSize: '1.8em'}}>
-                            Storico  
-                            </Typography>
-                            </Box>
-                </Modal>
-
-
-
-                <Modal
-                        open={modalAzioni}
-                        onClose={() => setModalAzioni(false)}
-                        aria-labelledby="modal-modal-title"
-                        aria-describedby="modal-modal-description"
-                        sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
+                            
                         }}
-                        >
-                        <Box
-                            sx={{
-                            backgroundColor: 'white',
-                            p: 4,
-                            borderRadius: 2,
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            flexDirection: 'column',
-                            gap: 2,
-                            width: '80vw',
-                            height: 'auto'
+                    >
+                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2 }}>
+                        <IconButton
+                        
+                        onClick={(event) => {
+                            event.stopPropagation(); 
+                            setModalAzioni(false);
+                        }}                            
+                            sx={{ 
+                                position: 'absolute', 
+                                top: 8, 
+                                right: 8, 
+                                color: 'gray', 
                             }}
                         >
-                            {/* <Typography id="modal-modal-title" variant="h6" component="h2">
-                            Cambia stato al need
-                            </Typography> */}
-
-                            <Select
-                            fullWidth
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={newAzione}
-                                onChange={handleChangeAzione}
-                                sx={{ width: '30%' }}
-                            >
-                                {azioniOptions.map((option) => (
-                                    <MenuItem key={option.value} value={option.value}>
-                                        {option.label}
-                                    </MenuItem>
-                                ))}
-                            </Select>
+                            <CloseIcon />
+                        </IconButton>
+                        </Box>
 
 
-                            <TextField
+                        <FormControl fullWidth >
+                                <Autocomplete
+                                    id="stato-combo-box"
+                                    options={tipologieOptions}
+                                    getOptionLabel={(option) => option.label}
+                                    value={tipologieOptions.find(option => option.value === values.tipologie) || null}
+                                    onChange={(event, newValue) => {
+                                        handleValueChange('tipologie', newValue ? newValue.value : null);
+                                    }}
+                                    renderInput={(params) => 
+                                    <TextField 
+                                    {...params} 
+                                    label="Tipologia"
+                                    variant='filled' 
+                                    sx={{
+                                        height: '4em',
+                                        
+                                        p: 1,
+                                        borderRadius: '20px', 
+                                        backgroundColor: '#EDEDED', 
+                                        '& .MuiFilledInput-root': {
+                                            backgroundColor: 'transparent',
+                                        },
+                                        '& .MuiFilledInput-underline:after': {
+                                            borderBottomColor: 'transparent',
+                                        },
+                                        '& .MuiFilledInput-root::before': {
+                                            borderBottom: 'none', 
+                                        },
+                                        '&:hover .MuiFilledInput-root::before': {
+                                            borderBottom: 'none', 
+                                        } 
+                                    }}  
+                                    />}
+                                />
+                            </FormControl>
+
+
+
+                        <TextField
                             fullWidth
                             label="Seleziona Data"
                             type="date"
-                            defaultValue={""} // Puoi mettere una data di default se vuoi
-                            sx={{ width: '30%', mt: 2 }} // Aggiungi un margine top per distanziarlo dalla select
+                            defaultValue={""} 
+                            variant="filled"
+                            sx={{
+                                height: '4em',
+                                p: 1,
+                                borderRadius: '20px', 
+                                backgroundColor: '#EDEDED', 
+                                '& .MuiFilledInput-root': {
+                                    backgroundColor: 'transparent',
+                                },
+                                '& .MuiFilledInput-underline:after': {
+                                    borderBottomColor: 'transparent',
+                                },
+                                '& .MuiFilledInput-root::before': {
+                                    borderBottom: 'none', 
+                                },
+                                '&:hover .MuiFilledInput-root::before': {
+                                    borderBottom: 'none', 
+                                } 
+                                }} 
                             InputLabelProps={{
-                                shrink: true, // Questo fa in modo che l'etichetta non si sovrapponga al valore
+                                shrink: true, 
                             }}
-                            onChange={handleChangeData} // Assicurati di gestire il cambiamento della data
+                            onChange={(event) => handleValueChange('data', event.target.value)}
                             />
 
-                            <TextField
+                        <TextField
                             fullWidth
                             label="Note"
                             multiline
+                            variant="filled"
+
                             rows={4}
-                            variant="outlined"
-                            sx={{ width: '30%', mt: 2 }} // Aggiungi un margine top per distanziarlo dal campo data
-                            onChange={handleChangeNota} // Assicurati di gestire il cambiamento del testo delle note
+                            sx={{
+                                height: '8em',
+                                p: 1,
+                                borderRadius: '20px', 
+                                backgroundColor: '#EDEDED', 
+                                '& .MuiFilledInput-root': {
+                                    backgroundColor: 'transparent',
+                                },
+                                '& .MuiFilledInput-underline:after': {
+                                    borderBottomColor: 'transparent',
+                                },
+                                '& .MuiFilledInput-root::before': {
+                                    borderBottom: 'none', 
+                                },
+                                '&:hover .MuiFilledInput-root::before': {
+                                    borderBottom: 'none', 
+                                } 
+                                }} 
+                            onChange={(event) => handleValueChange('note', event.target.value)}
                             />
 
 
-                            
+                        <Button sx={{
+                            width: '60%',
+                            height: '40px',
+                            backgroundColor: '#00B400',
+                            color: 'white',
+                            mt: 2,
+                            borderRadius: '5px',
+                            '&:hover': {
+                                backgroundColor: '#00B400',
+                                transform: 'scale(1.03)'
+                            },
+                        }}
+                        onClick={() => handleAzioniSubmit(valori.id)}
+                        >
+                            Invia
+                        </Button>
+                    </Box>
+                </Modal>
 
-                            <Box
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                pt: 2,
-                                gap: 3
-                            }}
-                            >
-                            <Button
-                                onClick={handleCloseModalAzioni}
-                                sx={{
-                                backgroundColor: 'black',
-                                color: 'white',
-                                '&:hover': {
-                                    backgroundColor: '#333',
-                                },
-                                }}
-                            >
-                                Indietro
-                            </Button>
 
-                            {/* <Button
-                                onClick={handleUpdateStato}
-                                sx={{
-                                backgroundColor: '#00B401',
-                                color: 'white',
-                                '&:hover': {
-                                    backgroundColor: '#006b2b',
-                                },
-                                }}
-                            >
-                                Salva
-                            </Button> */}
-                            </Box>
+                { /* MODAL PERLA LISTA DEI NEED */}
+                <Modal
+                open={modalNeed}
+                onClose={() => setModalNeed(false)}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}>
+                    <Box sx={{ display:'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: '#EDEDED'}}>
+                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', mb: 2, textAlign: 'center', p: 3}}>Lista dei Need</Typography>
+                            <IconButton sx={{ mr: 2, backgroundColor: 'transparent', border: 'none' }} onClick={() => setModalNeed(false)}>
+                                <CloseIcon sx={{ backgroundColor: 'transparent' }}/>
+                            </IconButton>
                         </Box>
-                        </Modal>
+                        <TableContainer component={Paper}>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell sx={{ fontWeight: 'bold', fontSize: 'large'}}>#</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', fontSize: 'large'}}>Descrizione</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {needAssociati.slice(pagina * righePerPagina, pagina * righePerPagina + righePerPagina).map((need) => (
+                                    <TableRow key={need.id}>
+                                        <TableCell>{need.id}</TableCell>
+                                        <TableCell>{need.descrizione}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <TablePagination
+                        // rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={needAssociati.length}
+                        rowsPerPage={righePerPagina}
+                        page={pagina}
+                        onPageChange={(event, newPage) => handleChangePagina(newPage, valori.id)}
+                        // onRowsPerPageChange={handleChangeRighePerPagina}
+                    />
+                    </Box>
+                </Modal>
+
 
 
     </Card>

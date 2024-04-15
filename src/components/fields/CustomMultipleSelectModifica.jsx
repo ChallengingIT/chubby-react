@@ -11,6 +11,7 @@ const CustomMultipleSelectModifica = ({ name, label, options, value, onChange, s
     };
 
 
+    const currentValue = Array.isArray(value) ? value : [];
 
 
 
@@ -20,7 +21,7 @@ const CustomMultipleSelectModifica = ({ name, label, options, value, onChange, s
             <Select
                 multiple
                 name={name}
-                value={value}
+                value={currentValue}
                 variant='filled'
                 onChange={handleChangeSkills}
                 sx={{ 
@@ -48,9 +49,10 @@ const CustomMultipleSelectModifica = ({ name, label, options, value, onChange, s
             >
                 {skillsOptions.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
-                        <Checkbox checked={value.indexOf(option.value) > -1} />
-                        <ListItemText primary={option.label} />
-                    </MenuItem>
+                    <Checkbox checked={(value || []).indexOf(option.value) > -1} />
+                    <ListItemText primary={option.label} />
+                </MenuItem>
+                
                 ))}
             </Select>
         </FormControl>

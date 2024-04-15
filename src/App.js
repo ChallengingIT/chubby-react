@@ -64,12 +64,12 @@ useEffect(() => {
                     </PrivateRoute>
                   } /> */}
                 <Route path="/dashboard" element={
-                    <PrivateRoute roles={['ROLE_ADMIN',  'ROLE_RECRUITER', 'ROLE_BM']}>
+                    <PrivateRoute roles={['ROLE_ADMIN',  'ROLE_RECRUITER', 'ROLE_BM', 'ROLE_USER']}>
                       <Dashboard />
                     </PrivateRoute>
                   } />
                 <Route path="/business" element={
-                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
+                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER', 'ROLE_USER']}>
                       <Aziende />
                     </PrivateRoute>
                   } />
@@ -94,7 +94,7 @@ useEffect(() => {
                     </PrivateRoute>
                   } />
                 <Route path="/contacts"element={
-                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
+                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER', 'ROLE_USER']}>
                       <Keypeople />
                     </PrivateRoute>
                   } />

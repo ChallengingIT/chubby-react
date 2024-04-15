@@ -149,7 +149,7 @@ const ModificaNeedGrafica = () => {
     const getMandatoryFields = (index) => {
         switch (index) {
             case 0:
-                return ["idAzienda", "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location"]; 
+                return [ "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location"]; 
             default:
                 return [];
         }
@@ -236,7 +236,7 @@ const ModificaNeedGrafica = () => {
                 setActiveSection(menu[currentIndex + 1].title);
                 setCurrentPageIndex(currentIndex + 1);
             } else {
-                setAlert({ open: true, message: 'Compilare tutti i field obbligatori presenti per poter avanzare'});
+                setAlert({ open: true, message: 'Compilare tutti i campi obbligatori presenti per poter avanzare'});
             }
         }
     };
@@ -283,23 +283,23 @@ const ModificaNeedGrafica = () => {
         }
     };
 
-        const fieldObbligatori = [ "idAzienda", "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location" ];
+        const fieldObbligatori = [ "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location" ];
 
         const fields =[
-            { label: "Descrizione Need*",   name: "descrizione",                  type: "text"                                             },
-            { label: "Priorità*",           name: "priorita",                     type: "decimalNumber"                                           },
-            { label: "Week*",               name: "week",                         type: "week"                                       },
-            { label: "Tipologia*",           name: "idTipologia",                    type: "select",               options: tipologiaOptions  },
+            { label: "Descrizione Need*",   name: "descrizione",                  type: "text"                                                },
+            { label: "Priorità*",           name: "priorita",                     type: "decimalNumber"                                       },
+            { label: "Week*",               name: "week",                         type: "week"                                                },
+            { label: "Tipologia*",          name: "idTipologia",                  type: "select",               options: tipologiaOptions     },
             { label: "Tipologia Azienda",   name: "tipo",                         type: "select",               options: [
             { value: 1,                   label: "Cliente" },
             { value: 2,                   label: "Consulenza" },
             { value: 3,                   label: "Prospect" }
             ] },
-            { label: "Owner*",                     name: "idOwner",                      type: "select",                 options: ownerOptions         },
-            { label: "Stato*",                     name: "idStato",                        type: "select",                 options: statoOptions         },
-            { label: "Headcount",                 name: "numeroRisorse",                type: "decimalNumber"                                                },
-            { label: "Location*",                  name: "location",                     type: "text"                                                  },
-            { label: "Skills",                    name: "idSkills",                       type: "multipleSelect",    options: skillsOptions        },
+            { label: "Owner*",                     name: "idOwner",                     type: "select",                 options: ownerOptions         },
+            { label: "Stato*",                     name: "idStato",                     type: "select",                 options: statoOptions         },
+            { label: "Headcount",                 name: "numeroRisorse",                type: "decimalNumber"                                         },
+            { label: "Location*",                  name: "location",                    type: "text"                                                  },
+            { label: "Skills",                    name: "idSkills",                     type: "multipleSelect",         options: skillsOptions        },
             { label: "Seniority",                 name: "anniEsperienza",               type: "decimalNumber"                                         },
             { label: 'Pubblicazione Annuncio*',   name: 'pubblicazione',                type: 'select',                 options: pubblicazioneOptions },
             { label: 'Screening*',                name: 'screening',                    type: 'select',                 options: screeningOptions     },
@@ -578,7 +578,7 @@ const ModificaNeedGrafica = () => {
                         Indietro
                     </Button>
                 </Box>
-                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: 'black'}}>  Aggiungi <br /> Candidato </Typography>
+                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: 'black'}}>  Modifica <br /> Need </Typography>
                 <List sx={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
                             {menu.map((item) => (
                                 <ListItem

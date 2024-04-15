@@ -98,8 +98,8 @@ const NeedMatch2 = () => {
                 const associatiResponse   = await axios.get(`http://localhost:8080/need/react/match/associati/mod/${id}`,                { headers: headers, params: paginazione});
                 const responseTipologia   = await axios.get("http://localhost:8080/aziende/react/tipologia",                             { headers: headers});
                 const responseTipo        = await axios.get("http://localhost:8080/staffing/react/tipo"    ,                             { headers: headers});
-                const ownerResponse       = await axios.get("http://localhost:8080/aziende/react/owner", { headers: headers});
-                const statoResponse       = await axios.get("http://localhost:8080/associazioni/react/stati", { headers: headers});
+                const ownerResponse       = await axios.get("http://localhost:8080/aziende/react/owner",                                 { headers: headers});
+                const statoResponse       = await axios.get("http://localhost:8080/associazioni/react/stati",                            { headers: headers});
 
                 if (Array.isArray(ownerResponse.data)) {
                     const ownerOptions = ownerResponse.data.map((owner) => ({
@@ -379,6 +379,24 @@ const NeedMatch2 = () => {
                     const associatiResponse   = await axios.get(`http://localhost:8080/need/react/match/associati/mod/${id}`,                { headers: headers, params: paginazione});
                     const responseTipologia    = await axios.get("http://localhost:8080/aziende/react/tipologia",                             { headers: headers});
                     const responseTipo        = await axios.get("http://localhost:8080/staffing/react/tipo"    ,                             { headers: headers});
+                    const ownerResponse       = await axios.get("http://localhost:8080/aziende/react/owner",                                 { headers: headers});
+                const statoResponse       = await axios.get("http://localhost:8080/associazioni/react/stati",                            { headers: headers});
+
+                if (Array.isArray(ownerResponse.data)) {
+                    const ownerOptions = ownerResponse.data.map((owner) => ({
+                    label: owner.descrizione,
+                    value: owner.id,
+                    }));
+                    setOwnerOptions(ownerOptions);
+                }
+
+                    if (Array.isArray(statoResponse.data)) {
+                    const statoOptions = statoResponse.data.map((stato) => ({
+                        label: stato.descrizione,
+                        value: stato.id,
+                    }));
+                    setStatoOptions(statoOptions);
+                }
     
                     if (Array.isArray(responseTipologia.data)) {
                         const tipologiaOptions = responseTipologia.data.map((tipologia) => ({

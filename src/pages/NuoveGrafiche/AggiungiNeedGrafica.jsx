@@ -31,6 +31,9 @@ const AggiungiNeedGrafica = () => {
     const [ ownerOptions,         setOwnerOptions       ] = useState([]);
     const [ tipologiaOptions,     setTipologiaOptions   ] = useState([]);
     const [ statoOptions,         setStatoOptions       ] = useState([]);
+    const [ keypeopleOptions,     setKeypeopleOptions   ] = useState([]);
+    const [ isKeypeopleEnabled,   setIsKeypeopleEnabled ] = useState(false);
+
   
     const [ values,             setValues               ] = useState([]);
 
@@ -180,6 +183,36 @@ const AggiungiNeedGrafica = () => {
                 [fieldName]: [...newValues]
             }));
         };
+
+
+
+        //useEffect che controlla se l'azienda è selezionata
+        useEffect(() => {
+            if (values.idAzienda && values.idAzienda.length !== 0) {
+                const azinedaConId = values.idAzienda; 
+        
+                setIsKeypeopleEnabled(true);
+                fetchKeypeopleOptions(azinedaConId);
+            } else {
+                setIsKeypeopleEnabled(false);
+                setKeypeopleOptions([]);
+            }
+        }, [values.idAzienda]); 
+
+
+        const fetchKeypeopleOptions = async (aziendaConId) => {
+            try {
+                const responseKeypeople = await axios.get(`http://localhost:8080/keypeople/react/azienda/${aziendaConId}`, { headers: headers });
+                const keypeopleOptions = responseKeypeople.data.map(keypeople => ({
+                    value: keypeople.id,
+                    label: keypeople.nome
+                }));
+                setKeypeopleOptions(keypeopleOptions);
+            } catch(error) {
+                console.error("Errore durante il recupero dei keypeople:", error);
+            }
+        };
+        
         
 
 
@@ -268,6 +301,7 @@ const AggiungiNeedGrafica = () => {
 
         const fields =[
           { label: "Azienda*",            name: "idAzienda",                    type: "select",               options: aziendeOptions    },
+          { label: 'Contatto*',           name: "idKeyPeople",                  type: "select",               options: keypeopleOptions   },
           { label: "Descrizione Need*",   name: "descrizione",                  type: "text"                                             },
           { label: "Priorità*",           name: "priorita",                     type: "decimalNumber"                                           },
           { label: "Week*",               name: "week",                         type: "week"                                       },
@@ -371,6 +405,20 @@ const AggiungiNeedGrafica = () => {
                     );
 
                     case 'select': 
+                    if ( field.name === 'idKeyPeople') {
+                        return (
+                            <CustomAutocomplete
+                            name={field.name}
+                            label={field.label}
+                            options={field.options}
+                            value={values[field.name] || null}
+                            onChange={handleChange}
+                            getOptionSelected={(option, value) => option.value === value.value}
+                            disabled={!isKeypeopleEnabled}
+                            />
+                        );
+                    } else {
+                    
                     return (
                         <CustomAutocomplete
                         name={field.name}
@@ -381,16 +429,17 @@ const AggiungiNeedGrafica = () => {
                         getOptionSelected={(option, value) => option.value === value.value}
                         />
                     );
+                }
 
 
                     case 'week': 
                     return (
-                      <CustomWeekDateAggiungi
-                      name={field.name}
-                      label={field.label}
-                      values={values}
-                      onChange={handleChange}
-                      />
+                    <CustomWeekDateAggiungi
+                        name={field.name}
+                        label={field.label}
+                        values={values}
+                        onChange={handleChange}
+                    />
                     )
 
 
@@ -510,7 +559,7 @@ const AggiungiNeedGrafica = () => {
                         Indietro
                     </Button>
                 </Box>
-                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: 'black'}}>  Aggiungi <br /> Candidato </Typography>
+                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: 'black'}}>  Aggiungi <br /> Need </Typography>
                 <List sx={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
                             {menu.map((item) => (
                                 <ListItem

@@ -81,14 +81,18 @@ const AziendeCardFlip = ({valori, onDelete}) => {
             case 'EXCLIENTE':
                 return {
                     backgroundColor: '#f0f0f0', // Grigio Chiaro
-                    borderColor: '#f0f0f0'
+                    borderColor: '#f0f0f0',
+                    margin: 'auto', 
+
                     // pointerEvents: 'none', // Disabilita interazioni
                     // opacity: 0.5 
                 };
                 case 'Ex cliente':
                 return {
                     backgroundColor: '#f0f0f0', // Grigio Chiaro
-                    borderColor: '#f0f0f0'
+                    borderColor: '#f0f0f0',
+                    margin: 'auto', 
+
                     // pointerEvents: 'none', // Disabilita interazioni
                     // opacity: 0.5 
                 };
@@ -213,6 +217,15 @@ const AziendeCardFlip = ({valori, onDelete}) => {
         handleCloseModalDelete(true);
     };
 
+    const userHasRole = (roleToCheck) => {
+        const userString = localStorage.getItem('user');
+        if (!userString) {
+            return false;
+        }
+        const userObj = JSON.parse(userString);
+        return userObj.roles.includes(roleToCheck);
+    };
+
 
     const menuData = [
         {
@@ -234,7 +247,9 @@ const AziendeCardFlip = ({valori, onDelete}) => {
             icon: <DeleteIcon />,
             onClick: (event) => {
                 handleOpenModalDelete(event);
-            }
+            },
+            isVisible: !userHasRole('ROLE_USER'),
+
         }
     ];
     
@@ -332,7 +347,9 @@ const AziendeCardFlip = ({valori, onDelete}) => {
 
             <Box sx={{ display: 'flex', alignItems: 'start', justifyContent: 'flex-start', flexDirection: 'column', mb: 1 }}>
             <List>
-                    {menuData.map((item, index) => (
+                    {menuData
+                        .filter(item => item.isVisible !== false)
+                        .map((item, index) => (
                         <ListItem
                             key={item.title}
                             selected={activeLink === `/${item.title.toLowerCase()}`}

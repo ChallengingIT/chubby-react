@@ -27,6 +27,7 @@ const Keypeople = () => {
     //stati ricerche
     const [ clienteOptions,             setClienteOptions             ] = useState([]);
     const [ ownerOptions,               setOwnerOptions               ] = useState([]);
+    const [ statiOptions,               setStatiOptions               ] = useState([]);
     const [ filtri,                     setFiltri                     ] = useState(() => {
         const filtriSalvati = localStorage.getItem('filtriRicercaKeypeople');
         return filtriSalvati ? JSON.parse(filtriSalvati) : {
@@ -72,18 +73,26 @@ const Keypeople = () => {
         const response        = await axios.get("http://localhost:8080/keypeople/react/mod",             { headers: headers, params: filtriDaInviare});
         const responseCliente = await axios.get("http://localhost:8080/aziende/react/select",            { headers: headers });
         const responseOwner   = await axios.get("http://localhost:8080/aziende/react/owner",             { headers: headers });
+        const responseStati   = await axios.get("http://localhost:8080/keypeople/react/stati",            { headers: headers });
+
 
         if (Array.isArray(responseOwner.data)) {
             setOwnerOptions(responseOwner.data.map((owner, index) => ({ label: owner.descrizione, value: owner.id })));
         } else {
-            console.error("I dati ottenuti non sono nel formato Array:", responseOwner.data);
+            console.error("I dati dell'owner ottenuti non sono nel formato Array:", responseOwner.data);
+        } 
+
+        if (Array.isArray(responseStati.data)) {
+            setStatiOptions(responseStati.data.map((stati, index) => ({ label: stati.descrizione, value: stati.id })));
+        } else {
+            console.error("I dati degli stati in ricerca ottenuti non sono nel formato Array:", responseStati.data);
         } 
 
 
         if (Array.isArray(responseCliente.data)) {
             setClienteOptions(responseCliente.data.map((cliente) => ({ label: cliente.denominazione, value: cliente.id })));
         } else {
-            console.error("I dati ottenuti non sono nel formato Array:", responseCliente.data);
+            console.error("I dati degli stati ottenuti non sono nel formato Array:", responseCliente.data);
         }
     
         if (Array.isArray(response.data)) {
@@ -91,7 +100,7 @@ const Keypeople = () => {
             setOriginalKeypeople(keypeopleConId);
             setHasMore(keypeopleConId.length >= quantita);
         } else {
-            console.error("I dati ottenuti non sono nel formato Array:", response.data);
+            console.error("I dati per i keypeople ottenuti non sono nel formato Array:", response.data);
         }
         setLoading(false);
         } catch (error) {
@@ -137,7 +146,7 @@ const Keypeople = () => {
                 setOriginalKeypeople((prev) => [...prev, ...keypeopleConId]);
                 setHasMore(response.data.length >= quantita);
             } else {
-                console.error("I dati ottenuti non sonon nel formato Array: ", response.data);
+                console.error("I dati dei keypeople nel more ottenuti non sono nel formato Array: ", response.data);
             }
         } catch(error) {
             console.error("Errore durante il recupero dei dati: ", error);
@@ -162,25 +171,34 @@ const Keypeople = () => {
             const response = await axios.get("http://localhost:8080/keypeople/react/ricerca/mod", { headers: headers, params: filtriDaInviare });
             const responseCliente = await axios.get("http://localhost:8080/aziende/react/select",            { headers: headers });
             const responseOwner   = await axios.get("http://localhost:8080/aziende/react/owner",             { headers: headers });
+            const responseStati   = await axios.get("http://localhost:8080/keypeople/react/stati",            { headers: headers });
 
             if (Array.isArray(responseOwner.data)) {
                 setOwnerOptions(responseOwner.data.map((owner, index) => ({ label: owner.descrizione, value: owner.id })));
             } else {
-                console.error("I dati ottenuti non sono nel formato Array:", responseOwner.data);
+                console.error("I dati di owner ricerca ottenuti non sono nel formato Array:", responseOwner.data);
             } 
+
+
+            if (Array.isArray(responseStati.data)) {
+                setStatiOptions(responseStati.data.map((stati, index) => ({ label: stati.descrizione, value: stati.id })));
+            } else {
+                console.error("I dati degli stati in ricerca ottenuti non sono nel formato Array:", responseStati.data);
+            } 
+
 
 
             if (Array.isArray(responseCliente.data)) {
                 setClienteOptions(responseCliente.data.map((cliente) => ({ label: cliente.denominazione, value: cliente.id })));
             } else {
-                console.error("I dati ottenuti non sono nel formato Array:", responseCliente.data);
+                console.error("I dati dei clienti in ricerca ottenuti non sono nel formato Array:", responseCliente.data);
             }
 
             if (Array.isArray(response.data)) {
                 setOriginalKeypeople(response.data);
                 setHasMore(response.data.length >= quantita);
             } else {
-                console.error("I dati ottenuti non sono nel formato Array:", response.data);
+                console.error("I dati dei keypeople in ricerca ottenuti non sono nel formato Array:", response.data);
             }
         } catch (error) {
             console.error("Errore durante il recupero dei dati filtrati:", error);

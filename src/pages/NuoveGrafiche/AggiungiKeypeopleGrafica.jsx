@@ -173,7 +173,7 @@ const AggiungiKeypeopleGrafica = () => {
                         console.error("il contatto è già stata salvato.");
                         return; 
                     }
-                    navigate("/keyPeople");
+                    navigate("/contacts");
                 } catch (error) {
                     console.error("Errore durante il salvataggio:", error);
                 }

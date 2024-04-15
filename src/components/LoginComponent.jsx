@@ -90,7 +90,7 @@ const handleLogin = async (e) => {
             if (userRole === "ROLE_ADMIN" || userRole === "ROLE_RECRUITER" || userRole === "ROLE_BM") {
                 navigate("/dashboard");
             } else if (userRole === "ROLE_USER") {
-                navigate("/userHompage");
+                navigate("/dashboard");
             }
         }
         } catch (error) {

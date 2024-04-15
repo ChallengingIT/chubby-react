@@ -249,12 +249,12 @@ const ModificaAziendaGrafica = () => {
                         });
                     
                         } else {
-                            navigate("/aziende");
+                            navigate("/business");
                         }
                     } catch (error) {
                         console.error("Errore nell'invio dell'immagine: ", error);
                     }
-                    navigate("/aziende");
+                    navigate("/business");
                 } catch (error) {
                     console.error("Errore durante il salvataggio:", error);
                 }
