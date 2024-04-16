@@ -7,9 +7,11 @@ import BusinessIcon                         from '@mui/icons-material/Business';
 import SettingsIcon from '@mui/icons-material/Settings';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-import AutoModeIcon                         from '@mui/icons-material/AutoMode'; //stato
 import ExploreIcon from '@mui/icons-material/Explore'; //need
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow'; //azioni
+import ChangeCircleIcon from '@mui/icons-material/ChangeCircle'; //cambia stato
+import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar'; //tipo
+import PersonIcon from '@mui/icons-material/Person'; //stato
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, Alert } from '@mui/material';
@@ -50,6 +52,7 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
     const [ modalAzioni,         setModalAzioni       ] = useState(false);
     const [ modalDelete,         setModalDelete       ] = useState(false);
     const [ modalNeed,           setModalNeed         ] = useState(false);
+    const [ modalCambiaStato,    setModalCambiaStato  ] = useState(false);
     const [ isFlipped,           setIsFlipped         ] = useState(false);
     const [ activeLink,          setActiveLink        ] = useState(null);
     const [ newAzione,           setNewAzione         ] = useState(valori.azione?.id); 
@@ -90,7 +93,7 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
 
 
     const toggleFlip = () => {
-        if (modalStorico || modalAzioni || modalDelete || modalNeed) {
+        if (modalStorico || modalAzioni || modalDelete || modalNeed || modalCambiaStato) {
             return; 
         }
         setIsFlipped(!isFlipped); 
@@ -116,21 +119,6 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
     };
     const handleCloseModalAzioni = () => setModalAzioni(false);
 
-    const handleChangeAzione = (event) => {
-        event.stopPropagation();
-        setNewAzione(event.target.value); 
-    };
-
-    const handleChangeData = (event) => {
-        event.stopPropagation();
-        setNewData(event.target.value); 
-    };
-
-    const handleChangeNota = (event) => {
-        event.stopPropagation();
-        setNewNota(event.target.value); 
-    };
-
 
     const handleOpenModalDelete = (event) => {
         event.stopPropagation();
@@ -145,6 +133,12 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
         onDelete();
         handleCloseModalDelete(true);
     };
+
+    const handleOpenModalCambiaStato = (event) => {
+        event.stopPropagation();
+        setModalCambiaStato(true);
+    };
+    const handleCloseModalCambiaStato = () => setModalCambiaStato(false);
 
 
     const user = JSON.parse(localStorage.getItem('user'));
@@ -296,6 +290,7 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
         left: 0,
         width: '100%',
         height: '100%',
+        overflowY: 'auto',
     };
 
 
@@ -333,6 +328,13 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
             icon: <DoubleArrowIcon />,
             onClick: (event) => {
                 handleOpenModalAzioni(event);
+            }
+        },
+        {
+            title: 'Cambia Stato',
+            icon: <ChangeCircleIcon />,
+            onClick: (event) => {
+                handleOpenModalCambiaStato(event);
             }
         },
         {
@@ -468,12 +470,12 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
             </Typography>
 
             <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
-                <AutoModeIcon sx={{ color: '#00B401', mr: 1 }} />
+                <PermContactCalendarIcon sx={{ color: '#00B401', mr: 1 }} />
                 {tipoConverter(valori.tipo)}
             </Typography>
 
             <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
-                <AutoModeIcon sx={{ color: '#00B401', mr: 1 }} />
+                <PersonIcon sx={{ color: '#00B401', mr: 1 }} />
                 {valori.stato?.descrizione}
             </Typography>
 
@@ -508,7 +510,7 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
         <div style={cardBackStyle}>
         <CardContent sx={{ backfaceVisibility: 'hidden'}}>
             {/* Contenuto della Card */}
-            <Typography
+            {/* <Typography
                 gutterBottom
                 variant="h5"
                 component="div"
@@ -523,9 +525,9 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
                 }}
             >
                 Menu
-            </Typography>
+            </Typography> */}
 
-            <Box sx={{ display: 'flex', alignItems: 'start', justifyContent: 'flex-start', flexDirection: 'column', mb: 1 }}>
+            <Box sx={{ display: 'flex', alignItems: 'start', justifyContent: 'flex-start', flexDirection: 'column', mb: 0.2 }}>
             <List>
                     {menuData
                     .filter(item => item.isVisible !== false)
@@ -718,7 +720,13 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
                             
                         }}
                     >
-                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2 }}>
+                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
+                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', ml: 2, mt: 0.5, mb: 0.5}}>Azioni</Typography>
+                            <IconButton sx={{ mr: 2, backgroundColor: 'transparent', border: 'none' }} onClick={() => setModalAzioni(false)}>
+                                <CloseIcon sx={{ backgroundColor: 'transparent' }}/>
+                            </IconButton>
+                        </Box>
+                        {/* <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2 }}>
                         <IconButton
                         
                         onClick={(event) => {
@@ -734,7 +742,7 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
                         >
                             <CloseIcon />
                         </IconButton>
-                        </Box>
+                        </Box> */}
 
 
                         <FormControl fullWidth >
@@ -903,9 +911,100 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
                     </Box>
                 </Modal>
 
+
+                { /* MODAL PER IL CAMBIO STATO */ }
+                {/* <Modal
+                    open={modalCambiaStato}
+                    onClose={() => setModalCambiaStato(false)}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <Box
+                        sx={{
+                            backgroundColor: 'white',
+                            p: 4,
+                            borderRadius: 2,
+                            display: 'flex',
+                            position: 'relative', 
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flexDirection: 'column',
+                            gap: 2,
+                            width: '40vw',
+                            height: 'auto',
+                            
+                        }}
+                    >
+                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
+                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', ml: 2, mt: 0.5, mb: 0.5}}>Cambia Stato al Need</Typography>
+                            <IconButton sx={{ mr: 2, backgroundColor: 'transparent', border: 'none' }} onClick={() => setModalCambiaStato(false)}>
+                                <CloseIcon sx={{ backgroundColor: 'transparent' }}/>
+                            </IconButton>
+                        </Box>
+                        <FormControl fullWidth >
+                                <Autocomplete
+                                    id="stato-combo-box"
+                                    options={tipologieOptions}
+                                    getOptionLabel={(option) => option.label}
+                                    value={tipologieOptions.find(option => option.value === values.tipologie) || null}
+                                    onChange={(event, newValue) => {
+                                        handleValueChange('tipologie', newValue ? newValue.value : null);
+                                    }}
+                                    renderInput={(params) => 
+                                    <TextField 
+                                    {...params} 
+                                    label="Tipologia"
+                                    variant='filled' 
+                                    sx={{
+                                        height: '4em',
+                                        
+                                        p: 1,
+                                        borderRadius: '20px', 
+                                        backgroundColor: '#EDEDED', 
+                                        '& .MuiFilledInput-root': {
+                                            backgroundColor: 'transparent',
+                                        },
+                                        '& .MuiFilledInput-underline:after': {
+                                            borderBottomColor: 'transparent',
+                                        },
+                                        '& .MuiFilledInput-root::before': {
+                                            borderBottom: 'none', 
+                                        },
+                                        '&:hover .MuiFilledInput-root::before': {
+                                            borderBottom: 'none', 
+                                        } 
+                                    }}  
+                                    />}
+                                />
+                            </FormControl>
+                            <Button
+                            sx={{
+                                mt: 2,
+                                width: '60%',
+                                backgroundColor: '#00B400',
+                                color: 'white',
+                                borderRadius: '20px',
+                                '&:hover': {
+                                    backgroundColor: '#008C00',
+                                    transform: 'scale(1.05)',
+                                },
+                            }}
+                            >
+                                Cambia
+                            </Button>
+                            </Box>
+                            </Modal> */}
+
+                
+
                 { /* SNACKBAR  */}
 
-                <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+                <Snackbar open={snackbarOpen} autoHideDuration={8000} onClose={handleCloseSnackbar}>
                     <Alert onClose={handleCloseSnackbar} severity={snackbarType} sx={{ width: '100%' }}>
                         {snackbarMessage}
                     </Alert>
