@@ -31,6 +31,7 @@ import ModificaIntervistaGrafica                                       from './p
 import DashboardProva from './pages/DashboardProva.jsx';
 import AggiungiNeedGrafica from './pages/NuoveGrafiche/AggiungiNeedGrafica.jsx';
 import ModificaNeedGrafica from './pages/NuoveGrafiche/ModificaNeedGrafica.jsx';
+import AggiungiNeedIDGragica from './pages/NuoveGrafiche/AggiungiNeedIDGrafica.jsx';
 
 
 
@@ -90,7 +91,7 @@ useEffect(() => {
                   } />
                 <Route path="/need/aggiungi/:id"element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
-                      <AggiungiNeedID />
+                      <AggiungiNeedIDGragica />
                     </PrivateRoute>
                   } />
                 <Route path="/contacts"element={

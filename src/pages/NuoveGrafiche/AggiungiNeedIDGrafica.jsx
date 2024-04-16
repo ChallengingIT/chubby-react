@@ -1,8 +1,8 @@
-import React, { useState, useEffect }                                                                           from 'react';
-import { useNavigate }                                                                                          from 'react-router-dom';
+import React, { useState, useEffect }                from "react";
+import { useNavigate, useLocation, useParams }       from "react-router-dom";
+import axios                                         from "axios";
 import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Skeleton, Snackbar, Grid } from '@mui/material';
 import CircleOutlinedIcon                                                                                       from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
-import axios                                                                                                    from 'axios';
 import CustomAutocomplete                                                                                       from '../../components/fields/CustomAutocomplete';
 import CustomTextFieldAggiungi                                                                                  from '../../components/fields/CustomTextFieldAggiungi';
 import CustomNoteAggiungi                                                                                       from '../../components/fields/CustomNoteAggiungi';
@@ -10,222 +10,214 @@ import CustomDatePickerAggiungi                                                 
 import CustomDecimalNumberAggiungi                                                                              from '../../components/fields/CustomDecimalNumberAggiungi';
 import CustomMultipleSelectAggiunta                                                                             from '../../components/fields/CustomMultipleSelectAggiunta';
 import CustomWeekDateAggiungi from '../../components/fields/CustomWeekDateAggiungi';
-
-const AggiungiNeedGrafica = () => {
-    const navigate = useNavigate();
-
-    //stati della pagina
-    const [ activeSection,      setActiveSection        ] = useState('Descrizione Need');
-    const [ currentPageIndex,   setCurrentPageIndex     ] = useState(0);
-    const [ alert,              setAlert                ] = useState({ open: false, message: ''});
-    const [ errors,             setErrors               ] = useState({});
-    const [ loading,            setLoading              ] = useState(true);    
-
-    //stati per i valori
-    const [ idCandidato,        setIdCandidato          ] = useState([]);
+import CustomTextFieldModifica from "../../components/fields/CustomTextFieldModifica";
 
 
-    const [ aziendeOptions,       setAziendeOptions     ] = useState([]);
-    const [ skillsOptions,        setSkillsOptions      ] = useState([]);
-    const [ ownerOptions,         setOwnerOptions       ] = useState([]);
-    const [ tipologiaOptions,     setTipologiaOptions   ] = useState([]);
-    const [ statoOptions,         setStatoOptions       ] = useState([]);
-    const [ keypeopleOptions,     setKeypeopleOptions   ] = useState([]);
-    const [ isKeypeopleEnabled,   setIsKeypeopleEnabled ] = useState(false);
+const AggiungiNeedIDGragica = () => {
+  const { id }              = useParams();
+  const navigate            = useNavigate();
+  const location = useLocation();
+  const valori = location.state;
 
+
+      //stati della pagina
+      const [ activeSection,      setActiveSection        ] = useState('Descrizione Need');
+      const [ currentPageIndex,   setCurrentPageIndex     ] = useState(0);
+      const [ alert,              setAlert                ] = useState({ open: false, message: ''});
+      const [ errors,             setErrors               ] = useState({});
+      const [ loading,            setLoading              ] = useState(true);    
   
-    const [ values,             setValues               ] = useState([]);
+
+  const [ aziendeOptions,       setAziendeOptions     ] = useState([]);
+  const [ skillsOptions,        setSkillsOptions      ] = useState([]);
+  const [ ownerOptions,         setOwnerOptions       ] = useState([]);
+  const [ tipologiaOptions,     setTipologiaOptions   ] = useState([]);
+  const [ statoOptions,         setStatoOptions       ] = useState([]);
+  const [ keypeopleOptions,     setKeypeopleOptions   ] = useState([]);
+  const [ isKeypeopleEnabled,   setIsKeypeopleEnabled ] = useState(false);
+
+
+  const [ values,             setValues               ] = useState([]);
+  
+
+
+  // Recupera l'token da localStorage
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = user?.token;
+
+  // Configura gli headers della richiesta con l'Authorization token
+  const headers = {
+    Authorization: `Bearer ${token}`
+  };
+
+  const navigateBack = () => {
+    navigate(-1); 
+  };
 
 
 
+  useEffect(() => {
+    const fetchNeedOptions = async () => {
+      try {
+        const responseAziende       = await axios.get(`http://localhost:8080/aziende/react/${id}`, { headers: headers });
+        const responseSkill         = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
+        const ownerResponse         = await axios.get("http://localhost:8080/aziende/react/owner" , { headers: headers });
+        const tipologiaResponse     = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
+        const statoResponse         = await axios.get("http://localhost:8080/need/react/stato"    , { headers: headers });
 
 
-
-
-    const user = JSON.parse(localStorage.getItem("user"));
-    const token = user?.token;
-
-    const headers = {
-        Authorization: `Bearer ${token}`
-    };
-
-    //chiamata per ricevere i dati dal db
-    useEffect(() => {
-      const fetchNeedOptions = async () => {
-        try {
-          const responseAziende       = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
-          const responseSkill         = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
-          const ownerResponse         = await axios.get("http://localhost:8080/aziende/react/owner" , { headers: headers });
-          const tipologiaResponse     = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
-          const statoResponse         = await axios.get("http://localhost:8080/need/react/stato"    , { headers: headers});
-  
-  
-          if (Array.isArray(statoResponse.data)) {
-            const statoOptions = statoResponse.data.map((stato) => ({
-              label: stato.descrizione,
-              value: stato.id,
-            }));
-            setStatoOptions(statoOptions);
-          }
-  
-  
-  
-          if (Array.isArray(tipologiaResponse.data)) {
-            const tipologiaOptions = tipologiaResponse.data.map((tipologia) => ({
-              label: tipologia.descrizione,
-              value: tipologia.id,
-            }));
-            setTipologiaOptions(tipologiaOptions);
-          }
-  
-  
-  
-          if (Array.isArray(ownerResponse.data)) {
-            const ownerOptions = ownerResponse.data.map((owner) => ({
-              label: owner.descrizione,
-              value: owner.id,
-            }));
-            setOwnerOptions(ownerOptions);
-          }
-  
-  
-        if (Array.isArray(responseSkill.data)) {
-          const skillsOptions = responseSkill.data.map((skill) => ({
-            value: skill.id,
-            label: skill.descrizione
+        if (Array.isArray(statoResponse.data)) {
+          const statoOptions = statoResponse.data.map((stato) => ({
+            label: stato.descrizione,
+            value: stato.id,
           }));
-          setSkillsOptions(skillsOptions);
+          setStatoOptions(statoOptions);
         }
-  
-  
-          if (Array.isArray(responseAziende.data)) {
-            const ownerOptions = responseAziende.data.map((aziende) => ({
-              label: aziende.denominazione,
-              value: aziende.id,
-            }));
-            setAziendeOptions(ownerOptions);
-          }
-        } catch (error) {
-          console.error("Errore durante il recupero delle aziende:", error);
+
+
+
+        if (Array.isArray(tipologiaResponse.data)) {
+          const tipologiaOptions = tipologiaResponse.data.map((tipologia) => ({
+            label: tipologia.descrizione,
+            value: tipologia.id,
+          }));
+          setTipologiaOptions(tipologiaOptions);
         }
-        setLoading(false);
-
-      };
-  
-      fetchNeedOptions();
-    }, []);
-  
-  
-    const pubblicazioneOptions = [
-      { value: 1, label: 'To Do' },
-      { value: 2, label: 'Done'  }
-    ];
-  
-    const screeningOptions = [
-      { value: 1, label: 'To Do' },
-      { value: 2, label: 'In progress' },
-      { value: 3, label: 'Done' }
-    ];
 
 
 
-    const menu = [
-        {
-            title: 'Descrizione Need',
-            icon: <CircleOutlinedIcon />
-        },
-    ];
-
-    const handleGoBack = () => {
-        navigate(-1);
-    };
-
-    //funzione per fieldre quali field sono obbligatori nel form corrente
-    const getMandatoryFields = (index) => {
-        switch (index) {
-            case 0:
-                return ["idAzienda", "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location"]; 
-            default:
-                return [];
+        if (Array.isArray(ownerResponse.data)) {
+          const ownerOptions = ownerResponse.data.map((owner) => ({
+            label: owner.descrizione,
+            value: owner.id,
+          }));
+          setOwnerOptions(ownerOptions);
         }
-    };
 
-
-    //funzione per la validazione dei field
-    const validateFields = (values, mandatoryFields) => {
-        let errors = {};
-        mandatoryFields.forEach(field => {
-            if (!values[field]) {
-                errors[field] = 'Questo campo è obbligatorio';
-            }
-        });
-        return errors;
-    };
-
-
-
-     // Funzione per il cambio stato degli input
-     const handleChange = (fieldValue) => {
-        setValues(prevValues => ({
-            ...prevValues,
-            ...fieldValue
+       
+      if (Array.isArray(responseSkill.data)) {
+        const skillsOptions = responseSkill.data.map((skill) => ({
+          value: skill.id,
+          label: skill.descrizione
         }));
-        };
+        setSkillsOptions(skillsOptions);
+    }
 
-        //funzione per il cambio stato delle skill
-        const handleChangeSkill = (fieldValue) => {
-            const fieldName = Object.keys(fieldValue)[0]; 
-            const newValues = fieldValue[fieldName];
-        
-            setValues(prevValues => ({
-                ...prevValues,
-                [fieldName]: [...newValues]
-            }));
-        };
+        if (Array.isArray(responseAziende.data)) {
+          const ownerOptions = responseAziende.data.map((aziende) => ({
+            label: aziende.denominazione,
+            value: aziende.id,
+          }));
+          setAziendeOptions(ownerOptions);
+        }
+      } catch (error) {
+        console.error("Errore durante il recupero delle aziende:", error);
+      }
+      setLoading(false);
+    };
 
-
-
-        //useEffect che controlla se l'azienda è selezionata
-        useEffect(() => {
-            if (values.idAzienda && values.idAzienda.length !== 0) {
-                const azinedaConId = values.idAzienda; 
-        
-                setIsKeypeopleEnabled(true);
-                fetchKeypeopleOptions(azinedaConId);
-            } else {
-                setIsKeypeopleEnabled(false);
-                setKeypeopleOptions([]);
-            }
-        }, [values.idAzienda]); 
-
-
-        const fetchKeypeopleOptions = async (aziendaConId) => {
-            try {
-                const responseKeypeople = await axios.get(`http://localhost:8080/keypeople/react/azienda/${aziendaConId}`, { headers: headers });
-                const keypeopleOptions = responseKeypeople.data.map(keypeople => ({
-                    value: keypeople.id,
-                    label: keypeople.nome
-                }));
-                setKeypeopleOptions(keypeopleOptions);
-            } catch(error) {
-                console.error("Errore durante il recupero dei keypeople:", error);
-            }
-        };
-        
-        
+    fetchNeedOptions();
+  }, []);
 
 
 
-    //funzione di change per decimalNumber
-    // const handleChangeDecimal = (fieldName, fieldValue) => {
-    //     const value = fieldValue.replace(/,/g, '.');
-    //     if (!value || value.match(/^\d+(\.\d{0,2})?$/)) {
-    //       setValues(prevValues => ({
-    //         ...prevValues,
-    //         [fieldName]: value  
-    //       }));
-    //     }
-    //   };
+  const pubblicazioneOptions = [
+    { value: 1, label: 'To Do' },
+    { value: 2, label: 'Done'  }
+  ];
+
+  const screeningOptions = [
+    { value: 1, label: 'To Do' },
+    { value: 2, label: 'In progress' },
+    { value: 3, label: 'Done' }
+  ];
+
+
+
+  const menu = [
+      {
+          title: 'Descrizione Need',
+          icon: <CircleOutlinedIcon />
+      },
+  ];
+
+  const handleGoBack = () => {
+      navigate(-1);
+  };
+
+  //funzione per fieldre quali field sono obbligatori nel form corrente
+  const getMandatoryFields = (index) => {
+      switch (index) {
+          case 0:
+              return [ "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location"]; 
+              
+          default:
+              return [];
+      }
+  };
+
+
+  //funzione per la validazione dei field
+  const validateFields = (values, mandatoryFields) => {
+      let errors = {};
+      mandatoryFields.forEach(field => {
+          if (!values[field]) {
+              errors[field] = 'Questo campo è obbligatorio';
+          }
+      });
+      return errors;
+  };
+
+
+
+   // Funzione per il cambio stato degli input
+   const handleChange = (fieldValue) => {
+      setValues(prevValues => ({
+          ...prevValues,
+          ...fieldValue
+      }));
+      };
+
+      //funzione per il cambio stato delle skill
+      const handleChangeSkill = (fieldValue) => {
+          const fieldName = Object.keys(fieldValue)[0]; 
+          const newValues = fieldValue[fieldName];
+      
+          setValues(prevValues => ({
+              ...prevValues,
+              [fieldName]: [...newValues]
+          }));
+      };
+
+
+
+      //useEffect che controlla se l'azienda è selezionata
+      useEffect(() => {
+          if (values.idAzienda && values.idAzienda.length !== 0) {
+              const azinedaConId = values.idAzienda; 
+      
+              setIsKeypeopleEnabled(true);
+              fetchKeypeopleOptions(azinedaConId);
+          } else {
+              setIsKeypeopleEnabled(false);
+              setKeypeopleOptions([]);
+          }
+      }, [values.idAzienda]); 
+
+
+      const fetchKeypeopleOptions = async (aziendaConId) => {
+          try {
+              const responseKeypeople = await axios.get(`http://localhost:8080/keypeople/react/azienda/${aziendaConId}`, { headers: headers });
+              const keypeopleOptions = responseKeypeople.data.map(keypeople => ({
+                  value: keypeople.id,
+                  label: keypeople.nome
+              }));
+              setKeypeopleOptions(keypeopleOptions);
+          } catch(error) {
+              console.error("Errore durante il recupero dei keypeople:", error);
+          }
+      };
+
 
 
     //funzioni per cambiare pagina del form
@@ -265,7 +257,7 @@ const AggiungiNeedGrafica = () => {
         };
 
 
-        //funzione per il salvataggio     
+                //funzione per il salvataggio     
     const handleSubmit = async (values) => {
         const currentIndex = menu.findIndex(item => item.title.toLowerCase() === activeSection.toLowerCase());
         const mandatoryFields = getMandatoryFields(currentIndex); 
@@ -274,19 +266,20 @@ const AggiungiNeedGrafica = () => {
     
         if (!hasErrors) {
             try {
+                console.log("values: ", values);
                 Object.keys(values).forEach(key => {
                     if (!fieldObbligatori.includes(key) && !values[key]) {
                         values[key] = null;
                     }
                 });
 
-                const skills = values.skills ? values.skills.join(',') : '';
+                const skills = values.idSkills ? values.idSkills.join(',') : '';
 
 
-                delete values.skills;
+                delete values.idSkills;
 
-                const responseSaveNeed = await axios.post("http://localhost:8080/need/react/salva", values, { params: { skill1: skills }, headers: headers});
-                navigate('/need');
+                const responseSaveNeed = await axios.post("http://localhost:8080/need/react/salva", values, { params: { skill: skills }, headers: headers});
+                navigate(`/need`);
               } catch(error) {
                 console.error("Errore durante il salvataggio", error);
               }
@@ -296,31 +289,40 @@ const AggiungiNeedGrafica = () => {
         }
     };
 
-        const fieldObbligatori = [ "idAzienda", "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location" ];
+  const fieldObbligatori = [ "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location" ];
 
-        const fields =[
-          { label: "Azienda*",            name: "idAzienda",                    type: "select",               options: aziendeOptions    },
-          { label: 'Contatto*',           name: "idKeyPeople",                  type: "select",               options: keypeopleOptions   },
-          { label: "Descrizione Need*",   name: "descrizione",                  type: "text"                                             },
-          { label: "Priorità*",           name: "priorita",                     type: "decimalNumber"                                           },
-          { label: "Week*",               name: "week",                         type: "week"                                       },
-          { label: "Tipologia*",           name: "tipologia",                    type: "select",               options: tipologiaOptions  },
-          { label: "Tipologia Azienda",   name: "tipo",                         type: "select",               options: [
-          { value: 1,                   label: "Cliente" },
-          { value: 2,                   label: "Consulenza" },
-          { value: 3,                   label: "Prospect" }
-        ] },
-          { label: "Owner*",                     name: "idOwner",                      type: "select",                 options: ownerOptions         },
-          { label: "Stato*",                     name: "stato",                        type: "select",                 options: statoOptions         },
-          { label: "Headcount",                 name: "numeroRisorse",                type: "decimalNumber"                                                },
-          { label: "Location*",                  name: "location",                     type: "text"                                                  },
-          { label: "Skills",                    name: "skills",                       type: "multipleSelect",    options: skillsOptions        },
-          { label: "Seniority",                 name: "anniEsperienza",               type: "decimalNumber"                                         },
-          { label: 'Pubblicazione Annuncio*',   name: 'pubblicazione',                type: 'select',                 options: pubblicazioneOptions },
-          { label: 'Screening*',                name: 'screening',                    type: 'select',                 options: screeningOptions     },
-          { label: "Note",                      name: "note",                         type: "note"                                                  },
-        ];
-      
+
+  const fields = [
+    { label: "Azienda*",            name: "denominazione",                type: "text",            disabled:true },
+    { label: "Descrizione Need*",   name: "descrizione",                  type: "text" },
+    { label: "Priorità*",           name: "priorita",                     type: "decimalNumber" },
+    { label: "Week*",               name: "week",                         type: "week" },
+    { label: "Tipologia*",           name: "tipologia",                    type: "select",           options: tipologiaOptions  },
+    { label: "Tipologia Azienda",   name: "tipo",                         type: "select",           options: [ 
+    { value: 1,                   label: "Cliente" },
+    { value: 2,                   label: "Consulenza" },
+    { value: 3,                   label: "Prospect" }
+  ] },
+    { label: "Owner*",               name: "idOwner",                      type: "select",           options: ownerOptions },
+    { label: "Stato*",               name: "stato",                        type: "select",           options: statoOptions },
+    { label: "Headcount",           name: "numeroRisorse",                type: "decimalNumber"                                         },
+    { label: "Location*",            name: "location",                     type: "text" },
+    { label: "Skills",              name: "idSkills",                     type: "multipleSelect",         options: skillsOptions        },
+    { label: "Seniority",           name: "anniEsperienza",               type: "decimalNumber" },
+    { label: 'Pubblicazione Annuncio*',   name: 'pubblicazione',                type: 'select',                 options: pubblicazioneOptions },
+    { label: 'Screening*',                name: 'screening',                    type: 'select',                 options: screeningOptions     },
+    { label: "Note",                name: "note",                         type: "note" },
+  ];
+
+
+  const initialValues = {
+    idAzienda:            valori?.id            || "",
+    denominazione:        valori?.denominazione || "",
+  };
+
+  const disabledFields = [ "denominazione" ];
+
+
 
         //funzione per suddividere fields nelle varie pagine in base a titleGroups
         const groupFields = (fields) => {
@@ -381,6 +383,19 @@ const AggiungiNeedGrafica = () => {
 
             switch (type) {
                 case 'text':
+                    if ( field.name === 'denominazione') {
+                        return (
+                            <CustomTextFieldModifica
+                            name={field.name}
+                            label={field.label}
+                            type={field.type}
+                            values={values}
+                            onChange={handleChange}
+                            initialValues={initialValues}
+                            disabled={disabledFields.includes(field.name)}
+                            />
+                        );
+                    } else {
                     return (
                         <CustomTextFieldAggiungi
                         name={field.name}
@@ -390,6 +405,7 @@ const AggiungiNeedGrafica = () => {
                         onChange={handleChange}
                         />
                     );
+                }
 
 
                     case 'note':
@@ -664,4 +680,4 @@ const AggiungiNeedGrafica = () => {
     )
 }
 
-export default AggiungiNeedGrafica;
+export default AggiungiNeedIDGragica;

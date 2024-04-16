@@ -32,7 +32,7 @@ const AziendeCardFlip = ({valori, onDelete}) => {
 
     const [ modalDelete,       setModalDelete     ] = useState(false);
     const [isFlipped, setIsFlipped] = useState(false);
-        const [activeLink, setActiveLink] = useState(null);
+    const [activeLink, setActiveLink] = useState(null);
 
 
     const toggleFlip = () => {
@@ -217,6 +217,7 @@ const AziendeCardFlip = ({valori, onDelete}) => {
         handleCloseModalDelete(true);
     };
 
+    //controllo del ruolo dell'utente loggato
     const userHasRole = (roleToCheck) => {
         const userString = localStorage.getItem('user');
         if (!userString) {
@@ -458,9 +459,6 @@ const AziendeCardFlip = ({valori, onDelete}) => {
                             </Box>
                             </Box>
                 </Modal>
-
-
-
     </Card>
     );
 };

@@ -12,7 +12,7 @@ import ExploreIcon from '@mui/icons-material/Explore'; //need
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow'; //azioni
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, Alert } from '@mui/material';
 
 
 
@@ -30,12 +30,10 @@ import {
     ListItem,
     ListItemIcon,
     ListItemText,
-    Select,
-    MenuItem,
     TextField,
-    Popover,
     Autocomplete,
     FormControl,
+    Snackbar
     
     } from '@mui/material';
 
@@ -65,6 +63,28 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
         data: '',
         note: ''
     });
+
+    //stato per lo snackbar
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarType, setSnackbarType] = useState('success'); 
+
+
+    //funzioni per gestire lo snackbar
+    const handleOpenSnackbar = (message, type) => {
+        setSnackbarMessage(message);
+        setSnackbarType(type);
+        setSnackbarOpen(true);
+    };
+    
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackbarOpen(false);
+    };
+    
+
     
 
 
@@ -136,12 +156,8 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
 
 
     const azioniKeypeople = async(id, event) => {
-        const datiDaInviare = {
-            pagina: 0,
-            quantita: 10
-        };
         try{
-            const responseAzioni = await axios.get(`http://localhost:8080/azioni/react/${id}`, { header: headers, params: datiDaInviare });
+            const responseAzioni = await axios.get(`http://localhost:8080/azioni/react/${id}`, { header: headers });
             if (Array.isArray(responseAzioni.data)) {
                 const azioni = responseAzioni.data.map((azione) => ({ ...azione}));
                 setAzioni(azioni);
@@ -350,27 +366,31 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
     //     { value: 5, label: 'Follow up'},
     // ];
 
-const handleAzioniSubmit = async(id) => {
-    const valoriDaInviare = {
-        data: values.data,
-        idTipologia: values.tipologie,
-        note: values.note,
-    };
+    const handleAzioniSubmit = async (id) => {
+        const valoriDaInviare = {
+            data: values.data,
+            idTipologia: values.tipologie,
+            note: values.note,
+        };
         try {
             const responseSubmitAzione = await axios.post(`http://localhost:8080/azioni/react/salva/${id}`, valoriDaInviare, { headers: headers });
-            if (responseSubmitAzione.data && responseSubmitAzione.data.message === 'OK') {
+            if (responseSubmitAzione.status === 200 || responseSubmitAzione.status === 201) {
                 setValues({
                     data: '',
                     tipologie: '',
                     note: ''
-                })
-                handleCloseModalAzioni();
+                });
+                handleOpenSnackbar('Azione salvata con successo!', 'success');
+            } else {
+                handleOpenSnackbar('Qualcosa è andato storto, riprova!', 'error');
             }
-        } catch(error) {
+            handleCloseModalAzioni();
+        } catch (error) {
             console.error("Errore durante l'invio dei dati: ", error);
+            handleOpenSnackbar('Errore durante l invio dei dati.', 'error');
         }
     };
-
+    
 
     const handleValueChange = (name, value) => {
         setValues(prevValues => ({
@@ -615,9 +635,9 @@ const handleAzioniSubmit = async(id) => {
                     alignItems: 'center',
                     justifyContent: 'center',
                 }}>
-                    <Box sx={{ display:'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: '#EDEDED'}}>
+                    <Box sx={{ display:'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: '#EDEDED', overflow: 'auto'}}>
                         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', mb: 2, textAlign: 'center', p: 3}}>Storico delle azioni</Typography>
+                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', ml: 2, mt: 0.5, mb: 0.5}}>Storico delle azioni</Typography>
                             <IconButton sx={{ mr: 2, backgroundColor: 'transparent', border: 'none' }} onClick={() => setModalStorico(false)}>
                                 <CloseIcon sx={{ backgroundColor: 'transparent' }}/>
                             </IconButton>
@@ -626,29 +646,33 @@ const handleAzioniSubmit = async(id) => {
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold', fontSize: 'large'}}>#</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold', fontSize: 'large'}}>Descrizione</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', fontSize: 'large'}}>Data</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', fontSize: 'large'}}>Tipologia</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', fontSize: 'large'}}>Note</TableCell>
+
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {needAssociati.slice(pagina * righePerPagina, pagina * righePerPagina + righePerPagina).map((need) => (
-                                    <TableRow key={need.id}>
-                                        <TableCell>{need.id}</TableCell>
-                                        <TableCell>{need.descrizione}</TableCell>
+                                {azioni.slice(pagina * righePerPagina, pagina * righePerPagina + righePerPagina).map((azioni) => (
+                                    <TableRow key={azioni.id}>
+                                        <TableCell>{azioni.dataModifica}</TableCell>
+                                        <TableCell>{azioni.tipologia && azioni.tipologia?.descrizione}</TableCell>
+                                        <TableCell>{azioni.note}</TableCell>
+
                                     </TableRow>
                                 ))}
                             </TableBody>
                         </Table>
                     </TableContainer>
-                    <TablePagination
+                    {/* <TablePagination
                         // rowsPerPageOptions={[5, 10, 25]}
                         component="div"
-                        count={needAssociati.length}
+                        count={azioni.length}
                         rowsPerPage={righePerPagina}
                         page={pagina}
                         onPageChange={(event, newPage) => handleChangePagina(newPage, valori.id)}
                         // onRowsPerPageChange={handleChangeRighePerPagina}
-                    />
+                    /> */}
                     </Box>
                 </Modal>
 
@@ -831,7 +855,7 @@ const handleAzioniSubmit = async(id) => {
                 }}>
                     <Box sx={{ display:'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: '#EDEDED'}}>
                         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', mb: 2, textAlign: 'center', p: 3}}>Lista dei Need</Typography>
+                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', ml: 2, mt: 0.5, mb: 0.5}}>Lista dei Need</Typography>
                             <IconButton sx={{ mr: 2, backgroundColor: 'transparent', border: 'none' }} onClick={() => setModalNeed(false)}>
                                 <CloseIcon sx={{ backgroundColor: 'transparent' }}/>
                             </IconButton>
@@ -847,7 +871,7 @@ const handleAzioniSubmit = async(id) => {
                             <TableBody>
                                 {needAssociati.slice(pagina * righePerPagina, pagina * righePerPagina + righePerPagina).map((need) => (
                                     <TableRow key={need.id}>
-                                        <TableCell>{need.id}</TableCell>
+                                        <TableCell>{need.progressivo}</TableCell>
                                         <TableCell>{need.descrizione}</TableCell>
                                     </TableRow>
                                 ))}
@@ -865,6 +889,14 @@ const handleAzioniSubmit = async(id) => {
                     />
                     </Box>
                 </Modal>
+
+                { /* SNACKBAR  */}
+
+                <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+                    <Alert onClose={handleCloseSnackbar} severity={snackbarType} sx={{ width: '100%' }}>
+                        {snackbarMessage}
+                    </Alert>
+                </Snackbar>
 
 
 

@@ -23,6 +23,7 @@ const Aziende = () => {
     // const [ clienteOptions,             setClienteOptions             ] = useState([]);
     const [ ownerOptions,               setOwnerOptions               ] = useState([]);
     const [ provinceOptions,            setProvinceOptions            ] = useState([]);
+    const [ role, setRole] = useState('');
 
 
     const getValueLabel = (value) => {
@@ -67,6 +68,18 @@ const Aziende = () => {
     };
 
 
+    //controllo del ruolo dell'utente loggato
+    const userHasRole = (roleToCheck) => {
+        const userString = localStorage.getItem('user');
+        if (!userString) {
+            return false;
+        }
+        const userObj = JSON.parse(userString);
+        return userObj.roles.includes(roleToCheck);
+    };
+
+
+
 
     const fetchData = async() => {
         setLoading(true);
@@ -78,8 +91,20 @@ const Aziende = () => {
             pagina: 0,
             quantita: 10,
         };
+            if (!userHasRole('ROLE_ADMIN')) {
+                const userString = localStorage.getItem('user');
+                if (userString) {
+                    const userObj = JSON.parse(userString);
+                    filtriDaInviare.username = userObj.username;
+                }
+            }
+
+            const baseUrl = userHasRole('ROLE_ADMIN') ? "http://localhost:8080/aziende/react/mod" : "http://localhost:8080/aziende/react/mod/personal";
+
             try {
-            const responseAziende   = await axios.get("http://localhost:8080/aziende/react/mod",     { headers: headers , params: filtriDaInviare });
+            const responseAziende = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
+
+            // const responseAziende   = await axios.get("http://localhost:8080/aziende/react/mod",     { headers: headers , params: filtriDaInviare });
             // const responseCliente   = await axios.get("http://localhost:8080/aziende/react/select",  { headers });
             const responseOwner     = await axios.get("http://localhost:8080/aziende/react/owner",   { headers: headers });
             const provinceResponse = await axios.get("http://localhost:8080/aziende/react/province", { headers: headers });
@@ -132,22 +157,29 @@ const Aziende = () => {
         const fetchMoreData = async () => {
             const paginaSuccessiva = pagina + 1;
 
-            const filtriAttivi = Object.values(filtri).some(value => value !== null && value !== '');
+            // const filtriAttivi = Object.values(filtri).some(value => value !== null && value !== '');
 
-            const url = filtriAttivi ?
-            "http://localhost:8080/aziende/react/ricerca/mod" :
-            "http://localhost:8080/aziende/react/mod";
+            // const url = filtriAttivi ?
+            // "http://localhost:8080/aziende/react/ricerca/mod" :
+            // "http://localhost:8080/aziende/react/mod";
 
+            if (!userHasRole('ROLE_ADMIN')) {
+                const userString = localStorage.getItem('user');
+                if (userString) {
+                    const userObj = JSON.parse(userString);
+                    filtri.username = userObj.username; 
+                }
+            }
+        
+            const baseUrl = userHasRole('ROLE_ADMIN') ? "http://localhost:8080/aziende/react/mod" : "http://localhost:8080/aziende/react/mod/personal";
+        
             const filtriDaInviare = {
-                ragione: filtri.denominazione || null,
-                tipologia: filtri.tipologia || null,
-                owner: filtri.owner || null,
-                stato: filtri.stato || null,
+                ...filtri,
                 pagina: paginaSuccessiva,
                 quantita: quantita
             };
             try {
-                const responsePaginazione   = await axios.get(url,     { headers: headers , params: filtriDaInviare });
+                const responsePaginazione = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
                 if (Array.isArray(responsePaginazione.data)) {
                     const aziendeConId = responsePaginazione.data
                     .map((aziende) => ({ ...aziende }));
@@ -167,16 +199,24 @@ const Aziende = () => {
             const handleRicerche = async () => {
         
                 const filtriDaInviare = {
-                    ragione: filtri.denominazione || null,
-                    tipologia: filtri.tipologia || null,
-                    owner: filtri.owner || null,
-                    stato: filtri.stato || null,
+                    ...filtri,
                     pagina: 0,
                     quantita: quantita
                 };
+            
+                if (!userHasRole('ROLE_ADMIN')) {
+                    const userString = localStorage.getItem('user');
+                    if (userString) {
+                        const userObj = JSON.parse(userString);
+                        filtriDaInviare.username = userObj.username;
+                    }
+                }
+            
+                const baseUrl = userHasRole('ROLE_ADMIN') ? "http://localhost:8080/aziende/react/ricerca/mod" : "http://localhost:8080/aziende/react/ricerca/mod/personal";
+            
                 setLoading(true);     
                 try {
-                    const response          = await axios.get("http://localhost:8080/aziende/react/ricerca/mod", { headers: headers, params: filtriDaInviare });
+                    const response = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
                     const responseOwner     = await axios.get("http://localhost:8080/aziende/react/owner",   { headers });
 
                     if (Array.isArray(responseOwner.data)) {

@@ -149,7 +149,8 @@ const ModificaNeedGrafica = () => {
     const getMandatoryFields = (index) => {
         switch (index) {
             case 0:
-                return [ "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location"]; 
+                return [ "descrizione", "priorita", "week", "pubblicazione", "screening", "idTipologia", "idStato", "idOwner", "location"]; 
+
             default:
                 return [];
         }
@@ -267,12 +268,12 @@ const ModificaNeedGrafica = () => {
                     }
                 });
 
-                const skills = values.skills ? values.skills.join(',') : '';
+                const skills = values.idSkills ? values.idSkills.join(',') : '';
 
 
-                delete values.skills;
+                delete values.idSkills;
 
-                const responseSaveNeed = await axios.post("http://localhost:8080/need/react/salva", values, { params: { skill1: skills }, headers: headers});
+                const responseSaveNeed = await axios.post("http://localhost:8080/need/react/salva", values, { params: { skill: skills }, headers: headers});
                 navigate('/need');
               } catch(error) {
                 console.error("Errore durante il salvataggio", error);
@@ -283,7 +284,7 @@ const ModificaNeedGrafica = () => {
         }
     };
 
-        const fieldObbligatori = [ "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location" ];
+        const fieldObbligatori = [ "descrizione", "priorita", "week", "pubblicazione", "screening", "idTipologia", "idStato", "idOwner", "location" ];
 
         const fields =[
             { label: "Descrizione Need*",   name: "descrizione",                  type: "text"                                                },
@@ -295,10 +296,10 @@ const ModificaNeedGrafica = () => {
             { value: 2,                   label: "Consulenza" },
             { value: 3,                   label: "Prospect" }
             ] },
-            { label: "Owner*",                     name: "idOwner",                     type: "select",                 options: ownerOptions         },
-            { label: "Stato*",                     name: "idStato",                     type: "select",                 options: statoOptions         },
+            { label: "Owner*",                    name: "idOwner",                     type: "select",                 options: ownerOptions         },
+            { label: "Stato*",                    name: "idStato",                     type: "select",                 options: statoOptions         },
             { label: "Headcount",                 name: "numeroRisorse",                type: "decimalNumber"                                         },
-            { label: "Location*",                  name: "location",                    type: "text"                                                  },
+            { label: "Location*",                 name: "location",                    type: "text"                                                  },
             { label: "Skills",                    name: "idSkills",                     type: "multipleSelect",         options: skillsOptions        },
             { label: "Seniority",                 name: "anniEsperienza",               type: "decimalNumber"                                         },
             { label: 'Pubblicazione Annuncio*',   name: 'pubblicazione',                type: 'select',                 options: pubblicazioneOptions },
