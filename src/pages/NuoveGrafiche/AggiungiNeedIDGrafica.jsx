@@ -266,7 +266,6 @@ const AggiungiNeedIDGragica = () => {
     
         if (!hasErrors) {
             try {
-                console.log("values: ", values);
                 Object.keys(values).forEach(key => {
                     if (!fieldObbligatori.includes(key) && !values[key]) {
                         values[key] = null;

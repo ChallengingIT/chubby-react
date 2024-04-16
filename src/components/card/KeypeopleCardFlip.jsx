@@ -244,6 +244,17 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
         }
     };
 
+    const tipoConverter = (tipoId) => {
+        const tipoMap = {
+            1: "Keypeople",
+            2: "Hook",
+            3: "Link"
+        };
+        return tipoMap[tipoId] || ""; 
+    };
+    
+    
+
 
 
 
@@ -458,10 +469,12 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
 
             <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
                 <AutoModeIcon sx={{ color: '#00B401', mr: 1 }} />
+                {tipoConverter(valori.tipo)}
             </Typography>
 
             <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
                 <AutoModeIcon sx={{ color: '#00B401', mr: 1 }} />
+                {valori.stato?.descrizione}
             </Typography>
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>

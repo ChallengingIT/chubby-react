@@ -1,18 +1,22 @@
 import React, { useState, useEffect }                                                                           from 'react';
-import { useNavigate, useLocation }                                                                             from 'react-router-dom';
-import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Snackbar, Skeleton, Grid } from '@mui/material';
+import { useNavigate, useLocation, useParams }                                                                             from 'react-router-dom';
+import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Snackbar, Skeleton, Grid, IconButton, Popover } from '@mui/material';
 import CircleOutlinedIcon                                                                                       from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
 import axios                                                                                                    from 'axios';
 import CustomAutocomplete                                                                                       from '../../components/fields/CustomAutocomplete';
 import CustomTextFieldModifica                                                                                  from '../../components/fields/CustomTextFieldModifica';
 import CustomNoteModifica                                                                                       from '../../components/fields/CustomNoteModifica';
 import CustomDatePickerModifica                                                                                 from '../../components/fields/CustomDatePickerModifica';
+import InfoIcon                                                                                       from '@mui/icons-material/Info';
 
 
 const ModificaKeypeopleGrafica = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const valori = location.state;
+    const { id } = useParams();
+
+    console.log("id: ", id);
 
 
     //stati della pagina
@@ -25,6 +29,8 @@ const ModificaKeypeopleGrafica = () => {
     //stati per i valori
     const [ aziendeOptions, setAziendeOptions] = useState([]);
     const [ ownerOptions,   setOwnerOptions  ] = useState([]);
+    const [ statiOptions,   setStatiOptions  ] = useState([]);
+    const [ datiModifica,   setDatiModifica  ] = useState([]);
     const [ values,             setValues               ] = useState({});
 
 
@@ -40,8 +46,20 @@ const ModificaKeypeopleGrafica = () => {
     useEffect(() => {
         const fetchAziendeOptions = async () => {
         try {
+            const keypeopleResponse = await axios.get(`http://localhost:8080/keypeople/react/${id}`,    { headers: headers });
             const aziendeResponse = await axios.get("http://localhost:8080/aziende/react/select",       { headers: headers });
             const ownerResponse   = await axios.get("http://localhost:8080/aziende/react/owner",        { headers: headers });
+            const statiResponse   = await axios.get("http://localhost:8080/keypeople/react/stati",       { headers: headers });
+
+            if (Array.isArray(statiResponse.data)) {
+                const statiOptions = statiResponse.data.map((stati) => ({
+                    label: stati.descrizione,
+                    value: stati.id,
+                }));
+                setStatiOptions(statiOptions);
+                } else {
+                console.error("I dati ottenuti non sono nel formato Array:", statiResponse.data);
+                }
             if (Array.isArray(ownerResponse.data)) {
             const ownerOptions = ownerResponse.data.map((owner) => ({
                 label: owner.descrizione,
@@ -63,6 +81,10 @@ const ModificaKeypeopleGrafica = () => {
             } else {
             console.error("I dati ottenuti non sono nel formato Array:", aziendeResponse.data);
             }
+
+            const modificaData = keypeopleResponse.data;
+            setDatiModifica(modificaData);
+            setLoading(false);
         } catch (error) {
             console.error("Errore durante il recupero delle province:", error);
         }
@@ -86,7 +108,7 @@ const ModificaKeypeopleGrafica = () => {
     const getMandatoryFields = (index) => {
         switch (index) {
             case 0:
-                return ["nome", "idAzienda", "idOwner", "email", "status", "ruolo", "dataCreazione"]; 
+                return ["nome", "idAzienda", "idOwner", "email", "idStato", "ruolo", "dataCreazione"]; 
             default:
                 return [];
         }
@@ -183,11 +205,26 @@ const ModificaKeypeopleGrafica = () => {
                 setAlert({ open: true, message: "Compilare tutti i campi obbligatori presenti prima di avanzare" });
             }
         };
+
+
+          //funzione per il popover
+        const [anchorEl, setAnchorEl] = useState(null);
+
+        const handlePopoverOpen = (event) => {
+            setAnchorEl(event.currentTarget);
+        };
+
+        const handlePopoverClose = () => {
+            setAnchorEl(null);
+        };
+
+        const open = Boolean(anchorEl);
+
         
 
 
 
-        const campiObbligatori = [ "nome", "idAzienda", "email", "idOwner", "status", "ruolo", "dataCreazione" ];
+        const campiObbligatori = [ "nome", "idAzienda", "email", "idOwner", "idStato", "ruolo", "dataCreazione" ];
 
         const fields =[
             { type: "titleGroups",                label: "Anagrafica"            },
@@ -199,13 +236,7 @@ const ModificaKeypeopleGrafica = () => {
                 { value: 2, label: "Hook" },
                 { value: 3, label: 'Link'}
               ] },
-              { label: "Stato*",                name: "status",              type: "select",      options: [
-                { value: "1", label: "Gold" },
-                { value: "2", label: "Silver" },
-                { value: "3", label: "Bronze" },
-                { value: "4", label: "Wood" },
-                { value: null, label: "Nessuna Azione" },
-              ] },
+              { label: "Stato*",                name: "idStato",              type: "select",      options: statiOptions },
               { label: "Owner*",                name: "idOwner",              type: "select",      options: ownerOptions},
             { label: "Email*",                name: "email",                type: "text" },
             { label: "Cellulare",             name: "cellulare",            type: "text" },
@@ -219,34 +250,35 @@ const ModificaKeypeopleGrafica = () => {
 
 
         const initialValues = {
-            id:                 valori.id                                                  ,
-            nome:               valori.nome                                                || null,
-            idAzienda:          valori.cliente && valori.cliente.id                        || null,
-            idOwner:            valori.owner   && valori.owner.id                          || null,
-            email:              valori.email                                               || null,
-            cellulare:          valori.cellulare                                           || null,
-            ruolo:              valori.ruolo                                               || null,
-            dataCreazione:      valori.dataCreazione                                       || null,
-            dataUltimaAttivita: valori.dataUltimaAttivita                                  || null,
-            status:             valori.status                                              || null,
-            note:               valori.note                                                || null,
+            id:                 datiModifica.id                                                  ,
+            nome:               datiModifica.nome                                                || null,
+            idAzienda:          datiModifica.cliente && datiModifica.cliente.id                        || null,
+            idOwner:            datiModifica.owner   && datiModifica.owner.id                          || null,
+            email:              datiModifica.email                                               || null,
+            cellulare:          datiModifica.cellulare                                           || null,
+            ruolo:              datiModifica.ruolo                                               || null,
+            dataCreazione:      datiModifica.dataCreazione                                       || null,
+            dataUltimaAttivita: datiModifica.dataUltimaAttivita                                  || null,
+            idStato:            datiModifica.stato && datiModifica.stato.id                                             || null,
+            tipo:               datiModifica.tipo                                                || null,   
+            note:               datiModifica.note                                                || null,
         };
 
 
          //funzione per caricare i dati nei campi solo dopo aver terminato la chiamata
          useEffect(() => {
-            if (Object.keys(valori).length !== 0) {
+            if (Object.keys(datiModifica).length !== 0) {
                 const updatedFormValues = { ...initialValues };
         
-                Object.keys(valori).forEach(key => {
+                Object.keys(datiModifica).forEach(key => {
                     if (initialValues.hasOwnProperty(key)) {
-                        updatedFormValues[key] = valori[key];
+                        updatedFormValues[key] = datiModifica[key];
                     }
                 });
         
                 setValues(updatedFormValues);
             }
-        }, [valori]); 
+        }, [datiModifica]); 
     
 
 
@@ -345,18 +377,101 @@ const ModificaKeypeopleGrafica = () => {
                             />
                         )
 
-                case 'select': 
-                        return (
-                            <CustomAutocomplete
-                            name={field.name}
-                            label={field.label}
-                            options={field.options}
-                            value={values[field.name] || null}
-                            onChange={handleChange}
-                            getOptionSelected={(option, value) => option.value === value.value}
-                            initialValues={initialValues}
-                            />
-                        );
+                        case 'select':
+                            if (field.name === 'idStato') {
+                                return (
+                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                        <CustomAutocomplete
+                                            name={field.name}
+                                            label={field.label}
+                                            options={field.options}
+                                            value={values[field.name] || null}
+                                            onChange={handleChange}
+                                            getOptionSelected={(option, value) => option.value === value.value}
+                                        />
+                                        <IconButton onClick={handlePopoverOpen} sx={{ mr: -3, ml: 2 }}>
+                                            <InfoIcon />
+                                        </IconButton>
+                                        <Popover
+                                            open={open}
+                                            anchorEl={anchorEl}
+                                            onClose={handlePopoverClose}
+                                            anchorOrigin={{
+                                                vertical: 'bottom',
+                                                horizontal: 'right',
+                                            }}
+                                            transformOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'right',
+                                            }}
+                                            >
+                                            <List dense>
+                                                <ListItem>
+                                                <ListItemText 
+                                                    primary={
+                                                    <Box>
+                                                        <Typography component="span" sx={{ fontWeight: 'bold' }}>Gold:</Typography>
+                                                        {" ho ricevuto un’esigenza di business"}
+                                                    </Box>
+                                                    } 
+                                                />
+                                                </ListItem>
+                                                <ListItem>
+                                                <ListItemText 
+                                                    primary={
+                                                    <Box>
+                                                        <Typography component="span" sx={{ fontWeight: 'bold' }}>Silver:</Typography>
+                                                        {" è stata fissata una prospection"}
+                                                    </Box>
+                                                    } 
+                                                />
+                                                </ListItem>
+                                                <ListItem>
+                                                <ListItemText 
+                                                    primary={
+                                                    <Box>
+                                                        <Typography component="span" sx={{ fontWeight: 'bold' }}>Bronze:</Typography>
+                                                        {" entrati in contatto"}
+                                                    </Box>
+                                                    } 
+                                                />
+                                                </ListItem>
+                                                <ListItem>
+                                                <ListItemText 
+                                                    primary={
+                                                    <Box>
+                                                        <Typography component="span" sx={{ fontWeight: 'bold' }}>Wood:</Typography>
+                                                        {" ho effettuato un’azione senza esito"}
+                                                    </Box>
+                                                    } 
+                                                />
+                                                </ListItem>
+                                                <ListItem>
+                                                <ListItemText 
+                                                    primary={
+                                                    <Box>
+                                                        <Typography component="span" sx={{ fontWeight: 'bold' }}>Nessuna Azione:</Typography>
+                                                        {" non ho ancora effettuato azioni commerciali"}
+                                                    </Box>
+                                                    } 
+                                                />
+                                                </ListItem>
+                                            </List>
+                                            </Popover>
+
+                                    </Box>
+                                );
+                            }
+                            return (
+                                <CustomAutocomplete
+                                    name={field.name}
+                                    label={field.label}
+                                    options={field.options}
+                                    value={values[field.name] || null}
+                                    onChange={handleChange}
+                                    getOptionSelected={(option, value) => option.value === value.value}
+                                />
+                            );
 
                     default:
                         return null;

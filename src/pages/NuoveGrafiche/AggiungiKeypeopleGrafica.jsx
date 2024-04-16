@@ -24,6 +24,7 @@ const AggiungiKeypeopleGrafica = () => {
     //stati per i valori
     const [ aziendeOptions, setAziendeOptions] = useState([]);
     const [ ownerOptions,   setOwnerOptions  ] = useState([]);
+    const [ statiOptions,   setStatiOptions  ] = useState([]);
     const [ values,             setValues               ] = useState({});
 
 
@@ -41,6 +42,19 @@ const AggiungiKeypeopleGrafica = () => {
         try {
             const aziendeResponse = await axios.get("http://localhost:8080/aziende/react/select",       { headers: headers });
             const ownerResponse   = await axios.get("http://localhost:8080/aziende/react/owner",        { headers: headers });
+            const statiResponse   = await axios.get("http://localhost:8080/keypeople/react/stati",       { headers: headers });
+
+            if (Array.isArray(statiResponse.data)) {
+                const statiOptions = statiResponse.data.map((stati) => ({
+                    label: stati.descrizione,
+                    value: stati.id,
+                }));
+                setStatiOptions(statiOptions);
+                } else {
+                console.error("I dati ottenuti non sono nel formato Array:", statiResponse.data);
+                }
+
+
             if (Array.isArray(ownerResponse.data)) {
             const ownerOptions = ownerResponse.data.map((owner) => ({
                 label: owner.descrizione,
@@ -84,7 +98,7 @@ const AggiungiKeypeopleGrafica = () => {
     const getMandatoryFields = (index) => {
         switch (index) {
             case 0:
-                return ["nome", "idAzienda", "idOwner", "email", "status", "ruolo", "dataCreazione"]; 
+                return ["nome", "idAzienda", "idOwner", "email", "idStato", "ruolo", "dataCreazione"]; 
             default:
                 return [];
         }
@@ -196,11 +210,13 @@ const AggiungiKeypeopleGrafica = () => {
 
         const open = Boolean(anchorEl);
 
+
+
         
 
 
 
-        const campiObbligatori = [ "nome", "idAzienda", "email", "idOwner", "status", "ruolo", "dataCreazione" ];
+        const campiObbligatori = [ "nome", "idAzienda", "email", "idOwner", "idStato", "ruolo", "dataCreazione" ];
 
         const fields =[
             { type: "titleGroups",                label: "Anagrafica"            },
@@ -212,14 +228,8 @@ const AggiungiKeypeopleGrafica = () => {
                 { value: 2, label: "Hook" },
                 { value: 3, label: 'Link'}
               ] },
-            { label: "Stato*",                name: "status",              type: "select",      options: [
-                { value: "1", label: "Gold" },
-                { value: "2", label: "Silver" },
-                { value: "3", label: "Bronze" },
-                { value: "4", label: "Wood" },
-                { value: null, label: "Nessuna Azione" },
-              ] },
-              { label: "Owner*",                name: "idOwner",              type: "select",      options: ownerOptions},
+            { label: "Stato*",                name: "idStato",              type: "select",      options: statiOptions},
+            { label: "Owner*",                name: "idOwner",              type: "select",      options: ownerOptions},
             { label: "Email*",                name: "email",                type: "text" },
             { label: "Cellulare",             name: "cellulare",            type: "text" },
            
@@ -293,7 +303,7 @@ const AggiungiKeypeopleGrafica = () => {
                         )
 
                         case 'select':
-                            if (field.name === 'status') {
+                            if (field.name === 'idStato') {
                                 return (
                                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                         <CustomAutocomplete
