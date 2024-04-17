@@ -255,7 +255,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
         const idStato = values.stato;  
         const params = new URLSearchParams({ stato: idStato });
         try {
-            const responseUpdateStato = await axios.post(`http://localhost:8080/keypeople/react/salva/stato/${idKeypeople}?${params.toString()}`, {}, { headers: headers });
+            const responseUpdateStato = await axios.post(`http://89.46.196.60:8443/keypeople/react/salva/stato/${idKeypeople}?${params.toString()}`, {}, { headers: headers });
             setModalCambiaStato(false);
             onRefresh();
             handleOpenSnackbar('Stato aggiornato con successo!', 'success');
