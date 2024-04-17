@@ -151,7 +151,7 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
 
     const azioniKeypeople = async(id, event) => {
         try{
-            const responseAzioni = await axios.get(`http://localhost:8080/azioni/react/${id}`, { header: headers });
+            const responseAzioni = await axios.get(`http://89.46.196.60:8443/azioni/react/${id}`, { header: headers });
             if (Array.isArray(responseAzioni.data)) {
                 const azioni = responseAzioni.data.map((azione) => ({ ...azione}));
                 setAzioni(azioni);
@@ -170,7 +170,7 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
             quantita: 10
         };
         try {
-            const responseNeed = await axios.get(`http://localhost:8080/need/react/keypeople/modificato/${id}`, { headers: headers, params: datiDaInviare });
+            const responseNeed = await axios.get(`http://89.46.196.60:8443/need/react/keypeople/modificato/${id}`, { headers: headers, params: datiDaInviare });
             if (Array.isArray(responseNeed.data)) {
                 const needDaAssociare = responseNeed.data.map((keypeople) => ({ ...keypeople}));
                 setNeedAssociati(needDaAssociare);
@@ -198,7 +198,7 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
                 quantita: 10
             };
             try {
-                const responseNeed = await axios.get(`http://localhost:8080/need/react/keypeople/modificato/${id}`, { headers: headers, params: datiDaInviare });
+                const responseNeed = await axios.get(`http://89.46.196.60:8443/need/react/keypeople/modificato/${id}`, { headers: headers, params: datiDaInviare });
                 if (Array.isArray(responseNeed.data)) {
                     const needDaAssociare = responseNeed.data.map((keypeople) => ({ ...keypeople }));
                     setNeedAssociati(needDaAssociare);
@@ -227,7 +227,7 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
 
     const azioniData = async(id, event) => {
         try{
-            const responseAzioni = await axios.get(`http://localhost:8080/azioni/react/tipologie`, { headers: headers });
+            const responseAzioni = await axios.get(`http://89.46.196.60:8443/azioni/react/tipologie`, { headers: headers });
             if (Array.isArray(responseAzioni.data)) {
                 setTipologieOptions(responseAzioni.data.map((tipologie) => ({ label: tipologie.descrizione, value: tipologie.id })));
             } else {
@@ -386,7 +386,7 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
             note: values.note,
         };
         try {
-            const responseSubmitAzione = await axios.post(`http://localhost:8080/azioni/react/salva/${id}`, valoriDaInviare, { headers: headers });
+            const responseSubmitAzione = await axios.post(`http://89.46.196.60:8443/azioni/react/salva/${id}`, valoriDaInviare, { headers: headers });
             if (responseSubmitAzione.status === 200 || responseSubmitAzione.status === 201) {
                 setValues({
                     data: '',

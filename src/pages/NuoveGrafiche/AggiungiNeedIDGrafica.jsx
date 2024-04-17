@@ -59,11 +59,11 @@ const AggiungiNeedIDGragica = () => {
   useEffect(() => {
     const fetchNeedOptions = async () => {
       try {
-        const responseAziende       = await axios.get(`http://localhost:8080/aziende/react/${id}`, { headers: headers });
-        const responseSkill         = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
-        const ownerResponse         = await axios.get("http://localhost:8080/aziende/react/owner" , { headers: headers });
-        const tipologiaResponse     = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
-        const statoResponse         = await axios.get("http://localhost:8080/need/react/stato"    , { headers: headers });
+        const responseAziende       = await axios.get(`http://89.46.196.60:8443/aziende/react/${id}`, { headers: headers });
+        const responseSkill         = await axios.get("http://89.46.196.60:8443/staffing/react/skill", { headers: headers });
+        const ownerResponse         = await axios.get("http://89.46.196.60:8443/aziende/react/owner" , { headers: headers });
+        const tipologiaResponse     = await axios.get("http://89.46.196.60:8443/need/react/tipologia", { headers: headers });
+        const statoResponse         = await axios.get("http://89.46.196.60:8443/need/react/stato"    , { headers: headers });
 
 
         if (Array.isArray(statoResponse.data)) {
@@ -207,7 +207,7 @@ const AggiungiNeedIDGragica = () => {
 
       const fetchKeypeopleOptions = async (aziendaConId) => {
           try {
-              const responseKeypeople = await axios.get(`http://localhost:8080/keypeople/react/azienda/${aziendaConId}`, { headers: headers });
+              const responseKeypeople = await axios.get(`http://89.46.196.60:8443/keypeople/react/azienda/${aziendaConId}`, { headers: headers });
               const keypeopleOptions = responseKeypeople.data.map(keypeople => ({
                   value: keypeople.id,
                   label: keypeople.nome
@@ -277,7 +277,7 @@ const AggiungiNeedIDGragica = () => {
 
                 delete values.idSkills;
 
-                const responseSaveNeed = await axios.post("http://localhost:8080/need/react/salva", values, { params: { skill: skills }, headers: headers});
+                const responseSaveNeed = await axios.post("http://89.46.196.60:8443/need/react/salva", values, { params: { skill: skills }, headers: headers});
                 navigate(`/need`);
               } catch(error) {
                 console.error("Errore durante il salvataggio", error);

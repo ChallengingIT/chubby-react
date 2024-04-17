@@ -92,14 +92,14 @@ const NeedMatch2 = () => {
                 quantita: 10
             };
             try {
-                const candidatiResponse   = await axios.get(`http://localhost:8080/need/react/match/associabili/mod/${id}`,              { headers: headers, params: filtriCandidati});
-                // const candidatiResponse   = await axios.get(`http://localhost:8080/staffing/react/mod`,                                  { headers: headers, params: filtriCandidati});
-                const storicoResponse     = await axios.get(`http://localhost:8080/need/react/storico/${id}`,                            { headers: headers, params: paginazione});
-                const associatiResponse   = await axios.get(`http://localhost:8080/need/react/match/associati/mod/${id}`,                { headers: headers, params: paginazione});
-                const responseTipologia   = await axios.get("http://localhost:8080/aziende/react/tipologia",                             { headers: headers});
-                const responseTipo        = await axios.get("http://localhost:8080/staffing/react/tipo"    ,                             { headers: headers});
-                const ownerResponse       = await axios.get("http://localhost:8080/aziende/react/owner",                                 { headers: headers});
-                const statoResponse       = await axios.get("http://localhost:8080/associazioni/react/stati",                            { headers: headers});
+                const candidatiResponse   = await axios.get(`http://89.46.196.60:8443/need/react/match/associabili/mod/${id}`,              { headers: headers, params: filtriCandidati});
+                // const candidatiResponse   = await axios.get(`http://89.46.196.60:8443/staffing/react/mod`,                                  { headers: headers, params: filtriCandidati});
+                const storicoResponse     = await axios.get(`http://89.46.196.60:8443/need/react/storico/${id}`,                            { headers: headers, params: paginazione});
+                const associatiResponse   = await axios.get(`http://89.46.196.60:8443/need/react/match/associati/mod/${id}`,                { headers: headers, params: paginazione});
+                const responseTipologia   = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia",                             { headers: headers});
+                const responseTipo        = await axios.get("http://89.46.196.60:8443/staffing/react/tipo"    ,                             { headers: headers});
+                const ownerResponse       = await axios.get("http://89.46.196.60:8443/aziende/react/owner",                                 { headers: headers});
+                const statoResponse       = await axios.get("http://89.46.196.60:8443/associazioni/react/stati",                            { headers: headers});
 
                 if (Array.isArray(ownerResponse.data)) {
                     const ownerOptions = ownerResponse.data.map((owner) => ({
@@ -218,8 +218,8 @@ const NeedMatch2 = () => {
     const fetchMoreDataCandidati = async (paginaCandidati) => {
         const filtriAttivi = Object.values(filtri).some(value => value !== null && value !== '');
         const url = filtriAttivi ?
-        `http://localhost:8080/need/react/match/associabili/ricerca/mod/${id}` :
-        `http://localhost:8080/need/react/match/associabili/mod/${id}`;
+        `http://89.46.196.60:8443/need/react/match/associabili/ricerca/mod/${id}` :
+        `http://89.46.196.60:8443/need/react/match/associabili/mod/${id}`;
 
 
             const filtriCandidati = {
@@ -266,7 +266,7 @@ const NeedMatch2 = () => {
                     };
                 
                     try {
-                    const storicoResponse     = await axios.get(`http://localhost:8080/need/react/storico/${id}`, { headers: headers, params: paginazione});
+                    const storicoResponse     = await axios.get(`http://89.46.196.60:8443/need/react/storico/${id}`, { headers: headers, params: paginazione});
                     const { recordStorico, storico } = storicoResponse.data;
                 
                             if (storico && Array.isArray(storico)) {
@@ -291,7 +291,7 @@ const NeedMatch2 = () => {
                     quantita: 10
                     };
                     try {
-                    const associatiResponse   = await axios.get(`http://localhost:8080/need/react/match/associati/mod/${id}`, { headers: headers, params: paginazione});
+                    const associatiResponse   = await axios.get(`http://89.46.196.60:8443/need/react/match/associati/mod/${id}`, { headers: headers, params: paginazione});
                     const { recordAssociati, associati } = associatiResponse.data;
                 
                     if (associati && Array.isArray(associati)) {
@@ -374,13 +374,13 @@ const NeedMatch2 = () => {
                 };
 
                 try{
-                    const candidatiResponse = await axios.get(`http://localhost:8080/need/react/match/associabili/ricerca/mod/${id}`, { headers: headers, params: filtriCandidati});
-                    const storicoResponse     = await axios.get(`http://localhost:8080/need/react/storico/${id}`,                            { headers: headers, params: paginazione});
-                    const associatiResponse   = await axios.get(`http://localhost:8080/need/react/match/associati/mod/${id}`,                { headers: headers, params: paginazione});
-                    const responseTipologia    = await axios.get("http://localhost:8080/aziende/react/tipologia",                             { headers: headers});
-                    const responseTipo        = await axios.get("http://localhost:8080/staffing/react/tipo"    ,                             { headers: headers});
-                    const ownerResponse       = await axios.get("http://localhost:8080/aziende/react/owner",                                 { headers: headers});
-                const statoResponse       = await axios.get("http://localhost:8080/associazioni/react/stati",                            { headers: headers});
+                    const candidatiResponse = await axios.get(`http://89.46.196.60:8443/need/react/match/associabili/ricerca/mod/${id}`, { headers: headers, params: filtriCandidati});
+                    const storicoResponse     = await axios.get(`http://89.46.196.60:8443/need/react/storico/${id}`,                            { headers: headers, params: paginazione});
+                    const associatiResponse   = await axios.get(`http://89.46.196.60:8443/need/react/match/associati/mod/${id}`,                { headers: headers, params: paginazione});
+                    const responseTipologia    = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia",                             { headers: headers});
+                    const responseTipo        = await axios.get("http://89.46.196.60:8443/staffing/react/tipo"    ,                             { headers: headers});
+                    const ownerResponse       = await axios.get("http://89.46.196.60:8443/aziende/react/owner",                                 { headers: headers});
+                const statoResponse       = await axios.get("http://89.46.196.60:8443/associazioni/react/stati",                            { headers: headers});
 
                 if (Array.isArray(ownerResponse.data)) {
                     const ownerOptions = ownerResponse.data.map((owner) => ({
@@ -478,7 +478,7 @@ const NeedMatch2 = () => {
                 try {
                     const idNeed = parseInt(id);
                     const idCandidato = row;
-                    const url = `http://localhost:8080/associazioni/react/rimuovi/candidato/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
+                    const url = `http://89.46.196.60:8443/associazioni/react/rimuovi/candidato/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
                     const responseDeleteAssociati = await axios.delete(url, {headers: headers});
                     fetchData();
                 } catch(error) {
@@ -490,7 +490,7 @@ const NeedMatch2 = () => {
             const handleDeleteStorico = async (row) => {
                 try {
                     const idAssociazione = row;
-                    const url = `http://localhost:8080/associazioni/react/rimuovi/associa/${idAssociazione}`;
+                    const url = `http://89.46.196.60:8443/associazioni/react/rimuovi/associa/${idAssociazione}`;
                     const responseDeleteStorico = await axios.delete(url, { headers: headers });
                     fetchData();
                 } catch(error) {
@@ -502,7 +502,7 @@ const NeedMatch2 = () => {
                 try{
                     const idNeed = parseInt(id);
                     const idCandidato = row.id;
-                    const url = `http://localhost:8080/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
+                    const url = `http://89.46.196.60:8443/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
                     const responseAssocia = await axios.post(url, { headers: headers });
                     fetchData();
                 } catch(error) {
@@ -546,7 +546,7 @@ const NeedMatch2 = () => {
                         delete updateValues.candidato;
                         delete updateValues.cliente;
 
-                        const response = await axios.post(`http://localhost:8080/associazioni/salva`, updateValues, { headers: headers });;
+                        const response = await axios.post(`http://89.46.196.60:8443/associazioni/salva`, updateValues, { headers: headers });;
                         fetchData();
                     } catch(error) {
                         console.error("Errore durante il recupero dei dati: ", error);
