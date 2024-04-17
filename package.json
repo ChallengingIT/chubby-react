@@ -48,7 +48,6 @@
     "web-vitals": "^2.1.4",
     "yup": "^0.28.5"
   },
-  
   "scripts": {
     "start": "set port=80 && react-scripts start",
     "build": "react-scripts build",
