@@ -1,8 +1,8 @@
 import React, { useEffect, useState}                  from 'react'
-import { useParams }                                  from 'react-router-dom';
+import { Link, useParams }                                  from 'react-router-dom';
 import { useNavigate }                                from "react-router-dom";
 import axios                                          from 'axios';
-import { Modal, Box, Button, Typography, selectClasses }             from '@mui/material';
+import { Modal, Box, Button, Typography, selectClasses}             from '@mui/material';
 import { useLocation }                                from 'react-router-dom';
 import Tabella from '../components/Tabella.jsx';
 import DeleteButton from '../components/button/DeleteButton.jsx';
@@ -92,14 +92,14 @@ const NeedMatch2 = () => {
                 quantita: 10
             };
             try {
-                const candidatiResponse   = await axios.get(`http://89.46.196.60:8443/need/react/match/associabili/mod/${id}`,              { headers: headers, params: filtriCandidati});
-                // const candidatiResponse   = await axios.get(`http://89.46.196.60:8443/staffing/react/mod`,                                  { headers: headers, params: filtriCandidati});
-                const storicoResponse     = await axios.get(`http://89.46.196.60:8443/need/react/storico/${id}`,                            { headers: headers, params: paginazione});
-                const associatiResponse   = await axios.get(`http://89.46.196.60:8443/need/react/match/associati/mod/${id}`,                { headers: headers, params: paginazione});
-                const responseTipologia   = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia",                             { headers: headers});
-                const responseTipo        = await axios.get("http://89.46.196.60:8443/staffing/react/tipo"    ,                             { headers: headers});
-                const ownerResponse       = await axios.get("http://89.46.196.60:8443/aziende/react/owner", { headers: headers});
-                const statoResponse       = await axios.get("http://89.46.196.60:8443/associazioni/react/stati", { headers: headers});
+                const candidatiResponse   = await axios.get(`http://localhost:8080/need/react/match/associabili/mod/${id}`,              { headers: headers, params: filtriCandidati});
+                // const candidatiResponse   = await axios.get(`http://localhost:8080/staffing/react/mod`,                                  { headers: headers, params: filtriCandidati});
+                const storicoResponse     = await axios.get(`http://localhost:8080/need/react/storico/${id}`,                            { headers: headers, params: paginazione});
+                const associatiResponse   = await axios.get(`http://localhost:8080/need/react/match/associati/mod/${id}`,                { headers: headers, params: paginazione});
+                const responseTipologia   = await axios.get("http://localhost:8080/aziende/react/tipologia",                             { headers: headers});
+                const responseTipo        = await axios.get("http://localhost:8080/staffing/react/tipo"    ,                             { headers: headers});
+                const ownerResponse       = await axios.get("http://localhost:8080/aziende/react/owner",                                 { headers: headers});
+                const statoResponse       = await axios.get("http://localhost:8080/associazioni/react/stati",                            { headers: headers});
 
                 if (Array.isArray(ownerResponse.data)) {
                     const ownerOptions = ownerResponse.data.map((owner) => ({
@@ -218,8 +218,8 @@ const NeedMatch2 = () => {
     const fetchMoreDataCandidati = async (paginaCandidati) => {
         const filtriAttivi = Object.values(filtri).some(value => value !== null && value !== '');
         const url = filtriAttivi ?
-        `http://89.46.196.60:8443/need/react/match/associabili/ricerca/mod/${id}` :
-        `http://89.46.196.60:8443/need/react/match/associabili/mod/${id}`;
+        `http://localhost:8080/need/react/match/associabili/ricerca/mod/${id}` :
+        `http://localhost:8080/need/react/match/associabili/mod/${id}`;
 
 
             const filtriCandidati = {
@@ -266,7 +266,7 @@ const NeedMatch2 = () => {
                     };
                 
                     try {
-                    const storicoResponse     = await axios.get(`http://89.46.196.60:8443/need/react/storico/${id}`, { headers: headers, params: paginazione});
+                    const storicoResponse     = await axios.get(`http://localhost:8080/need/react/storico/${id}`, { headers: headers, params: paginazione});
                     const { recordStorico, storico } = storicoResponse.data;
                 
                             if (storico && Array.isArray(storico)) {
@@ -291,7 +291,7 @@ const NeedMatch2 = () => {
                     quantita: 10
                     };
                     try {
-                    const associatiResponse   = await axios.get(`http://89.46.196.60:8443/need/react/match/associati/mod/${id}`, { headers: headers, params: paginazione});
+                    const associatiResponse   = await axios.get(`http://localhost:8080/need/react/match/associati/mod/${id}`, { headers: headers, params: paginazione});
                     const { recordAssociati, associati } = associatiResponse.data;
                 
                     if (associati && Array.isArray(associati)) {
@@ -374,11 +374,29 @@ const NeedMatch2 = () => {
                 };
 
                 try{
-                    const candidatiResponse = await axios.get(`http://89.46.196.60:8443/need/react/match/associabili/ricerca/mod/${id}`, { headers: headers, params: filtriCandidati});
-                    const storicoResponse     = await axios.get(`http://89.46.196.60:8443/need/react/storico/${id}`,                            { headers: headers, params: paginazione});
-                    const associatiResponse   = await axios.get(`http://89.46.196.60:8443/need/react/match/associati/mod/${id}`,                { headers: headers, params: paginazione});
-                    const responseTipologia    = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia",                             { headers: headers});
-                    const responseTipo        = await axios.get("http://89.46.196.60:8443/staffing/react/tipo"    ,                             { headers: headers});
+                    const candidatiResponse = await axios.get(`http://localhost:8080/need/react/match/associabili/ricerca/mod/${id}`, { headers: headers, params: filtriCandidati});
+                    const storicoResponse     = await axios.get(`http://localhost:8080/need/react/storico/${id}`,                            { headers: headers, params: paginazione});
+                    const associatiResponse   = await axios.get(`http://localhost:8080/need/react/match/associati/mod/${id}`,                { headers: headers, params: paginazione});
+                    const responseTipologia    = await axios.get("http://localhost:8080/aziende/react/tipologia",                             { headers: headers});
+                    const responseTipo        = await axios.get("http://localhost:8080/staffing/react/tipo"    ,                             { headers: headers});
+                    const ownerResponse       = await axios.get("http://localhost:8080/aziende/react/owner",                                 { headers: headers});
+                const statoResponse       = await axios.get("http://localhost:8080/associazioni/react/stati",                            { headers: headers});
+
+                if (Array.isArray(ownerResponse.data)) {
+                    const ownerOptions = ownerResponse.data.map((owner) => ({
+                    label: owner.descrizione,
+                    value: owner.id,
+                    }));
+                    setOwnerOptions(ownerOptions);
+                }
+
+                    if (Array.isArray(statoResponse.data)) {
+                    const statoOptions = statoResponse.data.map((stato) => ({
+                        label: stato.descrizione,
+                        value: stato.id,
+                    }));
+                    setStatoOptions(statoOptions);
+                }
     
                     if (Array.isArray(responseTipologia.data)) {
                         const tipologiaOptions = responseTipologia.data.map((tipologia) => ({
@@ -460,7 +478,7 @@ const NeedMatch2 = () => {
                 try {
                     const idNeed = parseInt(id);
                     const idCandidato = row;
-                    const url = `http://89.46.196.60:8443/associazioni/react/rimuovi/candidato/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
+                    const url = `http://localhost:8080/associazioni/react/rimuovi/candidato/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
                     const responseDeleteAssociati = await axios.delete(url, {headers: headers});
                     fetchData();
                 } catch(error) {
@@ -472,7 +490,7 @@ const NeedMatch2 = () => {
             const handleDeleteStorico = async (row) => {
                 try {
                     const idAssociazione = row;
-                    const url = `http://89.46.196.60:8443/associazioni/react/rimuovi/associa/${idAssociazione}`;
+                    const url = `http://localhost:8080/associazioni/react/rimuovi/associa/${idAssociazione}`;
                     const responseDeleteStorico = await axios.delete(url, { headers: headers });
                     fetchData();
                 } catch(error) {
@@ -484,7 +502,7 @@ const NeedMatch2 = () => {
                 try{
                     const idNeed = parseInt(id);
                     const idCandidato = row.id;
-                    const url = `http://89.46.196.60:8443/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
+                    const url = `http://localhost:8080/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
                     const responseAssocia = await axios.post(url, { headers: headers });
                     fetchData();
                 } catch(error) {
@@ -528,7 +546,7 @@ const NeedMatch2 = () => {
                         delete updateValues.candidato;
                         delete updateValues.cliente;
 
-                        const response = await axios.post(`http://89.46.196.60:8443/associazioni/salva`, updateValues, { headers: headers });;
+                        const response = await axios.post(`http://localhost:8080/associazioni/salva`, updateValues, { headers: headers });;
                         fetchData();
                     } catch(error) {
                         console.error("Errore durante il recupero dei dati: ", error);
@@ -641,15 +659,18 @@ const NeedMatch2 = () => {
 
 
                 const tabellaAssociati = [
-                        { field: "nome",                    headerName: "Nome",         flex: 1, renderCell: (params) => (
-                            <div style={{ textAlign: "left"  }}>
-                            <div onClick={() => navigateToCercaCandidato(params.row)}>
-                                    
-                                    {params.row.nome} {params.row.cognome}
-                                </div>
-                        
-                        </div>
-                            ),},
+                    { field: "nome",         headerName: "Nome",           flex: 1.3, renderCell: (params) => (
+                        <div style={{ textAlign: "left"  }}>
+                        <Link 
+                        to={`/recruiting/modifica/${params.row.id}`}
+                        state={{ recruitingData: params.row }}
+                        style={{ color: 'black' }}
+                      >
+                        {params.row.nome} {params.row.cognome}
+                      </Link>
+                      </div>
+                        ),
+                      },
                         { field: "email",                   headerName: "E-Mail",        flex: 1.4},
                         { field: "tipologia",               headerName: "Job Title",     flex: 1, renderCell: (params) => (
                             <div style={{ textAlign: "start" }}>
@@ -696,11 +717,11 @@ const NeedMatch2 = () => {
                             p: 2,
                             ml: 25,
                             mt: 1.5,
-                            mb: 0.5,
+                            marginBottom: '0.8em', 
                             mr: 0.8,
                             backgroundColor: '#FEFCFD',
                             borderRadius: '10px',
-                            height: 'auto',
+                            minHeight: '97vh',
                             width: '100%',
                             flexDirection: 'column',
                             overflow: 'hidden'

@@ -6,7 +6,7 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
 
 
-function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, statoOptions, ownerOptions, onRicerche, onNavigate }) {
+function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, statoOptions, keyPeopleOptions, ownerOptions, onRicerche, onNavigate }) {
 
 
     const [ openFiltri,                setOpenFiltri            ] = useState(false);
@@ -244,6 +244,18 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
                                 </MenuItem>
                                 ))}
                             </Select> */}
+                            </FormControl>
+                            <FormControl fullWidth sx={{ mb: 2 }}>
+                            <Autocomplete
+                                id="keyPeople-combo-box"
+                                options={keyPeopleOptions}
+                                getOptionLabel={(option) => option.label}
+                                value={keyPeopleOptions.find(option => option.value === filtri.keyPeople) || null}
+                                onChange={(event, newValue) => {
+                                    onFilterChange('keyPeople')({ target: { value: newValue?.value || null } });
+                                }}
+                                renderInput={(params) => <TextField {...params} label="Contacts" />}
+                            />
                             </FormControl>
     
                             <Box sx={{ display: 'flex', justifyContent: 'center'}}>

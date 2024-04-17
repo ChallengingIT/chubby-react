@@ -45,6 +45,16 @@ function Sidebar() {
     const [appuntamentoModal,  setAppuntamentoModal ] = useState(false);
     const [emailModal, setEmailModal ] = useState(false);
 
+
+    const userHasRole = (roleToCheck) => {
+        const userString = localStorage.getItem('user');
+        if (!userString) {
+            return false;
+        }
+        const userObj = JSON.parse(userString);
+        return userObj.roles.includes(roleToCheck);
+    };
+
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -181,11 +191,11 @@ function Sidebar() {
             icon: <DashboardIcon />,
         },
         {
-            title: 'Aziende',
+            title: 'Business',
             icon: <BusinessCenterIcon />,
         },
         {
-            title: 'Keypeople',
+            title: 'Contacts',
             icon: <PersonIcon />,
         },
         {
@@ -199,6 +209,7 @@ function Sidebar() {
         {
             title: 'Hiring',
             icon: <ChecklistRtlIcon />,
+            isVisible: !userHasRole('ROLE_USER'),
         }
     ];
 
@@ -233,7 +244,9 @@ function Sidebar() {
                     </IconButton>
                 </Box>
                 <List>
-                    {sidebarData.map((item, index) => (
+                    {sidebarData
+                        .filter(item => item.isVisible !== false)
+                        .map((item, index) => (
                         <ListItem
                             key={item.title}
                             selected={activeLink === `/${item.title.toLowerCase()}`}

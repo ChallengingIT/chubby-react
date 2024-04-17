@@ -1,7 +1,7 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
 
-function CustomTextFieldModifica({ name, label, type, onChange, values, initialValues, disabled }) {
+function CustomWeekDateModifica({ name, label, type, onChange, values, initialValues, disabled }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     onChange({ [name]: value });
@@ -9,24 +9,22 @@ function CustomTextFieldModifica({ name, label, type, onChange, values, initialV
 
 
 
-
-
-
   return (
     <TextField
-      name={name}
-      label={label}
-      type={type}
-      variant="filled"
-      fullWidth
-      value={values[name] || initialValues[name] || ''}
-      onChange={handleChange}
-      disabled={disabled}
-      sx={{ 
-        m: 2,
-        width: "100%",
-        textAlign: "left",
-        borderRadius: '20px', 
+  name={name}
+  label={label}
+  variant="filled"
+  fullWidth
+  type='week'
+  value={values[name] || initialValues[name] || ''}
+  onChange={handleChange}
+  disabled={disabled}
+  sx={{ 
+    m: 2,
+    height: '4em',
+    width: "100%",
+    textAlign: "left",
+    borderRadius: '20px', 
     backgroundColor: '#EDEDED', 
     '& .MuiFilledInput-root': {
         backgroundColor: 'transparent',
@@ -40,18 +38,21 @@ function CustomTextFieldModifica({ name, label, type, onChange, values, initialV
     '&:hover .MuiFilledInput-root::before': {
         borderBottom: 'none', 
     },
-    '& .MuiFilledInput-underline:hover:before': {
-      borderBottomStyle: 'trasparent', 
+    '& .MuiInputLabel-filled': { 
+        transform: 'translate(12px, 5px) scale(1)',
+    },
+    '& .MuiInputLabel-filled.MuiInputLabel-shrink': { 
+        transform: 'translate(12px, 10px) scale(0.75)',
     },
     '& .Mui-disabled': {
       WebkitTextFillColor: 'black', // Questo sovrascrive il colore del testo per i browser basati su Webkit come Chrome e Safari
       color: 'black', 
       cursor: 'not-allowed', 
     },
+  }}
+/>
 
-        }}
-    />
   );
 }
 
-export default CustomTextFieldModifica;
+export default CustomWeekDateModifica;

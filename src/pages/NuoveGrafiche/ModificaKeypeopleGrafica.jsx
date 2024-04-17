@@ -1,18 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Snackbar, Skeleton } from '@mui/material';
-import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
-import axios from 'axios';
-import CustomAutocomplete from '../../components/fields/CustomAutocomplete';
-import CustomTextFieldModifica from '../../components/fields/CustomTextFieldModifica';
-import CustomNoteModifica from '../../components/fields/CustomNoteModifica';
-import CustomDatePickerModifica from '../../components/fields/CustomDatePickerModifica';
+import React, { useState, useEffect }                                                                           from 'react';
+import { useNavigate, useLocation, useParams }                                                                             from 'react-router-dom';
+import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Snackbar, Skeleton, Grid, IconButton, Popover } from '@mui/material';
+import CircleOutlinedIcon                                                                                       from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
+import axios                                                                                                    from 'axios';
+import CustomAutocomplete                                                                                       from '../../components/fields/CustomAutocomplete';
+import CustomTextFieldModifica                                                                                  from '../../components/fields/CustomTextFieldModifica';
+import CustomNoteModifica                                                                                       from '../../components/fields/CustomNoteModifica';
+import CustomDatePickerModifica                                                                                 from '../../components/fields/CustomDatePickerModifica';
+import InfoIcon                                                                                       from '@mui/icons-material/Info';
 
 
 const ModificaKeypeopleGrafica = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const valori = location.state;
+    const { id } = useParams();
+
+    console.log("id: ", id);
 
 
     //stati della pagina
@@ -25,6 +29,8 @@ const ModificaKeypeopleGrafica = () => {
     //stati per i valori
     const [ aziendeOptions, setAziendeOptions] = useState([]);
     const [ ownerOptions,   setOwnerOptions  ] = useState([]);
+    const [ statiOptions,   setStatiOptions  ] = useState([]);
+    const [ datiModifica,   setDatiModifica  ] = useState([]);
     const [ values,             setValues               ] = useState({});
 
 
@@ -40,8 +46,20 @@ const ModificaKeypeopleGrafica = () => {
     useEffect(() => {
         const fetchAziendeOptions = async () => {
         try {
-            const aziendeResponse = await axios.get("http://89.46.196.60:8443/aziende/react/select",       { headers: headers });
-            const ownerResponse   = await axios.get("http://89.46.196.60:8443/aziende/react/owner",        { headers: headers });
+            const keypeopleResponse = await axios.get(`http://localhost:8080/keypeople/react/${id}`,    { headers: headers });
+            const aziendeResponse = await axios.get("http://localhost:8080/aziende/react/select",       { headers: headers });
+            const ownerResponse   = await axios.get("http://localhost:8080/aziende/react/owner",        { headers: headers });
+            const statiResponse   = await axios.get("http://localhost:8080/keypeople/react/stati",       { headers: headers });
+
+            if (Array.isArray(statiResponse.data)) {
+                const statiOptions = statiResponse.data.map((stati) => ({
+                    label: stati.descrizione,
+                    value: stati.id,
+                }));
+                setStatiOptions(statiOptions);
+                } else {
+                console.error("I dati ottenuti non sono nel formato Array:", statiResponse.data);
+                }
             if (Array.isArray(ownerResponse.data)) {
             const ownerOptions = ownerResponse.data.map((owner) => ({
                 label: owner.descrizione,
@@ -63,6 +81,10 @@ const ModificaKeypeopleGrafica = () => {
             } else {
             console.error("I dati ottenuti non sono nel formato Array:", aziendeResponse.data);
             }
+
+            const modificaData = keypeopleResponse.data;
+            setDatiModifica(modificaData);
+            setLoading(false);
         } catch (error) {
             console.error("Errore durante il recupero delle province:", error);
         }
@@ -86,7 +108,7 @@ const ModificaKeypeopleGrafica = () => {
     const getMandatoryFields = (index) => {
         switch (index) {
             case 0:
-                return ["nome", "idAzienda", "idOwner", "email", "status", "ruolo", "dataCreazione"]; 
+                return ["nome", "idAzienda", "idOwner", "email", "idStato", "ruolo", "dataCreazione"]; 
             default:
                 return [];
         }
@@ -166,7 +188,7 @@ const ModificaKeypeopleGrafica = () => {
                         }
                     });
     
-                    const response = await axios.post("http://89.46.196.60:8443/keypeople/react/salva", values, {
+                    const response = await axios.post("http://localhost:8080/keypeople/react/salva", values, {
                         headers: headers
                     });
                     if (response.data === "DUPLICATO") {
@@ -174,7 +196,7 @@ const ModificaKeypeopleGrafica = () => {
                         console.error("il contatto è già stata salvato.");
                         return; 
                     }
-                    navigate("/keyPeople");
+                    navigate("/contacts");
                 } catch (error) {
                     console.error("Errore durante il salvataggio:", error);
                 }
@@ -183,26 +205,43 @@ const ModificaKeypeopleGrafica = () => {
                 setAlert({ open: true, message: "Compilare tutti i campi obbligatori presenti prima di avanzare" });
             }
         };
+
+
+          //funzione per il popover
+        const [anchorEl, setAnchorEl] = useState(null);
+
+        const handlePopoverOpen = (event) => {
+            setAnchorEl(event.currentTarget);
+        };
+
+        const handlePopoverClose = () => {
+            setAnchorEl(null);
+        };
+
+        const open = Boolean(anchorEl);
+
         
 
 
 
-        const campiObbligatori = [ "nome", "idAzienda", "email", "idOwner", "status", "ruolo", "dataCreazione" ];
+        const campiObbligatori = [ "nome", "idAzienda", "email", "idOwner", "idStato", "ruolo", "dataCreazione" ];
 
         const fields =[
             { type: "titleGroups",                label: "Anagrafica"            },
             { label: "Nome Contatto*",        name: "nome",                 type: "text" },
+            { label: "Ruolo*",                name: "ruolo",               type: "text" },
             { label: "Azienda*",              name: "idAzienda",            type: "select",      options: aziendeOptions },
+            { label: 'Tipo',                  name: 'tipo',                type: 'select',      options: [
+                { value: 1, label: "Keypeople" },
+                { value: 2, label: "Hook" },
+                { value: 3, label: 'Link'}
+              ] },
+              { label: "Stato*",                name: "idStato",              type: "select",      options: statiOptions },
+              { label: "Owner*",                name: "idOwner",              type: "select",      options: ownerOptions},
             { label: "Email*",                name: "email",                type: "text" },
             { label: "Cellulare",             name: "cellulare",            type: "text" },
-            { label: "Owner*",                name: "idOwner",              type: "select",      options: ownerOptions},
-            { label: "Stato*",                name: "status",               type: "select",      options: [
-              { value: "1", label: "Verde" },
-              { value: "2", label: "Giallo" },
-              { value: "3", label: "Rosso" },
-            ] },
+           
             
-            { label: "Ruolo*",                name: "ruolo",               type: "text" },
             { label: "Data di Creazione*",    name: "dataCreazione",       type: "date" },
             { label: 'Ultima attività',       name: 'dataUltimaAttivita',  type: 'date' },
             { label: "Note",                  name: "note",                type: "note" },
@@ -211,34 +250,35 @@ const ModificaKeypeopleGrafica = () => {
 
 
         const initialValues = {
-            id:                 valori.id                                                  ,
-            nome:               valori.nome                                                || null,
-            idAzienda:          valori.cliente && valori.cliente.id                        || null,
-            idOwner:            valori.owner   && valori.owner.id                          || null,
-            email:              valori.email                                               || null,
-            cellulare:          valori.cellulare                                           || null,
-            ruolo:              valori.ruolo                                               || null,
-            dataCreazione:      valori.dataCreazione                                       || null,
-            dataUltimaAttivita: valori.dataUltimaAttivita                                  || null,
-            status:             valori.status                                              || null,
-            note:               valori.note                                                || null,
+            id:                 datiModifica.id                                                  ,
+            nome:               datiModifica.nome                                                || null,
+            idAzienda:          datiModifica.cliente && datiModifica.cliente.id                        || null,
+            idOwner:            datiModifica.owner   && datiModifica.owner.id                          || null,
+            email:              datiModifica.email                                               || null,
+            cellulare:          datiModifica.cellulare                                           || null,
+            ruolo:              datiModifica.ruolo                                               || null,
+            dataCreazione:      datiModifica.dataCreazione                                       || null,
+            dataUltimaAttivita: datiModifica.dataUltimaAttivita                                  || null,
+            idStato:            datiModifica.stato && datiModifica.stato.id                                             || null,
+            tipo:               datiModifica.tipo                                                || null,   
+            note:               datiModifica.note                                                || null,
         };
 
 
          //funzione per caricare i dati nei campi solo dopo aver terminato la chiamata
          useEffect(() => {
-            if (Object.keys(valori).length !== 0) {
+            if (Object.keys(datiModifica).length !== 0) {
                 const updatedFormValues = { ...initialValues };
         
-                Object.keys(valori).forEach(key => {
+                Object.keys(datiModifica).forEach(key => {
                     if (initialValues.hasOwnProperty(key)) {
-                        updatedFormValues[key] = valori[key];
+                        updatedFormValues[key] = datiModifica[key];
                     }
                 });
         
                 setValues(updatedFormValues);
             }
-        }, [valori]); 
+        }, [datiModifica]); 
     
 
 
@@ -337,18 +377,101 @@ const ModificaKeypeopleGrafica = () => {
                             />
                         )
 
-                case 'select': 
-                        return (
-                            <CustomAutocomplete
-                            name={field.name}
-                            label={field.label}
-                            options={field.options}
-                            value={values[field.name] || null}
-                            onChange={handleChange}
-                            getOptionSelected={(option, value) => option.value === value.value}
-                            initialValues={initialValues}
-                            />
-                        );
+                        case 'select':
+                            if (field.name === 'idStato') {
+                                return (
+                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                        <CustomAutocomplete
+                                            name={field.name}
+                                            label={field.label}
+                                            options={field.options}
+                                            value={values[field.name] || null}
+                                            onChange={handleChange}
+                                            getOptionSelected={(option, value) => option.value === value.value}
+                                        />
+                                        <IconButton onClick={handlePopoverOpen} sx={{ mr: -3, ml: 2 }}>
+                                            <InfoIcon />
+                                        </IconButton>
+                                        <Popover
+                                            open={open}
+                                            anchorEl={anchorEl}
+                                            onClose={handlePopoverClose}
+                                            anchorOrigin={{
+                                                vertical: 'bottom',
+                                                horizontal: 'right',
+                                            }}
+                                            transformOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'right',
+                                            }}
+                                            >
+                                            <List dense>
+                                                <ListItem>
+                                                <ListItemText 
+                                                    primary={
+                                                    <Box>
+                                                        <Typography component="span" sx={{ fontWeight: 'bold' }}>Gold:</Typography>
+                                                        {" ho ricevuto un’esigenza di business"}
+                                                    </Box>
+                                                    } 
+                                                />
+                                                </ListItem>
+                                                <ListItem>
+                                                <ListItemText 
+                                                    primary={
+                                                    <Box>
+                                                        <Typography component="span" sx={{ fontWeight: 'bold' }}>Silver:</Typography>
+                                                        {" è stata fissata una prospection"}
+                                                    </Box>
+                                                    } 
+                                                />
+                                                </ListItem>
+                                                <ListItem>
+                                                <ListItemText 
+                                                    primary={
+                                                    <Box>
+                                                        <Typography component="span" sx={{ fontWeight: 'bold' }}>Bronze:</Typography>
+                                                        {" entrati in contatto"}
+                                                    </Box>
+                                                    } 
+                                                />
+                                                </ListItem>
+                                                <ListItem>
+                                                <ListItemText 
+                                                    primary={
+                                                    <Box>
+                                                        <Typography component="span" sx={{ fontWeight: 'bold' }}>Wood:</Typography>
+                                                        {" ho effettuato un’azione senza esito"}
+                                                    </Box>
+                                                    } 
+                                                />
+                                                </ListItem>
+                                                <ListItem>
+                                                <ListItemText 
+                                                    primary={
+                                                    <Box>
+                                                        <Typography component="span" sx={{ fontWeight: 'bold' }}>Nessuna Azione:</Typography>
+                                                        {" non ho ancora effettuato azioni commerciali"}
+                                                    </Box>
+                                                    } 
+                                                />
+                                                </ListItem>
+                                            </List>
+                                            </Popover>
+
+                                    </Box>
+                                );
+                            }
+                            return (
+                                <CustomAutocomplete
+                                    name={field.name}
+                                    label={field.label}
+                                    options={field.options}
+                                    value={values[field.name] || null}
+                                    onChange={handleChange}
+                                    getOptionSelected={(option, value) => option.value === value.value}
+                                />
+                            );
 
                     default:
                         return null;
@@ -357,25 +480,57 @@ const ModificaKeypeopleGrafica = () => {
         };
 
 
+        // const renderFieldsGroups = () => {
+        //     return (
+        //         <Box sx={{ ml: 15, mr: 15}}>
+        //             {groupedFields[currentPageIndex].map((fields, index) => {
+        //                 return (
+        //                     <Box key={index}>
+        //                         {renderFields(fields)}
+        //                     </Box>
+        //                 );
+        //             })}
+        //         </Box>
+        //     );
+        // };
+
         const renderFieldsGroups = () => {
             return (
                 <Box sx={{ ml: 15, mr: 15}}>
-                    {groupedFields[currentPageIndex].map((fields, index) => {
-                        return (
-                            <Box key={index}>
-                                {renderFields(fields)}
-                            </Box>
-                        );
-                    })}
+                    <Grid container spacing={2}> 
+                        {groupedFields[currentPageIndex].map((field, index) => {
+                            if (field.type === 'titleGroups') {
+                                return (
+                                    <Grid item xs={12} key={index}>
+                                        {/* <Typography variant="h6" sx={{fontWeight: 'bold', mb: 2}}>{field.label}</Typography> */}
+                                    </Grid>
+                                );
+                            } else if (field.type === 'note') {
+                                return (
+                                    <Grid item xs={12} key={index}>
+                                        {renderFields(field)}
+                                        {/* <Typography variant="h6" sx={{fontWeight: 'bold', mb: 2}}>{field.label}</Typography> */}
+                                    </Grid>
+                                );
+                            } else {
+                                return (
+                                    <Grid item xs={12} sm={6} key={index}> 
+                                        {renderFields(field)}
+                                    </Grid>
+                                );
+                            }
+                        })}
+                    </Grid>
                 </Box>
             );
         };
 
 
+
   return (
     <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
         <Box sx={{ display: 'flex', height: '98%', width: '100vw', flexDirection: 'row', ml: '12.5em', mt: '0.5em', mb: '0.5em', mr: '0.8em', borderRadius: '20px', overflow: 'hidden' }}>
-            <Box sx={{ width: '22%', height: '100%', background: '#00B400', p:2, overflow: 'hidden' }}>
+        <Box sx={{ width: '280px', height: '98%', background: '#00B400', p:2, overflow: 'hidden', position: 'fixed', borderRadius: '20px 0px 0px 20px' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%'}}>
                     <Button
                     onClick={handleGoBack}
@@ -422,7 +577,7 @@ const ModificaKeypeopleGrafica = () => {
                             ))}
                         </List>
             </Box>
-            <Box sx={{ flexGrow: 1, height: '100%', background: '#FEFCFD',  display: 'flex', flexDirection: 'column' }}>
+            <Box sx={{ flexGrow: 1, height: '100%', background: '#FEFCFD',  display: 'flex', flexDirection: 'column', ml: '280px' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, mb: 3}}>
                 <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
                 <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>

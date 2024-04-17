@@ -14,7 +14,6 @@ function CustomAutocomplete({ name, label, options, value, onChange, disabled })
 
 
 
-
   return (
     <Autocomplete
       fullWidth

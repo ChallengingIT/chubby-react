@@ -8,7 +8,7 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
 
 
-function RicercheAziende({ filtri, onFilterChange, onReset, tipologiaOptions, statoOptions, ownerOptions, onRicerche }) {
+function RicercheAziende({ filtri, onFilterChange, onReset, tipologiaOptions, statoOptions, ownerOptions, onRicerche, idaOptions }) {
 
     const navigate = useNavigate();
 
@@ -26,8 +26,20 @@ function RicercheAziende({ filtri, onFilterChange, onReset, tipologiaOptions, st
 
 
     const navigateToAggiungi = () => {
-        navigate('/aziende/aggiungi');
+        navigate('/business/aggiungi');
     };
+
+
+    const isAdminRole = () => {
+        const userString = localStorage.getItem('user');
+        if (userString) {
+            const userObj = JSON.parse(userString);
+            return userObj.roles.includes('ROLE_ADMIN');
+        }
+        return false;
+    };
+    
+
 
 
     // const renderInputField = (filtro) => {
@@ -222,8 +234,22 @@ function RicercheAziende({ filtri, onFilterChange, onReset, tipologiaOptions, st
                                 ))}
                             </Select> */}
                             </FormControl>
-    
+
+
                             <FormControl fullWidth sx={{ mb: 2 }}>
+                            <Autocomplete
+                                id="ida-combo-box"
+                                options={idaOptions}
+                                getOptionLabel={(option) => option.label}
+                                value={idaOptions.find(option => option.value === filtri.ida) || null}
+                                onChange={(event, newValue) => {
+                                    onFilterChange('ida')({ target: { value: newValue?.value || null } });
+                                }}
+                                renderInput={(params) => <TextField {...params} label="IDA" />}
+                            />
+                            </FormControl>
+    
+                            {/* <FormControl fullWidth sx={{ mb: 2 }}>
                             <Autocomplete
                                 id="stato-combo-box"
                                 options={statoOptions}
@@ -234,29 +260,10 @@ function RicercheAziende({ filtri, onFilterChange, onReset, tipologiaOptions, st
                                 }}
                                 renderInput={(params) => <TextField {...params} label="Stato" />}
                             />
-                            {/* <InputLabel id="stato-label">Stato</InputLabel>
-                            <Select
-                                labelId="stato-label"
-                                displayEmpty
-                                value={filtri.stato || ''} 
-                                onChange={onFilterChange('stato')}
-                                renderValue={(selected) => {
-                                    if (selected === '') {
-                                        return <em></em>;
-                                    }
-                                    const selectedLabel = statoOptions.find(option => option.value === selected)?.label;
-                                    return selectedLabel || selected;
-                                }}
-                            >
-                                
-                                {statoOptions.map((option) => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                </MenuItem>
-                                ))}
-                            </Select> */}
-                            </FormControl>
-    
+                            </FormControl> */}
+
+                            
+                            {isAdminRole() && (
                             <FormControl fullWidth sx={{ mb: 2 }}>
                             <Autocomplete
                                 id="owner-combo-box"
@@ -268,28 +275,8 @@ function RicercheAziende({ filtri, onFilterChange, onReset, tipologiaOptions, st
                                 }}
                                 renderInput={(params) => <TextField {...params} label="Owner" />}
                             />
-                            {/* <InputLabel id="owner-label">Owner</InputLabel>
-                            <Select
-                                labelId="owner-label"
-                                displayEmpty
-                                value={filtri.owner || ''} 
-                                onChange={onFilterChange('owner')}
-                                renderValue={(selected) => {
-                                    if (selected === '') {
-                                        return <em></em>;
-                                    }
-                                    const selectedLabel = ownerOptions.find(option => option.value === selected)?.label;
-                                    return selectedLabel || selected;
-                                }}
-                            >
-                                
-                                {ownerOptions.map((option) => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                </MenuItem>
-                                ))}
-                            </Select> */}
                             </FormControl>
+                            )}
     
                             <Box sx={{ display: 'flex', justifyContent: 'center'}}>
                             {/* <Button 

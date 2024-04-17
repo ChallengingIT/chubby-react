@@ -13,6 +13,7 @@ import {
     Grid,
     Skeleton
     } from '@mui/material';
+import KeypeopleCardFlip from '../components/card/KeypeopleCardFlip';
 
 
 const Keypeople = () => {
@@ -26,6 +27,7 @@ const Keypeople = () => {
     //stati ricerche
     const [ clienteOptions,             setClienteOptions             ] = useState([]);
     const [ ownerOptions,               setOwnerOptions               ] = useState([]);
+    const [ statiOptions,               setStatiOptions               ] = useState([]);
     const [ filtri,                     setFiltri                     ] = useState(() => {
         const filtriSalvati = localStorage.getItem('filtriRicercaKeypeople');
         return filtriSalvati ? JSON.parse(filtriSalvati) : {
@@ -68,21 +70,29 @@ const Keypeople = () => {
         setLoading(true);
         try {
     
-        const response        = await axios.get("http://89.46.196.60:8443/keypeople/react/mod",             { headers: headers, params: filtriDaInviare});
-        const responseCliente = await axios.get("http://89.46.196.60:8443/aziende/react/select",            { headers: headers });
-        const responseOwner   = await axios.get("http://89.46.196.60:8443/aziende/react/owner",             { headers: headers });
+        const response        = await axios.get("http://localhost:8080/keypeople/react/mod",             { headers: headers, params: filtriDaInviare});
+        const responseCliente = await axios.get("http://localhost:8080/aziende/react/select",            { headers: headers });
+        const responseOwner   = await axios.get("http://localhost:8080/aziende/react/owner",             { headers: headers });
+        const responseStati   = await axios.get("http://localhost:8080/keypeople/react/stati",            { headers: headers });
+
 
         if (Array.isArray(responseOwner.data)) {
             setOwnerOptions(responseOwner.data.map((owner, index) => ({ label: owner.descrizione, value: owner.id })));
         } else {
-            console.error("I dati ottenuti non sono nel formato Array:", responseOwner.data);
+            console.error("I dati dell'owner ottenuti non sono nel formato Array:", responseOwner.data);
+        } 
+
+        if (Array.isArray(responseStati.data)) {
+            setStatiOptions(responseStati.data.map((stati, index) => ({ label: stati.descrizione, value: stati.id })));
+        } else {
+            console.error("I dati degli stati in ricerca ottenuti non sono nel formato Array:", responseStati.data);
         } 
 
 
         if (Array.isArray(responseCliente.data)) {
             setClienteOptions(responseCliente.data.map((cliente) => ({ label: cliente.denominazione, value: cliente.id })));
         } else {
-            console.error("I dati ottenuti non sono nel formato Array:", responseCliente.data);
+            console.error("I dati degli stati ottenuti non sono nel formato Array:", responseCliente.data);
         }
     
         if (Array.isArray(response.data)) {
@@ -90,7 +100,7 @@ const Keypeople = () => {
             setOriginalKeypeople(keypeopleConId);
             setHasMore(keypeopleConId.length >= quantita);
         } else {
-            console.error("I dati ottenuti non sono nel formato Array:", response.data);
+            console.error("I dati per i keypeople ottenuti non sono nel formato Array:", response.data);
         }
         setLoading(false);
         } catch (error) {
@@ -116,8 +126,8 @@ const Keypeople = () => {
 
         const filtriAttivi = Object.values(filtri).some(value => value !== null && value !== '');
         const url = filtriAttivi ?
-        "http://89.46.196.60:8443/keypeople/react/ricerca/mod" :
-        "http://89.46.196.60:8443/keypeople/react/mod";
+        "http://localhost:8080/keypeople/react/ricerca/mod" :
+        "http://localhost:8080/keypeople/react/mod";
 
 
         const filtriDaInviare = {
@@ -136,7 +146,7 @@ const Keypeople = () => {
                 setOriginalKeypeople((prev) => [...prev, ...keypeopleConId]);
                 setHasMore(response.data.length >= quantita);
             } else {
-                console.error("I dati ottenuti non sonon nel formato Array: ", response.data);
+                console.error("I dati dei keypeople nel more ottenuti non sono nel formato Array: ", response.data);
             }
         } catch(error) {
             console.error("Errore durante il recupero dei dati: ", error);
@@ -158,28 +168,37 @@ const Keypeople = () => {
         };
         setLoading(true);
         try {
-            const response = await axios.get("http://89.46.196.60:8443/keypeople/react/ricerca/mod", { headers: headers, params: filtriDaInviare });
-            const responseCliente = await axios.get("http://89.46.196.60:8443/aziende/react/select",            { headers: headers });
-            const responseOwner   = await axios.get("http://89.46.196.60:8443/aziende/react/owner",             { headers: headers });
+            const response = await axios.get("http://localhost:8080/keypeople/react/ricerca/mod", { headers: headers, params: filtriDaInviare });
+            const responseCliente = await axios.get("http://localhost:8080/aziende/react/select",            { headers: headers });
+            const responseOwner   = await axios.get("http://localhost:8080/aziende/react/owner",             { headers: headers });
+            const responseStati   = await axios.get("http://localhost:8080/keypeople/react/stati",            { headers: headers });
 
             if (Array.isArray(responseOwner.data)) {
                 setOwnerOptions(responseOwner.data.map((owner, index) => ({ label: owner.descrizione, value: owner.id })));
             } else {
-                console.error("I dati ottenuti non sono nel formato Array:", responseOwner.data);
+                console.error("I dati di owner ricerca ottenuti non sono nel formato Array:", responseOwner.data);
             } 
+
+
+            if (Array.isArray(responseStati.data)) {
+                setStatiOptions(responseStati.data.map((stati, index) => ({ label: stati.descrizione, value: stati.id })));
+            } else {
+                console.error("I dati degli stati in ricerca ottenuti non sono nel formato Array:", responseStati.data);
+            } 
+
 
 
             if (Array.isArray(responseCliente.data)) {
                 setClienteOptions(responseCliente.data.map((cliente) => ({ label: cliente.denominazione, value: cliente.id })));
             } else {
-                console.error("I dati ottenuti non sono nel formato Array:", responseCliente.data);
+                console.error("I dati dei clienti in ricerca ottenuti non sono nel formato Array:", responseCliente.data);
             }
 
             if (Array.isArray(response.data)) {
                 setOriginalKeypeople(response.data);
                 setHasMore(response.data.length >= quantita);
             } else {
-                console.error("I dati ottenuti non sono nel formato Array:", response.data);
+                console.error("I dati dei keypeople in ricerca ottenuti non sono nel formato Array:", response.data);
             }
         } catch (error) {
             console.error("Errore durante il recupero dei dati filtrati:", error);
@@ -239,7 +258,7 @@ const Keypeople = () => {
      //funzione per cancellare l'azienda
     const handleDelete = async (id) => {
         try{
-            const responseDelete = await axios.delete(`http://89.46.196.60:8443/keypeople/react/elimina/${id}`, {headers: headers});
+            const responseDelete = await axios.delete(`http://localhost:8080/keypeople/react/elimina/${id}`, {headers: headers});
             await fetchData(0);
         } catch(error) {
             console.error("Errore durante la cancellazione: ", error);
@@ -252,7 +271,7 @@ const Keypeople = () => {
             <Box sx={{ 
                 flexGrow: 1, 
                 p: 3, 
-                marginLeft: '13.2em', 
+                marginLeft: '12.8em', 
                 marginTop: '0.5em', 
                 marginBottom: '0.8em', 
                 marginRight: '0.8em', 
@@ -309,7 +328,7 @@ const Keypeople = () => {
                     ) : (
                         originalKeypeople.map((keypeople, index) => (
                             <Grid item xs={12} md={6} key={index}>
-                                <KeypeopleCard 
+                                <KeypeopleCardFlip 
                                 valori={keypeople}
                                 onDelete={() => handleDelete(keypeople.id)}/>
                             </Grid>

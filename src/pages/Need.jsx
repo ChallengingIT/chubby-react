@@ -4,6 +4,7 @@ import axios                                            from 'axios';
 import NeedCard                                         from '../components/card/NeedCard';
 import InfiniteScroll                                   from 'react-infinite-scroll-component';
 import RicercheNeed from '../components/ricerche/RicercheNeed';
+import NeedCardFlip from '../components/card/NeedCardFlip';
 
 import { 
     Box,
@@ -25,14 +26,15 @@ import {
         const [ tipologiaOptions,               setTipologiaOptions         ] = useState([]);
         const [ ownerOptions,                   setOwnerOptions             ] = useState([]);
         const [ statoOptions,                   setStatoOptions             ] = useState([]);
-        const [ aziendaOptions,             setAziendaOptions             ] = useState([]);
+        const [ aziendaOptions,                 setAziendaOptions           ] = useState([]);
         const [ filtri,                         setFiltri                   ] = useState(() => {
             const filtriSalvati = localStorage.getItem('filtriRicercaNeed');
             return filtriSalvati ? JSON.parse(filtriSalvati) : {
             descrizione: '',
             tipologia: '',
             stato: '',
-            owner: ''
+            owner: '',
+            keyPeople: ''
             };
         });
         const quantita = 10;
@@ -63,6 +65,7 @@ import {
                 owner: filtri.owner || null,
                 stato: filtri.stato || null,
                 azienda: filtri.azienda || null,
+                keyPeople: filtri.keyPeople || null,
                 pagina: 0,
                 quantita: 10
             };
@@ -146,6 +149,7 @@ import {
                 owner: filtri.owner || null,
                 stato: filtri.stato || null,
                 azienda: filtri.azienda || null,
+                keyPeople: filtri.keyPeople || null,
                 pagina: paginaSuccessiva,
                 quantita: 10
             };
@@ -174,6 +178,7 @@ import {
                 owner: filtri.owner || null,
                 stato: filtri.stato || null,
                 azienda: filtri.azienda || null,
+                keyPeople: filtri.keyPeople || null,
                 pagina: 0,
                 quantita: 10
             };
@@ -247,7 +252,7 @@ import {
             if (filtriHasValues) {
                 handleRicerche();
             }
-        }, [filtri.tipologia, filtri.stato, filtri.owner, filtri.azienda]);
+        }, [filtri.tipologia, filtri.stato, filtri.owner, filtri.azienda, filtri.keyPeople]);
 
         useEffect(() => {
             localStorage.setItem('filtriRicercaNeed', JSON.stringify(filtri));
@@ -265,7 +270,8 @@ import {
                 stato: '',
                 tipologia: '',
                 owner: '',
-                azienda: ''
+                azienda: '',
+                keyPeople: ''
             });
             setPagina(0);
             setOriginalNeed([]);
@@ -291,6 +297,11 @@ import {
             await fetchData(0);
         };
 
+        //funzione per avere il contatto da usare per le ricerche
+        const handleContactChange = (contattoId) => {
+            setFiltri(prev => ({ ...prev, keyPeople: contattoId }));
+        };
+
 
 
 
@@ -303,7 +314,7 @@ import {
             <Box sx={{ 
                 flexGrow: 1, 
                 p: 3, 
-                marginLeft: '13.2em', 
+                marginLeft: '12.8em', 
                 marginTop: '0.5em', 
                 marginBottom: '0.8em', 
                 marginRight: '0.8em', 
@@ -327,6 +338,7 @@ import {
                     ownerOptions={ownerOptions}
                     aziendaOptions={aziendaOptions}
                     onRicerche={handleRicerche}
+                    onContactChange={handleContactChange} 
                     
                     />
                     </Box>
@@ -363,7 +375,7 @@ import {
                         ) : (
                             originalNeed.map((need, index) => (
                                 <Grid item xs={12} md={6} key={index}>
-                                    <NeedCard valori={need}
+                                    <NeedCardFlip valori={need}
                                     statoOptions={statoOptions}
                                     onDelete={() => handleDelete(need.id)}
                                     onRefresh={handleRefresh}

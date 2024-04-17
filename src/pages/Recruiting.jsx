@@ -473,7 +473,7 @@ return (
   <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto', minHeight: '100vh', flexGrow: 1}}>
     <Box sx={{
       p: 2,
-      ml: 26,
+      ml: 25,
       mt: 1.5,
       mb: 0.5,
       mr: 0.8,

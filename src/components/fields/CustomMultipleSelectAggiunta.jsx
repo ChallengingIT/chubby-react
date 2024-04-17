@@ -34,13 +34,22 @@ const CustomMultipleSelectAggiunta = ({ name, label, onChange, skillsOptions }) 
                     '& .MuiFilledInput-underline:after': {
                         borderBottomColor: 'transparent',
                     },
-                    '& .MuiFilledInput-root::before': {
-                        borderBottom: 'none', 
-                    },
-                    '&:hover .MuiFilledInput-root::before': {
-                        borderBottom: 'none', 
-                    }
-                    }}                renderValue={(selected) =>
+                
+                        '& .MuiInputBase-root.MuiFilledInput-root.MuiSelect-root:before': {
+                          borderBottom: 'none !important',
+                        },
+                        '& .MuiInputBase-root.MuiFilledInput-root.MuiSelect-root:after': {
+                          borderBottom: 'none !important',
+                        },
+                        '& .MuiInputBase-root.MuiFilledInput-root.MuiSelect-root:hover:before': {
+                          borderBottom: 'none !important',
+                        },
+                        // Verifica se ci sono altri stati su cui devi agire
+                      
+                      
+                    
+                    }}               
+                    renderValue={(selected) =>
                     selected.map((skillId) => skillsOptions.find(option => option.value === skillId)?.label || "").join(", ")
                 }
             >

@@ -37,6 +37,7 @@ const AziendeListaNeedCard = () => {
     const [ tipologiaOptions,               setTipologiaOptions         ] = useState([]);
     const [ ownerOptions,                   setOwnerOptions             ] = useState([]);
     const [ statoOptions,                   setStatoOptions             ] = useState([]);
+    const [ keyPeopleOptions,               setKeyPeopleOptions         ] = useState([]);
     const [ filtri,                         setFiltri                   ] = useState(() => {
         const filtriSalvati = localStorage.getItem('filtriRicercaListaNeed');
         return filtriSalvati ? JSON.parse(filtriSalvati) : {
@@ -44,7 +45,8 @@ const AziendeListaNeedCard = () => {
         tipologia: '',
         stato: '',
         priorita: '',
-        week: ''
+        week: '',
+        keyPeople: ''
         };
     });
 
@@ -72,14 +74,22 @@ const AziendeListaNeedCard = () => {
             stato: filtri.stato || null,
             priorita: filtri.priorita || null,
             week: filtri.week || null,
+            keypeople: filtri.keypeople || null,
             pagina: 0,
             quantita: 10
         };
         try {
-            const response              = await axios.get(`http://89.46.196.60:8443/need/react/cliente/modificato/${id}`, { headers: headers, params: filtriDaInviare });
-            const responseOwner         = await axios.get("http://89.46.196.60:8443/aziende/react/owner",           { headers: headers });
-            const responseTipologia     = await axios.get("http://89.46.196.60:8443/need/react/tipologia",          { headers: headers });
-            const responseStato         = await axios.get("http://89.46.196.60:8443/need/react/stato",              { headers: headers });
+            const response              = await axios.get(`http://localhost:8080/need/react/cliente/modificato/${id}`, { headers: headers, params: filtriDaInviare });
+            const responseOwner         = await axios.get("http://localhost:8080/aziende/react/owner",           { headers: headers });
+            const responseTipologia     = await axios.get("http://localhost:8080/need/react/tipologia",          { headers: headers });
+            const responseStato         = await axios.get("http://localhost:8080/need/react/stato",              { headers: headers });
+            const responseKeyPeople     = await axios.get(`http://localhost:8080/keypeople/react/azienda/${id}`, { headers: headers });
+
+            if (Array.isArray(responseKeyPeople.data)) {
+                setKeyPeopleOptions(responseKeyPeople.data.map((keyPeople) => ({ label: keyPeople.nome, value: keyPeople.id})));
+            } else {
+                console.error("I dati del keypeople ottenuti non sono nel formato Array; ", responseKeyPeople.data);
+            }
 
 
             if (Array.isArray(responseOwner.data)) {
@@ -126,6 +136,8 @@ const AziendeListaNeedCard = () => {
 
 
 
+
+
     //caricamento dati con paginazione
 
     const fetchMoreData = async () => {
@@ -133,8 +145,8 @@ const AziendeListaNeedCard = () => {
         const filtriAttivi = Object.values(filtri).some(value => value !== null && value !== '');
 
         const url = filtriAttivi ?
-        "http://89.46.196.60:8443/need/react/ricerca/modificato" :
-        `http://89.46.196.60:8443/need/react/cliente/modificato/${id}`;
+        "http://localhost:8080/need/react/ricerca/modificato" :
+        `http://localhost:8080/need/react/cliente/modificato/${id}`;
 
         const filtriDaInviare = {
             owner: filtri.owner || null,
@@ -142,6 +154,7 @@ const AziendeListaNeedCard = () => {
             stato: filtri.stato || null,
             priorita: filtri.priorita || null,
             week: filtri.week || null,
+            keyPeople: filtri.keyPeople || null,
             pagina: paginaSuccessiva,
             quantita: 10
         };
@@ -169,12 +182,13 @@ const AziendeListaNeedCard = () => {
             owner: filtri.owner || null,
             stato: filtri.stato || null,
             azienda: id,
+            keyPeople: filtri.keyPeople || null,
             pagina: 0,
             quantita: 10
         };
         setLoading(true);
         try {
-            const response = await axios.get("http://89.46.196.60:8443/need/react/ricerca/modificato", { headers: headers, params: filtriDaInviare });
+            const response = await axios.get("http://localhost:8080/need/react/ricerca/modificato", { headers: headers, params: filtriDaInviare });
 
             if (Array.isArray(response.data)) {
                 setOriginalListaNeed(response.data);
@@ -206,7 +220,7 @@ const AziendeListaNeedCard = () => {
         if (filtriHasValues) {
             handleRicerche();
         }
-    }, [filtri.tipologia, filtri.stato, filtri.owner]);
+    }, [filtri.tipologia, filtri.stato, filtri.owner, filtri.keyPeople]);
 
     useEffect(() => {
         localStorage.setItem('filtriRicercaListaNeed', JSON.stringify(filtri));
@@ -220,7 +234,8 @@ const AziendeListaNeedCard = () => {
             descrizione: '',
             stato: '',
             tipologia: '',
-            owner: ''
+            owner: '',
+            keyPeople: ''
         });
         setPagina(0);
         setOriginalListaNeed([]);
@@ -241,6 +256,7 @@ const AziendeListaNeedCard = () => {
     const navigateToAggiungi = () => {
         navigate(`/need/aggiungi/${id}`, { state: { denominazione: valori.state.denominazione }});
     };
+
     
 
     return (
@@ -248,7 +264,7 @@ const AziendeListaNeedCard = () => {
             <Box sx={{ 
                 flexGrow: 1, 
                 p: 3, 
-                marginLeft: '13.2em', 
+                marginLeft: '12.8em', 
                 marginTop: '0.5em', 
                 marginBottom: '0.8em', 
                 marginRight: '0.8em', 
@@ -268,6 +284,7 @@ const AziendeListaNeedCard = () => {
                     onReset={handleReset}
                     tipologiaOptions={tipologiaOptions}
                     statoOptions={statoOptions}
+                    keyPeopleOptions={keyPeopleOptions}
                     ownerOptions={ownerOptions}
                     onRicerche={handleRicerche}
                     onNavigate={navigateToAggiungi}

@@ -266,7 +266,7 @@ state={params.row}
         mr: 0.8,
         backgroundColor: '#FEFCFD',
         borderRadius: '10px',
-        height: '99%',
+        height: '97vh',
         width: '100%',
         flexDirection: 'column',
         overflow: 'hidden'

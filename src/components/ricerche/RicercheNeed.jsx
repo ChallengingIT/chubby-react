@@ -1,23 +1,50 @@
 import React, { useState } from 'react';
 import { Button, Box, Grid, Select, MenuItem, FormControl, InputLabel, IconButton, Drawer, Typography, TextField, InputAdornment, Autocomplete } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon                                        from '@mui/icons-material/Close';
 import SearchIcon                                       from '@mui/icons-material/Search';
 import { useNavigate  }                                 from 'react-router-dom';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import RestartAltIcon                                   from '@mui/icons-material/RestartAlt';
+import axios                                            from 'axios';
 
 
 
-function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, statoOptions, aziendaOptions, ownerOptions, onRicerche }) {
+function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, statoOptions, aziendaOptions, ownerOptions, onRicerche, onContactChange }) {
 
     const navigate = useNavigate();
 
     const [ openFiltri,                setOpenFiltri            ] = useState(false);
     const [ isRotated,                 setIsRotated             ] = useState(false);
+    const [contactOptions, setContactOptions] = useState([]);
+    const [selectedContact, setSelectedContact] = useState('');
+
+    const handleAziendaChange = async (event, newValue) => {
+        onFilterChange('azienda')({ target: { value: newValue?.value || null } });
+        const aziendaId = newValue?.value;
+        if (aziendaId) {
+            try {
+                const response = await axios.get(`http://localhost:8080/keypeople/react/azienda/${aziendaId}`);
+                setContactOptions(response.data.map(keyPeople => ({ label: keyPeople.nome, value: keyPeople.id })));
+            } catch (error) {
+                console.error("Errore durante il recupero dei contatti: ", error);
+                setContactOptions([]);
+            }
+        } else {
+            setContactOptions([]);
+        }
+    };
+
+    const handleContactChange = (event, newValue) => {
+        setSelectedContact(newValue?.value || '');
+        const contactId = newValue?.value || null;
+        onContactChange(contactId);
+    };
 
     const handleClickReset = () => {
         onReset();
         setIsRotated(true);
         setTimeout(() => setIsRotated(false), 500);
+        setSelectedContact('');
+        setContactOptions([]);
     };
 
     const handleOpenFiltri = () => setOpenFiltri(true);
@@ -155,9 +182,10 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
                                 options={aziendaOptions}
                                 getOptionLabel={(option) => option.label}
                                 value={aziendaOptions.find(option => option.value === filtri.azienda) || null}
-                                onChange={(event, newValue) => {
-                                    onFilterChange('azienda')({ target: { value: newValue?.value || null } });
-                                }}
+                                // onChange={(event, newValue) => {
+                                //     onFilterChange('azienda')({ target: { value: newValue?.value || null } });
+                                // }}
+                                onChange={handleAziendaChange}
                                 renderInput={(params) => <TextField {...params} label="Azienda" />}
                             />
                             {/* <InputLabel id="azienda-label">Azienda</InputLabel>
@@ -181,6 +209,19 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
                                 </MenuItem>
                                 ))}
                             </Select> */}
+                            </FormControl>
+
+
+                            <FormControl fullWidth sx={{ mb: 2 }}>
+                                <Autocomplete
+                                    id="keyPeople-combo-box"
+                                    options={contactOptions}
+                                    getOptionLabel={(option) => option.label}
+                                    value={contactOptions.find(option => option.value === selectedContact) || null}
+                                    onChange={handleContactChange}
+                                    renderInput={(params) => <TextField {...params} label="Contatto" />}
+                                    disabled={contactOptions.length === 0}
+                                />
                             </FormControl>
 
             <FormControl fullWidth sx={{ mb: 2 }}>

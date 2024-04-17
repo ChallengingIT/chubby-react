@@ -3,7 +3,6 @@ import { useNavigate }                                                          
 import authService                                                                  from "../services/auth.service";
 import eventBus                                                                     from "../common/EventBus";
 import { Box, Button, Typography, TextField, ThemeProvider, createTheme, IconButton, InputAdornment}            from "@mui/material";
-import Torcia from "../images/torciaSF.png";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import nuovaTorcia from "../images/nuovaTorcia.svg";
@@ -91,7 +90,7 @@ const handleLogin = async (e) => {
             if (userRole === "ROLE_ADMIN" || userRole === "ROLE_RECRUITER" || userRole === "ROLE_BM") {
                 navigate("/dashboard");
             } else if (userRole === "ROLE_USER") {
-                navigate("/userHompage");
+                navigate("/dashboard");
             }
         }
         } catch (error) {
@@ -147,7 +146,7 @@ const handleLogin = async (e) => {
 
 
                 <Typography variant="h5" component="h2" sx={{  mb: 5, color: "#00B401", fontSize: '3em', alignSelf: 'flex-start', mt: 2, fontWeight: 600 }}>Sign in</Typography>
-                <img src={nuovaTorcia} alt="Torcia" style={{ maxWidth: '100%', width: '30%', alignSelf: 'flex-end', height: '8em' }} />
+                {/* <img src={nuovaTorcia} alt="Torcia" style={{ maxWidth: '100%', width: '30%', alignSelf: 'flex-end', height: '8em' }} /> */}
                 {/* </Box> */}
                 </Box>
                     <Typography variant="h6" component="h2" sx={{ alignSelf: 'flex-start', fontSize: '1em' }}>Enter your username</Typography>
@@ -229,7 +228,7 @@ const handleLogin = async (e) => {
                 </Button>
                 <Typography variant="h6" component="h2" sx={{  fontSize: '1em', color: '#00B401', mb: 1 }}>Forgot password</Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', border: 'solid 1px #00B401', borderRadius: 2, mt: 2, mb: 1 }}/>    
-                <Button 
+                {/* <Button 
                 on
                 sx={{  display: 'flex',
                 justifyContent: 'center',
@@ -249,7 +248,7 @@ const handleLogin = async (e) => {
                 }}
                 >
                     Registrati
-                </Button>
+                </Button> */}
                 </ThemeProvider>
             </Box>
         </Box>
