@@ -14,7 +14,7 @@ import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar'; /
 import PersonIcon from '@mui/icons-material/Person'; //stato
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, Alert } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, Alert, MenuItem } from '@mui/material';
 
 
 
@@ -38,9 +38,10 @@ import {
     Snackbar
     
     } from '@mui/material';
+import { Select } from 'antd';
 
 
-const KeypeopleCardFlip = ({valori, onDelete}) => {
+const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
 
 
     //stati per la paginazione
@@ -55,9 +56,7 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
     const [ modalCambiaStato,    setModalCambiaStato  ] = useState(false);
     const [ isFlipped,           setIsFlipped         ] = useState(false);
     const [ activeLink,          setActiveLink        ] = useState(null);
-    const [ newAzione,           setNewAzione         ] = useState(valori.azione?.id); 
-    const [ newData,             setNewData           ] = useState(valori.date);
-    const [ newNota,             setNewNota           ] = useState(valori.note);
+    const [ idKeypeople,         setIdKeypeople       ] = useState(null);
     const [ needAssociati,       setNeedAssociati     ] = useState([]);
     const [ tipologieOptions,    setTipologieOptions  ] = useState([]);
     const [ azioni, setAzioni            ] = useState([]);
@@ -88,10 +87,7 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
     };
     
 
-    
-
-
-
+    //funzione per bloccare il flip quando i modal sono aperti
     const toggleFlip = () => {
         if (modalStorico || modalAzioni || modalDelete || modalNeed || modalCambiaStato) {
             return; 
@@ -134,10 +130,16 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
         handleCloseModalDelete(true);
     };
 
-    const handleOpenModalCambiaStato = (event) => {
+    const handleOpenModalCambiaStato = (id, event) => {
         event.stopPropagation();
+        setIdKeypeople(id);
         setModalCambiaStato(true);
+        setValues(prevValues => ({
+            ...prevValues,
+            stato: valori.stato?.id  
+        }));
     };
+    
     const handleCloseModalCambiaStato = () => setModalCambiaStato(false);
 
 
@@ -246,10 +248,23 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
         };
         return tipoMap[tipoId] || ""; 
     };
-    
-    
 
 
+    //funzione per il cambio stato
+    const handleUpdateStato = async () => {
+        const idStato = values.stato;  
+        const params = new URLSearchParams({ stato: idStato });
+        try {
+            const responseUpdateStato = await axios.post(`http://localhost:8080/keypeople/react/salva/stato/${idKeypeople}?${params.toString()}`, {}, { headers: headers });
+            setModalCambiaStato(false);
+            onRefresh();
+            handleOpenSnackbar('Stato aggiornato con successo!', 'success');
+        } catch (error) {
+            console.error("Errore durante l'aggiornamento dello stato: ", error);
+            handleOpenSnackbar('Errore durante l aggiornamento dello stato.', 'error');
+        }
+    };
+    
 
 
     const cardContainerStyle = {
@@ -260,7 +275,7 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
         border: 'solid 2px #00B400',
             '&:hover': {
             cursor: 'pointer',
-            transform: 'scale(1.05)',
+            transform: 'scale(1.01)',
         }
     };
 
@@ -290,7 +305,7 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
         left: 0,
         width: '100%',
         height: '100%',
-        overflowY: 'auto',
+        // overflowY: 'auto',
     };
 
 
@@ -334,7 +349,7 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
             title: 'Cambia Stato',
             icon: <ChangeCircleIcon />,
             onClick: (event) => {
-                handleOpenModalCambiaStato(event);
+                handleOpenModalCambiaStato(valori.id, event);
             }
         },
         {
@@ -550,7 +565,6 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
                                 backgroundColor: activeLink === `/${item.title.toLowerCase()}` ? '#00B401' : '',
                                 '& .MuiListItemIcon-root': {
                                     color: activeLink === `/${item.title.toLowerCase()}` ? '#00B400' : '#00B401',
-                                    minWidth: '2.2em',
                                 },
                                 '& .MuiListItemText-primary': {
                                     color: activeLink === `/${item.title.toLowerCase()}` ? '#00B400' : 'black',
@@ -615,7 +629,7 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
                                     '&:hover': {
                                         backgroundColor: 'black',
                                         color: 'white',
-                                        transform: 'scale(1.05)'
+                                        transform: 'scale(1.01)'
                                     },
                                 }}>
                                 Indietro
@@ -629,7 +643,7 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
                                 '&:hover': {
                                     backgroundColor: '#00B401',
                                     color: 'white',
-                                    transform: 'scale(1.05)'
+                                    transform: 'scale(1.01)'
                                 },
                             }}>
                                 Conferma
@@ -746,18 +760,19 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
 
 
                         <FormControl fullWidth >
+                            
                                 <Autocomplete
                                     id="stato-combo-box"
-                                    options={tipologieOptions}
+                                    options={statiOptions}
                                     getOptionLabel={(option) => option.label}
-                                    value={tipologieOptions.find(option => option.value === values.tipologie) || null}
+                                    value={statiOptions.find(option => option.value === values.stato) || null}
                                     onChange={(event, newValue) => {
-                                        handleValueChange('tipologie', newValue ? newValue.value : null);
+                                        handleValueChange('stato', newValue ? newValue.value : null);
                                     }}
                                     renderInput={(params) => 
                                     <TextField 
                                     {...params} 
-                                    label="Tipologia"
+                                    label="Stato"
                                     variant='filled' 
                                     sx={{
                                         height: '4em',
@@ -852,7 +867,7 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
                             borderRadius: '5px',
                             '&:hover': {
                                 backgroundColor: '#00B400',
-                                transform: 'scale(1.03)'
+                                transform: 'scale(1.01)'
                             },
                         }}
                         onClick={() => handleAzioniSubmit(valori.id)}
@@ -913,7 +928,7 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
 
 
                 { /* MODAL PER IL CAMBIO STATO */ }
-                {/* <Modal
+                <Modal
                     open={modalCambiaStato}
                     onClose={() => setModalCambiaStato(false)}
                     aria-labelledby="modal-modal-title"
@@ -946,59 +961,64 @@ const KeypeopleCardFlip = ({valori, onDelete}) => {
                                 <CloseIcon sx={{ backgroundColor: 'transparent' }}/>
                             </IconButton>
                         </Box>
+                        
                         <FormControl fullWidth >
-                                <Autocomplete
-                                    id="stato-combo-box"
-                                    options={tipologieOptions}
-                                    getOptionLabel={(option) => option.label}
-                                    value={tipologieOptions.find(option => option.value === values.tipologie) || null}
-                                    onChange={(event, newValue) => {
-                                        handleValueChange('tipologie', newValue ? newValue.value : null);
-                                    }}
-                                    renderInput={(params) => 
+                        <Autocomplete
+                                id="stato-combo-box"
+                                options={statiOptions}
+                                getOptionLabel={(option) => option.label}
+                                value={statiOptions.find(option => option.value === values.stato) || null}
+                                onChange={(event, newValue) => {
+                                    setValues(prevValues => ({
+                                        ...prevValues,
+                                        stato: newValue ? newValue.value : null
+                                    }));
+                                }}
+                                renderInput={(params) => 
                                     <TextField 
-                                    {...params} 
-                                    label="Tipologia"
-                                    variant='filled' 
-                                    sx={{
-                                        height: '4em',
-                                        
-                                        p: 1,
-                                        borderRadius: '20px', 
-                                        backgroundColor: '#EDEDED', 
-                                        '& .MuiFilledInput-root': {
-                                            backgroundColor: 'transparent',
-                                        },
-                                        '& .MuiFilledInput-underline:after': {
-                                            borderBottomColor: 'transparent',
-                                        },
-                                        '& .MuiFilledInput-root::before': {
-                                            borderBottom: 'none', 
-                                        },
-                                        '&:hover .MuiFilledInput-root::before': {
-                                            borderBottom: 'none', 
-                                        } 
-                                    }}  
-                                    />}
-                                />
+                                        {...params} 
+                                        label="Stato"
+                                        variant="filled" 
+                                        sx={{
+                                            height: '4em',
+                                            p: 1,
+                                            borderRadius: '20px', 
+                                            backgroundColor: '#EDEDED',
+                                            '& .MuiFilledInput-root': {
+                                                backgroundColor: 'transparent',
+                                            },
+                                            '& .MuiFilledInput-underline:after': {
+                                                borderBottomColor: 'transparent',
+                                            },
+                                            '& .MuiFilledInput-root::before': {
+                                                borderBottom: 'none', 
+                                            },
+                                            '&:hover .MuiFilledInput-root::before': {
+                                                borderBottom: 'none', 
+                                            } 
+                                        }}  
+                                    />
+                            }
+                            />
                             </FormControl>
                             <Button
+                            onClick={handleUpdateStato}
                             sx={{
                                 mt: 2,
                                 width: '60%',
                                 backgroundColor: '#00B400',
                                 color: 'white',
-                                borderRadius: '20px',
+                                borderRadius: '10px',
                                 '&:hover': {
-                                    backgroundColor: '#008C00',
-                                    transform: 'scale(1.05)',
+                                    backgroundColor: '#00B400',
+                                    transform: 'scale(1.02)',
                                 },
                             }}
                             >
                                 Cambia
                             </Button>
                             </Box>
-                            </Modal> */}
+                            </Modal>
 
                 
 

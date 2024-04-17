@@ -57,7 +57,7 @@ const AziendeCardFlip = ({valori, onDelete}) => {
                     transition: 'transform 0.3s ease, border-width 0.3s ease', 
 
                     '&:hover': {
-                        transform: 'scale(1.05)', 
+                        transform: 'scale(1.01)', 
                         border: '4px solid #ffae44'
                     }
                 };
@@ -73,7 +73,7 @@ const AziendeCardFlip = ({valori, onDelete}) => {
                     transition: 'transform 0.3s ease, border-width 0.3s ease', 
 
                     '&:hover': {
-                        transform: 'scale(1.05)', 
+                        transform: 'scale(1.01)', 
                         border: '4px solid #ffae44'
                     }
                 };
@@ -107,7 +107,7 @@ const AziendeCardFlip = ({valori, onDelete}) => {
                 border: '2px solid #00B401', 
                 transition: 'transform 0.3s ease, border-width 0.3s ease', 
                 '&:hover': {
-                transform: 'scale(1.05)', 
+                transform: 'scale(1.01)', 
                 border: '4px solid #00B401'
                 }};
         }
@@ -122,7 +122,7 @@ const AziendeCardFlip = ({valori, onDelete}) => {
         ...getCardStyle(valori.tipologia),
         '&:hover': {
             cursor: 'pointer',
-            transform: 'scale(1.05)',
+            transform: 'scale(1.01)',
         }
         
        
@@ -437,7 +437,7 @@ const AziendeCardFlip = ({valori, onDelete}) => {
                                     '&:hover': {
                                         backgroundColor: 'black',
                                         color: 'white',
-                                        transform: 'scale(1.05)'
+                                        transform: 'scale(1.01)'
                                     },
                                 }}>
                                 Indietro
@@ -451,7 +451,7 @@ const AziendeCardFlip = ({valori, onDelete}) => {
                                 '&:hover': {
                                     backgroundColor: '#00B401',
                                     color: 'white',
-                                    transform: 'scale(1.05)'
+                                    transform: 'scale(1.01)'
                                 },
                             }}>
                                 Conferma
