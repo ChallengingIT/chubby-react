@@ -35,11 +35,11 @@ const NeedMatch2 = () => {
     const [ filtri,                     setFiltri                   ] = useState(() => {
         const filtriSalvati = localStorage.getItem('filtriRicercaNeedMatch');
         return filtriSalvati ? JSON.parse(filtriSalvati) : {
-        nome: '',
-        cognome: '',
-        tipologia: '',
-        tipologia: '',
-        seniority: ''
+        nome: null,
+        cognome: null,
+        tipologia: null,
+        tipologia: null,
+        seniority: null
         };
     }); 
     const seniority = [
@@ -201,17 +201,36 @@ const NeedMatch2 = () => {
 
 
 
+                // useEffect(() => {
+                //     const filtriSalvati = localStorage.getItem('filtriRicercaNeedMatch');
+                //     if(filtriSalvati) {
+                //         setFiltri(JSON.parse(filtriSalvati));
+                //         handleRicerche();
+                //     } else {
+                //     fetchData();
+                //     }
+                // // eslint-disable-next-line
+                // }, []);
+
+
+
                 useEffect(() => {
                     const filtriSalvati = localStorage.getItem('filtriRicercaNeedMatch');
-                    if(filtriSalvati) {
-                        setFiltri(JSON.parse(filtriSalvati));
+                    if (filtriSalvati) {
+                    const filtriParsed = JSON.parse(filtriSalvati);
+                    setFiltri(filtriParsed);
+                    
+                    const isAnyFilterSet = Object.values(filtriParsed).some(value => value);
+                    if (isAnyFilterSet) {
                         handleRicerche();
+                    } else {
+                        fetchData();
+                    }
                     } else {
                     fetchData();
                     }
-                // eslint-disable-next-line
+                    // eslint-disable-next-line
                 }, []);
-
 
     //funzione per la paginazione
 
@@ -358,6 +377,11 @@ const NeedMatch2 = () => {
 
             //funzione per le ricerche
             const handleRicerche = async (minimo, massimo) => {
+                const isAnyFilterSet = Object.values(filtri).some(value => value);
+                if (!isAnyFilterSet) {
+                    return; 
+                }
+               
                 const paginazione = {
                     pagina: 0,
                     quantita: 10
@@ -455,13 +479,13 @@ const NeedMatch2 = () => {
 
             const handleReset = () => {
                 setFiltri({
-                    nome: '', 
-                    cognome: '',
-                    tipo: '',
-                    tipologia: '',
-                    seniority: '',
-                    minimo: '',
-                    massimo: ''
+                    nome: null, 
+                    cognome: null,
+                    tipo: null,
+                    tipologia: null,
+                    seniority: null,
+                    minimo: null,
+                    massimo: null
                 });
                 setPaginaCandidati(0);
                 fetchData();

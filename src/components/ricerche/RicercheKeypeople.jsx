@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
 
-function RicercheKeypeople({ filtri, onFilterChange, onReset, aziendaOptions, statoOptions, ownerOptions, onRicerche }) {
+function RicercheKeypeople({ filtri, onFilterChange, onReset, aziendaOptions, statiOptions, ownerOptions, onRicerche }) {
 
     const navigate = useNavigate();
 
@@ -159,9 +159,9 @@ function RicercheKeypeople({ filtri, onFilterChange, onReset, aziendaOptions, st
                         <FormControl fullWidth sx={{ mb: 2 }}>
                             <Autocomplete
                                 id="stato-combo-box"
-                                options={statoOptions}
+                                options={statiOptions}
                                 getOptionLabel={(option) => option.label}
-                                value={statoOptions.find(option => option.value === filtri.stato) || null}
+                                value={statiOptions.find(option => option.value === filtri.stato) || null}
                                 onChange={(event, newValue) => {
                                     onFilterChange('stato')({ target: { value: newValue?.value || null } });
                                 }}

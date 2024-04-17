@@ -52,11 +52,11 @@ const Recruiting = () => {
   const [ filtri,                     setFiltri               ] = useState(() => {
     const filtriSalvati = localStorage.getItem('filtriRicercaRecruiting');
     return filtriSalvati ? JSON.parse(filtriSalvati) : {
-    nome: '',
-    cognome: '',
-    tipologia: '',
-    stato: '',
-    tipo:''
+    nome: null,
+    cognome: null,
+    tipologia: null,
+    stato: null,
+    tipo:null
     };
 });
 
@@ -138,11 +138,29 @@ const quantita = 10;
     };
     
     
-    useEffect(() => {
-        fetchData();
-        // eslint-disable-next-line
-    }, []);
+    // useEffect(() => {
+    //     fetchData();
+    //     // eslint-disable-next-line
+    // }, []);
 
+
+    useEffect(() => {
+      const filtriSalvati = localStorage.getItem('filtriRicercaRecruiting');
+      if (filtriSalvati) {
+      const filtriParsed = JSON.parse(filtriSalvati);
+      setFiltri(filtriParsed);
+      
+      const isAnyFilterSet = Object.values(filtriParsed).some(value => value);
+      if (isAnyFilterSet) {
+          handleRicerche();
+      } else {
+          fetchData();
+      }
+      } else {
+      fetchData();
+      }
+      // eslint-disable-next-line
+  }, []);
 
 
     //funzione per la paginazione
@@ -258,6 +276,11 @@ useEffect(() => {
 
 
 const handleRicerche = async () => {
+  const isAnyFilterSet = Object.values(filtri).some(value => value);
+  if (!isAnyFilterSet) {
+      return; 
+  }
+
 
   // if (!Object.values(filtri).every(value => value === '')) {
     const filtriDaInviare = {
@@ -334,14 +357,34 @@ useEffect(() => {
 
 
 
+// const handleFilterChange = (name) => (event) => {
+//   const newValue = event.target.value;
+//   setFiltri({ ...filtri, [name]: newValue });
+//   // if (name === 'denominazione' && newValue === '') {
+//   //     fetchData();
+//   // } else {
+//   //     handleRicerche();
+//   // }
+// };
+
+
 const handleFilterChange = (name) => (event) => {
   const newValue = event.target.value;
-  setFiltri({ ...filtri, [name]: newValue });
-  // if (name === 'denominazione' && newValue === '') {
-  //     fetchData();
-  // } else {
-  //     handleRicerche();
-  // }
+  setFiltri(currentFilters => {
+      const newFilters = { ...currentFilters, [name]: newValue };
+      
+      // Controllo se tutti i filtri sono vuoti 
+      const areFiltersEmpty = Object.values(newFilters).every(value => value === null);
+      if (areFiltersEmpty) {
+          fetchData();
+      } else {
+          setPagina(0);
+          setOriginalRecruiting([]);
+          handleRicerche();
+      }
+      
+      return newFilters;
+  });
 };
 
 
@@ -354,11 +397,11 @@ const handleCloseFiltri = () => setOpenFiltri(false);
 
 const handleReset = () => {
     setFiltri({
-        nome: '',
-        cognome: '',
-        tipo:'',
-        tipologia:'',
-        stato: ''
+        nome: null,
+        cognome: null,
+        tipo:null,
+        tipologia:null,
+        stato: null
     });
     localStorage.removeItem("RicercheRecruiting");
     setPagina(0);

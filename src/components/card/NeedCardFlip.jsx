@@ -5,12 +5,16 @@ import BusinessCenterIcon                   from '@mui/icons-material/BusinessCe
 import axios                                        from 'axios';
 import Torcia                                       from "../../images/torciaSF.png";
 import JoinInnerIcon                                from '@mui/icons-material/JoinInner'; //match
-import AutorenewIcon                                from '@mui/icons-material/Autorenew'; //stato
+import ChangeCircleIcon                             from '@mui/icons-material/ChangeCircle'; //cambia stato
 import DeleteIcon                                   from '@mui/icons-material/Delete'; //cancella
 import { Edit }                                     from '@mui/icons-material';
 import AutoModeIcon                                 from '@mui/icons-material/AutoMode'; //stato
+import TagIcon                                      from '@mui/icons-material/Tag'; //numero progressivo
 import NuovaTorcia                                  from "../../images/nuovaTorcia.svg";
-import PlaceIcon                            from '@mui/icons-material/Place';
+import PlaceIcon                                    from '@mui/icons-material/Place';
+import CloseIcon from '@mui/icons-material/Close';
+
+
 
 
 
@@ -29,7 +33,10 @@ import {
     List,
     ListItem,
     ListItemText,
-    ListItemIcon
+    ListItemIcon,
+    FormControl,
+    TextField,
+    Autocomplete
     } from '@mui/material';
 
 
@@ -43,6 +50,9 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
     const [ modalDelete,       setModalDelete     ] = useState(false);
     const [ newStato,          setNewStato        ] = useState(valori.stato?.id); 
     const [ idNeed,            setIdNeed          ] = useState(null);
+    const [ values,            setValues          ] = useState({
+        stato: ''
+    });
     const [isFlipped, setIsFlipped] = useState(false);
     const [activeLink, setActiveLink] = useState(null);
 
@@ -61,6 +71,9 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
     }, [valori.stato?.id]);
     
     const toggleFlip = () => {
+        if ( modalStato) {
+            return;
+        }
         setIsFlipped(!isFlipped);
     };
 
@@ -76,10 +89,16 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
 
 
 
-    const handleOpenModalStato = (id) => {
+    const handleOpenModalStato = (id, event) => {
+        event.stopPropagation();
         setModalStato(true);
         setIdNeed(id);
+        setValues(prevValues => ({
+            ...prevValues,
+            stato: valori.stato?.id
+        }));
     };
+    
     const handleCloseModalStato = () => setModalStato(false);
 
     const handleChangeStato = (event) => {
@@ -87,20 +106,18 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
     };
 
 
-
     const handleUpdateStato = async () => {
-        const idStato = newStato;
+        const idStato = values.stato;  
         const params = new URLSearchParams({ stato: idStato });
-
-
         try {
-            const responseUpdateStato = await axios.post(`http://localhost:8080/need/react/salva/stato/${idNeed}?${params.toString()}`, { headers: headers});
+            const responseUpdateStato = await axios.post(`http://localhost:8080/need/react/salva/stato/${idNeed}?${params.toString()}`, {}, { headers: headers });
             setModalStato(false);
             onRefresh();
-        } catch(error) {
+        } catch (error) {
             console.error("Errore durante l'aggiornamento dello stato: ", error);
         }
     };
+    
 
 
 
@@ -122,7 +139,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
         border: 'solid 2px #00B400',
             '&:hover': {
             cursor: 'pointer',
-            transform: 'scale(1.05)',
+            transform: 'scale(1.01)',
         }
         
        
@@ -138,7 +155,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
         borderRadius: '20px',
         display: 'flex',
 
-        minHeight: '16em',
+        minHeight: '18em',
         // border: 'solid 2px #00B401',
         
     };
@@ -172,11 +189,11 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
                 navigateToAssocia(valori.id, event);
             }
         },
-        { 
-            title: 'Cambia stato',
-            icon: <AutorenewIcon />,
+        {
+            title: 'Cambia Stato',
+            icon: <ChangeCircleIcon />,
             onClick: (event) => {
-                handleOpenModalStato(valori.id);
+                handleOpenModalStato(valori.id, event);
             }
         },
         {
@@ -214,11 +231,19 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
                 textOverflow: 'ellipsis',
-                width: '100%' 
+                width: '100%',
+                ml: 1
                 }}
             >
                 {valori.descrizione}
             </Typography>
+
+
+            <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
+                    <TagIcon sx={{ color: '#00B401', mr: 1 }} />
+                    {valori.progressivo}
+            </Typography>
+
 
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
@@ -240,15 +265,15 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
             </Typography>
                 </Box>
                 <Box sx={{ 
-            position: 'absolute', 
-            bottom: 0, 
-            right: 0, 
-            display: 'flex', 
-            justifyContent: 'flex-end', 
-            alignItems: 'end', 
-            paddingRight: '16px', 
-            paddingBottom: '16px' 
-        }}>
+                    position: 'absolute', 
+                    bottom: 0, 
+                    right: 0, 
+                    display: 'flex', 
+                    justifyContent: 'flex-end', 
+                    alignItems: 'end', 
+                    paddingRight: '16px', 
+                    paddingBottom: '16px' 
+                }}>
             <Typography variant="h6" color="text.primary" sx={{ color: 'black', fontWeight: 'bold', display: 'flex', mr: 1, mt: 2 }}>{valori.cliente.denominazione}</Typography>
         </Box>
                 </Box>
@@ -364,7 +389,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
                                     '&:hover': {
                                         backgroundColor: 'black',
                                         color: 'white',
-                                        transform: 'scale(1.05)'
+                                        transform: 'scale(1.01)'
                                     },
                                 }}>
                                 Indietro
@@ -378,7 +403,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
                                 '&:hover': {
                                     backgroundColor: '#00B401',
                                     color: 'white',
-                                    transform: 'scale(1.05)'
+                                    transform: 'scale(1.01)'
                                 },
                             }}>
                                 Conferma
@@ -388,7 +413,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
                 </Modal>
                 
 
-
+{/* 
                 <Modal
                         open={modalStato}
                         onClose={() => setModalStato(false)}
@@ -466,7 +491,102 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
                             </Button>
                             </Box>
                         </Box>
-                        </Modal>
+                        </Modal> */}
+
+
+{ /* MODAL PER IL CAMBIO STATO */ }
+                <Modal
+                    open={modalStato}
+                    onClose={() => setModalStato(false)}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <Box
+                        sx={{
+                            backgroundColor: 'white',
+                            p: 4,
+                            borderRadius: 2,
+                            display: 'flex',
+                            position: 'relative', 
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flexDirection: 'column',
+                            gap: 2,
+                            width: '40vw',
+                            height: 'auto',
+                            
+                        }}
+                    >
+                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
+                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', ml: 2, mt: 0.5, mb: 0.5}}>Cambia Stato al Need</Typography>
+                            <IconButton sx={{ mr: 2, backgroundColor: 'transparent', border: 'none' }} onClick={() => setModalStato(false)}>
+                                <CloseIcon sx={{ backgroundColor: 'transparent' }}/>
+                            </IconButton>
+                        </Box>
+                        
+                        <FormControl fullWidth >
+                        <Autocomplete
+                                id="stato-combo-box"
+                                options={statoOptions}
+                                getOptionLabel={(option) => option.label}
+                                value={statoOptions.find(option => option.value === values.stato) || null}
+                                onChange={(event, newValue) => {
+                                    setValues(prevValues => ({
+                                        ...prevValues,
+                                        stato: newValue ? newValue.value : null
+                                    }));
+                                }}
+                                renderInput={(params) => 
+                                    <TextField 
+                                        {...params} 
+                                        label="Stato"
+                                        variant="filled" 
+                                        sx={{
+                                            height: '4em',
+                                            p: 1,
+                                            borderRadius: '20px', 
+                                            backgroundColor: '#EDEDED',
+                                            '& .MuiFilledInput-root': {
+                                                backgroundColor: 'transparent',
+                                            },
+                                            '& .MuiFilledInput-underline:after': {
+                                                borderBottomColor: 'transparent',
+                                            },
+                                            '& .MuiFilledInput-root::before': {
+                                                borderBottom: 'none', 
+                                            },
+                                            '&:hover .MuiFilledInput-root::before': {
+                                                borderBottom: 'none', 
+                                            } 
+                                        }}  
+                                    />
+                            }
+                            />
+                            </FormControl>
+                            <Button
+                            onClick={handleUpdateStato}
+                            sx={{
+                                mt: 2,
+                                width: '60%',
+                                backgroundColor: '#00B400',
+                                color: 'white',
+                                borderRadius: '10px',
+                                '&:hover': {
+                                    backgroundColor: '#00B400',
+                                    transform: 'scale(1.02)',
+                                },
+                            }}
+                            >
+                                Cambia
+                            </Button>
+                            </Box>
+                            </Modal>
+
 
 
 

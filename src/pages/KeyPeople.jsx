@@ -31,10 +31,10 @@ const Keypeople = () => {
     const [ filtri,                     setFiltri                     ] = useState(() => {
         const filtriSalvati = localStorage.getItem('filtriRicercaKeypeople');
         return filtriSalvati ? JSON.parse(filtriSalvati) : {
-        nome:  '',
-        azienda: '',
-        stato: '',
-        owner:''
+        nome:  null,
+        azienda: null,
+        stato: null,
+        owner:null
         };
     });
 
@@ -108,15 +108,33 @@ const Keypeople = () => {
         }
     };
     
+    // useEffect(() => {
+    //     const filtriSalvati = localStorage.getItem('filtriRicercaKeypeople');
+    //     if (filtriSalvati) {
+    //         setFiltri(JSON.parse(filtriSalvati));
+    //         handleRicerche();
+    //     } else {
+    // fetchData();
+    //     }
+    // // eslint-disable-next-line
+    // }, []);
+
     useEffect(() => {
         const filtriSalvati = localStorage.getItem('filtriRicercaKeypeople');
         if (filtriSalvati) {
-            setFiltri(JSON.parse(filtriSalvati));
+        const filtriParsed = JSON.parse(filtriSalvati);
+        setFiltri(filtriParsed);
+        
+        const isAnyFilterSet = Object.values(filtriParsed).some(value => value);
+        if (isAnyFilterSet) {
             handleRicerche();
         } else {
-    fetchData();
+            fetchData();
         }
-    // eslint-disable-next-line
+        } else {
+        fetchData();
+        }
+        // eslint-disable-next-line
     }, []);
 
 
@@ -157,6 +175,12 @@ const Keypeople = () => {
     //funzione per la ricerca
 
     const handleRicerche = async () => {
+
+        const isAnyFilterSet = Object.values(filtri).some(value => value);
+                if (!isAnyFilterSet) {
+                    return; 
+                }
+        
 
         const filtriDaInviare = {
             nome: filtri.nome || null,
@@ -210,13 +234,32 @@ const Keypeople = () => {
     //funzione cambio stato select
     const handleFilterChange = (name) => (event) => {
         const newValue = event.target.value;
-        setFiltri({ ...filtri, [name]: newValue });
-        if( name === 'nome' && newValue === '') {
-            fetchData();
-        } else {
-            handleRicerche();
-        }
+        setFiltri(currentFilters => {
+            const newFilters = { ...currentFilters, [name]: newValue };
+            
+            // Controllo se tutti i filtri sono vuoti 
+            const areFiltersEmpty = Object.values(newFilters).every(value => value === null);
+            if (areFiltersEmpty) {
+                fetchData();
+            } else {
+                setPagina(0);
+                setOriginalKeypeople([]);
+                setHasMore(true);
+                handleRicerche();
+            }
+            
+            return newFilters;
+        });
     };
+    // const handleFilterChange = (name) => (event) => {
+    //     const newValue = event.target.value;
+    //     setFiltri({ ...filtri, [name]: newValue });
+    //     if( name === 'nome' && newValue === '') {
+    //         fetchData();
+    //     } else {
+    //         handleRicerche();
+    //     }
+    // };
 
     useEffect(() => {
         const { nome, ...otherFilters } = filtri;
@@ -236,10 +279,10 @@ const Keypeople = () => {
 
     const handleReset = async () => {
         setFiltri({
-            nome: '',
-            azienda: '',
-            stato: '',
-            owner: ''
+            nome: null,
+            azienda: null,
+            stato: null,
+            owner: null
         });
         setPagina(0);
         setOriginalKeypeople([]);
@@ -248,11 +291,11 @@ const Keypeople = () => {
     };
 
 
-    const statoOptions = [
-        { label: 'Caldo', value: '1' },
-        { label: 'Tiepido', value: '2' },
-        { label: 'Freddo', value: '3' }
-    ];
+    // const statoOptions = [
+    //     { label: 'Caldo', value: '1' },
+    //     { label: 'Tiepido', value: '2' },
+    //     { label: 'Freddo', value: '3' }
+    // ];
 
 
      //funzione per cancellare l'azienda
@@ -263,6 +306,11 @@ const Keypeople = () => {
         } catch(error) {
             console.error("Errore durante la cancellazione: ", error);
         }
+    };
+
+    //funzione per il refresh
+    const handleRefresh = async () => {
+        await fetchData(0);
     };
 
 
@@ -290,7 +338,7 @@ const Keypeople = () => {
                         onFilterChange={handleFilterChange}
                         onReset={handleReset}
                         aziendaOptions={clienteOptions}
-                        statoOptions={statoOptions}
+                        statiOptions={statiOptions}
                         ownerOptions={ownerOptions}
                         onRicerche={handleRicerche}
                         />
@@ -330,7 +378,10 @@ const Keypeople = () => {
                             <Grid item xs={12} md={6} key={index}>
                                 <KeypeopleCardFlip 
                                 valori={keypeople}
-                                onDelete={() => handleDelete(keypeople.id)}/>
+                                statiOptions={statiOptions}
+                                onDelete={() => handleDelete(keypeople.id)}
+                                onRefresh={handleRefresh}
+                                />
                             </Grid>
                         ))
                     )

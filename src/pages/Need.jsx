@@ -30,11 +30,11 @@ import {
         const [ filtri,                         setFiltri                   ] = useState(() => {
             const filtriSalvati = localStorage.getItem('filtriRicercaNeed');
             return filtriSalvati ? JSON.parse(filtriSalvati) : {
-            descrizione: '',
-            tipologia: '',
-            stato: '',
-            owner: '',
-            keyPeople: ''
+            descrizione: null,
+            tipologia: null,
+            stato: null,
+            owner: null,
+            keypeople: null
             };
         });
         const quantita = 10;
@@ -60,12 +60,12 @@ import {
             setLoading(true);
 
             const filtriDaInviare = {
-                descrizione: filtri.descrizione || null,
-                tipologia: filtri.tipologia || null,
-                owner: filtri.owner || null,
-                stato: filtri.stato || null,
-                azienda: filtri.azienda || null,
-                keyPeople: filtri.keyPeople || null,
+                // descrizione: filtri.descrizione || null,
+                // tipologia: filtri.tipologia || null,
+                // owner: filtri.owner || null,
+                // stato: filtri.stato || null,
+                // azienda: filtri.azienda || null,
+                // keyPeople: filtri.keyPeople || null,
                 pagina: 0,
                 quantita: 10
             };
@@ -103,9 +103,9 @@ import {
             }
             if (Array.isArray(responseNeed.data)) {
                 const needConId = responseNeed.data.map((need) => ({...need}));
-                const sortedNeed = needConId.sort((a, b) => b.id - a.id);
+                // const sortedNeed = needConId.sort((a, b) => b.id - a.id);
 
-                setOriginalNeed(sortedNeed);
+                setOriginalNeed(needConId);
                 setHasMore(needConId.length >= quantita);
 
             } else {
@@ -118,17 +118,35 @@ import {
         };
 
 
-        useEffect(() => {
-            const filtriSalvati = localStorage.getItem('filtriRicercaNeed');
-            if(filtriSalvati) {
-                setFiltri(JSON.parse(filtriSalvati));
-                handleRicerche();
-            } else {
-            fetchData();
-            }
-            // eslint-disable-next-line
-        }, []);
+        // useEffect(() => {
+        //     const filtriSalvati = localStorage.getItem('filtriRicercaNeed');
+        //     if(filtriSalvati) {
+        //         setFiltri(JSON.parse(filtriSalvati));
+        //         handleRicerche();
+        //     } else {
+        //     fetchData();
+        //     }
+        //     // eslint-disable-next-line
+        // }, []);
 
+            useEffect(() => {
+                const filtriSalvati = localStorage.getItem('filtriRicercaNeed');
+                if (filtriSalvati) {
+                const filtriParsed = JSON.parse(filtriSalvati);
+                setFiltri(filtriParsed);
+                
+                const isAnyFilterSet = Object.values(filtriParsed).some(value => value);
+                if (isAnyFilterSet) {
+                    handleRicerche();
+                } else {
+                    fetchData();
+                }
+                } else {
+                fetchData();
+                }
+                // eslint-disable-next-line
+            }, []);
+            
 
 
         //caricamento dati con paginazione
@@ -149,7 +167,7 @@ import {
                 owner: filtri.owner || null,
                 stato: filtri.stato || null,
                 azienda: filtri.azienda || null,
-                keyPeople: filtri.keyPeople || null,
+                keypeople: filtri.keypeople || null,
                 pagina: paginaSuccessiva,
                 quantita: 10
             };
@@ -172,13 +190,17 @@ import {
 
         //funzione di ricerca
         const handleRicerche = async () => {
+            const isAnyFilterSet = Object.values(filtri).some(value => value);
+                if (!isAnyFilterSet) {
+                    return; 
+                }
             const filtriDaInviare = {
                 descrizione: filtri.descrizione || null,
                 tipologia: filtri.tipologia || null,
                 owner: filtri.owner || null,
                 stato: filtri.stato || null,
                 azienda: filtri.azienda || null,
-                keyPeople: filtri.keyPeople || null,
+                keypeople: filtri.keypeople || null,
                 pagina: 0,
                 quantita: 10
             };
@@ -236,15 +258,36 @@ import {
         
 
         //funzione cambiamento stato select
-        const handleFilterChange = (name) => (event) => {
-            const newValue = event.target.value;
-            setFiltri({...filtri, [name]:newValue});
-            if(name === 'descrizione' && newValue === '') {
-                fetchData();
-            } else {
-                handleRicerche();
-            }
-        };
+        // const handleFilterChange = (name) => (event) => {
+        //     const newValue = event.target.value;
+        //     setFiltri({...filtri, [name]:newValue});
+        //     if(name === 'descrizione' && newValue === '') {
+        //         fetchData();
+        //     } else {
+        //         handleRicerche();
+        //     }
+        // };
+
+
+const handleFilterChange = (name) => (event) => {
+    const newValue = event.target.value;
+    setFiltri(currentFilters => {
+        const newFilters = { ...currentFilters, [name]: newValue };
+        
+        // Controllo se tutti i filtri sono vuoti 
+        const areFiltersEmpty = Object.values(newFilters).every(value => value === null);
+        if (areFiltersEmpty) {
+            fetchData();
+        } else {
+            setPagina(0);
+            setOriginalNeed([]);
+            setHasMore(true);
+            handleRicerche();
+        }
+        
+        return newFilters;
+    });
+};
 
         useEffect(() => {
             const { descrizione, ...otherFilters } = filtri;
@@ -252,7 +295,7 @@ import {
             if (filtriHasValues) {
                 handleRicerche();
             }
-        }, [filtri.tipologia, filtri.stato, filtri.owner, filtri.azienda, filtri.keyPeople]);
+        }, [filtri.tipologia, filtri.stato, filtri.owner, filtri.azienda, filtri.keypeople]);
 
         useEffect(() => {
             localStorage.setItem('filtriRicercaNeed', JSON.stringify(filtri));
@@ -266,12 +309,12 @@ import {
         //funzione di reset dei campi di ricerca
         const handleReset = async () => {
             setFiltri({
-                descrizione: '',
-                stato: '',
-                tipologia: '',
-                owner: '',
-                azienda: '',
-                keyPeople: ''
+                descrizione: null,
+                stato: null,
+                tipologia: null,
+                owner: null,
+                azienda: null,
+                keypeople: null
             });
             setPagina(0);
             setOriginalNeed([]);
@@ -299,7 +342,7 @@ import {
 
         //funzione per avere il contatto da usare per le ricerche
         const handleContactChange = (contattoId) => {
-            setFiltri(prev => ({ ...prev, keyPeople: contattoId }));
+            setFiltri(prev => ({ ...prev, keypeople: contattoId }));
         };
 
 

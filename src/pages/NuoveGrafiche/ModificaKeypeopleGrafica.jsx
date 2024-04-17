@@ -16,7 +16,6 @@ const ModificaKeypeopleGrafica = () => {
     const valori = location.state;
     const { id } = useParams();
 
-    console.log("id: ", id);
 
 
     //stati della pagina

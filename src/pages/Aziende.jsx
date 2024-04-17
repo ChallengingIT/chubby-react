@@ -42,12 +42,12 @@ const Aziende = () => {
           return filtriParsed;
         }
         return {
-          denominazione: '',
-          tipologia: '',
-          stato: '',
-          owner: '',
-          ida: '',
-          ownerLabel: '', 
+          denominazione: null,
+          tipologia: null,
+          stato: null,
+          owner: null,
+          ida: null,
+          ownerLabel: null, 
         };
       });
       
@@ -142,16 +142,36 @@ const Aziende = () => {
         };
 
 
+        // useEffect(() => {
+        //     const filtriSalvati = localStorage.getItem('filtriRicercaAziende');
+        //     if (filtriSalvati) {
+        //         setFiltri(JSON.parse(filtriSalvati));
+        //         handleRicerche();
+        //     } else {
+        //     fetchData();
+        //     }
+        //     // eslint-disable-next-line
+        // }, []); 
+
+
+
         useEffect(() => {
             const filtriSalvati = localStorage.getItem('filtriRicercaAziende');
             if (filtriSalvati) {
-                setFiltri(JSON.parse(filtriSalvati));
+            const filtriParsed = JSON.parse(filtriSalvati);
+            setFiltri(filtriParsed);
+            
+            const isAnyFilterSet = Object.values(filtriParsed).some(value => value);
+            if (isAnyFilterSet) {
                 handleRicerche();
+            } else {
+                fetchData();
+            }
             } else {
             fetchData();
             }
             // eslint-disable-next-line
-        }, []); 
+        }, []);
 
         //funzione per la paginazione
         const fetchMoreData = async () => {
@@ -197,6 +217,11 @@ const Aziende = () => {
 
             //funzione di ricerca
             const handleRicerche = async () => {
+                const isAnyFilterSet = Object.values(filtri).some(value => value);
+                if (!isAnyFilterSet) {
+                    return; 
+                }
+                
         
                 const filtriDaInviare = {
                     ...filtri,
@@ -243,14 +268,33 @@ const Aziende = () => {
             //funzione cambio stato select
             const handleFilterChange = (name) => (event) => {
                 const newValue = event.target.value;
-                setFiltri({ ...filtri, [name]: newValue });
-                
-                if (name === 'denominazione' && newValue === '') {
-                    fetchData();
-                } else {
-                    handleRicerche();
-                }
+                setFiltri(currentFilters => {
+                    const newFilters = { ...currentFilters, [name]: newValue };
+                    
+                    // Controllo se tutti i filtri sono vuoti 
+                    const areFiltersEmpty = Object.values(newFilters).every(value => value === null);
+                    if (areFiltersEmpty) {
+                        fetchData();
+                    } else {
+                        setPagina(0);
+                        setOriginalAziende([]);
+                        setHasMore(true);
+                        handleRicerche();
+                    }
+                    
+                    return newFilters;
+                });
             };
+            // const handleFilterChange = (name) => (event) => {
+            //     const newValue = event.target.value;
+            //     setFiltri({ ...filtri, [name]: newValue });
+                
+            //     if (name === 'denominazione' && newValue === '') {
+            //         fetchData();
+            //     } else {
+            //         handleRicerche();
+            //     }
+            // };
 
             useEffect(() => {
                 const { denominazione, ...otherFilters } = filtri;
@@ -272,11 +316,11 @@ const Aziende = () => {
             //funzione di reset dei campi di ricerca
             const handleReset = async() => {
                 setFiltri({
-                    denominazione: '',
-                    stato: '',
-                    owner:'',
-                    tipologia:'',
-                    ida: ''
+                    denominazione: null,
+                    stato: null,
+                    owner:null,
+                    tipologia:null,
+                    ida: null
                 });
                 setPagina(0);
                 setOriginalAziende([]);

@@ -32,6 +32,8 @@ const ModificaNeedGrafica = () => {
     const [ ownerOptions,         setOwnerOptions       ] = useState([]);
     const [ tipologiaOptions,     setTipologiaOptions   ] = useState([]);
     const [ statoOptions,         setStatoOptions       ] = useState([]);
+    const [ keyPeopleOptions,     setKeyPeopleOptions   ] = useState([]);
+    const [ aziendaID,            setAziendaID          ] = useState(null);
   
     const [ values,             setValues               ] = useState([]);
 
@@ -59,8 +61,13 @@ const ModificaNeedGrafica = () => {
           const tipologiaResponse     = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
           const statoResponse         = await axios.get("http://localhost:8080/need/react/stato"    , { headers: headers});
           const needResponse          = await axios.get(`http://localhost:8080/need/react/${id}`     , { headers: headers});
-  
-  
+
+          const modificaData = needResponse.data;
+          const aziendaId = needResponse.data.cliente.id;
+          setAziendaID(aziendaId);
+          setDatiModifica(modificaData);
+
+          
           if (Array.isArray(statoResponse.data)) {
             const statoOptions = statoResponse.data.map((stato) => ({
               label: stato.descrizione,
@@ -106,10 +113,6 @@ const ModificaNeedGrafica = () => {
             }));
             setAziendeOptions(ownerOptions);
           }
-
-          const modificaData = needResponse.data;
-          setDatiModifica(modificaData);
-
         } catch (error) {
           console.error("Errore durante il recupero delle aziende:", error);
         }
@@ -119,6 +122,31 @@ const ModificaNeedGrafica = () => {
   
       fetchNeedOptions();
     }, []);
+
+
+    useEffect(() => {
+        if (datiModifica.cliente && datiModifica.cliente.length !== 0) {
+            const aziendaConId = datiModifica.cliente.id;
+            fetchKeypeopleOptions(aziendaConId);
+        } 
+    },[ datiModifica.cliente]);
+
+    const fetchKeypeopleOptions = async (aziendaConId) => {
+        try {
+            
+                const keypeopleResponse     = await axios.get(`http://localhost:8080/keypeople/react/azienda/${aziendaID}`, { headers: headers });
+    
+                if (Array.isArray(keypeopleResponse.data)) {
+                  const keypeopleOptions = keypeopleResponse.data.map((keypeople) => ({
+                    label: keypeople.nome,
+                    value: keypeople.id,
+                  }));
+                  setKeyPeopleOptions(keypeopleOptions); 
+              }
+        } catch (error) {
+          console.error("Errore durante il recupero dei key people:", error);
+        }
+    };
   
   
     const pubblicazioneOptions = [
@@ -149,7 +177,7 @@ const ModificaNeedGrafica = () => {
     const getMandatoryFields = (index) => {
         switch (index) {
             case 0:
-                return [ "descrizione", "priorita", "week", "pubblicazione", "screening", "idTipologia", "idStato", "idOwner", "location"]; 
+                return [ "descrizione", "idKeyPeople", "priorita", "week", "pubblicazione", "screening", "idTipologia", "idStato", "idOwner", "location"]; 
 
             default:
                 return [];
@@ -284,10 +312,11 @@ const ModificaNeedGrafica = () => {
         }
     };
 
-        const fieldObbligatori = [ "descrizione", "priorita", "week", "pubblicazione", "screening", "idTipologia", "idStato", "idOwner", "location" ];
+        const fieldObbligatori = [ "descrizione", "idKeyPeople", "priorita", "week", "pubblicazione", "screening", "idTipologia", "idStato", "idOwner", "location" ];
 
         const fields =[
             { label: "Descrizione Need*",   name: "descrizione",                  type: "text"                                                },
+            { label: "Contatto*",           name: "idKeyPeople",                  type: "select",               options: keyPeopleOptions     },
             { label: "Priorità*",           name: "priorita",                     type: "decimalNumber"                                       },
             { label: "Week*",               name: "week",                         type: "week"                                                },
             { label: "Tipologia*",          name: "idTipologia",                  type: "select",               options: tipologiaOptions     },
@@ -311,6 +340,7 @@ const ModificaNeedGrafica = () => {
         const initialValues = {
             id:                         datiModifica.id                                                 ,
             descrizione:                datiModifica.descrizione                                        || null,
+            idKeyPeople:                (datiModifica.keyPeople && datiModifica.keyPeople.id)           || null,
             priorita:                   datiModifica.priorita                                           || null,
             week:                       datiModifica.week                                               || null,
             idTipologia:               (datiModifica.tipologia && datiModifica.tipologia.id)                             || null,
