@@ -767,7 +767,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                                     getOptionLabel={(option) => option.label}
                                     value={tipologieOptions.find(option => option.value === values.tipologie) || null}
                                     onChange={(event, newValue) => {
-                                        handleValueChange('stato', newValue ? newValue.value : null);
+                                        handleValueChange('tipologie', newValue ? newValue.value : null);
                                     }}
                                     renderInput={(params) => 
                                     <TextField 
