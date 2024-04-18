@@ -230,7 +230,7 @@ const AziendeCardFlip = ({valori, onDelete}) => {
 
     const menuData = [
         {
-            title: 'Associa Azienda',
+            title: 'Need Associati',
             icon: <JoinInnerIcon />,
             onClick: () => {
                 navigateToAssocia(valori.id);
@@ -305,7 +305,7 @@ const AziendeCardFlip = ({valori, onDelete}) => {
 
             <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', color: 'black', mt: 1 }}>
                 {icon}
-                ida: {text}
+                IDA: {text}
             </Typography>
             </Box>
             <Box sx={{ 
@@ -343,7 +343,7 @@ const AziendeCardFlip = ({valori, onDelete}) => {
                 
                 }}
             >
-                Menu
+                {valori.denominazione}
             </Typography>
 
             <Box sx={{ display: 'flex', alignItems: 'start', justifyContent: 'flex-start', flexDirection: 'column', mb: 1 }}>

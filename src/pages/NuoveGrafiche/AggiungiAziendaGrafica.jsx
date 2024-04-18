@@ -74,14 +74,19 @@ const AggiungiAziendaGrafica = () => {
             title: 'Profilo',
             icon: <CircleOutlinedIcon />
         },
-        { 
-            title: 'Location',
-            icon: <CircleOutlinedIcon />
-        },
         {
             title: 'Contatti',
             icon: <CircleOutlinedIcon />
         },
+        {
+            title: 'IDA',
+            icon: <CircleOutlinedIcon />
+        },
+        { 
+            title: 'Location',
+            icon: <CircleOutlinedIcon />
+        },
+        
         {
             title: 'File',
             icon: <CircleOutlinedIcon />
@@ -97,7 +102,7 @@ const AggiungiAziendaGrafica = () => {
         switch (index) {
             case 0: 
                 return [ "denominazione", "settoreMercato", "idOwner", "tipologia", "status", "potenzialita", "semplicita" ];
-            case 1: 
+            case 3: 
                 return [ "citta", "provincia", "sedeOperativa", "cap" ];
             default: 
                 return [];
@@ -262,12 +267,19 @@ const AggiungiAziendaGrafica = () => {
                 { value: "Prospect", label: "Prospect" },
                 { value: "EXCLIENTE", label: "Ex Cliente" }
             ]  },
-            { label: "Potenzialita*",                          name: "potenzialita",                    type: "select", options: [
+            { type: "titleGroups",                label: "Contatti"            },
+            { label: "Pec",                             name: "pec",                      type: "text"                             },
+            { label: "Codice Destinatario",             name: "codiceDestinatario",       type: "text"                             },
+            { label: "Sito Web",                        name: "sito",                     type: "text"                             },
+            { label: 'Note',                            name: 'note',                     type: 'note'                             },
+    
+            { type: 'titleGroups',                label: "IDA"     },
+            { label: "Potenzialità*",                          name: "potenzialita",                    type: "select", options: [
                 { value: 1, label: "1" },
                 { value: 2, label: "2" },
                 { value: 3, label: "3" },
             ]  },
-            { label: "Semplicita*",                            name: "semplicita",                    type: "select", options: [
+            { label: "Semplicità*",                            name: "semplicita",                    type: "select", options: [
                 { value: 1, label: "1" },
                 { value: 2, label: "2" },
                 { value: 3, label: "3" },
@@ -286,12 +298,7 @@ const AggiungiAziendaGrafica = () => {
             { label: "Sede Legale",                     name: "sedeLegale",               type: "text"                             },
             { label: "CAP*",                             name: "cap",                      type: "text"                             },
     
-            { type: "titleGroups",                label: "Contatti"            },
-            { label: "Pec",                             name: "pec",                      type: "text"                             },
-            { label: "Codice Destinatario",             name: "codiceDestinatario",       type: "text"                             },
-            { label: "Sito Web",                        name: "sito",                     type: "text"                             },
-            { label: 'Note',                            name: 'note',                     type: 'note'                             },
-    
+           
     
             { type: "titleGroups",                label: "File"            },
             { label: 'Logo',                      name: 'logo',                     type: 'aggiungiImmagine'                             },
