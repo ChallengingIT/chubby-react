@@ -350,7 +350,7 @@ const AggiungiKeypeopleGrafica = () => {
                                                     primary={
                                                     <Box>
                                                         <Typography component="span" sx={{ fontWeight: 'bold' }}>Keypeople:</Typography>
-                                                        {" ho ricevuto un’esigenza di business"}
+                                                        {" lavora in azienda target, ha budget da gestire e potere decisionale "}
                                                     </Box>
                                                     } 
                                                 />
@@ -360,7 +360,7 @@ const AggiungiKeypeopleGrafica = () => {
                                                     primary={
                                                     <Box>
                                                         <Typography component="span" sx={{ fontWeight: 'bold' }}>Hook:</Typography>
-                                                        {" è stata fissata una prospection"}
+                                                        {" lavora in azienda target, ma non ha budget e potere decisionale "}
                                                     </Box>
                                                     } 
                                                 />
@@ -370,7 +370,7 @@ const AggiungiKeypeopleGrafica = () => {
                                                     primary={
                                                     <Box>
                                                         <Typography component="span" sx={{ fontWeight: 'bold' }}>Link:</Typography>
-                                                        {" entrati in contatto"}
+                                                        {" persona che fa parte del nostro network e potrebbe avere contatti utili "}
                                                     </Box>
                                                     } 
                                                 />
@@ -424,7 +424,7 @@ const AggiungiKeypeopleGrafica = () => {
                                                     primary={
                                                     <Box>
                                                         <Typography component="span" sx={{ fontWeight: 'bold' }}>Silver:</Typography>
-                                                        {" è stata fissata una prospection"}
+                                                        {" ho fissato una prospection"}
                                                     </Box>
                                                     } 
                                                 />
@@ -434,7 +434,7 @@ const AggiungiKeypeopleGrafica = () => {
                                                     primary={
                                                     <Box>
                                                         <Typography component="span" sx={{ fontWeight: 'bold' }}>Bronze:</Typography>
-                                                        {" entrati in contatto"}
+                                                        {" sono entrato in contatto"}
                                                     </Box>
                                                     } 
                                                 />

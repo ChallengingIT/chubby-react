@@ -902,6 +902,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                                 <TableRow>
                                     <TableCell sx={{ fontWeight: 'bold', fontSize: 'large'}}>#</TableCell>
                                     <TableCell sx={{ fontWeight: 'bold', fontSize: 'large'}}>Descrizione</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', fontSize: 'large'}}>Stato</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -909,6 +910,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                                     <TableRow key={need.id}>
                                         <TableCell>{need.progressivo}</TableCell>
                                         <TableCell>{need.descrizione}</TableCell>
+                                        <TableCell>{need.stato?.descrizione}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

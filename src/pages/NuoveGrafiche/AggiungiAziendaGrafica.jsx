@@ -74,19 +74,14 @@ const AggiungiAziendaGrafica = () => {
             title: 'Profilo',
             icon: <CircleOutlinedIcon />
         },
-        {
-            title: 'Contatti',
+        { 
+            title: 'Location',
             icon: <CircleOutlinedIcon />
         },
         {
             title: 'IDA',
             icon: <CircleOutlinedIcon />
         },
-        { 
-            title: 'Location',
-            icon: <CircleOutlinedIcon />
-        },
-        
         {
             title: 'File',
             icon: <CircleOutlinedIcon />
@@ -101,13 +96,16 @@ const AggiungiAziendaGrafica = () => {
     const getMandatoryFields = (index) => {
         switch (index) {
             case 0: 
-                return [ "denominazione", "settoreMercato", "idOwner", "tipologia", "status", "potenzialita", "semplicita" ];
-            case 3: 
+            return [ "denominazione", "settoreMercato" ]
+            case 1:
                 return [ "citta", "provincia", "sedeOperativa", "cap" ];
+            case 2:
+                return ["idOwner", "tipologia", "status", "potenzialita", "semplicita" ];
             default: 
                 return [];
         }
     };
+
 
 
     //funzione per la validazione dei campi
@@ -258,22 +256,31 @@ const AggiungiAziendaGrafica = () => {
             { type: "titleGroups",                label: "Profilo"            },
             { label: 'Nome Azienda*',                   name: 'denominazione',            type:'text'                              },
             { label: 'Settore Mercato*',                name: 'settoreMercato',           type:'text'                              },
-            { label: "Email",                           name: "email",                    type: "text"                             },
+            // { label: "Email",                           name: "email",                    type: "text"                             },
             { label: "Partita IVA",                     name: "pi",                       type: "text"                             },
             { label: "Codice Fiscale",                  name: "cf",                       type: "text"                             },
+            { label: "Pec",                             name: "pec",                      type: "text"                             },
+            { label: "Codice Destinatario",             name: "codiceDestinatario",       type: "text"                             },
+            { label: "Sito Web",                        name: "sito",                     type: "text"                             },
+            { label: 'Note',                            name: 'note',                     type: 'note'                             },
+    
+    
+            { type: "titleGroups",                label: "Location"            },
+            { label: "Città*",                          name: "citta",                    type: "text"                             },
+            { label: "Paese",                           name: "paese",                    type: "text"                             },
+            { label: "Provincia*",                      name: "provincia",                type: "select", options: provinceOptions },
+            { label: "Sede Operativa*",                  name: "sedeOperativa",            type: "text"                            },
+            { label: "Sede Legale",                     name: "sedeLegale",               type: "text"                             },
+            { label: "CAP*",                             name: "cap",                      type: "text"                             },
+
+
+            { type: 'titleGroups',                label: "IDA"     },
             { label: "Owner*",                          name: "idOwner",                  type: "select", options: ownerOptions    },
             { label: "Tipologia*",                       name: "tipologia",                type: "select", options: [
                 { value: "Cliente", label: "Cliente" },
                 { value: "Prospect", label: "Prospect" },
                 { value: "EXCLIENTE", label: "Ex Cliente" }
             ]  },
-            { type: "titleGroups",                label: "Contatti"            },
-            { label: "Pec",                             name: "pec",                      type: "text"                             },
-            { label: "Codice Destinatario",             name: "codiceDestinatario",       type: "text"                             },
-            { label: "Sito Web",                        name: "sito",                     type: "text"                             },
-            { label: 'Note',                            name: 'note',                     type: 'note'                             },
-    
-            { type: 'titleGroups',                label: "IDA"     },
             { label: "Potenzialità*",                          name: "potenzialita",                    type: "select", options: [
                 { value: 1, label: "1" },
                 { value: 2, label: "2" },
@@ -289,14 +296,6 @@ const AggiungiAziendaGrafica = () => {
                 { value: 2, label: "2" },
                 { value: 3, label: "3" },
             ]  },
-    
-            { type: "titleGroups",                label: "Location"            },
-            { label: "Città*",                          name: "citta",                    type: "text"                             },
-            { label: "Paese",                           name: "paese",                    type: "text"                             },
-            { label: "Provincia*",                      name: "provincia",                type: "select", options: provinceOptions },
-            { label: "Sede Operativa*",                  name: "sedeOperativa",            type: "text"                            },
-            { label: "Sede Legale",                     name: "sedeLegale",               type: "text"                             },
-            { label: "CAP*",                             name: "cap",                      type: "text"                             },
     
            
     
