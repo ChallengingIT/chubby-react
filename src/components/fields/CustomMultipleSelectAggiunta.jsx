@@ -14,7 +14,8 @@ const CustomMultipleSelectAggiunta = ({ name, label, onChange, skillsOptions }) 
 
 
     return (
-        <FormControl fullWidth>
+        <FormControl fullWidth variant='filled'
+        >
             <InputLabel 
               sx={{ 
                 ml: 2, 

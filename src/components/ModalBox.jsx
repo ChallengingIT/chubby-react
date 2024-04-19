@@ -11,8 +11,11 @@ import {
   Typography, 
   Checkbox, 
   ListItemText, 
-  FormHelperText 
+  FormHelperText,
+  Autocomplete
 } from '@mui/material';
+import CloseIcon                            from '@mui/icons-material/Close';
+
 
 
 
@@ -62,26 +65,91 @@ const ModalBox = ({
           value={values[field.name] || ''}
           fullWidth
           disabled={isDisabled}
+          variant='filled'
+          sx={{ 
+            width: "100%",
+            textAlign: "left",
+            borderRadius: '20px', 
+            backgroundColor: '#EDEDED', 
+            '& .MuiFilledInput-root': {
+                backgroundColor: 'transparent',
+            },
+            '& .MuiFilledInput-underline:after': {
+                borderBottomColor: 'transparent',
+            },
+            '& .MuiFilledInput-root::before': {
+                borderBottom: 'none', 
+            },
+            '&:hover .MuiFilledInput-root::before': {
+                borderBottom: 'none', 
+            },
+            '& .MuiFormLabel-root.Mui-focused': {
+              color: '#00B400',
+          },
+            }}
         />
         );
 
       case 'select':
         return (
-          <FormControl fullWidth disabled={isDisabled}> 
-  <InputLabel>{field.label}</InputLabel>
-  <Select
-    style={{ width: "100%", textAlign: "left" }}
-    name={field.name}
-    value={values[field.name] || ''}
-    onChange={handleChange(field.name)}
-  >
-    {field.options.map((option) => (
-      <MenuItem key={option.value} value={option.value}>
-        {option.label}
-      </MenuItem>
-    ))}
-  </Select>
-</FormControl>
+          <FormControl fullWidth disabled={isDisabled}
+          variant='filled'
+          sx={{
+            textAlign: "left",
+            borderRadius: '20px', 
+            backgroundColor: '#EDEDED', 
+            '& .MuiFilledInput-root': {
+              backgroundColor: 'transparent',
+          },
+          '& .MuiFilledInput-underline:after': {
+              borderBottomColor: 'transparent',
+          },
+          '& .MuiFilledInput-root::before': {
+              borderBottom: 'none', 
+          },
+          '&:hover .MuiFilledInput-root::before': {
+              borderBottom: 'none', 
+          },
+          '& .MuiFormLabel-root.Mui-focused': {
+            color: '#00B400',
+        },
+          }}> 
+          <InputLabel>{field.label}</InputLabel>
+          <Select
+            style={{ width: "100%", textAlign: "left" }}
+            name={field.name}
+            value={values[field.name] || ''}
+            onChange={handleChange(field.name)}
+            variant='filled'
+          sx={{ 
+            width: "100%",
+            textAlign: "left",
+            borderRadius: '20px', 
+            backgroundColor: '#EDEDED', 
+            '& .MuiFilledInput-root': {
+                backgroundColor: 'transparent',
+            },
+            '& .MuiFilledInput-underline:after': {
+                borderBottomColor: 'transparent',
+            },
+            '& .MuiFilledInput-root::before': {
+                borderBottom: 'none', 
+            },
+            '&:hover .MuiFilledInput-root::before': {
+                borderBottom: 'none', 
+            },
+            '& .MuiFormLabel-root.Mui-focused': {
+              color: '#00B400',
+          },
+            }}
+          >
+            {field.options.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
         );
 
@@ -97,6 +165,28 @@ const ModalBox = ({
             onChange={handleChange(field.name)}
             InputLabelProps={{ shrink: true }}
             fullWidth
+            variant='filled'
+          sx={{ 
+            width: "100%",
+            textAlign: "left",
+            borderRadius: '20px', 
+            backgroundColor: '#EDEDED', 
+            '& .MuiFilledInput-root': {
+                backgroundColor: 'transparent',
+            },
+            '& .MuiFilledInput-underline:after': {
+                borderBottomColor: 'transparent',
+            },
+            '& .MuiFilledInput-root::before': {
+                borderBottom: 'none', 
+            },
+            '&:hover .MuiFilledInput-root::before': {
+                borderBottom: 'none', 
+            },
+            '& .MuiFormLabel-root.Mui-focused': {
+              color: '#00B400',
+          },
+            }}
           />
         );
 
@@ -110,6 +200,28 @@ const ModalBox = ({
       onChange={handleChange(field.name)}
       value={values[field.name] || ''}
       fullWidth
+      variant='filled'
+          sx={{ 
+            width: "100%",
+            textAlign: "left",
+            borderRadius: '20px', 
+            backgroundColor: '#EDEDED', 
+            '& .MuiFilledInput-root': {
+                backgroundColor: 'transparent',
+            },
+            '& .MuiFilledInput-underline:after': {
+                borderBottomColor: 'transparent',
+            },
+            '& .MuiFilledInput-root::before': {
+                borderBottom: 'none', 
+            },
+            '&:hover .MuiFilledInput-root::before': {
+                borderBottom: 'none', 
+            },
+            '& .MuiFormLabel-root.Mui-focused': {
+              color: '#00B400',
+          },
+            }}
     />
   );
 
@@ -126,7 +238,7 @@ const ModalBox = ({
         display: "flex",
         flexDirection: "column",
         width: "80%",
-        margin: "auto",
+        m: 1,
         padding: "30px",
         backgroundColor: "white",
         borderRadius: "20px",
@@ -134,9 +246,13 @@ const ModalBox = ({
         boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.5)",
       }}
     >
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'row'}}>
       <Typography variant="h5" style={{ marginBottom: "20px" }}>
         {title}
       </Typography>
+      <Button onClick={onClose} variant="outlined" sx={{ mt: -2 ,backgroundColor: 'transparent', border: 'none', color: '#898989', '&:hover': { border: 'none', color: 'red', transform: 'scale(1.1)'}}}startIcon={<CloseIcon sx={{backgroundColor: 'transparent'}}/>}/>
+
+      </Box>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={3}>
           {fields.map((field) => (
@@ -159,7 +275,7 @@ const ModalBox = ({
             gap: "40px",
           }}
         >
-        {showBackButton && (
+        {/* {showBackButton && (
           <Button
             color="primary"
             onClick={onClose}
@@ -174,14 +290,16 @@ const ModalBox = ({
           >
             Indietro
           </Button>
-          )}
+          )} */}
           {showSaveButton && (
             <Button
               color="primary"
               variant="contained"
               // onClick={() => onSubmit(values)}
               type="submit"
-              style={{
+              sx={{
+                width: '30%',
+                borderRadius: '5px',
                 fontWeight: "bold",
                 backgroundColor: "#00B401",
                 color: "white",
