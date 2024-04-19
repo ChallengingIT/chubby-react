@@ -347,7 +347,7 @@ const Keypeople = () => {
                 dataLength={originalKeypeople.length}
                 next={fetchMoreData}
                 hasMore={hasMore}
-                loader={'Caricamento in corso...'}
+                // loader={'Caricamento in corso...'}
                 >
                             {/* Main Content Area */}
                 <Grid container spacing={2} sx={{ mt: 1, mb: 4}}>

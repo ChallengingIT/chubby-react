@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import CloseIcon                            from '@mui/icons-material/Close';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'; 
-import { LocalizationProvider } from '@mui/x-date-pickers'; 
+import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers'; 
 import axios from 'axios';
 import dayjs from 'dayjs';
 
@@ -47,6 +47,12 @@ function AppuntamentoModal({ open, handleClose }) {
     const newValue = event.target.value;
     setFormData({...formData, [name]:newValue});
 };
+
+
+    // Aggiornamento del gestore di eventi per gestire oggetti dayjs
+    const handleDateChange = (newValue) => {
+        setFormData({...formData, data: newValue});
+    };
 
 const onClose = () => {
     setFormData({
@@ -156,7 +162,11 @@ const onClose = () => {
             },
             '&:hover .MuiFilledInput-root::before': {
                 borderBottom: 'none', 
-            } 
+            },
+            '& .MuiFormLabel-root.Mui-focused': {
+                color: '#00B400',
+            },
+            
             }} 
         />
         <Typography variant="h6" sx={{ mb: 1, mt: 0.3, ml: 1, color: '#666565', fontSize: '1em'}}>* Inserire i destinatari separati da " ; "</Typography>
@@ -187,7 +197,10 @@ const onClose = () => {
             },
             '&:hover .MuiFilledInput-root::before': {
                 borderBottom: 'none', 
-            } 
+            },
+            '& .MuiFormLabel-root.Mui-focused': {
+                color: '#00B400',
+            },
             }} 
         />
 
@@ -216,26 +229,30 @@ const onClose = () => {
             },
             '&:hover .MuiFilledInput-root::before': {
                 borderBottom: 'none', 
-            } 
+            },
+            '& .MuiFormLabel-root.Mui-focused': {
+                color: '#00B400',
+              },
             }} 
         />
 
-            {/* <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 1,  }}>
-                <TextField
-                type="date"
-                label="Data"
-                name="data"
-                value={formData.data}
-                onChange={(e) => handleDateChange(e.target.value)}
+        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
                 
-                variant='filled'
-                sx={{
-                    width: '40%',
+                <DateTimePicker
+                label="Data e ora"
+                value={formData.data}
+                onChange={handleDateChange}
+                fullWidth
 
+                renderInput={(params) => <TextField {...params} variant="filled" fullWidth/>}
+                ampm={true}
+                views={['year', 'month', 'day', 'hours', 'minutes']}
+                sx={{
+                    height: '4em',
                     mb: 2,
                     p: 1,
-                    borderRadius: '40px', 
-                    backgroundColor: '#EDEDED', 
+                    borderRadius: '20px', 
+                    backgroundColor: '#EDEDED',
                     '& .MuiFilledInput-root': {
                         backgroundColor: 'transparent',
                     },
@@ -247,73 +264,49 @@ const onClose = () => {
                     },
                     '&:hover .MuiFilledInput-root::before': {
                         borderBottom: 'none', 
-                    } 
-                    }} 
+                    }
+                }}
                 />
 
-
-
-                <TextField
-                type="time"
-                label="Data"
-                name="data"
-                value={formData.data}
-                onChange={(e) => handleTimeChange(e.target.value)}
-                
-                variant='filled'
-                sx={{
-                    width: '40%',
-                    mb: 2,
-                    p: 1,
-                    borderRadius: '40px', 
-                    backgroundColor: '#EDEDED', 
-                    '& .MuiFilledInput-root': {
-                        backgroundColor: 'transparent',
-                    },
-                    '& .MuiFilledInput-underline:after': {
-                        borderBottomColor: 'transparent',
-                    },
-                    '& .MuiFilledInput-root::before': {
-                        borderBottom: 'none', 
-                    },
-                    '&:hover .MuiFilledInput-root::before': {
-                        borderBottom: 'none', 
-                    } 
-                    }} 
-                />
-
-            </Box> */}
+            </LocalizationProvider> */}
 
 
 <TextField
-id='data-box'
-    label="Data e ora"
-    type="datetime-local" 
-    name="data"
-    value={formData.data} 
-    onChange={handleChange('data')} 
-    fullWidth
-    variant='filled'
-    sx={{
-        height: '4em',
-        mb: 2,
-        p: 1,
-        borderRadius: '20px', 
-        backgroundColor: '#EDEDED', 
-        '& .MuiFilledInput-root': {
-            backgroundColor: 'transparent',
-        },
-        '& .MuiFilledInput-underline:after': {
-            borderBottomColor: 'transparent',
-        },
-        '& .MuiFilledInput-root::before': {
-            borderBottom: 'none', 
-        },
-        '&:hover .MuiFilledInput-root::before': {
-            borderBottom: 'none', 
-        } 
-    }} 
+  id='data-box'
+  label="Data e ora"
+  type="datetime-local"
+  name="data"
+  value={formData.data}
+  onChange={handleChange('data')}
+  fullWidth
+  variant='filled'
+  sx={{
+    height: '4em',
+    mb: 2,
+    p: 1,
+    borderRadius: '20px',
+    backgroundColor: '#EDEDED',
+    '& .MuiFilledInput-root': {
+      backgroundColor: 'transparent',
+      '&:after': { 
+        borderBottomColor: '#00B400',
+      },
+    },
+    '& .MuiFilledInput-underline:before': { 
+      borderBottomColor: '#00B400',
+    },
+    '& .MuiFilledInput-underline:hover:before': { 
+      borderBottomColor: ['#00B400', '!important'], 
+    },
+    '& .MuiFilledInput-underline:after': { 
+      borderBottomColor: '#00B400', 
+    },
+    '& .MuiFormLabel-root.Mui-focused': {
+      color: '#00B400',
+    },
+  }}
 />
+
 
 
 
@@ -351,7 +344,10 @@ id='data-box'
                     },
                     '&:hover .MuiFilledInput-root::before': {
                         borderBottom: 'none', 
-                    } 
+                    },
+                    '& .MuiFormLabel-root.Mui-focused': {
+                        color: '#00B400',
+                    },
                 }}  
             />
         )}
@@ -386,7 +382,10 @@ id='data-box'
                     },
                     '&:hover .MuiFilledInput-root::before': {
                         borderBottom: 'none', 
-                    } 
+                    },
+                    '& .MuiFormLabel-root.Mui-focused': {
+                        color: '#00B400',
+                    },
                     }}
                     />
             <Box sx={{ display: 'flex', justifyContent: 'center'}}>

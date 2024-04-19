@@ -791,7 +791,10 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                                         },
                                         '&:hover .MuiFilledInput-root::before': {
                                             borderBottom: 'none', 
-                                        } 
+                                        },
+                                        '& .MuiFormLabel-root.Mui-focused': {
+                                            color: '#00B400',
+                                        }, 
                                     }}  
                                     />}
                                 />
@@ -821,7 +824,10 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                                 },
                                 '&:hover .MuiFilledInput-root::before': {
                                     borderBottom: 'none', 
-                                } 
+                                },
+                                '& .MuiFormLabel-root.Mui-focused': {
+                                    color: '#00B400',
+                                },
                                 }} 
                             InputLabelProps={{
                                 shrink: true, 
@@ -852,7 +858,10 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                                 },
                                 '&:hover .MuiFilledInput-root::before': {
                                     borderBottom: 'none', 
-                                } 
+                                },
+                                '& .MuiFormLabel-root.Mui-focused': {
+                                    color: '#00B400',
+                                }, 
                                 }} 
                             onChange={(event) => handleValueChange('note', event.target.value)}
                             />
@@ -997,7 +1006,10 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                                             },
                                             '&:hover .MuiFilledInput-root::before': {
                                                 borderBottom: 'none', 
-                                            } 
+                                            },
+                                            '& .MuiFormLabel-root.Mui-focused': {
+                                                color: '#00B400',
+                                            },
                                         }}  
                                     />
                             }

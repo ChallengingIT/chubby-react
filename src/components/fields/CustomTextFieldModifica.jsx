@@ -48,6 +48,9 @@ function CustomTextFieldModifica({ name, label, type, onChange, values, initialV
       color: 'black', 
       cursor: 'not-allowed', 
     },
+    '& .MuiFormLabel-root.Mui-focused': {
+      color: '#00B400',
+  },
 
         }}
     />

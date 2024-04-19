@@ -186,7 +186,29 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
                                 //     onFilterChange('azienda')({ target: { value: newValue?.value || null } });
                                 // }}
                                 onChange={handleAziendaChange}
-                                renderInput={(params) => <TextField {...params} label="Azienda" />}
+                                renderInput={(params) => <TextField {...params} label="Azienda" 
+                                variant='filled'
+                                sx={{
+                                    textAlign: "left",
+                                    borderRadius: '20px', 
+                                    backgroundColor: '#EDEDED', 
+                                    '& .MuiFilledInput-root': {
+                                        backgroundColor: 'transparent',
+                                    },
+                                    '& .MuiFilledInput-underline:after': {
+                                        borderBottomColor: 'transparent',
+                                    },
+                                    '& .MuiFilledInput-root::before': {
+                                        borderBottom: 'none', 
+                                    },
+                                    '&:hover .MuiFilledInput-root::before': {
+                                        borderBottom: 'none', 
+                                    },
+                                    '& .MuiFormLabel-root.Mui-focused': {
+                                        color: '#00B400',
+                                    },
+                                }} 
+                                />}
                             />
                             {/* <InputLabel id="azienda-label">Azienda</InputLabel>
                             <Select
@@ -219,7 +241,29 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
                                     getOptionLabel={(option) => option.label}
                                     value={contactOptions.find(option => option.value === selectedContact) || null}
                                     onChange={handleContactChange}
-                                    renderInput={(params) => <TextField {...params} label="Contatto" />}
+                                    renderInput={(params) => <TextField {...params} label="Contatto" 
+                                    variant='filled'
+                                    sx={{
+                                        textAlign: "left",
+                                        borderRadius: '20px', 
+                                        backgroundColor: '#EDEDED', 
+                                        '& .MuiFilledInput-root': {
+                                            backgroundColor: 'transparent',
+                                        },
+                                        '& .MuiFilledInput-underline:after': {
+                                            borderBottomColor: 'transparent',
+                                        },
+                                        '& .MuiFilledInput-root::before': {
+                                            borderBottom: 'none', 
+                                        },
+                                        '&:hover .MuiFilledInput-root::before': {
+                                            borderBottom: 'none', 
+                                        },
+                                        '& .MuiFormLabel-root.Mui-focused': {
+                                            color: '#00B400',
+                                        },
+                                    }} 
+                                    />}
                                     disabled={contactOptions.length === 0}
                                 />
                             </FormControl>
@@ -233,7 +277,29 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
                                 onChange={(event, newValue) => {
                                     onFilterChange('tipologia')({ target: { value: newValue?.value || null } });
                                 }}
-                                renderInput={(params) => <TextField {...params} label="Tipologia" />}
+                                renderInput={(params) => <TextField {...params} label="Tipologia" 
+                                variant='filled'
+                                sx={{
+                                    textAlign: "left",
+                                    borderRadius: '20px', 
+                                    backgroundColor: '#EDEDED', 
+                                    '& .MuiFilledInput-root': {
+                                        backgroundColor: 'transparent',
+                                    },
+                                    '& .MuiFilledInput-underline:after': {
+                                        borderBottomColor: 'transparent',
+                                    },
+                                    '& .MuiFilledInput-root::before': {
+                                        borderBottom: 'none', 
+                                    },
+                                    '&:hover .MuiFilledInput-root::before': {
+                                        borderBottom: 'none', 
+                                    },
+                                    '& .MuiFormLabel-root.Mui-focused': {
+                                        color: '#00B400',
+                                    },
+                                }} 
+                                />}
                             />
                             {/* <InputLabel id="tipologia-label">Tipologia</InputLabel>
                             <Select
@@ -267,7 +333,29 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
                                 onChange={(event, newValue) => {
                                     onFilterChange('stato')({ target: { value: newValue?.value || null } });
                                 }}
-                                renderInput={(params) => <TextField {...params} label="Stato" />}
+                                renderInput={(params) => <TextField {...params} label="Stato" 
+                                variant='filled'
+                                sx={{
+                                    textAlign: "left",
+                                    borderRadius: '20px', 
+                                    backgroundColor: '#EDEDED', 
+                                    '& .MuiFilledInput-root': {
+                                        backgroundColor: 'transparent',
+                                    },
+                                    '& .MuiFilledInput-underline:after': {
+                                        borderBottomColor: 'transparent',
+                                    },
+                                    '& .MuiFilledInput-root::before': {
+                                        borderBottom: 'none', 
+                                    },
+                                    '&:hover .MuiFilledInput-root::before': {
+                                        borderBottom: 'none', 
+                                    },
+                                    '& .MuiFormLabel-root.Mui-focused': {
+                                        color: '#00B400',
+                                    },
+                                }} 
+                                />}
                             />
                             {/* <InputLabel id="stato-label">Stato</InputLabel>
                             <Select
@@ -301,7 +389,29 @@ function RicercheNeed({ filtri, onFilterChange, onReset, tipologiaOptions, stato
                                 onChange={(event, newValue) => {
                                     onFilterChange('owner')({ target: { value: newValue?.value || null } });
                                 }}
-                                renderInput={(params) => <TextField {...params} label="Owner" />}
+                                renderInput={(params) => <TextField {...params} label="Owner" 
+                                variant='filled'
+                                sx={{
+                                    textAlign: "left",
+                                    borderRadius: '20px', 
+                                    backgroundColor: '#EDEDED', 
+                                    '& .MuiFilledInput-root': {
+                                        backgroundColor: 'transparent',
+                                    },
+                                    '& .MuiFilledInput-underline:after': {
+                                        borderBottomColor: 'transparent',
+                                    },
+                                    '& .MuiFilledInput-root::before': {
+                                        borderBottom: 'none', 
+                                    },
+                                    '&:hover .MuiFilledInput-root::before': {
+                                        borderBottom: 'none', 
+                                    },
+                                    '& .MuiFormLabel-root.Mui-focused': {
+                                        color: '#00B400',
+                                    },
+                                }} 
+                                />}
                             />
                             {/* <InputLabel id="owner-label">Owner</InputLabel>
                             <Select

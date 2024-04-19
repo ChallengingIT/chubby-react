@@ -49,6 +49,9 @@ function CustomDatePickerModifica({ name, label, type, onChange, values, initial
       color: 'black', 
       cursor: 'not-allowed', 
     },
+    '& .MuiFormLabel-root.Mui-focused': {
+      color: '#00B400',
+  },
   }}
 />
 

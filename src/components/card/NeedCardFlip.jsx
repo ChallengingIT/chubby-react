@@ -562,7 +562,10 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
                                             },
                                             '&:hover .MuiFilledInput-root::before': {
                                                 borderBottom: 'none', 
-                                            } 
+                                            },
+                                            '& .MuiFormLabel-root.Mui-focused': {
+                                                color: '#00B400',
+                                            }, 
                                         }}  
                                     />
                             }

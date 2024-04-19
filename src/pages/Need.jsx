@@ -366,10 +366,9 @@ const handleFilterChange = (name) => (event) => {
                 minHeight: '98vh',
                 mt: 1.5
             }}>
-                
                 <Box sx={{ 
                     position: 'sticky', 
-                    top: 0,
+                    top: 0, 
                     zIndex: 1000, 
                 }}>
                     <RicercheNeed 

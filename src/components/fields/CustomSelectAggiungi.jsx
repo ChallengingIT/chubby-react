@@ -37,6 +37,9 @@ function CustomSelectAggiungi({ name, label, options, value, onChange, disabled 
             color: '#a09f9f', 
             cursor: 'not-allowed', 
           },
+          '& .MuiFormLabel-root.Mui-focused': {
+            color: '#00B400',
+        },
         }}
       >
         {options.map((option) => (

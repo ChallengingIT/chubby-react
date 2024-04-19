@@ -226,7 +226,29 @@ function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, 
                                 onChange={(event, newValue) => {
                                     onFilterChange('tipo')({ target: { value: newValue?.value || null } });
                                 }}
-                                renderInput={(params) => <TextField {...params} label="Tipologia" />}
+                                renderInput={(params) => <TextField {...params} label="Tipologia" 
+                                variant='filled'
+                                sx={{
+                                    textAlign: "left",
+                                    borderRadius: '20px', 
+                                    backgroundColor: '#EDEDED', 
+                                    '& .MuiFilledInput-root': {
+                                        backgroundColor: 'transparent',
+                                    },
+                                    '& .MuiFilledInput-underline:after': {
+                                        borderBottomColor: 'transparent',
+                                    },
+                                    '& .MuiFilledInput-root::before': {
+                                        borderBottom: 'none', 
+                                    },
+                                    '&:hover .MuiFilledInput-root::before': {
+                                        borderBottom: 'none', 
+                                    },
+                                    '& .MuiFormLabel-root.Mui-focused': {
+                                        color: '#00B400',
+                                    },
+                                }} 
+                                />}
                             />
                         {/* <InputLabel id="tipo-label">Tipologia</InputLabel>
                         <Select
@@ -262,7 +284,29 @@ function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, 
                                 onChange={(event, newValue) => {
                                     onFilterChange('tipologia')({ target: { value: newValue?.value || null } });
                                 }}
-                                renderInput={(params) => <TextField {...params} label="Jobtitle" />}
+                                renderInput={(params) => <TextField {...params} label="Jobtitle" 
+                                variant='filled'
+                                sx={{
+                                    textAlign: "left",
+                                    borderRadius: '20px', 
+                                    backgroundColor: '#EDEDED', 
+                                    '& .MuiFilledInput-root': {
+                                        backgroundColor: 'transparent',
+                                    },
+                                    '& .MuiFilledInput-underline:after': {
+                                        borderBottomColor: 'transparent',
+                                    },
+                                    '& .MuiFilledInput-root::before': {
+                                        borderBottom: 'none', 
+                                    },
+                                    '&:hover .MuiFilledInput-root::before': {
+                                        borderBottom: 'none', 
+                                    },
+                                    '& .MuiFormLabel-root.Mui-focused': {
+                                        color: '#00B400',
+                                    },
+                                }} 
+                                />}
                             />
                         {/* <InputLabel id="tipologia-label">JobTitle</InputLabel>
                         <Select
@@ -298,7 +342,29 @@ function RicercheNeedMatch({ filtri, onFilterChange, onReset, tipologiaOptions, 
                                 onChange={(event, newValue) => {
                                     onFilterChange('seniority')({ target: { value: newValue?.value || null } });
                                 }}
-                                renderInput={(params) => <TextField {...params} label="Seniority" />}
+                                renderInput={(params) => <TextField {...params} label="Seniority" 
+                                variant='filled'
+                                sx={{
+                                    textAlign: "left",
+                                    borderRadius: '20px', 
+                                    backgroundColor: '#EDEDED', 
+                                    '& .MuiFilledInput-root': {
+                                        backgroundColor: 'transparent',
+                                    },
+                                    '& .MuiFilledInput-underline:after': {
+                                        borderBottomColor: 'transparent',
+                                    },
+                                    '& .MuiFilledInput-root::before': {
+                                        borderBottom: 'none', 
+                                    },
+                                    '&:hover .MuiFilledInput-root::before': {
+                                        borderBottom: 'none', 
+                                    },
+                                    '& .MuiFormLabel-root.Mui-focused': {
+                                        color: '#00B400',
+                                    },
+                                }} 
+                                />}
                             />
                         {/* <InputLabel id="seniority-label">Seniority</InputLabel>
                         <Select
