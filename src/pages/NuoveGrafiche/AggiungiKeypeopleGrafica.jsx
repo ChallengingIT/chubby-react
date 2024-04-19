@@ -198,17 +198,31 @@ const AggiungiKeypeopleGrafica = () => {
         };
 
         //funzione per il popover
-        const [anchorEl, setAnchorEl] = useState(null);
+        const [anchorElStato, setAnchorElStato] = useState(null);
+        const [anchorElTipo, setAnchorElTipo] = useState(null);
 
-        const handlePopoverOpen = (event) => {
-            setAnchorEl(event.currentTarget);
+
+        const handlePopoverStatoOpen = (event) => {
+            setAnchorElStato(event.currentTarget);
         };
 
-        const handlePopoverClose = () => {
-            setAnchorEl(null);
+        const handlePopoverStatoClose = () => {
+            setAnchorElStato(null);
         };
 
-        const open = Boolean(anchorEl);
+
+        const handlePopoverTipoOpen = (event) => {
+            setAnchorElTipo(event.currentTarget);
+        };
+
+        const handlePopoverTipoClose = () => {
+            setAnchorElTipo(null);
+        };
+
+        const openStato = Boolean(anchorElStato);
+
+        const openTipo = Boolean(anchorElTipo);
+
 
 
 
@@ -303,6 +317,70 @@ const AggiungiKeypeopleGrafica = () => {
                         )
 
                         case 'select':
+                            if (field.name === 'tipo') {
+                                return (
+                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                        <CustomAutocomplete
+                                            name={field.name}
+                                            label={field.label}
+                                            options={field.options}
+                                            value={values[field.name] || null}
+                                            onChange={handleChange}
+                                            getOptionSelected={(option, value) => option.value === value.value}
+                                        />
+                                        <IconButton onClick={handlePopoverStatoOpen} sx={{ mr: -3, ml: 2 }}>
+                                            <InfoIcon />
+                                        </IconButton>
+                                        <Popover
+                                            open={openStato}
+                                            anchorEl={anchorElStato}
+                                            onClose={handlePopoverStatoClose}
+                                            anchorOrigin={{
+                                                vertical: 'bottom',
+                                                horizontal: 'right',
+                                            }}
+                                            transformOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'right',
+                                            }}
+                                            >
+                                            <List dense>
+                                                <ListItem>
+                                                <ListItemText 
+                                                    primary={
+                                                    <Box>
+                                                        <Typography component="span" sx={{ fontWeight: 'bold' }}>Keypeople:</Typography>
+                                                        {" lavora in azienda target, ha budget da gestire e potere decisionale "}
+                                                    </Box>
+                                                    } 
+                                                />
+                                                </ListItem>
+                                                <ListItem>
+                                                <ListItemText 
+                                                    primary={
+                                                    <Box>
+                                                        <Typography component="span" sx={{ fontWeight: 'bold' }}>Hook:</Typography>
+                                                        {" lavora in azienda target, ma non ha budget e potere decisionale "}
+                                                    </Box>
+                                                    } 
+                                                />
+                                                </ListItem>
+                                                <ListItem>
+                                                <ListItemText 
+                                                    primary={
+                                                    <Box>
+                                                        <Typography component="span" sx={{ fontWeight: 'bold' }}>Link:</Typography>
+                                                        {" persona che fa parte del nostro network e potrebbe avere contatti utili "}
+                                                    </Box>
+                                                    } 
+                                                />
+                                                </ListItem>
+                                            </List>
+                                            </Popover>
+
+                                    </Box>
+                                );
+                            }
                             if (field.name === 'idStato') {
                                 return (
                                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -314,13 +392,13 @@ const AggiungiKeypeopleGrafica = () => {
                                             onChange={handleChange}
                                             getOptionSelected={(option, value) => option.value === value.value}
                                         />
-                                        <IconButton onClick={handlePopoverOpen} sx={{ mr: -3, ml: 2 }}>
+                                        <IconButton onClick={handlePopoverTipoOpen} sx={{ mr: -3, ml: 2 }}>
                                             <InfoIcon />
                                         </IconButton>
                                         <Popover
-                                            open={open}
-                                            anchorEl={anchorEl}
-                                            onClose={handlePopoverClose}
+                                            open={openTipo}
+                                            anchorEl={anchorElTipo}
+                                            onClose={handlePopoverTipoClose}
                                             anchorOrigin={{
                                                 vertical: 'bottom',
                                                 horizontal: 'right',
@@ -346,7 +424,7 @@ const AggiungiKeypeopleGrafica = () => {
                                                     primary={
                                                     <Box>
                                                         <Typography component="span" sx={{ fontWeight: 'bold' }}>Silver:</Typography>
-                                                        {" è stata fissata una prospection"}
+                                                        {" ho fissato una prospection"}
                                                     </Box>
                                                     } 
                                                 />
@@ -356,7 +434,7 @@ const AggiungiKeypeopleGrafica = () => {
                                                     primary={
                                                     <Box>
                                                         <Typography component="span" sx={{ fontWeight: 'bold' }}>Bronze:</Typography>
-                                                        {" entrati in contatto"}
+                                                        {" sono entrato in contatto"}
                                                     </Box>
                                                     } 
                                                 />
@@ -375,7 +453,7 @@ const AggiungiKeypeopleGrafica = () => {
                                                 <ListItemText 
                                                     primary={
                                                     <Box>
-                                                        <Typography component="span" sx={{ fontWeight: 'bold' }}>Nessuna Azione:</Typography>
+                                                        <Typography component="span" sx={{ fontWeight: 'bold' }}>Start:</Typography>
                                                         {" non ho ancora effettuato azioni commerciali"}
                                                     </Box>
                                                     } 
@@ -383,7 +461,6 @@ const AggiungiKeypeopleGrafica = () => {
                                                 </ListItem>
                                             </List>
                                             </Popover>
-
                                     </Box>
                                 );
                             }

@@ -763,16 +763,16 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                             
                                 <Autocomplete
                                     id="stato-combo-box"
-                                    options={statiOptions}
+                                    options={tipologieOptions}
                                     getOptionLabel={(option) => option.label}
-                                    value={statiOptions.find(option => option.value === values.stato) || null}
+                                    value={tipologieOptions.find(option => option.value === values.tipologie) || null}
                                     onChange={(event, newValue) => {
-                                        handleValueChange('stato', newValue ? newValue.value : null);
+                                        handleValueChange('tipologie', newValue ? newValue.value : null);
                                     }}
                                     renderInput={(params) => 
                                     <TextField 
                                     {...params} 
-                                    label="Stato"
+                                    label="Azione"
                                     variant='filled' 
                                     sx={{
                                         height: '4em',
@@ -902,6 +902,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                                 <TableRow>
                                     <TableCell sx={{ fontWeight: 'bold', fontSize: 'large'}}>#</TableCell>
                                     <TableCell sx={{ fontWeight: 'bold', fontSize: 'large'}}>Descrizione</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', fontSize: 'large'}}>Stato</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -909,6 +910,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                                     <TableRow key={need.id}>
                                         <TableCell>{need.progressivo}</TableCell>
                                         <TableCell>{need.descrizione}</TableCell>
+                                        <TableCell>{need.stato?.descrizione}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -956,7 +958,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                         }}
                     >
                         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
-                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', ml: 2, mt: 0.5, mb: 0.5}}>Cambia Stato al Need</Typography>
+                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', ml: 2, mt: 0.5, mb: 0.5}}>Cambia Stato del Contatto</Typography>
                             <IconButton sx={{ mr: 2, backgroundColor: 'transparent', border: 'none' }} onClick={() => setModalCambiaStato(false)}>
                                 <CloseIcon sx={{ backgroundColor: 'transparent' }}/>
                             </IconButton>

@@ -6,6 +6,7 @@ import axios                                                                    
 import CustomAutocomplete                                                                                       from '../../components/fields/CustomAutocomplete';
 import CustomTextFieldModifica                                                                                  from '../../components/fields/CustomTextFieldModifica';
 import CustomImgFieldModifica                                                                                   from '../../components/fields/CustomImgFieldModifica';
+import CustomNoteModifica from '../../components/fields/CustomNoteModifica';
 
 
 const ModificaAziendaGrafica = () => {
@@ -103,7 +104,7 @@ const ModificaAziendaGrafica = () => {
             icon: <CircleOutlinedIcon />
         },
         {
-            title: 'Contatti',
+            title: 'IDA',
             icon: <CircleOutlinedIcon />
         },
         {
@@ -120,9 +121,11 @@ const ModificaAziendaGrafica = () => {
     const getMandatoryFields = (index) => {
         switch (index) {
             case 0: 
-            return [ "denominazione", "settoreMercato", "idOwner", "tipologia", "status", "potenzialita", "semplicita" ];
-            case 1: 
+            return [ "denominazione", "settoreMercato" ]
+            case 1:
                 return [ "citta", "provincia", "sedeOperativa", "cap" ];
+            case 2:
+                return ["idOwner", "tipologia", "status", "potenzialita", "semplicita" ];
             default: 
                 return [];
         }
@@ -273,21 +276,37 @@ const ModificaAziendaGrafica = () => {
             { type: "titleGroups",                label: "Profilo"            },
             { label: 'Nome Azienda*',                   name: 'denominazione',            type:'text'                              },
             { label: 'Settore Mercato*',                name: 'settoreMercato',           type:'text'                              },
-            { label: "Email",                           name: "email",                    type: "text"                             },
+            // { label: "Email",                           name: "email",                    type: "text"                             },
             { label: "Partita IVA",                     name: "pi",                       type: "text"                             },
             { label: "Codice Fiscale",                  name: "cf",                       type: "text"                             },
+            { label: "Pec",                             name: "pec",                      type: "text"                             },
+            { label: "Codice Destinatario",             name: "codiceDestinatario",       type: "text"                             },
+            { label: "Sito Web",                        name: "sito",                     type: "text"                             },
+            { label: 'Note',                            name: 'note',                     type: 'note'                             },
+    
+    
+            { type: "titleGroups",                label: "Location"            },
+            { label: "Città*",                          name: "citta",                    type: "text"                             },
+            { label: "Paese",                           name: "paese",                    type: "text"                             },
+            { label: "Provincia*",                      name: "provincia",                type: "select", options: provinceOptions },
+            { label: "Sede Operativa*",                  name: "sedeOperativa",            type: "text"                            },
+            { label: "Sede Legale",                     name: "sedeLegale",               type: "text"                             },
+            { label: "CAP*",                             name: "cap",                      type: "text"                             },
+
+
+            { type: 'titleGroups',                label: "IDA"     },
             { label: "Owner*",                          name: "idOwner",                  type: "select", options: ownerOptions    },
-            { label: "Tipologia",                       name: "tipologia",                type: "select", options: [
+            { label: "Tipologia*",                       name: "tipologia",                type: "select", options: [
                 { value: "Cliente", label: "Cliente" },
                 { value: "Prospect", label: "Prospect" },
                 { value: "EXCLIENTE", label: "Ex Cliente" }
             ]  },
-            { label: "Potenzialita*",                          name: "potenzialita",                    type: "select", options: [
+            { label: "Potenzialità*",                          name: "potenzialita",                    type: "select", options: [
                 { value: 1, label: "1" },
                 { value: 2, label: "2" },
                 { value: 3, label: "3" },
             ]  },
-            { label: "Semplicita*",                            name: "semplicita",                    type: "select", options: [
+            { label: "Semplicità*",                            name: "semplicita",                    type: "select", options: [
                 { value: 1, label: "1" },
                 { value: 2, label: "2" },
                 { value: 3, label: "3" },
@@ -298,20 +317,7 @@ const ModificaAziendaGrafica = () => {
                 { value: 3, label: "3" },
             ]  },
     
-            { type: "titleGroups",                label: "Location"            },
-            { label: "Città*",                          name: "citta",                    type: "text"                             },
-            { label: "Paese",                           name: "paese",                    type: "text"                             },
-            { label: "Provincia*",                      name: "provincia",                type: "select", options: provinceOptions },
-            { label: "Sede Operativa*",                  name: "sedeOperativa",            type: "text"                            },
-            { label: "Sede Legale",                     name: "sedeLegale",               type: "text"                             },
-            { label: "CAP*",                             name: "cap",                      type: "text"                             },
-    
-            { type: "titleGroups",                label: "Contatti"            },
-            { label: "Pec",                             name: "pec",                      type: "text"                             },
-            { label: "Codice Destinatario",             name: "codiceDestinatario",       type: "text"                             },
-            { label: "Sito Web",                        name: "sito",                     type: "text"                             },
-            { label: 'Note',                            name: 'note',                     type: 'note'                             },
-    
+           
     
             { type: "titleGroups",                label: "File"            },
             { label: 'Logo',                      name: 'logo',                     type: 'aggiungiImmagine'                             },
@@ -322,7 +328,7 @@ const ModificaAziendaGrafica = () => {
         const initialValues = {
             id:                           datiModifica.id                              ,
             denominazione:                datiModifica.denominazione                   || null,
-            email:                        datiModifica.email                           || null,
+            // email:                        datiModifica.email                           || null,
             pi:                           datiModifica.pi                              || null,
             cf:                           datiModifica.cf                              || null,
             citta:                        datiModifica.citta                           || null,
@@ -435,7 +441,8 @@ const ModificaAziendaGrafica = () => {
 
                 case 'select': 
                 const initialValue = field.options.find(option => option.value === values[field.name]);
-                return <CustomAutocomplete
+                return (
+                <CustomAutocomplete
                             // key={field.name}
                             name={field.name}
                             label={field.label}
@@ -443,7 +450,25 @@ const ModificaAziendaGrafica = () => {
                             value={values[field.name] || null}
                             onChange={handleChange}
                             initialValue={initialValue}
-                        />;
+                        />
+                );
+
+
+                case 'note':
+                    return (
+                        <CustomNoteModifica
+                        name={field.name}
+                        label={field.label}
+                        type={field.type}
+                        values={values}
+                        onChange={handleChange}
+                        initialValues={initialValues}
+                        />
+                    );
+
+
+
+                        
                         
 
                 case 'aggiungiImmagine': 
@@ -533,7 +558,7 @@ const ModificaAziendaGrafica = () => {
                         Indietro
                     </Button>
                 </Box>
-                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: 'black'}}>  Modifica <br /> Azienda </Typography>
+                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: 'black'}}>  Aggiorna <br /> Azienda </Typography>
                 <List sx={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
                             {menu.map((item) => (
                                 <ListItem
