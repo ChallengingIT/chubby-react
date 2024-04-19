@@ -16,7 +16,7 @@ import axios                                  from "axios";
 
 
 const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalInterviste }) => {
-  const savedSearchTerms = JSON.parse(localStorage.getItem("ricercaInterviste")) || {
+  const savedSearchTerms = JSON.parse(sessionStorage.getItem("ricercaInterviste")) || {
     stato: '',
     intervistatore: '',
     data: null,
@@ -30,7 +30,7 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
   const [ selectedDate, setSelectedDate ] = useState('');
 
 
-  const token = localStorage.getItem("token"); 
+  const token = sessionStorage.getItem("token"); 
   const headers = {
     Authorization: `Bearer ${token}`,
   };
@@ -77,7 +77,7 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
         String(item[key]).toLowerCase().includes(String(searchTerm[key]).toLowerCase())
       )
     );
-    localStorage.setItem("ricercaInterviste", JSON.stringify(searchTerm));
+    sessionStorage.setItem("ricercaInterviste", JSON.stringify(searchTerm));
 
     onSearch(filteredData);
     setFilteredData(filteredData);
@@ -93,7 +93,7 @@ const IntervisteSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
     onSearchTextChange("");
     onReset();
     setFilteredData([]); 
-    localStorage.removeItem("ricercaInterviste");
+    sessionStorage.removeItem("ricercaInterviste");
 
   };
 

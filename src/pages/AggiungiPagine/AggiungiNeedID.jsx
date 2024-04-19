@@ -20,8 +20,8 @@ const AggiungiNeedID = () => {
   
 
 
-  // Recupera l'token da localStorage
-  const user = JSON.parse(localStorage.getItem("user"));
+  // Recupera l'token da sessionStorage
+  const user = JSON.parse(sessionStorage.getItem("user"));
   const token = user?.token;
 
   // Configura gli headers della richiesta con l'Authorization token

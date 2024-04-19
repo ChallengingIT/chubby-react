@@ -14,7 +14,7 @@ import {
 
 const NeedMatchSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalAssociabili}) => {
 
-  const savedSearchTerms = JSON.parse(localStorage.getItem("ricercaNeedMatch")) || {
+  const savedSearchTerms = JSON.parse(sessionStorage.getItem("ricercaNeedMatch")) || {
     nome: '',
     cognome: '',
     jobtitle: '',
@@ -26,7 +26,7 @@ const NeedMatchSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Origi
 
   
 
-const token = localStorage.getItem("token"); 
+const token = sessionStorage.getItem("token"); 
 
 const headers = {
   Authorization: `Bearer ${token}`,
@@ -84,7 +84,7 @@ const headers = {
         String(item[key]).toLowerCase().includes(String(searchTerm[key]).toLowerCase())
       )
     );
-    localStorage.setItem("ricercaNeedMatch", JSON.stringify(searchTerm));
+    sessionStorage.setItem("ricercaNeedMatch", JSON.stringify(searchTerm));
 
     onSearch(filteredData);
     setFilteredData(filteredData);
@@ -105,7 +105,7 @@ const headers = {
     onSearchTextChange("");
     onReset();
     setFilteredData([]);
-    localStorage.removeItem("ricercaNeedMatch");
+    sessionStorage.removeItem("ricercaNeedMatch");
 
   };
 

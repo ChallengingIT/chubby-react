@@ -31,7 +31,7 @@ function RicercheAziende({ filtri, onFilterChange, onReset, tipologiaOptions, st
 
 
     const isAdminRole = () => {
-        const userString = localStorage.getItem('user');
+        const userString = sessionStorage.getItem('user');
         if (userString) {
             const userObj = JSON.parse(userString);
             return userObj.roles.includes('ROLE_ADMIN');

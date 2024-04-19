@@ -29,7 +29,7 @@ const Keypeople = () => {
     const [ ownerOptions,               setOwnerOptions               ] = useState([]);
     const [ statiOptions,               setStatiOptions               ] = useState([]);
     const [ filtri,                     setFiltri                     ] = useState(() => {
-        const filtriSalvati = localStorage.getItem('filtriRicercaKeypeople');
+        const filtriSalvati = sessionStorage.getItem('filtriRicercaKeypeople');
         return filtriSalvati ? JSON.parse(filtriSalvati) : {
         nome:  null,
         azienda: null,
@@ -44,7 +44,7 @@ const Keypeople = () => {
     const quantita = 10;
 
 
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(sessionStorage.getItem('user'));
     const token = user?.token;
 
     const headers = {
@@ -109,7 +109,7 @@ const Keypeople = () => {
     };
     
     // useEffect(() => {
-    //     const filtriSalvati = localStorage.getItem('filtriRicercaKeypeople');
+    //     const filtriSalvati = sessionStorage.getItem('filtriRicercaKeypeople');
     //     if (filtriSalvati) {
     //         setFiltri(JSON.parse(filtriSalvati));
     //         handleRicerche();
@@ -120,7 +120,7 @@ const Keypeople = () => {
     // }, []);
 
     useEffect(() => {
-        const filtriSalvati = localStorage.getItem('filtriRicercaKeypeople');
+        const filtriSalvati = sessionStorage.getItem('filtriRicercaKeypeople');
         if (filtriSalvati) {
         const filtriParsed = JSON.parse(filtriSalvati);
         setFiltri(filtriParsed);
@@ -271,7 +271,7 @@ const Keypeople = () => {
     }, [filtri.azienda, filtri.stato, filtri.owner]);
 
     useEffect(() => {
-        localStorage.setItem('filtriRicercaKeypeople', JSON.stringify(filtri));
+        sessionStorage.setItem('filtriRicercaKeypeople', JSON.stringify(filtri));
     }, [filtri]);
     
 

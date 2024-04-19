@@ -36,7 +36,7 @@ const ModificaAziendaGrafica = () => {
 
 
 
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(sessionStorage.getItem("user"));
     const token = user?.token;
 
     const headers = {
@@ -211,9 +211,9 @@ const ModificaAziendaGrafica = () => {
                         }
                     });
         
-                    const userString = localStorage.getItem("user");
+                    const userString = sessionStorage.getItem("user");
                     if (!userString) {
-                        console.error("Nessun utente o token trovato in localStorage");
+                        console.error("Nessun utente o token trovato in sessionStorage");
                         return;
                     }
                     const user = JSON.parse(userString);

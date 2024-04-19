@@ -143,7 +143,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
     const handleCloseModalCambiaStato = () => setModalCambiaStato(false);
 
 
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(sessionStorage.getItem('user'));
     const token = user?.token;
 
     const headers = {
@@ -328,7 +328,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
 
 
     const userHasRole = (roleToCheck) => {
-        const userString = localStorage.getItem('user');
+        const userString = sessionStorage.getItem('user');
         if (!userString) {
             return false;
         }

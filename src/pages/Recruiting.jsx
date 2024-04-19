@@ -50,7 +50,7 @@ const Recruiting = () => {
   const [ loading,                    setLoading              ] = useState(false);
   const [ righeTot,                   setRigheTot             ] = useState(0);
   const [ filtri,                     setFiltri               ] = useState(() => {
-    const filtriSalvati = localStorage.getItem('filtriRicercaRecruiting');
+    const filtriSalvati = sessionStorage.getItem('filtriRicercaRecruiting');
     return filtriSalvati ? JSON.parse(filtriSalvati) : {
     nome: null,
     cognome: null,
@@ -67,7 +67,7 @@ const quantita = 10;
 
 
   
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(sessionStorage.getItem('user'));
   const token = user?.token;
 
   const headers = {
@@ -145,7 +145,7 @@ const quantita = 10;
 
 
     useEffect(() => {
-      const filtriSalvati = localStorage.getItem('filtriRicercaRecruiting');
+      const filtriSalvati = sessionStorage.getItem('filtriRicercaRecruiting');
       if (filtriSalvati) {
       const filtriParsed = JSON.parse(filtriSalvati);
       setFiltri(filtriParsed);
@@ -270,7 +270,7 @@ const quantita = 10;
 
 
 useEffect(() => {
-  localStorage.setItem('filtriRicercaRecruiting', JSON.stringify(filtri));
+  sessionStorage.setItem('filtriRicercaRecruiting', JSON.stringify(filtri));
 }, [filtri]);
 
 
@@ -403,7 +403,7 @@ const handleReset = () => {
         tipologia:null,
         stato: null
     });
-    localStorage.removeItem("RicercheRecruiting");
+    sessionStorage.removeItem("RicercheRecruiting");
     setPagina(0);
 
     fetchData();

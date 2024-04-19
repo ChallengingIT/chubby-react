@@ -39,7 +39,7 @@ const AziendeListaNeedCard = () => {
     const [ statoOptions,                   setStatoOptions             ] = useState([]);
     const [ keyPeopleOptions,               setKeyPeopleOptions         ] = useState([]);
     const [ filtri,                         setFiltri                   ] = useState(() => {
-        const filtriSalvati = localStorage.getItem('filtriRicercaListaNeed');
+        const filtriSalvati = sessionStorage.getItem('filtriRicercaListaNeed');
         return filtriSalvati ? JSON.parse(filtriSalvati) : {
         owner: '',
         tipologia: '',
@@ -57,7 +57,7 @@ const AziendeListaNeedCard = () => {
     const quantita = 10;
 
 
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(sessionStorage.getItem('user'));
     const token = user?.token;
 
     const headers = {
@@ -124,7 +124,7 @@ const AziendeListaNeedCard = () => {
     };
 
     useEffect(() => {
-        const filtriSalvati = localStorage.getItem('filtriRicercaListaNeed');
+        const filtriSalvati = sessionStorage.getItem('filtriRicercaListaNeed');
         if(filtriSalvati) {
             setFiltri(JSON.parse(filtriSalvati));
             handleRicerche();
@@ -223,7 +223,7 @@ const AziendeListaNeedCard = () => {
     }, [filtri.tipologia, filtri.stato, filtri.owner, filtri.keyPeople]);
 
     useEffect(() => {
-        localStorage.setItem('filtriRicercaListaNeed', JSON.stringify(filtri));
+        sessionStorage.setItem('filtriRicercaListaNeed', JSON.stringify(filtri));
       }, [filtri]);
 
 

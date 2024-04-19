@@ -25,7 +25,7 @@ import dayjs from 'dayjs';
 function EmailModal({ open, handleClose }) {
 
 
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(sessionStorage.getItem("user"));
     const token = user?.token;
   
     const headers = {

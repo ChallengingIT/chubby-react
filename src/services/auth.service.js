@@ -16,7 +16,7 @@ class AuthService {
       })
       .then(response => {
         if (response.data) {
-          localStorage.setItem("user", JSON.stringify(response.data));
+          sessionStorage.setItem("user", JSON.stringify(response.data));
         } else {
           console.log("login fallito!");
         }
@@ -27,7 +27,7 @@ class AuthService {
 
   logout() {
     
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(sessionStorage.getItem("user"));
     const token = user?.token;
 
     const config = {
@@ -40,7 +40,7 @@ class AuthService {
     .post(API_LOGOUT, {}, config)
     .then(response => {
       if (response.data) {
-        localStorage.removeItem("user");
+        sessionStorage.removeItem("user");
         
         
       }
@@ -68,7 +68,7 @@ class AuthService {
   }
 
   getCurrentUser() {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(sessionStorage.getItem('user'));
     return user;
   }
   

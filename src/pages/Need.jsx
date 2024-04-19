@@ -28,7 +28,7 @@ import {
         const [ statoOptions,                   setStatoOptions             ] = useState([]);
         const [ aziendaOptions,                 setAziendaOptions           ] = useState([]);
         const [ filtri,                         setFiltri                   ] = useState(() => {
-            const filtriSalvati = localStorage.getItem('filtriRicercaNeed');
+            const filtriSalvati = sessionStorage.getItem('filtriRicercaNeed');
             return filtriSalvati ? JSON.parse(filtriSalvati) : {
             descrizione: null,
             tipologia: null,
@@ -45,7 +45,7 @@ import {
 
 
 
-        const user = JSON.parse(localStorage.getItem('user'));
+        const user = JSON.parse(sessionStorage.getItem('user'));
         const token = user?.token;
 
         const headers = {
@@ -119,7 +119,7 @@ import {
 
 
         // useEffect(() => {
-        //     const filtriSalvati = localStorage.getItem('filtriRicercaNeed');
+        //     const filtriSalvati = sessionStorage.getItem('filtriRicercaNeed');
         //     if(filtriSalvati) {
         //         setFiltri(JSON.parse(filtriSalvati));
         //         handleRicerche();
@@ -130,7 +130,7 @@ import {
         // }, []);
 
             useEffect(() => {
-                const filtriSalvati = localStorage.getItem('filtriRicercaNeed');
+                const filtriSalvati = sessionStorage.getItem('filtriRicercaNeed');
                 if (filtriSalvati) {
                 const filtriParsed = JSON.parse(filtriSalvati);
                 setFiltri(filtriParsed);
@@ -298,7 +298,7 @@ const handleFilterChange = (name) => (event) => {
         }, [filtri.tipologia, filtri.stato, filtri.owner, filtri.azienda, filtri.keypeople]);
 
         useEffect(() => {
-            localStorage.setItem('filtriRicercaNeed', JSON.stringify(filtri));
+            sessionStorage.setItem('filtriRicercaNeed', JSON.stringify(filtri));
         }, [filtri]);
         
 

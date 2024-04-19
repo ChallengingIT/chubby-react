@@ -47,7 +47,7 @@ function Sidebar() {
 
 
     const userHasRole = (roleToCheck) => {
-        const userString = localStorage.getItem('user');
+        const userString = sessionStorage.getItem('user');
         if (!userString) {
             return false;
         }
@@ -67,7 +67,7 @@ function Sidebar() {
     };
 
     const handleLogout = () => {
-        localStorage.clear();
+        sessionStorage.clear();
         navigate('/login', { replace: true });
         closeLogoutPopup();
     };
@@ -113,7 +113,7 @@ function Sidebar() {
     };
 
     const ruolo = () => {
-        const userString = localStorage.getItem('user');
+        const userString = sessionStorage.getItem('user');
             if (userString) {
             const userObj = JSON.parse(userString);
             const rolesArray = userObj.roles;
@@ -135,7 +135,7 @@ function Sidebar() {
 
 
     const nome = () => {
-        const userString = localStorage.getItem('user');
+        const userString = sessionStorage.getItem('user');
         if(userString) {
             const userObj = JSON.parse(userString);
             return userObj.nome;
@@ -145,7 +145,7 @@ function Sidebar() {
     };
 
     const cognome = () => {
-        const userString = localStorage.getItem('user');
+        const userString = sessionStorage.getItem('user');
         if(userString) {
             const userObj = JSON.parse(userString);
             return userObj.cognome;
