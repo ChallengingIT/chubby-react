@@ -39,7 +39,7 @@ const SignupComponent
 
     useEffect(() => {
         const handleBeforeUnload = (e) => {
-            localStorage.removeItem("user");
+            sessionStorage.removeItem("user");
     };
     window.addEventListener('beforeunload', handleBeforeUnload);
     return () => {
@@ -57,10 +57,10 @@ const [ showPassword,       setShowPassword       ] = useState(false);
 
 
 useEffect(() => {
-    const lastRegisteredUsername = localStorage.getItem("lastRegisteredUsername");
+    const lastRegisteredUsername = sessionStorage.getItem("lastRegisteredUsername");
     if (lastRegisteredUsername) {
         setUsername(lastRegisteredUsername);
-        localStorage.removeItem("lastRegisteredUsername");
+        sessionStorage.removeItem("lastRegisteredUsername");
     }
 }, []);
 
@@ -71,8 +71,8 @@ useEffect(() => {
 //     try {
 //         const response = await authService.login(username, password);
 //         if (response && response.token) {
-//             localStorage.setItem("token", response.token);
-//             localStorage.setItem("user", JSON.stringify(response));
+//             sessionStorage.setItem("token", response.token);
+//             sessionStorage.setItem("user", JSON.stringify(response));
 //             eventBus.dispatch("loginSuccess");
 //             const userRole = response.roles[0];
 

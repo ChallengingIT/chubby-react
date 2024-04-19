@@ -58,7 +58,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
 
 
 
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(sessionStorage.getItem('user'));
     const token = user?.token;
 
     const headers = {
@@ -562,7 +562,10 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
                                             },
                                             '&:hover .MuiFilledInput-root::before': {
                                                 borderBottom: 'none', 
-                                            } 
+                                            },
+                                            '& .MuiFormLabel-root.Mui-focused': {
+                                                color: '#00B400',
+                                            }, 
                                         }}  
                                     />
                             }

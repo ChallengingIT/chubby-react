@@ -143,7 +143,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
     const handleCloseModalCambiaStato = () => setModalCambiaStato(false);
 
 
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(sessionStorage.getItem('user'));
     const token = user?.token;
 
     const headers = {
@@ -328,7 +328,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
 
 
     const userHasRole = (roleToCheck) => {
-        const userString = localStorage.getItem('user');
+        const userString = sessionStorage.getItem('user');
         if (!userString) {
             return false;
         }
@@ -791,7 +791,10 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                                         },
                                         '&:hover .MuiFilledInput-root::before': {
                                             borderBottom: 'none', 
-                                        } 
+                                        },
+                                        '& .MuiFormLabel-root.Mui-focused': {
+                                            color: '#00B400',
+                                        }, 
                                     }}  
                                     />}
                                 />
@@ -821,7 +824,10 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                                 },
                                 '&:hover .MuiFilledInput-root::before': {
                                     borderBottom: 'none', 
-                                } 
+                                },
+                                '& .MuiFormLabel-root.Mui-focused': {
+                                    color: '#00B400',
+                                },
                                 }} 
                             InputLabelProps={{
                                 shrink: true, 
@@ -852,7 +858,10 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                                 },
                                 '&:hover .MuiFilledInput-root::before': {
                                     borderBottom: 'none', 
-                                } 
+                                },
+                                '& .MuiFormLabel-root.Mui-focused': {
+                                    color: '#00B400',
+                                }, 
                                 }} 
                             onChange={(event) => handleValueChange('note', event.target.value)}
                             />
@@ -997,7 +1006,10 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                                             },
                                             '&:hover .MuiFilledInput-root::before': {
                                                 borderBottom: 'none', 
-                                            } 
+                                            },
+                                            '& .MuiFormLabel-root.Mui-focused': {
+                                                color: '#00B400',
+                                            },
                                         }}  
                                     />
                             }

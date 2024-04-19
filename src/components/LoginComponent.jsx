@@ -38,7 +38,7 @@ const LoginComponent
 
     useEffect(() => {
         const handleBeforeUnload = (e) => {
-            localStorage.removeItem("user");
+            sessionStorage.removeItem("user");
     };
     window.addEventListener('beforeunload', handleBeforeUnload);
     return () => {
@@ -67,10 +67,10 @@ const flipStyles = {
 };
 
 useEffect(() => {
-    const lastRegisteredUsername = localStorage.getItem("lastRegisteredUsername");
+    const lastRegisteredUsername = sessionStorage.getItem("lastRegisteredUsername");
     if (lastRegisteredUsername) {
         setUsername(lastRegisteredUsername);
-        localStorage.removeItem("lastRegisteredUsername");
+        sessionStorage.removeItem("lastRegisteredUsername");
     }
 }, []);
 
@@ -81,8 +81,8 @@ const handleLogin = async (e) => {
     try {
         const response = await authService.login(username, password);
         if (response && response.token) {
-            localStorage.setItem("token", response.token);
-            localStorage.setItem("user", JSON.stringify(response));
+            sessionStorage.setItem("token", response.token);
+            sessionStorage.setItem("user", JSON.stringify(response));
             eventBus.dispatch("loginSuccess");
             const userRole = response.roles[0];
 
@@ -166,7 +166,16 @@ const handleLogin = async (e) => {
                         setUsername(e.target.value);
                         setLoginError(errors => ({...errors, username: false }));
                     }}
-                    sx={{ mb: 4 }}
+                    sx={{  mb: 4,
+                        '& .MuiFormLabel-root.Mui-focused': {
+                            color: '#00B400',
+                        },
+                        '& .MuiOutlinedInput-root': {
+                            '&.Mui-focused fieldset': {
+                                borderColor: '#00B400', 
+                            },
+                        },
+                    }}
                     />
 
                     <Typography variant="h6" component="h2" sx={{ alignSelf: 'flex-start', fontSize: '1em' }}>Enter your password</Typography>
@@ -200,7 +209,16 @@ const handleLogin = async (e) => {
                             </InputAdornment>
                                 ),
                             }}
-                    sx={{  mb: 2 }}
+                    sx={{  mb: 2,
+                        '& .MuiFormLabel-root.Mui-focused': {
+                            color: '#00B400',
+                        },
+                        '& .MuiOutlinedInput-root': {
+                            '&.Mui-focused fieldset': {
+                                borderColor: '#00B400', 
+                            },
+                        },
+                    }}
                     />
                 <Button
                 color="primary"

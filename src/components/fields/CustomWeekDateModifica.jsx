@@ -49,6 +49,9 @@ function CustomWeekDateModifica({ name, label, type, onChange, values, initialVa
       color: 'black', 
       cursor: 'not-allowed', 
     },
+    '& .MuiFormLabel-root.Mui-focused': {
+      color: '#00B400',
+  },
   }}
 />
 

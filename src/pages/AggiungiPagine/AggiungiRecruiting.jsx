@@ -19,7 +19,7 @@ const [ livelloScolasticoOptions, setLivelloScolasticoOptions ] = useState([]);
 const [ alert,           setAlert          ] = useState({ open: false, message: '' });
 
 
-const user = JSON.parse(localStorage.getItem("user"));
+const user = JSON.parse(sessionStorage.getItem("user"));
 const token = user?.token;
 const headers = {
     Authorization: `Bearer ${token}`

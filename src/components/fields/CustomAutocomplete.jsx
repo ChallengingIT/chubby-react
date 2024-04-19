@@ -51,6 +51,9 @@ function CustomAutocomplete({ name, label, options, value, onChange, disabled })
             color: '#a09f9f', 
             cursor: 'not-allowed', 
           },
+          '& .MuiFormLabel-root.Mui-focused': {
+            color: '#00B400',
+        },
           }}
         />
       }

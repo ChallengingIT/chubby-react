@@ -6,8 +6,8 @@ import { DataGrid } from '@mui/x-data-grid/DataGrid';
 
 const Tabella = ({ data, columns, title, getRowId, pagina, quantita, onPageChange, righeTot }) => {
 
-    // const [ rowPerPage, setRowsPerPage ] = useState( parseInt(localStorage.getItem("rowsPerPage") || "25", 10));
-    // const [ page, setPage ] = useState( parseInt(localStorage.getItem("currentPage" || "0", 10)));
+    // const [ rowPerPage, setRowsPerPage ] = useState( parseInt(sessionStorage.getItem("rowsPerPage") || "25", 10));
+    // const [ page, setPage ] = useState( parseInt(sessionStorage.getItem("currentPage" || "0", 10)));
     const [ loading, setLoading] = useState(false);
     const [ showNoDataMessage, setShowNoDataMessage ] = useState(false);
 

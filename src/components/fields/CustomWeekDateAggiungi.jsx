@@ -42,7 +42,10 @@ function CustomWeekDateAggiungi({ name, label, type, onChange, values }) {
     },
     '& .MuiInputLabel-filled.MuiInputLabel-shrink': { 
         transform: 'translate(12px, 10px) scale(0.75)',
-    }
+    },
+    '& .MuiFormLabel-root.Mui-focused': {
+      color: '#00B400',
+  },
   }}
 />
 

@@ -14,8 +14,19 @@ const CustomMultipleSelectAggiunta = ({ name, label, onChange, skillsOptions }) 
 
 
     return (
-        <FormControl fullWidth>
-            <InputLabel sx={{ ml: 2, mt: 2}}>{label}</InputLabel>
+        <FormControl fullWidth variant='filled'
+        >
+            <InputLabel 
+              sx={{ 
+                ml: 2, 
+                mt: 2,
+                '&.Mui-focused': {
+                  color: '#00B400', 
+                },
+              }}
+            >
+              {label}
+            </InputLabel>
             <Select
                 multiple
                 name={name}
@@ -27,35 +38,38 @@ const CustomMultipleSelectAggiunta = ({ name, label, onChange, skillsOptions }) 
                     width: "100%",
                     textAlign: "left",
                     borderRadius: '20px', 
-                    backgroundColor: '#EDEDED', 
+                    backgroundColor: '#EDEDED',
                     '& .MuiFilledInput-root': {
                         backgroundColor: 'transparent',
+                        '&:after': {
+                            borderBottomColor: '#00B400', 
+                        },
+                        '&:before': {
+                            borderBottom: 'none',
+                        },
+                        '&:hover:before': {
+                            borderBottom: 'none',
+                        },
                     },
-                    '& .MuiFilledInput-underline:after': {
-                        borderBottomColor: 'transparent',
+                    '& .MuiInputLabel-root.Mui-focused': {
+                        color: '#00B400', 
                     },
-                
-                        '& .MuiInputBase-root.MuiFilledInput-root.MuiSelect-root:before': {
-                          borderBottom: 'none !important',
-                        },
-                        '& .MuiInputBase-root.MuiFilledInput-root.MuiSelect-root:after': {
-                          borderBottom: 'none !important',
-                        },
-                        '& .MuiInputBase-root.MuiFilledInput-root.MuiSelect-root:hover:before': {
-                          borderBottom: 'none !important',
-                        },
-                        // Verifica se ci sono altri stati su cui devi agire
-                      
-                      
-                    
-                    }}               
-                    renderValue={(selected) =>
+                }}               
+                renderValue={(selected) =>
                     selected.map((skillId) => skillsOptions.find(option => option.value === skillId)?.label || "").join(", ")
                 }
             >
                 {skillsOptions.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
-                        <Checkbox checked={selectedSkills.indexOf(option.value) > -1} />
+                        <Checkbox 
+                          checked={selectedSkills.indexOf(option.value) > -1}
+                          sx={{
+                              color: '#00B400', 
+                              '&.Mui-checked': {
+                                  color: '#00B400', 
+                              },
+                          }}
+                        />
                         <ListItemText primary={option.label} />
                     </MenuItem>
                 ))}

@@ -37,7 +37,10 @@ function CustomNoteAggiungi({ name, label, type, onChange, values }) {
     },
     '&:hover .MuiFilledInput-root::before': {
         borderBottom: 'none', 
-    }
+    },
+    '& .MuiFormLabel-root.Mui-focused': {
+      color: '#00B400',
+  },
 
         }}
     />

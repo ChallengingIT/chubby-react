@@ -4,7 +4,7 @@ import axios                              from "axios";
 
 
 const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalRecruiting, initialEmail}) => {
-  const savedSearchTerms = JSON.parse(localStorage.getItem("ricercaRecruiting")) || {
+  const savedSearchTerms = JSON.parse(sessionStorage.getItem("ricercaRecruiting")) || {
     nome: '',
     cognome: '',
     email: '',
@@ -33,7 +33,7 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
     handleSearch(); 
   };
 
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(sessionStorage.getItem("user"));
   const token = user?.token;
 
 
@@ -94,7 +94,7 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
     };
   
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
+      const user = JSON.parse(sessionStorage.getItem("user"));
       const token = user?.token;
   
       const response = await axios.post("http://89.46.196.60:8443/staffing/react/mod/ricerca",{ headers: headers, params: filtriDaInviare });
@@ -124,7 +124,7 @@ const RecruitingSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Orig
     onSearchTextChange("");
     onReset();
     setFilteredData([]);
-    localStorage.removeItem("ricercaRecruiting");
+    sessionStorage.removeItem("ricercaRecruiting");
 
   };
 

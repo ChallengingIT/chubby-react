@@ -7,13 +7,10 @@ import PrivateRoute                                                   from './co
 import Aziende                                                         from './pages/Aziende.jsx';
 import Need                                                            from './pages/Need.jsx';
 import Recruiting                                                      from './pages/Recruiting.jsx';
-import AggiungiNeed                                                    from './pages/AggiungiPagine/AggiungiNeed';
-import ModificaNeed                                                    from './pages/ModificaPagine/ModificaNeed.jsx';
 import DettaglioNeed                                                   from './pages/DettaglioPagine/DettaglioNeed.jsx';
 import Layout                                                          from './components/Layout.jsx';
 import LoginPage                                                       from './pages/LoginPage.jsx';
 import IntervisteList                                                  from './pages/IntervisteList.jsx';
-import AggiungiNeedID                                                  from './pages/AggiungiPagine/AggiungiNeedID.jsx';
 import Keypeople                                                       from './pages/Keypeople.jsx';
 import Hiring                                                          from './pages/Hiring.jsx';
 import NeedMatch2                                                      from './pages/NeedMatch2.jsx';
@@ -28,27 +25,27 @@ import AggiungiRecruitingGrafica                                       from './p
 import ModificaRecruitingGrafica                                       from './pages/NuoveGrafiche/ModificaRecruitingGrafica.jsx';
 import AggiungiIntervistaGrafica                                       from './pages/NuoveGrafiche/AggiungiIntervistaGrafica.jsx';
 import ModificaIntervistaGrafica                                       from './pages/NuoveGrafiche/ModificaIntervistaGrafica.jsx';
+import AggiungiNeedGrafica                                             from './pages/NuoveGrafiche/AggiungiNeedGrafica.jsx';
+import ModificaNeedGrafica                                             from './pages/NuoveGrafiche/ModificaNeedGrafica.jsx';
+import AggiungiNeedIDGragica                                           from './pages/NuoveGrafiche/AggiungiNeedIDGrafica.jsx';
 import DashboardProva from './pages/DashboardProva.jsx';
-import AggiungiNeedGrafica from './pages/NuoveGrafiche/AggiungiNeedGrafica.jsx';
-import ModificaNeedGrafica from './pages/NuoveGrafiche/ModificaNeedGrafica.jsx';
-import AggiungiNeedIDGragica from './pages/NuoveGrafiche/AggiungiNeedIDGrafica.jsx';
 
 
 
 const App = () => {
 
 
-useEffect(() => {
-  const handleBeforeUnload = () => {
-    localStorage.clear();
-  };
+// useEffect(() => {
+//   const handleBeforeUnload = () => {
+//     sessionStorage.clear();
+//   };
 
-  window.addEventListener('beforeunload', handleBeforeUnload);
+//   window.addEventListener('beforeunload', handleBeforeUnload);
 
-  return () => {
-    window.removeEventListener('beforeunload', handleBeforeUnload);
-  };
-}, []);
+//   return () => {
+//     window.removeEventListener('beforeunload', handleBeforeUnload);
+//   };
+// }, []);
 
 
 

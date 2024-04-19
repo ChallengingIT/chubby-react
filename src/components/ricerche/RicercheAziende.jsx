@@ -31,7 +31,7 @@ function RicercheAziende({ filtri, onFilterChange, onReset, tipologiaOptions, st
 
 
     const isAdminRole = () => {
-        const userString = localStorage.getItem('user');
+        const userString = sessionStorage.getItem('user');
         if (userString) {
             const userObj = JSON.parse(userString);
             return userObj.roles.includes('ROLE_ADMIN');
@@ -205,7 +205,29 @@ function RicercheAziende({ filtri, onFilterChange, onReset, tipologiaOptions, st
                 onChange={(event, newValue) => {
                     onFilterChange('tipologia')({ target: { value: newValue?.value || null } });
                 }}
-                renderInput={(params) => <TextField {...params} label="Tipologia" />}
+                renderInput={(params) => <TextField {...params} label="Tipologia" 
+                variant='filled'
+                sx={{
+                    textAlign: "left",
+                    borderRadius: '20px', 
+                    backgroundColor: '#EDEDED', 
+                    '& .MuiFilledInput-root': {
+                        backgroundColor: 'transparent',
+                    },
+                    '& .MuiFilledInput-underline:after': {
+                        borderBottomColor: 'transparent',
+                    },
+                    '& .MuiFilledInput-root::before': {
+                        borderBottom: 'none', 
+                    },
+                    '&:hover .MuiFilledInput-root::before': {
+                        borderBottom: 'none', 
+                    },
+                    '& .MuiFormLabel-root.Mui-focused': {
+                        color: '#00B400',
+                    },
+                }} 
+                />}
             />
 
 
@@ -245,7 +267,29 @@ function RicercheAziende({ filtri, onFilterChange, onReset, tipologiaOptions, st
                                 onChange={(event, newValue) => {
                                     onFilterChange('ida')({ target: { value: newValue?.value || null } });
                                 }}
-                                renderInput={(params) => <TextField {...params} label="IDA" />}
+                                renderInput={(params) => <TextField {...params} label="IDA"
+                                variant='filled'
+                                sx={{
+                                    textAlign: "left",
+                                    borderRadius: '20px', 
+                                    backgroundColor: '#EDEDED', 
+                                    '& .MuiFilledInput-root': {
+                                        backgroundColor: 'transparent',
+                                    },
+                                    '& .MuiFilledInput-underline:after': {
+                                        borderBottomColor: 'transparent',
+                                    },
+                                    '& .MuiFilledInput-root::before': {
+                                        borderBottom: 'none', 
+                                    },
+                                    '&:hover .MuiFilledInput-root::before': {
+                                        borderBottom: 'none', 
+                                    },
+                                    '& .MuiFormLabel-root.Mui-focused': {
+                                        color: '#00B400',
+                                    },
+                                }} 
+                                />}
                             />
                             </FormControl>
     
@@ -273,7 +317,29 @@ function RicercheAziende({ filtri, onFilterChange, onReset, tipologiaOptions, st
                                 onChange={(event, newValue) => {
                                     onFilterChange('owner')({ target: { value: newValue?.value || null } });
                                 }}
-                                renderInput={(params) => <TextField {...params} label="Owner" />}
+                                renderInput={(params) => <TextField {...params} label="Owner"
+                                variant='filled'
+                                sx={{
+                                    textAlign: "left",
+                                    borderRadius: '20px', 
+                                    backgroundColor: '#EDEDED', 
+                                    '& .MuiFilledInput-root': {
+                                        backgroundColor: 'transparent',
+                                    },
+                                    '& .MuiFilledInput-underline:after': {
+                                        borderBottomColor: 'transparent',
+                                    },
+                                    '& .MuiFilledInput-root::before': {
+                                        borderBottom: 'none', 
+                                    },
+                                    '&:hover .MuiFilledInput-root::before': {
+                                        borderBottom: 'none', 
+                                    },
+                                    '& .MuiFormLabel-root.Mui-focused': {
+                                        color: '#00B400',
+                                    },
+                                }} 
+                                />}
                             />
                             </FormControl>
                             )}

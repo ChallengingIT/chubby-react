@@ -7,6 +7,8 @@ import CustomAutocomplete                                                       
 import CustomTextFieldModifica                                                                                  from '../../components/fields/CustomTextFieldModifica';
 import CustomImgFieldModifica                                                                                   from '../../components/fields/CustomImgFieldModifica';
 import CustomNoteModifica from '../../components/fields/CustomNoteModifica';
+import CustomDatePickerModifica                                                                                 from '../../components/fields/CustomDatePickerModifica';
+
 
 
 const ModificaAziendaGrafica = () => {
@@ -34,7 +36,7 @@ const ModificaAziendaGrafica = () => {
 
 
 
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(sessionStorage.getItem("user"));
     const token = user?.token;
 
     const headers = {
@@ -209,9 +211,9 @@ const ModificaAziendaGrafica = () => {
                         }
                     });
         
-                    const userString = localStorage.getItem("user");
+                    const userString = sessionStorage.getItem("user");
                     if (!userString) {
-                        console.error("Nessun utente o token trovato in localStorage");
+                        console.error("Nessun utente o token trovato in sessionStorage");
                         return;
                     }
                     const user = JSON.parse(userString);
@@ -282,6 +284,7 @@ const ModificaAziendaGrafica = () => {
             { label: "Pec",                             name: "pec",                      type: "text"                             },
             { label: "Codice Destinatario",             name: "codiceDestinatario",       type: "text"                             },
             { label: "Sito Web",                        name: "sito",                     type: "text"                             },
+            { label: 'Scadenza Contratto',              name: 'dataScadenzaContratto',    type: 'date'                             },
             { label: 'Note',                            name: 'note',                     type: 'note'                             },
     
     
@@ -330,6 +333,7 @@ const ModificaAziendaGrafica = () => {
             denominazione:                datiModifica.denominazione                   || null,
             // email:                        datiModifica.email                           || null,
             pi:                           datiModifica.pi                              || null,
+            dataScadenzaContratto:        datiModifica.dataScadenzaContratto           || null,
             cf:                           datiModifica.cf                              || null,
             citta:                        datiModifica.citta                           || null,
             cap:                          datiModifica.cap                             || null,
@@ -452,6 +456,19 @@ const ModificaAziendaGrafica = () => {
                             initialValue={initialValue}
                         />
                 );
+
+                case 'date':
+                    return (
+                        <CustomDatePickerModifica
+                        name={field.name}
+                        label={field.label}
+                        type={field.type}
+                        values={values}
+                        onChange={handleChange}
+                        initialValues={initialValues}
+
+                        />
+                    )
 
 
                 case 'note':

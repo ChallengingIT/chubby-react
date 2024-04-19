@@ -13,7 +13,7 @@ import itLocale                             from 'date-fns/locale/it';
 
 const ListaNeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, OriginalListaNeed}) => {
 
-  const savedSearchTerms = JSON.parse(localStorage.getItem("ricercaListaNeed")) || {
+  const savedSearchTerms = JSON.parse(sessionStorage.getItem("ricercaListaNeed")) || {
     owner: '',
     priorita: '',
     week: '',
@@ -43,7 +43,7 @@ const ListaNeedSearchBox = ({ data, onSearch, onReset, onSearchTextChange, Origi
   const [ filteredData,             setFilteredData             ] = useState([]);
 
 
-  const token = localStorage.getItem("token"); 
+  const token = sessionStorage.getItem("token"); 
 
 const headers = {
   Authorization: `Bearer ${token}`,
@@ -107,7 +107,7 @@ const handleKeyDown = (e) => {
         String(item[key]).toLowerCase().includes(String(searchTerm[key]).toLowerCase())
       )
     );
-    localStorage.setItem("ricercaListaNeed", JSON.stringify(searchTerm));
+    sessionStorage.setItem("ricercaListaNeed", JSON.stringify(searchTerm));
 
     onSearch(filteredData);
     setFilteredData(filteredData);
@@ -129,7 +129,7 @@ const handleKeyDown = (e) => {
     onSearchTextChange("");
     onReset();
     setFilteredData([]);
-    localStorage.removeItem("ricercaListaNeed");
+    sessionStorage.removeItem("ricercaListaNeed");
 
   };
 

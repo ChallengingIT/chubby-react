@@ -25,7 +25,7 @@ import dayjs from 'dayjs';
 function EmailModal({ open, handleClose }) {
 
 
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(sessionStorage.getItem("user"));
     const token = user?.token;
   
     const headers = {
@@ -120,7 +120,10 @@ const onClose = () => {
             },
             '&:hover .MuiFilledInput-root::before': {
                 borderBottom: 'none', 
-            } 
+            },
+            '& .MuiFormLabel-root.Mui-focused': {
+              color: '#00B400',
+          },
             }} 
         />
         <Typography variant="h6" sx={{ mb: 1, mt: 0.3, ml: 1, color: '#666565', fontSize: '1em'}}>* Inserire i destinatari separati da " ; "</Typography>
@@ -151,7 +154,10 @@ const onClose = () => {
             },
             '&:hover .MuiFilledInput-root::before': {
                 borderBottom: 'none', 
-            } 
+            },
+            '& .MuiFormLabel-root.Mui-focused': {
+              color: '#00B400',
+          },
             }} 
         />
 
@@ -182,7 +188,10 @@ const onClose = () => {
                     },
                     '&:hover .MuiFilledInput-root::before': {
                         borderBottom: 'none', 
-                    } 
+                    },
+                    '& .MuiFormLabel-root.Mui-focused': {
+                      color: '#00B400',
+                  }, 
                     }}             />
             <Box sx={{ display: 'flex', justifyContent: 'center'}}>
         <Button onClick={handleSubmitEmail} variant="contained" sx={{ borderRadius: '5px', backgroundColor: '#00B401', '&:hover': { backgroundColor: '#00B401', transform: 'scale(1.1)'}}}>

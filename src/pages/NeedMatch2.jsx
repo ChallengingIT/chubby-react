@@ -33,7 +33,7 @@ const NeedMatch2 = () => {
     const [ tipologiaOptions,           setTipologiaOptions          ] = useState([]);
     const [ openFiltri,                 setOpenFiltri               ] = useState(false);
     const [ filtri,                     setFiltri                   ] = useState(() => {
-        const filtriSalvati = localStorage.getItem('filtriRicercaNeedMatch');
+        const filtriSalvati = sessionStorage.getItem('filtriRicercaNeedMatch');
         return filtriSalvati ? JSON.parse(filtriSalvati) : {
         nome: null,
         cognome: null,
@@ -63,7 +63,7 @@ const NeedMatch2 = () => {
     const quantita = 10;
 
 
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(sessionStorage.getItem("user"));
     const token = user?.token;
 
     const headers = {
@@ -202,7 +202,7 @@ const NeedMatch2 = () => {
 
 
                 // useEffect(() => {
-                //     const filtriSalvati = localStorage.getItem('filtriRicercaNeedMatch');
+                //     const filtriSalvati = sessionStorage.getItem('filtriRicercaNeedMatch');
                 //     if(filtriSalvati) {
                 //         setFiltri(JSON.parse(filtriSalvati));
                 //         handleRicerche();
@@ -215,7 +215,7 @@ const NeedMatch2 = () => {
 
 
                 useEffect(() => {
-                    const filtriSalvati = localStorage.getItem('filtriRicercaNeedMatch');
+                    const filtriSalvati = sessionStorage.getItem('filtriRicercaNeedMatch');
                     if (filtriSalvati) {
                     const filtriParsed = JSON.parse(filtriSalvati);
                     setFiltri(filtriParsed);
@@ -370,7 +370,7 @@ const NeedMatch2 = () => {
 
 
             useEffect(() => {
-                localStorage.setItem('filtriRicercaNeedMatch', JSON.stringify(filtri));
+                sessionStorage.setItem('filtriRicercaNeedMatch', JSON.stringify(filtri));
               }, [filtri]);
             
 

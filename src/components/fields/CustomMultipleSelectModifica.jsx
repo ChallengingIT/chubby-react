@@ -17,7 +17,10 @@ const CustomMultipleSelectModifica = ({ name, label, options, value, onChange, s
 
     return (
         <FormControl fullWidth>
-            <InputLabel sx={{ ml: 2, mt: 2}}>{label}</InputLabel>
+            <InputLabel sx={{ ml: 2, mt: 2, '&.Mui-focused': {
+                  color: '#00B400', 
+                },
+                }}>{label}</InputLabel>
             <Select
                 multiple
                 name={name}
@@ -29,27 +32,37 @@ const CustomMultipleSelectModifica = ({ name, label, options, value, onChange, s
                     width: "100%",
                     textAlign: "left",
                     borderRadius: '20px', 
-                    backgroundColor: '#EDEDED', 
+                    backgroundColor: '#EDEDED',
                     '& .MuiFilledInput-root': {
                         backgroundColor: 'transparent',
+                        '&:after': {
+                            borderBottomColor: '#00B400', 
+                        },
+                        '&:before': {
+                            borderBottom: 'none',
+                        },
+                        '&:hover:before': {
+                            borderBottom: 'none',
+                        },
                     },
-                    '& .MuiFilledInput-underline:after': {
-                        borderBottomColor: 'transparent',
+                    '& .MuiInputLabel-root.Mui-focused': {
+                        color: '#00B400', 
                     },
-                    '& .MuiFilledInput-root::before': {
-                        borderBottom: 'none', 
-                    },
-                    '&:hover .MuiFilledInput-root::before': {
-                        borderBottom: 'none', 
-                    }
-                    }}
+                }}          
                 renderValue={(selected) =>
                     selected.map((skillId) => skillsOptions.find(option => option.value === skillId)?.label || "").join(", ")
                 }
             >
                 {skillsOptions.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
-                    <Checkbox checked={(value || []).indexOf(option.value) > -1} />
+                    <Checkbox checked={(value || []).indexOf(option.value) > -1}
+                    sx={{
+                        color: '#00B400', 
+                        '&.Mui-checked': {
+                            color: '#00B400', 
+                        },
+                    }}
+                    />
                     <ListItemText primary={option.label} />
                 </MenuItem>
                 

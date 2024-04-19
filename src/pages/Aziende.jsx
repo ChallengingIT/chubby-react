@@ -33,7 +33,7 @@ const Aziende = () => {
       
 
     const [filtri, setFiltri] = useState(() => {
-        const filtriSalvati = localStorage.getItem('filtriRicercaAziende');
+        const filtriSalvati = sessionStorage.getItem('filtriRicercaAziende');
         if (filtriSalvati) {
           const filtriParsed = JSON.parse(filtriSalvati);
           if (filtriParsed.owner) {
@@ -60,7 +60,7 @@ const Aziende = () => {
     const quantita = 10;
 
 
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(sessionStorage.getItem('user'));
     const token = user?.token;
 
     const headers = {
@@ -70,7 +70,7 @@ const Aziende = () => {
 
     //controllo del ruolo dell'utente loggato
     const userHasRole = (roleToCheck) => {
-        const userString = localStorage.getItem('user');
+        const userString = sessionStorage.getItem('user');
         if (!userString) {
             return false;
         }
@@ -92,7 +92,7 @@ const Aziende = () => {
             quantita: 10,
         };
             if (!userHasRole('ROLE_ADMIN')) {
-                const userString = localStorage.getItem('user');
+                const userString = sessionStorage.getItem('user');
                 if (userString) {
                     const userObj = JSON.parse(userString);
                     filtriDaInviare.username = userObj.username;
@@ -143,7 +143,7 @@ const Aziende = () => {
 
 
         // useEffect(() => {
-        //     const filtriSalvati = localStorage.getItem('filtriRicercaAziende');
+        //     const filtriSalvati = sessionStorage.getItem('filtriRicercaAziende');
         //     if (filtriSalvati) {
         //         setFiltri(JSON.parse(filtriSalvati));
         //         handleRicerche();
@@ -156,7 +156,7 @@ const Aziende = () => {
 
 
         useEffect(() => {
-            const filtriSalvati = localStorage.getItem('filtriRicercaAziende');
+            const filtriSalvati = sessionStorage.getItem('filtriRicercaAziende');
             if (filtriSalvati) {
             const filtriParsed = JSON.parse(filtriSalvati);
             setFiltri(filtriParsed);
@@ -184,7 +184,7 @@ const Aziende = () => {
             // "http://89.46.196.60:8443/aziende/react/mod";
 
             if (!userHasRole('ROLE_ADMIN')) {
-                const userString = localStorage.getItem('user');
+                const userString = sessionStorage.getItem('user');
                 if (userString) {
                     const userObj = JSON.parse(userString);
                     filtri.username = userObj.username; 
@@ -230,7 +230,7 @@ const Aziende = () => {
                 };
             
                 if (!userHasRole('ROLE_ADMIN')) {
-                    const userString = localStorage.getItem('user');
+                    const userString = sessionStorage.getItem('user');
                     if (userString) {
                         const userObj = JSON.parse(userString);
                         filtriDaInviare.username = userObj.username;
@@ -307,7 +307,7 @@ const Aziende = () => {
 
 
             useEffect(() => {
-                localStorage.setItem('filtriRicercaAziende', JSON.stringify(filtri));
+                sessionStorage.setItem('filtriRicercaAziende', JSON.stringify(filtri));
             }, [filtri]);
 
 

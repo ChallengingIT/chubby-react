@@ -219,7 +219,7 @@ const AziendeCardFlip = ({valori, onDelete}) => {
 
     //controllo del ruolo dell'utente loggato
     const userHasRole = (roleToCheck) => {
-        const userString = localStorage.getItem('user');
+        const userString = sessionStorage.getItem('user');
         if (!userString) {
             return false;
         }
