@@ -166,7 +166,16 @@ const handleLogin = async (e) => {
                         setUsername(e.target.value);
                         setLoginError(errors => ({...errors, username: false }));
                     }}
-                    sx={{ mb: 4 }}
+                    sx={{  mb: 4,
+                        '& .MuiFormLabel-root.Mui-focused': {
+                            color: '#00B400',
+                        },
+                        '& .MuiOutlinedInput-root': {
+                            '&.Mui-focused fieldset': {
+                                borderColor: '#00B400', 
+                            },
+                        },
+                    }}
                     />
 
                     <Typography variant="h6" component="h2" sx={{ alignSelf: 'flex-start', fontSize: '1em' }}>Enter your password</Typography>
@@ -200,7 +209,16 @@ const handleLogin = async (e) => {
                             </InputAdornment>
                                 ),
                             }}
-                    sx={{  mb: 2 }}
+                    sx={{  mb: 2,
+                        '& .MuiFormLabel-root.Mui-focused': {
+                            color: '#00B400',
+                        },
+                        '& .MuiOutlinedInput-root': {
+                            '&.Mui-focused fieldset': {
+                                borderColor: '#00B400', 
+                            },
+                        },
+                    }}
                     />
                 <Button
                 color="primary"

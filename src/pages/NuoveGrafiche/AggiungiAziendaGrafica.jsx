@@ -7,6 +7,7 @@ import CustomAutocomplete                                                       
 import CustomTextFieldAggiungi                                                                        from '../../components/fields/CustomTextFieldAggiungi';
 import CustomNoteAggiungi                                                                             from '../../components/fields/CustomNoteAggiungi';
 import CustomImgFieldAggiunta                                                                         from '../../components/fields/CustomImgFieldAggiunta';
+import CustomDatePickerAggiungi from '../../components/fields/CustomDatePickerAggiungi';
 
 
 const AggiungiAziendaGrafica = () => {
@@ -262,6 +263,7 @@ const AggiungiAziendaGrafica = () => {
             { label: "Pec",                             name: "pec",                      type: "text"                             },
             { label: "Codice Destinatario",             name: "codiceDestinatario",       type: "text"                             },
             { label: "Sito Web",                        name: "sito",                     type: "text"                             },
+            { label: 'Scadenza Contratto',              name: 'dataScadenzaContratto',    type: 'date'                             },
             { label: 'Note',                            name: 'note',                     type: 'note'                             },
     
     
@@ -342,6 +344,17 @@ const AggiungiAziendaGrafica = () => {
                         onChange={handleChange}
                         />
                     );
+
+                    case 'date':
+                        return (
+                            <CustomDatePickerAggiungi
+                            name={field.name}
+                            label={field.label}
+                            type={field.type}
+                            values={values}
+                            onChange={handleChange}
+                            />
+                        )
 
 
                     case 'note':
