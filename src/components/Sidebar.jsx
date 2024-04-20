@@ -19,7 +19,8 @@ import {
     DialogContentText,
     Popover,
     Modal,
-    Typography
+    Typography,
+    Avatar
 } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonIcon from '@mui/icons-material/Person';
@@ -44,6 +45,17 @@ function Sidebar() {
     const [anchorEl, setAnchorEl] = useState(null); // Nuovo stato per l'ancoraggio del Popover
     const [appuntamentoModal,  setAppuntamentoModal ] = useState(false);
     const [emailModal, setEmailModal ] = useState(false);
+
+
+    //genera colori random per l'avata
+    const generateRandomColor = () => {
+        const randomColor = "#" + Math.floor(Math.random()*16777215).toString(16);
+        return randomColor;
+    };
+
+    const [avatarColor, setAvatarColor] = useState(generateRandomColor());
+
+    
 
 
     const userHasRole = (roleToCheck) => {
@@ -114,24 +126,25 @@ function Sidebar() {
 
     const ruolo = () => {
         const userString = sessionStorage.getItem('user');
-            if (userString) {
+        if (userString) {
             const userObj = JSON.parse(userString);
             const rolesArray = userObj.roles;
-            const rolesReadable = rolesArray.map(role => {
+            const rolesReadable = rolesArray.map((role, index) => {
                 switch (role) {
                     case 'ROLE_ADMIN':
-                        return 'Admin';
+                        return <span key={index}>Admin</span>;
                     case 'ROLE_BM':
-                        return 'Business Manager';
+                        return <React.Fragment key={index}>Business<br />Manager</React.Fragment>;
                     default:
-                        return 'Utente';
+                        return <span key={index}>Utente</span>;
                 }
             });
-            return rolesReadable.join(', ');
+                return rolesReadable.reduce((prev, curr, index) => index === 0 ? [curr] : [...prev, ', ', curr], []);
         } else {
             return 'Utente';
         }
     };
+    
 
 
     const nome = () => {
@@ -280,7 +293,12 @@ function Sidebar() {
                     ))}
                 </List>
                 <List sx={{ marginTop: 'auto' }}>
-                    <Typography variant="h8" sx={{ display: 'flex', justifyContent: 'center',color: '#EDEDED', textAlign: 'start', mb: 1 }}>{ruolo()}: <br /> {nome()} {cognome()}</Typography>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 1, padding: 1, mb: 2 }}>
+                <Typography variant="h6" sx={{ color: '#EDEDED', fontSize: '1em' }}>
+                    {ruolo()}:
+                </Typography>
+                <Avatar sx={{ bgcolor: avatarColor }}>{nome()[0] + cognome()[0]}</Avatar>
+            </Box>  
                     <ListItem
                         selected={activeLink === '/logout'}
                         onClick={handleLogoutClick}

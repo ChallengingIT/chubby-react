@@ -14,7 +14,7 @@ import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar'; /
 import PersonIcon from '@mui/icons-material/Person'; //stato
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, Alert, MenuItem } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, Alert, MenuItem, Stack, Pagination } from '@mui/material';
 
 
 
@@ -590,6 +590,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                 onClose={handleCloseModalDelete}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
+                
                 onClick={(event) => event.stopPropagation()}
                 sx={{
                     display: 'flex',
@@ -663,10 +664,11 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    
                 }}>
                     <Box sx={{ display:'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: '#EDEDED', overflow: 'auto'}}>
-                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', ml: 2, mt: 0.5, mb: 0.5}}>Storico delle azioni</Typography>
+                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', p: 3}}>
+                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', mt: 0.5, mb: 0.5}}>Storico delle azioni</Typography>
                             <IconButton sx={{ mr: 2, backgroundColor: 'transparent', border: 'none' }} onClick={() => setModalStorico(false)}>
                                 <CloseIcon sx={{ backgroundColor: 'transparent' }}/>
                             </IconButton>
@@ -899,8 +901,8 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                     justifyContent: 'center',
                 }}>
                     <Box sx={{ display:'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: '#EDEDED'}}>
-                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', ml: 2, mt: 0.5, mb: 0.5}}>Lista dei Need</Typography>
+                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', p: 3}}>
+                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', mt: 0.5, mb: 0.5}}>Lista dei Need</Typography>
                             <IconButton sx={{ mr: 2, backgroundColor: 'transparent', border: 'none' }} onClick={() => setModalNeed(false)}>
                                 <CloseIcon sx={{ backgroundColor: 'transparent' }}/>
                             </IconButton>
@@ -925,7 +927,15 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                    <TablePagination
+                        <Stack spacing={2} sx={{ m: 2}} >
+                        <Pagination 
+                        count={needAssociati.length}
+                        rowsPerPage={righePerPagina}
+                        page={pagina}
+                        onPageChange={(event, newPage) => handleChangePagina(newPage, valori.id)}
+                        sx={{ display: 'flex', justifyContent: 'flex-end', mt: 10}} />
+                        </Stack>
+                    {/* <TablePagination
                         // rowsPerPageOptions={[5, 10, 25]}
                         component="div"
                         count={needAssociati.length}
@@ -933,7 +943,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                         page={pagina}
                         onPageChange={(event, newPage) => handleChangePagina(newPage, valori.id)}
                         // onRowsPerPageChange={handleChangeRighePerPagina}
-                    />
+                    /> */}
                     </Box>
                 </Modal>
 
@@ -1039,7 +1049,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                 { /* SNACKBAR  */}
 
                 <Snackbar open={snackbarOpen} autoHideDuration={8000} onClose={handleCloseSnackbar}>
-                    <Alert onClose={handleCloseSnackbar} severity={snackbarType} sx={{ width: '100%' }}>
+                    <Alert variant='filled' onClose={handleCloseSnackbar} severity={snackbarType} sx={{ width: '100%' }}>
                         {snackbarMessage}
                     </Alert>
                 </Snackbar>
