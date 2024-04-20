@@ -6,9 +6,8 @@ import axios                                                                    
 import CustomAutocomplete                                                                                       from '../../components/fields/CustomAutocomplete';
 import CustomTextFieldModifica                                                                                  from '../../components/fields/CustomTextFieldModifica';
 import CustomImgFieldModifica                                                                                   from '../../components/fields/CustomImgFieldModifica';
-import CustomNoteModifica from '../../components/fields/CustomNoteModifica';
+import CustomNoteModifica                                                                                       from '../../components/fields/CustomNoteModifica';
 import CustomDatePickerModifica                                                                                 from '../../components/fields/CustomDatePickerModifica';
-
 
 
 const ModificaAziendaGrafica = () => {
@@ -48,9 +47,9 @@ const ModificaAziendaGrafica = () => {
         const fetchProvinceOptions = async () => {
         try {
             const responseProvince = await axios.get("http://localhost:8080/aziende/react/province", { headers: headers });
-            const responseOwner    = await axios.get("http://localhost:8080/aziende/react/owner", { headers: headers });
-            const responseAziende  = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
-            const responseModifica = await axios.get(`http://localhost:8080/aziende/react/${id}`, {headers: headers});
+            const responseOwner    = await axios.get("http://localhost:8080/aziende/react/owner",    { headers: headers });
+            const responseAziende  = await axios.get("http://localhost:8080/aziende/react/select",   { headers: headers });
+            const responseModifica = await axios.get(`http://localhost:8080/aziende/react/${id}`,    { headers: headers });
 
 
             if (Array.isArray(responseAziende.data)) {
@@ -90,10 +89,6 @@ const ModificaAziendaGrafica = () => {
 
         fetchProvinceOptions();
     }, []);
-
-
-    
-
 
 
     const menu = [
@@ -181,10 +176,10 @@ const ModificaAziendaGrafica = () => {
 
     const handleChange = (fieldValue) => {
         setValues(prevValues => ({
-          ...prevValues,
-          ...fieldValue
+            ...prevValues,
+            ...fieldValue
         }));
-      };
+    };
 
 
         //funzione per la chiusura dell'alert
@@ -292,14 +287,14 @@ const ModificaAziendaGrafica = () => {
             { label: "Città*",                          name: "citta",                    type: "text"                             },
             { label: "Paese",                           name: "paese",                    type: "text"                             },
             { label: "Provincia*",                      name: "provincia",                type: "select", options: provinceOptions },
-            { label: "Sede Operativa*",                  name: "sedeOperativa",            type: "text"                            },
+            { label: "Sede Operativa*",                 name: "sedeOperativa",            type: "text"                             },
             { label: "Sede Legale",                     name: "sedeLegale",               type: "text"                             },
-            { label: "CAP*",                             name: "cap",                      type: "text"                             },
+            { label: "CAP*",                            name: "cap",                      type: "text"                             },
 
 
             { type: 'titleGroups',                label: "IDA"     },
             { label: "Owner*",                          name: "idOwner",                  type: "select", options: ownerOptions    },
-            { label: "Tipologia*",                       name: "tipologia",                type: "select", options: [
+            { label: "Tipologia*",                      name: "tipologia",                type: "select", options: [
                 { value: "Cliente", label: "Cliente" },
                 { value: "Prospect", label: "Prospect" },
                 { value: "EXCLIENTE", label: "Ex Cliente" }
@@ -320,8 +315,7 @@ const ModificaAziendaGrafica = () => {
                 { value: 3, label: "3" },
             ]  },
     
-           
-    
+
             { type: "titleGroups",                label: "File"            },
             { label: 'Logo',                      name: 'logo',                     type: 'aggiungiImmagine'                             },
         ];
@@ -418,9 +412,6 @@ const ModificaAziendaGrafica = () => {
             }
         };
 
-
-
-
         //funzione per richiamare i vari campi
         const renderFields = (field) => {
             if (loading) {
@@ -483,11 +474,6 @@ const ModificaAziendaGrafica = () => {
                         />
                     );
 
-
-
-                        
-                        
-
                 case 'aggiungiImmagine': 
                 return (
                     <CustomImgFieldModifica
@@ -503,21 +489,6 @@ const ModificaAziendaGrafica = () => {
         }
         };
 
-
-        // const renderFieldsGroups = () => {
-        //     return (
-        //         <Box sx={{ ml: 15, mr: 15}}>
-        //             {groupedFields[currentPageIndex].map((fields, index) => {
-        //                 return (
-        //                     <Box key={index}>
-        //                         {renderFields(fields)}
-        //                     </Box>
-        //                 );
-        //             })}
-        //         </Box>
-        //     );
-            
-        // };
         const renderFieldsGroups = () => {
             return (
                 <Box sx={{ ml: 15, mr: 15}}>
@@ -526,14 +497,12 @@ const ModificaAziendaGrafica = () => {
                             if (field.type === 'titleGroups') {
                                 return (
                                     <Grid item xs={12} key={index}>
-                                        {/* <Typography variant="h6" sx={{fontWeight: 'bold', mb: 2}}>{field.label}</Typography> */}
                                     </Grid>
                                 );
                             } else if (field.type === 'note') {
                                 return (
                                     <Grid item xs={12} key={index}>
                                         {renderFields(field)}
-                                        {/* <Typography variant="h6" sx={{fontWeight: 'bold', mb: 2}}>{field.label}</Typography> */}
                                     </Grid>
                                 );
                             } else {
@@ -550,7 +519,7 @@ const ModificaAziendaGrafica = () => {
         };
 
 
-  return (
+return (
     <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
         <Box sx={{ display: 'flex', height: '98%', width: '100vw', flexDirection: 'row', ml: '12.5em', mt: '0.5em', mb: '0.5em', mr: '0.8em', borderRadius: '20px', overflow: 'hidden' }}>
         <Box sx={{ width: '280px', height: '98%', background: '#00B400', p:2, overflow: 'hidden', position: 'fixed', borderRadius: '20px 0px 0px 20px' }}>

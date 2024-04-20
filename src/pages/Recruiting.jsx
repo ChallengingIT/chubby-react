@@ -255,20 +255,6 @@ const quantita = 10;
   };
 
 
-  // const handleSearch = (filteredData) => {
-  //   setFilteredRecruiting(filteredData)
-  // };
-
-  // const handleReset = () => {
-  //   setSearchText('');
-  //   fetchData();
-  // };
-
-
-
-
-
-
 useEffect(() => {
   sessionStorage.setItem('filtriRicercaRecruiting', JSON.stringify(filtri));
 }, [filtri]);
@@ -282,7 +268,6 @@ const handleRicerche = async () => {
   }
 
 
-  // if (!Object.values(filtri).every(value => value === '')) {
     const filtriDaInviare = {
         nome: filtri.nome || null,
         cognome: filtri.cognome || null,
@@ -357,17 +342,6 @@ useEffect(() => {
 
 
 
-// const handleFilterChange = (name) => (event) => {
-//   const newValue = event.target.value;
-//   setFiltri({ ...filtri, [name]: newValue });
-//   // if (name === 'denominazione' && newValue === '') {
-//   //     fetchData();
-//   // } else {
-//   //     handleRicerche();
-//   // }
-// };
-
-
 const handleFilterChange = (name) => (event) => {
   const newValue = event.target.value;
   setFiltri(currentFilters => {
@@ -386,9 +360,6 @@ const handleFilterChange = (name) => (event) => {
       return newFilters;
   });
 };
-
-
-
 
 const handleOpenFiltri = () => setOpenFiltri(true);
 const handleCloseFiltri = () => setOpenFiltri(false);
@@ -454,7 +425,6 @@ const handleReset = () => {
     ),
   }, 
     { field: "rating",        headerName: "Rating",         flex: 0.6, renderCell: (params) => getSmileIcon(params), }, //fino a 1.9 è rosso, da 2 a 3 giallo, sopra 3 è verde
-    // { field: "nrating",       headerName: "N. Rating",      width: 90  },
     { field: "owner",         headerName: "Owner",         flex: 0.6, renderCell: (params) => (
         <div style={{ textAlign: "start" }}>
           {params.row.owner && params.row.owner.descrizione
@@ -506,10 +476,6 @@ const handleReset = () => {
       </Box>
     ), },
   ];
-
-
-
-
 
 
 return (

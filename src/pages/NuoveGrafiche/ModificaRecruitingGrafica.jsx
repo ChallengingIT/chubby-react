@@ -24,8 +24,8 @@ const ModificaRecruitingGrafica = () => {
     const [ alert,              setAlert                ] = useState({ open: false, message: ''});
     const [ errors,             setErrors               ] = useState({});
     const [ loading,            setLoading              ] = useState(true);  
-    const [ openDialog,           setOpenDialog         ] = useState(false);
-    const [ selectedFileId,       setSelectedFileId     ] = useState(null);  
+    const [ openDialog,         setOpenDialog           ] = useState(false);
+    const [ selectedFileId,     setSelectedFileId       ] = useState(null);  
 
     //stati per i valori
     const [ datiModifica,       setDatiModifica         ] = useState([]);
@@ -68,13 +68,8 @@ const ModificaRecruitingGrafica = () => {
             const ownerResponse               = await axios.get("http://localhost:8080/aziende/react/owner"           , { headers: headers });
             const facoltaResponse             = await axios.get("http://localhost:8080/staffing/react/facolta"        , { headers: headers });
             const livelloScolasticoResponse   = await axios.get("http://localhost:8080/staffing/react/livello"        , { headers: headers });
-            const funzioniAziendaliResponse   = await axios.get("http://localhost:8080/staffing/react/funzioni"         , { headers: headers }); 
+            const funzioniAziendaliResponse   = await axios.get("http://localhost:8080/staffing/react/funzioni"       , { headers: headers }); 
 
-
-
-            
-
-    
             if (Array.isArray(livelloScolasticoResponse.data)) {
             const livelloScolasticoOptions = livelloScolasticoResponse.data.map((livelloScolastico) => ({
                 label: livelloScolastico.descrizione,
@@ -473,13 +468,13 @@ const ModificaRecruitingGrafica = () => {
     
     
             { type: "titleGroups",                label: "Esperienza"            },
-            { label: "Anni di Esperienza",              name: "anniEsperienza",           type: "decimalNumber"                                                            },
-            { label: "Anni di Esperienza nel Ruolo*",   name: "anniEsperienzaRuolo",      type: "decimalNumber"                                                            },
-            { label: "Livello Scolastico*",             name: "idLivelloScolastico",        type: "select",               options: livelloScolasticoOptions         },
-            { label: "Facoltà",                         name: "idFacolta",                  type: "select",               options: facoltaOptions                   },
+            { label: "Anni di Esperienza",              name: "anniEsperienza",           type: "decimalNumber"                                                   },
+            { label: "Anni di Esperienza nel Ruolo*",   name: "anniEsperienzaRuolo",      type: "decimalNumber"                                                   },
+            { label: "Livello Scolastico*",             name: "idLivelloScolastico",      type: "select",               options: livelloScolasticoOptions         },
+            { label: "Facoltà",                         name: "idFacolta",                type: "select",               options: facoltaOptions                   },
     
             { type: "titleGroups",                label: "Posizione Lavorativa"            },
-            { label: "Tipologia*",                     name: "idTipo",                     type: "select",          options: tipologiaOptions                      },
+            { label: "Tipologia*",                     name: "idTipo",                   type: "select",          options: tipologiaOptions                      },
             { label: "Tipo Ricerca",                   name: "ricerca",                  type: "select",          options: [
                 { value: "C", label: "C"},
                 { value: "R", label: "R" },
@@ -495,7 +490,7 @@ const ModificaRecruitingGrafica = () => {
         { label: "Data Inserimento*",                  name: "dataUltimoContatto",         type: "date"                                                            },
         { label: "Stato*",                             name: "idStato",                    type: "select",               options: statoOptions                     },
         { label: "Owner",                              name: "idOwner",                    type: "select",               options: ownerOptions                     },
-        { label: "Skills",                             name: "idSkills",                   type: "multipleSelect",  options: skillsOptions                    },
+        { label: "Skills",                             name: "idSkills",                   type: "multipleSelect",  options: skillsOptions                         },
         { label: "RAL/Tariffa",                        name: "ral",                        type: "text"                                                            },
         { label: "Disponibilità",                      name: "disponibilita",              type: "text"                                                            },
         { label: "Note",                               name: "note",                       type: "note"                                                            },
@@ -511,7 +506,7 @@ const ModificaRecruitingGrafica = () => {
         const initialValues = {
 
             id:                                 datiModifica.id                                                                   ,
-            idTipo:                            (datiModifica.tipo && datiModifica.tipo.id)                                       || null,
+            idTipo:                            (datiModifica.tipo && datiModifica.tipo.id)                                        || null,
             ricerca:                            datiModifica.ricerca                                                              || null,
             nome:                               datiModifica.nome                                                                 || null,
             cognome:                            datiModifica.cognome                                                              || null,
@@ -522,14 +517,14 @@ const ModificaRecruitingGrafica = () => {
             citta:                              datiModifica.citta                                                                || null,
             modalita:                           datiModifica.modalita                                                             || null,
             anniEsperienzaRuolo:                datiModifica.anniEsperienzaRuolo                                                  || null,
-            idLivelloScolastico:               (datiModifica.livelloScolastico && datiModifica.livelloScolastico.id)             || null,
-            idFacolta:                         (datiModifica.facolta && datiModifica.facolta.id)                                 || null,
-            idFunzioneAziendale:               (datiModifica.tipologia?.funzione && datiModifica.tipologia.funzione?.id)             || null,
-            idTipologia:                       (datiModifica.tipologia && datiModifica.tipologia.id)                             || null,
+            idLivelloScolastico:               (datiModifica.livelloScolastico && datiModifica.livelloScolastico.id)              || null,
+            idFacolta:                         (datiModifica.facolta && datiModifica.facolta.id)                                  || null,
+            idFunzioneAziendale:               (datiModifica.tipologia?.funzione && datiModifica.tipologia.funzione?.id)          || null,
+            idTipologia:                       (datiModifica.tipologia && datiModifica.tipologia.id)                              || null,
             dataUltimoContatto:                 datiModifica.dataUltimoContatto                                                   || null,
-            idStato:                           (datiModifica.stato && datiModifica.stato.id)                                     || null,
-            idOwner:                           (datiModifica.owner && datiModifica.owner.id) || null,
-            idSkills:                           datiModifica.skills ? datiModifica.skills.map((skills) => skills.id) :               [],
+            idStato:                           (datiModifica.stato && datiModifica.stato.id)                                      || null,
+            idOwner:                           (datiModifica.owner && datiModifica.owner.id)                                      || null,
+            idSkills:                           datiModifica.skills ? datiModifica.skills.map((skills) => skills.id) :            [],
             ral:                                datiModifica.ral                                                                  || null,
             disponibilita:                      datiModifica.disponibilita                                                        || null,
             cv:                                 datiModifica.files ? datiModifica.files.find(file => file && file.tipologia && file.tipologia.descrizione === 'CV') || null : null,
@@ -752,10 +747,10 @@ const ModificaRecruitingGrafica = () => {
                                             marginBottom: "10px", 
                                             marginTop: "10px", 
                                             justifyContent:"flex-end", 
-                                            color: 'black',
+                                            color: 'white',
                                             ':hover': {
                                                 backgroundColor: '#00B400',
-                                                color: 'black',
+                                                color: 'white',
                                                 transform: 'scale(1.1)'
                                             }
                                         }}
@@ -840,10 +835,10 @@ const ModificaRecruitingGrafica = () => {
                                             marginTop: "10px", 
                                             justifyContent:"flex-end", 
                                             backgroundColor: '#00B400', 
-                                            color: 'black',
+                                            color: 'white',
                                             ':hover': {
                                                 backgroundColor: '#00B400',
-                                                color: 'black',
+                                                color: 'white',
                                                 transform: 'scale(1.1)'
         
                                             }
@@ -884,12 +879,6 @@ const ModificaRecruitingGrafica = () => {
                                     </Box>
                                 </Box>
                             );
-
-
-
-                
-
-                
                     default:
                         return null;
             }
@@ -905,14 +894,12 @@ const ModificaRecruitingGrafica = () => {
                             if (field.type === 'titleGroups') {
                                 return (
                                     <Grid item xs={12} key={index}>
-                                        {/* <Typography variant="h6" sx={{fontWeight: 'bold', mb: 2}}>{field.label}</Typography> */}
                                     </Grid>
                                 );
                             } else if (field.type === 'note') {
                                 return (
                                     <Grid item xs={12} key={index}>
                                         {renderFields(field)}
-                                        {/* <Typography variant="h6" sx={{fontWeight: 'bold', mb: 2}}>{field.label}</Typography> */}
                                     </Grid>
                                 );
                             } else {
@@ -929,7 +916,7 @@ const ModificaRecruitingGrafica = () => {
         };
 
 
-  return (
+return (
     <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
         <Box sx={{ display: 'flex', height: '98%', width: '100vw', flexDirection: 'row', ml: '12.5em', mt: '0.5em', mb: '0.5em', mr: '0.8em', borderRadius: '20px', overflow: 'hidden' }}>
         <Box sx={{ width: '280px', height: '98%', background: '#00B400', p:2, overflow: 'hidden', position: 'fixed', borderRadius: '20px 0px 0px 20px' }}>

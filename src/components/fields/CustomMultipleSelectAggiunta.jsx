@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState }                                                   from 'react';
 import { Select, FormControl, InputLabel, MenuItem, ListItemText, Checkbox } from '@mui/material';
 
 const CustomMultipleSelectAggiunta = ({ name, label, onChange, skillsOptions }) => {
@@ -10,22 +10,19 @@ const CustomMultipleSelectAggiunta = ({ name, label, onChange, skillsOptions }) 
         onChange({ [name]: value });
     };
 
-
-
-
     return (
         <FormControl fullWidth variant='filled'
         >
             <InputLabel 
-              sx={{ 
-                ml: 2, 
-                mt: 2,
-                '&.Mui-focused': {
-                  color: '#00B400', 
-                },
-              }}
+                sx={{ 
+                    ml: 2, 
+                    mt: 2,
+                    '&.Mui-focused': {
+                    color: '#00B400', 
+                    },
+                }}
             >
-              {label}
+            {label}
             </InputLabel>
             <Select
                 multiple
@@ -62,13 +59,13 @@ const CustomMultipleSelectAggiunta = ({ name, label, onChange, skillsOptions }) 
                 {skillsOptions.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
                         <Checkbox 
-                          checked={selectedSkills.indexOf(option.value) > -1}
-                          sx={{
-                              color: '#00B400', 
-                              '&.Mui-checked': {
-                                  color: '#00B400', 
-                              },
-                          }}
+                            checked={selectedSkills.indexOf(option.value) > -1}
+                                sx={{
+                                    color: '#00B400', 
+                                    '&.Mui-checked': {
+                                        color: '#00B400', 
+                                    },
+                                }}
                         />
                         <ListItemText primary={option.label} />
                     </MenuItem>

@@ -1,5 +1,5 @@
-import React from 'react';
-import { FormControl, InputLabel, Select, MenuItem, FormHelperText } from '@mui/material';
+import React                                         from 'react';
+import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
 function CustomSelectAggiungi({ name, label, options, value, onChange, disabled }) {
   const handleChange = (event) => {
@@ -48,7 +48,6 @@ function CustomSelectAggiungi({ name, label, options, value, onChange, disabled 
           </MenuItem>
         ))}
       </Select>
-      {/* Optional: Add FormHelperText here if needed for errors or other messages */}
     </FormControl>
   );
 }

@@ -1,24 +1,18 @@
 import React, { useState, useEffect }                   from 'react';
 import { useNavigate  }                                 from 'react-router-dom';
 import axios                                            from 'axios';
-import SearchIcon                                       from '@mui/icons-material/Search';
-// import BusinessCenterIcon                               from '@mui/icons-material/BusinessCenter'; //aziende
-import CloseIcon                                        from '@mui/icons-material/Close';
-import KeypeopleCard                                    from '../components/card/KeypeopleCard';
 import InfiniteScroll                                   from 'react-infinite-scroll-component';
 import RicercheKeypeople                                from '../components/ricerche/RicercheKeypeople';
+import KeypeopleCardFlip                                from '../components/card/KeypeopleCardFlip';
 
 import { 
     Box,
     Grid,
     Skeleton
     } from '@mui/material';
-import KeypeopleCardFlip from '../components/card/KeypeopleCardFlip';
 
 
 const Keypeople = () => {
-
-    const navigate = useNavigate();
 
     const [ originalKeypeople,   setOriginalKeypeople ] = useState([]);
     const [ loading,             setLoading           ] = useState(false);
@@ -51,10 +45,6 @@ const Keypeople = () => {
         Authorization: `Bearer ${token}`
     };
     
-
-
-
-
     const fetchData = async () => {
 
         const filtriDaInviare = {
@@ -108,16 +98,6 @@ const Keypeople = () => {
         }
     };
     
-    // useEffect(() => {
-    //     const filtriSalvati = sessionStorage.getItem('filtriRicercaKeypeople');
-    //     if (filtriSalvati) {
-    //         setFiltri(JSON.parse(filtriSalvati));
-    //         handleRicerche();
-    //     } else {
-    // fetchData();
-    //     }
-    // // eslint-disable-next-line
-    // }, []);
 
     useEffect(() => {
         const filtriSalvati = sessionStorage.getItem('filtriRicercaKeypeople');
@@ -251,15 +231,7 @@ const Keypeople = () => {
             return newFilters;
         });
     };
-    // const handleFilterChange = (name) => (event) => {
-    //     const newValue = event.target.value;
-    //     setFiltri({ ...filtri, [name]: newValue });
-    //     if( name === 'nome' && newValue === '') {
-    //         fetchData();
-    //     } else {
-    //         handleRicerche();
-    //     }
-    // };
+
 
     useEffect(() => {
         const { nome, ...otherFilters } = filtri;
@@ -289,13 +261,6 @@ const Keypeople = () => {
         setHasMore(true);
         await fetchData(0);
     };
-
-
-    // const statoOptions = [
-    //     { label: 'Caldo', value: '1' },
-    //     { label: 'Tiepido', value: '2' },
-    //     { label: 'Freddo', value: '3' }
-    // ];
 
 
      //funzione per cancellare l'azienda
@@ -352,15 +317,6 @@ const Keypeople = () => {
                             {/* Main Content Area */}
                 <Grid container spacing={2} sx={{ mt: 1, mb: 4}}>
                     { loading ? (
-                        // <Box
-                        // sx={{
-                        //     display: 'flex',
-                        //     justifyContent: 'center',
-                        //     alignItems: 'center',
-                        //     height: '100%'
-                        // }}>
-                        //     <CircularProgress /> 
-                        // </Box>
                         <>
                         {Array.from(new Array(quantita)).map((_, index) => (
                             <Grid item xs={12} md={6} key={index}>

@@ -1,16 +1,14 @@
 import React, { useState, useEffect }                   from 'react';
 import axios                                            from 'axios';
-import AziendeCard                                      from '../components/card/AziendeCard';
 import InfiniteScroll                                   from "react-infinite-scroll-component";
 import RicercheAziende                                  from '../components/ricerche/RicercheAziende';    
+import AziendeCardFlip                                  from '../components/card/AziendeCardFlip';
 
 import { 
     Box,
     Grid,
     Skeleton
     } from '@mui/material';
-import ProvaCardFlip from '../components/card/AziendeCardFlip';
-import AziendeCardFlip from '../components/card/AziendeCardFlip';
 
 
 const Aziende = () => {
@@ -20,45 +18,40 @@ const Aziende = () => {
 
 
     //stati ricerche
-    // const [ clienteOptions,             setClienteOptions             ] = useState([]);
     const [ ownerOptions,               setOwnerOptions               ] = useState([]);
     const [ provinceOptions,            setProvinceOptions            ] = useState([]);
-    const [ role, setRole] = useState('');
-
-
-    const getValueLabel = (value) => {
-        const option = ownerOptions.find((option) => option.value === value);
-        return option ? option.label : null;
-      };
-      
-
-    const [filtri, setFiltri] = useState(() => {
-        const filtriSalvati = sessionStorage.getItem('filtriRicercaAziende');
-        if (filtriSalvati) {
-          const filtriParsed = JSON.parse(filtriSalvati);
-          if (filtriParsed.owner) {
-            filtriParsed.ownerLabel = getValueLabel(filtriParsed.owner);
-          }
-          return filtriParsed;
-        }
-        return {
-          denominazione: null,
-          tipologia: null,
-          stato: null,
-          owner: null,
-          ida: null,
-          ownerLabel: null, 
-        };
-      });
-      
-    
 
     //stato paginazione
     const [ pagina,                 setPagina       ] = useState(0);
     const [ hasMore,                setHasMore      ] = useState(true);
-
+    
     const quantita = 10;
 
+
+        const getValueLabel = (value) => {
+            const option = ownerOptions.find((option) => option.value === value);
+            return option ? option.label : null;
+        };
+        
+
+        const [filtri, setFiltri] = useState(() => {
+            const filtriSalvati = sessionStorage.getItem('filtriRicercaAziende');
+            if (filtriSalvati) {
+            const filtriParsed = JSON.parse(filtriSalvati);
+            if (filtriParsed.owner) {
+                filtriParsed.ownerLabel = getValueLabel(filtriParsed.owner);
+            }
+            return filtriParsed;
+            }
+            return {
+                denominazione: null,
+                tipologia: null,
+                stato: null,
+                owner: null,
+                ida: null,
+                ownerLabel: null, 
+            };
+        });
 
     const user = JSON.parse(sessionStorage.getItem('user'));
     const token = user?.token;
@@ -141,20 +134,6 @@ const Aziende = () => {
             }
         };
 
-
-        // useEffect(() => {
-        //     const filtriSalvati = sessionStorage.getItem('filtriRicercaAziende');
-        //     if (filtriSalvati) {
-        //         setFiltri(JSON.parse(filtriSalvati));
-        //         handleRicerche();
-        //     } else {
-        //     fetchData();
-        //     }
-        //     // eslint-disable-next-line
-        // }, []); 
-
-
-
         useEffect(() => {
             const filtriSalvati = sessionStorage.getItem('filtriRicercaAziende');
             if (filtriSalvati) {
@@ -176,12 +155,6 @@ const Aziende = () => {
         //funzione per la paginazione
         const fetchMoreData = async () => {
             const paginaSuccessiva = pagina + 1;
-
-            // const filtriAttivi = Object.values(filtri).some(value => value !== null && value !== '');
-
-            // const url = filtriAttivi ?
-            // "http://localhost:8080/aziende/react/ricerca/mod" :
-            // "http://localhost:8080/aziende/react/mod";
 
             if (!userHasRole('ROLE_ADMIN')) {
                 const userString = sessionStorage.getItem('user');
@@ -285,16 +258,6 @@ const Aziende = () => {
                     return newFilters;
                 });
             };
-            // const handleFilterChange = (name) => (event) => {
-            //     const newValue = event.target.value;
-            //     setFiltri({ ...filtri, [name]: newValue });
-                
-            //     if (name === 'denominazione' && newValue === '') {
-            //         fetchData();
-            //     } else {
-            //         handleRicerche();
-            //     }
-            // };
 
             useEffect(() => {
                 const { denominazione, ...otherFilters } = filtri;
@@ -310,8 +273,6 @@ const Aziende = () => {
                 sessionStorage.setItem('filtriRicercaAziende', JSON.stringify(filtri));
             }, [filtri]);
 
-
-            
 
             //funzione di reset dei campi di ricerca
             const handleReset = async() => {

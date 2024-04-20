@@ -7,7 +7,6 @@ import {
     CardContent, 
     Box,
     Typography,
-    Button,
     CardActions,
     } from '@mui/material';
 
@@ -56,7 +55,7 @@ import {
                 border: '2px solid #00B401', 
                 transition: 'transform 0.3s ease, border-width 0.3s ease', 
                 '&:hover': {
-                transform: 'scale(1.05)', 
+                transform: 'scale(1.02)', 
                 border: '4px solid #00B401' 
             }}
             }>
@@ -86,10 +85,6 @@ import {
                 {timeDifference}
                 </Typography>
 
-                {/* <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, color: 'black' }}>
-                {valori.stato && valori.stato.descrizione}
-                </Typography> */}
-
                 <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
                     <AutoModeIcon sx={{ color: '#00B401', mr: 1 }} />
                     {valori.stato && valori.stato.descrizione}
@@ -106,23 +101,7 @@ import {
                 width: '100%',
                 mr:2
             }} >
-                {/* <Button 
-                size="small"
-                onClick={(event) => navigateToAggiorna(valori.id, event)}
-                sx={{
-                    backgroundColor: 'black',
-                    color: 'white',
-                    ml: 1,
-                    mb: 1,
-                    textTransform: 'lowercase',
-                    fontWeight: 'bold',
-                    '&:hover': {
-                        backgroundColor: 'black',
-                        transform: 'scale(1.05)',
-                        },
-                    }}>Modifica</Button> */}
             </Box>
-
             </CardActions>
             </Card>
         );

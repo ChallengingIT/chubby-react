@@ -1,4 +1,4 @@
-import React from 'react';
+import React     from 'react';
 import TextField from '@mui/material/TextField';
 
 function CustomDecimalNumberModifica({ name, label, type, onChange, values, initialValues }) {
@@ -6,7 +6,6 @@ function CustomDecimalNumberModifica({ name, label, type, onChange, values, init
     const { name, value } = e.target;
     onChange({ [name]: value });
   };
-
 
 
   return (

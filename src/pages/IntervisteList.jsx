@@ -5,6 +5,10 @@ import React, { useEffect, useState}          from 'react'
 import { Link, useParams }                    from 'react-router-dom';
 import { useNavigate, useLocation }           from "react-router-dom";
 import axios                                  from 'axios';
+import AddIcon                                from "@mui/icons-material/Add";
+import Tabella                                from '../components/Tabella.jsx';
+import DeleteButton                           from '../components/button/DeleteButton.jsx';
+import EditButton                             from '../components/button/EditButton.jsx';
 import {
   Dialog,
   DialogTitle,
@@ -15,13 +19,9 @@ import {
   Box,
   Typography
 } from '@mui/material';
-import AddIcon from "@mui/icons-material/Add";
-import Tabella from '../components/Tabella.jsx';
-import DeleteButton from '../components/button/DeleteButton.jsx';
-import EditButton from '../components/button/EditButton.jsx';
-// import VisibilityButton from '../components/button/VisibilityButton.jsx';
 
 function IntervisteList() {
+
   const navigate                = useNavigate();
   const params                  = useParams();
   const { id }                  = params;
@@ -83,9 +83,9 @@ function IntervisteList() {
 
       if (intervistaCaricata) {
       const filtriDaInviare = {
-        nome: recruitingData.nome,
-        cognome: recruitingData.cognome,
-        email: recruitingData.email,
+        nome:     recruitingData.nome,
+        cognome:  recruitingData.cognome,
+        email:    recruitingData.email,
         pagina: 0,
         quantita: 1
       }
@@ -100,13 +100,9 @@ function IntervisteList() {
     }
   };
 
-  
-
   useEffect(() => {
     fetchData();
   }, []);
-
-
 
    //funzione per la paginazione
    const fetchMoreData = async (pagina) => {
@@ -115,9 +111,9 @@ function IntervisteList() {
       quantita: 10
   };
   const filtriDaInviare = {
-    nome: recruitingData.nome,
-    cognome: recruitingData.cognome,
-    email: recruitingData.email,
+    nome:     recruitingData.nome,
+    cognome:  recruitingData.cognome,
+    email:    recruitingData.email,
     pagina: 0,
     quantita: 1
   }
@@ -163,25 +159,16 @@ navigate("/recruiting");
         fetchMoreData(newPage);
     };
   
-
-
-
   const navigateToAggiungiIntervista = () => {
     navigate("/intervista/aggiungi", { state: {  candidatoID  }});
   };
-
-
 
   const handleDelete = async (id) => {
     try {
 
         const response = await axios.delete(`http://localhost:8080/intervista/react/elimina/${deleteId}`, { headers: headers});
         setOpenDialog(false);
-
-  
-  
         fetchData();
-      
     } catch (error) {
       console.error("Errore durante l'eliminazione dell'intervista:", error);
     }
@@ -190,17 +177,6 @@ navigate("/recruiting");
 
 const candidatoNome    = candidatoData.length > 0 ? candidatoData[0].nome : '';
 const candidatoCognome = candidatoData.length > 0 ? candidatoData[0].cognome : '';
-
-
-
-
-  const prepareDataForChild = (rowData) => {
-    return {
-      rowData,
-      candidatoData,
-    };
-  };
-
 
   
 const table1 = [
@@ -236,13 +212,6 @@ renderCell: (params) => (
    //dataAggiornamento e follo up si chiama intervista.tipo.descrizione
   { field: "azioni",         headerName: "Azioni",          flex: 1, renderCell: (params) => (
     <div>
-      {/* <Link
-      to={`/intervista/visualizza/${params.row.id}`}
-      state={params.row}
-  
->
-<VisibilityButton />
-</Link> */}
 <Link
 to={`/intervista/modifica/${params.row.id}`}
 state={params.row}

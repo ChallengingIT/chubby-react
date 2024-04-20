@@ -7,7 +7,7 @@ import CustomAutocomplete                                                       
 import CustomTextFieldAggiungi                                                                        from '../../components/fields/CustomTextFieldAggiungi';
 import CustomNoteAggiungi                                                                             from '../../components/fields/CustomNoteAggiungi';
 import CustomImgFieldAggiunta                                                                         from '../../components/fields/CustomImgFieldAggiunta';
-import CustomDatePickerAggiungi from '../../components/fields/CustomDatePickerAggiungi';
+import CustomDatePickerAggiungi                                                                       from '../../components/fields/CustomDatePickerAggiungi';
 
 
 const AggiungiAziendaGrafica = () => {
@@ -208,10 +208,7 @@ const AggiungiAziendaGrafica = () => {
                         Authorization: `Bearer ${token}`
                     };
                     delete values.image;
-
-
     
-        
                     const response = await axios.post("http://localhost:8080/aziende/react/salva", values, {
                         headers: headers
                     });
@@ -248,16 +245,12 @@ const AggiungiAziendaGrafica = () => {
             }
         };
         
-
-
-
         const campiObbligatori = [ "denominazione", "ragioneSociale", "idOwner", "citta", "provincia", "sedeOperativa", "cap", "tipologia", "status", "potenzialita", "semplicita" ];
 
         const fields =[
             { type: "titleGroups",                label: "Profilo"            },
             { label: 'Nome Azienda*',                   name: 'denominazione',            type:'text'                              },
             { label: 'Settore Mercato*',                name: 'settoreMercato',           type:'text'                              },
-            // { label: "Email",                           name: "email",                    type: "text"                             },
             { label: "Partita IVA",                     name: "pi",                       type: "text"                             },
             { label: "Codice Fiscale",                  name: "cf",                       type: "text"                             },
             { label: "Pec",                             name: "pec",                      type: "text"                             },
@@ -268,22 +261,22 @@ const AggiungiAziendaGrafica = () => {
     
     
             { type: "titleGroups",                label: "Location"            },
-            { label: "Città*",                          name: "citta",                    type: "text"                             },
-            { label: "Paese",                           name: "paese",                    type: "text"                             },
-            { label: "Provincia*",                      name: "provincia",                type: "select", options: provinceOptions },
-            { label: "Sede Operativa*",                  name: "sedeOperativa",            type: "text"                            },
-            { label: "Sede Legale",                     name: "sedeLegale",               type: "text"                             },
+            { label: "Città*",                           name: "citta",                    type: "text"                             },
+            { label: "Paese",                            name: "paese",                    type: "text"                             },
+            { label: "Provincia*",                       name: "provincia",                type: "select", options: provinceOptions },
+            { label: "Sede Operativa*",                  name: "sedeOperativa",            type: "text"                             },
+            { label: "Sede Legale",                      name: "sedeLegale",               type: "text"                             },
             { label: "CAP*",                             name: "cap",                      type: "text"                             },
 
 
             { type: 'titleGroups',                label: "IDA"     },
-            { label: "Owner*",                          name: "idOwner",                  type: "select", options: ownerOptions    },
-            { label: "Tipologia*",                       name: "tipologia",                type: "select", options: [
+            { label: "Owner*",                                name: "idOwner",                       type: "select", options: ownerOptions    },
+            { label: "Tipologia*",                            name: "tipologia",                     type: "select", options: [
                 { value: "Cliente", label: "Cliente" },
                 { value: "Prospect", label: "Prospect" },
                 { value: "EXCLIENTE", label: "Ex Cliente" }
             ]  },
-            { label: "Potenzialità*",                          name: "potenzialita",                    type: "select", options: [
+            { label: "Potenzialità*",                          name: "potenzialita",                  type: "select", options: [
                 { value: 1, label: "1" },
                 { value: 2, label: "2" },
                 { value: 3, label: "3" },
@@ -293,16 +286,15 @@ const AggiungiAziendaGrafica = () => {
                 { value: 2, label: "2" },
                 { value: 3, label: "3" },
             ]  },
-            { label: "Stato*",                                 name: "status",                    type: "select", options: [
+            { label: "Stato*",                                 name: "status",                        type: "select", options: [
                 { value: 1, label: "1" },
                 { value: 2, label: "2" },
                 { value: 3, label: "3" },
             ]  },
     
-           
-    
-            { type: "titleGroups",                label: "File"            },
-            { label: 'Logo',                      name: 'logo',                     type: 'aggiungiImmagine'                             },
+
+            { type: "titleGroups",   label: "File"                            },
+            { label: 'Logo',         name: 'logo',  type: 'aggiungiImmagine'  },
         ];
 
         //funzione per suddividere fields nelle varie pagine in base a titleGroups
@@ -393,21 +385,6 @@ const AggiungiAziendaGrafica = () => {
             }
         };
 
-
-        // const renderFieldsGroups = () => {
-        //     return (
-        //         <Box sx={{ ml: 15, mr: 15}}>
-        //             {groupedFields[currentPageIndex].map((fields, index) => {
-        //                 return (
-        //                     <Box key={index}>
-        //                         {renderFields(fields)}
-        //                     </Box>
-        //                 );
-        //             })}
-        //         </Box>
-        //     );
-        // };
-
         const renderFieldsGroups = () => {
             return (
                 <Box sx={{ ml: 15, mr: 15}}>
@@ -416,14 +393,12 @@ const AggiungiAziendaGrafica = () => {
                             if (field.type === 'titleGroups') {
                                 return (
                                     <Grid item xs={12} key={index}>
-                                        {/* <Typography variant="h6" sx={{fontWeight: 'bold', mb: 2}}>{field.label}</Typography> */}
                                     </Grid>
                                 );
                             } else if (field.type === 'note') {
                                 return (
                                     <Grid item xs={12} key={index}>
                                         {renderFields(field)}
-                                        {/* <Typography variant="h6" sx={{fontWeight: 'bold', mb: 2}}>{field.label}</Typography> */}
                                     </Grid>
                                 );
                             } else {
