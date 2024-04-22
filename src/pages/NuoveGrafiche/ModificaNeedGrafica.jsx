@@ -295,7 +295,13 @@ const ModificaNeedGrafica = () => {
         const fields =[
             { label: "Descrizione Need*",   name: "descrizione",                  type: "text"                                                },
             { label: "Contatto*",           name: "idKeyPeople",                  type: "select",               options: keyPeopleOptions     },
-            { label: "Priorità*",           name: "priorita",                     type: "decimalNumber"                                       },
+            // { label: "Priorità*",           name: "priorita",                     type: "decimalNumber"                                       },
+            { label: "Priorità*",              name: "priorita",                          type: "select",               options: [
+                { value: 1,                   label: "Bassa" },
+                { value: 2,                   label: "Media" },
+                { value: 3,                   label: "Alta" },
+                { value: 4,                   label: "Massima" } 
+                ] },
             { label: "Week*",               name: "week",                         type: "week"                                                },
             { label: "Tipologia*",          name: "idTipologia",                  type: "select",               options: tipologiaOptions     },
             { label: "Tipologia Azienda",   name: "tipo",                         type: "select",               options: [

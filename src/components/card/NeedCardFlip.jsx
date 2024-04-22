@@ -13,6 +13,7 @@ import CloseIcon                                    from '@mui/icons-material/Cl
 import TrendingDownIcon                             from '@mui/icons-material/TrendingDown';
 import TrendingFlatIcon                             from '@mui/icons-material/TrendingFlat';
 import TrendingUpIcon                               from '@mui/icons-material/TrendingUp';
+import CallMadeIcon                                 from '@mui/icons-material/CallMade'; //priorità massima
 
 import { 
     Card, 
@@ -152,8 +153,10 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
             return { icon: <TrendingDownIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Basso" };
         } else if (priorita > 1 && priorita <= 2) {
             return { icon: <TrendingFlatIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Medio" };
-        } else if (priorita > 2) {
+        } else if (priorita > 2 && priorita <= 3) {
             return { icon: <TrendingUpIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Alto" };
+        } else if (priorita > 3) {
+            return { icon: <CallMadeIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Massima" };
         } else {
             return { icon: null, text: "" }; 
         }
@@ -241,7 +244,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
                     {icon}
-                    {valori.priorita}
+                    Priorità: {text}
             </Typography>
 
 
