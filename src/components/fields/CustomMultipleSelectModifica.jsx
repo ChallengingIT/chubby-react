@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React                                                                 from 'react';
 import { Select, FormControl, InputLabel, MenuItem, ListItemText, Checkbox } from '@mui/material';
 
 const CustomMultipleSelectModifica = ({ name, label, options, value, onChange, skillsOptions, initialValues }) => {
@@ -10,15 +10,12 @@ const CustomMultipleSelectModifica = ({ name, label, options, value, onChange, s
         onChange({ [name]: value });
     };
 
-
     const currentValue = Array.isArray(value) ? value : [];
-
-
 
     return (
         <FormControl fullWidth>
             <InputLabel sx={{ ml: 2, mt: 2, '&.Mui-focused': {
-                  color: '#00B400', 
+                color: '#00B400', 
                 },
                 }}>{label}</InputLabel>
             <Select

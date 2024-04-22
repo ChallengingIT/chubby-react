@@ -1,15 +1,13 @@
-import React, {useState, useEffect}         from 'react';
+import React, {useState}                    from 'react';
 import { useNavigate }                      from 'react-router-dom';
-import CloseIcon                            from '@mui/icons-material/Close';
 import FactoryIcon                          from '@mui/icons-material/Factory';
 import PlaceIcon                            from '@mui/icons-material/Place';
-import Torcia                               from "../../images/torciaSF.png";
 import TrendingDownIcon                     from '@mui/icons-material/TrendingDown';
 import TrendingFlatIcon                     from '@mui/icons-material/TrendingFlat';
 import TrendingUpIcon                       from '@mui/icons-material/TrendingUp';
-import JoinInnerIcon from '@mui/icons-material/JoinInner';
-import SettingsIcon from '@mui/icons-material/Settings';
-import DeleteIcon from '@mui/icons-material/Delete';
+import JoinInnerIcon                        from '@mui/icons-material/JoinInner';
+import SettingsIcon                         from '@mui/icons-material/Settings';
+import DeleteIcon                           from '@mui/icons-material/Delete';
 
 import { 
     Card, 
@@ -17,30 +15,22 @@ import {
     Box,
     Typography,
     Button,
-    CardActions,
     Modal,
-    IconButton,
     List,
     ListItem,
     ListItemIcon,
     ListItemText,
     } from '@mui/material';
 
-
 const AziendeCardFlip = ({valori, onDelete}) => {
 
-
     const [ modalDelete,       setModalDelete     ] = useState(false);
-    const [isFlipped, setIsFlipped] = useState(false);
-    const [activeLink, setActiveLink] = useState(null);
-
+    const [ isFlipped,         setIsFlipped       ] = useState(false);
+    const [ activeLink,                           ] = useState(null);
 
     const toggleFlip = () => {
         setIsFlipped(!isFlipped);
     };
-
-
-
 
     const getCardStyle = (tipologia) => {
         switch (tipologia) {
@@ -53,14 +43,13 @@ const AziendeCardFlip = ({valori, onDelete}) => {
                     margin: 'auto', 
                     cursor: 'pointer', 
                     height: 'auto',
-                    borde: '2px solid #ffae44', // Blu navy
                     transition: 'transform 0.3s ease, border-width 0.3s ease', 
-
                     '&:hover': {
-                        transform: 'scale(1.01)', 
+                        transform: 'scale(1.02)', 
                         border: '4px solid #ffae44'
                     }
                 };
+
                 case 'Prospect':
                 return {
                     borderRadius: '20px', 
@@ -69,11 +58,9 @@ const AziendeCardFlip = ({valori, onDelete}) => {
                     margin: 'auto', 
                     cursor: 'pointer', 
                     height: 'auto',
-                    border: '2px solid #ffae44', // Blu navy
                     transition: 'transform 0.3s ease, border-width 0.3s ease', 
-
                     '&:hover': {
-                        transform: 'scale(1.01)', 
+                        transform: 'scale(1.02)', 
                         border: '4px solid #ffae44'
                     }
                 };
@@ -83,19 +70,14 @@ const AziendeCardFlip = ({valori, onDelete}) => {
                     backgroundColor: '#f0f0f0', // Grigio Chiaro
                     borderColor: '#f0f0f0',
                     margin: 'auto', 
-
-                    // pointerEvents: 'none', // Disabilita interazioni
-                    // opacity: 0.5 
                 };
                 case 'Ex cliente':
                 return {
                     backgroundColor: '#f0f0f0', // Grigio Chiaro
                     borderColor: '#f0f0f0',
                     margin: 'auto', 
-
-                    // pointerEvents: 'none', // Disabilita interazioni
-                    // opacity: 0.5 
                 };
+
             default:
                 return { 
                 borderRadius: '20px', 
@@ -107,7 +89,7 @@ const AziendeCardFlip = ({valori, onDelete}) => {
                 border: '2px solid #00B401', 
                 transition: 'transform 0.3s ease, border-width 0.3s ease', 
                 '&:hover': {
-                transform: 'scale(1.01)', 
+                transform: 'scale(1.02)', 
                 border: '4px solid #00B401'
                 }};
         }
@@ -124,9 +106,6 @@ const AziendeCardFlip = ({valori, onDelete}) => {
             cursor: 'pointer',
             transform: 'scale(1.01)',
         }
-        
-       
-        
     };
 
     const cardStyle = {
@@ -137,10 +116,7 @@ const AziendeCardFlip = ({valori, onDelete}) => {
         perspective: '1000px',
         borderRadius: '20px',
         display: 'flex',
-
-        minHeight: '16em',
-        // border: 'solid 2px #00B401',
-        
+        minHeight: '16em',        
     };
 
     const cardFrontStyle = {
@@ -157,10 +133,7 @@ const AziendeCardFlip = ({valori, onDelete}) => {
         height: '100%',
     };
 
-
     const navigate = useNavigate();
-
-
 
     const mediaIda = (ida) => {
         if (ida >= 0 && ida <= 1) {
@@ -176,26 +149,10 @@ const AziendeCardFlip = ({valori, onDelete}) => {
 
     const { icon, text } = mediaIda(valori.ida);
 
-
-
-    // const cardStyle = {
-    //     borderRadius: '20px',
-    //     maxWidth: '80%',
-    //     justifyContent: 'center',
-    //     margin: 'auto',
-    //     cursor: 'pointer',
-    //     height: 'auto',
-    //     border: '2px solid', 
-    //     transition: 'transform 0.3s ease, border-width 0.3s ease',
-    //     ...getCardStyle(valori.tipologia) 
-    // };
-
-
     const navigateToAssocia = (id) => {
         navigate(`/need/${valori.id}`, { state: {...valori}});
     };
     
-
     const navigateToAggiorna = (id, event) => {
         // event.stopPropagation();
         navigate(`/business/modifica/${valori.id}`, { state: { ...valori } });
@@ -210,8 +167,6 @@ const AziendeCardFlip = ({valori, onDelete}) => {
         setModalDelete(false);
     };
     
-
-
     const confirmDelete = (id, event) => {
         onDelete();
         handleCloseModalDelete(true);
@@ -250,7 +205,6 @@ const AziendeCardFlip = ({valori, onDelete}) => {
                 handleOpenModalDelete(event);
             },
             isVisible: !userHasRole('ROLE_USER'),
-
         }
     ];
     
@@ -285,12 +239,6 @@ const AziendeCardFlip = ({valori, onDelete}) => {
             >
                 {valori.denominazione}
             </Typography>
-            
-
-            {/* <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, color: 'black' }}>
-                {valori.citta}
-            </Typography> */}
-
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
                     <PlaceIcon sx={{ color: '#00B401', mr: 1 }} />
@@ -309,15 +257,15 @@ const AziendeCardFlip = ({valori, onDelete}) => {
             </Typography>
             </Box>
             <Box sx={{ 
-            position: 'absolute', 
-            bottom: 0, 
-            right: 0, 
-            display: 'flex', 
-            justifyContent: 'flex-end', 
-            alignItems: 'end', 
-            paddingRight: '16px', 
-            paddingBottom: '16px' 
-        }}>
+                position: 'absolute', 
+                bottom: 0, 
+                right: 0, 
+                display: 'flex', 
+                justifyContent: 'flex-end', 
+                alignItems: 'end', 
+                paddingRight: '16px', 
+                paddingBottom: '16px' 
+            }}>
             <img src={`data:image/png;base64,${valori.logo}`} alt="Logo" style={{ width: '80px', height: '80px', borderRadius: '50%' }} />
         </Box>
                 </Box>
@@ -384,13 +332,9 @@ const AziendeCardFlip = ({valori, onDelete}) => {
                     ))}
                 </List>
         </Box>
-
-
-
         </CardContent>
-
         </div>
-        </div>
+    </div>
 
 
         <Modal
@@ -456,8 +400,8 @@ const AziendeCardFlip = ({valori, onDelete}) => {
                             }}>
                                 Conferma
                             </Button>
-                            </Box>
-                            </Box>
+                        </Box>
+                    </Box>
                 </Modal>
     </Card>
     );

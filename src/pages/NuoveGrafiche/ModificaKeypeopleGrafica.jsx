@@ -1,5 +1,5 @@
 import React, { useState, useEffect }                                                                           from 'react';
-import { useNavigate, useLocation, useParams }                                                                             from 'react-router-dom';
+import { useNavigate, useLocation, useParams }                                                                  from 'react-router-dom';
 import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Snackbar, Skeleton, Grid, IconButton, Popover } from '@mui/material';
 import CircleOutlinedIcon                                                                                       from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
 import axios                                                                                                    from 'axios';
@@ -7,7 +7,7 @@ import CustomAutocomplete                                                       
 import CustomTextFieldModifica                                                                                  from '../../components/fields/CustomTextFieldModifica';
 import CustomNoteModifica                                                                                       from '../../components/fields/CustomNoteModifica';
 import CustomDatePickerModifica                                                                                 from '../../components/fields/CustomDatePickerModifica';
-import InfoIcon                                                                                       from '@mui/icons-material/Info';
+import InfoIcon                                                                                                 from '@mui/icons-material/Info';
 
 
 const ModificaKeypeopleGrafica = () => {
@@ -30,7 +30,7 @@ const ModificaKeypeopleGrafica = () => {
     const [ ownerOptions,   setOwnerOptions  ] = useState([]);
     const [ statiOptions,   setStatiOptions  ] = useState([]);
     const [ datiModifica,   setDatiModifica  ] = useState([]);
-    const [ values,             setValues               ] = useState({});
+    const [ values,         setValues        ] = useState({});
 
 
 
@@ -45,10 +45,10 @@ const ModificaKeypeopleGrafica = () => {
     useEffect(() => {
         const fetchAziendeOptions = async () => {
         try {
-            const keypeopleResponse = await axios.get(`http://89.46.196.60:8443/keypeople/react/${id}`,    { headers: headers });
-            const aziendeResponse = await axios.get("http://89.46.196.60:8443/aziende/react/select",       { headers: headers });
-            const ownerResponse   = await axios.get("http://89.46.196.60:8443/aziende/react/owner",        { headers: headers });
-            const statiResponse   = await axios.get("http://89.46.196.60:8443/keypeople/react/stati",       { headers: headers });
+            const keypeopleResponse = await axios.get(`http://localhost:8080/keypeople/react/${id}`,    { headers: headers });
+            const aziendeResponse = await axios.get("http://localhost:8080/aziende/react/select",       { headers: headers });
+            const ownerResponse   = await axios.get("http://localhost:8080/aziende/react/owner",        { headers: headers });
+            const statiResponse   = await axios.get("http://localhost:8080/keypeople/react/stati",      { headers: headers });
 
             if (Array.isArray(statiResponse.data)) {
                 const statiOptions = statiResponse.data.map((stati) => ({
@@ -125,9 +125,6 @@ const ModificaKeypeopleGrafica = () => {
         return errors;
     };
 
-
-
-
     //funzioni per cambiare pagina del form
     const handleBackButtonClick = () => {
         const currentIndex = menu.findIndex(item => item.title.toLowerCase() === activeSection.toLowerCase());
@@ -187,7 +184,7 @@ const ModificaKeypeopleGrafica = () => {
                         }
                     });
     
-                    const response = await axios.post("http://89.46.196.60:8443/keypeople/react/salva", values, {
+                    const response = await axios.post("http://localhost:8080/keypeople/react/salva", values, {
                         headers: headers
                     });
                     if (response.data === "DUPLICATO") {
@@ -230,24 +227,21 @@ const ModificaKeypeopleGrafica = () => {
 
         const openTipo = Boolean(anchorElTipo);
 
-        
-
-
 
         const campiObbligatori = [ "nome", "idAzienda", "email", "idOwner", "idStato", "ruolo", "dataCreazione" ];
 
         const fields =[
             { type: "titleGroups",                label: "Anagrafica"            },
-            { label: "Nome Contatto*",        name: "nome",                 type: "text" },
+            { label: "Nome Contatto*",        name: "nome",                type: "text" },
             { label: "Ruolo*",                name: "ruolo",               type: "text" },
-            { label: "Azienda*",              name: "idAzienda",            type: "select",      options: aziendeOptions },
+            { label: "Azienda*",              name: "idAzienda",           type: "select",      options: aziendeOptions },
             { label: 'Tipo',                  name: 'tipo',                type: 'select',      options: [
                 { value: 1, label: "Keypeople" },
                 { value: 2, label: "Hook" },
                 { value: 3, label: 'Link'}
               ] },
-              { label: "Stato*",                name: "idStato",              type: "select",      options: statiOptions },
-              { label: "Owner*",                name: "idOwner",              type: "select",      options: ownerOptions},
+              { label: "Stato*",              name: "idStato",              type: "select",      options: statiOptions },
+              { label: "Owner*",              name: "idOwner",              type: "select",      options: ownerOptions},
             { label: "Email*",                name: "email",                type: "text" },
             { label: "Cellulare",             name: "cellulare",            type: "text" },
            
@@ -262,14 +256,14 @@ const ModificaKeypeopleGrafica = () => {
         const initialValues = {
             id:                 datiModifica.id                                                  ,
             nome:               datiModifica.nome                                                || null,
-            idAzienda:          datiModifica.cliente && datiModifica.cliente.id                        || null,
-            idOwner:            datiModifica.owner   && datiModifica.owner.id                          || null,
+            idAzienda:          datiModifica.cliente && datiModifica.cliente.id                  || null,
+            idOwner:            datiModifica.owner   && datiModifica.owner.id                    || null,
             email:              datiModifica.email                                               || null,
             cellulare:          datiModifica.cellulare                                           || null,
             ruolo:              datiModifica.ruolo                                               || null,
             dataCreazione:      datiModifica.dataCreazione                                       || null,
             dataUltimaAttivita: datiModifica.dataUltimaAttivita                                  || null,
-            idStato:            datiModifica.stato && datiModifica.stato.id                                             || null,
+            idStato:            datiModifica.stato && datiModifica.stato.id                      || null,
             tipo:               datiModifica.tipo                                                || null,   
             note:               datiModifica.note                                                || null,
         };
@@ -552,21 +546,6 @@ const ModificaKeypeopleGrafica = () => {
         }
         };
 
-
-        // const renderFieldsGroups = () => {
-        //     return (
-        //         <Box sx={{ ml: 15, mr: 15}}>
-        //             {groupedFields[currentPageIndex].map((fields, index) => {
-        //                 return (
-        //                     <Box key={index}>
-        //                         {renderFields(fields)}
-        //                     </Box>
-        //                 );
-        //             })}
-        //         </Box>
-        //     );
-        // };
-
         const renderFieldsGroups = () => {
             return (
                 <Box sx={{ ml: 15, mr: 15}}>
@@ -575,14 +554,12 @@ const ModificaKeypeopleGrafica = () => {
                             if (field.type === 'titleGroups') {
                                 return (
                                     <Grid item xs={12} key={index}>
-                                        {/* <Typography variant="h6" sx={{fontWeight: 'bold', mb: 2}}>{field.label}</Typography> */}
                                     </Grid>
                                 );
                             } else if (field.type === 'note') {
                                 return (
                                     <Grid item xs={12} key={index}>
                                         {renderFields(field)}
-                                        {/* <Typography variant="h6" sx={{fontWeight: 'bold', mb: 2}}>{field.label}</Typography> */}
                                     </Grid>
                                 );
                             } else {
@@ -600,7 +577,7 @@ const ModificaKeypeopleGrafica = () => {
 
 
 
-  return (
+return (
     <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
         <Box sx={{ display: 'flex', height: '98%', width: '100vw', flexDirection: 'row', ml: '12.5em', mt: '0.5em', mb: '0.5em', mr: '0.8em', borderRadius: '20px', overflow: 'hidden' }}>
         <Box sx={{ width: '280px', height: '98%', background: '#00B400', p:2, overflow: 'hidden', position: 'fixed', borderRadius: '20px 0px 0px 20px' }}>

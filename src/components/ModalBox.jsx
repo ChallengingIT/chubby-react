@@ -1,231 +1,212 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Grid, 
-  Button, 
-  TextField, 
-  Select, 
-  MenuItem, 
-  InputLabel, 
-  FormControl, 
-  Box, 
-  Typography, 
-  Checkbox, 
-  ListItemText, 
-  FormHelperText,
-  Autocomplete
-} from '@mui/material';
-import CloseIcon                            from '@mui/icons-material/Close';
+import React, { useState } from "react";
+import {
+  Grid,
+  Button,
+  TextField,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  Box,
+  Typography,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
-
-
-
-const ModalBox = ({ 
-  fields, 
-  initialValues = {}, 
-  disableFields = {}, 
-  onSubmit, 
-  onClose, 
-  title, 
-  showBackButton = true, 
-  showSaveButton = true 
+const ModalBox = ({
+  fields,
+  initialValues = {},
+  disableFields = {},
+  onSubmit,
+  onClose,
+  title,
+  showSaveButton = true,
 }) => {
-
-  const [values,                       setValues                    ] = useState(initialValues || {});
-  const [ isModalOpen,                 setIsModalOpen               ] = useState(false);
+  const [values, setValues] = useState(initialValues || {});
 
   const handleChange = (fieldName) => (event) => {
-    setValues(prevValues => ({
+    setValues((prevValues) => ({
       ...prevValues,
-      [fieldName]: event.target.value
+      [fieldName]: event.target.value,
     }));
   };
-  
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(values);
   };
-  
 
   const renderField = (field) => {
     const isDisabled = disableFields[field.name];
     switch (field.type) {
-      case 'text':
-
+      case "text":
         return (
-  
           <TextField
-          label={field.label}
-          name={field.name}
-          onChange={handleChange(field.name)}
-          value={values[field.name] || ''}
-          fullWidth
-          disabled={isDisabled}
-          variant='filled'
-          sx={{ 
-            width: "100%",
-            textAlign: "left",
-            borderRadius: '20px', 
-            backgroundColor: '#EDEDED', 
-            '& .MuiFilledInput-root': {
-                backgroundColor: 'transparent',
-            },
-            '& .MuiFilledInput-underline:after': {
-                borderBottomColor: 'transparent',
-            },
-            '& .MuiFilledInput-root::before': {
-                borderBottom: 'none', 
-            },
-            '&:hover .MuiFilledInput-root::before': {
-                borderBottom: 'none', 
-            },
-            '& .MuiFormLabel-root.Mui-focused': {
-              color: '#00B400',
-          },
+            label={field.label}
+            name={field.name}
+            onChange={handleChange(field.name)}
+            value={values[field.name] || ""}
+            fullWidth
+            disabled={isDisabled}
+            variant="filled"
+            sx={{
+              width: "100%",
+              textAlign: "left",
+              borderRadius: "20px",
+              backgroundColor: "#EDEDED",
+              "& .MuiFilledInput-root": {
+                backgroundColor: "transparent",
+              },
+              "& .MuiFilledInput-underline:after": {
+                borderBottomColor: "transparent",
+              },
+              "& .MuiFilledInput-root::before": {
+                borderBottom: "none",
+              },
+              "&:hover .MuiFilledInput-root::before": {
+                borderBottom: "none",
+              },
+              "& .MuiFormLabel-root.Mui-focused": {
+                color: "#00B400",
+              },
             }}
-        />
+          />
         );
 
-      case 'select':
+      case "select":
         return (
-          <FormControl fullWidth disabled={isDisabled}
-          variant='filled'
-          sx={{
-            textAlign: "left",
-            borderRadius: '20px', 
-            backgroundColor: '#EDEDED', 
-            '& .MuiFilledInput-root': {
-              backgroundColor: 'transparent',
-          },
-          '& .MuiFilledInput-underline:after': {
-              borderBottomColor: 'transparent',
-          },
-          '& .MuiFilledInput-root::before': {
-              borderBottom: 'none', 
-          },
-          '&:hover .MuiFilledInput-root::before': {
-              borderBottom: 'none', 
-          },
-          '& .MuiFormLabel-root.Mui-focused': {
-            color: '#00B400',
-        },
-          }}> 
-          <InputLabel>{field.label}</InputLabel>
-          <Select
-            style={{ width: "100%", textAlign: "left" }}
-            name={field.name}
-            value={values[field.name] || ''}
-            onChange={handleChange(field.name)}
-            variant='filled'
-          sx={{ 
-            width: "100%",
-            textAlign: "left",
-            borderRadius: '20px', 
-            backgroundColor: '#EDEDED', 
-            '& .MuiFilledInput-root': {
-                backgroundColor: 'transparent',
-            },
-            '& .MuiFilledInput-underline:after': {
-                borderBottomColor: 'transparent',
-            },
-            '& .MuiFilledInput-root::before': {
-                borderBottom: 'none', 
-            },
-            '&:hover .MuiFilledInput-root::before': {
-                borderBottom: 'none', 
-            },
-            '& .MuiFormLabel-root.Mui-focused': {
-              color: '#00B400',
-          },
+          <FormControl
+            fullWidth
+            disabled={isDisabled}
+            variant="filled"
+            sx={{
+              textAlign: "left",
+              borderRadius: "20px",
+              backgroundColor: "#EDEDED",
+              "& .MuiFilledInput-root": {
+                backgroundColor: "transparent",
+              },
+              "& .MuiFilledInput-underline:after": {
+                borderBottomColor: "transparent",
+              },
+              "& .MuiFilledInput-root::before": {
+                borderBottom: "none",
+              },
+              "&:hover .MuiFilledInput-root::before": {
+                borderBottom: "none",
+              },
+              "& .MuiFormLabel-root.Mui-focused": {
+                color: "#00B400",
+              },
             }}
           >
-            {field.options.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
+            <InputLabel>{field.label}</InputLabel>
+            <Select
+              style={{ width: "100%", textAlign: "left" }}
+              name={field.name}
+              value={values[field.name] || ""}
+              onChange={handleChange(field.name)}
+              variant="filled"
+              sx={{
+                width: "100%",
+                textAlign: "left",
+                borderRadius: "20px",
+                backgroundColor: "#EDEDED",
+                "& .MuiFilledInput-root": {
+                  backgroundColor: "transparent",
+                },
+                "& .MuiFilledInput-underline:after": {
+                  borderBottomColor: "transparent",
+                },
+                "& .MuiFilledInput-root::before": {
+                  borderBottom: "none",
+                },
+                "&:hover .MuiFilledInput-root::before": {
+                  borderBottom: "none",
+                },
+                "& .MuiFormLabel-root.Mui-focused": {
+                  color: "#00B400",
+                },
+              }}
+            >
+              {field.options.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         );
 
-        
-
-      case 'date':
+      case "date":
         return (
           <TextField
             type="date"
             label={field.label}
             name={field.name}
-            value={values[field.name] || ''}
+            value={values[field.name] || ""}
             onChange={handleChange(field.name)}
             InputLabelProps={{ shrink: true }}
             fullWidth
-            variant='filled'
-          sx={{ 
-            width: "100%",
-            textAlign: "left",
-            borderRadius: '20px', 
-            backgroundColor: '#EDEDED', 
-            '& .MuiFilledInput-root': {
-                backgroundColor: 'transparent',
-            },
-            '& .MuiFilledInput-underline:after': {
-                borderBottomColor: 'transparent',
-            },
-            '& .MuiFilledInput-root::before': {
-                borderBottom: 'none', 
-            },
-            '&:hover .MuiFilledInput-root::before': {
-                borderBottom: 'none', 
-            },
-            '& .MuiFormLabel-root.Mui-focused': {
-              color: '#00B400',
-          },
+            variant="filled"
+            sx={{
+              width: "100%",
+              textAlign: "left",
+              borderRadius: "20px",
+              backgroundColor: "#EDEDED",
+              "& .MuiFilledInput-root": {
+                backgroundColor: "transparent",
+              },
+              "& .MuiFilledInput-underline:after": {
+                borderBottomColor: "transparent",
+              },
+              "& .MuiFilledInput-root::before": {
+                borderBottom: "none",
+              },
+              "&:hover .MuiFilledInput-root::before": {
+                borderBottom: "none",
+              },
+              "& .MuiFormLabel-root.Mui-focused": {
+                color: "#00B400",
+              },
             }}
           />
         );
 
-        case 'note':
-  return (
-    <TextField
-      label={field.label}
-      name={field.name}
-      multiline
-      rows={4}
-      onChange={handleChange(field.name)}
-      value={values[field.name] || ''}
-      fullWidth
-      variant='filled'
-          sx={{ 
-            width: "100%",
-            textAlign: "left",
-            borderRadius: '20px', 
-            backgroundColor: '#EDEDED', 
-            '& .MuiFilledInput-root': {
-                backgroundColor: 'transparent',
-            },
-            '& .MuiFilledInput-underline:after': {
-                borderBottomColor: 'transparent',
-            },
-            '& .MuiFilledInput-root::before': {
-                borderBottom: 'none', 
-            },
-            '&:hover .MuiFilledInput-root::before': {
-                borderBottom: 'none', 
-            },
-            '& .MuiFormLabel-root.Mui-focused': {
-              color: '#00B400',
-          },
+      case "note":
+        return (
+          <TextField
+            label={field.label}
+            name={field.name}
+            multiline
+            rows={4}
+            onChange={handleChange(field.name)}
+            value={values[field.name] || ""}
+            fullWidth
+            variant="filled"
+            sx={{
+              width: "100%",
+              textAlign: "left",
+              borderRadius: "20px",
+              backgroundColor: "#EDEDED",
+              "& .MuiFilledInput-root": {
+                backgroundColor: "transparent",
+              },
+              "& .MuiFilledInput-underline:after": {
+                borderBottomColor: "transparent",
+              },
+              "& .MuiFilledInput-root::before": {
+                borderBottom: "none",
+              },
+              "&:hover .MuiFilledInput-root::before": {
+                borderBottom: "none",
+              },
+              "& .MuiFormLabel-root.Mui-focused": {
+                color: "#00B400",
+              },
             }}
-    />
-  );
-
-        
+          />
+        );
 
       default:
         return null;
@@ -246,21 +227,37 @@ const ModalBox = ({
         boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.5)",
       }}
     >
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'row'}}>
-      <Typography variant="h5" style={{ marginBottom: "20px" }}>
-        {title}
-      </Typography>
-      <Button onClick={onClose} variant="outlined" sx={{ mt: -2 ,backgroundColor: 'transparent', border: 'none', color: '#898989', '&:hover': { border: 'none', color: 'red', transform: 'scale(1.1)'}}}startIcon={<CloseIcon sx={{backgroundColor: 'transparent'}}/>}/>
-
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          flexDirection: "row",
+        }}
+      >
+        <Typography variant="h5" style={{ marginBottom: "20px" }}>
+          {title}
+        </Typography>
+        <Button
+          onClick={onClose}
+          variant="outlined"
+          sx={{
+            mt: -2,
+            backgroundColor: "transparent",
+            border: "none",
+            color: "#898989",
+            "&:hover": {
+              border: "none",
+              color: "red",
+              transform: "scale(1.1)",
+            },
+          }}
+          startIcon={<CloseIcon sx={{ backgroundColor: "transparent" }} />}
+        />
       </Box>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={3}>
           {fields.map((field) => (
-            <Grid
-              item
-              xs={field.type === "note" ? 12 : 4}
-              key={field.name}
-            >
+            <Grid item xs={field.type === "note" ? 12 : 4} key={field.name}>
               {renderField(field)}
             </Grid>
           ))}
@@ -275,31 +272,14 @@ const ModalBox = ({
             gap: "40px",
           }}
         >
-        {/* {showBackButton && (
-          <Button
-            color="primary"
-            onClick={onClose}
-            style={{
-              backgroundColor: "black",
-              color: "white",
-              "&:hover": {
-                backgroundColor: "black",
-                transform: "scale(1.05)",
-              },
-            }}
-          >
-            Indietro
-          </Button>
-          )} */}
           {showSaveButton && (
             <Button
               color="primary"
               variant="contained"
-              // onClick={() => onSubmit(values)}
               type="submit"
               sx={{
-                width: '30%',
-                borderRadius: '5px',
+                width: "30%",
+                borderRadius: "5px",
                 fontWeight: "bold",
                 backgroundColor: "#00B401",
                 color: "white",
@@ -313,7 +293,7 @@ const ModalBox = ({
               Salva
             </Button>
           )}
-          </div>
+        </div>
       </form>
     </div>
   );

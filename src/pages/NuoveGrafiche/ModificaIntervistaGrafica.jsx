@@ -54,9 +54,7 @@ const ModificaIntervistaGrafica = () => {
             const responseCandidato                      = await axios.get(`http://89.46.196.60:8443/staffing/react/${candidatoID}`            , { headers: headers }); //questo è il candidato
             const responseStato                          = await axios.get("http://89.46.196.60:8443/staffing/react/stato/candidato"           , { headers: headers });
 
-        
-        
-        
+
             if (responseIntervista.data && typeof responseIntervista.data === 'object') {
                 const intervisteData = responseIntervista.data.interviste;
                 if (Array.isArray(intervisteData) && intervisteData.length > 0) {
@@ -64,7 +62,6 @@ const ModificaIntervistaGrafica = () => {
                     const ultimaIntervista = intervisteData[intervisteData.length - 1];
                     setInterviste(ultimaIntervista);
                 } else if (intervisteData.length === 0) {
-                  // Gestisci il caso in cui non ci siano interviste
                 } else {
                     console.error("I dati ottenuti da intervista non sono nel formato Array:", intervisteData);
                 }
@@ -88,8 +85,6 @@ const ModificaIntervistaGrafica = () => {
                 }));
                 setStatoOptions(statoOptions);
             }
-        
-
         
             if (Array.isArray(ownerResponse.data)) {
                 const ownerOptions = ownerResponse.data.map((owner) => ({
@@ -164,23 +159,13 @@ const ModificaIntervistaGrafica = () => {
     };
 
      // Funzione per il cambio stato degli input
-     const handleChange = (fieldValue) => {
+    const handleChange = (fieldValue) => {
         setValues(prevValues => ({
             ...prevValues,
             ...fieldValue
         }));
-        };
-        
-    //funzione di change per decimalNumber
-    // const handleChangeDecimal = (fieldName, fieldValue) => {
-    //     const value = fieldValue.replace(/,/g, '.');
-    //     if (!value || value.match(/^\d+(\.\d{0,2})?$/)) {
-    //       setValues(prevValues => ({
-    //         ...prevValues,
-    //         [fieldName]: value  
-    //       }));
-    //     }
-    //   };
+    };
+
 
 
     //funzioni per cambiare pagina del form
@@ -261,7 +246,7 @@ const ModificaIntervistaGrafica = () => {
         { type: "titleGroups",                label: "Informazioni candidato"             },
         { label: "Data Incontro*",            name: "dataColloquio",          type: "date"},
         { label: "Intervistatore",            name: "idOwner",                type: "select", options: ownerOptions },
-        { label: "Tipologia Incontro",        name: "stato",                type: "text"},
+        { label: "Tipologia Incontro",        name: "stato",                  type: "text"},
         { label: "Nome",                      name: "nome",                   type: "text"},
         { label: "Cognome",                   name: "cognome",                type: "text"},
         { label: "Data di Nascita",           name: "dataNascita",            type: "date"},
@@ -297,7 +282,7 @@ const ModificaIntervistaGrafica = () => {
         { label: "RAL Attuale",               name: "attuale",                 type: "text"},
         { label: "RAL Desiderata",            name: "desiderata",              type: "text"},
         { label: "Proposta economica",        name: "proposta",                type: "text"},
-        { label: "Follow Up",                 name: "idTipo",                    type: "select", options: tipoIntervistaOptions },
+        { label: "Follow Up",                 name: "idTipo",                  type: "select", options: tipoIntervistaOptions },
         { label: "Preavviso",                 name: "preavviso",               type: "text"},
         { label: "Next Deadline",             name: "dataAggiornamento",       type: "dateOra"},
         { label: "Owner next Deadline",       name: "idNextOwner",             type: "select", options: ownerOptions },
@@ -306,43 +291,38 @@ const ModificaIntervistaGrafica = () => {
 
     const initialValues = {
         id:                               rowData.id                                  ,  
-        stato:                            candidatoData.stato && candidatoData.stato.descrizione                              || null,  
-        nome:                             candidatoData?.nome                               || null,
-        cognome:                          candidatoData.cognome                             || null,
-        dataNascita:                      candidatoData.dataNascita                         || null,
-        location:                         candidatoData.citta                               || null, 
-        tipologia:                        candidatoData.tipologia?.descrizione              || null,
-        anniEsperienza:                   candidatoData.anniEsperienza                      || null,
-        dataColloquio:                    rowData.dataColloquio                         || null,
-        cellulare:                        candidatoData.cellulare                           || null,
-        idOwner:                          rowData.owner?.id                           || null,
-        aderenza:                         rowData.aderenza                            || null,
-        coerenza:                         rowData.coerenza                            || null,
-        motivazione:                      rowData.motivazione                         || null,
-        standing:                         rowData.standing                            || null,
-        energia:                          rowData.energia                             || null,
-        comunicazione:                    rowData.comunicazione                       || null,
-        inglese:                          rowData.inglese                             || null,
-        competenze:                       rowData.competenze                          || null,
-        valutazione:                      rowData.valutazione                         || null,
-        descrizioneCandidatoUna:          rowData.descrizioneCandidatoUna             || null,
-        teamSiNo:                         rowData.teamSiNo                            || null,
-        note:                             candidatoData.note                         || null,
-        disponibilita:                    rowData.disponibilita                       || null,
-        attuale:                          rowData.attuale                             || null,
-        desiderata:                       rowData.desiderata                          || null,
-        proposta:                         rowData.proposta                            || null,
-        idTipo:                           rowData.tipo?.id                            || null,
-        preavviso:                        rowData.preavviso                           || null,
-        dataAggiornamento:                rowData.dataAggiornamento                   || null, 
-        idNextOwner:                      rowData.nextOwner?.id                       || null
+        stato:                            candidatoData.stato && candidatoData.stato.descrizione   || null,  
+        nome:                             candidatoData?.nome                                      || null,
+        cognome:                          candidatoData.cognome                                    || null,
+        dataNascita:                      candidatoData.dataNascita                                || null,
+        location:                         candidatoData.citta                                      || null, 
+        tipologia:                        candidatoData.tipologia?.descrizione                     || null,
+        anniEsperienza:                   candidatoData.anniEsperienza                             || null,
+        dataColloquio:                    rowData.dataColloquio                                    || null,
+        cellulare:                        candidatoData.cellulare                                  || null,
+        idOwner:                          rowData.owner?.id                                        || null,
+        aderenza:                         rowData.aderenza                                         || null,
+        coerenza:                         rowData.coerenza                                         || null,
+        motivazione:                      rowData.motivazione                                      || null,
+        standing:                         rowData.standing                                         || null,
+        energia:                          rowData.energia                                          || null,
+        comunicazione:                    rowData.comunicazione                                    || null,
+        inglese:                          rowData.inglese                                          || null,
+        competenze:                       rowData.competenze                                       || null,
+        valutazione:                      rowData.valutazione                                      || null,
+        descrizioneCandidatoUna:          rowData.descrizioneCandidatoUna                          || null,
+        teamSiNo:                         rowData.teamSiNo                                         || null,
+        note:                             candidatoData.note                                       || null,
+        disponibilita:                    rowData.disponibilita                                    || null,
+        attuale:                          rowData.attuale                                          || null,
+        desiderata:                       rowData.desiderata                                       || null,
+        proposta:                         rowData.proposta                                         || null,
+        idTipo:                           rowData.tipo?.id                                         || null,
+        preavviso:                        rowData.preavviso                                        || null,
+        dataAggiornamento:                rowData.dataAggiornamento                                || null, 
+        idNextOwner:                      rowData.nextOwner?.id                                    || null
     };
 
-
-
-
-    
-    
     const disableFields = {
     nome:               true,
     cognome:            true,
@@ -522,20 +502,6 @@ const ModificaIntervistaGrafica = () => {
         };
 
 
-        // const renderFieldsGroups = () => {
-        //     return (
-        //         <Box sx={{ ml: 15, mr: 15}}>
-        //             {groupedFields[currentPageIndex].map((fields, index) => {
-        //                 return (
-        //                     <Box key={index}>
-        //                         {renderFields(fields)}
-        //                     </Box>
-        //                 );
-        //             })}
-        //         </Box>
-        //     );
-        // };
-
         const renderFieldsGroups = () => {
             return (
                 <Box sx={{ ml: 15, mr: 15}}>
@@ -544,14 +510,12 @@ const ModificaIntervistaGrafica = () => {
                             if (field.type === 'titleGroups') {
                                 return (
                                     <Grid item xs={12} key={index}>
-                                        {/* <Typography variant="h6" sx={{fontWeight: 'bold', mb: 2}}>{field.label}</Typography> */}
                                     </Grid>
                                 );
                             } else if (field.type === 'note') {
                                 return (
                                     <Grid item xs={12} key={index}>
                                         {renderFields(field)}
-                                        {/* <Typography variant="h6" sx={{fontWeight: 'bold', mb: 2}}>{field.label}</Typography> */}
                                     </Grid>
                                 );
                             } else {

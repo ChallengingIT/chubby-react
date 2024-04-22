@@ -61,6 +61,7 @@ const Recruiting = () => {
 });
 
 
+
 //stati per la paginazione
 const [ pagina,                 setPagina       ] = useState(0);
 const quantita = 10;
@@ -255,20 +256,6 @@ const quantita = 10;
   };
 
 
-  // const handleSearch = (filteredData) => {
-  //   setFilteredRecruiting(filteredData)
-  // };
-
-  // const handleReset = () => {
-  //   setSearchText('');
-  //   fetchData();
-  // };
-
-
-
-
-
-
 useEffect(() => {
   sessionStorage.setItem('filtriRicercaRecruiting', JSON.stringify(filtri));
 }, [filtri]);
@@ -282,7 +269,6 @@ const handleRicerche = async () => {
   }
 
 
-  // if (!Object.values(filtri).every(value => value === '')) {
     const filtriDaInviare = {
         nome: filtri.nome || null,
         cognome: filtri.cognome || null,
@@ -346,47 +332,26 @@ const handleRicerche = async () => {
 };
 
 
-useEffect(() => {
-  const { nome, cognome, ...otherFilters } = filtri;
-  const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x != null);
 
-  if (filtriHasValues) {
-      handleRicerche();
-  }
-}, [filtri.tipologia, filtri.stato, filtri.tipo, filtri.nome, filtri.cognome]);
-
-
-
-// const handleFilterChange = (name) => (event) => {
-//   const newValue = event.target.value;
-//   setFiltri({ ...filtri, [name]: newValue });
-//   // if (name === 'denominazione' && newValue === '') {
-//   //     fetchData();
-//   // } else {
-//   //     handleRicerche();
-//   // }
-// };
+    const handleFilterChange = (name) => (event) => {
+      const newValue = event.target.value;
+      setFiltri(currentFilters => {
+          const newFilters = { ...currentFilters, [name]: newValue };
+            setPagina(0);
+          return newFilters;
+      });
+    };
 
 
-const handleFilterChange = (name) => (event) => {
-  const newValue = event.target.value;
-  setFiltri(currentFilters => {
-      const newFilters = { ...currentFilters, [name]: newValue };
-      
+    useEffect(() => {
       // Controllo se tutti i filtri sono vuoti 
-      const areFiltersEmpty = Object.values(newFilters).every(value => value === null);
+      const areFiltersEmpty = Object.values(filtri).every(value => value === null || value === '');
       if (areFiltersEmpty) {
           fetchData();
       } else {
-          setPagina(0);
-          setOriginalRecruiting([]);
           handleRicerche();
       }
-      
-      return newFilters;
-  });
-};
-
+    }, [filtri, pagina]);
 
 
 
@@ -397,8 +362,8 @@ const handleCloseFiltri = () => setOpenFiltri(false);
 
 const handleReset = () => {
     setFiltri({
-        nome: null,
-        cognome: null,
+        nome: '',
+        cognome: '',
         tipo:null,
         tipologia:null,
         stato: null
@@ -454,7 +419,6 @@ const handleReset = () => {
     ),
   }, 
     { field: "rating",        headerName: "Rating",         flex: 0.6, renderCell: (params) => getSmileIcon(params), }, //fino a 1.9 è rosso, da 2 a 3 giallo, sopra 3 è verde
-    // { field: "nrating",       headerName: "N. Rating",      width: 90  },
     { field: "owner",         headerName: "Owner",         flex: 0.6, renderCell: (params) => (
         <div style={{ textAlign: "start" }}>
           {params.row.owner && params.row.owner.descrizione
@@ -506,10 +470,6 @@ const handleReset = () => {
       </Box>
     ), },
   ];
-
-
-
-
 
 
 return (

@@ -1,6 +1,6 @@
-import React from 'react';
+import React        from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/TextField';
+import TextField    from '@mui/material/TextField';
 
 function CustomAutocomplete({ name, label, options, value, onChange, disabled }) {
   const handleChange = (event, newValue) => {
@@ -9,9 +9,6 @@ function CustomAutocomplete({ name, label, options, value, onChange, disabled })
 
   // Trova l'opzione che corrisponde al valore
   const selectedOption = options.find(option => option.value === value) || null;
-
-
-
 
 
   return (

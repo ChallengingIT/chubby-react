@@ -1,5 +1,5 @@
-import React from 'react';
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import React                       from 'react';
+import CloudUploadIcon             from "@mui/icons-material/CloudUpload";
 import { Box, Typography, Button } from '@mui/material';
 
 function CustomImgFieldAggiunta({ label, imagePreviewUrl, onChange, initialValues }) {

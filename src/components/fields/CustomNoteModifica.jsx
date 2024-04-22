@@ -1,4 +1,4 @@
-import React from 'react';
+import React     from 'react';
 import TextField from '@mui/material/TextField';
 
 function CustomNoteModifica({ name, label, type, onChange, values, initialValues }) {
@@ -6,8 +6,6 @@ function CustomNoteModifica({ name, label, type, onChange, values, initialValues
     const { name, value } = e.target;
     onChange({ [name]: value });
   };
-
-
 
   return (
     <TextField
@@ -25,24 +23,23 @@ function CustomNoteModifica({ name, label, type, onChange, values, initialValues
         width: "100%",
         textAlign: "left",
         borderRadius: '20px', 
-    backgroundColor: '#EDEDED', 
-    '& .MuiFilledInput-root': {
-        backgroundColor: 'transparent',
-    },
-    '& .MuiFilledInput-underline:after': {
-        borderBottomColor: 'transparent',
-    },
-    '& .MuiFilledInput-root::before': {
-        borderBottom: 'none', 
-    },
-    '&:hover .MuiFilledInput-root::before': {
-        borderBottom: 'none', 
-    },
-    '& .MuiFormLabel-root.Mui-focused': {
-      color: '#00B400',
-  },
-
-        }}
+        backgroundColor: '#EDEDED', 
+        '& .MuiFilledInput-root': {
+            backgroundColor: 'transparent',
+        },
+        '& .MuiFilledInput-underline:after': {
+            borderBottomColor: 'transparent',
+        },
+        '& .MuiFilledInput-root::before': {
+            borderBottom: 'none', 
+        },
+        '&:hover .MuiFilledInput-root::before': {
+            borderBottom: 'none', 
+        },
+        '& .MuiFormLabel-root.Mui-focused': {
+          color: '#00B400',
+        },
+      }}
     />
   );
 }

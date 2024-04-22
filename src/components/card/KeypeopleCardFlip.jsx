@@ -1,31 +1,28 @@
-import React, {useState, useEffect}         from 'react';
+import React, {useState}                    from 'react';
 import { useNavigate }                      from 'react-router-dom';
 import EmailIcon                            from '@mui/icons-material/Email';
 import BusinessCenterIcon                   from '@mui/icons-material/BusinessCenter';
 import LocalPhoneIcon                       from '@mui/icons-material/LocalPhone';
 import BusinessIcon                         from '@mui/icons-material/Business'; //azienda
-import SettingsIcon from '@mui/icons-material/Settings';
-import DeleteIcon from '@mui/icons-material/Delete';
-import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-import ExploreIcon from '@mui/icons-material/Explore'; //need
-import DoubleArrowIcon from '@mui/icons-material/DoubleArrow'; //azioni
-import ChangeCircleIcon from '@mui/icons-material/ChangeCircle'; //cambia stato
-import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar'; //tipo
-import PersonIcon from '@mui/icons-material/Person'; //stato
-import CloseIcon from '@mui/icons-material/Close';
-import axios from 'axios';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, Alert, MenuItem } from '@mui/material';
+import SettingsIcon                         from '@mui/icons-material/Settings';
+import DeleteIcon                           from '@mui/icons-material/Delete';
+import AutoStoriesIcon                      from '@mui/icons-material/AutoStories';
+import ExploreIcon                          from '@mui/icons-material/Explore'; //need
+import DoubleArrowIcon                      from '@mui/icons-material/DoubleArrow'; //azioni
+import ChangeCircleIcon                     from '@mui/icons-material/ChangeCircle'; //cambia stato
+import PermContactCalendarIcon              from '@mui/icons-material/PermContactCalendar'; //tipo
+import PersonIcon                           from '@mui/icons-material/Person'; //stato
+import CloseIcon                            from '@mui/icons-material/Close';
+import axios                                from 'axios';
+import InfoIcon                             from '@mui/icons-material/Info';
 
-
-
-
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Alert, Stack, Pagination, Popover } from '@mui/material';
 import { 
     Card, 
     CardContent, 
     Box,
     Typography,
     Button,
-    CardActions,
     Modal,
     IconButton,
     List,
@@ -36,9 +33,7 @@ import {
     Autocomplete,
     FormControl,
     Snackbar
-    
     } from '@mui/material';
-import { Select } from 'antd';
 
 
 const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
@@ -46,8 +41,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
 
     //stati per la paginazione
     const [ pagina,             setPagina        ] = useState(0);
-    const [righePerPagina,      setRighePerPagina] = useState(10);
-    const quantita = 10;
+    const [righePerPagina,                       ] = useState(10);
 
     const [ modalStorico,        setModalStorico      ] = useState(false);
     const [ modalAzioni,         setModalAzioni       ] = useState(false);
@@ -55,21 +49,23 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
     const [ modalNeed,           setModalNeed         ] = useState(false);
     const [ modalCambiaStato,    setModalCambiaStato  ] = useState(false);
     const [ isFlipped,           setIsFlipped         ] = useState(false);
-    const [ activeLink,          setActiveLink        ] = useState(null);
+    const [ activeLink,                               ] = useState(null);
     const [ idKeypeople,         setIdKeypeople       ] = useState(null);
     const [ needAssociati,       setNeedAssociati     ] = useState([]);
     const [ tipologieOptions,    setTipologieOptions  ] = useState([]);
-    const [ azioni, setAzioni            ] = useState([]);
-    const [values, setValues] = useState({
+    const [ azioni,              setAzioni            ] = useState([]);
+    const [ anchorElStato,       setAnchorElStato     ] = useState(null);
+
+    const [values,               setValues            ] = useState({
         tipologie: '',
         data: '',
         note: ''
     });
 
     //stato per lo snackbar
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const [snackbarMessage, setSnackbarMessage] = useState('');
-    const [snackbarType, setSnackbarType] = useState('success'); 
+    const [ snackbarOpen,        setSnackbarOpen        ] = useState(false);
+    const [ snackbarMessage,     setSnackbarMessage     ] = useState('');
+    const [ snackbarType,        setSnackbarType        ] = useState('success'); 
 
 
     //funzioni per gestire lo snackbar
@@ -94,6 +90,17 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
         }
         setIsFlipped(!isFlipped); 
     };
+
+    const handlePopoverStatoOpen = (event) => {
+        setAnchorElStato(event.currentTarget);
+    };
+
+    const handlePopoverStatoClose = () => {
+        setAnchorElStato(null);
+    };
+
+    const openStato = Boolean(anchorElStato);
+
     
 
 
@@ -106,7 +113,6 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
         setModalStorico(true);
         azioniKeypeople(valori.id, event)
     };
-    const handleCloseModalStorico = () => setModalStorico(false);
 
     const handleOpenModalAzioni = (event) => {
         event.stopPropagation();
@@ -140,9 +146,6 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
         }));
     };
     
-    const handleCloseModalCambiaStato = () => setModalCambiaStato(false);
-
-
     const user = JSON.parse(sessionStorage.getItem('user'));
     const token = user?.token;
 
@@ -186,14 +189,6 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
         }
     };
 
-
-        //funzione per il cambio pagina
-        const handlePageChange = (newPage) => {
-            setPagina(newPage);
-            handleChangePagina(newPage);
-        };
-
-
         const handleChangePagina = async(newPage, id) => {
             const datiDaInviare = {
                 pagina: newPage,
@@ -213,19 +208,11 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
             setPagina(newPage); 
         };
         
-    
-
-    
-    
     const handleOpenModalNeed = (event) => {
         event.stopPropagation();
         setModalNeed(true);
         needKeypeople(valori.id, event);
     };
-    const handleCloseModalNeed = (event) => {
-        setModalNeed(false);
-    };
-
 
     const azioniData = async(id, event) => {
         try{
@@ -265,17 +252,16 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
         }
     };
     
-
-
     const cardContainerStyle = {
         width: '80%',
         borderRadius: '20px',
         marginLeft: '4em',
         marginRight: '2em',
         border: 'solid 2px #00B400',
+        transition: 'transform 0.3s ease, border-width 0.3s ease', 
             '&:hover': {
             cursor: 'pointer',
-            transform: 'scale(1.01)',
+            transform: 'scale(1.02)',
         }
     };
 
@@ -287,10 +273,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
         perspective: '1000px',
         borderRadius: '20px',
         display: 'flex',
-
-        minHeight: '16em',
-        // border: 'solid 2px #00B401',
-        
+        minHeight: '16em',        
     };
 
     const cardFrontStyle = {
@@ -305,27 +288,9 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
         left: 0,
         width: '100%',
         height: '100%',
-        // overflowY: 'auto',
     };
 
-
     const navigate = useNavigate();
-
-
-
-
-    // const cardStyle = {
-    //     borderRadius: '20px',
-    //     maxWidth: '80%',
-    //     justifyContent: 'center',
-    //     margin: 'auto',
-    //     cursor: 'pointer',
-    //     height: 'auto',
-    //     border: '2px solid', 
-    //     transition: 'transform 0.3s ease, border-width 0.3s ease',
-    //     ...getCardStyle(valori.tipologia) 
-    // };
-
 
     const userHasRole = (roleToCheck) => {
         const userString = sessionStorage.getItem('user');
@@ -359,7 +324,6 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                 handleOpenModalNeed(event);
             }
         },
-        
         {
             title: 'Storico',
             icon: <AutoStoriesIcon />,
@@ -381,18 +345,8 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                 handleOpenModalDelete(event);
             },
             isVisible: !userHasRole('ROLE_USER'),
-
         }
     ];
-
-
-    // const azioniOptions = [
-    //     { value: 1, label: 'Cold Call'},
-    //     { value: 2, label: 'Call'},
-    //     { value: 3, label: 'Messaggio'},
-    //     { value: 4, label: 'Prospection '},
-    //     { value: 5, label: 'Follow up'},
-    // ];
 
     const handleAzioniSubmit = async (id) => {
         const valoriDaInviare = {
@@ -427,15 +381,6 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
         }));
     };
 
-
-    // const handleChangeRighePerPagina = (event) => {
-    //     setRighePerPagina(+event.target.value);
-    //     setPagina(0); 
-    // };
-    
-
-    
-
     return (
         <Card
             raised 
@@ -466,18 +411,11 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
             >
                 {valori.nome} {valori.cognome}
             </Typography>
-            
-
-            {/* <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, color: 'black' }}>
-                {valori.citta}
-            </Typography> */}
-
 
             <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
                 <BusinessIcon sx={{ color: '#00B401', mr: 1 }} />
                 {valori.cliente.denominazione}
             </Typography>
-
 
             <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
                 <BusinessCenterIcon sx={{ color: '#00B401', mr: 1 }} />
@@ -505,15 +443,15 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
             </Typography>
                 </Box>
                 <Box sx={{ 
-            position: 'absolute', 
-            bottom: 0, 
-            right: 0, 
-            display: 'flex', 
-            justifyContent: 'flex-end', 
-            alignItems: 'end', 
-            paddingRight: '16px', 
-            paddingBottom: '16px' 
-        }}>
+                    position: 'absolute', 
+                    bottom: 0, 
+                    right: 0, 
+                    display: 'flex', 
+                    justifyContent: 'flex-end', 
+                    alignItems: 'end', 
+                    paddingRight: '16px', 
+                    paddingBottom: '16px' 
+                }}>
                 <img src={`data:image/png;base64,${valori.cliente.logo}`} alt="Logo" style={{width: '80px', height: '80px', borderRadius: '50%'}} />
         </Box>
                 </Box>
@@ -525,23 +463,6 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
         <div style={cardBackStyle}>
         <CardContent sx={{ backfaceVisibility: 'hidden'}}>
             {/* Contenuto della Card */}
-            {/* <Typography
-                gutterBottom
-                variant="h5"
-                component="div"
-                sx={{
-                color: 'black',
-                fontWeight: 'bold',
-                overflow: 'hidden',
-                whiteSpace: 'nowrap',
-                textOverflow: 'ellipsis',
-                width: '100%',
-                
-                }}
-            >
-                Menu
-            </Typography> */}
-
             <Box sx={{ display: 'flex', alignItems: 'start', justifyContent: 'flex-start', flexDirection: 'column', mb: 0.2 }}>
             <List>
                     {menuData
@@ -590,6 +511,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                 onClose={handleCloseModalDelete}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
+                
                 onClick={(event) => event.stopPropagation()}
                 sx={{
                     display: 'flex',
@@ -663,10 +585,11 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    
                 }}>
                     <Box sx={{ display:'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: '#EDEDED', overflow: 'auto'}}>
-                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', ml: 2, mt: 0.5, mb: 0.5}}>Storico delle azioni</Typography>
+                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', p: 3}}>
+                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', mt: 0.5, mb: 0.5}}>Storico delle azioni</Typography>
                             <IconButton sx={{ mr: 2, backgroundColor: 'transparent', border: 'none' }} onClick={() => setModalStorico(false)}>
                                 <CloseIcon sx={{ backgroundColor: 'transparent' }}/>
                             </IconButton>
@@ -693,15 +616,6 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                    {/* <TablePagination
-                        // rowsPerPageOptions={[5, 10, 25]}
-                        component="div"
-                        count={azioni.length}
-                        rowsPerPage={righePerPagina}
-                        page={pagina}
-                        onPageChange={(event, newPage) => handleChangePagina(newPage, valori.id)}
-                        // onRowsPerPageChange={handleChangeRighePerPagina}
-                    /> */}
                     </Box>
                 </Modal>
 
@@ -740,25 +654,6 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                                 <CloseIcon sx={{ backgroundColor: 'transparent' }}/>
                             </IconButton>
                         </Box>
-                        {/* <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2 }}>
-                        <IconButton
-                        
-                        onClick={(event) => {
-                            event.stopPropagation(); 
-                            setModalAzioni(false);
-                        }}                            
-                            sx={{ 
-                                position: 'absolute', 
-                                top: 8, 
-                                right: 8, 
-                                color: 'gray', 
-                            }}
-                        >
-                            <CloseIcon />
-                        </IconButton>
-                        </Box> */}
-
-
                         <FormControl fullWidth >
                             
                                 <Autocomplete
@@ -899,8 +794,8 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                     justifyContent: 'center',
                 }}>
                     <Box sx={{ display:'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: '#EDEDED'}}>
-                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', ml: 2, mt: 0.5, mb: 0.5}}>Lista dei Need</Typography>
+                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', p: 3}}>
+                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', mt: 0.5, mb: 0.5}}>Lista dei Need</Typography>
                             <IconButton sx={{ mr: 2, backgroundColor: 'transparent', border: 'none' }} onClick={() => setModalNeed(false)}>
                                 <CloseIcon sx={{ backgroundColor: 'transparent' }}/>
                             </IconButton>
@@ -925,15 +820,14 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                    <TablePagination
-                        // rowsPerPageOptions={[5, 10, 25]}
-                        component="div"
+                        <Stack spacing={2} sx={{ m: 2}} >
+                        <Pagination 
                         count={needAssociati.length}
                         rowsPerPage={righePerPagina}
                         page={pagina}
                         onPageChange={(event, newPage) => handleChangePagina(newPage, valori.id)}
-                        // onRowsPerPageChange={handleChangeRighePerPagina}
-                    />
+                        sx={{ display: 'flex', justifyContent: 'flex-end', mt: 10}} />
+                        </Stack>
                     </Box>
                 </Modal>
 
@@ -972,9 +866,10 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                                 <CloseIcon sx={{ backgroundColor: 'transparent' }}/>
                             </IconButton>
                         </Box>
-                        
-                        <FormControl fullWidth >
+                        <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%'}}>
+                        <FormControl fullWidth sx={{ width: '90%'}} >
                         <Autocomplete
+                                fullWidth
                                 id="stato-combo-box"
                                 options={statiOptions}
                                 getOptionLabel={(option) => option.label}
@@ -990,6 +885,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                                         {...params} 
                                         label="Stato"
                                         variant="filled" 
+                                        fullWidth
                                         sx={{
                                             height: '4em',
                                             p: 1,
@@ -1015,6 +911,11 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                             }
                             />
                             </FormControl>
+                            <IconButton onClick={handlePopoverStatoOpen} sx={{ mr: -3, ml: 2 }}>
+                                <InfoIcon />
+                            </IconButton>
+                            </Box>
+
                             <Button
                             onClick={handleUpdateStato}
                             sx={{
@@ -1034,18 +935,80 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                             </Box>
                             </Modal>
 
-                
+                            { /* POPOVER PER LE INFO DEL CAMBIO STATO */ }
+                            <Popover
+                                            open={openStato}
+                                            anchorEl={anchorElStato}
+                                            onClose={handlePopoverStatoClose}
+                                            anchorOrigin={{
+                                                vertical: 'bottom',
+                                                horizontal: 'right',
+                                            }}
+                                            transformOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'right',
+                                            }}
+                                            >
+                                            <List dense>
+                                                <ListItem>
+                                                <ListItemText 
+                                                    primary={
+                                                    <Box>
+                                                        <Typography component="span" sx={{ fontWeight: 'bold' }}>Gold:</Typography>
+                                                        {" ho ricevuto un’esigenza di business"}
+                                                    </Box>
+                                                    } 
+                                                />
+                                                </ListItem>
+                                                <ListItem>
+                                                <ListItemText 
+                                                    primary={
+                                                    <Box>
+                                                        <Typography component="span" sx={{ fontWeight: 'bold' }}>Silver:</Typography>
+                                                        {" ho fissato una prospection"}
+                                                    </Box>
+                                                    } 
+                                                />
+                                                </ListItem>
+                                                <ListItem>
+                                                <ListItemText 
+                                                    primary={
+                                                    <Box>
+                                                        <Typography component="span" sx={{ fontWeight: 'bold' }}>Bronze:</Typography>
+                                                        {" sono entrato in contatto"}
+                                                    </Box>
+                                                    } 
+                                                />
+                                                </ListItem>
+                                                <ListItem>
+                                                <ListItemText 
+                                                    primary={
+                                                    <Box>
+                                                        <Typography component="span" sx={{ fontWeight: 'bold' }}>Wood:</Typography>
+                                                        {" ho effettuato un’azione senza esito"}
+                                                    </Box>
+                                                    } 
+                                                />
+                                                </ListItem>
+                                                <ListItem>
+                                                <ListItemText 
+                                                    primary={
+                                                    <Box>
+                                                        <Typography component="span" sx={{ fontWeight: 'bold' }}>Start:</Typography>
+                                                        {" non ho ancora effettuato azioni commerciali"}
+                                                    </Box>
+                                                    } 
+                                                />
+                                                </ListItem>
+                                            </List>
+                                            </Popover>
 
                 { /* SNACKBAR  */}
-
                 <Snackbar open={snackbarOpen} autoHideDuration={8000} onClose={handleCloseSnackbar}>
-                    <Alert onClose={handleCloseSnackbar} severity={snackbarType} sx={{ width: '100%' }}>
+                    <Alert variant='filled' onClose={handleCloseSnackbar} severity={snackbarType} sx={{ width: '100%' }}>
                         {snackbarMessage}
                     </Alert>
                 </Snackbar>
-
-
-
     </Card>
     );
 };

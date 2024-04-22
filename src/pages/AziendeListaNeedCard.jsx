@@ -1,11 +1,9 @@
 import React, { useState, useEffect }                   from 'react';
 import axios                                            from 'axios';
-// import BusinessCenterIcon                               from '@mui/icons-material/BusinessCenter'; //aziende
 import InfiniteScroll                                   from 'react-infinite-scroll-component';
-import RicercheNeed                                     from '../components/ricerche/RicercheNeed';
 import ListaNeedCard                                    from '../components/card/ListaNeedCard';
-import { useLocation, useParams, useNavigate }                       from 'react-router-dom';
-import RicercheListaNeed from '../components/ricerche/RicercheListaNeed.jsx';
+import { useLocation, useParams, useNavigate }          from 'react-router-dom';
+import RicercheListaNeed                                from '../components/ricerche/RicercheListaNeed.jsx';
 
 import { 
     Box,
@@ -24,14 +22,8 @@ const AziendeListaNeedCard = () => {
     const { id } = params;
     const valori = location;
 
-
-
-
-
     const [ originalListaNeed,      setOriginalListaNeed    ] = useState([]);
     const [ loading,                setLoading              ] = useState(false);
-
-
 
     //stati per le ricerche
     const [ tipologiaOptions,               setTipologiaOptions         ] = useState([]);
@@ -79,18 +71,17 @@ const AziendeListaNeedCard = () => {
             quantita: 10
         };
         try {
-            const response              = await axios.get(`http://89.46.196.60:8443/need/react/cliente/modificato/${id}`, { headers: headers, params: filtriDaInviare });
-            const responseOwner         = await axios.get("http://89.46.196.60:8443/aziende/react/owner",           { headers: headers });
-            const responseTipologia     = await axios.get("http://89.46.196.60:8443/need/react/tipologia",          { headers: headers });
-            const responseStato         = await axios.get("http://89.46.196.60:8443/need/react/stato",              { headers: headers });
-            const responseKeyPeople     = await axios.get(`http://89.46.196.60:8443/keypeople/react/azienda/${id}`, { headers: headers });
+            const response              = await axios.get(`http://localhost:8080/need/react/cliente/modificato/${id}`, { headers: headers, params: filtriDaInviare });
+            const responseOwner         = await axios.get("http://localhost:8080/aziende/react/owner",                 { headers: headers });
+            const responseTipologia     = await axios.get("http://localhost:8080/need/react/tipologia",                { headers: headers });
+            const responseStato         = await axios.get("http://localhost:8080/need/react/stato",                    { headers: headers });
+            const responseKeyPeople     = await axios.get(`http://localhost:8080/keypeople/react/azienda/${id}`,       { headers: headers });
 
             if (Array.isArray(responseKeyPeople.data)) {
                 setKeyPeopleOptions(responseKeyPeople.data.map((keyPeople) => ({ label: keyPeople.nome, value: keyPeople.id})));
             } else {
                 console.error("I dati del keypeople ottenuti non sono nel formato Array; ", responseKeyPeople.data);
             }
-
 
             if (Array.isArray(responseOwner.data)) {
                 setOwnerOptions(responseOwner.data.map((owner) => ({ label: owner.descrizione, value: owner.id})));
@@ -135,9 +126,6 @@ const AziendeListaNeedCard = () => {
     }, []);
 
 
-
-
-
     //caricamento dati con paginazione
 
     const fetchMoreData = async () => {
@@ -145,16 +133,16 @@ const AziendeListaNeedCard = () => {
         const filtriAttivi = Object.values(filtri).some(value => value !== null && value !== '');
 
         const url = filtriAttivi ?
-        "http://89.46.196.60:8443/need/react/ricerca/modificato" :
-        `http://89.46.196.60:8443/need/react/cliente/modificato/${id}`;
+        "http://localhost:8080/need/react/ricerca/modificato" :
+        `http://localhost:8080/need/react/cliente/modificato/${id}`;
 
         const filtriDaInviare = {
-            owner: filtri.owner || null,
-            tipologia: filtri.tipologia || null,
-            stato: filtri.stato || null,
-            priorita: filtri.priorita || null,
-            week: filtri.week || null,
-            keyPeople: filtri.keyPeople || null,
+            owner:      filtri.owner            || null,
+            tipologia:  filtri.tipologia        || null,
+            stato:      filtri.stato            || null,
+            priorita:   filtri.priorita         || null,
+            week:       filtri.week             || null,
+            keyPeople:  filtri.keyPeople        || null,
             pagina: paginaSuccessiva,
             quantita: 10
         };
@@ -177,18 +165,18 @@ const AziendeListaNeedCard = () => {
       //funzione di ricerca
       const handleRicerche = async () => {
         const filtriDaInviare = {
-            descrizione: filtri.descrizione || null,
-            tipologia: filtri.tipologia || null,
-            owner: filtri.owner || null,
-            stato: filtri.stato || null,
-            azienda: id,
-            keyPeople: filtri.keyPeople || null,
+            descrizione:        filtri.descrizione  || null,
+            tipologia:          filtri.tipologia    || null,
+            owner:              filtri.owner        || null,
+            stato:              filtri.stato        || null,
+            keyPeople:          filtri.keyPeople    || null,
+            azienda:            id,
             pagina: 0,
             quantita: 10
         };
         setLoading(true);
         try {
-            const response = await axios.get("http://89.46.196.60:8443/need/react/ricerca/modificato", { headers: headers, params: filtriDaInviare });
+            const response = await axios.get("http://localhost:8080/need/react/ricerca/modificato", { headers: headers, params: filtriDaInviare });
 
             if (Array.isArray(response.data)) {
                 setOriginalListaNeed(response.data);

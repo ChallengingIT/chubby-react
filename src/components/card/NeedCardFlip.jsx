@@ -1,23 +1,19 @@
 import React, {useState, useEffect}                 from 'react';
 import { useNavigate }                              from 'react-router-dom';
-// import ChecklistIcon                                from '@mui/icons-material/Checklist';
-import BusinessCenterIcon                   from '@mui/icons-material/BusinessCenter';
+import BusinessCenterIcon                           from '@mui/icons-material/BusinessCenter';
 import axios                                        from 'axios';
-import Torcia                                       from "../../images/torciaSF.png";
 import JoinInnerIcon                                from '@mui/icons-material/JoinInner'; //match
 import ChangeCircleIcon                             from '@mui/icons-material/ChangeCircle'; //cambia stato
 import DeleteIcon                                   from '@mui/icons-material/Delete'; //cancella
 import { Edit }                                     from '@mui/icons-material';
 import AutoModeIcon                                 from '@mui/icons-material/AutoMode'; //stato
 import TagIcon                                      from '@mui/icons-material/Tag'; //numero progressivo
-import NuovaTorcia                                  from "../../images/nuovaTorcia.svg";
 import PlaceIcon                                    from '@mui/icons-material/Place';
-import CloseIcon from '@mui/icons-material/Close';
-
-
-
-
-
+import CloseIcon                                    from '@mui/icons-material/Close';
+import TrendingDownIcon                             from '@mui/icons-material/TrendingDown';
+import TrendingFlatIcon                             from '@mui/icons-material/TrendingFlat';
+import TrendingUpIcon                               from '@mui/icons-material/TrendingUp';
+import CallMadeIcon                                 from '@mui/icons-material/CallMade'; //priorità massima
 
 import { 
     Card, 
@@ -26,9 +22,6 @@ import {
     Typography,
     Button,
     Modal,
-    Select,
-    MenuItem,
-    Popover,
     IconButton,
     List,
     ListItem,
@@ -38,10 +31,6 @@ import {
     TextField,
     Autocomplete
     } from '@mui/material';
-
-
-
-
 
 const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
 
@@ -54,7 +43,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
         stato: ''
     });
     const [isFlipped, setIsFlipped] = useState(false);
-    const [activeLink, setActiveLink] = useState(null);
+    const [activeLink,            ] = useState(null);
 
 
 
@@ -87,8 +76,6 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
         navigate(`/need/modifica/${valori.id}`, { state: { ...valori } });
     };
 
-
-
     const handleOpenModalStato = (id, event) => {
         event.stopPropagation();
         setModalStato(true);
@@ -99,12 +86,6 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
         }));
     };
     
-    const handleCloseModalStato = () => setModalStato(false);
-
-    const handleChangeStato = (event) => {
-        setNewStato(event.target.value); 
-    };
-
 
     const handleUpdateStato = async () => {
         const idStato = values.stato;  
@@ -118,10 +99,6 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
         }
     };
     
-
-
-
-
     const handleOpenModalDelete = () => setModalDelete(true);
     const handleCloseModalDelete = () => setModalDelete(false);
 
@@ -137,13 +114,11 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
         marginLeft: '4em',
         marginRight: '2em',
         border: 'solid 2px #00B400',
+        transition: 'transform 0.3s ease, border-width 0.3s ease', 
             '&:hover': {
             cursor: 'pointer',
-            transform: 'scale(1.01)',
+            transform: 'scale(1.02)',
         }
-        
-       
-        
     };
 
     const cardStyle = {
@@ -154,10 +129,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
         perspective: '1000px',
         borderRadius: '20px',
         display: 'flex',
-
-        minHeight: '18em',
-        // border: 'solid 2px #00B401',
-        
+        minHeight: '18em',        
     };
 
     const cardFrontStyle = {
@@ -173,6 +145,24 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
         width: '100%',
         height: '100%',
     };
+
+
+
+    const mediaPriorita = (priorita) => {
+        if (priorita >= 0 && priorita <= 1) {
+            return { icon: <TrendingDownIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Bassa" };
+        } else if (priorita > 1 && priorita <= 2) {
+            return { icon: <TrendingFlatIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Media" };
+        } else if (priorita > 2 && priorita <= 3) {
+            return { icon: <TrendingUpIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Alta" };
+        } else if (priorita > 3) {
+            return { icon: <CallMadeIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Massima" };
+        } else {
+            return { icon: null, text: "" }; 
+        }
+    };
+
+    const { icon, text } = mediaPriorita(valori.priorita);
 
     const menuData = [
         {
@@ -249,6 +239,12 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
                     <PlaceIcon sx={{ color: '#00B401', mr: 1 }} />
                     {valori.location}
+            </Typography>
+
+
+            <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
+                    {icon}
+                    Priorità: {text}
             </Typography>
 
 
@@ -338,11 +334,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
                     ))}
                 </List>
         </Box>
-
-
-
         </CardContent>
-
         </div>
         </div>
 
@@ -411,88 +403,6 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
                             </Box>
                             </Box>
                 </Modal>
-                
-
-{/* 
-                <Modal
-                        open={modalStato}
-                        onClose={() => setModalStato(false)}
-                        aria-labelledby="modal-modal-title"
-                        aria-describedby="modal-modal-description"
-                        sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                        >
-                        <Box
-                            sx={{
-                            backgroundColor: 'white',
-                            p: 4,
-                            borderRadius: 2,
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            flexDirection: 'column',
-                            gap: 2,
-                            width: '40vw',
-                            }}
-                        >
-                            <Typography id="modal-modal-title" variant="h6" component="h2">
-                            Cambia stato al need
-                            </Typography>
-
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={newStato}
-                                onChange={handleChangeStato}
-                                sx={{ width: '30%' }}
-                            >
-                                {statoOptions.map((option) => (
-                                    <MenuItem key={option.value} value={option.value}>
-                                        {option.label}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-
-                            <Box
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                pt: 2,
-                                gap: 3
-                            }}
-                            >
-                            <Button
-                                onClick={handleCloseModalStato}
-                                sx={{
-                                backgroundColor: 'black',
-                                color: 'white',
-                                '&:hover': {
-                                    backgroundColor: '#333',
-                                },
-                                }}
-                            >
-                                Indietro
-                            </Button>
-
-                            <Button
-                                onClick={handleUpdateStato}
-                                sx={{
-                                backgroundColor: '#00B401',
-                                color: 'white',
-                                '&:hover': {
-                                    backgroundColor: '#006b2b',
-                                },
-                                }}
-                            >
-                                Salva
-                            </Button>
-                            </Box>
-                        </Box>
-                        </Modal> */}
-
 
 { /* MODAL PER IL CAMBIO STATO */ }
                 <Modal
@@ -589,10 +499,6 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
                             </Button>
                             </Box>
                             </Modal>
-
-
-
-
     </Card>
     );
 };

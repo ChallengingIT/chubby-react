@@ -15,30 +15,26 @@ const AggiungiRecruitingGrafica = () => {
     const navigate = useNavigate();
 
     //stati della pagina
-    const [ activeSection,      setActiveSection        ] = useState('Profilo Candidato');
-    const [ currentPageIndex,   setCurrentPageIndex     ] = useState(0);
-    const [ alert,              setAlert                ] = useState({ open: false, message: ''});
-    const [ errors,             setErrors               ] = useState({});
-    const [ loading,            setLoading              ] = useState(true);    
+    const [ activeSection,              setActiveSection            ] = useState('Profilo Candidato');      
+    const [ currentPageIndex,           setCurrentPageIndex         ] = useState(0);
+    const [ alert,                      setAlert                    ] = useState({ open: false, message: ''});
+    const [ errors,                     setErrors                   ] = useState({});
+    const [ loading,                    setLoading                  ] = useState(true);    
 
     //stati per i valori
-    const [ idCandidato,        setIdCandidato          ] = useState([]);
-    const [ fileCV,             setFileCV               ] = useState(null);
-    const [ fileCF,             setFileCF               ] = useState(null);
-    const [ statoOptions,       setStatoOptions         ] = useState([]);
-    const [ jobTitleOptions,    setJobTitleOptions      ] = useState([]);
-    const [ tipologiaOptions,   setTipologiaOptions     ] = useState([]);
-    const [ skillsOptions,      setSkillsOptions        ] = useState([]);
-    const [ ownerOptions,       setOwnerOptions         ] = useState([]);
-    const [ facoltaOptions,     setFacoltaOptions       ] = useState([]);
-    const [ values,             setValues               ] = useState([]);
-    const [ jobTitleEnable,     setJobTitleEnable       ] = useState(false);    
-    const [ livelloScolasticoOptions, setLivelloScolasticoOptions ] = useState([]);
-    const [ funzioniAziendaliOptions, setFunzioniAziendaliOptions ] = useState([]);
-
-
-
-
+    const [ idCandidato,                setIdCandidato              ] = useState([]);
+    const [ fileCV,                     setFileCV                   ] = useState(null);
+    const [ fileCF,                     setFileCF                   ] = useState(null);
+    const [ statoOptions,               setStatoOptions             ] = useState([]);
+    const [ jobTitleOptions,            setJobTitleOptions          ] = useState([]);
+    const [ tipologiaOptions,           setTipologiaOptions         ] = useState([]);
+    const [ skillsOptions,              setSkillsOptions            ] = useState([]);
+    const [ ownerOptions,               setOwnerOptions             ] = useState([]);
+    const [ facoltaOptions,             setFacoltaOptions           ] = useState([]);
+    const [ values,                     setValues                   ] = useState([]);
+    const [ jobTitleEnable,             setJobTitleEnable           ] = useState(false);    
+    const [ livelloScolasticoOptions,   setLivelloScolasticoOptions ] = useState([]);
+    const [ funzioniAziendaliOptions,   setFunzioniAziendaliOptions ] = useState([]);
 
 
     const user = JSON.parse(sessionStorage.getItem("user"));
@@ -207,12 +203,12 @@ const AggiungiRecruitingGrafica = () => {
 
 
      // Funzione per il cambio stato degli input
-     const handleChange = (fieldValue) => {
+    const handleChange = (fieldValue) => {
         setValues(prevValues => ({
             ...prevValues,
             ...fieldValue
         }));
-        };
+    };
 
         //funzione per il cambio stato delle skill
         const handleChangeSkill = (fieldValue) => {
@@ -225,20 +221,6 @@ const AggiungiRecruitingGrafica = () => {
             }));
         };
         
-
-
-
-    //funzione di change per decimalNumber
-    // const handleChangeDecimal = (fieldName, fieldValue) => {
-    //     const value = fieldValue.replace(/,/g, '.');
-    //     if (!value || value.match(/^\d+(\.\d{0,2})?$/)) {
-    //       setValues(prevValues => ({
-    //         ...prevValues,
-    //         [fieldName]: value  
-    //       }));
-    //     }
-    //   };
-
 
     //funzioni per cambiare pagina del form
     const handleBackButtonClick = () => {
@@ -267,7 +249,6 @@ const AggiungiRecruitingGrafica = () => {
     };
 
 
-
         //funzione per la chiusura dell'alert
         const handleCloseAlert = (reason) => {
             if (reason === 'clickaway') {
@@ -293,7 +274,6 @@ const AggiungiRecruitingGrafica = () => {
                 });
 
                 const skills = values.skills ? values.skills.join(',') : '';
-
 
                 delete values.skills;
                 delete values.cv;
@@ -373,10 +353,6 @@ const AggiungiRecruitingGrafica = () => {
         }
     };
 
-
-    
-    
-
         const fieldObbligatori = [ "nome", "cognome", "email", "anniEsperienzaRuolo", "tipologia", "dataUltimoContatto", "tipo", "stato", "livelloScolastico", "funzioneAziendale" ];
 
         const fields =[
@@ -391,13 +367,13 @@ const AggiungiRecruitingGrafica = () => {
     
     
             { type: "titleGroups",                label: "Esperienza"            },
-            { label: "Anni di Esperienza",              name: "anniEsperienza",           type: "decimalNumber"                                                            },
-            { label: "Anni di Esperienza nel Ruolo*",   name: "anniEsperienzaRuolo",      type: "decimalNumber"                                                            },
+            { label: "Anni di Esperienza",              name: "anniEsperienza",           type: "decimalNumber"                                                   },
+            { label: "Anni di Esperienza nel Ruolo*",   name: "anniEsperienzaRuolo",      type: "decimalNumber"                                                   },
             { label: "Livello Scolastico*",             name: "livelloScolastico",        type: "select",               options: livelloScolasticoOptions         },
             { label: "Facoltà",                         name: "facolta",                  type: "select",               options: facoltaOptions                   },
     
             { type: "titleGroups",                label: "Posizione Lavorativa"            },
-            { label: "Tipologia*",                     name: "tipo",                     type: "select",          options: tipologiaOptions                      },
+            { label: "Tipologia*",                     name: "tipo",                     type: "select",          options: tipologiaOptions                       },
             { label: "Tipo Ricerca",                   name: "ricerca",                  type: "select",          options: [
                 { value: "C", label: "C"},
                 { value: "R", label: "R" },
@@ -413,7 +389,7 @@ const AggiungiRecruitingGrafica = () => {
         { label: "Data Inserimento*",                  name: "dataUltimoContatto",       type: "date"                                                            },
         { label: "Stato*",                             name: "stato",                    type: "select",               options: statoOptions                     },
         { label: "Owner",                              name: "owner",                    type: "select",               options: ownerOptions                     },
-        { label: "Skills",                             name: "skills",                    type: "multipleSelect",  options: skillsOptions                    },
+        { label: "Skills",                             name: "skills",                    type: "multipleSelect",        options: skillsOptions                    },
         { label: "RAL/Tariffa",                        name: "ral",                      type: "text"                                                            },
         { label: "Disponibilità",                      name: "disponibilita",            type: "text"                                                            },
         { label: "Note",                               name: "note",                     type: "note"                                                            },
@@ -589,10 +565,10 @@ const AggiungiRecruitingGrafica = () => {
                                             marginBottom: "10px", 
                                             marginTop: "10px", 
                                             justifyContent:"flex-end", 
-                                            color: 'black',
+                                            color: 'white',
                                             ':hover': {
                                                 backgroundColor: '#00B400',
-                                                color: 'black',
+                                                color: 'white',
                                                 transform: 'scale(1.1)'
                                             }
                                         }}
@@ -634,10 +610,10 @@ const AggiungiRecruitingGrafica = () => {
                                             marginTop: "10px", 
                                             justifyContent:"flex-end", 
                                             backgroundColor: '#00B400', 
-                                            color: 'black',
+                                            color: 'white',
                                             ':hover': {
                                                 backgroundColor: '#00B400',
-                                                color: 'black',
+                                                color: 'white',
                                                 transform: 'scale(1.1)'
         
                                             }
@@ -656,32 +632,12 @@ const AggiungiRecruitingGrafica = () => {
                                 </Box>
                             );
 
-
-
-
-                
-
-                
                     default:
                         return null;
             }
         }
         };
 
-
-        // const renderFieldsGroups = () => {
-        //     return (
-        //         <Box sx={{ ml: 15, mr: 15}}>
-        //             {groupedFields[currentPageIndex].map((fields, index) => {
-        //                 return (
-        //                     <Box key={index}>
-        //                         {renderFields(fields)}
-        //                     </Box>
-        //                 );
-        //             })}
-        //         </Box>
-        //     );
-        // };
 
         const renderFieldsGroups = () => {
             return (

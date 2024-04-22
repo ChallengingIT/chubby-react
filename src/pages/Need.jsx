@@ -1,21 +1,16 @@
 import React, { useState, useEffect }                   from 'react';
 import axios                                            from 'axios';
-// import BusinessCenterIcon                               from '@mui/icons-material/BusinessCenter'; //aziende
-import NeedCard                                         from '../components/card/NeedCard';
 import InfiniteScroll                                   from 'react-infinite-scroll-component';
-import RicercheNeed from '../components/ricerche/RicercheNeed';
-import NeedCardFlip from '../components/card/NeedCardFlip';
+import RicercheNeed                                     from '../components/ricerche/RicercheNeed';
+import NeedCardFlip                                     from '../components/card/NeedCardFlip';
 
 import { 
     Box,
     Grid,
-    CircularProgress,
     Skeleton
     } from '@mui/material';
 
     const Need = () => {
-
-
 
         const [ originalNeed,              setOriginalNeed          ] = useState([]);
         const [ loading,                   setLoading               ] = useState(false);
@@ -43,8 +38,6 @@ import {
         const [ pagina,                 setPagina           ] = useState(0);
         const [ hasMore,                setHasMore          ] = useState(true);
 
-
-
         const user = JSON.parse(sessionStorage.getItem('user'));
         const token = user?.token;
 
@@ -55,17 +48,9 @@ import {
 
         //caricamento dati al montaggio
         const fetchData = async ()  => {
-            // if(originalNeed.length > 0) { return; };
-
             setLoading(true);
 
             const filtriDaInviare = {
-                // descrizione: filtri.descrizione || null,
-                // tipologia: filtri.tipologia || null,
-                // owner: filtri.owner || null,
-                // stato: filtri.stato || null,
-                // azienda: filtri.azienda || null,
-                // keyPeople: filtri.keyPeople || null,
                 pagina: 0,
                 quantita: 10
             };
@@ -117,17 +102,6 @@ import {
             }
         };
 
-
-        // useEffect(() => {
-        //     const filtriSalvati = sessionStorage.getItem('filtriRicercaNeed');
-        //     if(filtriSalvati) {
-        //         setFiltri(JSON.parse(filtriSalvati));
-        //         handleRicerche();
-        //     } else {
-        //     fetchData();
-        //     }
-        //     // eslint-disable-next-line
-        // }, []);
 
             useEffect(() => {
                 const filtriSalvati = sessionStorage.getItem('filtriRicercaNeed');
@@ -250,25 +224,6 @@ import {
             }
         };
 
-
-
-
-
-
-        
-
-        //funzione cambiamento stato select
-        // const handleFilterChange = (name) => (event) => {
-        //     const newValue = event.target.value;
-        //     setFiltri({...filtri, [name]:newValue});
-        //     if(name === 'descrizione' && newValue === '') {
-        //         fetchData();
-        //     } else {
-        //         handleRicerche();
-        //     }
-        // };
-
-
 const handleFilterChange = (name) => (event) => {
     const newValue = event.target.value;
     setFiltri(currentFilters => {
@@ -290,26 +245,46 @@ const handleFilterChange = (name) => (event) => {
 };
 
         useEffect(() => {
-            const { descrizione, ...otherFilters } = filtri;
+            const { ...otherFilters } = filtri;
             const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x !== null);
             if (filtriHasValues) {
                 handleRicerche();
+            } else {
+                fetchData();
             }
-        }, [filtri.tipologia, filtri.stato, filtri.owner, filtri.azienda, filtri.keypeople]);
+        }, [filtri.tipologia, filtri.stato, filtri.owner, filtri.azienda, filtri.keypeople, filtri.descrizione]);
+
+
+            // const handleFilterChange = (name) => (event) => {
+            //     const newValue = event.target.value;
+            //     setFiltri(currentFilters => {
+            //         const newFilters = { ...currentFilters, [name]: newValue };
+            //         setPagina(0);
+            //         return newFilters;
+            //     });
+            // };
+            
+            
+            // useEffect(() => {
+            //     // Controllo se tutti i filtri sono vuoti 
+            //     const areFiltersEmpty = Object.values(filtri).every(value => value === null || value === '');
+            //     if (areFiltersEmpty) {
+            //         fetchData();
+            //     } else {
+            //     console.log("filtri: ", filtri);
+            //         handleRicerche();
+            //     }
+            // }, [filtri, pagina]);
 
         useEffect(() => {
             sessionStorage.setItem('filtriRicercaNeed', JSON.stringify(filtri));
         }, [filtri]);
         
 
-
-
-
-
         //funzione di reset dei campi di ricerca
         const handleReset = async () => {
             setFiltri({
-                descrizione: null,
+                descrizione: '',
                 stato: null,
                 tipologia: null,
                 owner: null,
@@ -319,10 +294,8 @@ const handleFilterChange = (name) => (event) => {
             setPagina(0);
             setOriginalNeed([]);
             setHasMore(true);
-
             await fetchData(0);
         };
-
 
         //funzione per cancellare il need
         const handleDelete = async (id) => {
@@ -344,13 +317,6 @@ const handleFilterChange = (name) => (event) => {
         const handleContactChange = (contattoId) => {
             setFiltri(prev => ({ ...prev, keypeople: contattoId }));
         };
-
-
-
-
-
-
-
 
         return(
             <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto', width: '100vw' }}>
@@ -388,20 +354,10 @@ const handleFilterChange = (name) => (event) => {
                     dataLength={originalNeed.length}
                     next={fetchMoreData}
                     hasMore={hasMore}
-                    // loader={'Caricamento in corso...'}
                     >
                                 {/* Main Content Area */}
                     <Grid container spacing={2} sx={{ mt: 1, mb: 4}}>
                         { loading ? (
-                            // <Box
-                            // sx={{
-                            //     display: 'flex',
-                            //     justifyContent: 'center',
-                            //     alignItems: 'center',
-                            //     height: '100%'
-                            // }}>
-                            //     <CircularProgress sx={{ color: '#00B401'}}/> 
-                            // </Box>
                             <>
                             {Array.from(new Array(quantita)).map((_, index) => (
                                 <Grid item xs={12} md={6} key={index}>

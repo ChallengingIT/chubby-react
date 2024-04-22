@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { Box, Typography, Button } from '@mui/material';
+import CloudUploadIcon                from "@mui/icons-material/CloudUpload";
+import { Box, Typography, Button }    from '@mui/material';
 
 function CustomImgFieldModifica({ label, onChange, initialValues }) {
     const [imagePreview, setImagePreview] = useState('');

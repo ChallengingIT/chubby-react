@@ -1,16 +1,14 @@
 import React, { useState, useEffect }                   from 'react';
 import axios                                            from 'axios';
-import AziendeCard                                      from '../components/card/AziendeCard';
 import InfiniteScroll                                   from "react-infinite-scroll-component";
 import RicercheAziende                                  from '../components/ricerche/RicercheAziende';    
+import AziendeCardFlip                                  from '../components/card/AziendeCardFlip';
 
 import { 
     Box,
     Grid,
     Skeleton
     } from '@mui/material';
-import ProvaCardFlip from '../components/card/AziendeCardFlip';
-import AziendeCardFlip from '../components/card/AziendeCardFlip';
 
 
 const Aziende = () => {
@@ -20,45 +18,40 @@ const Aziende = () => {
 
 
     //stati ricerche
-    // const [ clienteOptions,             setClienteOptions             ] = useState([]);
     const [ ownerOptions,               setOwnerOptions               ] = useState([]);
     const [ provinceOptions,            setProvinceOptions            ] = useState([]);
-    const [ role, setRole] = useState('');
-
-
-    const getValueLabel = (value) => {
-        const option = ownerOptions.find((option) => option.value === value);
-        return option ? option.label : null;
-      };
-      
-
-    const [filtri, setFiltri] = useState(() => {
-        const filtriSalvati = sessionStorage.getItem('filtriRicercaAziende');
-        if (filtriSalvati) {
-          const filtriParsed = JSON.parse(filtriSalvati);
-          if (filtriParsed.owner) {
-            filtriParsed.ownerLabel = getValueLabel(filtriParsed.owner);
-          }
-          return filtriParsed;
-        }
-        return {
-          denominazione: null,
-          tipologia: null,
-          stato: null,
-          owner: null,
-          ida: null,
-          ownerLabel: null, 
-        };
-      });
-      
-    
 
     //stato paginazione
     const [ pagina,                 setPagina       ] = useState(0);
     const [ hasMore,                setHasMore      ] = useState(true);
-
+    
     const quantita = 10;
 
+
+        const getValueLabel = (value) => {
+            const option = ownerOptions.find((option) => option.value === value);
+            return option ? option.label : null;
+        };
+        
+
+        const [filtri, setFiltri] = useState(() => {
+            const filtriSalvati = sessionStorage.getItem('filtriRicercaAziende');
+            if (filtriSalvati) {
+            const filtriParsed = JSON.parse(filtriSalvati);
+            if (filtriParsed.owner) {
+                filtriParsed.ownerLabel = getValueLabel(filtriParsed.owner);
+            }
+            return filtriParsed;
+            }
+            return {
+                denominazione: null,
+                tipologia: null,
+                stato: null,
+                owner: null,
+                ida: null,
+                ownerLabel: null, 
+            };
+        });
 
     const user = JSON.parse(sessionStorage.getItem('user'));
     const token = user?.token;
@@ -99,15 +92,15 @@ const Aziende = () => {
                 }
             }
 
-            const baseUrl = userHasRole('ROLE_ADMIN') ? "http://89.46.196.60:8443/aziende/react/mod" : "http://89.46.196.60:8443/aziende/react/mod/personal";
+            const baseUrl = userHasRole('ROLE_ADMIN') ? "http://localhost:8080/aziende/react/mod" : "http://localhost:8080/aziende/react/mod/personal";
 
             try {
             const responseAziende = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
 
-            // const responseAziende   = await axios.get("http://89.46.196.60:8443/aziende/react/mod",     { headers: headers , params: filtriDaInviare });
-            // const responseCliente   = await axios.get("http://89.46.196.60:8443/aziende/react/select",  { headers });
-            const responseOwner     = await axios.get("http://89.46.196.60:8443/aziende/react/owner",   { headers: headers });
-            const provinceResponse = await axios.get("http://89.46.196.60:8443/aziende/react/province", { headers: headers });
+            // const responseAziende   = await axios.get("http://localhost:8080/aziende/react/mod",     { headers: headers , params: filtriDaInviare });
+            // const responseCliente   = await axios.get("http://localhost:8080/aziende/react/select",  { headers });
+            const responseOwner     = await axios.get("http://localhost:8080/aziende/react/owner",   { headers: headers });
+            const provinceResponse = await axios.get("http://localhost:8080/aziende/react/province", { headers: headers });
 
             if (Array.isArray(responseOwner.data)) {
             setOwnerOptions(responseOwner.data.map((owner, index) => ({ label: owner.descrizione, value: owner.id })));
@@ -141,20 +134,6 @@ const Aziende = () => {
             }
         };
 
-
-        // useEffect(() => {
-        //     const filtriSalvati = sessionStorage.getItem('filtriRicercaAziende');
-        //     if (filtriSalvati) {
-        //         setFiltri(JSON.parse(filtriSalvati));
-        //         handleRicerche();
-        //     } else {
-        //     fetchData();
-        //     }
-        //     // eslint-disable-next-line
-        // }, []); 
-
-
-
         useEffect(() => {
             const filtriSalvati = sessionStorage.getItem('filtriRicercaAziende');
             if (filtriSalvati) {
@@ -177,12 +156,6 @@ const Aziende = () => {
         const fetchMoreData = async () => {
             const paginaSuccessiva = pagina + 1;
 
-            // const filtriAttivi = Object.values(filtri).some(value => value !== null && value !== '');
-
-            // const url = filtriAttivi ?
-            // "http://89.46.196.60:8443/aziende/react/ricerca/mod" :
-            // "http://89.46.196.60:8443/aziende/react/mod";
-
             if (!userHasRole('ROLE_ADMIN')) {
                 const userString = sessionStorage.getItem('user');
                 if (userString) {
@@ -191,7 +164,7 @@ const Aziende = () => {
                 }
             }
         
-            const baseUrl = userHasRole('ROLE_ADMIN') ? "http://89.46.196.60:8443/aziende/react/mod" : "http://89.46.196.60:8443/aziende/react/mod/personal";
+            const baseUrl = userHasRole('ROLE_ADMIN') ? "http://localhost:8080/aziende/react/mod" : "http://localhost:8080/aziende/react/mod/personal";
         
             const filtriDaInviare = {
                 ...filtri,
@@ -237,12 +210,12 @@ const Aziende = () => {
                     }
                 }
             
-                const baseUrl = userHasRole('ROLE_ADMIN') ? "http://89.46.196.60:8443/aziende/react/ricerca/mod" : "http://89.46.196.60:8443/aziende/react/ricerca/mod/personal";
+                const baseUrl = userHasRole('ROLE_ADMIN') ? "http://localhost:8080/aziende/react/ricerca/mod" : "http://localhost:8080/aziende/react/ricerca/mod/personal";
             
                 setLoading(true);     
                 try {
                     const response = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
-                    const responseOwner     = await axios.get("http://89.46.196.60:8443/aziende/react/owner",   { headers });
+                    const responseOwner     = await axios.get("http://localhost:8080/aziende/react/owner",   { headers });
 
                     if (Array.isArray(responseOwner.data)) {
                     setOwnerOptions(responseOwner.data.map((owner, index) => ({ label: owner.descrizione, value: owner.id })));
@@ -285,25 +258,36 @@ const Aziende = () => {
                     return newFilters;
                 });
             };
-            // const handleFilterChange = (name) => (event) => {
-            //     const newValue = event.target.value;
-            //     setFiltri({ ...filtri, [name]: newValue });
-                
-            //     if (name === 'denominazione' && newValue === '') {
-            //         fetchData();
-            //     } else {
-            //         handleRicerche();
-            //     }
-            // };
 
             useEffect(() => {
-                const { denominazione, ...otherFilters } = filtri;
+                const { ...otherFilters } = filtri;
                 const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x != null);
             
                 if (filtriHasValues) {
                     handleRicerche();
                 }
-            }, [filtri.tipologia, filtri.stato, filtri.owner, filtri.ida]);
+            }, [filtri.tipologia, filtri.stato, filtri.owner, filtri.ida, filtri.denominazione]);
+
+            // const handleFilterChange = (name) => (event) => {
+            //     const newValue = event.target.value;
+            //     setFiltri(currentFilters => {
+            //         const newFilters = { ...currentFilters, [name]: newValue };
+            //         setPagina(0);
+            //         setHasMore(true);
+            //         return newFilters;
+            //     });
+            // };
+            
+            
+            // useEffect(() => {
+            //     // Controllo se tutti i filtri sono vuoti 
+            //     const areFiltersEmpty = Object.values(filtri).every(value => value === null || value === '');
+            //     if (areFiltersEmpty) {
+            //         fetchData();
+            //     } else {
+            //         handleRicerche();
+            //     }
+            // }, [filtri, pagina]);
 
 
             useEffect(() => {
@@ -311,12 +295,10 @@ const Aziende = () => {
             }, [filtri]);
 
 
-            
-
             //funzione di reset dei campi di ricerca
             const handleReset = async() => {
                 setFiltri({
-                    denominazione: null,
+                    denominazione: '',
                     stato: null,
                     owner:null,
                     tipologia:null,
@@ -334,7 +316,7 @@ const Aziende = () => {
         //funzione per cancellare l'azienda
         const handleDelete = async (id) => {
             try{
-                const responseDelete = await axios.delete(`http://89.46.196.60:8443/aziende/react/elimina/${id}`, {headers: headers});
+                const responseDelete = await axios.delete(`http://localhost:8080/aziende/react/elimina/${id}`, {headers: headers});
                 await fetchData(0);
             } catch(error) {
                 console.error("Errore durante la cancellazione: ", error);

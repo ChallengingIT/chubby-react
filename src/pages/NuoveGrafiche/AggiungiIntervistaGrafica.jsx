@@ -115,8 +115,6 @@ const AggiungiIntervistaGrafica = () => {
         }, []);
 
 
-
-
     const menu = [
         {
             title: 'Informazioni Candidato',
@@ -173,17 +171,6 @@ const AggiungiIntervistaGrafica = () => {
             ...fieldValue
         }));
         };
-        
-    //funzione di change per decimalNumber
-    // const handleChangeDecimal = (fieldName, fieldValue) => {
-    //     const value = fieldValue.replace(/,/g, '.');
-    //     if (!value || value.match(/^\d+(\.\d{0,2})?$/)) {
-    //       setValues(prevValues => ({
-    //         ...prevValues,
-    //         [fieldName]: value  
-    //       }));
-    //     }
-    //   };
 
 
     //funzioni per cambiare pagina del form
@@ -211,8 +198,6 @@ const AggiungiIntervistaGrafica = () => {
             }
         }
     };
-
-
 
         //funzione per la chiusura dell'alert
         const handleCloseAlert = (reason) => {
@@ -309,40 +294,36 @@ const AggiungiIntervistaGrafica = () => {
 
 
     const initialValues = {
-        stato:                            candidato.stato && candidato.stato.descrizione        || null,
-        nome:                             candidato?.nome                               || null,
-        cognome:                          candidato.cognome                             || null,
-        dataNascita:                      candidato.dataNascita                         || null,
-        location:                         candidato.citta                               || null, 
-        tipologia:                        candidato.tipologia?.descrizione              || null,
-        anniEsperienza:                   candidato.anniEsperienza                      || null,
-        cellulare:                        candidato.cellulare                           || null,
-        idOwner:                          interviste.owner?.id                          || null,
-        aderenza:                         interviste.aderenza                           || null,
-        coerenza:                         interviste.coerenza                           || null,
-        motivazione:                      interviste.motivazione                        || null,
-        standing:                         interviste.standing                           || null,
-        energia:                          interviste.energia                            || null,
-        comunicazione:                    interviste.comunicazione                      || null,
-        inglese:                          interviste.inglese                            || null,
-        competenze:                       interviste.competenze                         || null,
-        valutazione:                      interviste.valutazione                        || null,
-        descrizioneCandidatoUna:          interviste.descrizioneCandidatoUna            || null,
-        teamSiNo:                         interviste.teamSiNo                           || null,
-        note:                             interviste.note                               || null,
-        disponibilita:                    interviste.disponibilita                      || null,
-        attuale:                          interviste.attuale                            || null,
-        desiderata:                       interviste.desiderata                         || null,
-        proposta:                         interviste.proposta                           || null,
-        tipo:                             interviste.tipo?.id                           || null,
-        preavviso:                        interviste.preavviso                          || null,
-        dataAggiornamento:                interviste.dataAggiornamento                  || null,
-        idNextOwner:                      interviste.nextOwner?.id                      || null
+        stato:                            candidato.stato && candidato.stato.descrizione  || null,
+        nome:                             candidato?.nome                                 || null,
+        cognome:                          candidato.cognome                               || null,
+        dataNascita:                      candidato.dataNascita                           || null,
+        location:                         candidato.citta                                 || null, 
+        tipologia:                        candidato.tipologia?.descrizione                || null,
+        anniEsperienza:                   candidato.anniEsperienza                        || null,
+        cellulare:                        candidato.cellulare                             || null,
+        idOwner:                          interviste.owner?.id                            || null,
+        aderenza:                         interviste.aderenza                             || null,
+        coerenza:                         interviste.coerenza                             || null,
+        motivazione:                      interviste.motivazione                          || null,
+        standing:                         interviste.standing                             || null,
+        energia:                          interviste.energia                              || null,
+        comunicazione:                    interviste.comunicazione                        || null,
+        inglese:                          interviste.inglese                              || null,
+        competenze:                       interviste.competenze                           || null,
+        valutazione:                      interviste.valutazione                          || null,
+        descrizioneCandidatoUna:          interviste.descrizioneCandidatoUna              || null,
+        teamSiNo:                         interviste.teamSiNo                             || null,
+        note:                             interviste.note                                 || null,
+        disponibilita:                    interviste.disponibilita                        || null,
+        attuale:                          interviste.attuale                              || null,
+        desiderata:                       interviste.desiderata                           || null,
+        proposta:                         interviste.proposta                             || null,
+        tipo:                             interviste.tipo?.id                             || null,
+        preavviso:                        interviste.preavviso                            || null,
+        dataAggiornamento:                interviste.dataAggiornamento                    || null,
+        idNextOwner:                      interviste.nextOwner?.id                        || null
     };
-
-
-
-
 
     
     const disableFields = {
@@ -401,9 +382,6 @@ const AggiungiIntervistaGrafica = () => {
 
             }
         };
-
-
-
 
 
         //funzione per richiamare i vari field
@@ -502,21 +480,6 @@ const AggiungiIntervistaGrafica = () => {
         }
         };
 
-
-        // const renderFieldsGroups = () => {
-        //     return (
-        //         <Box sx={{ ml: 15, mr: 15}}>
-        //             {groupedFields[currentPageIndex].map((fields, index) => {
-        //                 return (
-        //                     <Box key={index}>
-        //                         {renderFields(fields)}
-        //                     </Box>
-        //                 );
-        //             })}
-        //         </Box>
-        //     );
-        // };
-
         const renderFieldsGroups = () => {
             return (
                 <Box sx={{ ml: 15, mr: 15}}>
@@ -525,14 +488,12 @@ const AggiungiIntervistaGrafica = () => {
                             if (field.type === 'titleGroups') {
                                 return (
                                     <Grid item xs={12} key={index}>
-                                        {/* <Typography variant="h6" sx={{fontWeight: 'bold', mb: 2}}>{field.label}</Typography> */}
                                     </Grid>
                                 );
                             } else if (field.type === 'note') {
                                 return (
                                     <Grid item xs={12} key={index}>
                                         {renderFields(field)}
-                                        {/* <Typography variant="h6" sx={{fontWeight: 'bold', mb: 2}}>{field.label}</Typography> */}
                                     </Grid>
                                 );
                             } else {
@@ -549,7 +510,7 @@ const AggiungiIntervistaGrafica = () => {
         };
 
 
-  return (
+return (
     <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
         <Box sx={{ display: 'flex', height: '98%', width: '100vw', flexDirection: 'row', ml: '12.5em', mt: '0.5em', mb: '0.5em', mr: '0.8em', borderRadius: '20px', overflow: 'hidden' }}>
         <Box sx={{ width: '280px', height: '98%', background: '#00B400', p:2, overflow: 'hidden', position: 'fixed', borderRadius: '20px 0px 0px 20px' }}>

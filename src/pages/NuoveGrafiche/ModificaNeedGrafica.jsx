@@ -1,15 +1,15 @@
 import React, { useState, useEffect }                                                                           from 'react';
-import { useNavigate, useParams }                                                                                          from 'react-router-dom';
+import { useNavigate, useParams }                                                                               from 'react-router-dom';
 import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Skeleton, Snackbar, Grid } from '@mui/material';
 import CircleOutlinedIcon                                                                                       from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
 import axios                                                                                                    from 'axios';
 import CustomAutocomplete                                                                                       from '../../components/fields/CustomAutocomplete';
-import CustomWeekDateAggiungi from '../../components/fields/CustomWeekDateAggiungi';
-import CustomTextFieldModifica from '../../components/fields/CustomTextFieldModifica';
-import CustomNoteModifica from '../../components/fields/CustomNoteModifica';
-import CustomDatePickerModifica from '../../components/fields/CustomDatePickerModifica';
-import CustomDecimalNumberModifica from '../../components/fields/CustomDecimalNumberModifica';
-import CustomMultipleSelectModifica from '../../components/fields/CustomMultipleSelectModifica';
+import CustomWeekDateAggiungi                                                                                   from '../../components/fields/CustomWeekDateAggiungi';
+import CustomTextFieldModifica                                                                                  from '../../components/fields/CustomTextFieldModifica';
+import CustomNoteModifica                                                                                       from '../../components/fields/CustomNoteModifica';
+import CustomDatePickerModifica                                                                                 from '../../components/fields/CustomDatePickerModifica';
+import CustomDecimalNumberModifica                                                                              from '../../components/fields/CustomDecimalNumberModifica';
+import CustomMultipleSelectModifica                                                                             from '../../components/fields/CustomMultipleSelectModifica';
 
 const ModificaNeedGrafica = () => {
     const navigate = useNavigate();
@@ -34,8 +34,7 @@ const ModificaNeedGrafica = () => {
     const [ statoOptions,         setStatoOptions       ] = useState([]);
     const [ keyPeopleOptions,     setKeyPeopleOptions   ] = useState([]);
     const [ aziendaID,            setAziendaID          ] = useState(null);
-  
-    const [ values,             setValues               ] = useState([]);
+    const [ values,               setValues             ] = useState([]);
 
 
 
@@ -53,74 +52,71 @@ const ModificaNeedGrafica = () => {
 
     //chiamata per ricevere i dati dal db
     useEffect(() => {
-      const fetchNeedOptions = async () => {
-        try {
-          const responseAziende       = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers: headers });
-          const responseSkill         = await axios.get("http://89.46.196.60:8443/staffing/react/skill", { headers: headers });
-          const ownerResponse         = await axios.get("http://89.46.196.60:8443/aziende/react/owner" , { headers: headers });
-          const tipologiaResponse     = await axios.get("http://89.46.196.60:8443/need/react/tipologia", { headers: headers });
-          const statoResponse         = await axios.get("http://89.46.196.60:8443/need/react/stato"    , { headers: headers});
-          const needResponse          = await axios.get(`http://89.46.196.60:8443/need/react/${id}`     , { headers: headers});
+        const fetchNeedOptions = async () => {
+            try {
+            const responseAziende       = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
+            const responseSkill         = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
+            const ownerResponse         = await axios.get("http://localhost:8080/aziende/react/owner" , { headers: headers });
+            const tipologiaResponse     = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
+            const statoResponse         = await axios.get("http://localhost:8080/need/react/stato"    , { headers: headers});
+            const needResponse          = await axios.get(`http://localhost:8080/need/react/${id}`     , { headers: headers});
 
-          const modificaData = needResponse.data;
-          const aziendaId = needResponse.data.cliente.id;
-          setAziendaID(aziendaId);
-          setDatiModifica(modificaData);
+            const modificaData = needResponse.data;
+            const aziendaId = needResponse.data.cliente.id;
+            setAziendaID(aziendaId);
+            setDatiModifica(modificaData);
 
-          
-          if (Array.isArray(statoResponse.data)) {
-            const statoOptions = statoResponse.data.map((stato) => ({
-              label: stato.descrizione,
-              value: stato.id,
-            }));
-            setStatoOptions(statoOptions);
-          }
-  
-  
-  
-          if (Array.isArray(tipologiaResponse.data)) {
-            const tipologiaOptions = tipologiaResponse.data.map((tipologia) => ({
-              label: tipologia.descrizione,
-              value: tipologia.id,
-            }));
-            setTipologiaOptions(tipologiaOptions);
-          }
-  
-  
-  
-          if (Array.isArray(ownerResponse.data)) {
-            const ownerOptions = ownerResponse.data.map((owner) => ({
-              label: owner.descrizione,
-              value: owner.id,
-            }));
-            setOwnerOptions(ownerOptions);
-          }
-  
-  
-        if (Array.isArray(responseSkill.data)) {
-          const skillsOptions = responseSkill.data.map((skill) => ({
-            value: skill.id,
-            label: skill.descrizione
-          }));
-          setSkillsOptions(skillsOptions);
-        }
-  
-  
-          if (Array.isArray(responseAziende.data)) {
-            const ownerOptions = responseAziende.data.map((aziende) => ({
-              label: aziende.denominazione,
-              value: aziende.id,
-            }));
-            setAziendeOptions(ownerOptions);
-          }
-        } catch (error) {
-          console.error("Errore durante il recupero delle aziende:", error);
-        }
-        setLoading(false);
+            
+            if (Array.isArray(statoResponse.data)) {
+                const statoOptions = statoResponse.data.map((stato) => ({
+                label: stato.descrizione,
+                value: stato.id,
+                }));
+                setStatoOptions(statoOptions);
+            }
+    
+            if (Array.isArray(tipologiaResponse.data)) {
+                const tipologiaOptions = tipologiaResponse.data.map((tipologia) => ({
+                label: tipologia.descrizione,
+                value: tipologia.id,
+                }));
+                setTipologiaOptions(tipologiaOptions);
+            }
+    
 
-      };
-  
-      fetchNeedOptions();
+            if (Array.isArray(ownerResponse.data)) {
+                const ownerOptions = ownerResponse.data.map((owner) => ({
+                label: owner.descrizione,
+                value: owner.id,
+                }));
+                setOwnerOptions(ownerOptions);
+            }
+    
+    
+            if (Array.isArray(responseSkill.data)) {
+            const skillsOptions = responseSkill.data.map((skill) => ({
+                value: skill.id,
+                label: skill.descrizione
+            }));
+            setSkillsOptions(skillsOptions);
+            }
+    
+    
+            if (Array.isArray(responseAziende.data)) {
+                const ownerOptions = responseAziende.data.map((aziende) => ({
+                label: aziende.denominazione,
+                value: aziende.id,
+                }));
+                setAziendeOptions(ownerOptions);
+            }
+            } catch (error) {
+            console.error("Errore durante il recupero delle aziende:", error);
+            }
+            setLoading(false);
+
+        };
+    
+        fetchNeedOptions();
     }, []);
 
 
@@ -134,31 +130,31 @@ const ModificaNeedGrafica = () => {
     const fetchKeypeopleOptions = async (aziendaConId) => {
         try {
             
-                const keypeopleResponse     = await axios.get(`http://89.46.196.60:8443/keypeople/react/azienda/${aziendaID}`, { headers: headers });
+                const keypeopleResponse     = await axios.get(`http://localhost:8080/keypeople/react/azienda/${aziendaID}`, { headers: headers });
     
-                if (Array.isArray(keypeopleResponse.data)) {
-                  const keypeopleOptions = keypeopleResponse.data.map((keypeople) => ({
-                    label: keypeople.nome,
-                    value: keypeople.id,
-                  }));
-                  setKeyPeopleOptions(keypeopleOptions); 
-              }
-        } catch (error) {
-          console.error("Errore durante il recupero dei key people:", error);
-        }
-    };
-  
-  
-    const pubblicazioneOptions = [
-      { value: 1, label: 'To Do' },
-      { value: 2, label: 'Done'  }
-    ];
-  
-    const screeningOptions = [
-      { value: 1, label: 'To Do' },
-      { value: 2, label: 'In progress' },
-      { value: 3, label: 'Done' }
-    ];
+                    if (Array.isArray(keypeopleResponse.data)) {
+                    const keypeopleOptions = keypeopleResponse.data.map((keypeople) => ({
+                        label: keypeople.nome,
+                        value: keypeople.id,
+                    }));
+                    setKeyPeopleOptions(keypeopleOptions); 
+                }
+            } catch (error) {
+            console.error("Errore durante il recupero dei key people:", error);
+            }
+        };
+    
+    
+        const pubblicazioneOptions = [
+        { value: 1, label: 'To Do' },
+        { value: 2, label: 'Done'  }
+        ];
+    
+        const screeningOptions = [
+        { value: 1, label: 'To Do' },
+        { value: 2, label: 'In progress' },
+        { value: 3, label: 'Done' }
+        ];
 
 
 
@@ -199,12 +195,12 @@ const ModificaNeedGrafica = () => {
 
 
      // Funzione per il cambio stato degli input
-     const handleChange = (fieldValue) => {
+    const handleChange = (fieldValue) => {
         setValues(prevValues => ({
             ...prevValues,
             ...fieldValue
         }));
-        };
+    };
 
         //funzione per il cambio stato delle skill
         const handleChangeSkill = (fieldValue) => {
@@ -229,21 +225,6 @@ const ModificaNeedGrafica = () => {
             });
         };
         
-
-
-
-    //funzione di change per decimalNumber
-    // const handleChangeDecimal = (fieldName, fieldValue) => {
-    //     const value = fieldValue.replace(/,/g, '.');
-    //     if (!value || value.match(/^\d+(\.\d{0,2})?$/)) {
-    //       setValues(prevValues => ({
-    //         ...prevValues,
-    //         [fieldName]: value  
-    //       }));
-    //     }
-    //   };
-
-
     //funzioni per cambiare pagina del form
     const handleBackButtonClick = () => {
         const currentIndex = menu.findIndex(item => item.title.toLowerCase() === activeSection.toLowerCase());
@@ -252,7 +233,6 @@ const ModificaNeedGrafica = () => {
             setCurrentPageIndex(currentIndex - 1);
         }
     };
-
 
     const handleNextButtonClick = () => {
         const currentIndex = menu.findIndex(item => item.title.toLowerCase() === activeSection.toLowerCase());
@@ -269,8 +249,6 @@ const ModificaNeedGrafica = () => {
             }
         }
     };
-
-
 
         //funzione per la chiusura dell'alert
         const handleCloseAlert = (reason) => {
@@ -301,11 +279,11 @@ const ModificaNeedGrafica = () => {
 
                 delete values.idSkills;
 
-                const responseSaveNeed = await axios.post("http://89.46.196.60:8443/need/react/salva", values, { params: { skill: skills }, headers: headers});
+                const responseSaveNeed = await axios.post("http://localhost:8080/need/react/salva", values, { params: { skill: skills }, headers: headers});
                 navigate('/need');
-              } catch(error) {
+                } catch(error) {
                 console.error("Errore durante il salvataggio", error);
-              }
+                }
         } else {
             setErrors(errors);
             setAlert({ open: true, message: "Compilare tutti i field obbligatori presenti prima di avanzare" });
@@ -317,7 +295,13 @@ const ModificaNeedGrafica = () => {
         const fields =[
             { label: "Descrizione Need*",   name: "descrizione",                  type: "text"                                                },
             { label: "Contatto*",           name: "idKeyPeople",                  type: "select",               options: keyPeopleOptions     },
-            { label: "Priorità*",           name: "priorita",                     type: "decimalNumber"                                       },
+            // { label: "Priorità*",           name: "priorita",                     type: "decimalNumber"                                       },
+            { label: "Priorità*",              name: "priorita",                          type: "select",               options: [
+                { value: 1,                   label: "Bassa" },
+                { value: 2,                   label: "Media" },
+                { value: 3,                   label: "Alta" },
+                { value: 4,                   label: "Massima" } 
+                ] },
             { label: "Week*",               name: "week",                         type: "week"                                                },
             { label: "Tipologia*",          name: "idTipologia",                  type: "select",               options: tipologiaOptions     },
             { label: "Tipologia Azienda",   name: "tipo",                         type: "select",               options: [
@@ -327,13 +311,13 @@ const ModificaNeedGrafica = () => {
             ] },
             { label: "Owner*",                    name: "idOwner",                     type: "select",                 options: ownerOptions         },
             { label: "Stato*",                    name: "idStato",                     type: "select",                 options: statoOptions         },
-            { label: "Headcount",                 name: "numeroRisorse",                type: "decimalNumber"                                         },
+            { label: "Headcount",                 name: "numeroRisorse",               type: "decimalNumber"                                         },
             { label: "Location*",                 name: "location",                    type: "text"                                                  },
-            { label: "Skills",                    name: "idSkills",                     type: "multipleSelect",         options: skillsOptions        },
-            { label: "Seniority",                 name: "anniEsperienza",               type: "decimalNumber"                                         },
-            { label: 'Pubblicazione Annuncio*',   name: 'pubblicazione',                type: 'select',                 options: pubblicazioneOptions },
-            { label: 'Screening*',                name: 'screening',                    type: 'select',                 options: screeningOptions     },
-            { label: "Note",                      name: "note",                         type: "note"                                                  },
+            { label: "Skills",                    name: "idSkills",                    type: "multipleSelect",         options: skillsOptions        },
+            { label: "Seniority",                 name: "anniEsperienza",              type: "decimalNumber"                                         },
+            { label: 'Pubblicazione Annuncio*',   name: 'pubblicazione',               type: 'select',                 options: pubblicazioneOptions },
+            { label: 'Screening*',                name: 'screening',                   type: 'select',                 options: screeningOptions     },
+            { label: "Note",                      name: "note",                        type: "note"                                                  },
             ];
 
 
@@ -343,21 +327,21 @@ const ModificaNeedGrafica = () => {
             idKeyPeople:                (datiModifica.keyPeople && datiModifica.keyPeople.id)           || null,
             priorita:                   datiModifica.priorita                                           || null,
             week:                       datiModifica.week                                               || null,
-            idTipologia:               (datiModifica.tipologia && datiModifica.tipologia.id)                             || null,
-            tipo:                       datiModifica.tipo                                             || null,
-            idOwner:                   (datiModifica.owner && datiModifica.owner.id) || null,
-            idStato:                   (datiModifica.stato && datiModifica.stato.id)                                     || null,
+            idTipologia:               (datiModifica.tipologia && datiModifica.tipologia.id)            || null,
+            tipo:                       datiModifica.tipo                                               || null,
+            idOwner:                   (datiModifica.owner && datiModifica.owner.id)                    || null,
+            idStato:                   (datiModifica.stato && datiModifica.stato.id)                    || null,
             numeroRisorse:              datiModifica.numeroRisorse                                      || null,
             location:                   datiModifica.location                                           || null,
-            idSkills:                   datiModifica.skills ? datiModifica.skills.map((skills) => skills.id) :               [],
+            idSkills:                   datiModifica.skills ? datiModifica.skills.map((skills) => skills.id) :   [],
             anniEsperienza:             datiModifica.anniEsperienza                                     || null,
-            pubblicazione:             datiModifica.pubblicazione                                     || null,
-            screening:                datiModifica.screening                                     || null,
+            pubblicazione:              datiModifica.pubblicazione                                      || null,
+            screening:                  datiModifica.screening                                          || null,
             note:                       datiModifica.note                                               || null,        
             };
 
 
-                     //funzione per caricare i dati nei campi solo dopo aver terminato la chiamata
+        //funzione per caricare i dati nei campi solo dopo aver terminato la chiamata
         useEffect(() => {
             if (Object.keys(datiModifica).length !== 0) {
                 const updatedvalues = { ...initialValues };
@@ -402,7 +386,7 @@ const ModificaNeedGrafica = () => {
             return groupedFields;
         };
 
-        const groupedFields = groupFields(fields); //questo è l'array suddiviso
+        const groupedFields = groupFields(fields); 
 
 
         const renderFieldSkeleton = (type) => {
@@ -480,13 +464,13 @@ const ModificaNeedGrafica = () => {
 
                     case 'week': 
                     return (
-                      <CustomWeekDateAggiungi
-                      name={field.name}
-                      label={field.label}
-                      values={values}
-                      onChange={handleChange}
-                      initialValues={initialValues}
-                      />
+                    <CustomWeekDateAggiungi
+                        name={field.name}
+                        label={field.label}
+                        values={values}
+                        onChange={handleChange}
+                        initialValues={initialValues}
+                    />
                     )
 
 
@@ -538,21 +522,6 @@ const ModificaNeedGrafica = () => {
         }
         };
 
-
-        // const renderFieldsGroups = () => {
-        //     return (
-        //         <Box sx={{ ml: 15, mr: 15}}>
-        //             {groupedFields[currentPageIndex].map((fields, index) => {
-        //                 return (
-        //                     <Box key={index}>
-        //                         {renderFields(fields)}
-        //                     </Box>
-        //                 );
-        //             })}
-        //         </Box>
-        //     );
-        // };
-
         const renderFieldsGroups = () => {
             return (
                 <Box sx={{ ml: 15, mr: 15}}>
@@ -561,14 +530,12 @@ const ModificaNeedGrafica = () => {
                             if (field.type === 'titleGroups') {
                                 return (
                                     <Grid item xs={12} key={index}>
-                                        {/* <Typography variant="h6" sx={{fontWeight: 'bold', mb: 2}}>{field.label}</Typography> */}
                                     </Grid>
                                 );
                             } else if (field.type === 'note') {
                                 return (
                                     <Grid item xs={12} key={index}>
                                         {renderFields(field)}
-                                        {/* <Typography variant="h6" sx={{fontWeight: 'bold', mb: 2}}>{field.label}</Typography> */}
                                     </Grid>
                                 );
                             } else {
@@ -584,7 +551,7 @@ const ModificaNeedGrafica = () => {
             );
         };
 
-  return (
+return (
     <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
         <Box sx={{ display: 'flex', height: '98%', width: '100vw', flexDirection: 'row', ml: '12.5em', mt: '0.5em', mb: '0.5em', mr: '0.8em', borderRadius: '20px', overflow: 'hidden' }}>
         <Box sx={{ width: '280px', height: '98%', background: '#00B400', p:2, overflow: 'hidden', position: 'fixed', borderRadius: '20px 0px 0px 20px' }}>
