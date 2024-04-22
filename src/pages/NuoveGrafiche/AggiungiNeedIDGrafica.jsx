@@ -327,10 +327,10 @@
         { label: "Descrizione Need*",           name: "descrizione",            type: "text"                 },
         // { label: "Priorità*",                   name: "priorita",               type: "decimalNumber"        },
         { label: "Priorità*",              name: "priorita",                          type: "select",               options: [
-            { value: 1,                   label: "Bassa" },
-            { value: 2,                   label: "Media" },
-            { value: 3,                   label: "Alta" },
-            { value: 4,                   label: "Massima" } 
+            { value: 1,                   label: "Massima" },
+            { value: 2,                   label: "Alta" },
+            { value: 3,                   label: "Media" },
+            { value: 4,                   label: "Bassa" } 
             ] },
         { label: "Week*",                       name: "week",                   type: "week"                 },
         {
