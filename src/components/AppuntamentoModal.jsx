@@ -57,7 +57,7 @@ function AppuntamentoModal({ open, handleClose }) {
   const optionSelect = async () => {
     try {
       const ownerResponse = await axios.get(
-        "http://localhost:8080/aziende/react/owner",
+        "http://89.46.196.60:8443/aziende/react/owner",
         { headers: headers }
       );
       if (Array.isArray(ownerResponse.data)) {
@@ -95,7 +95,7 @@ function AppuntamentoModal({ open, handleClose }) {
     };
     try {
       const responseInviaAppuntamento = await axios.post(
-        "http://localhost:8080/calendar/insert",
+        "http://89.46.196.60:8443/calendar/insert",
         datiDaInviare,
         { headers: headers }
       );

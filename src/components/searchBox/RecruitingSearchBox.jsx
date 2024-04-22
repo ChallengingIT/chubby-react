@@ -48,9 +48,9 @@
 
 
 
-//         const responseTipologia = await axios.get("http://localhost:8080/aziende/react/tipologia", { headers });
-//         const responseTipo      = await axios.get("http://localhost:8080/staffing/react/tipo", { headers });
-//         const responseStato     = await axios.get("http://localhost:8080/staffing/react/stato/candidato", { headers });
+//         const responseTipologia = await axios.get("http://89.46.196.60:8443/aziende/react/tipologia", { headers });
+//         const responseTipo      = await axios.get("http://89.46.196.60:8443/staffing/react/tipo", { headers });
+//         const responseStato     = await axios.get("http://89.46.196.60:8443/staffing/react/stato/candidato", { headers });
 
 
 //         if (Array.isArray(responseStato.data)) {
@@ -97,7 +97,7 @@
 //       const user = JSON.parse(sessionStorage.getItem("user"));
 //       const token = user?.token;
   
-//       const response = await axios.post("http://localhost:8080/staffing/react/mod/ricerca",{ headers: headers, params: filtriDaInviare });
+//       const response = await axios.post("http://89.46.196.60:8443/staffing/react/mod/ricerca",{ headers: headers, params: filtriDaInviare });
   
 //       if (response.data && Array.isArray(response.data)) {
 //         onSearch(response.data);
