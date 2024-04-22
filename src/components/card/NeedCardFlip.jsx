@@ -150,11 +150,11 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
 
     const mediaPriorita = (priorita) => {
         if (priorita >= 0 && priorita <= 1) {
-            return { icon: <TrendingDownIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Basso" };
+            return { icon: <TrendingDownIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Bassa" };
         } else if (priorita > 1 && priorita <= 2) {
-            return { icon: <TrendingFlatIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Medio" };
+            return { icon: <TrendingFlatIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Media" };
         } else if (priorita > 2 && priorita <= 3) {
-            return { icon: <TrendingUpIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Alto" };
+            return { icon: <TrendingUpIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Alta" };
         } else if (priorita > 3) {
             return { icon: <CallMadeIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Massima" };
         } else {
