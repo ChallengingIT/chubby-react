@@ -317,19 +317,23 @@
             <Box
                 sx={{
                 display: "flex",
-                justifyContent: "space-between",
+                justifyContent: "center",
                 alignItems: "center",
                 gap: 1,
                 padding: 1,
                 mb: 2,
+                flexDirection: "column",
                 }}
             >
-                <Typography variant="h6" sx={{ color: "#EDEDED", fontSize: "1em" }}>
-                {ruolo()}:
-                </Typography>
+                <Box sx={{ display: 'flex', gap: 1, justifyContent: 'space-between', alignItems: 'center' }}>
                 <Avatar sx={{ bgcolor: avatarColor }}>
-                {nome()[0] + cognome()[0]}
+                    {nome()[0] + cognome()[0]}
                 </Avatar>
+                <Typography variant="h6" sx={{ color: "#EDEDED", fontSize: "0.8em" }}> {nome()} {cognome()}</Typography>
+                </Box>
+                <Typography variant="h6" sx={{ color: "#EDEDED", fontSize: "1em" }}>
+                    {ruolo()}
+                </Typography>
             </Box>
             <ListItem
                 selected={activeLink === "/logout"}

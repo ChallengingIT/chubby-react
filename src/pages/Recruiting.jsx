@@ -61,6 +61,7 @@ const Recruiting = () => {
 });
 
 
+
 //stati per la paginazione
 const [ pagina,                 setPagina       ] = useState(0);
 const quantita = 10;
@@ -331,35 +332,28 @@ const handleRicerche = async () => {
 };
 
 
-useEffect(() => {
-  const { nome, cognome, ...otherFilters } = filtri;
-  const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x != null);
 
-  if (filtriHasValues) {
-      handleRicerche();
-  }
-}, [filtri.tipologia, filtri.stato, filtri.tipo, filtri.nome, filtri.cognome]);
+    const handleFilterChange = (name) => (event) => {
+      const newValue = event.target.value;
+      setFiltri(currentFilters => {
+          const newFilters = { ...currentFilters, [name]: newValue };
+            setPagina(0);
+          return newFilters;
+      });
+    };
 
 
-
-const handleFilterChange = (name) => (event) => {
-  const newValue = event.target.value;
-  setFiltri(currentFilters => {
-      const newFilters = { ...currentFilters, [name]: newValue };
-      
+    useEffect(() => {
       // Controllo se tutti i filtri sono vuoti 
-      const areFiltersEmpty = Object.values(newFilters).every(value => value === null);
+      const areFiltersEmpty = Object.values(filtri).every(value => value === null || value === '');
       if (areFiltersEmpty) {
           fetchData();
       } else {
-          setPagina(0);
-          setOriginalRecruiting([]);
           handleRicerche();
       }
-      
-      return newFilters;
-  });
-};
+    }, [filtri, pagina]);
+
+
 
 const handleOpenFiltri = () => setOpenFiltri(true);
 const handleCloseFiltri = () => setOpenFiltri(false);
@@ -368,8 +362,8 @@ const handleCloseFiltri = () => setOpenFiltri(false);
 
 const handleReset = () => {
     setFiltri({
-        nome: null,
-        cognome: null,
+        nome: '',
+        cognome: '',
         tipo:null,
         tipologia:null,
         stato: null

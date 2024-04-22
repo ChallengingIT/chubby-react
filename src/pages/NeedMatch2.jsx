@@ -314,26 +314,26 @@
         fetchMoreDataAssociati(newPage);
     };
 
-    //funzione per il cambio stato dei select
-    const handleFilterChange = (name) => (event) => {
-        const newValue = event.target.value;
+    // //funzione per il cambio stato dei select
+    // const handleFilterChange = (name) => (event) => {
+    //     const newValue = event.target.value;
 
-        if (name === "seniority") {
-        const selectedOption = seniority.find(
-            (option) => option.value === newValue
-        );
+    //     if (name === "seniority") {
+    //     const selectedOption = seniority.find(
+    //         (option) => option.value === newValue
+    //     );
 
-        const min = selectedOption.min ?? parseInt(newValue);
-        const max = selectedOption.max ?? Infinity;
+    //     const min = selectedOption.min ?? parseInt(newValue);
+    //     const max = selectedOption.max ?? Infinity;
 
-        setFiltri({ ...filtri, [name]: newValue, minimo: min, massimo: max });
-        } else {
-        setFiltri({ ...filtri, [name]: newValue });
-        }
+    //     setFiltri({ ...filtri, [name]: newValue, minimo: min, massimo: max });
+    //     } else {
+    //     setFiltri({ ...filtri, [name]: newValue });
+    //     }
 
-        // Esegui la ricerca
-        handleRicerche();
-    };
+    //     // Esegui la ricerca
+    //     handleRicerche();
+    // };
 
     useEffect(() => {
         sessionStorage.setItem("filtriRicercaNeedMatch", JSON.stringify(filtri));
@@ -449,21 +449,41 @@
         }
     };
 
-    useEffect(() => {
-        const { nome, cognome, ...otherFilters } = filtri;
-        const filtriHasValues = Object.values(otherFilters).some(
-        (x) => x !== "" && x != null
-        );
+    // useEffect(() => {
+    //     const { nome, cognome, ...otherFilters } = filtri;
+    //     const filtriHasValues = Object.values(otherFilters).some(
+    //     (x) => x !== "" && x != null
+    //     );
 
-        if (filtriHasValues) {
-        handleRicerche();
-        }
-    }, [filtri.tipo, filtri.tipologia, filtri.seniority]);
+    //     if (filtriHasValues) {
+    //     handleRicerche();
+    //     }
+    // }, [filtri.tipo, filtri.tipologia, filtri.seniority]);
+
+        const handleFilterChange = (name) => (event) => {
+            const newValue = event.target.value;
+            setFiltri(currentFilters => {
+                const newFilters = { ...currentFilters, [name]: newValue };
+                setPaginaCandidati(0);
+                return newFilters;
+            });
+        };
+        
+        
+        useEffect(() => {
+            // Controllo se tutti i filtri sono vuoti 
+            const areFiltersEmpty = Object.values(filtri).every(value => value === null || value === '');
+            if (areFiltersEmpty) {
+                fetchData();
+            } else {
+                handleRicerche();
+            }
+        }, [filtri, paginaCandidati]);
 
     const handleReset = () => {
         setFiltri({
-        nome: null,
-        cognome: null,
+        nome: '',
+        cognome: '',
         tipo: null,
         tipologia: null,
         seniority: null,

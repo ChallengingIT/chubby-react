@@ -224,33 +224,55 @@ import {
             }
         };
 
-const handleFilterChange = (name) => (event) => {
-    const newValue = event.target.value;
-    setFiltri(currentFilters => {
-        const newFilters = { ...currentFilters, [name]: newValue };
+// const handleFilterChange = (name) => (event) => {
+//     const newValue = event.target.value;
+//     setFiltri(currentFilters => {
+//         const newFilters = { ...currentFilters, [name]: newValue };
         
-        // Controllo se tutti i filtri sono vuoti 
-        const areFiltersEmpty = Object.values(newFilters).every(value => value === null);
-        if (areFiltersEmpty) {
-            fetchData();
-        } else {
-            setPagina(0);
-            setOriginalNeed([]);
-            setHasMore(true);
-            handleRicerche();
-        }
+//         // Controllo se tutti i filtri sono vuoti 
+//         const areFiltersEmpty = Object.values(newFilters).every(value => value === null);
+//         if (areFiltersEmpty) {
+//             fetchData();
+//         } else {
+//             setPagina(0);
+//             setOriginalNeed([]);
+//             setHasMore(true);
+//             handleRicerche();
+//         }
         
-        return newFilters;
-    });
-};
+//         return newFilters;
+//     });
+// };
 
-        useEffect(() => {
-            const { descrizione, ...otherFilters } = filtri;
-            const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x !== null);
-            if (filtriHasValues) {
-                handleRicerche();
-            }
-        }, [filtri.tipologia, filtri.stato, filtri.owner, filtri.azienda, filtri.keypeople]);
+//         useEffect(() => {
+//             const { descrizione, ...otherFilters } = filtri;
+//             const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x !== null);
+//             if (filtriHasValues) {
+//                 handleRicerche();
+//             }
+//         }, [filtri.tipologia, filtri.stato, filtri.owner, filtri.azienda, filtri.keypeople]);
+
+
+            const handleFilterChange = (name) => (event) => {
+                const newValue = event.target.value;
+                setFiltri(currentFilters => {
+                    const newFilters = { ...currentFilters, [name]: newValue };
+                    setPagina(0);
+                    setHasMore(true);
+                    return newFilters;
+                });
+            };
+            
+            
+            useEffect(() => {
+                // Controllo se tutti i filtri sono vuoti 
+                const areFiltersEmpty = Object.values(filtri).every(value => value === null || value === '');
+                if (areFiltersEmpty) {
+                    fetchData();
+                } else {
+                    handleRicerche();
+                }
+            }, [filtri, pagina]);
 
         useEffect(() => {
             sessionStorage.setItem('filtriRicercaNeed', JSON.stringify(filtri));
@@ -260,7 +282,7 @@ const handleFilterChange = (name) => (event) => {
         //funzione di reset dei campi di ricerca
         const handleReset = async () => {
             setFiltri({
-                descrizione: null,
+                descrizione: '',
                 stato: null,
                 tipologia: null,
                 owner: null,

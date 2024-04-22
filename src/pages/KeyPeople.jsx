@@ -211,36 +211,58 @@ const Keypeople = () => {
         }
     };
 
-    //funzione cambio stato select
+    // //funzione cambio stato select
+    // const handleFilterChange = (name) => (event) => {
+    //     const newValue = event.target.value;
+    //     setFiltri(currentFilters => {
+    //         const newFilters = { ...currentFilters, [name]: newValue };
+            
+    //         // Controllo se tutti i filtri sono vuoti 
+    //         const areFiltersEmpty = Object.values(newFilters).every(value => value === null);
+    //         if (areFiltersEmpty) {
+    //             fetchData();
+    //         } else {
+    //             setPagina(0);
+    //             setOriginalKeypeople([]);
+    //             setHasMore(true);
+    //             handleRicerche();
+    //         }
+            
+    //         return newFilters;
+    //     });
+    // };
+
+
+    // useEffect(() => {
+    //     const { nome, ...otherFilters } = filtri;
+    //     const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x != null);
+    
+    //     if (filtriHasValues) {
+    //         handleRicerche();
+    //     }
+    // }, [filtri.azienda, filtri.stato, filtri.owner]);
+
+
     const handleFilterChange = (name) => (event) => {
         const newValue = event.target.value;
         setFiltri(currentFilters => {
             const newFilters = { ...currentFilters, [name]: newValue };
-            
-            // Controllo se tutti i filtri sono vuoti 
-            const areFiltersEmpty = Object.values(newFilters).every(value => value === null);
-            if (areFiltersEmpty) {
-                fetchData();
-            } else {
-                setPagina(0);
-                setOriginalKeypeople([]);
-                setHasMore(true);
-                handleRicerche();
-            }
-            
+            setPagina(0);
+            setHasMore(true);
             return newFilters;
         });
     };
-
-
-    useEffect(() => {
-        const { nome, ...otherFilters } = filtri;
-        const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x != null);
     
-        if (filtriHasValues) {
+    
+    useEffect(() => {
+        // Controllo se tutti i filtri sono vuoti 
+        const areFiltersEmpty = Object.values(filtri).every(value => value === null || value === '');
+        if (areFiltersEmpty) {
+            fetchData();
+        } else {
             handleRicerche();
         }
-    }, [filtri.azienda, filtri.stato, filtri.owner]);
+    }, [filtri, pagina]);
 
     useEffect(() => {
         sessionStorage.setItem('filtriRicercaKeypeople', JSON.stringify(filtri));
@@ -251,7 +273,7 @@ const Keypeople = () => {
 
     const handleReset = async () => {
         setFiltri({
-            nome: null,
+            nome: '',
             azienda: null,
             stato: null,
             owner: null

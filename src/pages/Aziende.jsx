@@ -238,35 +238,56 @@ const Aziende = () => {
 
 
 
-            //funzione cambio stato select
+            // //funzione cambio stato select
+            // const handleFilterChange = (name) => (event) => {
+            //     const newValue = event.target.value;
+            //     setFiltri(currentFilters => {
+            //         const newFilters = { ...currentFilters, [name]: newValue };
+                    
+            //         // Controllo se tutti i filtri sono vuoti 
+            //         const areFiltersEmpty = Object.values(newFilters).every(value => value === null);
+            //         if (areFiltersEmpty) {
+            //             fetchData();
+            //         } else {
+            //             setPagina(0);
+            //             setOriginalAziende([]);
+            //             setHasMore(true);
+            //             handleRicerche();
+            //         }
+                    
+            //         return newFilters;
+            //     });
+            // };
+
+            // useEffect(() => {
+            //     const { denominazione, ...otherFilters } = filtri;
+            //     const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x != null);
+            
+            //     if (filtriHasValues) {
+            //         handleRicerche();
+            //     }
+            // }, [filtri.tipologia, filtri.stato, filtri.owner, filtri.ida]);
+
             const handleFilterChange = (name) => (event) => {
                 const newValue = event.target.value;
                 setFiltri(currentFilters => {
                     const newFilters = { ...currentFilters, [name]: newValue };
-                    
-                    // Controllo se tutti i filtri sono vuoti 
-                    const areFiltersEmpty = Object.values(newFilters).every(value => value === null);
-                    if (areFiltersEmpty) {
-                        fetchData();
-                    } else {
-                        setPagina(0);
-                        setOriginalAziende([]);
-                        setHasMore(true);
-                        handleRicerche();
-                    }
-                    
+                    setPagina(0);
+                    setHasMore(true);
                     return newFilters;
                 });
             };
-
-            useEffect(() => {
-                const { denominazione, ...otherFilters } = filtri;
-                const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x != null);
             
-                if (filtriHasValues) {
+            
+            useEffect(() => {
+                // Controllo se tutti i filtri sono vuoti 
+                const areFiltersEmpty = Object.values(filtri).every(value => value === null || value === '');
+                if (areFiltersEmpty) {
+                    fetchData();
+                } else {
                     handleRicerche();
                 }
-            }, [filtri.tipologia, filtri.stato, filtri.owner, filtri.ida]);
+            }, [filtri, pagina]);
 
 
             useEffect(() => {
@@ -277,7 +298,7 @@ const Aziende = () => {
             //funzione di reset dei campi di ricerca
             const handleReset = async() => {
                 setFiltri({
-                    denominazione: null,
+                    denominazione: '',
                     stato: null,
                     owner:null,
                     tipologia:null,
