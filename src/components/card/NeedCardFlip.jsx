@@ -10,6 +10,9 @@ import AutoModeIcon                                 from '@mui/icons-material/Au
 import TagIcon                                      from '@mui/icons-material/Tag'; //numero progressivo
 import PlaceIcon                                    from '@mui/icons-material/Place';
 import CloseIcon                                    from '@mui/icons-material/Close';
+import TrendingDownIcon                             from '@mui/icons-material/TrendingDown';
+import TrendingFlatIcon                             from '@mui/icons-material/TrendingFlat';
+import TrendingUpIcon                               from '@mui/icons-material/TrendingUp';
 
 import { 
     Card, 
@@ -142,6 +145,22 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
         height: '100%',
     };
 
+
+
+    const mediaPriorita = (priorita) => {
+        if (priorita >= 0 && priorita <= 1) {
+            return { icon: <TrendingDownIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Basso" };
+        } else if (priorita > 1 && priorita <= 2) {
+            return { icon: <TrendingFlatIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Medio" };
+        } else if (priorita > 2) {
+            return { icon: <TrendingUpIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Alto" };
+        } else {
+            return { icon: null, text: "" }; 
+        }
+    };
+
+    const { icon, text } = mediaPriorita(valori.priorita);
+
     const menuData = [
         {
             title: 'Aggiorna Need',
@@ -217,6 +236,12 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
                     <PlaceIcon sx={{ color: '#00B401', mr: 1 }} />
                     {valori.location}
+            </Typography>
+
+
+            <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
+                    {icon}
+                    {valori.priorita}
             </Typography>
 
 

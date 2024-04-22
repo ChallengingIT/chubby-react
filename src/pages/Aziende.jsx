@@ -238,56 +238,56 @@ const Aziende = () => {
 
 
 
-            // //funzione cambio stato select
-            // const handleFilterChange = (name) => (event) => {
-            //     const newValue = event.target.value;
-            //     setFiltri(currentFilters => {
-            //         const newFilters = { ...currentFilters, [name]: newValue };
-                    
-            //         // Controllo se tutti i filtri sono vuoti 
-            //         const areFiltersEmpty = Object.values(newFilters).every(value => value === null);
-            //         if (areFiltersEmpty) {
-            //             fetchData();
-            //         } else {
-            //             setPagina(0);
-            //             setOriginalAziende([]);
-            //             setHasMore(true);
-            //             handleRicerche();
-            //         }
-                    
-            //         return newFilters;
-            //     });
-            // };
-
-            // useEffect(() => {
-            //     const { denominazione, ...otherFilters } = filtri;
-            //     const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x != null);
-            
-            //     if (filtriHasValues) {
-            //         handleRicerche();
-            //     }
-            // }, [filtri.tipologia, filtri.stato, filtri.owner, filtri.ida]);
-
+            //funzione cambio stato select
             const handleFilterChange = (name) => (event) => {
                 const newValue = event.target.value;
                 setFiltri(currentFilters => {
                     const newFilters = { ...currentFilters, [name]: newValue };
-                    setPagina(0);
-                    setHasMore(true);
+                    
+                    // Controllo se tutti i filtri sono vuoti 
+                    const areFiltersEmpty = Object.values(newFilters).every(value => value === null);
+                    if (areFiltersEmpty) {
+                        fetchData();
+                    } else {
+                        setPagina(0);
+                        setOriginalAziende([]);
+                        setHasMore(true);
+                        handleRicerche();
+                    }
+                    
                     return newFilters;
                 });
             };
-            
-            
+
             useEffect(() => {
-                // Controllo se tutti i filtri sono vuoti 
-                const areFiltersEmpty = Object.values(filtri).every(value => value === null || value === '');
-                if (areFiltersEmpty) {
-                    fetchData();
-                } else {
+                const { ...otherFilters } = filtri;
+                const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x != null);
+            
+                if (filtriHasValues) {
                     handleRicerche();
                 }
-            }, [filtri, pagina]);
+            }, [filtri.tipologia, filtri.stato, filtri.owner, filtri.ida, filtri.denominazione]);
+
+            // const handleFilterChange = (name) => (event) => {
+            //     const newValue = event.target.value;
+            //     setFiltri(currentFilters => {
+            //         const newFilters = { ...currentFilters, [name]: newValue };
+            //         setPagina(0);
+            //         setHasMore(true);
+            //         return newFilters;
+            //     });
+            // };
+            
+            
+            // useEffect(() => {
+            //     // Controllo se tutti i filtri sono vuoti 
+            //     const areFiltersEmpty = Object.values(filtri).every(value => value === null || value === '');
+            //     if (areFiltersEmpty) {
+            //         fetchData();
+            //     } else {
+            //         handleRicerche();
+            //     }
+            // }, [filtri, pagina]);
 
 
             useEffect(() => {

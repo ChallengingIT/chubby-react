@@ -224,55 +224,57 @@ import {
             }
         };
 
-// const handleFilterChange = (name) => (event) => {
-//     const newValue = event.target.value;
-//     setFiltri(currentFilters => {
-//         const newFilters = { ...currentFilters, [name]: newValue };
+const handleFilterChange = (name) => (event) => {
+    const newValue = event.target.value;
+    setFiltri(currentFilters => {
+        const newFilters = { ...currentFilters, [name]: newValue };
         
-//         // Controllo se tutti i filtri sono vuoti 
-//         const areFiltersEmpty = Object.values(newFilters).every(value => value === null);
-//         if (areFiltersEmpty) {
-//             fetchData();
-//         } else {
-//             setPagina(0);
-//             setOriginalNeed([]);
-//             setHasMore(true);
-//             handleRicerche();
-//         }
+        // Controllo se tutti i filtri sono vuoti 
+        const areFiltersEmpty = Object.values(newFilters).every(value => value === null);
+        if (areFiltersEmpty) {
+            fetchData();
+        } else {
+            setPagina(0);
+            setOriginalNeed([]);
+            setHasMore(true);
+            handleRicerche();
+        }
         
-//         return newFilters;
-//     });
-// };
+        return newFilters;
+    });
+};
 
-//         useEffect(() => {
-//             const { descrizione, ...otherFilters } = filtri;
-//             const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x !== null);
-//             if (filtriHasValues) {
-//                 handleRicerche();
-//             }
-//         }, [filtri.tipologia, filtri.stato, filtri.owner, filtri.azienda, filtri.keypeople]);
+        useEffect(() => {
+            const { ...otherFilters } = filtri;
+            const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x !== null);
+            if (filtriHasValues) {
+                handleRicerche();
+            } else {
+                fetchData();
+            }
+        }, [filtri.tipologia, filtri.stato, filtri.owner, filtri.azienda, filtri.keypeople, filtri.descrizione]);
 
 
-            const handleFilterChange = (name) => (event) => {
-                const newValue = event.target.value;
-                setFiltri(currentFilters => {
-                    const newFilters = { ...currentFilters, [name]: newValue };
-                    setPagina(0);
-                    setHasMore(true);
-                    return newFilters;
-                });
-            };
+            // const handleFilterChange = (name) => (event) => {
+            //     const newValue = event.target.value;
+            //     setFiltri(currentFilters => {
+            //         const newFilters = { ...currentFilters, [name]: newValue };
+            //         setPagina(0);
+            //         return newFilters;
+            //     });
+            // };
             
             
-            useEffect(() => {
-                // Controllo se tutti i filtri sono vuoti 
-                const areFiltersEmpty = Object.values(filtri).every(value => value === null || value === '');
-                if (areFiltersEmpty) {
-                    fetchData();
-                } else {
-                    handleRicerche();
-                }
-            }, [filtri, pagina]);
+            // useEffect(() => {
+            //     // Controllo se tutti i filtri sono vuoti 
+            //     const areFiltersEmpty = Object.values(filtri).every(value => value === null || value === '');
+            //     if (areFiltersEmpty) {
+            //         fetchData();
+            //     } else {
+            //     console.log("filtri: ", filtri);
+            //         handleRicerche();
+            //     }
+            // }, [filtri, pagina]);
 
         useEffect(() => {
             sessionStorage.setItem('filtriRicercaNeed', JSON.stringify(filtri));
