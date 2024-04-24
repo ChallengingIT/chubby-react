@@ -67,6 +67,17 @@ const [ pagina,                 setPagina       ] = useState(0);
 const quantita = 10;
 
 
+  const userHasRole = (role) => {
+    const userString = sessionStorage.getItem('user');
+    if (!userString) {
+      return false;
+    }
+    const userObj = JSON.parse(userString);
+    return userObj.roles.includes(role);
+  };
+
+
+
   
   const user = JSON.parse(sessionStorage.getItem('user'));
   const token = user?.token;
@@ -466,7 +477,7 @@ const handleReset = () => {
         params.row.file ? params.row.file.descrizione : null
     )}
 />
-        <DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
+{userHasRole('ROLE_ADMIN') && <DeleteButton onClick={() => openDeleteDialog(params.row.id)} />}
       </Box>
     ), },
   ];
@@ -485,6 +496,7 @@ return (
       height: '97vh',
       width: '100%',
       flexDirection: 'column',
+      overflow: 'auto',
     }}>
       <RicercheRecruiting 
       filtri={filtri}

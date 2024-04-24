@@ -3,6 +3,7 @@
     import LogoBianco from "../images/logoTorchyChallengingBianco.png";
     import TorciaBianca from "../images/torciaBianca.svg";
 
+
     import {
     Box,
     Drawer,
@@ -19,7 +20,7 @@
     DialogContentText,
     Popover,
     Typography,
-    Avatar,
+    
     } from "@mui/material";
     import DashboardIcon from "@mui/icons-material/Dashboard";
     import PersonIcon from "@mui/icons-material/Person";
@@ -42,13 +43,8 @@
     const [appuntamentoModal, setAppuntamentoModal] = useState(false);
     const [emailModal, setEmailModal] = useState(false);
 
-    //genera colori random per l'avata
-    const generateRandomColor = () => {
-        const randomColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
-        return randomColor;
-    };
 
-    const [avatarColor, setAvatarColor] = useState(generateRandomColor());
+
 
     const userHasRole = (roleToCheck) => {
         const userString = sessionStorage.getItem("user");
@@ -106,7 +102,7 @@
 
     const handleAggiungiCandidatoClick = () => {
         navigate("/recruiting/aggiungi");
-        handleAdditionalDrawerClose(); // Chiudi il drawer aggiuntivo dopo la navigazione
+        handleAdditionalDrawerClose(); 
     };
 
     const handleAggiungiNeedClick = () => {
@@ -131,6 +127,10 @@
                     Manager
                 </React.Fragment>
                 );
+                case "ROLE_RECRUITER":
+                    return (
+                        <span key={index}>Recruiter</span>
+                    );
             default:
                 return <span key={index}>Utente</span>;
             }
@@ -147,22 +147,23 @@
     const nome = () => {
         const userString = sessionStorage.getItem("user");
         if (userString) {
-        const userObj = JSON.parse(userString);
-        return userObj.nome;
+            const userObj = JSON.parse(userString);
+            return userObj.nome || "Utente senza nome"; 
         } else {
-        return "";
+            return "Utente senza nome"; 
         }
     };
-
+    
     const cognome = () => {
         const userString = sessionStorage.getItem("user");
         if (userString) {
-        const userObj = JSON.parse(userString);
-        return userObj.cognome;
+            const userObj = JSON.parse(userString);
+            return userObj.cognome || ""; 
         } else {
-        return "";
+            return ""; 
         }
     };
+
 
     const additionalDrawerContent = (
         <List>
@@ -172,12 +173,14 @@
             <PersonAddIcon sx={{ color: "#00B401" }} />
             </ListItemIcon>
         </ListItem>
+        {!userHasRole("ROLE_RECRUITER") && ( 
         <ListItem button onClick={handleAggiungiNeedClick}>
             <ListItemText primary="Aggiungi need" />
             <ListItemIcon>
             <AddCircleIcon sx={{ color: "#00B401" }} />
             </ListItemIcon>
         </ListItem>
+        )}
         <ListItem button onClick={handleAppuntamentoClick}>
             <ListItemText primary="Appuntamento" />
             <ListItemIcon>
@@ -201,10 +204,12 @@
         {
         title: "Business",
         icon: <BusinessCenterIcon />,
+        isVisible: !userHasRole("ROLE_RECRUITER")
         },
         {
         title: "Contacts",
         icon: <PersonIcon />,
+        isVisible: !userHasRole("ROLE_RECRUITER")
         },
         {
         title: "Need",
@@ -217,7 +222,7 @@
         {
         title: "Hiring",
         icon: <ChecklistRtlIcon />,
-        isVisible: !userHasRole("ROLE_USER"),
+        isVisible: !userHasRole("ROLE_USER" && "ROLE_RECRUITER"),
         },
     ];
 
@@ -255,14 +260,14 @@
             <img
                 src={LogoBianco}
                 alt="Logo"
-                style={{ width: "6.5vw", marginTop: "1em" }}
+                style={{ width: "6.5vw", marginTop: "1em", marginBottom: "0.5em" }}
             />
             {/* </IconButton> */}
 
             <IconButton
                 onClick={handleTorciaClick}
                 sx={{ padding: 0, "&:hover": { transform: "scale(1.1)" } }}
-            >
+            >                
                 <img
                 src={TorciaBianca}
                 alt="Torcia"
@@ -326,10 +331,7 @@
                 }}
             >
                 <Box sx={{ display: 'flex', gap: 1, justifyContent: 'space-between', alignItems: 'center' }}>
-                <Avatar sx={{ bgcolor: avatarColor }}>
-                    {nome()[0] + cognome()[0]}
-                </Avatar>
-                <Typography variant="h6" sx={{ color: "#EDEDED", fontSize: "0.8em" }}> {nome()} {cognome()}</Typography>
+                <Typography variant="h6" sx={{ color: "#EDEDED", fontSize: "0.9em" }}> {nome()} {cognome()}</Typography>
                 </Box>
                 <Typography variant="h6" sx={{ color: "#EDEDED", fontSize: "1em" }}>
                     {ruolo()}

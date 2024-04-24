@@ -1,6 +1,6 @@
 import './App.css';
 import { BrowserRouter, Routes, Route }                               from 'react-router-dom';
-import React, { useEffect }                                           from 'react';
+import React                                                          from 'react';
 import PrivateRoute                                                   from './components/PrivateRoute.jsx';
 
 
@@ -28,7 +28,7 @@ import ModificaIntervistaGrafica                                       from './p
 import AggiungiNeedGrafica                                             from './pages/NuoveGrafiche/AggiungiNeedGrafica.jsx';
 import ModificaNeedGrafica                                             from './pages/NuoveGrafiche/ModificaNeedGrafica.jsx';
 import AggiungiNeedIDGragica                                           from './pages/NuoveGrafiche/AggiungiNeedIDGrafica.jsx';
-import DashboardProva from './pages/DashboardProva.jsx';
+// import ProvaDashboard from './pages/ProvaDashboard.jsx';
 
 
 
@@ -63,42 +63,42 @@ const App = () => {
                     </PrivateRoute>
                   } />
                 <Route path="/business" element={
-                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER', 'ROLE_USER']}>
+                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_USER']}>
                       <Aziende />
                     </PrivateRoute>
                   } />
                 <Route path="/business/aggiungi"element={
-                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
+                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM',]}>
                       <AggiungiAziendaGrafica />
                     </PrivateRoute>
                   } />
                 <Route path="/business/modifica/:id"element={
-                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
+                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM']}>
                       <ModificaAziendaGrafica />
                     </PrivateRoute>
                   } />
                 <Route path="/need/:id"element={
-                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
+                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM']}>
                       <AziendeListaNeedCard />
                     </PrivateRoute>
                   } />
                 <Route path="/need/aggiungi/:id"element={
-                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
+                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM']}>
                       <AggiungiNeedIDGragica />
                     </PrivateRoute>
                   } />
                 <Route path="/contacts"element={
-                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER', 'ROLE_USER']}>
+                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM']}>
                       <Keypeople />
                     </PrivateRoute>
                   } />
                 <Route path="/contacts/aggiungi"element={
-                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
+                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM']}>
                       <AggiungiKeypeopleGrafica />
                     </PrivateRoute>
                   } />
                 <Route path="/contacts/modifica/:id" element={
-                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
+                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM']}>
                       <ModificaKeypeopleGrafica />
                     </PrivateRoute>
                   } />
@@ -108,7 +108,7 @@ const App = () => {
                     </PrivateRoute>
                   } />
                 <Route path="/need/aggiungi"element={
-                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
+                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM']}>
                       <AggiungiNeedGrafica />
                     </PrivateRoute>
                   } />
@@ -163,7 +163,7 @@ const App = () => {
                     </PrivateRoute>
                   } />
                 <Route path="/hiring" element={
-                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
+                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM']}>
                       <Hiring />
                     </PrivateRoute>
                   } />

@@ -1,6 +1,6 @@
 import React, { useState, useEffect }                                                                           from 'react';
 import { useNavigate }                                                                                          from 'react-router-dom';
-import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Skeleton, Snackbar, Grid } from '@mui/material';
+import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Skeleton, Snackbar, Grid, Slide } from '@mui/material';
 import CircleOutlinedIcon                                                                                       from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
 import axios                                                                                                    from 'axios';
 import CustomAutocomplete                                                                                       from '../../components/fields/CustomAutocomplete';
@@ -138,7 +138,7 @@ const AggiungiNeedGrafica = () => {
     const getMandatoryFields = (index) => {
         switch (index) {
             case 0:
-                return ["idAzienda", "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location"]; 
+                return ["idAzienda", "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location", "idKeyPeople"]; 
             default:
                 return [];
         }
@@ -243,6 +243,12 @@ const AggiungiNeedGrafica = () => {
             setAlert({...alert, open: false});
         };
 
+         //funzione per la transizione dell'alert
+        function TransitionDown(props) {
+            return <Slide {...props} direction="down" />;
+        }
+
+
 
         //funzione per il salvataggio     
     const handleSubmit = async (values) => {
@@ -275,7 +281,7 @@ const AggiungiNeedGrafica = () => {
         }
     };
 
-        const fieldObbligatori = [ "idAzienda", "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location" ];
+        const fieldObbligatori = [ "idAzienda", "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location", "idKeyPeople" ];
 
             const fields =[
             { label: "Azienda*",                   name: "idAzienda",                    type: "select",               options: aziendeOptions          },
@@ -554,7 +560,7 @@ return (
             </Box>
             <Box sx={{ flexGrow: 1, height: '100%', background: '#FEFCFD',  display: 'flex', flexDirection: 'column', ml: '280px'}}>
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, mb: 3}}>
-                <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+                <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} TransitionComponent={TransitionDown}>
                 <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
                     {alert.message}
                 </Alert>

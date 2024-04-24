@@ -52,7 +52,7 @@
             alignItems: "center",
             justifyContent: "space-between",
             borderRadius: "10px",
-            marginBottom: "4rem",
+            marginBottom: "2rem",
             width: "100%",
             overflow: "hidden",
         }}

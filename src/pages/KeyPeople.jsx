@@ -44,6 +44,17 @@ const Keypeople = () => {
     const headers = {
         Authorization: `Bearer ${token}`
     };
+
+
+    //controllo del ruolo dell'utente loggato
+    const userHasRole = (roleToCheck) => {
+        const userString = sessionStorage.getItem('user');
+        if (!userString) {
+            return false;
+        }
+        const userObj = JSON.parse(userString);
+        return userObj.roles.includes(roleToCheck);
+    };
     
     const fetchData = async () => {
 
@@ -58,12 +69,22 @@ const Keypeople = () => {
 
 
         setLoading(true);
+
+        if (!userHasRole('ROLE_ADMIN')) {
+            const userString = sessionStorage.getItem('user');
+            if (userString) {
+                const userObj = JSON.parse(userString);
+                filtriDaInviare.username = userObj.username;
+            }
+        }
+
+        const baseUrl = userHasRole('ROLE_ADMIN') ? "http://localhost:8080/keypeople/react/mod" : "http://localhost:8080/keypeople/react/mod/personal";
         try {
     
-        const response        = await axios.get("http://89.46.196.60:8443/keypeople/react/mod",             { headers: headers, params: filtriDaInviare});
-        const responseCliente = await axios.get("http://89.46.196.60:8443/aziende/react/select",            { headers: headers });
-        const responseOwner   = await axios.get("http://89.46.196.60:8443/aziende/react/owner",             { headers: headers });
-        const responseStati   = await axios.get("http://89.46.196.60:8443/keypeople/react/stati",            { headers: headers });
+        const response        = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
+        const responseCliente = await axios.get("http://localhost:8080/aziende/react/select",            { headers: headers });
+        const responseOwner   = await axios.get("http://localhost:8080/aziende/react/owner",             { headers: headers });
+        const responseStati   = await axios.get("http://localhost:8080/keypeople/react/stati",            { headers: headers });
 
 
         if (Array.isArray(responseOwner.data)) {
@@ -122,29 +143,31 @@ const Keypeople = () => {
     const fetchMoreData = async () => {
         const paginaSuccessiva = pagina + 1;
 
-        const filtriAttivi = Object.values(filtri).some(value => value !== null && value !== '');
-        const url = filtriAttivi ?
-        "http://89.46.196.60:8443/keypeople/react/ricerca/mod" :
-        "http://89.46.196.60:8443/keypeople/react/mod";
+        if (!userHasRole('ROLE_ADMIN')) {
+            const userString = sessionStorage.getItem('user');
+            if (userString) {
+                const userObj = JSON.parse(userString);
+                filtriDaInviare.username = userObj.username;
+            }
+        }
+
+        const baseUrl = userHasRole('ROLE_ADMIN') ? "http://localhost:8080/keypeople/react/mod" : "http://localhost:8080/keypeople/react/mod/personal";
+
 
 
         const filtriDaInviare = {
-            nome: filtri.nome || null,
-            azienda: filtri.azienda || null,
-            owner: filtri.owner || null,
-            stato: filtri.stato || null,
+            ...filtri,
             pagina: paginaSuccessiva,
-            quantita: 10
+            quantita: quantita
         };
-        
         try {
-            const response        = await axios.get(url,             { headers: headers, params: filtriDaInviare});
-            if (Array.isArray(response.data)) {
-                const keypeopleConId = response.data.map((keypeople) => ({...keypeople}));
+            const responsePaginazione = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
+            if (Array.isArray(responsePaginazione.data)) {
+                const keypeopleConId = responsePaginazione.data.map((keypeople) => ({...keypeople}));
                 setOriginalKeypeople((prev) => [...prev, ...keypeopleConId]);
-                setHasMore(response.data.length >= quantita);
+                setHasMore(responsePaginazione.data.length >= quantita);
             } else {
-                console.error("I dati dei keypeople nel more ottenuti non sono nel formato Array: ", response.data);
+                console.error("I dati dei keypeople nel more ottenuti non sono nel formato Array: ", responsePaginazione.data);
             }
         } catch(error) {
             console.error("Errore durante il recupero dei dati: ", error);
@@ -162,20 +185,27 @@ const Keypeople = () => {
                 }
         
 
-        const filtriDaInviare = {
-            nome: filtri.nome || null,
-            azienda: filtri.azienda || null,
-            owner: filtri.owner || null,
-            stato: filtri.stato || null,
-            pagina: 0,
-            quantita: 10,
-        };
+                const filtriDaInviare = {
+                    ...filtri,
+                    pagina: 0,
+                    quantita: quantita
+                };
+            
+                if (!userHasRole('ROLE_ADMIN')) {
+                    const userString = sessionStorage.getItem('user');
+                    if (userString) {
+                        const userObj = JSON.parse(userString);
+                        filtriDaInviare.username = userObj.username;
+                    }
+                }
+            
+                const baseUrl = userHasRole('ROLE_ADMIN') ? "http://localhost:8080/keypeople/react/ricerca/mod" : "http://localhost:8080/keypeople/react/ricerca/mod/modpersonal";
         setLoading(true);
         try {
-            const response = await axios.get("http://89.46.196.60:8443/keypeople/react/ricerca/mod", { headers: headers, params: filtriDaInviare });
-            const responseCliente = await axios.get("http://89.46.196.60:8443/aziende/react/select",            { headers: headers });
-            const responseOwner   = await axios.get("http://89.46.196.60:8443/aziende/react/owner",             { headers: headers });
-            const responseStati   = await axios.get("http://89.46.196.60:8443/keypeople/react/stati",            { headers: headers });
+            const response = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
+            const responseCliente = await axios.get("http://localhost:8080/aziende/react/select",            { headers: headers });
+            const responseOwner   = await axios.get("http://localhost:8080/aziende/react/owner",             { headers: headers });
+            const responseStati   = await axios.get("http://localhost:8080/keypeople/react/stati",            { headers: headers });
 
             if (Array.isArray(responseOwner.data)) {
                 setOwnerOptions(responseOwner.data.map((owner, index) => ({ label: owner.descrizione, value: owner.id })));
@@ -288,7 +318,7 @@ const Keypeople = () => {
      //funzione per cancellare l'azienda
     const handleDelete = async (id) => {
         try{
-            const responseDelete = await axios.delete(`http://89.46.196.60:8443/keypeople/react/elimina/${id}`, {headers: headers});
+            const responseDelete = await axios.delete(`http://localhost:8080/keypeople/react/elimina/${id}`, {headers: headers});
             await fetchData(0);
         } catch(error) {
             console.error("Errore durante la cancellazione: ", error);

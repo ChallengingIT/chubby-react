@@ -16,7 +16,7 @@ import CloseIcon                            from '@mui/icons-material/Close';
 import axios                                from 'axios';
 import InfoIcon                             from '@mui/icons-material/Info';
 
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Alert, Stack, Pagination, Popover } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Alert, Stack, Pagination, Popover, Slide } from '@mui/material';
 import { 
     Card, 
     CardContent, 
@@ -344,7 +344,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
             onClick: (event) => {
                 handleOpenModalDelete(event);
             },
-            isVisible: !userHasRole('ROLE_USER'),
+            isVisible: userHasRole('ROLE_ADMIN'),
         }
     ];
 
@@ -380,6 +380,11 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
             [name]: value
         }));
     };
+
+
+    function TransitionLeft(props) {
+        return <Slide {...props} direction="up" />;
+    }
 
     return (
         <Card
@@ -573,7 +578,12 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                             </Box>
                             </Box>
                 </Modal>
-
+                
+                {/* <DeleteModal 
+                open={modalDelete}
+                onClose={handleCloseModalDelete}
+                onDelete={() => confirmDelete(valori.id)}
+            /> */}
 
                 { /* MODAL PER LO STORICO */ }
                 <Modal
@@ -1004,7 +1014,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                                             </Popover>
 
                 { /* SNACKBAR  */}
-                <Snackbar open={snackbarOpen} autoHideDuration={8000} onClose={handleCloseSnackbar}>
+                <Snackbar open={snackbarOpen} autoHideDuration={7000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} TransitionComponent={TransitionLeft}>
                     <Alert variant='filled' onClose={handleCloseSnackbar} severity={snackbarType} sx={{ width: '100%' }}>
                         {snackbarMessage}
                     </Alert>
