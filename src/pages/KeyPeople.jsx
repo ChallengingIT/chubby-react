@@ -147,7 +147,7 @@ const Keypeople = () => {
             const userString = sessionStorage.getItem('user');
             if (userString) {
                 const userObj = JSON.parse(userString);
-                filtriDaInviare.username = userObj.username;
+                filtri.username = userObj.username;
             }
         }
 
