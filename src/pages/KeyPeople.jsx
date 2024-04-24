@@ -294,9 +294,9 @@ const Keypeople = () => {
     //     }
     // }, [filtri, pagina]);
 
-    // useEffect(() => {
-    //     sessionStorage.setItem('filtriRicercaKeypeople', JSON.stringify(filtri));
-    // }, [filtri]);
+    useEffect(() => {
+        sessionStorage.setItem('filtriRicercaKeypeople', JSON.stringify(filtri));
+    }, [filtri]);
     
 
     //funzione di reset dei campi di ricerca

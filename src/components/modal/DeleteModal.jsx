@@ -1,21 +1,9 @@
 // import React from 'react';
 // import { Modal, Box, Typography, Button } from '@mui/material';
 
-// const DeleteModal = (modalDelete, onClose, onDelete) => {
+// const DeleteModal = (onOpen, onClose, onDelete) => {
 //   return (
-//     <Modal
-//     open={modalDelete}
-//     onClose={onClose}
-//     aria-labelledby="modal-modal-title"
-//     aria-describedby="modal-modal-description"
-    
-//     onClick={(event) => event.stopPropagation()}
-//     sx={{
-//         display: 'flex',
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//     }}
-//     >
+
 //         <Box
 //                 sx={{
 //                 backgroundColor: 'white',
@@ -69,7 +57,6 @@
 //                 </Button>
 //                 </Box>
 //                 </Box>
-//     </Modal> 
 //     );
 // }
 
