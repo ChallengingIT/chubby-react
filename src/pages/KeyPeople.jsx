@@ -199,7 +199,7 @@ const Keypeople = () => {
                     }
                 }
             
-                const baseUrl = userHasRole('ROLE_ADMIN') ? "http://localhost:8080/keypeople/react/ricerca/mod" : "http://localhost:8080/keypeople/react/ricerca/mod/modpersonal";
+                const baseUrl = userHasRole('ROLE_ADMIN') ? "http://localhost:8080/keypeople/react/ricerca/mod" : "http://localhost:8080/keypeople/react/ricerca/modpersonal";
         setLoading(true);
         try {
             const response = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
