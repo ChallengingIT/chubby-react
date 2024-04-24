@@ -46,6 +46,16 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
     const [activeLink,            ] = useState(null);
 
 
+    const userHasRole = (roleToCheck) => {
+        const userString = sessionStorage.getItem('user');
+        if (!userString) {
+            return false;
+        }
+        const userObj = JSON.parse(userString);
+        return userObj.roles.includes(roleToCheck);
+    };
+
+
 
     const user = JSON.parse(sessionStorage.getItem('user'));
     const token = user?.token;
@@ -191,7 +201,8 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
             icon: <DeleteIcon />,
             onClick: (event) => {
                 handleOpenModalDelete(event);
-            }
+            },
+            isVisible: userHasRole('ROLE_ADMIN'),
         }
     ];
 
@@ -300,7 +311,9 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
 
             <Box sx={{ display: 'flex', alignItems: 'start', justifyContent: 'flex-start', flexDirection: 'column', mb: 1 }}>
             <List>
-                    {menuData.map((item, index) => (
+                    {menuData
+                    .filter(item => item.isVisible !== false)
+                    .map((item, index) => (
                         <ListItem
                             key={item.title}
                             selected={activeLink === `/${item.title.toLowerCase()}`}

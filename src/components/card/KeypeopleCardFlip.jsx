@@ -34,7 +34,6 @@ import {
     FormControl,
     Snackbar
     } from '@mui/material';
-import DeleteModal from '../modal/DeleteModal';
 
 
 const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
@@ -345,7 +344,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
             onClick: (event) => {
                 handleOpenModalDelete(event);
             },
-            isVisible: !userHasRole('ROLE_USER'),
+            isVisible: userHasRole('ROLE_ADMIN'),
         }
     ];
 

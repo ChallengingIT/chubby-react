@@ -32,6 +32,7 @@ const AziendeCardFlip = ({valori, onDelete}) => {
         setIsFlipped(!isFlipped);
     };
 
+
     const getCardStyle = (tipologia) => {
         switch (tipologia) {
 
@@ -204,7 +205,7 @@ const AziendeCardFlip = ({valori, onDelete}) => {
             onClick: (event) => {
                 handleOpenModalDelete(event);
             },
-            isVisible: !userHasRole('ROLE_USER'),
+            isVisible: userHasRole('ROLE_ADMIN'),
         }
     ];
     
