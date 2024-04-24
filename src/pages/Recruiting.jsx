@@ -485,6 +485,7 @@ return (
       height: '97vh',
       width: '100%',
       flexDirection: 'column',
+      overflow: 'auto',
     }}>
       <RicercheRecruiting 
       filtri={filtri}

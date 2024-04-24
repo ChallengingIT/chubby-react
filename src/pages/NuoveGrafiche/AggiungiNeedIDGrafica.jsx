@@ -22,6 +22,7 @@
         Skeleton,
         Snackbar,
         Grid,
+        Slide,
         } from "@mui/material";
 
     const AggiungiNeedIDGragica = () => {
@@ -270,6 +271,12 @@
         }
         setAlert({ ...alert, open: false });
     };
+
+     //funzione per la transizione dell'alert
+    function TransitionDown(props) {
+        return <Slide {...props} direction="down" />;
+    }
+
 
     //funzione per il salvataggio
     const handleSubmit = async (values) => {
@@ -711,6 +718,7 @@
                 autoHideDuration={6000}
                 onClose={handleCloseAlert}
                 anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                TransitionComponent={TransitionDown}
                 >
                 <Alert
                     onClose={handleCloseAlert}

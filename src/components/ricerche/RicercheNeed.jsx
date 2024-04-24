@@ -30,6 +30,20 @@
     }) {
     const navigate = useNavigate();
 
+
+
+    const userHasRole = (roleToCheck) => {
+        const userString = sessionStorage.getItem("user");
+        if (!userString) {
+        return false;
+        }
+        const userObj = JSON.parse(userString);
+        return userObj.roles.includes(roleToCheck);
+    };
+
+    const isRecruiter = userHasRole("ROLE_RECRUITER");
+
+
     const [openFiltri, setOpenFiltri] = useState(false);
     const [isRotated, setIsRotated] = useState(false);
     const [contactOptions, setContactOptions] = useState([]);
@@ -86,11 +100,14 @@
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
-            justifyContent: "space-between",
+            // justifyContent: isRecruiter ? "center" : "space-between",
+            justifyContent: 'space-between',
             borderRadius: "10px",
             marginBottom: "4rem",
+            gap: 20
         }}
         >
+        {!isRecruiter && (
         <Button
             variant="contained"
             color="primary"
@@ -109,6 +126,7 @@
         >
             + Aggiungi Need
         </Button>
+        )}
 
         <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
             {/* Barra di ricerca */}
@@ -156,6 +174,7 @@
             color="primary"
             onClick={handleOpenFiltri}
             sx={{
+            
             backgroundColor: "#00B401",
             mt: 2,
             minWidth: "12em",
