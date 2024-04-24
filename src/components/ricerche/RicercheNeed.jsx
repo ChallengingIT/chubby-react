@@ -127,6 +127,9 @@
             + Aggiungi Need
         </Button>
         )}
+        {isRecruiter && (
+            <Box sx={{ width: '10%'}}/>
+        )}
 
         <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
             {/* Barra di ricerca */}

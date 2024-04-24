@@ -59,7 +59,7 @@ const App = () => {
 
                 <Route path="/dashboard" element={
                     <PrivateRoute roles={['ROLE_ADMIN',  'ROLE_RECRUITER', 'ROLE_BM', 'ROLE_USER']}>
-                      <ProvaDashboard />
+                      <Dashboard />
                     </PrivateRoute>
                   } />
                 <Route path="/business" element={
