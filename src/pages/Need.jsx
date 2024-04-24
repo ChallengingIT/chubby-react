@@ -46,6 +46,17 @@ import {
         };
 
 
+         //controllo del ruolo dell'utente loggato
+        const userHasRole = (roleToCheck) => {
+            const userString = sessionStorage.getItem('user');
+            if (!userString) {
+                return false;
+            }
+            const userObj = JSON.parse(userString);
+            return userObj.roles.includes(roleToCheck);
+        };
+
+
         //caricamento dati al montaggio
         const fetchData = async ()  => {
             setLoading(true);
@@ -54,9 +65,18 @@ import {
                 pagina: 0,
                 quantita: 10
             };
+            if (!userHasRole('ROLE_ADMIN')) {
+                const userString = sessionStorage.getItem('user');
+                if (userString) {
+                    const userObj = JSON.parse(userString);
+                    filtriDaInviare.username = userObj.username;
+                }
+            }
+    
+            const baseUrl = userHasRole('ROLE_ADMIN') ? "http://localhost:8080/need/react/modificato" : "http://localhost:8080/need/react/modificato/personal";
 
             try {
-            const responseNeed          = await axios.get("http://localhost:8080/need/react/modificato",         { headers: headers, params: filtriDaInviare });
+            const responseNeed          = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
             const responseAzienda       = await axios.get("http://localhost:8080/aziende/react/select",          { headers: headers });
             const responseOwner         = await axios.get("http://localhost:8080/aziende/react/owner",           { headers: headers });
             const responseTipologia     = await axios.get("http://localhost:8080/need/react/tipologia",          { headers: headers });
@@ -128,25 +148,23 @@ import {
 
             const paginaSuccessiva = pagina + 1;
 
-            const filtriAttivi = Object.values(filtri).some(value => value !== null && value !== '');
-
-            const url = filtriAttivi ?
-            "http://localhost:8080/need/react/ricerca/modificato" :
-            "http://localhost:8080/need/react/modificato";
-
+            if (!userHasRole('ROLE_ADMIN')) {
+                const userString = sessionStorage.getItem('user');
+                if (userString) {
+                    const userObj = JSON.parse(userString);
+                    filtriDaInviare.username = userObj.username;
+                }
+            }
+    
+            const baseUrl = userHasRole('ROLE_ADMIN') ? "http://localhost:8080/need/react/modificato" : "http://localhost:8080/need/react/modificato/personal";
 
             const filtriDaInviare = {
-                descrizione: filtri.descrizione || null,
-                tipologia: filtri.tipologia || null,
-                owner: filtri.owner || null,
-                stato: filtri.stato || null,
-                azienda: filtri.azienda || null,
-                keypeople: filtri.keypeople || null,
+                ...filtri,
                 pagina: paginaSuccessiva,
-                quantita: 10
+                quantita: quantita
             };
             try {
-                const responsePaginazione   = await axios.get(url,    { headers: headers , params: filtriDaInviare });
+                const responsePaginazione = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
                 if (Array.isArray(responsePaginazione.data)) {
                     const needConId = responsePaginazione.data.map((need) => ({...need }));
                     setOriginalNeed((prev) => [...prev, ...needConId]);
@@ -168,19 +186,25 @@ import {
                 if (!isAnyFilterSet) {
                     return; 
                 }
-            const filtriDaInviare = {
-                descrizione: filtri.descrizione || null,
-                tipologia: filtri.tipologia || null,
-                owner: filtri.owner || null,
-                stato: filtri.stato || null,
-                azienda: filtri.azienda || null,
-                keypeople: filtri.keypeople || null,
-                pagina: 0,
-                quantita: 10
-            };
+            
+                const filtriDaInviare = {
+                    ...filtri,
+                    pagina: 0,
+                    quantita: quantita
+                };
+            
+                if (!userHasRole('ROLE_ADMIN')) {
+                    const userString = sessionStorage.getItem('user');
+                    if (userString) {
+                        const userObj = JSON.parse(userString);
+                        filtriDaInviare.username = userObj.username;
+                    }
+                }
+            
+                const baseUrl = userHasRole('ROLE_ADMIN') ? "http://localhost:8080/need/react/ricerca/modificato" : "http://localhost:8080/need/react/ricerca/modificato/personal";
             setLoading(true);
             try {
-                const response = await axios.get("http://localhost:8080/need/react/ricerca/modificato", { headers: headers, params: filtriDaInviare });
+                const response = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
                 const responseAzienda       = await axios.get("http://localhost:8080/aziende/react/select",          { headers: headers });
                 const responseOwner         = await axios.get("http://localhost:8080/aziende/react/owner",           { headers: headers });
                 const responseTipologia     = await axios.get("http://localhost:8080/need/react/tipologia",          { headers: headers });
