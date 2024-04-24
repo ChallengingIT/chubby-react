@@ -138,7 +138,7 @@ const AggiungiNeedGrafica = () => {
     const getMandatoryFields = (index) => {
         switch (index) {
             case 0:
-                return ["idAzienda", "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location"]; 
+                return ["idAzienda", "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location", "idKeyPeople"]; 
             default:
                 return [];
         }
@@ -281,7 +281,7 @@ const AggiungiNeedGrafica = () => {
         }
     };
 
-        const fieldObbligatori = [ "idAzienda", "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location" ];
+        const fieldObbligatori = [ "idAzienda", "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location", "idKeyPeople" ];
 
             const fields =[
             { label: "Azienda*",                   name: "idAzienda",                    type: "select",               options: aziendeOptions          },
