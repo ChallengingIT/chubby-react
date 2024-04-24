@@ -235,6 +235,11 @@ const ModificaIntervistaGrafica = () => {
                 },
                 headers: headers
                 });
+                if (response.data === "ERRORE") {
+                    setAlert({ open: true, message: "errore durante il salvataggio dell'intervista!" });
+                    console.error("L'intervista non è stata salvata.");
+                    return;
+                }
                 navigate(`/recruiting/intervista/${candidatoID}`);
 
                 } catch (error) {

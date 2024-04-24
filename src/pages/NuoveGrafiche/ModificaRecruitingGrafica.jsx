@@ -395,6 +395,11 @@ const ModificaRecruitingGrafica = () => {
                     console.error("il candidato è già stato salvato.");
                     return; 
                 }
+                if (datiResponse.data === "ERRORE") {
+                    setAlert({ open: true, message: "errore durante il salvataggio del candidato!" });
+                    console.error("Il candidato non è stata salvata.");
+                    return;
+                }
                 const candidatoId = datiResponse.data;
                 setIdCandidato(candidatoId);
 
