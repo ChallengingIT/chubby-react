@@ -8,6 +8,9 @@ import {
   Button,
   Box,
   Typography,
+  Slide,
+  Snackbar,
+  Alert
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -15,6 +18,10 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import axios from "axios";
 
 function EmailModal({ open, handleClose }) {
+
+
+  const [ alert, setAlert ] = useState(false);
+
   const user = JSON.parse(sessionStorage.getItem("user"));
   const token = user?.token;
 
@@ -57,10 +64,29 @@ function EmailModal({ open, handleClose }) {
       if (responseInviaEmail.data === "OK") {
         onClose();
       }
+      if (responseInviaEmail.data === "ERRORE") {
+        setAlert({ open: true, message: "errore durante il salvataggio dell'azienda!" });
+        console.error("L'azienda non è stata salvata.");
+        return;
+    }
     } catch (error) {
       console.error("Errore durante l'invio dell'email: ", error);
     }
   };
+
+
+   //funzione per la chiusura dell'alert
+  const handleCloseAlert = (reason) => {
+    if (reason === 'clickaway') {
+        return;
+    }
+    setAlert({...alert, open: false});
+  };
+
+  //funzione per la transizione dell'alert
+  function TransitionDown(props) {
+      return <Slide {...props} direction="down" />;
+  }
 
   return (
     <Dialog
@@ -233,6 +259,11 @@ function EmailModal({ open, handleClose }) {
         </DialogContent>
         <DialogActions></DialogActions>
       </LocalizationProvider>
+      <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} TransitionComponent={TransitionDown}>
+                <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
+                    {alert.message}
+                </Alert>
+        </Snackbar>
     </Dialog>
   );
 }

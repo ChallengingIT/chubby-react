@@ -29,7 +29,11 @@ import {
     ListItemIcon,
     FormControl,
     TextField,
-    Autocomplete
+    Autocomplete,
+    Snackbar,
+    Alert,
+    Slide
+
     } from '@mui/material';
 
 const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
@@ -44,6 +48,20 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
     });
     const [isFlipped, setIsFlipped] = useState(false);
     const [activeLink,            ] = useState(null);
+    const [alert,     setAlert    ] = useState(false);
+
+     //funzione per la chiusura dell'alert
+    const handleCloseAlert = (reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setAlert({...alert, open: false});
+    };
+
+    //funzione per la transizione dell'alert
+    function TransitionDown(props) {
+        return <Slide {...props} direction="down" />;
+    }
 
 
     const userHasRole = (roleToCheck) => {
@@ -104,6 +122,11 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
             const responseUpdateStato = await axios.post(`http://localhost:8080/need/react/salva/stato/${idNeed}?${params.toString()}`, {}, { headers: headers });
             setModalStato(false);
             onRefresh();
+            if (responseUpdateStato.data === "ERRORE") {
+                setAlert({ open: true, message: "errore durante il salvataggio dell'azienda!" });
+                console.error("L'azienda non è stata salvata.");
+                return;
+            }
         } catch (error) {
             console.error("Errore durante l'aggiornamento dello stato: ", error);
         }
@@ -511,6 +534,12 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
                             </Button>
                             </Box>
                             </Modal>
+
+            <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} TransitionComponent={TransitionDown}>
+                <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
+                    {alert.message}
+                </Alert>
+            </Snackbar>
     </Card>
     );
 };
