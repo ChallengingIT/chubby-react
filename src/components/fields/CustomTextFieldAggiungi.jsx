@@ -7,8 +7,6 @@ function CustomTextFieldAggiungi({ name, label, type, onChange, values, maxLengt
     onChange({ [name]: value });
   };
 
-  console.log("name: ", name);
-  console.log("maxLength: ", maxLength);
 
   return (
     <TextField
