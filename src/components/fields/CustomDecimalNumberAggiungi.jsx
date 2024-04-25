@@ -1,7 +1,7 @@
 import React     from 'react';
 import TextField from '@mui/material/TextField';
 
-function CustomDecimalNumberAggiungi({ name, label, type, onChange, values }) {
+function CustomDecimalNumberAggiungi({ name, label, type, onChange, values, maxLength }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     onChange({ [name]: value });
@@ -15,6 +15,9 @@ function CustomDecimalNumberAggiungi({ name, label, type, onChange, values }) {
       type='number'
       variant="filled"
       fullWidth
+      inputProps={{
+        maxLength: maxLength
+        }}
       value={values[name] || ''}
       onChange={handleChange}
       sx={{ 

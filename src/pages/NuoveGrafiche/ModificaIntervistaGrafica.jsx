@@ -276,24 +276,24 @@ const ModificaIntervistaGrafica = () => {
         { label: "Energia",                   name: "energia",                 type: "number"},
         { label: "Comunicazione",             name: "comunicazione",           type: "number"},
         { label: "Livello di Inglese",        name: "inglese",                 type: "number"},
-        { label: "Competenze vs ruolo",       name: "competenze",              type: "number"},
+        { label: "Competenze vs ruolo",       name: "competenze",              type: "number", maxLength: 90},
         { label: "Valutazione",               name: "valutazione",             type: "number"},
     
     
         { type: "titleGroups",                label: "Ultime Osservazioni"                 },
-        { label: "One word",                  name: "descrizioneCandidatoUna", type: "text"},
-        { label: "Lo vorresti nel tuo team?", name: "teamSiNo",                type: "text"},
-        { label: "Descrizione Candidato",     name: "note",                    type: "note"},
+        { label: "One word",                  name: "descrizioneCandidatoUna", type: "text", maxLength: 45},
+        { label: "Lo vorresti nel tuo team?", name: "teamSiNo",                type: "text", maxLength: 45},
+        { label: "Descrizione Candidato",     name: "note",                    type: "note", maxLength: 2000},
         
     
     
         { type: "titleGroups",                label: "Next Steps"},
-        { label: "Disponibilità",             name: "disponibilita",           type: "text"},
-        { label: "RAL Attuale",               name: "attuale",                 type: "text"},
-        { label: "RAL Desiderata",            name: "desiderata",              type: "text"},
-        { label: "Proposta economica",        name: "proposta",                type: "text"},
+        { label: "Disponibilità",             name: "disponibilita",           type: "text", maxLength: 45},
+        { label: "RAL Attuale",               name: "attuale",                 type: "text", maxLength: 90},
+        { label: "RAL Desiderata",            name: "desiderata",              type: "text", maxLength: 90},
+        { label: "Proposta economica",        name: "proposta",                type: "text", maxLength: 90},
         { label: "Follow Up",                 name: "idTipo",                  type: "select", options: tipoIntervistaOptions },
-        { label: "Preavviso",                 name: "preavviso",               type: "text"},
+        { label: "Preavviso",                 name: "preavviso",               type: "text", maxLength: 45},
         { label: "Next Deadline",             name: "dataAggiornamento",       type: "dateOra"},
         { label: "Owner next Deadline",       name: "idNextOwner",             type: "select", options: ownerOptions },
     ];
@@ -438,6 +438,7 @@ const ModificaIntervistaGrafica = () => {
                         onChange={handleChange}
                         initialValues={initialValues}
                         disabled={!!isDisabled}
+                        maxLength={field.maxLength}
                         />
                     );
 
@@ -451,6 +452,8 @@ const ModificaIntervistaGrafica = () => {
                         values={values}
                         onChange={handleChange}
                         initialValues={initialValues}
+                        maxLength={field.maxLength}
+
                         />
                     );
 
@@ -502,6 +505,8 @@ const ModificaIntervistaGrafica = () => {
                     type={field.type}
                     values={values}
                     onChange={handleChange}
+                    maxLength={field.maxLength}
+
                     />
                 );
 

@@ -742,7 +742,9 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                             label="Note"
                             multiline
                             variant="filled"
-
+                            inputProps={{
+                                maxLength: 4000
+                            }}
                             rows={4}
                             sx={{
                                 height: '8em',

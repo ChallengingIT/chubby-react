@@ -1,17 +1,23 @@
 import React     from 'react';
 import TextField from '@mui/material/TextField';
 
-function CustomTextFieldAggiungi({ name, label, type, onChange, values }) {
+function CustomTextFieldAggiungi({ name, label, type, onChange, values, maxLength }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     onChange({ [name]: value });
   };
+
+  console.log("name: ", name);
+  console.log("maxLength: ", maxLength);
 
   return (
     <TextField
       name={name}
       label={label}
       type={type}
+      inputProps={{
+      maxLength: maxLength
+      }}
       variant="filled"
       fullWidth
       value={values[name] || ''}

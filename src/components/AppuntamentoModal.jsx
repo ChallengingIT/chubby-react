@@ -194,6 +194,9 @@ function AppuntamentoModal({ open, handleClose }) {
               variant="filled"
               name="oggetto"
               value={formData.oggetto}
+              inputProps={{
+                maxLength: 120
+              }}
               onChange={handleChange("oggetto")}
               sx={{
                 height: "4em",
