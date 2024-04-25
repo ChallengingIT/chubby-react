@@ -34,6 +34,7 @@ import {
     FormControl,
     Snackbar
     } from '@mui/material';
+    
 
 
 const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
@@ -578,12 +579,8 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                             </Box>
                             </Box>
                 </Modal>
-                
-                {/* <DeleteModal 
-                open={modalDelete}
-                onClose={handleCloseModalDelete}
-                onDelete={() => confirmDelete(valori.id)}
-            /> */}
+
+
 
                 { /* MODAL PER LO STORICO */ }
                 <Modal

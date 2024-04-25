@@ -186,6 +186,11 @@ const AggiungiKeypeopleGrafica = () => {
                         console.error("il contatto è già stata salvato.");
                         return; 
                     }
+                    if (response.data === "ERRORE") {
+                        setAlert({ open: true, message: "errore durante il salvataggio del contatto!" });
+                        console.error("Il contatto non è stata salvata.");
+                        return;
+                    }
                     navigate("/contacts");
                 } catch (error) {
                     console.error("Errore durante il salvataggio:", error);

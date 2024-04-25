@@ -304,6 +304,11 @@
             values,
             { params: { skill: skills }, headers: headers }
             );
+            if (responseSaveNeed.data === "ERRORE") {
+                setAlert({ open: true, message: "errore durante il salvataggio del need!" });
+                console.error("Il need non è stata salvata.");
+                return;
+            }
             navigate(`/need`);
         } catch (error) {
             console.error("Errore durante il salvataggio", error);

@@ -222,6 +222,11 @@ const AggiungiAziendaGrafica = () => {
                         console.error("L'azienda è già stata salvata.");
                         return; 
                     }
+                    if (response.data === "ERRORE") {
+                        setAlert({ open: true, message: "errore durante il salvataggio dell'azienda!" });
+                        console.error("L'azienda non è stata salvata.");
+                        return;
+                    }
                     const aziendaID = response.data;
     
                     try {
