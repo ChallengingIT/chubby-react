@@ -468,12 +468,12 @@ const ModificaRecruitingGrafica = () => {
 
         const fields =[
             { type: "titleGroups",                label: "Profilo Candidato"            },
-            { label: "Nome*",                         name: "nome",                     type: "text"                                                            },
-            { label: "Cognome*",                      name: "cognome",                  type: "text"                                                            },
+            { label: "Nome*",                         name: "nome",                     type: "text", maxLength: 45                                                            },
+            { label: "Cognome*",                      name: "cognome",                  type: "text", maxLength: 45                                                            },
             { label: "Data di Nascita",               name: "dataNascita",              type: "date"                                                            },
-            { label: "Email*",                        name: "email",                    type: "text"                                                            },
-            { label: "Cellulare",                     name: "cellulare",                type: "text"                                                            },
-            { label: "Residenza",                     name: "citta",                    type: "text"                                                            },
+            { label: "Email*",                        name: "email",                    type: "text", maxLength: 45                                                            },
+            { label: "Cellulare",                     name: "cellulare",                type: "text", maxLength: 20                                                            },
+            { label: "Residenza",                     name: "citta",                    type: "text", maxLength: 45                                                            },
 
     
     
@@ -501,9 +501,9 @@ const ModificaRecruitingGrafica = () => {
         { label: "Stato*",                             name: "idStato",                    type: "select",               options: statoOptions                     },
         { label: "Owner",                              name: "idOwner",                    type: "select",               options: ownerOptions                     },
         { label: "Skills",                             name: "idSkills",                   type: "multipleSelect",  options: skillsOptions                         },
-        { label: "RAL/Tariffa",                        name: "ral",                        type: "text"                                                            },
-        { label: "Disponibilità",                      name: "disponibilita",              type: "text"                                                            },
-        { label: "Note",                               name: "note",                       type: "note"                                                            },
+        { label: "RAL/Tariffa",                        name: "ral",                        type: "text", maxLength: 100                                                            },
+        { label: "Disponibilità",                      name: "disponibilita",              type: "text", maxLength: 45                                                           },
+        { label: "Note",                               name: "note",                       type: "note", maxLength: 4000                                                           },
     
     
             { type: "titleGroups",                label: "Allegati"            },
@@ -634,6 +634,8 @@ const ModificaRecruitingGrafica = () => {
                         values={values}
                         onChange={handleChange}
                         initialValues={initialValues}
+                        maxLength={field.maxLength}
+
                         />
                     );
 
@@ -647,6 +649,8 @@ const ModificaRecruitingGrafica = () => {
                         values={values}
                         onChange={handleChange}
                         initialValues={initialValues}
+                        maxLength={field.maxLength}
+
                         />
                     );
 

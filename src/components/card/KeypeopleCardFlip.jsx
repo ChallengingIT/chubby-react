@@ -56,6 +56,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
     const [ tipologieOptions,    setTipologieOptions  ] = useState([]);
     const [ azioni,              setAzioni            ] = useState([]);
     const [ anchorElStato,       setAnchorElStato     ] = useState(null);
+    const [ alert,               setAlert             ] = useState(false);
 
     const [values,               setValues            ] = useState({
         tipologie: '',
@@ -146,6 +147,20 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
             stato: valori.stato?.id  
         }));
     };
+
+
+     //funzione per la chiusura dell'alert
+     const handleCloseAlert = (reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setAlert({...alert, open: false});
+    };
+
+    //funzione per la transizione dell'alert
+    function TransitionDown(props) {
+        return <Slide {...props} direction="down" />;
+    }
     
     const user = JSON.parse(sessionStorage.getItem('user'));
     const token = user?.token;
@@ -163,6 +178,11 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                 setAzioni(azioni);
             } else {
                 console.error("I dati per le azioni ottenuti non sono nel formato Array:", responseAzioni.data);
+            }
+            if (responseAzioni.data === "ERRORE") {
+                setAlert({ open: true, message: "errore durante il salvataggio dell'azione!" });
+                console.error("L'azienda non è stata salvata.");
+                return;
             }
         } catch(error) {
             console.error("Errore durante il recupero delle azioni:", error);
@@ -247,6 +267,11 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
             setModalCambiaStato(false);
             onRefresh();
             handleOpenSnackbar('Stato aggiornato con successo!', 'success');
+            if (responseUpdateStato.data === "ERRORE") {
+                setAlert({ open: true, message: "errore durante il salvataggio dell'azienda!" });
+                console.error("L'azienda non è stata salvata.");
+                return;
+            }
         } catch (error) {
             console.error("Errore durante l'aggiornamento dello stato: ", error);
             handleOpenSnackbar('Errore durante l aggiornamento dello stato.', 'error');
@@ -742,7 +767,9 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                             label="Note"
                             multiline
                             variant="filled"
-
+                            inputProps={{
+                                maxLength: 4000
+                            }}
                             rows={4}
                             sx={{
                                 height: '8em',
@@ -1016,6 +1043,11 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                         {snackbarMessage}
                     </Alert>
                 </Snackbar>
+                <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} TransitionComponent={TransitionDown}>
+                <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
+                    {alert.message}
+                </Alert>
+            </Snackbar>
     </Card>
     );
 };

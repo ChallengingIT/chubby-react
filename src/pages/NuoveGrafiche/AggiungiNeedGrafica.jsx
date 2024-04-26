@@ -291,7 +291,7 @@ const AggiungiNeedGrafica = () => {
             const fields =[
             { label: "Azienda*",                   name: "idAzienda",                    type: "select",               options: aziendeOptions          },
             { label: 'Contatto*',                  name: "idKeyPeople",                  type: "select",               options: keypeopleOptions        },
-            { label: "Descrizione Need*",          name: "descrizione",                  type: "text"                                                   },
+            { label: "Descrizione Need*",          name: "descrizione",                  type: "text",                 maxLength: 200                                                   },
             // { label: "Priorità*",                  name: "priorita",                     type: "decimalNumber"                                          },
             { label: "Priorità*",              name: "priorita",                          type: "select",               options: [
                 { value: 1,                   label: "Massima" },
@@ -309,12 +309,12 @@ const AggiungiNeedGrafica = () => {
             { label: "Owner*",                     name: "idOwner",                      type: "select",                 options: ownerOptions          },
             { label: "Stato*",                     name: "stato",                        type: "select",                 options: statoOptions          },
             { label: "Headcount",                  name: "numeroRisorse",                type: "decimalNumber"                                          },
-            { label: "Location*",                  name: "location",                     type: "text"                                                   },
+            { label: "Location*",                  name: "location",                     type: "text",                   maxLength: 45                                                    },
             { label: "Skills",                     name: "skills",                       type: "multipleSelect",    options: skillsOptions              },
-            { label: "Seniority",                  name: "anniEsperienza",               type: "decimalNumber"                                          },
+            { label: "Seniority",                  name: "anniEsperienza",               type: "decimalNumber"                                           },
             { label: 'Pubblicazione Annuncio*',    name: 'pubblicazione',                type: 'select',                 options: pubblicazioneOptions  },
             { label: 'Screening*',                 name: 'screening',                    type: 'select',                 options: screeningOptions      },
-            { label: "Note",                       name: "note",                         type: "note"                                                   },
+            { label: "Note",                       name: "note",                         type: "note",                   maxLength: 4000                                                   },
             ];
         
 
@@ -384,6 +384,7 @@ const AggiungiNeedGrafica = () => {
                         type={field.type}
                         values={values}
                         onChange={handleChange}
+                        maxLength={field.maxLength}
                         />
                     );
 
@@ -396,6 +397,7 @@ const AggiungiNeedGrafica = () => {
                         type={field.type}
                         values={values}
                         onChange={handleChange}
+                        maxLength={field.maxLength}
                         />
                     );
 

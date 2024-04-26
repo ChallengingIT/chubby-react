@@ -303,7 +303,7 @@ const ModificaNeedGrafica = () => {
         const fieldObbligatori = [ "descrizione", "idKeyPeople", "priorita", "week", "pubblicazione", "screening", "idTipologia", "idStato", "idOwner", "location" ];
 
         const fields =[
-            { label: "Descrizione Need*",   name: "descrizione",                  type: "text"                                                },
+            { label: "Descrizione Need*",   name: "descrizione",                  type: "text", maxLength: 200                                                },
             { label: "Contatto*",           name: "idKeyPeople",                  type: "select",               options: keyPeopleOptions     },
             // { label: "Priorità*",           name: "priorita",                     type: "decimalNumber"                                       },
             { label: "Priorità*",              name: "priorita",                          type: "select",               options: [
@@ -322,12 +322,12 @@ const ModificaNeedGrafica = () => {
             { label: "Owner*",                    name: "idOwner",                     type: "select",                 options: ownerOptions         },
             { label: "Stato*",                    name: "idStato",                     type: "select",                 options: statoOptions         },
             { label: "Headcount",                 name: "numeroRisorse",               type: "decimalNumber"                                         },
-            { label: "Location*",                 name: "location",                    type: "text"                                                  },
+            { label: "Location*",                 name: "location",                    type: "text", maxLength: 45                                                  },
             { label: "Skills",                    name: "idSkills",                    type: "multipleSelect",         options: skillsOptions        },
             { label: "Seniority",                 name: "anniEsperienza",              type: "decimalNumber"                                         },
             { label: 'Pubblicazione Annuncio*',   name: 'pubblicazione',               type: 'select',                 options: pubblicazioneOptions },
             { label: 'Screening*',                name: 'screening',                   type: 'select',                 options: screeningOptions     },
-            { label: "Note",                      name: "note",                        type: "note"                                                  },
+            { label: "Note",                      name: "note",                        type: "note", maxLength:4000                                                  },
             ];
 
 
@@ -443,6 +443,7 @@ const ModificaNeedGrafica = () => {
                         values={values}
                         onChange={handleChange}
                         initialValues={initialValues}
+                        maxLength={field.maxLength}
                         />
                     );
 
@@ -456,6 +457,8 @@ const ModificaNeedGrafica = () => {
                         values={values}
                         onChange={handleChange}
                         initialValues={initialValues}
+                        maxLength={field.maxLength}
+
                         />
                     );
 

@@ -10,6 +10,9 @@ import {
   Autocomplete,
   Box,
   Typography,
+  Snackbar,
+  Alert,
+  Slide
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -24,6 +27,22 @@ function AppuntamentoModal({ open, handleClose }) {
   const headers = {
     Authorization: `Bearer ${token}`,
   };
+
+  const [ alert, setAlert ] = useState(false);
+
+
+   //funzione per la chiusura dell'alert
+  const handleCloseAlert = (reason) => {
+    if (reason === 'clickaway') {
+        return;
+    }
+    setAlert({...alert, open: false});
+};
+
+//funzione per la transizione dell'alert
+function TransitionDown(props) {
+    return <Slide {...props} direction="down" />;
+}
 
   const [ownerOptions, setOwnerOptions] = useState([]);
   const [formData, setFormData] = useState({
@@ -102,6 +121,11 @@ function AppuntamentoModal({ open, handleClose }) {
       if (responseInviaAppuntamento.data === "OK") {
         onClose();
       }
+      if (responseInviaAppuntamento.data === "ERRORE") {
+        setAlert({ open: true, message: "errore durante il salvataggio dell'appuntamento!" });
+        console.error("L'azienda non è stata salvata.");
+        return;
+    }
     } catch (error) {
       console.error("Errore durante l'invio dell'appuntamento: ", error);
     }
@@ -194,6 +218,9 @@ function AppuntamentoModal({ open, handleClose }) {
               variant="filled"
               name="oggetto"
               value={formData.oggetto}
+              inputProps={{
+                maxLength: 120
+              }}
               onChange={handleChange("oggetto")}
               sx={{
                 height: "4em",
@@ -390,7 +417,13 @@ function AppuntamentoModal({ open, handleClose }) {
         </DialogContent>
         <DialogActions></DialogActions>
       </LocalizationProvider>
+        <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} TransitionComponent={TransitionDown}>
+                <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
+                    {alert.message}
+                </Alert>
+        </Snackbar>
     </Dialog>
+    
   );
 }
 

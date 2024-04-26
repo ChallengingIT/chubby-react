@@ -244,8 +244,8 @@ const AggiungiKeypeopleGrafica = () => {
 
         const fields =[
             { type: "titleGroups",            label: "Anagrafica"            },
-            { label: "Nome Contatto*",        name: "nome",                type: "text" },
-            { label: "Ruolo*",                name: "ruolo",               type: "text" },
+            { label: "Nome Contatto*",        name: "nome",                type: "text", maxLength: 255},
+            { label: "Ruolo*",                name: "ruolo",               type: "text", maxLength: 255},
             { label: "Azienda*",              name: "idAzienda",           type: "select",      options: aziendeOptions },
             { label: 'Tipo',                  name: 'tipo',                type: 'select',      options: [
                 { value: 1, label: "Keypeople" },
@@ -254,13 +254,13 @@ const AggiungiKeypeopleGrafica = () => {
             ] },
             { label: "Stato*",                name: "idStato",              type: "select",      options: statiOptions},
             { label: "Owner*",                name: "idOwner",              type: "select",      options: ownerOptions},
-            { label: "Email*",                name: "email",                type: "text" },
-            { label: "Cellulare",             name: "cellulare",            type: "text" },
+            { label: "Email*",                name: "email",                type: "text", maxLength: 45 },
+            { label: "Cellulare",             name: "cellulare",            type: "text", maxLength: 20 },
            
             
             { label: "Data di Creazione*",    name: "dataCreazione",       type: "date" },
             { label: 'Ultima attività',       name: 'dataUltimaAttivita',  type: 'date' },
-            { label: "Note",                  name: "note",                type: "note" },
+            { label: "Note",                  name: "note",                type: "note", maxLength:  2000},
         ];
 
         //funzione per suddividere fields nelle varie pagine in base a titleGroups
@@ -300,6 +300,7 @@ const AggiungiKeypeopleGrafica = () => {
                         type={field.type}
                         values={values}
                         onChange={handleChange}
+                        maxLength={field.maxLength}
                         />
                     );
 
@@ -312,6 +313,7 @@ const AggiungiKeypeopleGrafica = () => {
                             type={field.type}
                             values={values}
                             onChange={handleChange}
+                            maxLength={field.maxLength}
                             />
                         );
 

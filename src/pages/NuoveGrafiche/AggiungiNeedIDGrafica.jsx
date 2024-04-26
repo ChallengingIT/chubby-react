@@ -336,7 +336,7 @@
 
     const fields = [
         { label: "Azienda*",                    name: "denominazione",          type: "text", disabled: true },
-        { label: "Descrizione Need*",           name: "descrizione",            type: "text"                 },
+        { label: "Descrizione Need*",           name: "descrizione",            type: "text", maxLength: 200                 },
         // { label: "Priorità*",                   name: "priorita",               type: "decimalNumber"        },
         { label: "Priorità*",              name: "priorita",                          type: "select",               options: [
             { value: 1,                   label: "Massima" },
@@ -364,7 +364,7 @@
         { label: "Owner*",                      name: "idOwner",                type: "select", options: ownerOptions },
         { label: "Stato*",                      name: "stato",                  type: "select", options: statoOptions },
         { label: "Headcount",                   name: "numeroRisorse",          type: "decimalNumber"                 },
-        { label: "Location*",                   name: "location",               type: "text"                          },
+        { label: "Location*",                   name: "location",               type: "text", maxLength: 45                          },
         {
         label: "Skills",
         name: "idSkills",
@@ -384,7 +384,7 @@
         type: "select",
         options: screeningOptions,
         },
-        { label: "Note", name: "note", type: "note" },
+        { label: "Note", name: "note", type: "note", maxLength: 4000 },
     ];
 
     const initialValues = {
@@ -458,6 +458,7 @@
                     onChange={handleChange}
                     initialValues={initialValues}
                     disabled={disabledFields.includes(field.name)}
+                    maxLength={field.maxLength}
                 />
                 );
             } else {
@@ -468,6 +469,8 @@
                     type={field.type}
                     values={values}
                     onChange={handleChange}
+                    maxLength={field.maxLength}
+
                 />
                 );
             }
@@ -480,6 +483,8 @@
                 type={field.type}
                 values={values}
                 onChange={handleChange}
+                maxLength={field.maxLength}
+
                 />
             );
 

@@ -1,7 +1,7 @@
 import React     from 'react';
 import TextField from '@mui/material/TextField';
 
-function CustomTextFieldModifica({ name, label, type, onChange, values, initialValues, disabled }) {
+function CustomTextFieldModifica({ name, label, type, onChange, values, initialValues, disabled, maxLength}) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     onChange({ [name]: value });
@@ -14,6 +14,9 @@ function CustomTextFieldModifica({ name, label, type, onChange, values, initialV
       type={type}
       variant="filled"
       fullWidth
+      inputProps={{
+        maxLength: maxLength
+        }}
       value={values[name] || initialValues[name] || ''}
       onChange={handleChange}
       disabled={disabled}

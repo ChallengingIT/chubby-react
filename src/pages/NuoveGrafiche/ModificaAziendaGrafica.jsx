@@ -281,25 +281,25 @@ const ModificaAziendaGrafica = () => {
 
         const fields =[
             { type: "titleGroups",                label: "Profilo"            },
-            { label: 'Nome Azienda*',                   name: 'denominazione',            type:'text'                              },
-            { label: 'Settore Mercato*',                name: 'settoreMercato',           type:'text'                              },
+            { label: 'Nome Azienda*',                   name: 'denominazione',            type:'text', maxLength: 90                                 },
+            { label: 'Settore Mercato*',                name: 'settoreMercato',           type:'text', maxLength: 255                               },
             // { label: "Email",                           name: "email",                    type: "text"                             },
-            { label: "Partita IVA",                     name: "pi",                       type: "text"                             },
-            { label: "Codice Fiscale",                  name: "cf",                       type: "text"                             },
-            { label: "Pec",                             name: "pec",                      type: "text"                             },
-            { label: "Codice Destinatario",             name: "codiceDestinatario",       type: "text"                             },
-            { label: "Sito Web",                        name: "sito",                     type: "text"                             },
+            { label: "Partita IVA",                     name: "pi",                       type: "text", maxLength: 45                              },
+            { label: "Codice Fiscale",                  name: "cf",                       type: "text", maxLength: 45                              },
+            { label: "Pec",                             name: "pec",                      type: "text", maxLength: 45                             },
+            { label: "Codice Destinatario",             name: "codiceDestinatario",       type: "text", maxLength: 45                              },
+            { label: "Sito Web",                        name: "sito",                     type: "text", maxLength: 90                              },
             { label: 'Scadenza Contratto',              name: 'dataScadenzaContratto',    type: 'date'                             },
-            { label: 'Note',                            name: 'note',                     type: 'note'                             },
+            { label: 'Note',                            name: 'note',                     type: 'note', maxLength: 2000                             },
     
     
             { type: "titleGroups",                label: "Location"            },
-            { label: "Città*",                          name: "citta",                    type: "text"                             },
-            { label: "Paese",                           name: "paese",                    type: "text"                             },
+            { label: "Città*",                          name: "citta",                    type: "text", maxLength: 45                              },
+            { label: "Paese",                           name: "paese",                    type: "text", maxLength: 255                              },
             { label: "Provincia*",                      name: "provincia",                type: "select", options: provinceOptions },
-            { label: "Sede Operativa*",                 name: "sedeOperativa",            type: "text"                             },
-            { label: "Sede Legale",                     name: "sedeLegale",               type: "text"                             },
-            { label: "CAP*",                            name: "cap",                      type: "text"                             },
+            { label: "Sede Operativa*",                 name: "sedeOperativa",            type: "text", maxLength: 45                              },
+            { label: "Sede Legale",                     name: "sedeLegale",               type: "text", maxLength: 45                              },
+            { label: "CAP*",                            name: "cap",                      type: "text", maxLength: 6                             },
 
 
             { type: 'titleGroups',                label: "IDA"     },
@@ -441,6 +441,7 @@ const ModificaAziendaGrafica = () => {
                         values={values}
                         onChange={handleChange}
                         initialValues={initialValues}
+                        maxLength={field.maxLength}
                         />
                     );
 
@@ -481,6 +482,8 @@ const ModificaAziendaGrafica = () => {
                         values={values}
                         onChange={handleChange}
                         initialValues={initialValues}
+                        maxLength={field.maxLength}
+
                         />
                     );
 

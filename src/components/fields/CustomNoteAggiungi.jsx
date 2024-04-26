@@ -1,7 +1,7 @@
 import React     from 'react';
 import TextField from '@mui/material/TextField';
 
-function CustomNoteAggiungi({ name, label, type, onChange, values }) {
+function CustomNoteAggiungi({ name, label, type, onChange, values, maxLength }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     onChange({ [name]: value });
@@ -15,6 +15,9 @@ function CustomNoteAggiungi({ name, label, type, onChange, values }) {
       type={type}
       variant="filled"
       fullWidth
+      inputProps={{
+        maxLength: maxLength
+        }}
       multiline
       rows={4}
       value={values[name] || ''}
