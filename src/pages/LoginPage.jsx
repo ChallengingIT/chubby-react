@@ -33,7 +33,7 @@
             zIndex: -1,
             }}
         />
-        <Box
+        {/* <Box
             sx={{
             position: "absolute",
             top: "-5%",
@@ -42,7 +42,19 @@
             width: "20%",
             }}
         >
-            <img alt="Torchy logo" src={TorchyChallenging} />
+            <img alt="Torchy logo" src={TorchyChallenging} objectFit="cover" />
+        </Box> */}
+
+        <Box
+            sx={{
+                position: "absolute",
+                top: { xs: '2%', sm: '3%', md: '-35%' },
+                left: { xs: '5%', md: '1.5%' },
+                width: { xs: '30%', sm: '25%', md: '25%' },
+                height: { xs: '15%', md: '100%' }
+            }}
+        >
+            <img alt="Torchy logo" src={TorchyChallenging} style={{ width: '100%', height: '100%' }} />
         </Box>
 
         <Box
@@ -50,8 +62,8 @@
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            width: "40%",
-            height: "70vh",
+            minWidth: "40%",
+            // height: "50vh",
             }}
         >
             <LoginComponent navigate={navigate} />

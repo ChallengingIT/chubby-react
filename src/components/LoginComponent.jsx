@@ -133,7 +133,7 @@
             alignItems: "center",
             justifyContent: "center",
             width: "100%",
-            height: "90vh",
+            minHeight: "70vh",
             p: 3,
             m: 2,
             backgroundColor: "#FEFCFD",
