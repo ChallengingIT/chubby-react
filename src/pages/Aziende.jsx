@@ -9,11 +9,13 @@ import AziendeCardFlip                                  from '../components/card
 
 import { 
     Box,
+    CircularProgress,
     Grid,
     Skeleton,
     // Fab,
     // Popover,
     } from '@mui/material';
+
 
 
 const Aziende = () => {
@@ -454,7 +456,13 @@ const Aziende = () => {
                         dataLength={originalAziende.length}
                         next={fetchMoreData}
                         hasMore={hasMore}
-                        loader={'Caricamento in corso...'}
+                        // loader={'Caricamento in corso...'}
+                        loader={
+                            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '1em', overflow: 'hidden' }}>
+                            <CircularProgress sx={{ color: '#00B400' }} />
+                            </Box>
+                        }
+
                         >
 
                             {/* Main Content Area */}
@@ -470,6 +478,7 @@ const Aziende = () => {
                                     <Skeleton variant="text" width="60%" />
                                 </Box>
                             </Grid>
+                            
                         ))}
                     </>
                     ) : (
@@ -479,14 +488,14 @@ const Aziende = () => {
                                 valori={aziende}
                                 onDelete={() => handleDelete(aziende.id)}
                                 onRefresh={handleRefresh}
-
-
                                 />
                             </Grid>
                         ))
                     )
                     }
                     </Grid>
+
+
                     </InfiniteScroll>
                     </Box>
                     </Box>

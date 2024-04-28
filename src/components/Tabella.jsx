@@ -73,7 +73,7 @@ return (
                 showNoDataMessage ? ( 
                     <h1>Nessun dato</h1>
                 ) : (
-                <CircularProgress style={{ color: '#00B401' }} />
+                <CircularProgress sx={{ color: '#00B400' }} />
                 )
             }  
             getRowClassName={(params) => 

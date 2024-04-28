@@ -6,6 +6,7 @@ import NeedCardFlip                                     from '../components/card
 
 import { 
     Box,
+    CircularProgress,
     Grid,
     Skeleton
     } from '@mui/material';
@@ -378,6 +379,11 @@ const handleFilterChange = (name) => (event) => {
                     dataLength={originalNeed.length}
                     next={fetchMoreData}
                     hasMore={hasMore}
+                    loader={
+                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '1em', overflow: 'hidden' }}>
+                        <CircularProgress sx={{ color: '#00B400' }} />
+                        </Box>
+                    }
                     >
                                 {/* Main Content Area */}
                     <Grid container spacing={2} sx={{ mt: 1, mb: 4}}>

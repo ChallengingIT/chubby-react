@@ -283,6 +283,11 @@ const AziendeListaNeedCard = () => {
                 dataLength={originalListaNeed.length}
                 next={fetchMoreData}
                 hasMore={hasMore}
+                loader={
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '1em', overflow: 'hidden' }}>
+                    <CircularProgress sx={{ color: '#00B400' }} />
+                    </Box>
+                }
                 >
                     <Grid container spacing={2} sx={{ mt: 1, mb: 4}}>
                         { loading ? (
@@ -293,7 +298,6 @@ const AziendeListaNeedCard = () => {
                                 alignItems: 'center',
                                 height: '100%'
                             }}>
-                                <CircularProgress sx={{ color: '#00B401'}}/>
                             </Box>
                         ) : (
                             originalListaNeed.map((need, index) => (
