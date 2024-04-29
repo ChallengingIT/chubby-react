@@ -10,6 +10,7 @@ import CustomDatePickerAggiungi                                                 
 import CustomDecimalNumberAggiungi                                                                              from '../../components/fields/CustomDecimalNumberAggiungi';
 import CustomMultipleSelectAggiunta                                                                             from '../../components/fields/CustomMultipleSelectAggiunta';
 import CustomWeekDateAggiungi                                                                                   from '../../components/fields/CustomWeekDateAggiungi';
+import CustomNumberAggiunta from '../../components/fields/CustomNumberAggiunta';
 
 const AggiungiNeedGrafica = () => {
     const navigate = useNavigate();
@@ -308,7 +309,7 @@ const AggiungiNeedGrafica = () => {
             ] },
             { label: "Owner*",                     name: "idOwner",                      type: "select",                 options: ownerOptions          },
             { label: "Stato*",                     name: "stato",                        type: "select",                 options: statoOptions          },
-            { label: "Headcount",                  name: "numeroRisorse",                type: "decimalNumber"                                          },
+            { label: "Headcount",                  name: "numeroRisorse",                type: "number"                                          },
             { label: "Location*",                  name: "location",                     type: "text",                   maxLength: 45                                                    },
             { label: "Skills",                     name: "skills",                       type: "multipleSelect",    options: skillsOptions              },
             { label: "Seniority",                  name: "anniEsperienza",               type: "decimalNumber"                                           },
@@ -463,6 +464,17 @@ const AggiungiNeedGrafica = () => {
                     onChange={handleChange}
                     />
                 );
+
+                case 'number':
+                    return (
+                        <CustomNumberAggiunta
+                        name={field.name}
+                        label={field.label}
+                        type={field.type}
+                        values={values}
+                        onChange={handleChange}
+                        />
+                    );
 
 
                 case 'multipleSelect':

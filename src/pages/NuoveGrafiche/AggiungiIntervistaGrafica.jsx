@@ -253,6 +253,14 @@ const AggiungiIntervistaGrafica = () => {
             
             };
 
+
+            const valoriOptions = [
+                { value: 1, label: "1" },
+                { value: 2, label: "2" },
+                { value: 3, label: "3" },
+                { value: 4, label: "4" },
+            ];
+
     
 
     const campiObbligatori = [ "dataColloquio"];
@@ -274,15 +282,15 @@ const AggiungiIntervistaGrafica = () => {
     
     
         { type: "titleGroups",                label: "Hard e Soft Skills"                          },
-        { label: "Aderenza Posizione",        name: "aderenza",                type: "number"},
-        { label: "Coerenza Percorso",         name: "coerenza",                type: "number"},
-        { label: "Motivazione Posizione",     name: "motivazione",             type: "number"},
-        { label: "Standing",                  name: "standing",                type: "number"},
-        { label: "Energia",                   name: "energia",                 type: "number"},
-        { label: "Comunicazione",             name: "comunicazione",           type: "number"},
-        { label: "Livello di Inglese",        name: "inglese",                 type: "number"},
+        { label: "Aderenza Posizione",        name: "aderenza",                type: "select", options: valoriOptions},
+        { label: "Coerenza Percorso",         name: "coerenza",                type: "select", options: valoriOptions},
+        { label: "Motivazione Posizione",     name: "motivazione",             type: "select", options: valoriOptions},
+        { label: "Standing",                  name: "standing",                type: "select", options: valoriOptions},
+        { label: "Energia",                   name: "energia",                 type: "select", options: valoriOptions},
+        { label: "Comunicazione",             name: "comunicazione",           type: "select", options: valoriOptions},
+        { label: "Livello di Inglese",        name: "inglese",                 type: "select", options: valoriOptions},
         { label: "Competenze vs ruolo",       name: "competenze",              type: "number", maxLength: 90},
-        { label: "Valutazione",               name: "valutazione",             type: "number"},
+        { label: "Valutazione",               name: "valutazione",             type: "select", options: valoriOptions},
     
     
         { type: "titleGroups",                label: "Ultime Osservazioni"                 },

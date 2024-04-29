@@ -10,6 +10,7 @@ import CustomNoteModifica                                                       
 import CustomDatePickerModifica                                                                                 from '../../components/fields/CustomDatePickerModifica';
 import CustomDecimalNumberModifica                                                                              from '../../components/fields/CustomDecimalNumberModifica';
 import CustomMultipleSelectModifica                                                                             from '../../components/fields/CustomMultipleSelectModifica';
+import CustomNumberModifica from '../../components/fields/CustomNumberModifica';
 
 const ModificaNeedGrafica = () => {
     const navigate = useNavigate();
@@ -321,7 +322,7 @@ const ModificaNeedGrafica = () => {
             ] },
             { label: "Owner*",                    name: "idOwner",                     type: "select",                 options: ownerOptions         },
             { label: "Stato*",                    name: "idStato",                     type: "select",                 options: statoOptions         },
-            { label: "Headcount",                 name: "numeroRisorse",               type: "decimalNumber"                                         },
+            { label: "Headcount",                 name: "numeroRisorse",               type: "number"                                         },
             { label: "Location*",                 name: "location",                    type: "text", maxLength: 45                                                  },
             { label: "Skills",                    name: "idSkills",                    type: "multipleSelect",         options: skillsOptions        },
             { label: "Seniority",                 name: "anniEsperienza",              type: "decimalNumber"                                         },
@@ -512,6 +513,18 @@ const ModificaNeedGrafica = () => {
                     initialValues={initialValues}
                     />
                 );
+
+                case 'number':
+                    return (
+                        <CustomNumberModifica
+                        name={field.name}
+                        label={field.label}
+                        type={field.type}
+                        values={values}
+                        onChange={handleChange}
+                        initialValues={initialValues}
+                        />
+                    );
 
 
                 case 'multipleSelect':
