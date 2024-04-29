@@ -3,7 +3,7 @@ import axios                                            from 'axios';
 import InfiniteScroll                                   from "react-infinite-scroll-component";
 import RicercheAziende                                  from '../components/ricerche/RicercheAziende';    
 import AziendeCardFlip                                  from '../components/card/AziendeCardFlip';
-// import AddIcon                                          from '@mui/icons-material/Add'; //bottone per chatgpt
+import AddIcon                                          from '@mui/icons-material/Add'; //bottone per chatgpt
 // import GptChat                                          from '../components/GptChat';
 
 
