@@ -188,6 +188,7 @@ const ModificaKeypeopleGrafica = () => {
                             values[key] = null;
                         }
                     });
+
     
                     const response = await axios.post("http://localhost:8080/keypeople/react/salva", values, {
                         headers: headers
@@ -277,6 +278,7 @@ const ModificaKeypeopleGrafica = () => {
             tipo:               datiModifica.tipo                                                || null,   
             note:               datiModifica.note                                                || null,
         };
+
 
 
          //funzione per caricare i dati nei campi solo dopo aver terminato la chiamata

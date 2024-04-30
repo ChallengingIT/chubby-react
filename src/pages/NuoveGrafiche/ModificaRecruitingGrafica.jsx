@@ -363,6 +363,33 @@ const ModificaRecruitingGrafica = () => {
             };
 
 
+            const fieldMapping = {
+                idTipo: "tipo",
+                idStato: "stato",
+                idLivelloScolastico: "livelloScolastico",
+                idFacolta: "facolta",
+                idFunzioneAziendale: "funzioneAziendale",
+                idTipologia: "tipologia",
+                idOwner: "owner",
+                idSkills: "skills"
+            };
+
+            //funzione per convertire le chiavi delle select da "idX" a "X"
+            const replaceKeysInValues = (values, mapping) => {
+                const newValues = {...values}; 
+                Object.keys(mapping).forEach(key => {
+                    if (key in newValues) {
+                        const newKey = mapping[key];
+                        newValues[newKey] = newValues[key];
+                        delete newValues[key]; 
+                    }
+                });
+                return newValues;
+            };
+            
+            
+
+
         //funzione per il salvataggio
 
     const handleSubmit = async (values) => {
@@ -386,7 +413,13 @@ const ModificaRecruitingGrafica = () => {
                 delete values.cv;
                 delete values.cf;
 
-                const datiResponse = await axios.post("http://localhost:8080/staffing/salva", values, {
+                const transformedValues = replaceKeysInValues(values, fieldMapping);
+
+
+
+                console.log("valori inviati: ", values);
+
+                const datiResponse = await axios.post("http://localhost:8080/staffing/salva", transformedValues, {
                 params: { skill: skills },
                 headers: headers,
                 });
@@ -532,7 +565,7 @@ const ModificaRecruitingGrafica = () => {
             idFunzioneAziendale:               (datiModifica.tipologia?.funzione && datiModifica.tipologia.funzione?.id)          || null,
             idTipologia:                       (datiModifica.tipologia && datiModifica.tipologia.id)                              || null,
             dataUltimoContatto:                 datiModifica.dataUltimoContatto                                                   || null,
-            idStato:                           (datiModifica.stato && datiModifica.stato.id)                                      || null,
+            idStato:                            datiModifica.stato && datiModifica.stato.id                                       || null,
             idOwner:                           (datiModifica.owner && datiModifica.owner.id)                                      || null,
             idSkills:                           datiModifica.skills ? datiModifica.skills.map((skills) => skills.id) :            [],
             ral:                                datiModifica.ral                                                                  || null,
@@ -541,6 +574,8 @@ const ModificaRecruitingGrafica = () => {
             cf:                                 datiModifica.files ? datiModifica.files.find(file => file && file.tipologia && file.tipologia.descrizione === 'CF') || null : null,
             note:                               datiModifica.note                                                                 || null,
         };
+
+        console.log("datiModifica: ", datiModifica);
 
 
          //funzione per caricare i dati nei campi solo dopo aver terminato la chiamata

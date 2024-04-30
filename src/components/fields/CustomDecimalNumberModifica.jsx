@@ -18,8 +18,8 @@ function CustomDecimalNumberModifica({ name, label, type, onChange, values, init
       inputProps={{
         maxLength: maxLength
         }}
-      value={values[name] || initialValues[name] || ''}
-      onChange={handleChange}
+        value={values[name] ?? initialValues[name] ?? ''}
+        onChange={handleChange}
       sx={{ 
         m: 2,
         width: "100%",
