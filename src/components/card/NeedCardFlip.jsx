@@ -303,7 +303,9 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
                     paddingRight: '16px', 
                     paddingBottom: '16px' 
                 }}>
-            <Typography variant="h6" color="text.primary" sx={{ color: 'black', fontWeight: 'bold', display: 'flex', mr: 1, mt: 2 }}>{valori.cliente.denominazione}</Typography>
+            {/* <Typography variant="h6" color="text.primary" sx={{ color: 'black', fontWeight: 'bold', display: 'flex', mr: 1, mt: 2 }}>{valori.cliente.denominazione}</Typography> */}
+            <img src={`data:image/png;base64,${valori.cliente.logo}`} alt="Logo" style={{ width: '80px', height: '80px', borderRadius: '50%' }} />
+
         </Box>
                 </Box>
         </CardContent>

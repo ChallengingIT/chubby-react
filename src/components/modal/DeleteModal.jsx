@@ -1,9 +1,18 @@
 // import React from 'react';
-// import { Modal, Box, Typography, Button } from '@mui/material';
+// import { Modal, Box, Typography, Button, Dialog } from '@mui/material';
 
 // const DeleteModal = (onOpen, onClose, onDelete) => {
 //   return (
-
+//         <Dialog
+//         open={onOpen}
+//         onClose={onClose}
+//         sx={{
+//         "& .MuiDialog-paper": {
+//             width: "70%",
+//             maxWidth: "70%",
+//         },
+//         }}
+//     >
 //         <Box
 //                 sx={{
 //                 backgroundColor: 'white',
@@ -57,6 +66,7 @@
 //                 </Button>
 //                 </Box>
 //                 </Box>
+//                 </Dialog>
 //     );
 // }
 

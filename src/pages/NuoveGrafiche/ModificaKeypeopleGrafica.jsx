@@ -188,6 +188,7 @@ const ModificaKeypeopleGrafica = () => {
                             values[key] = null;
                         }
                     });
+
     
                     const response = await axios.post("http://89.46.196.60:8443/keypeople/react/salva", values, {
                         headers: headers
@@ -277,6 +278,7 @@ const ModificaKeypeopleGrafica = () => {
             tipo:               datiModifica.tipo                                                || null,   
             note:               datiModifica.note                                                || null,
         };
+
 
 
          //funzione per caricare i dati nei campi solo dopo aver terminato la chiamata

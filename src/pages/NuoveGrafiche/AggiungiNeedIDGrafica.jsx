@@ -24,6 +24,7 @@
         Grid,
         Slide,
         } from "@mui/material";
+import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
 
     const AggiungiNeedIDGragica = () => {
     const { id } = useParams();
@@ -363,7 +364,7 @@
         },
         { label: "Owner*",                      name: "idOwner",                type: "select", options: ownerOptions },
         { label: "Stato*",                      name: "stato",                  type: "select", options: statoOptions },
-        { label: "Headcount",                   name: "numeroRisorse",          type: "decimalNumber"                 },
+        { label: "Headcount",                   name: "numeroRisorse",          type: "number"                 },
         { label: "Location*",                   name: "location",               type: "text", maxLength: 45                          },
         {
         label: "Skills",
@@ -542,6 +543,18 @@
             case "decimalNumber":
             return (
                 <CustomDecimalNumberAggiungi
+                name={field.name}
+                label={field.label}
+                type={field.type}
+                values={values}
+                onChange={handleChange}
+                />
+            );
+
+
+            case "number":
+            return (
+                <CustomNumberAggiunta
                 name={field.name}
                 label={field.label}
                 type={field.type}
