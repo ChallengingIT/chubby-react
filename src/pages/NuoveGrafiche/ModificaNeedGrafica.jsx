@@ -265,7 +265,27 @@ const ModificaNeedGrafica = () => {
         }
 
 
-        //funzione per il salvataggio     
+        const fieldMapping = {
+            idStato: "stato",
+            idTipologia: "tipologia",
+            idTipo: 'tipo'
+        };
+
+        //funzione per convertire le chiavi delle select da "idX" a "X"
+        const replaceKeysInValues = (values, mapping) => {
+            const newValues = {...values};
+            Object.keys(mapping).forEach(key => {
+                if (key in newValues) {
+                    const newKey = mapping[key];
+                    newValues[newKey] = newValues[key];
+                    delete newValues[key];
+                }
+            });
+            return newValues;
+        };
+
+
+        //funzione per il salvataggio
     const handleSubmit = async (values) => {
         const currentIndex = menu.findIndex(item => item.title.toLowerCase() === activeSection.toLowerCase());
         const mandatoryFields = getMandatoryFields(currentIndex); 
@@ -284,8 +304,10 @@ const ModificaNeedGrafica = () => {
 
 
                 delete values.idSkills;
+                const transformedValues = replaceKeysInValues(values, fieldMapping);
 
-                const responseSaveNeed = await axios.post("http://89.46.196.60:8443/need/react/salva", values, { params: { skill: skills }, headers: headers});
+
+                const responseSaveNeed = await axios.post("http://89.46.196.60:8443/need/react/salva", transformedValues, { params: { skill1: skills }, headers: headers});
                 if (responseSaveNeed.data === "ERRORE") {
                     setAlert({ open: true, message: "errore durante il salvataggio del need!" });
                     console.error("Il need non è stata salvata.");
@@ -315,7 +337,7 @@ const ModificaNeedGrafica = () => {
                 ] },
             { label: "Week*",               name: "week",                         type: "week"                                                },
             { label: "Tipologia*",          name: "idTipologia",                  type: "select",               options: tipologiaOptions     },
-            { label: "Tipologia Azienda",   name: "tipo",                         type: "select",               options: [
+            { label: "Tipologia Azienda",   name: "idTipo",                         type: "select",               options: [
             { value: 1,                   label: "Cliente" },
             { value: 2,                   label: "Consulenza" },
             { value: 3,                   label: "Prospect" }
@@ -339,7 +361,7 @@ const ModificaNeedGrafica = () => {
             priorita:                   datiModifica.priorita                                           || null,
             week:                       datiModifica.week                                               || null,
             idTipologia:               (datiModifica.tipologia && datiModifica.tipologia.id)            || null,
-            tipo:                       datiModifica.tipo                                               || null,
+            idTipo:                       datiModifica.tipo                                               || null,
             idOwner:                   (datiModifica.owner && datiModifica.owner.id)                    || null,
             idStato:                   (datiModifica.stato && datiModifica.stato.id)                    || null,
             numeroRisorse:              datiModifica.numeroRisorse                                      || null,

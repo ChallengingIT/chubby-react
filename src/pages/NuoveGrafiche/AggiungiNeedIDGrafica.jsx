@@ -303,7 +303,7 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
             const responseSaveNeed = await axios.post(
             "http://89.46.196.60:8443/need/react/salva",
             values,
-            { params: { skill: skills }, headers: headers }
+            { params: { skill1: skills }, headers: headers }
             );
             if (responseSaveNeed.data === "ERRORE") {
                 setAlert({ open: true, message: "errore durante il salvataggio del need!" });

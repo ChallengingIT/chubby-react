@@ -209,6 +209,25 @@ const ModificaIntervistaGrafica = () => {
             return <Slide {...props} direction="down" />;
         }
 
+        const fieldMapping = {
+            idTipo: "tipo",
+        };
+
+
+        //funzione per convertire le chiavi delle select da "idX" a "X"
+        const replaceKeysInValues = (values, mapping) => {
+            const newValues = {...values};
+            Object.keys(mapping).forEach(key => {
+                if (key in newValues) {
+                    const newKey = mapping[key];
+                    newValues[newKey] = newValues[key];
+                    delete newValues[key];
+                }
+            });
+            return newValues;
+        };
+
+
 
         //funzione per il salvataggio     
         const handleSubmit = async (values) => {
@@ -225,9 +244,12 @@ const ModificaIntervistaGrafica = () => {
                         }
                     });
 
+                    const transformedValues = replaceKeysInValues(values, fieldMapping);
+
+
                 const note = values.note;
                 const modifica = 0; 
-                const response = await axios.post("http://89.46.196.60:8443/intervista/react/salva",  values, {
+                const response = await axios.post("http://89.46.196.60:8443/intervista/react/salva",  transformedValues, {
                 params: {
                     idCandidato: candidatoID,
                     note: note,
@@ -341,7 +363,7 @@ const ModificaIntervistaGrafica = () => {
     location:           true,
     anniEsperienza:     true,
     cellulare:          true,
-    stato:              true
+    stato:            true
     };
 
         //funzione per suddividere fields nelle varie pagine in base a titleGroups
