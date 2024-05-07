@@ -298,7 +298,7 @@ const ModificaIntervistaGrafica = () => {
         { label: "Energia",                   name: "energia",                 type: "number"},
         { label: "Comunicazione",             name: "comunicazione",           type: "number"},
         { label: "Livello di Inglese",        name: "inglese",                 type: "number"},
-        { label: "Competenze vs ruolo",       name: "competenze",              type: "number", maxLength: 90},
+        { label: "Competenze vs ruolo",       name: "competenze",              type: "text",   maxLength: 90},
         { label: "Valutazione",               name: "valutazione",             type: "number"},
     
     

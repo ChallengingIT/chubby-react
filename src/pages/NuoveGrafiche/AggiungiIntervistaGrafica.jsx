@@ -289,7 +289,7 @@ const AggiungiIntervistaGrafica = () => {
         { label: "Energia",                   name: "energia",                 type: "select", options: valoriOptions},
         { label: "Comunicazione",             name: "comunicazione",           type: "select", options: valoriOptions},
         { label: "Livello di Inglese",        name: "inglese",                 type: "select", options: valoriOptions},
-        { label: "Competenze vs ruolo",       name: "competenze",              type: "number", maxLength: 90},
+        { label: "Competenze vs ruolo",       name: "competenze",              type: "text",   maxLength: 90},
         { label: "Valutazione",               name: "valutazione",             type: "select", options: valoriOptions},
     
     

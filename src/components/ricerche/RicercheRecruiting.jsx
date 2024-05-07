@@ -55,6 +55,7 @@
             marginBottom: "2rem",
             width: "100%",
             overflow: "hidden",
+            p: 2
         }}
         >
         <Button
@@ -221,7 +222,7 @@
             <Grid item>
                 <FormControl fullWidth sx={{ mb: 2 }}>
                 <Autocomplete
-                    id="tipologia-combo-box"
+                    id="jobTitle-combo-box"
                     options={tipologiaOptions}
                     getOptionLabel={(option) => option.label}
                     value={
@@ -237,7 +238,7 @@
                     renderInput={(params) => (
                     <TextField
                         {...params}
-                        label="Tipologia"
+                        label="Job Title"
                         variant="filled"
                         sx={{
                         textAlign: "left",
@@ -311,7 +312,7 @@
 
                 <FormControl fullWidth sx={{ mb: 2 }}>
                 <Autocomplete
-                    id="tipo-combo-box"
+                    id="tipologia-combo-box"
                     options={tipoOptions}
                     getOptionLabel={(option) => option.label}
                     value={
@@ -326,7 +327,7 @@
                     renderInput={(params) => (
                     <TextField
                         {...params}
-                        label="Tipo"
+                        label="Tipologia"
                         variant="filled"
                         sx={{
                         textAlign: "left",

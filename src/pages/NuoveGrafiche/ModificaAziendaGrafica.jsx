@@ -8,6 +8,7 @@ import CustomTextFieldModifica                                                  
 import CustomImgFieldModifica                                                                                   from '../../components/fields/CustomImgFieldModifica';
 import CustomNoteModifica                                                                                       from '../../components/fields/CustomNoteModifica';
 import CustomDatePickerModifica                                                                                 from '../../components/fields/CustomDatePickerModifica';
+import CustomMultipleSelectAziende                                                                              from '../../components/fields/CustomMultipleSelectAziende';
 
 
 const ModificaAziendaGrafica = () => {
@@ -31,6 +32,8 @@ const ModificaAziendaGrafica = () => {
     const [ values,             setValues               ] = useState({});
     const [ aziendeOptions,     setAziendeOptions       ] = useState([]);
     const [ datiModifica,       setDatiModifica         ] = useState([]);
+    const [ ricercaOptions,     setRicercaOptions       ] = useState([]);
+
 
 
 
@@ -46,10 +49,20 @@ const ModificaAziendaGrafica = () => {
     useEffect(() => {
         const fetchProvinceOptions = async () => {
         try {
-            const responseProvince = await axios.get("http://localhost:8080/aziende/react/province", { headers: headers });
-            const responseOwner    = await axios.get("http://localhost:8080/aziende/react/owner",    { headers: headers });
-            const responseAziende  = await axios.get("http://localhost:8080/aziende/react/select",   { headers: headers });
-            const responseModifica = await axios.get(`http://localhost:8080/aziende/react/${id}`,    { headers: headers });
+            const responseProvince = await axios.get("http://localhost:8080/aziende/react/province",         { headers: headers });
+            const responseOwner    = await axios.get("http://localhost:8080/aziende/react/owner",            { headers: headers });
+            const responseAziende  = await axios.get("http://localhost:8080/aziende/react/select",           { headers: headers });
+            const responseModifica = await axios.get(`http://localhost:8080/aziende/react/${id}`,            { headers: headers });
+            const ricercaResponse  = await axios.get("http://localhost:8080/staffing/react/tipo/ricerca",    { headers: headers });
+
+            if (Array.isArray(ricercaResponse.data)) {
+                const ricercaOptions = ricercaResponse.data.map((ricerca) => ({
+                    label: ricerca.descrizione,
+                    value: ricerca.id,
+                }));
+                setRicercaOptions(ricercaOptions);
+                }
+
 
 
             if (Array.isArray(responseAziende.data)) {
@@ -196,6 +209,14 @@ const ModificaAziendaGrafica = () => {
         }
 
 
+        const handleChangeMultipleSkill = (fieldValue) => {
+            setValues(prevValues => ({
+                ...prevValues,
+                ...fieldValue
+            }));
+        };
+
+
         //funzione per il salvataggio
         const handleSubmit = async (values) => {
             const currentIndex = menu.findIndex(item => item.title.toLowerCase() === activeSection.toLowerCase());
@@ -289,7 +310,8 @@ const ModificaAziendaGrafica = () => {
             { label: "Pec",                             name: "pec",                      type: "text", maxLength: 45                             },
             { label: "Codice Destinatario",             name: "codiceDestinatario",       type: "text", maxLength: 45                              },
             { label: "Sito Web",                        name: "sito",                     type: "text", maxLength: 90                              },
-            { label: 'Scadenza Contratto',              name: 'dataScadenzaContratto',    type: 'date'                             },
+            { label: 'Scadenza Contratto',              name: 'dataScadenzaContratto',    type: 'date'                                              },
+            { label: 'Tipo di contratto*',              name: 'ricerca',                  type: 'multipleSelect', options: ricercaOptions         },
             { label: 'Note',                            name: 'note',                     type: 'note', maxLength: 2000                             },
     
     
@@ -355,6 +377,7 @@ const ModificaAziendaGrafica = () => {
             semplicita:                   datiModifica.semplicita                      || null,
             potenzialita:                 datiModifica.potenzialita                    || null, 
             idOwner:                     (datiModifica.owner && datiModifica.owner.id) || null,
+            ricerca:                      datiModifica.ricerca                         || null,
             note:                         datiModifica.note                            || null,
             logo:                         datiModifica.logo                            || null,
         };
@@ -470,7 +493,23 @@ const ModificaAziendaGrafica = () => {
                         initialValues={initialValues}
 
                         />
-                    )
+                    );
+
+                    case 'multipleSelect':
+                        return ( 
+                            <CustomMultipleSelectAziende
+                                name={field.name}
+                                label={field.label}
+                                options={field.options}
+                                value={values[field.name] || null}
+                                onChange={handleChangeMultipleSkill}
+                                getOptionSelected={(option, value) => option.value === value.value}
+                                multipleOptions={ricercaOptions}
+                                initialValues={initialValues}
+                            />
+                        );
+
+
 
 
                 case 'note':

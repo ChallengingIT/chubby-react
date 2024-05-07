@@ -42,6 +42,7 @@ const ModificaRecruitingGrafica = () => {
     const [ jobTitleEnable,     setJobTitleEnable       ] = useState(false);    
     const [ livelloScolasticoOptions, setLivelloScolasticoOptions ] = useState([]);
     const [ funzioniAziendaliOptions, setFunzioniAziendaliOptions ] = useState([]);
+    const [ ricercaOptions,     setRicercaOptions       ] = useState([]);
 
 
 
@@ -63,12 +64,21 @@ const ModificaRecruitingGrafica = () => {
             const responseStaffing            = await axios.get(`http://localhost:8080/staffing/react/${id}`,           { headers: headers });
             const responseStato               = await axios.get("http://localhost:8080/staffing/react/stato/candidato", { headers: headers });
             const responseJobTitle            = await axios.get("http://localhost:8080/aziende/react/tipologia"       , { headers: headers });
-            const responseTipologia           = await axios.get("http://localhost:8080/staffing/react/tipo"           , { headers: headers });
+            const responseTipologia           = await axios.get("http://localhost:8080/staffing/react/tipo/candidatura"           , { headers: headers });
             const responseNeedSkills          = await axios.get("http://localhost:8080/staffing/react/skill"          , { headers: headers });
             const ownerResponse               = await axios.get("http://localhost:8080/aziende/react/owner"           , { headers: headers });
             const facoltaResponse             = await axios.get("http://localhost:8080/staffing/react/facolta"        , { headers: headers });
             const livelloScolasticoResponse   = await axios.get("http://localhost:8080/staffing/react/livello"        , { headers: headers });
             const funzioniAziendaliResponse   = await axios.get("http://localhost:8080/staffing/react/funzioni"       , { headers: headers }); 
+            const ricercaResponse             = await axios.get("http://localhost:8080/staffing/react/tipo/ricerca"   , { headers: headers });
+
+            if (Array.isArray(ricercaResponse.data)) {
+                const ricercaOptions = ricercaResponse.data.map((ricerca) => ({
+                    label: ricerca.descrizione,
+                    value: ricerca.id,
+                }));
+                setRicercaOptions(ricercaOptions);
+                }
 
             if (Array.isArray(livelloScolasticoResponse.data)) {
             const livelloScolasticoOptions = livelloScolasticoResponse.data.map((livelloScolastico) => ({
@@ -218,7 +228,7 @@ const ModificaRecruitingGrafica = () => {
             case 1:
                 return [ "anniEsperienzaRuolo", "idLivelloScolastico"]; 
             case 2: 
-                return ["idTipo", "idTipologia", "dataUltimoContatto", "idStato", "idFunzioneAziendale"];
+                return ["idCandidatura", "idTipologia", "dataUltimoContatto", "idStato", "idFunzioneAziendale", "idRicerca"];
             default:
                 return [];
         }
@@ -364,7 +374,8 @@ const ModificaRecruitingGrafica = () => {
 
 
             const fieldMapping = {
-                idTipo: "tipo",
+                idCandidatura: "candidatura",
+                idRicerca: 'ricerca',
                 idStato: "stato",
                 idLivelloScolastico: "livelloScolastico",
                 idFacolta: "facolta",
@@ -497,7 +508,7 @@ const ModificaRecruitingGrafica = () => {
 
 
 
-        const campiObbligatori = [ "nome", "cognome", "email", "anniEsperienzaRuolo", "idTipologia", "dataUltimoContatto", "idTipo", "idStato", "idLivelloScolastico", "idFunzioneAziendale" ];
+        const campiObbligatori = [ "nome", "cognome", "email", "anniEsperienzaRuolo", "idTipologia", "dataUltimoContatto", "idCandidatura", "idStato", "idLivelloScolastico", "idFunzioneAziendale", "idRicerca" ];
 
         const fields =[
             { type: "titleGroups",                label: "Profilo Candidato"            },
@@ -517,12 +528,9 @@ const ModificaRecruitingGrafica = () => {
             { label: "Facoltà",                         name: "idFacolta",                type: "select",               options: facoltaOptions                   },
     
             { type: "titleGroups",                label: "Posizione Lavorativa"            },
-            { label: "Tipologia*",                     name: "idTipo",                   type: "select",          options: tipologiaOptions                      },
-            { label: "Tipo Ricerca",                   name: "ricerca",                  type: "select",          options: [
-                { value: "C", label: "C"},
-                { value: "R", label: "R" },
-                { value: "C-R", label: "C-R" },
-            ]},
+            { label: "Tipo Candidatura*",              name: "idCandidatura",              type: "select",          options: tipologiaOptions                      },
+            { label: "Tipo Ricerca*",                  name: "idRicerca",                  type: "select",          options: ricercaOptions                        },
+
             { label: "Modalità di lavoro",             name: "modalita",                 type: "select",          options: [ 
                 { value: 1, label: "Full Remote" },
                 { value: 2, label: "Ibrido" },
@@ -549,8 +557,8 @@ const ModificaRecruitingGrafica = () => {
         const initialValues = {
 
             id:                                 datiModifica.id                                                                   ,
-            idTipo:                            (datiModifica.tipo && datiModifica.tipo.id)                                        || null,
-            ricerca:                            datiModifica.ricerca                                                              || null,
+            idCandidatura:                     (datiModifica.candidatura && datiModifica.candidatura.id )                                      || null,
+            idRicerca:                         (datiModifica.ricerca && datiModifica.ricerca.id )                                  || null,
             nome:                               datiModifica.nome                                                                 || null,
             cognome:                            datiModifica.cognome                                                              || null,
             dataNascita:                        datiModifica.dataNascita                                                          || null,

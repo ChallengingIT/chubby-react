@@ -1,33 +1,113 @@
-    import React, { useState } from "react";
-    import {
-    Button,
-    Box,
-    Grid,
-    FormControl,
-    IconButton,
-    Drawer,
-    Typography,
-    TextField,
-    InputAdornment,
-    Autocomplete,
-    } from "@mui/material";
-    import CloseIcon from "@mui/icons-material/Close";
-    import SearchIcon from "@mui/icons-material/Search";
-    import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import React, { useState } from "react";
+import {
+Button,
+Box,
+Grid,
+FormControl,
+IconButton,
+Drawer,
+Typography,
+TextField,
+InputAdornment,
+Autocomplete,
+Popover,
+List,
+ListItem,
+ListItemText,
+ListItemIcon
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import SearchIcon from "@mui/icons-material/Search";
+import { useNavigate } from "react-router-dom";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import PersonSearchIcon from '@mui/icons-material/PersonSearch'; //recruiting
+import LocationSearchingIcon from '@mui/icons-material/LocationSearching'; //head hunting
+import PunchClockIcon from '@mui/icons-material/PunchClock'; //temporary
+import GroupsIcon from '@mui/icons-material/Groups'; //staffing
 
-    function RicercheNeedMatch({
+
+function RicercheHiring({
     filtri,
     onFilterChange,
     onReset,
-    tipologiaOptions,
-    tipoOptions,
-    seniorityOptions,
     onRicerche,
-    onGoBack,
-    }) {
-
+}) {
+    const navigate = useNavigate();
+    //stati per le ricerche
     const [openFiltri, setOpenFiltri] = useState(false);
     const [isRotated, setIsRotated] = useState(false);
+
+    //stati per il popover
+    const [anchorEl, setAnchorEl] = useState(null); 
+    const openPopover = Boolean(anchorEl);
+
+
+
+    const handleButtonClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleAdditionalDrawerClose = () => {
+        setAnchorEl(null);
+    };
+
+    const navigateToAggiungiRecruiting = () => {
+        // navigate("/aggiungi/recruiting");
+
+    };
+
+    const navigateToAggiungiHeadHunting = () => {
+        // navigate("/aggiungi/headhunting");
+    };
+
+    const navigateToAggiungiTemporary = () => {
+        navigate("");
+    };
+
+    const navigateToAggiungiStaffing = () => {
+        navigate("");
+    };
+
+
+
+    const additionalDrawerContent = (
+        <List>
+
+        <ListItem button onClick={navigateToAggiungiRecruiting}>
+        <PersonSearchIcon sx={{ color: "#00B401", mr: 2 }} />
+            <ListItemText primary="Recruiting" />
+            <ListItemIcon>
+            </ListItemIcon>
+        </ListItem>
+
+        <ListItem button onClick={navigateToAggiungiHeadHunting}>
+        <LocationSearchingIcon sx={{ color: "#00B401", mr: 2 }} />
+            <ListItemText primary="Head hunting" />
+            <ListItemIcon>
+            </ListItemIcon>
+        </ListItem>
+        
+        <ListItem button onClick={navigateToAggiungiTemporary}>
+        <PunchClockIcon sx={{ color: "#00B401", mr: 2 }} />
+            <ListItemText primary="Temporary" />
+            <ListItemIcon>
+            </ListItemIcon>
+        </ListItem>
+
+        <ListItem button onClick={navigateToAggiungiStaffing}>
+        <GroupsIcon sx={{ color: "#00B401", mr: 2 }} />
+            <ListItemText primary="Staffing" />
+            <ListItemIcon>
+            </ListItemIcon>
+        </ListItem>
+        </List>
+    );
+
+
+
+
+
+
 
     const handleClickReset = () => {
         onReset();
@@ -48,34 +128,49 @@
             alignItems: "center",
             justifyContent: "space-between",
             borderRadius: "10px",
-            marginBottom: "4rem",
+            marginBottom: "2rem",
             width: "100%",
             overflow: "hidden",
             p: 2
         }}
         >
         <Button
-            onClick={onGoBack}
             variant="contained"
+            color="primary"
+            onClick={handleButtonClick}
             sx={{
-                minWidth: "12em",
+            minWidth: "12em",
+            backgroundColor: "#00B401",
+            borderRadius: "10px",
+            textTransform: "none",
+            ml: 2,
+            "&:hover": {
                 backgroundColor: "#00B401",
-                borderRadius: "10px",
-                textTransform: "none",
-                ml: 2,
-                "&:hover": {
-                    backgroundColor: "#00B401",
-                    transform: "scale(1.05)",
-                },
-                }}
+                transform: "scale(1.05)",
+            },
+            }}
         >
-            <span style={{ marginRight: "0.5rem" }}>{"<"}</span>
-            Indietro
+            + Aggiungi Servizio
         </Button>
+        <Popover
+            open={Boolean(anchorEl)}
+            anchorEl={anchorEl}
+            onClose={handleAdditionalDrawerClose}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            transformOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+            }}
+        >
+            <Box sx={{ width: 250 }}>{additionalDrawerContent}</Box>
+        </Popover>
 
-        <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
             {/* Barra di ricerca */}
-            <TextField
+            {/* <TextField
             id="search-bar"
             variant="outlined"
             placeholder="Nome"
@@ -114,74 +209,25 @@
                 },
                 },
             }}
-            />
+            /> */}
+            <Box />
 
-            <TextField
-            id="search-location"
-            variant="outlined"
-            placeholder="Cognome"
-            size="small"
-            value={filtri.cognome}
-            onChange={onFilterChange("cognome")}
-            onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                event.preventDefault();
-                onRicerche();
-                }
-            }}
-            sx={{
-                borderTopLeftRadius: 0,
-                borderBottomLeftRadius: 0,
-                mb: 0.5,
-                width: "20em",
-                minWidth: "10em",
-
-                "& .MuiOutlinedInput-root": {
-                borderTopLeftRadius: 0,
-                borderBottomLeftRadius: 0,
-                borderLeft: 0,
-                borderColor: "#00B401",
-                "&:hover fieldset": {
-                    borderColor: "#00B401",
-                },
-                "&.Mui-focused": {
-                    borderColor: "#00B401",
-                },
-                },
-                "& .MuiInputLabel-root": {
-                color: "black",
-                },
-                "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#00B401",
-                },
-                "& .MuiOutlinedInput-input": {
-                color: "black",
-                },
-                "& .MuiPlaceholder-root": {
-                color: "black",
-                },
-                "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#00B401",
-                },
-            }}
-            />
         </Box>
-
         <Button
             variant="contained"
             color="primary"
             onClick={handleOpenFiltri}
             sx={{
-                minWidth: "12em",
+            minWidth: "12em",
+            backgroundColor: "#00B401",
+            borderRadius: "10px",
+            textTransform: "none",
+            mr: 2,
+            "&:hover": {
                 backgroundColor: "#00B401",
-                borderRadius: "10px",
-                textTransform: "none",
-                ml: 2,
-                "&:hover": {
-                    backgroundColor: "#00B401",
-                    transform: "scale(1.05)",
-                },
-                }}
+                transform: "scale(1.05)",
+            },
+            }}
         >
             Filtra per:
         </Button>
@@ -217,17 +263,18 @@
 
             <Grid container spacing={2} direction="column" sx={{ p: 2 }}>
             <Grid item>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                {/* <FormControl fullWidth sx={{ mb: 2 }}>
                 <Autocomplete
-                    id="tipo-combo-box"
-                    options={tipoOptions}
+                    id="tipologia-combo-box"
+                    options={tipologiaOptions}
                     getOptionLabel={(option) => option.label}
                     value={
-                    tipoOptions.find((option) => option.value === filtri.tipo) ||
-                    null
+                    tipologiaOptions.find(
+                        (option) => option.value === filtri.tipologia
+                    ) || null
                     }
                     onChange={(event, newValue) => {
-                    onFilterChange("tipo")({
+                    onFilterChange("tipologia")({
                         target: { value: newValue?.value || null },
                     });
                     }}
@@ -263,23 +310,23 @@
 
                 <FormControl fullWidth sx={{ mb: 2 }}>
                 <Autocomplete
-                    id="tipologia-combo-box"
-                    options={tipologiaOptions}
+                    id="stato-combo-box"
+                    options={statoOptions}
                     getOptionLabel={(option) => option.label}
                     value={
-                    tipologiaOptions.find(
-                        (option) => option.value === filtri.tipologia
+                    statoOptions.find(
+                        (option) => option.value === filtri.stato
                     ) || null
                     }
                     onChange={(event, newValue) => {
-                    onFilterChange("tipologia")({
+                    onFilterChange("stato")({
                         target: { value: newValue?.value || null },
                     });
                     }}
                     renderInput={(params) => (
                     <TextField
                         {...params}
-                        label="Jobtitle"
+                        label="Stato"
                         variant="filled"
                         sx={{
                         textAlign: "left",
@@ -308,23 +355,22 @@
 
                 <FormControl fullWidth sx={{ mb: 2 }}>
                 <Autocomplete
-                    id="seniority-combo-box"
-                    options={seniorityOptions}
+                    id="tipo-combo-box"
+                    options={tipoOptions}
                     getOptionLabel={(option) => option.label}
                     value={
-                    seniorityOptions.find(
-                        (option) => option.value === filtri.seniority
-                    ) || null
+                    tipoOptions.find((option) => option.value === filtri.tipo) ||
+                    null
                     }
                     onChange={(event, newValue) => {
-                    onFilterChange("seniority")({
+                    onFilterChange("tipo")({
                         target: { value: newValue?.value || null },
                     });
                     }}
                     renderInput={(params) => (
                     <TextField
                         {...params}
-                        label="Seniority"
+                        label="Tipo"
                         variant="filled"
                         sx={{
                         textAlign: "left",
@@ -349,7 +395,7 @@
                     />
                     )}
                 />
-                </FormControl>
+                </FormControl> */}
                 <Box sx={{ display: "flex", justifyContent: "center" }}>
                 <IconButton
                     onClick={handleClickReset}
@@ -369,7 +415,7 @@
                 >
                     <RestartAltIcon
                     sx={{
-                        transition: "transform 0.5s ease-in-out",
+                        transition: "transform 0.4s ease-in-out",
                         transform: isRotated ? "rotate(720deg)" : "none",
                     }}
                     />
@@ -380,5 +426,6 @@
         </Drawer>
         </Box>
     );
-    }
-    export default RicercheNeedMatch;
+}
+
+export default RicercheHiring

@@ -242,8 +242,10 @@ state={params.row}
       }}>
               <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%', mt: 5}}>
               <Button 
+              variant="contained"
                 onClick={handleGoBack}
                 sx={{
+                    minWidth: "12em",
                     backgroundColor: '#00B401',
                     color: 'white', 
                     border: 'none', 
@@ -253,6 +255,7 @@ state={params.row}
                     alignItems: 'center', 
                     padding: '0.5rem 1rem', 
                     outline: 'none', 
+                    textTransform: "none",
                     borderRadius: '10px',
                     '&:hover': {
                       backgroundColor: '#00B401',
@@ -268,27 +271,27 @@ state={params.row}
                 <Typography variant="h4" component="h1" sx={{  fontWeight: 'bold', fontSize: '1.4em'}}>Lista ITW di {candidato.nome} {candidato.cognome}</Typography>
                     <Button onClick={navigateToAggiungiIntervista}
                     startIcon={<AddIcon />}
+                    variant='contained'
                     sx={{
-                        width: "100%",
-                        maxWidth: "16em",
-                        height: '3em',
-                        backgroundColor: "#00B401",
-                        color: "white",
-                        borderRadius: "10px",
-                        fontSize: "0.7rem",
-                        fontWeight: "bolder",
-                        
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        textAlign:'center',
-                
-                        "&:hover": {
-                        backgroundColor: "#00B401",
-                        transform: "scale(1.05)",
+                      minWidth: "12em",
+                      backgroundColor: '#00B401',
+                      color: 'white', 
+                      border: 'none', 
+                      fontSize: '0.8rem', 
+                      cursor: 'pointer', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      padding: '0.5rem 1rem', 
+                      outline: 'none', 
+                      textTransform: "none",
+                      borderRadius: '10px',
+                      '&:hover': {
+                        backgroundColor: '#00B401',
                         color: 'white',
-                        },
-                    }}>Aggiungi Intervista</Button>
+                        transform: 'scale(1.05)'
+                      }
+                  }}
+                    >Aggiungi Intervista</Button>
                     </Box>
                     <Box sx={{ mr: 0.2, mt: 10}}>
 

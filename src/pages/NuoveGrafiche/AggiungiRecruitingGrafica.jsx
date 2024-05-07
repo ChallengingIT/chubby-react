@@ -35,6 +35,8 @@ const AggiungiRecruitingGrafica = () => {
     const [ jobTitleEnable,             setJobTitleEnable           ] = useState(false);    
     const [ livelloScolasticoOptions,   setLivelloScolasticoOptions ] = useState([]);
     const [ funzioniAziendaliOptions,   setFunzioniAziendaliOptions ] = useState([]);
+    const [ ricercaOptions,             setRicercaOptions           ] = useState([]);
+
 
 
     const user = JSON.parse(sessionStorage.getItem("user"));
@@ -56,6 +58,17 @@ const AggiungiRecruitingGrafica = () => {
             const facoltaResponse             = await axios.get("http://localhost:8080/staffing/react/facolta"          , { headers: headers });
             const livelloScolasticoResponse   = await axios.get("http://localhost:8080/staffing/react/livello"          , { headers: headers });
             const funzioniAziendaliResponse   = await axios.get("http://localhost:8080/staffing/react/funzioni"         , { headers: headers }); 
+            const ricercaResponse             = await axios.get("http://localhost:8080/staffing/react/tipo/ricerca"     , { headers: headers });
+
+
+            if (Array.isArray(ricercaResponse.data)) {
+                const ricercaOptions = ricercaResponse.data.map((ricerca) => ({
+                    label: ricerca.descrizione,
+                    value: ricerca.id,
+                }));
+                setRicercaOptions(ricercaOptions);
+                }
+
     
             if (Array.isArray(livelloScolasticoResponse.data)) {
             const livelloScolasticoOptions = livelloScolasticoResponse.data.map((livelloScolastico) => ({
@@ -166,7 +179,7 @@ const AggiungiRecruitingGrafica = () => {
             case 1:
                 return [ "anniEsperienzaRuolo", "livelloScolastico"]; 
             case 2: 
-                return ["tipo", "tipologia", "dataUltimoContatto", "stato", "funzioneAziendale"];
+                return ["candidatura", "tipologia", "dataUltimoContatto", "stato", "funzioneAziendale", "ricerca"];
             default:
                 return [];
         }
@@ -384,12 +397,8 @@ const AggiungiRecruitingGrafica = () => {
             { label: "Facoltà",                         name: "facolta",                  type: "select",               options: facoltaOptions                   },
     
             { type: "titleGroups",                label: "Posizione Lavorativa"            },
-            { label: "Tipologia*",                     name: "tipo",                     type: "select",          options: tipologiaOptions                       },
-            { label: "Tipo Ricerca",                   name: "ricerca",                  type: "select",          options: [
-                { value: "C", label: "C"},
-                { value: "R", label: "R" },
-                { value: "C-R", label: "C-R" },
-            ]},
+            { label: "Tipo Candidatura*",              name: "candidatura",              type: "select",          options: tipologiaOptions                       },
+            { label: "Tipo Ricerca*",                  name: "ricerca",                  type: "select",          options: ricercaOptions                         },
             { label: "Modalità di lavoro",             name: "modalita",                 type: "select",          options: [ 
                 { value: 1, label: "Full Remote" },
                 { value: 2, label: "Ibrido" },
