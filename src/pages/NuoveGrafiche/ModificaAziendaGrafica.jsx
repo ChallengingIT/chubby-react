@@ -49,11 +49,11 @@ const ModificaAziendaGrafica = () => {
     useEffect(() => {
         const fetchProvinceOptions = async () => {
         try {
-            const responseProvince = await axios.get("http://localhost:8080/aziende/react/province",         { headers: headers });
-            const responseOwner    = await axios.get("http://localhost:8080/aziende/react/owner",            { headers: headers });
-            const responseAziende  = await axios.get("http://localhost:8080/aziende/react/select",           { headers: headers });
-            const responseModifica = await axios.get(`http://localhost:8080/aziende/react/${id}`,            { headers: headers });
-            const ricercaResponse  = await axios.get("http://localhost:8080/staffing/react/tipo/ricerca",    { headers: headers });
+            const responseProvince = await axios.get("http://89.46.196.60:8443/aziende/react/province",         { headers: headers });
+            const responseOwner    = await axios.get("http://89.46.196.60:8443/aziende/react/owner",            { headers: headers });
+            const responseAziende  = await axios.get("http://89.46.196.60:8443/aziende/react/select",           { headers: headers });
+            const responseModifica = await axios.get(`http://89.46.196.60:8443/aziende/react/${id}`,            { headers: headers });
+            const ricercaResponse  = await axios.get("http://89.46.196.60:8443/staffing/react/tipo/ricerca",    { headers: headers });
 
             if (Array.isArray(ricercaResponse.data)) {
                 const ricercaOptions = ricercaResponse.data.map((ricerca) => ({
@@ -252,7 +252,7 @@ const ModificaAziendaGrafica = () => {
                     delete values.logo;
     
         
-                    const response = await axios.post("http://localhost:8080/aziende/react/salva", values, {
+                    const response = await axios.post("http://89.46.196.60:8443/aziende/react/salva", values, {
                         headers: headers
                     });
                     if (response.data === "DUPLICATO") {
@@ -272,7 +272,7 @@ const ModificaAziendaGrafica = () => {
                         const formDataIMG = new FormData();
                         formDataIMG.append('logo', fileIMG);
                     
-                        const responseIMG = await axios.post(`http://localhost:8080/aziende/react/salva/file/${aziendaID}`, formDataIMG, {
+                        const responseIMG = await axios.post(`http://89.46.196.60:8443/aziende/react/salva/file/${aziendaID}`, formDataIMG, {
                             headers: {
                             'Content-Type': 'multipart/form-data',
                             Authorization: `Bearer ${token}`

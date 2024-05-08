@@ -41,8 +41,8 @@ const AggiungiHeadHunting = () => {
         const fetchProvinceOptions = async () => {
         try {
     
-            const provinceResponse = await axios.get("http://localhost:8080/aziende/react/province", { headers: headers });
-            const ownerResponse    = await axios.get("http://localhost:8080/aziende/react/owner",    { headers: headers }   );
+            const provinceResponse = await axios.get("http://89.46.196.60:8443/aziende/react/province", { headers: headers });
+            const ownerResponse    = await axios.get("http://89.46.196.60:8443/aziende/react/owner",    { headers: headers }   );
     
             if (Array.isArray(ownerResponse.data)) {
             const ownerOptions = ownerResponse.data.map((owner) => ({
@@ -222,7 +222,7 @@ const AggiungiHeadHunting = () => {
                     };
                     delete values.image;
     
-                    const response = await axios.post("http://localhost:8080/aziende/react/salva", values, {
+                    const response = await axios.post("http://89.46.196.60:8443/aziende/react/salva", values, {
                         headers: headers
                     });
                     if (response.data === "DUPLICATO") {
@@ -242,7 +242,7 @@ const AggiungiHeadHunting = () => {
                         const formDataIMG = new FormData();
                         formDataIMG.append('logo', fileIMG);
                     
-                        const responseIMG = await axios.post(`http://localhost:8080/aziende/react/salva/file/${aziendaID}`, formDataIMG, {
+                        const responseIMG = await axios.post(`http://89.46.196.60:8443/aziende/react/salva/file/${aziendaID}`, formDataIMG, {
                             headers: {
                             'Content-Type': 'multipart/form-data',
                             Authorization: `Bearer ${token}`
