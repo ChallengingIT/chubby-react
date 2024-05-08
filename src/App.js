@@ -28,6 +28,9 @@ import ModificaIntervistaGrafica                                       from './p
 import AggiungiNeedGrafica                                             from './pages/NuoveGrafiche/AggiungiNeedGrafica.jsx';
 import ModificaNeedGrafica                                             from './pages/NuoveGrafiche/ModificaNeedGrafica.jsx';
 import AggiungiNeedIDGragica                                           from './pages/NuoveGrafiche/AggiungiNeedIDGrafica.jsx';
+import NotFoundPage from './pages/NotFoundPage.jsx';
+import AggiungiRecruitingHiring from './pages/NuoveGrafiche/AggiungiRecruitingHiring.jsx';
+import AggiungiHeadHunting from './pages/NuoveGrafiche/AggiungiHeadHunting.jsx';
 // import ProvaDashboard from './pages/ProvaDashboard.jsx';
 
 
@@ -167,7 +170,20 @@ const App = () => {
                       <Hiring />
                     </PrivateRoute>
                   } />
-        </Route>
+                                  
+                  <Route path="/aggiungi/recruiting" element={
+                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM']}>
+                      <AggiungiRecruitingHiring />
+                    </PrivateRoute>
+                  } />
+
+                <Route path="/aggiungi/headhunting" element={
+                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM']}>
+                      <AggiungiHeadHunting />
+                    </PrivateRoute>
+                  } />
+                </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );

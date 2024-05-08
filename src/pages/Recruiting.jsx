@@ -11,6 +11,8 @@ import SmileGreenIcon                         from '../components/icone/SmileGre
 import SmileOrangeIcon                        from '../components/icone/SmileOrangeIcon.jsx';
 import SmileRedIcon                           from '../components/icone/SmileRedIcon.jsx';
 import Tabella                                from "../components/Tabella.jsx";
+import RicercheRecruiting                     from "../components/ricerche/RicercheRecruiting.jsx";
+
 
 
 
@@ -26,7 +28,6 @@ import {
   Grid,
   Skeleton
 } from '@mui/material';
-import RicercheRecruiting from "../components/ricerche/RicercheRecruiting.jsx";
 
 
 const Recruiting = () => {
@@ -420,7 +421,7 @@ const handleReset = () => {
     </div>
       ),
     },
-    { field: "email",          headerName: "Email",          flex: 2},
+    { field: "email",          headerName: "Email",          flex: 1.5},
     { field: "tipologia",      headerName: "Job Title",      flex: 1.4, renderCell: (params) => (
       <div style={{ textAlign: "start" }}>
         {params.row.tipologia && params.row.tipologia.descrizione

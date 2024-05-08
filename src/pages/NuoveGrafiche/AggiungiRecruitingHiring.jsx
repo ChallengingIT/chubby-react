@@ -9,14 +9,13 @@ import CustomNoteAggiungi                                                       
 import CustomImgFieldAggiunta                                                                         from '../../components/fields/CustomImgFieldAggiunta';
 import CustomDatePickerAggiungi                                                                       from '../../components/fields/CustomDatePickerAggiungi';
 import CustomMultipleSelectAggiunta from '../../components/fields/CustomMultipleSelectAggiunta';
-import CustomMultipleSelectAziende from '../../components/fields/CustomMultipleSelectAziende';
 
 
-const AggiungiAziendaGrafica = () => {
+const AggiungiRecruitingHiring = () => {
     const navigate = useNavigate();
 
     //stati della pagina
-    const [ activeSection,      setActiveSection        ] = useState('Profilo');
+    const [ activeSection,      setActiveSection        ] = useState('Descrizione');
     const [ currentPageIndex,   setCurrentPageIndex     ] = useState(0);
     const [ imagePreviewUrl,    setImagePreviewUrl      ] = useState(null);
     const [ fileIMG,            setFileIMG              ] = useState(null);
@@ -24,10 +23,9 @@ const AggiungiAziendaGrafica = () => {
     const [ errors,             setErrors               ] = useState({});
 
     //stati per i valori
-    const [ provinceOptions,      setProvinceOptions      ] = useState([]);
-    const [ ownerOptions,         setOwnerOptions         ] = useState([]);
-    const [ ricercaOptions,       setRicercaOptions       ] = useState([]);
-    const [ values,               setValues               ] = useState({});
+    const [ provinceOptions,    setProvinceOptions      ] = useState([]);
+    const [ ownerOptions,       setOwnerOptions         ] = useState([]);
+    const [ values,             setValues               ] = useState({});
 
 
 
@@ -43,18 +41,8 @@ const AggiungiAziendaGrafica = () => {
         const fetchProvinceOptions = async () => {
         try {
     
-            const provinceResponse         = await axios.get("http://localhost:8080/aziende/react/province",         { headers: headers });
-            const ownerResponse            = await axios.get("http://localhost:8080/aziende/react/owner",            { headers: headers }   );
-            const ricercaResponse          = await axios.get("http://localhost:8080/staffing/react/tipo/ricerca",    { headers: headers }   );
-
-            if (Array.isArray(ricercaResponse.data)) {
-                const ricercaOptions = ricercaResponse.data.map((ricerca) => ({
-                    label: ricerca.descrizione,
-                    value: ricerca.id,
-                }));
-                setRicercaOptions(ricercaOptions);
-                }
-
+            const provinceResponse = await axios.get("http://localhost:8080/aziende/react/province", { headers: headers });
+            const ownerResponse    = await axios.get("http://localhost:8080/aziende/react/owner",    { headers: headers }   );
     
             if (Array.isArray(ownerResponse.data)) {
             const ownerOptions = ownerResponse.data.map((owner) => ({
@@ -85,21 +73,17 @@ const AggiungiAziendaGrafica = () => {
 
     const menu = [
         {
-            title: 'Profilo',
+            title: 'Descrizione',
             icon: <CircleOutlinedIcon />
         },
         { 
-            title: 'Location',
+            title: 'Economics',
             icon: <CircleOutlinedIcon />
         },
         {
-            title: 'IDA',
+            title: 'Fatturazione',
             icon: <CircleOutlinedIcon />
         },
-        {
-            title: 'File',
-            icon: <CircleOutlinedIcon />
-        }
     ];
 
     const handleGoBack = () => {
@@ -110,7 +94,7 @@ const AggiungiAziendaGrafica = () => {
     const getMandatoryFields = (index) => {
         switch (index) {
             case 0: 
-            return [ "denominazione", "settoreMercato", "ricerca" ]
+            return [ "denominazione", "settoreMercato" ]
             case 1:
                 return [ "citta", "provincia", "sedeOperativa", "cap" ];
             case 2:
@@ -194,24 +178,15 @@ const AggiungiAziendaGrafica = () => {
         }
 
         //funzione per il cambio stato del multiple select
-        // const handleChangeMultipleSkill = (fieldValue) => {
-        //     const fieldName = Object.keys(fieldValue)[0]; 
-        //     const newValues = fieldValue[fieldName];
-        
-        //     setValues(prevValues => ({
-        //         ...prevValues,
-        //         [fieldName]: [...newValues]
-        //     }));
-        // };
-
         const handleChangeMultipleSkill = (fieldValue) => {
+            const fieldName = Object.keys(fieldValue)[0]; 
+            const newValues = fieldValue[fieldName];
+        
             setValues(prevValues => ({
                 ...prevValues,
-                ...fieldValue
+                [fieldName]: [...newValues]
             }));
         };
-        
-
 
 
         //funzione per il salvataggio
@@ -288,9 +263,14 @@ const AggiungiAziendaGrafica = () => {
             }
         };
 
-
+        const tipoContrattoOptions = [
+            { value: 'Recruiting',  label: 'Recruiting'   },
+            { value: 'HeadHunting', label: 'Head Hunting' },
+            { value: 'Temporary',   label: 'Temporary'    },
+            { value: 'Staffing',    label: 'Staffing'     },
+        ];
         
-        const campiObbligatori = [ "denominazione", "ragioneSociale", "idOwner", "citta", "provincia", "sedeOperativa", "cap", "tipologia", "status", "potenzialita", "semplicita", "ricerca" ];
+        const campiObbligatori = [ "denominazione", "ragioneSociale", "idOwner", "citta", "provincia", "sedeOperativa", "cap", "tipologia", "status", "potenzialita", "semplicita" ];
 
         const fields =[
             { type: "titleGroups",                label: "Profilo"            },
@@ -302,7 +282,7 @@ const AggiungiAziendaGrafica = () => {
             { label: "Codice Destinatario",             name: "codiceDestinatario",       type: "text", maxLength: 45                             },
             { label: "Sito Web",                        name: "sito",                     type: "text", maxLength: 90                             },
             { label: 'Scadenza Contratto',              name: 'dataScadenzaContratto',    type: 'date'                                            },
-            { label: 'Tipo di contratto*',              name: 'ricerca',                  type: 'multipleSelect', options: ricercaOptions         },
+            // { label: 'Tipo di contratto',               name: 'tipoContratto',            type: 'multipleSelect', options: tipoContrattoOptions   },
             { label: 'Note',                            name: 'note',                     type: 'note', maxLength: 2000                           },
     
     
@@ -423,14 +403,14 @@ const AggiungiAziendaGrafica = () => {
 
                 case 'multipleSelect':
                     return ( 
-                        <CustomMultipleSelectAziende
+                        <CustomMultipleSelectAggiunta
                             name={field.name}
                             label={field.label}
                             options={field.options}
                             value={values[field.name] || null}
                             onChange={handleChangeMultipleSkill}
                             getOptionSelected={(option, value) => option.value === value.value}
-                            multipleOptions={ricercaOptions}
+                            skillsOptions={tipoContrattoOptions}
                         />
                     );
 
@@ -502,7 +482,7 @@ const AggiungiAziendaGrafica = () => {
                         Indietro
                     </Button>
                 </Box>
-                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: '#212121'}}>  Aggiungi <br /> Azienda </Typography>
+                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: '#212121'}}>  Aggiungi <br /> Servizio </Typography>
                 <List sx={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
                             {menu.map((item) => (
                                 <ListItem
@@ -610,4 +590,4 @@ const AggiungiAziendaGrafica = () => {
     )
 }
 
-export default AggiungiAziendaGrafica;
+export default AggiungiRecruitingHiring;
