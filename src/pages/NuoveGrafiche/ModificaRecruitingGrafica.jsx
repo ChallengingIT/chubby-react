@@ -43,6 +43,7 @@ const ModificaRecruitingGrafica = () => {
     const [ livelloScolasticoOptions, setLivelloScolasticoOptions ] = useState([]);
     const [ funzioniAziendaliOptions, setFunzioniAziendaliOptions ] = useState([]);
     const [ ricercaOptions,     setRicercaOptions       ] = useState([]);
+    const [ tipoOptions,        setTipoOptions          ] = useState([]);
 
 
 
@@ -64,13 +65,23 @@ const ModificaRecruitingGrafica = () => {
             const responseStaffing            = await axios.get(`http://localhost:8080/staffing/react/${id}`,           { headers: headers });
             const responseStato               = await axios.get("http://localhost:8080/staffing/react/stato/candidato", { headers: headers });
             const responseJobTitle            = await axios.get("http://localhost:8080/aziende/react/tipologia"       , { headers: headers });
-            const responseTipologia           = await axios.get("http://localhost:8080/staffing/react/tipo/candidatura"           , { headers: headers });
+            const responseTipologia           = await axios.get("http://localhost:8080/staffing/react/tipo/candidatura",{ headers: headers });
             const responseNeedSkills          = await axios.get("http://localhost:8080/staffing/react/skill"          , { headers: headers });
             const ownerResponse               = await axios.get("http://localhost:8080/aziende/react/owner"           , { headers: headers });
             const facoltaResponse             = await axios.get("http://localhost:8080/staffing/react/facolta"        , { headers: headers });
             const livelloScolasticoResponse   = await axios.get("http://localhost:8080/staffing/react/livello"        , { headers: headers });
             const funzioniAziendaliResponse   = await axios.get("http://localhost:8080/staffing/react/funzioni"       , { headers: headers }); 
             const ricercaResponse             = await axios.get("http://localhost:8080/staffing/react/tipo/ricerca"   , { headers: headers });
+            const tipoResponse                = await axios.get("http://localhost:8080/staffing/react/tipo"           , { headers: headers });
+
+
+            if (Array.isArray(tipoResponse.data)) {
+                const tipoOptions = tipoResponse.data.map((tipo) => ({
+                    label: tipo.descrizione,
+                    value: tipo.id,
+                }));
+                setTipoOptions(tipoOptions);
+                }
 
             if (Array.isArray(ricercaResponse.data)) {
                 const ricercaOptions = ricercaResponse.data.map((ricerca) => ({
@@ -228,7 +239,7 @@ const ModificaRecruitingGrafica = () => {
             case 1:
                 return [ "anniEsperienzaRuolo", "idLivelloScolastico"]; 
             case 2: 
-                return ["idCandidatura", "idTipologia", "dataUltimoContatto", "idStato", "idFunzioneAziendale", "idRicerca"];
+                return ["idCandidatura", "idTipologia", "dataUltimoContatto", "idStato", "idFunzioneAziendale", "idRicerca", "idTipo"];
             default:
                 return [];
         }
@@ -382,7 +393,8 @@ const ModificaRecruitingGrafica = () => {
                 idFunzioneAziendale: "funzioneAziendale",
                 idTipologia: "tipologia",
                 idOwner: "owner",
-                idSkills: "skills"
+                idSkills: "skills",
+                idTipo: 'tipo'
             };
 
             //funzione per convertire le chiavi delle select da "idX" a "X"
@@ -428,7 +440,6 @@ const ModificaRecruitingGrafica = () => {
 
 
 
-                console.log("valori inviati: ", values);
 
                 const datiResponse = await axios.post("http://localhost:8080/staffing/salva", transformedValues, {
                 params: { skill: skills },
@@ -508,7 +519,7 @@ const ModificaRecruitingGrafica = () => {
 
 
 
-        const campiObbligatori = [ "nome", "cognome", "email", "anniEsperienzaRuolo", "idTipologia", "dataUltimoContatto", "idCandidatura", "idStato", "idLivelloScolastico", "idFunzioneAziendale", "idRicerca" ];
+        const campiObbligatori = [ "nome", "cognome", "email", "anniEsperienzaRuolo", "idTipologia", "dataUltimoContatto", "idCandidatura", "idStato", "idLivelloScolastico", "idFunzioneAziendale", "idRicerca", "idTipo" ];
 
         const fields =[
             { type: "titleGroups",                label: "Profilo Candidato"            },
@@ -528,6 +539,7 @@ const ModificaRecruitingGrafica = () => {
             { label: "Facoltà",                         name: "idFacolta",                type: "select",               options: facoltaOptions                   },
     
             { type: "titleGroups",                label: "Posizione Lavorativa"            },
+            { label: 'Tipologia',                      name: 'idTipo',                     type: 'select',          options: tipoOptions                           },
             { label: "Tipo Candidatura*",              name: "idCandidatura",              type: "select",          options: tipologiaOptions                      },
             { label: "Tipo Ricerca*",                  name: "idRicerca",                  type: "select",          options: ricercaOptions                        },
 
@@ -578,12 +590,12 @@ const ModificaRecruitingGrafica = () => {
             idSkills:                           datiModifica.skills ? datiModifica.skills.map((skills) => skills.id) :            [],
             ral:                                datiModifica.ral                                                                  || null,
             disponibilita:                      datiModifica.disponibilita                                                        || null,
+            idTipo:                             datiModifica.tipo && datiModifica.tipo.id                                       || null,    
             cv:                                 datiModifica.files ? datiModifica.files.find(file => file && file.tipologia && file.tipologia.descrizione === 'CV') || null : null,
             cf:                                 datiModifica.files ? datiModifica.files.find(file => file && file.tipologia && file.tipologia.descrizione === 'CF') || null : null,
             note:                               datiModifica.note                                                                 || null,
         };
 
-        console.log("datiModifica: ", datiModifica);
 
 
          //funzione per caricare i dati nei campi solo dopo aver terminato la chiamata

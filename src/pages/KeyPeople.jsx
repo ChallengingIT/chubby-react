@@ -256,7 +256,7 @@ const Keypeople = () => {
                 setPagina(0);
                 setOriginalKeypeople([]);
                 setHasMore(true);
-                handleRicerche();
+                // handleRicerche();
             }
             
             return newFilters;
@@ -271,7 +271,7 @@ const Keypeople = () => {
         if (filtriHasValues) {
             handleRicerche();
         }
-    }, [filtri.azienda, filtri.stato, filtri.owner, filtri.nome]);
+    }, [ filtri.nome]);
 
 
     // const handleFilterChange = (name) => (event) => {
@@ -303,16 +303,16 @@ const Keypeople = () => {
     //funzione di reset dei campi di ricerca
 
     const handleReset = async () => {
+        setPagina(0);
+        setOriginalKeypeople([]);
+        setHasMore(true);
+        await fetchData(0);
         setFiltri({
             nome: '',
             azienda: null,
             stato: null,
             owner: null
         });
-        setPagina(0);
-        setOriginalKeypeople([]);
-        setHasMore(true);
-        await fetchData(0);
     };
 
 
@@ -355,6 +355,7 @@ const Keypeople = () => {
                         filtri={filtri}
                         onFilterChange={handleFilterChange}
                         onReset={handleReset}
+                        onSearch={handleRicerche}
                         aziendaOptions={clienteOptions}
                         statiOptions={statiOptions}
                         ownerOptions={ownerOptions}

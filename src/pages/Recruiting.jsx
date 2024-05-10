@@ -13,6 +13,8 @@ import SmileRedIcon                           from '../components/icone/SmileRed
 import Tabella                                from "../components/Tabella.jsx";
 import RicercheRecruiting                     from "../components/ricerche/RicercheRecruiting.jsx";
 
+import CloseIcon from '@mui/icons-material/Close';
+
 
 
 
@@ -26,7 +28,8 @@ import {
   Box,
   Button,
   Grid,
-  Skeleton
+  Skeleton,
+  IconButton
 } from '@mui/material';
 
 
@@ -66,6 +69,20 @@ const Recruiting = () => {
 //stati per la paginazione
 const [ pagina,                 setPagina       ] = useState(0);
 const quantita = 10;
+
+
+//stato per il dialog
+const [openDialogNome, setOpenDialogNome] = useState(false);
+    const [selectedRow, setSelectedRow] = useState(null);
+
+    const handleClickOpen = (row) => {
+        setSelectedRow(row);
+        setOpenDialogNome(true);
+    };
+
+    const handleClose = () => {
+        setOpenDialogNome(false);
+    };
 
 
   const userHasRole = (role) => {
@@ -175,9 +192,11 @@ const quantita = 10;
       // eslint-disable-next-line
   }, []);
 
+  console.log("pagina: ", pagina);
+
 
     //funzione per la paginazione
-    const fetchMoreData = async (pagina) => {
+    const fetchMoreData = async (newPage) => {
 
       const filtriAttivi = Object.values(filtri).some(value => value !== null && value !== '');
       const url = filtriAttivi ?
@@ -192,7 +211,7 @@ const quantita = 10;
         tipologia: filtri.tipologia || null,
         tipo: filtri.tipo || null,
         stato: filtri.stato || null,
-        pagina: pagina,
+        pagina: newPage,
         quantita: 10
     };
   
@@ -288,7 +307,7 @@ const handleRicerche = async () => {
         tipologia: filtri.tipologia || null,
         tipo: filtri.tipo || null,
         stato: filtri.stato || null,
-        pagina: 0,
+        pagina: pagina,
         quantita: 10
     };
 
@@ -355,15 +374,15 @@ const handleRicerche = async () => {
     };
 
 
-    useEffect(() => {
-      // Controllo se tutti i filtri sono vuoti 
-      const areFiltersEmpty = Object.values(filtri).every(value => value === null || value === '');
-      if (areFiltersEmpty) {
-          fetchData();
-      } else {
-          handleRicerche();
-      }
-    }, [filtri, pagina]);
+    // useEffect(() => {
+    //   // Controllo se tutti i filtri sono vuoti 
+    //   const areFiltersEmpty = Object.values(filtri).every(value => value === null || value === '');
+    //   if (areFiltersEmpty) {
+    //       fetchData();
+    //   } else {
+    //       handleRicerche();
+    //   }
+    // }, [filtri, pagina]);
 
 
 
@@ -408,7 +427,7 @@ const handleReset = () => {
   };
 
   const columns = [
-    // { field: "id",            headerName: "ID",             width: 70  },
+    { field: "id",            headerName: "ID",             width: 70  },
     { field: "nome",         headerName: "Nome",           flex: 1.3, renderCell: (params) => (
       <div style={{ textAlign: "left"  }}>
       <Link 
@@ -421,15 +440,28 @@ const handleReset = () => {
     </div>
       ),
     },
-    { field: "email",          headerName: "Email",          flex: 1.5},
-    { field: "tipologia",      headerName: "Job Title",      flex: 1.4, renderCell: (params) => (
-      <div style={{ textAlign: "start" }}>
-        {params.row.tipologia && params.row.tipologia.descrizione
-          ? params.row.tipologia.descrizione
-          : "N/A"}
-      </div>
-    ),
-  }, 
+  //   {
+  //     field: "nome",
+  //     headerName: "Nome",
+  //     flex: 1.3,
+  //     renderCell: (params) => (
+  //         <div style={{ textAlign: "left", cursor: "pointer", textDecoration: "underline" }}>
+  //             <span onClick={() => handleClickOpen(params.row)}>
+  //                 {params.row.nome} {params.row.cognome}
+  //             </span>
+  //         </div>
+  //     ),
+  // },
+  
+  //   { field: "email",          headerName: "Email",          flex: 1.5},
+  //   { field: "tipologia",      headerName: "Job Title",      flex: 1.4, renderCell: (params) => (
+  //     <div style={{ textAlign: "start" }}>
+  //       {params.row.tipologia && params.row.tipologia.descrizione
+  //         ? params.row.tipologia.descrizione
+  //         : "N/A"}
+  //     </div>
+  //   ),
+  // }, 
     { field: "rating",        headerName: "Rating",         flex: 0.6, renderCell: (params) => getSmileIcon(params), }, //fino a 1.9 è rosso, da 2 a 3 giallo, sopra 3 è verde
     { field: "owner",         headerName: "Owner",         flex: 0.6, renderCell: (params) => (
         <div style={{ textAlign: "start" }}>
@@ -503,10 +535,10 @@ return (
       filtri={filtri}
       onFilterChange={handleFilterChange}
       onReset={handleReset}
+      onSearch={handleRicerche}
       tipologiaOptions={tipologiaOptions}
       statoOptions={statoOptions}
       tipoOptions={tipoOptions}
-      onRicerche={handleRicerche}
       />
       <Box sx={{ mr: 0.2}}>
         { loading ? (
@@ -602,6 +634,87 @@ return (
                       </Button>
                     </DialogActions>
                   </Dialog>
+
+
+                  <Dialog
+                    open={openDialogNome}
+                    onClose={() => setOpenDialogNome(false)}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                    sx={{
+                      '& .MuiDialog-paper': {
+                        width: '50%', 
+                        maxWidth: 'none', 
+                        borderRadius: '20px',
+                        border: '2px solid #00B400',
+                        p: 1
+                      }
+                    }}
+                  >
+                    <DialogTitle id="alert-dialog-title" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', pr: 1 }}>
+                      <span style={{ fontSize: '180%', fontWeight: 'bolder' }}>{"Dettagli del Candidato"}</span>
+                      <IconButton
+                        aria-label="close"
+                        onClick={() => setOpenDialogNome(false)}
+                        sx={{ color: (theme) => theme.palette.grey[500] }}
+                      >
+                        <CloseIcon />
+                      </IconButton>
+                    </DialogTitle>
+                    <DialogContent>
+                    {selectedRow && (
+                      <>
+                        <DialogContentText>
+                          <span style={{ fontWeight: 'bold', color: 'black' }}>Nome: </span>
+                          <span style={{ color: 'black' }}>{selectedRow.nome}</span>
+                        </DialogContentText>
+                        <DialogContentText>
+                          <span style={{ fontWeight: 'bold', color: 'black' }}>Cognome: </span>
+                          <span style={{ color: 'black' }}>{selectedRow.cognome}</span>
+                        </DialogContentText>
+                        <DialogContentText>
+                          <span style={{ fontWeight: 'bold', color: 'black' }}>Email: </span>
+                          <span style={{ color: 'black' }}>{selectedRow.email}</span>
+                        </DialogContentText>
+                        <DialogContentText>
+                          <span style={{ fontWeight: 'bold', color: 'black' }}>Job Title: </span>
+                          <span style={{ color: 'black' }}>{selectedRow.tipologia?.descrizione}</span>
+                        </DialogContentText>
+                        <DialogContentText>
+                          <span style={{ fontWeight: 'bold', color: 'black' }}>Rating: </span>
+                          <span style={{ color: 'black' }}>{selectedRow.rating}</span>
+                        </DialogContentText>
+                        <DialogContentText>
+                          <span style={{ fontWeight: 'bold', color: 'black' }}>Owner: </span>
+                          <span style={{ color: 'black' }}>{selectedRow.owner?.descrizione}</span>
+                        </DialogContentText>
+                        <DialogContentText>
+                          <span style={{ fontWeight: 'bold', color: 'black' }}>Stato: </span>
+                          <span style={{ color: 'black' }}>{selectedRow.stato?.descrizione}</span>
+                        </DialogContentText>
+                        <DialogContentText>
+                          <span style={{ fontWeight: 'bold', color: 'black' }}>Ultimo Contatto: </span>
+                          <span style={{ color: 'black' }}>{selectedRow.dataUltimoContatto}</span>
+                        </DialogContentText>
+                        <DialogContentText>
+                          <span style={{ fontWeight: 'bold', color: 'black' }}>Note: </span>
+                          <span style={{ color: 'black' }}>{selectedRow.note}</span>
+                        </DialogContentText>
+                        <DialogContentText>
+                          <span style={{ fontWeight: 'bold', color: 'black' }}>RAL: </span>
+                          <span style={{ color: 'black' }}>{selectedRow.ral}</span>
+                        </DialogContentText>
+                        {selectedRow.allegati && selectedRow.allegati.map((file, index) => (
+                          <DialogContentText key={index}>
+                            <span style={{ fontWeight: 'bold', color: 'black' }}>{file.descrizione}: </span>
+                            <Button onClick={() => handleDownloadCV(file.id, file.descrizione)}>Scarica</Button>
+                          </DialogContentText>
+                        ))}
+                      </>
+                    )}
+                  </DialogContent>
+                  </Dialog>
+
     </Box>
   </Box>
 

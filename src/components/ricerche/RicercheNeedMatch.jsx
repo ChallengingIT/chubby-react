@@ -19,18 +19,28 @@
     filtri,
     onFilterChange,
     onReset,
+    onSearch,
     tipologiaOptions,
     tipoOptions,
     seniorityOptions,
-    onRicerche,
     onGoBack,
     }) {
 
     const [openFiltri, setOpenFiltri] = useState(false);
     const [isRotated, setIsRotated] = useState(false);
+    const [localFiltri, setLocalFiltri] = useState({ ...filtri });
+
+
+
+    const handleClickSearch = () => {
+        onFilterChange(localFiltri);
+        onSearch();
+    };
+
 
     const handleClickReset = () => {
         onReset();
+        setLocalFiltri({ ...filtri });
         setIsRotated(true);
         setTimeout(() => setIsRotated(false), 500);
     };
@@ -85,7 +95,7 @@
             onKeyDown={(event) => {
                 if (event.key === "Enter") {
                 event.preventDefault();
-                onRicerche();
+                onSearch();
                 }
             }}
             InputProps={{
@@ -126,7 +136,7 @@
             onKeyDown={(event) => {
                 if (event.key === "Enter") {
                 event.preventDefault();
-                onRicerche();
+                onSearch();
                 }
             }}
             sx={{
@@ -350,7 +360,25 @@
                     )}
                 />
                 </FormControl>
-                <Box sx={{ display: "flex", justifyContent: "center" }}>
+                <Box sx={{ display: "flex", justifyContent: "space-around" }}>
+                <IconButton
+                onClick={handleClickSearch}
+                disableRipple={true}
+                disableFocusRipple={true}
+                    sx={{
+                    backgroundColor: "#00B400",
+                    color: "white",
+                    textTransform: "lowercase",
+                    fontWeight: "bold",
+                    "&:hover": {
+                        backgroundColor: "#00B400",
+                        color: "white",
+                        trasform: "scale(1.1)",
+                    },
+                    }}
+                >
+                    <SearchIcon />
+                </IconButton> 
                 <IconButton
                     onClick={handleClickReset}
                     disableRipple={true}

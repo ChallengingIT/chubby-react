@@ -87,25 +87,25 @@ import {
             if (Array.isArray(responseOwner.data)) {
                 setOwnerOptions(responseOwner.data.map((owner) => ({ label: owner.descrizione, value: owner.id})));
             } else {
-                console.error("I dati ottenuti non sono nel formato Array; ", responseOwner.data);
+                console.error("I dati ottenuti dalla chiamata degli owner non sono nel formato Array; ", responseOwner.data);
             }
 
             if (Array.isArray(responseAzienda.data)) {
                 setAziendaOptions(responseAzienda.data.map((azienda) => ({ label: azienda.denominazione, value: azienda.id })));
             } else {
-                console.error("I dati ottenuti non sono nel formato Array:", responseAzienda.data);
+                console.error("I dati ottenuti dalla chiamata delle aziendenon sono nel formato Array:", responseAzienda.data);
             }
 
             if (Array.isArray(responseTipologia.data)) {
                 setTipologiaOptions(responseTipologia.data.map((tipologia) => ({ label: tipologia.descrizione, value: tipologia.id})));
             } else {
-                console.error("I dati ottenuti non sono nel formato Array; ", responseTipologia.data);
+                console.error("I dati ottenuti dalla chiamata delle tipologie non sono nel formato Array; ", responseTipologia.data);
             }
 
             if (Array.isArray(responseStato.data)) {
                 setStatoOptions(responseStato.data.map((stato) => ({ label: stato.descrizione, value: stato.id})));
             } else {
-                console.error("I dati ottenuti non sono nel formato Array; ", responseStato.data);
+                console.error("I dati ottenuti dalla chiamata degli stati non sono nel formato Array; ", responseStato.data);
             }
             if (Array.isArray(responseNeed.data)) {
                 const needConId = responseNeed.data.map((need) => ({...need}));
@@ -115,7 +115,7 @@ import {
                 setHasMore(needConId.length >= quantita);
 
             } else {
-                console.error("I dati ottenuti non sono nel formato Array; ", responseNeed.data);
+                console.error("I dati ottenuti dalla chiamata dei need non sono nel formato Array; ", responseNeed.data);
             }
             setLoading(false);
             } catch(error) {
@@ -262,7 +262,7 @@ const handleFilterChange = (name) => (event) => {
             setPagina(0);
             setOriginalNeed([]);
             setHasMore(true);
-            handleRicerche();
+            // handleRicerche();
         }
         
         return newFilters;
@@ -277,7 +277,7 @@ const handleFilterChange = (name) => (event) => {
             } else {
                 fetchData();
             }
-        }, [filtri.tipologia, filtri.stato, filtri.owner, filtri.azienda, filtri.keypeople, filtri.descrizione]);
+        }, [filtri.descrizione]);
 
 
             // const handleFilterChange = (name) => (event) => {
@@ -296,7 +296,6 @@ const handleFilterChange = (name) => (event) => {
             //     if (areFiltersEmpty) {
             //         fetchData();
             //     } else {
-            //     console.log("filtri: ", filtri);
             //         handleRicerche();
             //     }
             // }, [filtri, pagina]);
@@ -314,7 +313,7 @@ const handleFilterChange = (name) => (event) => {
                 tipologia: null,
                 owner: null,
                 azienda: null,
-                keypeople: null
+                keypeople: null,
             });
             setPagina(0);
             setOriginalNeed([]);
@@ -366,11 +365,11 @@ const handleFilterChange = (name) => (event) => {
                     filtri={filtri}
                     onFilterChange={handleFilterChange}
                     onReset={handleReset}
+                    onSearch={handleRicerche}
                     tipologiaOptions={tipologiaOptions}
                     statoOptions={statoOptions}
                     ownerOptions={ownerOptions}
                     aziendaOptions={aziendaOptions}
-                    onRicerche={handleRicerche}
                     onContactChange={handleContactChange} 
                     
                     />

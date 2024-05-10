@@ -372,12 +372,12 @@
             anchorEl={anchorEl}
             onClose={handleAdditionalDrawerClose}
             anchorOrigin={{
-            vertical: "center",
-            horizontal: "right",
+                vertical: 'bottom',
+                horizontal: 'right',
             }}
             transformOrigin={{
-            vertical: "top",
-            horizontal: "right 10px",
+                vertical: 'center',
+                horizontal: 'left',
             }}
         >
             <Box sx={{ width: 250 }}>{additionalDrawerContent}</Box>

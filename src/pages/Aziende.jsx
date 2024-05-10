@@ -272,6 +272,7 @@ const Aziende = () => {
 
 
 
+
             //funzione cambio stato select
             const handleFilterChange = (name) => (event) => {
                 const newValue = event.target.value;
@@ -286,7 +287,7 @@ const Aziende = () => {
                         setPagina(0);
                         setOriginalAziende([]);
                         setHasMore(true);
-                        handleRicerche();
+                        // handleRicerche();
                     }
                     
                     return newFilters;
@@ -300,7 +301,7 @@ const Aziende = () => {
                 if (filtriHasValues) {
                     handleRicerche();
                 }
-            }, [filtri.tipologia, filtri.stato, filtri.owner, filtri.ida, filtri.denominazione]);
+            }, [ filtri.denominazione]);
 
             // const handleFilterChange = (name) => (event) => {
             //     const newValue = event.target.value;
@@ -445,10 +446,10 @@ const Aziende = () => {
                     filtri={filtri}
                     onFilterChange={handleFilterChange}
                     onReset={handleReset}
+                    onSearch={handleRicerche}
                     tipologiaOptions={tipologiaOptions}
                     statoOptions={statoOptions}
                     ownerOptions={ownerOptions}
-                    onRicerche={handleRicerche}
                     idaOptions={idaOptions}
                     />
                     </Box>
