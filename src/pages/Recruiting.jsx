@@ -192,7 +192,6 @@ const [openDialogNome, setOpenDialogNome] = useState(false);
       // eslint-disable-next-line
   }, []);
 
-  console.log("pagina: ", pagina);
 
 
     //funzione per la paginazione

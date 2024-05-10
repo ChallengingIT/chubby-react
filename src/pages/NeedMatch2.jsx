@@ -148,7 +148,7 @@
             }));
             setOwnerOptions(ownerOptions);
         } else {
-            console.log("Errore nella lettura degli owner");
+            console.error("Errore nella lettura degli owner");
         }
 
         if (Array.isArray(statoResponse.data)) {
@@ -158,7 +158,7 @@
             }));
             setStatoOptions(statoOptions);
         } else {
-            console.log("Errore nella lettura degli stati");
+            console.error("Errore nella lettura degli stati");
         }
 
         if (Array.isArray(responseTipologia.data)) {
@@ -168,7 +168,7 @@
             }));
             setTipologiaOptions(tipologiaOptions);
         } else {
-            console.log("Errore nella lettura delle tipologie");
+            console.error("Errore nella lettura delle tipologie");
         }
 
         if (Array.isArray(responseTipo.data)) {
@@ -178,7 +178,7 @@
             }));
             setTipoOptions(tipoOptions);
         } else {
-            console.log("Errore nella lettura dei tipi");
+            console.error("Errore nella lettura dei tipi");
         }
 
         const { data: candidatiData } = candidatiResponse;
