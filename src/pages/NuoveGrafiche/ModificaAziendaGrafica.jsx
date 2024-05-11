@@ -308,7 +308,7 @@ const ModificaAziendaGrafica = () => {
             { label: "Codice Destinatario",             name: "codiceDestinatario",       type: "text", maxLength: 45                              },
             { label: "Sito Web",                        name: "sito",                     type: "text", maxLength: 90                              },
             { label: 'Scadenza Contratto',              name: 'dataScadenzaContratto',    type: 'date'                                              },
-            { label: 'Tipo di contratto*',              name: 'ricerca',                  type: 'multipleSelect', options: ricercaOptions         },
+            { label: 'Tipo di contratto',               name: 'ricerca',                  type: 'multipleSelect', options: ricercaOptions         },
             { label: 'Note',                            name: 'note',                     type: 'note', maxLength: 2000                             },
     
     

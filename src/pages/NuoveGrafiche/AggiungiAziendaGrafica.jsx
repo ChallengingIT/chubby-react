@@ -110,7 +110,7 @@ const AggiungiAziendaGrafica = () => {
     const getMandatoryFields = (index) => {
         switch (index) {
             case 0: 
-            return [ "denominazione", "settoreMercato", "ricerca" ]
+            return [ "denominazione", "settoreMercato" ]
             case 1:
                 return [ "citta", "provincia", "sedeOperativa", "cap" ];
             case 2:
@@ -290,7 +290,7 @@ const AggiungiAziendaGrafica = () => {
 
 
         
-        const campiObbligatori = [ "denominazione", "ragioneSociale", "idOwner", "citta", "provincia", "sedeOperativa", "cap", "tipologia", "status", "potenzialita", "semplicita", "ricerca" ];
+        const campiObbligatori = [ "denominazione", "ragioneSociale", "idOwner", "citta", "provincia", "sedeOperativa", "cap", "tipologia", "status", "potenzialita", "semplicita" ];
 
         const fields =[
             { type: "titleGroups",                label: "Profilo"            },
@@ -302,7 +302,7 @@ const AggiungiAziendaGrafica = () => {
             { label: "Codice Destinatario",             name: "codiceDestinatario",       type: "text", maxLength: 45                             },
             { label: "Sito Web",                        name: "sito",                     type: "text", maxLength: 90                             },
             { label: 'Scadenza Contratto',              name: 'dataScadenzaContratto',    type: 'date'                                            },
-            { label: 'Tipo di contratto*',              name: 'ricerca',                  type: 'multipleSelect', options: ricercaOptions         },
+            { label: 'Tipo di contratto',               name: 'ricerca',                  type: 'multipleSelect', options: ricercaOptions         },
             { label: 'Note',                            name: 'note',                     type: 'note', maxLength: 2000                           },
     
     
