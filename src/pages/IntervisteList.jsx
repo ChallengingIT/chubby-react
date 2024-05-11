@@ -144,8 +144,8 @@ function IntervisteList() {
   }, [candidatoData]); 
 
   const handleGoBack = () => {
-navigate("/recruiting");
-  };
+    window.history.back();
+    };
 
   const openDeleteDialog = (id) => {
     setDeleteId(id);

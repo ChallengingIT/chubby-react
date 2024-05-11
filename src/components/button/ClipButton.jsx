@@ -35,7 +35,7 @@ function ClipButton({ idFile, fileDescrizione, onClick }) {
                 justifyContent: 'center'
               },
               '&:hover': {
-                backgroundColor: 'balck',
+                backgroundColor: 'black',
                 transform:'scale(1.05)',
                 color: 'white',
                 cursor: 'pointer',

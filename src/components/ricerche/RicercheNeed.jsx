@@ -21,11 +21,11 @@
     filtri,
     onFilterChange,
     onReset,
+    onSearch,
     tipologiaOptions,
     statoOptions,
     aziendaOptions,
     ownerOptions,
-    onRicerche,
     onContactChange,
     }) {
     const navigate = useNavigate();
@@ -48,6 +48,8 @@
     const [isRotated, setIsRotated] = useState(false);
     const [contactOptions, setContactOptions] = useState([]);
     const [selectedContact, setSelectedContact] = useState("");
+    const [localFiltri, setLocalFiltri] = useState({ ...filtri });
+
 
     const handleAziendaChange = async (event, newValue) => {
         onFilterChange("azienda")({ target: { value: newValue?.value || null } });
@@ -78,8 +80,15 @@
         onContactChange(contactId);
     };
 
+
+    const handleClickSearch = () => {
+        onFilterChange(localFiltri);
+        onSearch();
+    };
+
     const handleClickReset = () => {
         onReset();
+        setLocalFiltri({ ...filtri });
         setIsRotated(true);
         setTimeout(() => setIsRotated(false), 500);
         setSelectedContact("");
@@ -143,7 +152,7 @@
             onKeyDown={(event) => {
                 if (event.key === "Enter") {
                 event.preventDefault();
-                onRicerche();
+                onSearch();
                 }
             }}
             InputProps={{
@@ -437,8 +446,25 @@
                 />
                 </FormControl>
 
-                <Box sx={{ display: "flex", justifyContent: "center" }}>
+                <Box sx={{ display: "flex", justifyContent: "space-around" }}>
                 <IconButton
+                onClick={handleClickSearch}
+                disableRipple={true}
+                disableFocusRipple={true}
+                    sx={{
+                    backgroundColor: "#00B400",
+                    color: "white",
+                    textTransform: "lowercase",
+                    fontWeight: "bold",
+                    "&:hover": {
+                        backgroundColor: "#00B400",
+                        color: "white",
+                        trasform: "scale(1.1)",
+                    },
+                    }}
+                >
+                    <SearchIcon />
+                </IconButton>                <IconButton
                     onClick={handleClickReset}
                     disableRipple={true}
                     disableFocusRipple={true}

@@ -20,21 +20,31 @@
     filtri,
     onFilterChange,
     onReset,
+    onSearch,
     tipologiaOptions,
     ownerOptions,
-    onRicerche,
     idaOptions,
     }) {
     const navigate = useNavigate();
 
     const [openFiltri, setOpenFiltri] = useState(false);
     const [isRotated, setIsRotated] = useState(false);
+    const [localFiltri, setLocalFiltri] = useState({ ...filtri });
+
 
     const handleClickReset = () => {
         onReset();
+        setLocalFiltri({ ...filtri });
         setIsRotated(true);
         setTimeout(() => setIsRotated(false), 500);
     };
+
+
+    const handleClickSearch = () => {
+        onFilterChange(localFiltri);
+        onSearch();
+    };
+    
 
     const handleOpenFiltri = () => setOpenFiltri(true);
     const handleCloseFiltri = () => setOpenFiltri(false);
@@ -42,6 +52,8 @@
     const navigateToAggiungi = () => {
         navigate("/business/aggiungi");
     };
+
+
 
     const isAdminRole = () => {
         const userString = sessionStorage.getItem("user");
@@ -94,7 +106,7 @@
             onKeyDown={(event) => {
                 if (event.key === "Enter") {
                 event.preventDefault();
-                onRicerche();
+                onSearch();
                 }
             }}
             InputProps={{
@@ -170,19 +182,26 @@
             <Grid container spacing={2} direction="column" sx={{ p: 2 }}>
             <Grid item>
                 <FormControl fullWidth sx={{ mb: 2 }}>
+                    
                 <Autocomplete
                     id="tipologia-combo-box"
                     options={tipologiaOptions}
                     getOptionLabel={(option) => option.label}
-                    value={
-                    tipologiaOptions.find(
-                        (option) => option.value === filtri.tipologia
-                    ) || null
-                    }
-                    onChange={(event, newValue) => {
-                    onFilterChange("tipologia")({
-                        target: { value: newValue?.value || null },
-                    });
+                            // value={
+                            // tipologiaOptions.find(
+                            //     (option) => option.value === filtri.tipologia
+                            // ) || null
+                            // }
+                            // onChange={(event, newValue) => {
+                            // onFilterChange("tipologia")({
+                            //     target: { value: newValue?.value || null },
+                            // });
+                            // }}
+                    value={tipologiaOptions.find(option => option.value === filtri.tipologia) || null}
+                    onChange={(event, newValue) =>{
+                        onFilterChange("tipologia")({
+                            target: { value: newValue?.value || null },
+                        });
                     }}
                     renderInput={(params) => (
                     <TextField
@@ -214,19 +233,28 @@
                 />
                 </FormControl>
 
+
+
+
                 <FormControl fullWidth sx={{ mb: 2 }}>
                 <Autocomplete
                     id="ida-combo-box"
                     options={idaOptions}
                     getOptionLabel={(option) => option.label}
-                    value={
-                    idaOptions.find((option) => option.value === filtri.ida) ||
-                    null
-                    }
-                    onChange={(event, newValue) => {
-                    onFilterChange("ida")({
-                        target: { value: newValue?.value || null },
-                    });
+                    // value={
+                    // idaOptions.find((option) => option.value === filtri.ida) ||
+                    // null
+                    // }
+                    // onChange={(event, newValue) => {
+                    // onFilterChange("ida")({
+                    //     target: { value: newValue?.value || null },
+                    // });
+                    // }}
+                    value={idaOptions.find(option => option.value === filtri.ida) || null}
+                    onChange={(event, newValue) =>{
+                        onFilterChange("ida")({
+                            target: { value: newValue?.value || null },
+                        });
                     }}
                     renderInput={(params) => (
                     <TextField
@@ -264,14 +292,20 @@
                     id="owner-combo-box"
                     options={ownerOptions}
                     getOptionLabel={(option) => option.label}
-                    value={
-                        ownerOptions.find(
-                        (option) => option.value === filtri.owner
-                        ) || null
-                    }
-                    onChange={(event, newValue) => {
+                    // value={
+                    //     ownerOptions.find(
+                    //     (option) => option.value === filtri.owner
+                    //     ) || null
+                    // }
+                    // onChange={(event, newValue) => {
+                    //     onFilterChange("owner")({
+                    //     target: { value: newValue?.value || null },
+                    //     });
+                    // }}
+                    value={ownerOptions.find(option => option.value === filtri.owner) || null}
+                    onChange={(event, newValue) =>{
                         onFilterChange("owner")({
-                        target: { value: newValue?.value || null },
+                            target: { value: newValue?.value || null },
                         });
                     }}
                     renderInput={(params) => (
@@ -305,7 +339,25 @@
                 </FormControl>
                 )}
 
-                <Box sx={{ display: "flex", justifyContent: "center" }}>
+                <Box sx={{ display: "flex", justifyContent: "space-around" }}>
+                <IconButton
+                onClick={handleClickSearch}
+                disableRipple={true}
+                disableFocusRipple={true}
+                    sx={{
+                    backgroundColor: "#00B400",
+                    color: "white",
+                    textTransform: "lowercase",
+                    fontWeight: "bold",
+                    "&:hover": {
+                        backgroundColor: "#00B400",
+                        color: "white",
+                        trasform: "scale(1.1)",
+                    },
+                    }}
+                >
+                    <SearchIcon />
+                </IconButton>
                 <IconButton
                     onClick={handleClickReset}
                     disableRipple={true}
@@ -338,3 +390,5 @@
     }
 
     export default RicercheAziende;
+
+

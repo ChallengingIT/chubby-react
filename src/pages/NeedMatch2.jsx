@@ -2,13 +2,14 @@
     import { Link, useParams }                              from "react-router-dom";
     import { useNavigate }                                  from "react-router-dom";
     import axios                                            from "axios";
-    import { Modal, Box, Button, Typography }               from "@mui/material";
+    import { Modal, Box, Button, Typography, Dialog, DialogContent, DialogTitle }               from "@mui/material";
     import { useLocation }                                  from "react-router-dom";
     import Tabella                                          from "../components/Tabella.jsx";
-    import DeleteButton                                     from "../components/button/DeleteButton.jsx";
     import ModalBox                                         from "../components/ModalBox.jsx";
     import RicercheNeedMatch                                from "../components/ricerche/RicercheNeedMatch.jsx";
-
+    import CloseIconButton                                  from "../components/button/CloseIconButton.jsx";
+    import IntervistaButton                                 from "../components/button/IntervistaButton.jsx";
+    import ClipButton                                       from "../components/button/ClipButton.jsx";
     const NeedMatch2 = () => {
 
     const navigate      = useNavigate();
@@ -27,6 +28,26 @@
     const [ isModalOpen,            setIsModalOpen                  ] = useState(false);
     const [ initialValuesAggiorna,  setInitialValuesAggiorna        ] = useState([]);
 
+
+        //stati per il dialog
+        const [ openDialog,         setOpenDialog           ] = useState(false);
+        const [ selectedRow,        setSelectedRow          ] = useState(null);
+    
+    
+        const handleOpenDialog = (row) => {
+            setSelectedRow(row);
+            setOpenDialog(true);
+        };
+        
+    
+        const handleCloseDialog = () => {
+            setSelectedRow(null);
+            setOpenDialog(false);
+        };
+    
+
+    
+
     //stati per le ricerche
     const [ tipoOptions,            setTipoOptions                  ] = useState([]);
     const [ tipologiaOptions,       setTipologiaOptions             ] = useState([]);
@@ -38,7 +59,7 @@
             nome: null,
             cognome: null,
             tipologia: null,
-            tipologia: null,
+            tipo: null,
             seniority: null,
             };
     });
@@ -72,16 +93,19 @@
         navigate("/recruiting", { state: { params } });
     };
 
+
+
     const fetchData = async () => {
         const filtriCandidati = {
         nome: filtri.nome || null,
         cognome: filtri.cognome || null,
         tipologia: filtri.tipologia || null,
-        tipo: filtri.tipologia || null,
+        tipo: filtri.tipo || null,
         seniority: filtri.seniority || null,
         pagina: 0,
         quantita: 10,
         };
+
 
         const paginazione = {
         pagina: 0,
@@ -123,6 +147,8 @@
             value: owner.id,
             }));
             setOwnerOptions(ownerOptions);
+        } else {
+            console.error("Errore nella lettura degli owner");
         }
 
         if (Array.isArray(statoResponse.data)) {
@@ -131,6 +157,8 @@
             value: stato.id,
             }));
             setStatoOptions(statoOptions);
+        } else {
+            console.error("Errore nella lettura degli stati");
         }
 
         if (Array.isArray(responseTipologia.data)) {
@@ -139,6 +167,8 @@
             value: tipologia.id,
             }));
             setTipologiaOptions(tipologiaOptions);
+        } else {
+            console.error("Errore nella lettura delle tipologie");
         }
 
         if (Array.isArray(responseTipo.data)) {
@@ -147,6 +177,8 @@
             value: tipo.id,
             }));
             setTipoOptions(tipoOptions);
+        } else {
+            console.error("Errore nella lettura dei tipi");
         }
 
         const { data: candidatiData } = candidatiResponse;
@@ -165,6 +197,10 @@
         setRigheTotCandidati(recordCandidati);
         setOriginalCandidati(candidati);
 
+    if (!setOriginalCandidati) {
+        console.log("errore nel recupero dei candidati");
+    }
+
         setRigheTotStorico(recordStorico);
         setOriginalStorico(associazioni);
 
@@ -174,6 +210,7 @@
         console.error("Errore durante il recupero dei dati: ", error);
         }
     };
+
 
 
     useEffect(() => {
@@ -470,15 +507,15 @@
         };
         
         
-        useEffect(() => {
-            // Controllo se tutti i filtri sono vuoti 
-            const areFiltersEmpty = Object.values(filtri).every(value => value === null || value === '');
-            if (areFiltersEmpty) {
-                fetchData();
-            } else {
-                handleRicerche();
-            }
-        }, [filtri, paginaCandidati]);
+        // useEffect(() => {
+        //     // Controllo se tutti i filtri sono vuoti 
+        //     const areFiltersEmpty = Object.values(filtri).every(value => value === null || value === '');
+        //     if (areFiltersEmpty) {
+        //         fetchData();
+        //     } else {
+        //         handleRicerche();
+        //     }
+        // }, [filtri, paginaCandidati]);
 
     const handleReset = () => {
         setFiltri({
@@ -585,6 +622,28 @@
         }
         handleCloseModal();
     };
+
+
+    const handleDownloadCV = async (idFile, fileDescrizione) => {
+        const url = `http://localhost:8080/files/react/download/file/${idFile}`;
+        try {
+            const responseDownloadCV = await axios({
+                method: 'GET',
+                url: url,
+                responseType: 'blob',
+                headers: headers
+            });
+            const fileURL = window.URL.createObjectURL(new Blob([responseDownloadCV.data], { type: 'application/pdf' }));
+            const link = document.createElement('a');
+            link.href = fileURL;
+            link.setAttribute('download', `${fileDescrizione}`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            } catch(error) {
+            console.error("Si è verificato un errore durante il download del file: ", error);
+            }
+        };
 
     const fieldsAggiorna = [
         { label: "Cliente", name: "cliente", type: "text" },
@@ -741,7 +800,8 @@
         flex: 1,
         renderCell: (params) => (
             <div>
-            <DeleteButton onClick={handleDeleteStorico} id={params.row.id} />
+            {/* <CloseIcon onClick={handleDeleteStorico} id={params.row.associazioni && params.row.associazioni.candidato?.id} /> */}
+            <CloseIconButton onClick={handleDeleteStorico} id={params.row.id} />
             </div>
         ),
         },
@@ -763,12 +823,31 @@
             </Link>
             </div>
         ),
+        // renderCell: (params) => (
+        //     <div style={{ textAlign: "left" }}>
+        //         <Button
+        //             onClick={() => handleOpenDialog(params.row)}
+        //             sx={{
+        //                 color: "black",
+        //                 textDecoration: "underline",
+        //                 textTransform: "none",
+        //                 justifyContent: "left",
+        //                 "&:hover": {
+        //                     textDecoration: "underline",
+        //                     backgroundColor: "transparent"
+        //                 },
+        //             }}
+        //         >
+        //             {params.row.nome} {params.row.cognome}
+        //         </Button>
+        //     </div>
+        // ),
         },
         { field: "email", headerName: "E-Mail", flex: 1.4 },
         {
         field: "tipologia",
         headerName: "Job Title",
-        flex: 1,
+        flex: 1.4,
         renderCell: (params) => (
             <div style={{ textAlign: "start" }}>
             {params.row.tipologia && params.row.tipologia.descrizione
@@ -777,7 +856,7 @@
             </div>
         ),
         },
-        { field: "rating", headerName: "Rating", flex: 1 },
+        { field: "rating", headerName: "Rating", flex: 0.5 },
         {
         field: "stato",
         headerName: "Stato",
@@ -790,15 +869,29 @@
             </div>
         ),
         },
-        { field: "dataUltimoContatto", headerName: "Contatto", flex: 1 },
+        { field: "dataUltimoContatto", headerName: "Contatto", flex: 0.8 },
         {
-        field: "elimina",
-        headerName: "Elimina",
+        field: "azioni",
+        headerName: "Azioni",
         flex: 1,
         renderCell: (params) => (
-            <div>
-            <DeleteButton onClick={handleDeleteAssociati} id={params.row.id} />
-            </div>
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
+            <Link
+                to={`/recruiting/intervista/${params.row.id}`}
+                state = {{ recruitingData: params.row}}
+                >
+                <IntervistaButton /> 
+            </Link>
+            <ClipButton 
+                idFile={params.row.file ? params.row.file.id : null} 
+                fileDescrizione={params.row.file ? params.row.file.descrizione : null}
+                onClick={() => handleDownloadCV(
+                    params.row.file ? params.row.file.id : null,
+                    params.row.file ? params.row.file.descrizione : null
+                )}
+            />
+            <CloseIconButton onClick={handleDeleteAssociati} id={params.row.id} />
+            </Box>
         ),
         },
         {
@@ -862,10 +955,10 @@
                 filtri={filtri}
                 onFilterChange={handleFilterChange}
                 onReset={handleReset}
+                onSearch={handleRicerche}
                 tipoOptions={tipoOptions}
                 tipologiaOptions={tipologiaOptions}
                 seniorityOptions={seniority}
-                onRicerche={handleRicerche}
                 onGoBack={handleGoBack}
             />
             </Box>
@@ -950,6 +1043,13 @@
             />
             </Box>
         </Box>
+        <Dialog open={openDialog} onClose={handleCloseDialog}>
+            <DialogTitle id="form-dialog-title">
+                Modifica Azienda
+            </DialogTitle>
+            <DialogContent>
+            </DialogContent>
+        </Dialog>
         </Box>
     );
     };

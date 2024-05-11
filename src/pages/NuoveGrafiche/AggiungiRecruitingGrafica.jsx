@@ -36,6 +36,8 @@ const AggiungiRecruitingGrafica = () => {
     const [ livelloScolasticoOptions,   setLivelloScolasticoOptions ] = useState([]);
     const [ funzioniAziendaliOptions,   setFunzioniAziendaliOptions ] = useState([]);
     const [ ricercaOptions,             setRicercaOptions           ] = useState([]);
+    const [ tipoOptions,                setTipoOptions          ] = useState([]);
+
 
 
 
@@ -50,15 +52,25 @@ const AggiungiRecruitingGrafica = () => {
     useEffect(() => {
         const fetchAziendeOptions = async () => {
         try {
-            const responseStato               = await axios.get("http://89.46.196.60:8443/staffing/react/stato/candidato"  , { headers: headers });
-            // const responseJobTitle            = await axios.get(`http://89.46.196.60:8443/aziende/react/tipologia/${id}`   , { headers: headers });
-            const responseTipologia           = await axios.get("http://89.46.196.60:8443/staffing/react/tipo"             , { headers: headers });
-            const responseNeedSkills          = await axios.get("http://89.46.196.60:8443/staffing/react/skill"            , { headers: headers });
-            const ownerResponse               = await axios.get("http://89.46.196.60:8443/aziende/react/owner"             , { headers: headers });
-            const facoltaResponse             = await axios.get("http://89.46.196.60:8443/staffing/react/facolta"          , { headers: headers });
-            const livelloScolasticoResponse   = await axios.get("http://89.46.196.60:8443/staffing/react/livello"          , { headers: headers });
-            const funzioniAziendaliResponse   = await axios.get("http://89.46.196.60:8443/staffing/react/funzioni"         , { headers: headers });
-            const ricercaResponse             = await axios.get("http://89.46.196.60:8443/staffing/react/tipo/ricerca"     , { headers: headers });
+            const responseStato               = await axios.get("http://localhost:8080/staffing/react/stato/candidato"  , { headers: headers });
+            // const responseJobTitle            = await axios.get(`http://localhost:8080/aziende/react/tipologia/${id}`   , { headers: headers });
+            const responseTipologia           = await axios.get("http://localhost:8080/staffing/react/tipo/candidatura" , { headers: headers });
+            const responseNeedSkills          = await axios.get("http://localhost:8080/staffing/react/skill"            , { headers: headers });
+            const ownerResponse               = await axios.get("http://localhost:8080/aziende/react/owner"             , { headers: headers });
+            const facoltaResponse             = await axios.get("http://localhost:8080/staffing/react/facolta"          , { headers: headers });
+            const livelloScolasticoResponse   = await axios.get("http://localhost:8080/staffing/react/livello"          , { headers: headers });
+            const funzioniAziendaliResponse   = await axios.get("http://localhost:8080/staffing/react/funzioni"         , { headers: headers }); 
+            const ricercaResponse             = await axios.get("http://localhost:8080/staffing/react/tipo/ricerca"     , { headers: headers });
+            const tipoResponse                = await axios.get("http://localhost:8080/staffing/react/tipo"            , { headers: headers });
+
+
+            if (Array.isArray(tipoResponse.data)) {
+                const tipoOptions = tipoResponse.data.map((tipo) => ({
+                    label: tipo.descrizione,
+                    value: tipo.id,
+                }));
+                setTipoOptions(tipoOptions);
+                }
 
 
             if (Array.isArray(ricercaResponse.data)) {
@@ -179,7 +191,7 @@ const AggiungiRecruitingGrafica = () => {
             case 1:
                 return [ "anniEsperienzaRuolo", "livelloScolastico"]; 
             case 2: 
-                return ["candidatura", "tipologia", "dataUltimoContatto", "stato", "funzioneAziendale", "ricerca"];
+                return ["candidatura", "tipologia", "dataUltimoContatto", "stato", "funzioneAziendale", "ricerca", "tipo"];
             default:
                 return [];
         }
@@ -298,7 +310,7 @@ const AggiungiRecruitingGrafica = () => {
                 delete values.cv;
                 delete values.cf;
 
-                const datiResponse = await axios.post("http://89.46.196.60:8443/staffing/salva", values, {
+                const datiResponse = await axios.post("http://localhost:8080/staffing/salva", values, {
                 params: { skill: skills },
                 headers: headers,
                 });
@@ -321,7 +333,7 @@ const AggiungiRecruitingGrafica = () => {
                         formDataCV.append('file', fileCV);
                         formDataCV.append('tipo', 1);
                 
-                        const responseCV = await axios.post(`http://89.46.196.60:8443/staffing/react/staff/salva/file/${candidatoId}`, formDataCV,
+                        const responseCV = await axios.post(`http://localhost:8080/staffing/react/staff/salva/file/${candidatoId}`, formDataCV,
                         {headers: headers});
                     } 
                 } catch(error) {
@@ -333,7 +345,7 @@ const AggiungiRecruitingGrafica = () => {
                         const formDataCF = new FormData();
                         formDataCF.append('file', fileCF);
                         formDataCF.append('tipo', 2);
-                        const responseCF = await axios.post(`http://89.46.196.60:8443/staffing/react/staff/salva/file/${candidatoId}`, formDataCF, {headers: headers});
+                        const responseCF = await axios.post(`http://localhost:8080/staffing/react/staff/salva/file/${candidatoId}`, formDataCF, {headers: headers});
                     }
                 } catch(error) {
                     console.error("errore nell'invio del CF", error);
@@ -366,7 +378,7 @@ const AggiungiRecruitingGrafica = () => {
 
     const fetchJobTitleOptions = async (funzioneAziendaleId) => {
         try {
-            const response = await axios.get(`http://89.46.196.60:8443/aziende/react/tipologia/${funzioneAziendaleId}`, { headers: headers });
+            const response = await axios.get(`http://localhost:8080/aziende/react/tipologia/${funzioneAziendaleId}`, { headers: headers });
             const jobTitleOptions = response.data.map(jobTitle => ({
                 label: jobTitle.descrizione,
                 value: jobTitle.id,
@@ -377,7 +389,7 @@ const AggiungiRecruitingGrafica = () => {
         }
     };
 
-        const fieldObbligatori = [ "nome", "cognome", "email", "anniEsperienzaRuolo", "tipologia", "dataUltimoContatto", "tipo", "stato", "livelloScolastico", "funzioneAziendale" ];
+        const fieldObbligatori = [ "nome", "cognome", "email", "anniEsperienzaRuolo", "tipologia", "dataUltimoContatto", "tipo", "stato", "livelloScolastico", "funzioneAziendale", "tipo" ];
 
         const fields =[
             { type: "titleGroups",                label: "Profilo Candidato"            },
@@ -397,6 +409,7 @@ const AggiungiRecruitingGrafica = () => {
             { label: "Facoltà",                         name: "facolta",                  type: "select",               options: facoltaOptions                   },
     
             { type: "titleGroups",                label: "Posizione Lavorativa"            },
+            { label: 'Tipologia*',                      name: 'tipo',                     type: 'select',          options: tipoOptions                           },
             { label: "Tipo Candidatura*",              name: "candidatura",              type: "select",          options: tipologiaOptions                       },
             { label: "Tipo Ricerca*",                  name: "ricerca",                  type: "select",          options: ricercaOptions                         },
             { label: "Modalità di lavoro",             name: "modalita",                 type: "select",          options: [ 
@@ -419,6 +432,7 @@ const AggiungiRecruitingGrafica = () => {
             { label: "Curriculim Vitae",                name: "cv",                       type: "modificaFileCV"                                                  },
             { label: "Consultant File",                 name: "cf",                       type: "modificaFileCF"                                                  }, 
         ];
+
 
         //funzione per suddividere fields nelle varie pagine in base a titleGroups
         const groupFields = (fields) => {
