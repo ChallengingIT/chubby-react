@@ -625,7 +625,7 @@
 
 
     const handleDownloadCV = async (idFile, fileDescrizione) => {
-        const url = `http://localhost:8080/files/react/download/file/${idFile}`;
+        const url = `http://89.46.196.60:8443/files/react/download/file/${idFile}`;
         try {
             const responseDownloadCV = await axios({
                 method: 'GET',
