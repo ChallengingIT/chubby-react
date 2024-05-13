@@ -99,6 +99,22 @@ const ModificaKeypeopleGrafica = () => {
         },
     ];
 
+     //funzione per la navigazione del menu laterale
+    const handleMenuItemClick = (section, index) => {
+        if (index === currentPageIndex) return; 
+    
+        const mandatoryFields = getMandatoryFields(currentPageIndex);
+        const errors = validateFields(values, mandatoryFields);
+        const hasErrors = Object.keys(errors).length > 0;
+    
+        if (!hasErrors) {
+            setActiveSection(section);
+            setCurrentPageIndex(index);
+        } else {
+            setAlert({ open: true, message: 'Compilare tutti i campi obbligatori presenti per poter cambiare sezione'});
+        }
+    };
+
     const handleGoBack = () => {
         navigate(-1);
     };
@@ -619,26 +635,47 @@ return (
                 </Box>
                 <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: 'black'}}>  Aggiorna <br /> Contatto </Typography>
                 <List sx={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
-                            {menu.map((item) => (
+                            {menu.map((item, index) => (
+                                // <ListItem
+                                // key={item.title}
+                                // selected={activeSection === item.title}
+                                // sx={{
+                                //     mb: 4,
+                                //     '&.Mui-selected': {
+                                //         backgroundColor: activeSection === item.title ? 'black' : 'trasparent',
+                                //         '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+                                //             color: activeSection === item.title ? '#EDEDED' : '#EDEDED'
+                                //         },
+                                //         borderRadius: '10px',
+                                //     }
+                                // }}
+                                // >
+                                //     <ListItemIcon>
+                                //         {item.icon}
+                                //     </ListItemIcon>
+                                //     <ListItemText primary={item.title} />
+                                // </ListItem>
                                 <ListItem
                                 key={item.title}
                                 selected={activeSection === item.title}
+                                onClick={() => handleMenuItemClick(item.title, index)}
                                 sx={{
                                     mb: 4,
+                                    cursor: 'pointer', // Assicurati che l'elemento sembri cliccabile
                                     '&.Mui-selected': {
-                                        backgroundColor: activeSection === item.title ? 'black' : 'trasparent',
+                                        backgroundColor: activeSection === item.title ? 'black' : 'transparent',
                                         '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
                                             color: activeSection === item.title ? '#EDEDED' : '#EDEDED'
                                         },
                                         borderRadius: '10px',
                                     }
                                 }}
-                                >
-                                    <ListItemIcon>
-                                        {item.icon}
-                                    </ListItemIcon>
-                                    <ListItemText primary={item.title} />
-                                </ListItem>
+                            >
+                                <ListItemIcon>
+                                    {item.icon}
+                                </ListItemIcon>
+                                <ListItemText primary={item.title} />
+                            </ListItem>
                             ))}
                         </List>
             </Box>

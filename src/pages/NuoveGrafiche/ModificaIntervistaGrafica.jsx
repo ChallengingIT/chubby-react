@@ -128,6 +128,25 @@ const ModificaIntervistaGrafica = () => {
         }
     ];
 
+      //stato per verificare che tutti i campi obbligatori sono stati compilati e quindi sbloccare il menu di navigazione
+    const [sectionCompleted, setSectionCompleted] = useState(new Array(menu.length).fill(true));
+
+    //funzione per la navigazione del menu laterale
+    const handleMenuItemClick = (section, index) => {
+        if (index === currentPageIndex) return; 
+    
+        const mandatoryFields = getMandatoryFields(currentPageIndex);
+        const errors = validateFields(values, mandatoryFields);
+        const hasErrors = Object.keys(errors).length > 0;
+    
+        if (!hasErrors) {
+            setActiveSection(section);
+            setCurrentPageIndex(index);
+        } else {
+            setAlert({ open: true, message: 'Compilare tutti i campi obbligatori presenti per poter cambiare sezione'});
+        }
+    };
+
     const handleGoBack = () => {
         navigate(-1);
     };
@@ -148,15 +167,36 @@ const ModificaIntervistaGrafica = () => {
 
 
     //funzione per la validazione dei field
-    const validateFields = (values, mandatoryFields) => {
+    // const validateFields = (values, mandatoryFields) => {
+    //     let errors = {};
+    //     mandatoryFields.forEach(field => {
+    //         if (!values[field]) {
+    //             errors[field] = 'Questo campo è obbligatorio';
+    //         }
+    //     });
+    //     return errors;
+    // };
+    const validateFields = (values, mandatoryFields, index) => {
         let errors = {};
+        let allFieldsValid = true;
+    
         mandatoryFields.forEach(field => {
             if (!values[field]) {
                 errors[field] = 'Questo campo è obbligatorio';
+                allFieldsValid = false;
             }
         });
+    
+        // Aggiorna lo stato di completamento della sezione
+        setSectionCompleted(prev => {
+            const newSectionCompleted = [...prev];
+            newSectionCompleted[index] = allFieldsValid;
+            return newSectionCompleted;
+        });
+    
         return errors;
     };
+    
 
      // Funzione per il cambio stato degli input
     const handleChange = (fieldValue) => {
@@ -596,26 +636,47 @@ const ModificaIntervistaGrafica = () => {
                 </Box>
                 <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: 'black'}}>  Aggiorna <br /> Intervista </Typography>
                 <List sx={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
-                            {menu.map((item) => (
+                            {menu.map((item, index) => (
+                                // <ListItem
+                                // key={item.title}
+                                // selected={activeSection === item.title}
+                                // sx={{
+                                //     mb: 4,
+                                //     '&.Mui-selected': {
+                                //         backgroundColor: activeSection === item.title ? 'black' : 'trasparent',
+                                //         '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+                                //             color: activeSection === item.title ? '#EDEDED' : '#EDEDED'
+                                //         },
+                                //         borderRadius: '10px',
+                                //     }
+                                // }}
+                                // >
+                                //     <ListItemIcon>
+                                //         {item.icon}
+                                //     </ListItemIcon>
+                                //     <ListItemText primary={item.title} />
+                                // </ListItem>
                                 <ListItem
                                 key={item.title}
                                 selected={activeSection === item.title}
+                                onClick={() => handleMenuItemClick(item.title, index)}
                                 sx={{
                                     mb: 4,
+                                    cursor: 'pointer', // Assicurati che l'elemento sembri cliccabile
                                     '&.Mui-selected': {
-                                        backgroundColor: activeSection === item.title ? 'black' : 'trasparent',
+                                        backgroundColor: activeSection === item.title ? 'black' : 'transparent',
                                         '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
                                             color: activeSection === item.title ? '#EDEDED' : '#EDEDED'
                                         },
                                         borderRadius: '10px',
                                     }
                                 }}
-                                >
-                                    <ListItemIcon>
-                                        {item.icon}
-                                    </ListItemIcon>
-                                    <ListItemText primary={item.title} />
-                                </ListItem>
+                            >
+                                <ListItemIcon>
+                                    {item.icon}
+                                </ListItemIcon>
+                                <ListItemText primary={item.title} />
+                            </ListItem>
                             ))}
                         </List>
             </Box>

@@ -8,9 +8,8 @@ import CustomTextFieldAggiungi                                                  
 import CustomNoteAggiungi                                                                             from '../../components/fields/CustomNoteAggiungi';
 import CustomImgFieldAggiunta                                                                         from '../../components/fields/CustomImgFieldAggiunta';
 import CustomDatePickerAggiungi                                                                       from '../../components/fields/CustomDatePickerAggiungi';
-import CustomMultipleSelectAggiunta from '../../components/fields/CustomMultipleSelectAggiunta';
 import CustomMultipleSelectAziende from '../../components/fields/CustomMultipleSelectAziende';
-
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const AggiungiAziendaGrafica = () => {
     const navigate = useNavigate();
@@ -28,6 +27,31 @@ const AggiungiAziendaGrafica = () => {
     const [ ownerOptions,         setOwnerOptions         ] = useState([]);
     const [ ricercaOptions,       setRicercaOptions       ] = useState([]);
     const [ values,               setValues               ] = useState({});
+
+
+
+    const menu = [
+        {
+            title: 'Profilo',
+            icon: <CircleOutlinedIcon />
+        },
+        { 
+            title: 'Location',
+            icon: <CircleOutlinedIcon />
+        },
+        {
+            title: 'IDA',
+            icon: <CircleOutlinedIcon />
+        },
+        {
+            title: 'File',
+            icon: <CircleOutlinedIcon />
+        }
+    ];
+
+    //stato per verificare che tutti i campi obbligatori sono stati compilati e quindi sbloccare il menu di navigazione
+    const [sectionCompleted, setSectionCompleted] = useState(new Array(menu.length).fill(false));
+
 
 
 
@@ -83,24 +107,19 @@ const AggiungiAziendaGrafica = () => {
 
 
 
-    const menu = [
-        {
-            title: 'Profilo',
-            icon: <CircleOutlinedIcon />
-        },
-        { 
-            title: 'Location',
-            icon: <CircleOutlinedIcon />
-        },
-        {
-            title: 'IDA',
-            icon: <CircleOutlinedIcon />
-        },
-        {
-            title: 'File',
-            icon: <CircleOutlinedIcon />
+
+
+    //funzione per la navigazione dal menu laterale
+    const handleMenuItemClick = (section, index) => {
+        const allPreviousCompleted = sectionCompleted.slice(0, index).every(x => x);
+        if (allPreviousCompleted) {
+            setActiveSection(section);
+            setCurrentPageIndex(index);
+        } else {
+            setAlert({ open: true, message: 'Per cambiare sezione, completare tutti i campi obbligatori delle sezioni precedenti.'});
         }
-    ];
+    };
+    
 
     const handleGoBack = () => {
         navigate(-1);
@@ -154,21 +173,43 @@ const AggiungiAziendaGrafica = () => {
     };
 
 
+    // const handleNextButtonClick = () => {
+    //     const currentIndex = menu.findIndex(item => item.title.toLowerCase() === activeSection.toLowerCase());
+    //     if (currentIndex < menu.length - 1) {
+    //         const mandatoryFields = getMandatoryFields(currentIndex);
+    //         const errors = validateFields(values, mandatoryFields);
+    //         const hasErrors = Object.keys(errors).length > 0;
+
+    //         if (!hasErrors) {
+    //             setActiveSection(menu[currentIndex + 1].title);
+    //             setCurrentPageIndex(currentIndex + 1);
+    //         } else {
+    //             setAlert({ open: true, message: 'Compilare tutti i campi obbligatori presenti per poter avanzare'});
+    //         }
+    //     }
+    // };
+
+
     const handleNextButtonClick = () => {
         const currentIndex = menu.findIndex(item => item.title.toLowerCase() === activeSection.toLowerCase());
-        if (currentIndex < menu.length - 1) {
-            const mandatoryFields = getMandatoryFields(currentIndex);
-            const errors = validateFields(values, mandatoryFields);
-            const hasErrors = Object.keys(errors).length > 0;
-
-            if (!hasErrors) {
+        const mandatoryFields = getMandatoryFields(currentIndex);
+        const errors = validateFields(values, mandatoryFields);
+        const hasErrors = Object.keys(errors).length > 0;
+    
+        if (!hasErrors) {
+            let newSectionCompleted = [...sectionCompleted];
+            newSectionCompleted[currentIndex] = true; // Imposta la sezione corrente come completata
+            setSectionCompleted(newSectionCompleted);
+    
+            if (currentIndex < menu.length - 1) {
                 setActiveSection(menu[currentIndex + 1].title);
                 setCurrentPageIndex(currentIndex + 1);
-            } else {
-                setAlert({ open: true, message: 'Compilare tutti i campi obbligatori presenti per poter avanzare'});
             }
+        } else {
+            setAlert({ open: true, message: 'Compilare tutti i campi obbligatori presenti per poter avanzare'});
         }
     };
+    
 
 
         // Funzione per il cambio stato degli input
@@ -504,23 +545,44 @@ const AggiungiAziendaGrafica = () => {
                 </Box>
                 <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: '#212121'}}>  Aggiungi <br /> Azienda </Typography>
                 <List sx={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
-                            {menu.map((item) => (
+                            {menu.map((item, index) => (
+                                // <ListItem
+                                // key={item.title}
+                                // selected={activeSection === item.title}
+                                // sx={{
+                                //     mb: 4,
+                                //     '&.Mui-selected': {
+                                //         backgroundColor: activeSection === item.title ? 'black' : 'trasparent',
+                                //         '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+                                //             color: activeSection === item.title ? '#EDEDED' : '#EDEDED'
+                                //         },
+                                //         borderRadius: '10px',
+                                //     }
+                                // }}
+                                // >
+                                //     <ListItemIcon>
+                                //         {item.icon}
+                                //     </ListItemIcon>
+                                //     <ListItemText primary={item.title} />
+                                // </ListItem>
                                 <ListItem
-                                key={item.title}
-                                selected={activeSection === item.title}
-                                sx={{
-                                    mb: 4,
-                                    '&.Mui-selected': {
-                                        backgroundColor: activeSection === item.title ? 'black' : 'trasparent',
-                                        '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-                                            color: activeSection === item.title ? '#EDEDED' : '#EDEDED'
-                                        },
-                                        borderRadius: '10px',
-                                    }
-                                }}
+                                    key={item.title}
+                                    selected={activeSection === item.title}
+                                    onClick={() => handleMenuItemClick(item.title, index)}
+                                    sx={{
+                                        mb: 4,
+                                        cursor: sectionCompleted[index] ? 'pointer' : 'not-allowed',
+                                        '&.Mui-selected, &:hover': {
+                                            backgroundColor: sectionCompleted[index] ? 'black' : 'black',
+                                            '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+                                                color: sectionCompleted[index] ? '#EDEDED' : '#EDEDED'
+                                            },
+                                            borderRadius: '10px',
+                                        }
+                                    }}
                                 >
                                     <ListItemIcon>
-                                        {item.icon}
+                                        {sectionCompleted[index] ? <CheckCircleIcon /> : item.icon} 
                                     </ListItemIcon>
                                     <ListItemText primary={item.title} />
                                 </ListItem>
