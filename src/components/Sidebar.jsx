@@ -251,7 +251,7 @@
             };
 
             try {
-            const response = await axios.get(`http://localhost:8080/aziende/react/logo`, {
+            const response = await axios.get(`http://89.46.196.60:8443/aziende/react/logo`, {
                 headers: headers,
                 params: parametroDaInviare
             });

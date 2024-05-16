@@ -69,11 +69,11 @@ const AziendeListaNeedCard = () => {
             quantita: 10
         };
         try {
-            const response              = await axios.get(`http://localhost:8080/need/react/cliente/modificato/${id}`, { headers: headers, params: filtriDaInviare });
-            const responseOwner         = await axios.get("http://localhost:8080/aziende/react/owner",                 { headers: headers });
-            const responseTipologia     = await axios.get("http://localhost:8080/need/react/tipologia",                { headers: headers });
-            const responseStato         = await axios.get("http://localhost:8080/need/react/stato",                    { headers: headers });
-            const responseKeyPeople     = await axios.get(`http://localhost:8080/keypeople/react/azienda/${id}`,       { headers: headers });
+            const response              = await axios.get(`http://89.46.196.60:8443/need/react/cliente/modificato/${id}`, { headers: headers, params: filtriDaInviare });
+            const responseOwner         = await axios.get("http://89.46.196.60:8443/aziende/react/owner",                 { headers: headers });
+            const responseTipologia     = await axios.get("http://89.46.196.60:8443/need/react/tipologia",                { headers: headers });
+            const responseStato         = await axios.get("http://89.46.196.60:8443/need/react/stato",                    { headers: headers });
+            const responseKeyPeople     = await axios.get(`http://89.46.196.60:8443/keypeople/react/azienda/${id}`,       { headers: headers });
 
             if (Array.isArray(responseKeyPeople.data)) {
                 setKeyPeopleOptions(responseKeyPeople.data.map((keyPeople) => ({ label: keyPeople.nome, value: keyPeople.id})));
@@ -138,8 +138,8 @@ const AziendeListaNeedCard = () => {
         const filtriAttivi = Object.values(filtri).some(value => value !== null && value !== '');
 
         const url = filtriAttivi ?
-        "http://localhost:8080/need/react/ricerca/modificato" :
-        `http://localhost:8080/need/react/cliente/modificato/${id}`;
+        "http://89.46.196.60:8443/need/react/ricerca/modificato" :
+        `http://89.46.196.60:8443/need/react/cliente/modificato/${id}`;
 
         const filtriDaInviare = {
             owner:      filtri.owner            || null,
@@ -185,10 +185,10 @@ const AziendeListaNeedCard = () => {
         };
         setLoading(true);
         try {
-            const response = await axios.get("http://localhost:8080/need/react/ricerca/modificato", { headers: headers, params: filtriDaInviare });
-                const responseOwner         = await axios.get("http://localhost:8080/aziende/react/owner",           { headers: headers });
-                const responseTipologia     = await axios.get("http://localhost:8080/need/react/tipologia",          { headers: headers });
-                const responseStato         = await axios.get("http://localhost:8080/need/react/stato",              { headers: headers });
+            const response = await axios.get("http://89.46.196.60:8443/need/react/ricerca/modificato", { headers: headers, params: filtriDaInviare });
+                const responseOwner         = await axios.get("http://89.46.196.60:8443/aziende/react/owner",           { headers: headers });
+                const responseTipologia     = await axios.get("http://89.46.196.60:8443/need/react/tipologia",          { headers: headers });
+                const responseStato         = await axios.get("http://89.46.196.60:8443/need/react/stato",              { headers: headers });
 
 
                 if (Array.isArray(responseOwner.data)) {
@@ -296,7 +296,7 @@ const AziendeListaNeedCard = () => {
             //funzione per cancellare il need
             const handleDelete = async (id) => {
                 try{
-                    const responseDelete = await axios.delete(`http://localhost:8080/need/react/elimina/${id}`, {headers: headers});
+                    const responseDelete = await axios.delete(`http://89.46.196.60:8443/need/react/elimina/${id}`, {headers: headers});
                     await fetchData(0);
                 } catch(error) {
                     console.error("Errore durante la cancellazione: ", error);
