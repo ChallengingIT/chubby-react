@@ -9,6 +9,7 @@ import CustomTextFieldModifica                                                  
 import CustomDatePickerHoursAggiungi                                                                            from '../../components/fields/CustomDatePickerHoursAggiungi';
 import CustomDatePickerModifica                                                                                 from '../../components/fields/CustomDatePickerModifica';
 import CustomNoteModifica                                                                                       from '../../components/fields/CustomNoteModifica';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const ModificaIntervistaGrafica = () => {
     const navigate = useNavigate();
@@ -673,7 +674,7 @@ const ModificaIntervistaGrafica = () => {
                                 }}
                             >
                                 <ListItemIcon>
-                                    {item.icon}
+                                    {sectionCompleted[index] ? <CheckCircleIcon /> : item.icon} 
                                 </ListItemIcon>
                                 <ListItemText primary={item.title} />
                             </ListItem>

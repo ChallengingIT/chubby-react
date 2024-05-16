@@ -676,7 +676,8 @@ return (
                                 <ListItemIcon>
                                 <ListItemIcon>
                                         {sectionCompleted[index] ? <CheckCircleIcon /> : item.icon} 
-                                    </ListItemIcon>                                </ListItemIcon>
+                                    </ListItemIcon> 
+                                </ListItemIcon>
                                 <ListItemText primary={item.title} />
                             </ListItem>
                             ))}

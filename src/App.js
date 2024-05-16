@@ -31,7 +31,8 @@ import NotFoundPage                                                    from './p
 import AggiungiRecruitingHiring                                        from './pages/NuoveGrafiche/AggiungiRecruitingHiring.jsx';
 import AggiungiHeadHunting                                             from './pages/NuoveGrafiche/AggiungiHeadHunting.jsx';
 import TorchyThemeProvider                                             from './components/TorchyThemeProvider.jsx';
-import { AuthProvider } from './services/authContext.js';
+import { AuthProvider }                                                from './services/authContext.js';
+import DashboardClienti                                                from './pages/DashboardClienti.jsx';
 
 
 const App = () => {
@@ -63,6 +64,11 @@ const App = () => {
                 <Route path="/dashboard" element={
                     <PrivateRoute roles={['ROLE_ADMIN',  'ROLE_RECRUITER', 'ROLE_BM', 'ROLE_USER', "ROLE_BUSINESS"]}>
                       <Dashboard />
+                    </PrivateRoute>
+                  } />
+                  <Route path="/homepage" element={
+                    <PrivateRoute roles={["ROLE_BUSINESS"]}>
+                      <DashboardClienti />
                     </PrivateRoute>
                   } />
                 <Route path="/business" element={
