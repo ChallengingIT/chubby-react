@@ -8,6 +8,7 @@ import CustomTextFieldModifica                                                  
 import CustomNoteModifica                                                                                       from '../../components/fields/CustomNoteModifica';
 import CustomDatePickerModifica                                                                                 from '../../components/fields/CustomDatePickerModifica';
 import InfoIcon                                                                                                 from '@mui/icons-material/Info';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 
 const ModificaKeypeopleGrafica = () => {
@@ -99,6 +100,10 @@ const ModificaKeypeopleGrafica = () => {
         },
     ];
 
+     //stato per verificare che tutti i campi obbligatori sono stati compilati e quindi sbloccare il menu di navigazione
+    const [sectionCompleted, setSectionCompleted] = useState(new Array(menu.length).fill(true));
+
+
      //funzione per la navigazione del menu laterale
     const handleMenuItemClick = (section, index) => {
         if (index === currentPageIndex) return; 
@@ -131,12 +136,22 @@ const ModificaKeypeopleGrafica = () => {
 
 
     //funzione per la validazione dei campi
-    const validateFields = (values, mandatoryFields) => {
+    const validateFields = (values, mandatoryFields, index) => {
         let errors = {};
+        let allFieldsValid = true;
+
         mandatoryFields.forEach(field => {
             if (!values[field]) {
                 errors[field] = 'Questo campo è obbligatorio';
+                allFieldsValid = false;
             }
+        });
+
+          // Aggiorna lo stato di completamento della sezione
+        setSectionCompleted(prev => {
+            const newSectionCompleted = [...prev];
+            newSectionCompleted[index] = allFieldsValid;
+            return newSectionCompleted;
         });
         return errors;
     };
@@ -672,7 +687,9 @@ return (
                                 }}
                             >
                                 <ListItemIcon>
-                                    {item.icon}
+                                <ListItemIcon>
+                                        {sectionCompleted[index] ? <CheckCircleIcon /> : item.icon} 
+                                    </ListItemIcon> 
                                 </ListItemIcon>
                                 <ListItemText primary={item.title} />
                             </ListItem>

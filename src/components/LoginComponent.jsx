@@ -106,7 +106,7 @@
             navigate("/dashboard");
             } else if (userRole === "ROLE_USER" ||
             userRole === "ROLE_BUSINESS" ) {
-            navigate("/dashboard");
+            navigate("/homepage");
             }
         }
         } catch (error) {

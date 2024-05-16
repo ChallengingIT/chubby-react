@@ -12,6 +12,8 @@ import CloudDownloadIcon                                                        
 import DeleteIcon                                                                                                   from "@mui/icons-material/Delete";
 import CustomMultipleSelectModifica                                                                                 from '../../components/fields/CustomMultipleSelectModifica';
 import CustomAutocomplete                                                                                           from '../../components/fields/CustomAutocomplete';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+
 
 const ModificaRecruitingGrafica = () => {
     const navigate = useNavigate();
@@ -1089,7 +1091,7 @@ return (
                                 }}
                             >
                                 <ListItemIcon>
-                                    {item.icon}
+                                    {sectionCompleted[index] ? <CheckCircleIcon /> : item.icon} 
                                 </ListItemIcon>
                                 <ListItemText primary={item.title} />
                             </ListItem>

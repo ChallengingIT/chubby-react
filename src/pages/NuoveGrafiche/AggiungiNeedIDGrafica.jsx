@@ -48,7 +48,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
     const [ tipologiaOptions,               setTipologiaOptions             ] = useState([]);
     const [ statoOptions,                   setStatoOptions                 ] = useState([]);
     const [ keypeopleOptions,               setKeypeopleOptions             ] = useState([]);
-    const [ isKeypeopleEnabled,             setIsKeypeopleEnabled           ] = useState(false);
+
 
     const [values, setValues] = useState({ idAzienda });
     // Recupera l'token da sessionStorage
@@ -84,6 +84,15 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
             "http://localhost:8080/need/react/stato",
             { headers: headers }
             );
+            const responseKeypeople = await axios.get(
+                `http://localhost:8080/keypeople/react/azienda/${idAzienda}`,
+                { headers: headers }
+            );
+            const keypeopleOptions = responseKeypeople.data.map((keypeople) => ({
+                value: keypeople.id,
+                label: keypeople.nome,
+            }));
+            setKeypeopleOptions(keypeopleOptions);
 
             if (Array.isArray(statoResponse.data)) {
             const statoOptions = statoResponse.data.map((stato) => ({
@@ -132,6 +141,8 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
 
         fetchNeedOptions();
     }, []);
+
+    
 
     const pubblicazioneOptions = [
         { value: 1, label: "To Do" },
@@ -205,34 +216,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
         }));
     };
 
-    //useEffect che controlla se l'azienda è selezionata
-    useEffect(() => {
-        if (values.idAzienda && values.idAzienda.length !== 0) {
-        const azinedaConId = values.idAzienda;
 
-        setIsKeypeopleEnabled(true);
-        fetchKeypeopleOptions(azinedaConId);
-        } else {
-        setIsKeypeopleEnabled(false);
-        setKeypeopleOptions([]);
-        }
-    }, [values.idAzienda]);
-
-    const fetchKeypeopleOptions = async (aziendaConId) => {
-        try {
-        const responseKeypeople = await axios.get(
-            `http://localhost:8080/keypeople/react/azienda/${aziendaConId}`,
-            { headers: headers }
-        );
-        const keypeopleOptions = responseKeypeople.data.map((keypeople) => ({
-            value: keypeople.id,
-            label: keypeople.nome,
-        }));
-        setKeypeopleOptions(keypeopleOptions);
-        } catch (error) {
-        console.error("Errore durante il recupero dei keypeople:", error);
-        }
-    };
 
     //funzioni per cambiare pagina del form
     const handleBackButtonClick = () => {
@@ -348,57 +332,32 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
     ];
 
     const fields = [
-        // { label: "Azienda*",                    name: "denominazione",          type: "text", disabled: true },
-        { label: "Descrizione Need*",           name: "descrizione",            type: "text", maxLength: 200                 },
-        // { label: "Priorità*",                   name: "priorita",               type: "decimalNumber"        },
-        { label: "Priorità*",              name: "priorita",                          type: "select",               options: [
-            { value: 1,                   label: "Massima" },
-            { value: 2,                   label: "Alta" },
-            { value: 3,                   label: "Media" },
-            { value: 4,                   label: "Bassa" } 
+        { label: "Descrizione Need*",   name: "descrizione",                  type: "text", maxLength: 200                                                },
+            { label: "Contatto*",           name: "idKeyPeople",                  type: "select",               options: keypeopleOptions     },
+            // { label: "Priorità*",           name: "priorita",                     type: "decimalNumber"                                       },
+            { label: "Priorità*",              name: "priorita",                          type: "select",               options: [
+                { value: 1,                   label: "Massima" },
+                { value: 2,                   label: "Alta" },
+                { value: 3,                   label: "Media" },
+                { value: 4,                   label: "Bassa" } 
+                ] },
+            { label: "Week*",               name: "week",                         type: "week"                                                },
+            { label: "Tipologia*",          name: "idTipologia",                  type: "select",               options: tipologiaOptions     },
+            { label: "Tipologia Azienda",   name: "idTipo",                         type: "select",               options: [
+            { value: 1,                   label: "Cliente" },
+            { value: 2,                   label: "Consulenza" },
+            { value: 3,                   label: "Prospect" }
             ] },
-        { label: "Week*",                       name: "week",                   type: "week"                 },
-        {
-        label: "Tipologia*",
-        name: "tipologia",
-        type: "select",
-        options: tipologiaOptions,
-        },
-        {
-        label: "Tipologia Azienda",
-        name: "tipo",
-        type: "select",
-        options: [
-            { value: 1, label: "Cliente" },
-            { value: 2, label: "Consulenza" },
-            { value: 3, label: "Prospect" },
-        ],
-        },
-        { label: "Owner*",                      name: "idOwner",                type: "select", options: ownerOptions },
-        { label: "Stato*",                      name: "stato",                  type: "select", options: statoOptions },
-        { label: "Headcount",                   name: "numeroRisorse",          type: "number"                 },
-        { label: "Location*",                   name: "location",               type: "text", maxLength: 45                          },
-        {
-        label: "Skills",
-        name: "idSkills",
-        type: "multipleSelect",
-        options: skillsOptions,
-        },
-        { label: "Seniority",                   name: "anniEsperienza",         type: "decimalNumber"                 },
-        {
-        label: "Pubblicazione Annuncio*",
-        name: "pubblicazione",
-        type: "select",
-        options: pubblicazioneOptions,
-        },
-        {
-        label: "Screening*",
-        name: "screening",
-        type: "select",
-        options: screeningOptions,
-        },
-        { label: "Note", name: "note", type: "note", maxLength: 4000 },
-    ];
+            { label: "Owner*",                    name: "idOwner",                     type: "select",                 options: ownerOptions         },
+            { label: "Stato*",                    name: "idStato",                     type: "select",                 options: statoOptions         },
+            { label: "Headcount",                 name: "numeroRisorse",               type: "number"                                         },
+            { label: "Location*",                 name: "location",                    type: "text", maxLength: 45                                                  },
+            { label: "Skills",                    name: "idSkills",                    type: "multipleSelect",         options: skillsOptions        },
+            { label: "Seniority",                 name: "anniEsperienza",              type: "decimalNumber"                                         },
+            { label: 'Pubblicazione Annuncio*',   name: 'pubblicazione',               type: 'select',                 options: pubblicazioneOptions },
+            { label: 'Screening*',                name: 'screening',                   type: 'select',                 options: screeningOptions     },
+            { label: "Note",                      name: "note",                        type: "note", maxLength:4000                                                  },
+            ];
 
     //funzione per suddividere fields nelle varie pagine in base a titleGroups
     const groupFields = (fields) => {
@@ -520,7 +479,6 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
                     getOptionSelected={(option, value) =>
                     option.value === value.value
                     }
-                    disabled={!isKeypeopleEnabled}
                 />
                 );
             } else {

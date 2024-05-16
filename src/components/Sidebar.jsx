@@ -43,6 +43,7 @@
     const [appuntamentoModal, setAppuntamentoModal] = useState(false);
     const [emailModal, setEmailModal] = useState(false);
     const [companyLogo, setCompanyLogo] = useState(""); // Stato per il logo aziendale
+    const [ roleBusiness, setRoleBusiness ] = useState(false); // Stato per il ruolo aziendale
 
     const userHasRole = (roleToCheck) => {
         const userString = sessionStorage.getItem("user");
@@ -51,7 +52,7 @@
         }
         const userObj = JSON.parse(userString);
         return userObj.roles.includes(roleToCheck);
-    };
+        };
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -88,6 +89,11 @@
 
     useEffect(() => {
         setActiveLink(location.pathname);
+        const userString = sessionStorage.getItem("user");
+        const userObj = userString ? JSON.parse(userString) : null;
+        if (userObj && userObj.roles.includes("ROLE_BUSINESS")) {
+            setRoleBusiness(true);
+        }
     }, [location.pathname]);
 
     const handleTorciaClick = (event) => {
@@ -271,9 +277,9 @@
 
     const sidebarData = [
         {
-        title: "Dashboard",
-        icon: <DashboardIcon />,
-        onClick: () => navigate("/dashboard"),
+            title: "Dashboard",
+            icon: <DashboardIcon />,
+            onClick: () => navigate(roleBusiness ? "/homepage" : "/dashboard"),
         },
         {
         title: "Business",
