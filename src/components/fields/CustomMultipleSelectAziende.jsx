@@ -1,7 +1,10 @@
 import React, { useState }                                                   from 'react';
 import { Select, FormControl, InputLabel, MenuItem, ListItemText, Checkbox } from '@mui/material';
+import { useUserTheme } from '../TorchyThemeProvider';
 
 const CustomMultipleSelectAziende = ({ name, label, onChange, multipleOptions, initialValues }) => {
+    const theme = useUserTheme();
+
     const [selectedSkills, setSelectedSkills] = useState([]);
 
     const handleChange = (event) => {
@@ -21,7 +24,7 @@ const CustomMultipleSelectAziende = ({ name, label, onChange, multipleOptions, i
                     ml: 2, 
                     mt: 2,
                     '&.Mui-focused': {
-                    color: '#00B400', 
+                    color: theme.palette.border.main, 
                     },
                 }}
             >
@@ -42,7 +45,7 @@ const CustomMultipleSelectAziende = ({ name, label, onChange, multipleOptions, i
                     '& .MuiFilledInput-root': {
                         backgroundColor: 'transparent',
                         '&:after': {
-                            borderBottomColor: '#00B400', 
+                            borderBottomColor: theme.palette.border.main,
                         },
                         '&:before': {
                             borderBottom: 'none',
@@ -52,7 +55,7 @@ const CustomMultipleSelectAziende = ({ name, label, onChange, multipleOptions, i
                         },
                     },
                     '& .MuiInputLabel-root.Mui-focused': {
-                        color: '#00B400', 
+                        color: theme.palette.border.main,
                     },
                 }}               
                 renderValue={(selected) =>
@@ -64,9 +67,9 @@ const CustomMultipleSelectAziende = ({ name, label, onChange, multipleOptions, i
                         <Checkbox 
                             checked={selectedSkills.indexOf(option.value) > -1}
                                 sx={{
-                                    color: '#00B400', 
+                                    color: theme.palette.border.main, 
                                     '&.Mui-checked': {
-                                        color: '#00B400', 
+                                        color: theme.palette.border.main, 
                                     },
                                 }}
                         />

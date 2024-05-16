@@ -21,8 +21,10 @@ import {
     ListItemIcon,
     ListItemText,
     } from '@mui/material';
+import { useUserTheme } from '../TorchyThemeProvider';
 
 const AziendeCardFlip = ({valori, onDelete}) => {
+    const theme = useUserTheme();
 
     const [ modalDelete,       setModalDelete     ] = useState(false);
     const [ isFlipped,         setIsFlipped       ] = useState(false);
@@ -87,11 +89,13 @@ const AziendeCardFlip = ({valori, onDelete}) => {
                 margin: 'auto', 
                 cursor: 'pointer', 
                 height: 'auto', 
-                border: '2px solid #00B401', 
+                border: '2px solid',
+                borderColor: theme.palette.border.main,
                 transition: 'transform 0.3s ease, border-width 0.3s ease', 
                 '&:hover': {
                 transform: 'scale(1.02)', 
-                border: '4px solid #00B401'
+                border: '4px solid',
+                borderColor: theme.palette.border.main
                 }};
         }
     };
@@ -138,11 +142,11 @@ const AziendeCardFlip = ({valori, onDelete}) => {
 
     const mediaIda = (ida) => {
         if (ida >= 0 && ida <= 1) {
-            return { icon: <TrendingDownIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Basso" };
+            return { icon: <TrendingDownIcon sx={{ color: theme.palette.icon.main, mr: 1}}/>, text: "Basso" };
         } else if (ida > 1 && ida <= 2) {
-            return { icon: <TrendingFlatIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Medio" };
+            return { icon: <TrendingFlatIcon sx={{ color: theme.palette.icon.main, mr: 1}}/>, text: "Medio" };
         } else if (ida > 2) {
-            return { icon: <TrendingUpIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Alto" };
+            return { icon: <TrendingUpIcon sx={{ color: theme.palette.icon.main, mr: 1}}/>, text: "Alto" };
         } else {
             return { icon: null, text: "" }; 
         }
@@ -242,12 +246,12 @@ const AziendeCardFlip = ({valori, onDelete}) => {
             </Typography>
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
-                    <PlaceIcon sx={{ color: '#00B401', mr: 1 }} />
+                    <PlaceIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
                     {valori.citta} - {valori.sedeOperativa}
             </Typography>
 
             <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
-                <FactoryIcon sx={{ color: '#00B401', mr: 1 }} />
+                <FactoryIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
                 {valori.settoreMercato}
             </Typography>
 
@@ -307,7 +311,7 @@ const AziendeCardFlip = ({valori, onDelete}) => {
                             sx={{
                                 gap: 0,
                                 '&:hover, &.Mui-selected': {
-                                    backgroundColor: '#00B401',
+                                    backgroundColor: theme.palette.hover.main,
                                     cursor: 'pointer',
                                     '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
                                         color: 'white',
@@ -315,13 +319,13 @@ const AziendeCardFlip = ({valori, onDelete}) => {
                                     borderRadius: '10px',
                                 },
                                 borderRadius: '10px',
-                                backgroundColor: activeLink === `/${item.title.toLowerCase()}` ? '#00B401' : '',
+                                backgroundColor: activeLink === `/${item.title.toLowerCase()}` ? theme.palette.icon.main : '',
                                 '& .MuiListItemIcon-root': {
-                                    color: activeLink === `/${item.title.toLowerCase()}` ? '#00B400' : '#00B401',
+                                    color: activeLink === `/${item.title.toLowerCase()}` ? theme.palette.icon.main : theme.palette.icon.main,
                                     minWidth: '2.2em',
                                 },
                                 '& .MuiListItemText-primary': {
-                                    color: activeLink === `/${item.title.toLowerCase()}` ? '#00B400' : 'black',
+                                    color: activeLink === `/${item.title.toLowerCase()}` ? theme.palette.icon.main : 'black',
                                 },
                             }}
                         >

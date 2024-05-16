@@ -15,6 +15,7 @@
     import SearchIcon from "@mui/icons-material/Search";
     import { useNavigate } from "react-router-dom";
     import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import { useUserTheme } from "../TorchyThemeProvider";
 
     function RicercheRecruiting({
     filtri,
@@ -26,6 +27,7 @@
     tipoOptions,
     }) {
     const navigate = useNavigate();
+    const theme = useUserTheme();
 
     const [openFiltri, setOpenFiltri] = useState(false);
     const [isRotated, setIsRotated] = useState(false);
@@ -70,16 +72,18 @@
         >
         <Button
             variant="contained"
-            color="primary"
+            // color="primary"
             onClick={navigateToAggiungi}
             sx={{
             minWidth: "12em",
-            backgroundColor: "#00B401",
+            bgcolor: theme.palette.button.main,
+            color: theme.palette.textButton.main,
             borderRadius: "10px",
             textTransform: "none",
             ml: 2,
             "&:hover": {
-                backgroundColor: "#00B401",
+                bgcolor: theme.palette.button.main,
+            color: theme.palette.textButton.main,
                 transform: "scale(1.05)",
             },
             }}
@@ -105,7 +109,9 @@
             InputProps={{
                 startAdornment: (
                 <InputAdornment position="start">
-                    <SearchIcon sx={{ color: "#00B401" }} />
+                    <SearchIcon sx={{
+                        color: theme.palette.icon.main
+                        }} />
                 </InputAdornment>
                 ),
             }}
@@ -154,19 +160,19 @@
                 borderTopLeftRadius: 0,
                 borderBottomLeftRadius: 0,
                 borderLeft: 0,
-                borderColor: "#00B401",
+                borderColor: theme.palette.border.main,
                 "&:hover fieldset": {
-                    borderColor: "#00B401",
+                    borderColor: theme.palette.border.main,
                 },
                 "&.Mui-focused": {
-                    borderColor: "#00B401",
+                    borderColor: theme.palette.border.main,
                 },
                 },
                 "& .MuiInputLabel-root": {
                 color: "black",
                 },
                 "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#00B401",
+                    borderColor: theme.palette.border.main,
                 },
                 "& .MuiOutlinedInput-input": {
                 color: "black",
@@ -175,7 +181,7 @@
                 color: "black",
                 },
                 "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#00B401",
+                    borderColor: theme.palette.border.main,
                 },
             }}
             />
@@ -186,12 +192,14 @@
             onClick={handleOpenFiltri}
             sx={{
             minWidth: "12em",
-            backgroundColor: "#00B401",
+            bgcolor: theme.palette.button.main,
+            color: theme.palette.textButton.main,
             borderRadius: "10px",
             textTransform: "none",
             mr: 2,
             "&:hover": {
-                backgroundColor: "#00B401",
+                bgcolor: theme.palette.button.main,
+                color: theme.palette.textButton.main,
                 transform: "scale(1.05)",
             },
             }}
@@ -267,7 +275,7 @@
                             borderBottom: "none",
                         },
                         "& .MuiFormLabel-root.Mui-focused": {
-                            color: "#00B400",
+                            color: theme.palette.border.main,
                         },
                         }}
                     />
@@ -312,7 +320,7 @@
                             borderBottom: "none",
                         },
                         "& .MuiFormLabel-root.Mui-focused": {
-                            color: "#00B400",
+                            color: theme.palette.border.main,
                         },
                         }}
                     />
@@ -356,7 +364,7 @@
                             borderBottom: "none",
                         },
                         "& .MuiFormLabel-root.Mui-focused": {
-                            color: "#00B400",
+                            color: theme.palette.border.main,
                         },
                         }}
                     />
@@ -369,12 +377,12 @@
                 disableRipple={true}
                 disableFocusRipple={true}
                     sx={{
-                    backgroundColor: "#00B400",
+                    backgroundColor: theme.palette.button.main,
                     color: "white",
                     textTransform: "lowercase",
                     fontWeight: "bold",
                     "&:hover": {
-                        backgroundColor: "#00B400",
+                        backgroundColor: theme.palette.button.main,
                         color: "white",
                         trasform: "scale(1.1)",
                     },

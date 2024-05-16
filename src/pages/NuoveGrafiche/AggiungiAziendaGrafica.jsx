@@ -10,8 +10,10 @@ import CustomImgFieldAggiunta                                                   
 import CustomDatePickerAggiungi                                                                       from '../../components/fields/CustomDatePickerAggiungi';
 import CustomMultipleSelectAziende from '../../components/fields/CustomMultipleSelectAziende';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { useUserTheme } from '../../components/TorchyThemeProvider';
 
 const AggiungiAziendaGrafica = () => {
+    const theme = useUserTheme();
     const navigate = useNavigate();
 
     //stati della pagina
@@ -521,12 +523,12 @@ const AggiungiAziendaGrafica = () => {
   return (
     <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
         <Box sx={{ display: 'flex', height: '98%', width: '100vw', flexDirection: 'row', ml: '12.5em', mt: '0.5em', mb: '0.5em', mr: '0.8em', borderRadius: '20px', overflow: 'hidden' }}>
-            <Box sx={{ width: '280px', height: '98%', background: '#00B400', p:2, overflow: 'hidden', position: 'fixed', borderRadius: '20px 0px 0px 20px' }}>
+            <Box sx={{ width: '280px', height: '98%', background: theme.palette.aggiungiSidebar.bg, p:2, overflow: 'hidden', position: 'fixed', borderRadius: '20px 0px 0px 20px' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%'}}>
                     <Button
                     onClick={handleGoBack}
                     sx={{
-                        color: 'black',
+                        color: theme.palette.textButton.main,
                         border:'none',
                         fontSize: '0.8em',
                         cursor: 'pointer',
@@ -535,7 +537,7 @@ const AggiungiAziendaGrafica = () => {
                         mt: 4,
                         ml: 2,
                         '&:hover': {
-                            color: '#EDEDED'
+                            color: theme.palette.textButton.main,
                         }
                     }}
                     >
@@ -543,7 +545,7 @@ const AggiungiAziendaGrafica = () => {
                         Indietro
                     </Button>
                 </Box>
-                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: '#212121'}}>  Aggiungi <br /> Azienda </Typography>
+                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: theme.palette.aggiungiSidebar.title}}>  Aggiungi <br /> Azienda </Typography>
                 <List sx={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
                             {menu.map((item, index) => (
                                 // <ListItem
@@ -573,18 +575,19 @@ const AggiungiAziendaGrafica = () => {
                                         mb: 4,
                                         cursor: sectionCompleted[index] ? 'pointer' : 'not-allowed',
                                         '&.Mui-selected, &:hover': {
-                                            backgroundColor: sectionCompleted[index] ? 'black' : 'black',
+                                            backgroundColor: sectionCompleted[index] ? theme.palette.aggiungiSidebar.hover : theme.palette.aggiungiSidebar.hover,
                                             '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-                                                color: sectionCompleted[index] ? '#EDEDED' : '#EDEDED'
+                                                // color: sectionCompleted[index] ? theme.palette.aggiungiSidebar.text : theme.palette.aggiungiSidebar.textHover
+                                                color: sectionCompleted[index] ? theme.palette.aggiungiSidebar.textHover : theme.palette.aggiungiSidebar.textHover
                                             },
                                             borderRadius: '10px',
                                         }
                                     }}
                                 >
-                                    <ListItemIcon>
+                                    <ListItemIcon sx={{ color: theme.palette.aggiungiSidebar.text }}>
                                         {sectionCompleted[index] ? <CheckCircleIcon /> : item.icon} 
                                     </ListItemIcon>
-                                    <ListItemText primary={item.title} />
+                                    <ListItemText primary={item.title} sx={{ color: theme.palette.aggiungiSidebar.text }} />
                                 </ListItem>
                             ))}
                         </List>
@@ -610,13 +613,13 @@ const AggiungiAziendaGrafica = () => {
                             sx={{
                             mb: 4,
                             width: '250px',
-                            backgroundColor: "black",
-                            color: "white",
+                            backgroundColor: theme.palette.button.black,
+                            color: theme.palette.textButton.white,
                             fontWeight:"bold",
                             boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                             borderRadius: '10px',
                             "&:hover": {
-                                backgroundColor: "black",
+                                backgroundColor: theme.palette.button.black,
                                 transform: "scale(1.05)",
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                 borderRadius: '10px',
@@ -628,16 +631,16 @@ const AggiungiAziendaGrafica = () => {
                                 sx={{ 
                                 mb: 4,
                                 width: '250px',
-                                backgroundColor: "black",
-                                color: "white",
+                                backgroundColor: theme.palette.button.black,
+                                color: theme.palette.textButton.white,
                                 fontWeight:"bold",
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                 borderRadius: '10px',
                                 
                                 
                                 "&:hover": {
-                                    backgroundColor: "black",
-                                    color: "white",
+                                    backgroundColor: theme.palette.button.black,
+                                    color: theme.palette.textButton.white,
                                     transform: "scale(1.05)",
                                     boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                     borderRadius: '10px',
@@ -650,15 +653,15 @@ const AggiungiAziendaGrafica = () => {
                             sx={{
                                 mb: 4,
                                 width: '250px',
-                                backgroundColor: "#00B400",
-                                color: "#EDEDED",
+                                backgroundColor: theme.palette.button.main,
+                                color: theme.palette.textButton.white,
                                 fontWeight:"bold",
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                 borderRadius: '10px',
                                 
                                 "&:hover": {
-                                backgroundColor: "#00B400",
-                                color: "#EDEDED",
+                                backgroundColor: theme.palette.button.main,
+                                color: theme.palette.textButton.white,
                                 transform: "scale(1.05)",
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                 borderRadius: '10px',

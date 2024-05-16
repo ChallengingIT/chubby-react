@@ -1,8 +1,11 @@
 import React        from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField    from '@mui/material/TextField';
+import { useUserTheme } from '../TorchyThemeProvider';
 
 function CustomAutocomplete({ name, label, options, value, onChange, disabled }) {
+
+  const theme = useUserTheme();
   const handleChange = (event, newValue) => {
     onChange({ [name]: newValue ? newValue.value : null });
   };
@@ -49,7 +52,7 @@ function CustomAutocomplete({ name, label, options, value, onChange, disabled })
             cursor: 'not-allowed', 
           },
           '& .MuiFormLabel-root.Mui-focused': {
-            color: '#00B400',
+            color: theme.palette.border.main,
         },
           }}
         />

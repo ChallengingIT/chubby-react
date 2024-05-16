@@ -1,7 +1,9 @@
     import React from 'react';
     import TextField from '@mui/material/TextField';
+import { useUserTheme } from '../TorchyThemeProvider';
 
     function CustomNumberAggiunta({ name, label, onChange, values, maxLength }) {
+        const theme = useUserTheme();
     const handleChange = (e) => {
         const { name, value } = e.target;
         // Filtra l'input per accettare solo numeri interi
@@ -41,7 +43,7 @@
                 borderBottom: 'none', 
             },
             '& .MuiFormLabel-root.Mui-focused': {
-            color: '#00B400',
+                color: theme.palette.border.main,
             },
         }}
         />

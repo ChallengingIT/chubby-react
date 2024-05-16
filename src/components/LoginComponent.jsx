@@ -14,6 +14,8 @@
     } from "@mui/material";
     import VisibilityIcon from "@mui/icons-material/Visibility";
     import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+    import { useAuth } from '../services/authContext';
+
 
     const LoginComponent = () => {
     const theme = createTheme({
@@ -50,6 +52,7 @@
     }, []);
 
     const navigate = useNavigate();
+    const { login } = useAuth();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [loginError, setLoginError] = useState({
@@ -90,6 +93,7 @@
         if (response && response.token) {
             sessionStorage.setItem("token", response.token);
             sessionStorage.setItem("user", JSON.stringify(response));
+            login(response);
             eventBus.dispatch("loginSuccess");
             const userRole = response.roles[0];
 
@@ -97,9 +101,11 @@
             userRole === "ROLE_ADMIN" ||
             userRole === "ROLE_RECRUITER" ||
             userRole === "ROLE_BM"
+            
             ) {
             navigate("/dashboard");
-            } else if (userRole === "ROLE_USER") {
+            } else if (userRole === "ROLE_USER" ||
+            userRole === "ROLE_BUSINESS" ) {
             navigate("/dashboard");
             }
         }

@@ -2,8 +2,7 @@
     import { useLocation, useNavigate } from "react-router-dom";
     import LogoBianco from "../images/logoTorchyChallengingBianco.png";
     import TorciaBianca from "../images/torciaBianca.svg";
-
-
+    import axios from "axios";
     import {
     Box,
     Drawer,
@@ -20,7 +19,6 @@
     DialogContentText,
     Popover,
     Typography,
-    
     } from "@mui/material";
     import DashboardIcon from "@mui/icons-material/Dashboard";
     import PersonIcon from "@mui/icons-material/Person";
@@ -29,22 +27,22 @@
     import ExploreIcon from "@mui/icons-material/Explore";
     import PersonSearchIcon from "@mui/icons-material/PersonSearch";
     import ChecklistRtlIcon from "@mui/icons-material/ChecklistRtl";
-    import PersonAddIcon from "@mui/icons-material/PersonAdd"; //aggiungi candidato
-    import AddCircleIcon from "@mui/icons-material/AddCircle"; //aggiungi need
-    import AddIcCallIcon from "@mui/icons-material/AddIcCall"; //aggiungi appuntamento
-    import EmailIcon from "@mui/icons-material/Email"; //email
+    import PersonAddIcon from "@mui/icons-material/PersonAdd"; // aggiungi candidato
+    import AddCircleIcon from "@mui/icons-material/AddCircle"; // aggiungi need
+    import AddIcCallIcon from "@mui/icons-material/AddIcCall"; // aggiungi appuntamento
+    import EmailIcon from "@mui/icons-material/Email"; // email
     import AppuntamentoModal from "./AppuntamentoModal";
     import EmailModal from "./EmailModal";
+    import { useUserTheme } from "./TorchyThemeProvider";
 
     function Sidebar() {
+    const theme = useUserTheme();
     const [activeLink, setActiveLink] = useState(null);
     const [isLogoutPopupOpen, setIsLogoutPopupOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null); // Nuovo stato per l'ancoraggio del Popover
     const [appuntamentoModal, setAppuntamentoModal] = useState(false);
     const [emailModal, setEmailModal] = useState(false);
-
-
-
+    const [companyLogo, setCompanyLogo] = useState(""); // Stato per il logo aziendale
 
     const userHasRole = (roleToCheck) => {
         const userString = sessionStorage.getItem("user");
@@ -102,11 +100,39 @@
 
     const handleAggiungiCandidatoClick = () => {
         navigate("/recruiting/aggiungi");
-        handleAdditionalDrawerClose(); 
+        handleAdditionalDrawerClose();
     };
 
     const handleAggiungiNeedClick = () => {
+        const userString = sessionStorage.getItem("user");
+        if (userString) {
+        const userObj = JSON.parse(userString);
+        if (userObj.roles.includes("ROLE_BUSINESS")) {
+            const idAzienda = userObj.idAzienda;
+            navigate(`/need/aggiungi/${idAzienda}`);
+        } else {
+            navigate("/need/aggiungi");
+        }
+        } else {
         navigate("/need/aggiungi");
+        }
+        handleAdditionalDrawerClose();
+    };
+
+
+    const handleNeedClick = () => {
+        const userString = sessionStorage.getItem("user");
+        if (userString) {
+        const userObj = JSON.parse(userString);
+        if (userObj.roles.includes("ROLE_BUSINESS")) {
+            const idAzienda = userObj.idAzienda;
+            navigate(`/need/${idAzienda}`);
+        } else {
+            navigate("/need");
+        }
+        } else {
+        navigate("/need");
+        }
         handleAdditionalDrawerClose();
     };
 
@@ -127,10 +153,10 @@
                     Manager
                 </React.Fragment>
                 );
-                case "ROLE_RECRUITER":
-                    return (
-                        <span key={index}>Recruiter</span>
-                    );
+            case "ROLE_RECRUITER":
+                return <span key={index}>Recruiter</span>;
+            case "ROLE_BUSINESS":
+                return <span key={index}></span>;
             default:
                 return <span key={index}>Utente</span>;
             }
@@ -147,82 +173,136 @@
     const nome = () => {
         const userString = sessionStorage.getItem("user");
         if (userString) {
-            const userObj = JSON.parse(userString);
-            return userObj.nome || "Utente senza nome"; 
+        const userObj = JSON.parse(userString);
+        return userObj.nome || "Utente senza nome";
         } else {
-            return "Utente senza nome"; 
+        return "Utente senza nome";
         }
     };
-    
+
     const cognome = () => {
         const userString = sessionStorage.getItem("user");
         if (userString) {
-            const userObj = JSON.parse(userString);
-            return userObj.cognome || ""; 
+        const userObj = JSON.parse(userString);
+        return userObj.cognome || "";
         } else {
-            return ""; 
+        return "";
         }
     };
 
-
     const additionalDrawerContent = (
         <List>
-        <ListItem button onClick={handleAggiungiCandidatoClick}>
-            <ListItemText primary="Aggiungi candidato" />
+        {!userHasRole("ROLE_BUSINESS") && (
+            <ListItem button onClick={handleAggiungiCandidatoClick}>
+            <ListItemText sx={{ color: theme.palette.text.secondary }}>
+                Aggiungi candidato
+            </ListItemText>
             <ListItemIcon>
-            <PersonAddIcon sx={{ color: "#00B401" }} />
+                <PersonAddIcon sx={{ color: theme.palette.icon.main }} />
             </ListItemIcon>
-        </ListItem>
-        {!userHasRole("ROLE_RECRUITER") && ( 
-        <ListItem button onClick={handleAggiungiNeedClick}>
-            <ListItemText primary="Aggiungi need" />
+            </ListItem>
+        )}
+        {!userHasRole("ROLE_RECRUITER") && (
+            <ListItem button onClick={handleAggiungiNeedClick}>
+            <ListItemText sx={{ color: theme.palette.text.secondary }}>
+                Aggiungi need
+            </ListItemText>
             <ListItemIcon>
-            <AddCircleIcon sx={{ color: "#00B401" }} />
+                <AddCircleIcon sx={{ color: theme.palette.icon.main }} />
+            </ListItemIcon>
+            </ListItem>
+        )}
+        {!userHasRole("ROLE_BUSINESS") && (
+        <ListItem button onClick={handleAppuntamentoClick}>
+            <ListItemText sx={{ color: theme.palette.text.secondary }}>
+            Appuntamento
+            </ListItemText>
+            <ListItemIcon>
+            <AddIcCallIcon sx={{ color: theme.palette.icon.main }} />
             </ListItemIcon>
         </ListItem>
         )}
-        <ListItem button onClick={handleAppuntamentoClick}>
-            <ListItemText primary="Appuntamento" />
-            <ListItemIcon>
-            <AddIcCallIcon sx={{ color: "#00B401" }} />
-            </ListItemIcon>
-        </ListItem>
         <ListItem button onClick={handleEmailClick}>
-            <ListItemText primary="Email" />
+            <ListItemText sx={{ color: theme.palette.text.secondary }}>
+            Email
+            </ListItemText>
             <ListItemIcon>
-            <EmailIcon sx={{ color: "#00B401" }} />
+            <EmailIcon sx={{ color: theme.palette.icon.main }} />
             </ListItemIcon>
         </ListItem>
         </List>
     );
 
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    const token = user?.token;
+
+    const headers = {
+        Authorization: `Bearer ${token}`
+    };
+
+    const fetchLogo = async () => {
+        const userString = sessionStorage.getItem("user");
+        if (userString) {
+        const userObj = JSON.parse(userString);
+        if (userObj.roles.includes("ROLE_BUSINESS")) {
+            const idAziende = userObj.idAzienda;
+            const parametroDaInviare = {
+            idAzienda: idAziende
+            };
+
+            try {
+            const response = await axios.get(`http://localhost:8080/aziende/react/logo`, {
+                headers: headers,
+                params: parametroDaInviare
+            });
+            if (response.data) {
+                setCompanyLogo(response.data);
+            }
+            } catch (error) {
+            console.error("Errore nel fetch del logo aziendale:", error);
+            }
+        }
+        }
+    };
+
+    useEffect(() => {
+        fetchLogo();
+    }, []);
+
     const sidebarData = [
         {
         title: "Dashboard",
         icon: <DashboardIcon />,
+        onClick: () => navigate("/dashboard"),
         },
         {
         title: "Business",
         icon: <BusinessCenterIcon />,
-        isVisible: !userHasRole("ROLE_RECRUITER")
+        isVisible: !userHasRole("ROLE_RECRUITER" && "ROLE_BUSINESS"),
+        onClick: () => navigate("/business"),
         },
         {
         title: "Contacts",
         icon: <PersonIcon />,
-        isVisible: !userHasRole("ROLE_RECRUITER")
+        isVisible: !userHasRole("ROLE_RECRUITER" && "ROLE_BUSINESS"),
+        onClick: () => navigate("/contacts"),
         },
         {
         title: "Need",
         icon: <ExploreIcon />,
+        onClick: handleNeedClick,
         },
         {
         title: "Recruiting",
         icon: <PersonSearchIcon />,
+        isVisible: !userHasRole("ROLE_BUSINESS"),
+        onClick: () => navigate("/recruiting"),
         },
         {
         title: "Hiring",
         icon: <ChecklistRtlIcon />,
-        isVisible: !userHasRole("ROLE_USER" && "ROLE_RECRUITER"),
+        isVisible: !userHasRole("ROLE_USER" && "ROLE_RECRUITER" && "ROLE_BUSINESS"),
+        onClick: () => navigate("/hiring"),
         },
     ];
 
@@ -238,7 +318,7 @@
                 mb: 1,
                 height: "98vh",
                 boxSizing: "border-box",
-                backgroundColor: "#191919",
+                backgroundColor: theme.palette.sidebar.background,
                 borderRadius: "22px 22px 22px 22px",
                 overflow: "hidden",
                 padding: "1em",
@@ -256,18 +336,15 @@
                 flexDirection: "column",
             }}
             >
-            {/* <IconButton  style={{ padding: 0 }}> */}
             <img
                 src={LogoBianco}
                 alt="Logo"
                 style={{ width: "6.5vw", marginTop: "1em", marginBottom: "0.5em" }}
             />
-            {/* </IconButton> */}
-
             <IconButton
                 onClick={handleTorciaClick}
                 sx={{ padding: 0, "&:hover": { transform: "scale(1.1)" } }}
-            >                
+            >
                 <img
                 src={TorciaBianca}
                 alt="Torcia"
@@ -282,27 +359,27 @@
                 <ListItem
                     key={item.title}
                     selected={activeLink === `/${item.title.toLowerCase()}`}
-                    onClick={() => navigate(`/${item.title.toLowerCase()}`)}
+                    onClick={item.onClick}
                     sx={{
                     gap: 0,
                     "&:hover, &.Mui-selected": {
-                        backgroundColor: "#00B401",
+                        backgroundColor: theme.palette.primary.main,
                         cursor: "pointer",
                         "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
-                        color: "white",
+                        color: theme.palette.text2.primary,
                         },
                         borderRadius: "10px",
                     },
                     borderRadius: "10px",
                     backgroundColor:
                         activeLink === `/${item.title.toLowerCase()}`
-                        ? "#00B401"
+                        ? theme.palette.primary.main
                         : "",
                     "& .MuiListItemIcon-root": {
                         color:
                         activeLink === `/${item.title.toLowerCase()}`
                             ? "white"
-                            : "#00B401",
+                            : theme.palette.primary.main,
                         minWidth: "2.2em",
                     },
                     "& .MuiListItemText-primary": {
@@ -330,11 +407,24 @@
                 flexDirection: "column",
                 }}
             >
+                {companyLogo && (
+                <Box
+                    component="img"
+                    src={`data:image/png;base64,${companyLogo}`}
+                    alt="Company Logo"
+                    sx={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: "50%",
+                    marginBottom: 2,
+                    }}
+                />
+                )}
                 <Box sx={{ display: 'flex', gap: 1, justifyContent: 'space-between', alignItems: 'center' }}>
                 <Typography variant="h6" sx={{ color: "#EDEDED", fontSize: "0.9em" }}> {nome()} {cognome()}</Typography>
                 </Box>
                 <Typography variant="h6" sx={{ color: "#EDEDED", fontSize: "1em" }}>
-                    {ruolo()}
+                {ruolo()}
                 </Typography>
             </Box>
             <ListItem
@@ -342,16 +432,16 @@
                 onClick={handleLogoutClick}
                 sx={{
                 "&:hover, &.Mui-selected": {
-                    backgroundColor: "#00B401",
+                    backgroundColor: theme.palette.primary.main,
                     cursor: "pointer",
                     "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
-                    color: "white",
+                    color: theme.palette.icon.secondary,
                     },
                     borderRadius: "10px",
                 },
                 borderRadius: "10px",
                 "& .MuiListItemIcon-root": {
-                    color: "#00B401",
+                    color: theme.palette.primary.main,
                     minWidth: "2.2em",
                 },
                 "& .MuiListItemText-primary": {
@@ -372,12 +462,12 @@
             anchorEl={anchorEl}
             onClose={handleAdditionalDrawerClose}
             anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
+            vertical: 'bottom',
+            horizontal: 'right',
             }}
             transformOrigin={{
-                vertical: 'center',
-                horizontal: 'left',
+            vertical: 'center',
+            horizontal: 'left',
             }}
         >
             <Box sx={{ width: 250 }}>{additionalDrawerContent}</Box>
@@ -389,13 +479,16 @@
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
             PaperProps={{
-            style: { backgroundColor: "#FEFCFD", color: "#00B401" },
+            style: {
+                backgroundColor: "#FEFCFD",
+                color: theme.palette.primary.main,
+            },
             }}
         >
             <DialogTitle
             id="alert-dialog-title"
             sx={{
-                color: "#00B401",
+                color: theme.palette.icon.main,
                 fontSize: "24px",
                 textAlign: "center",
                 fontWeight: "bold",
@@ -407,10 +500,9 @@
             <DialogContentText
                 id="alert-dialog-description"
                 sx={{
-                color: "white",
+                color: theme.palette.text.secondary,
                 fontSize: "18px",
                 textAlign: "center",
-                color: "black",
                 }}
             >
                 Sei sicuro di voler effettuare il logout?
@@ -430,14 +522,14 @@
                 onClick={closeLogoutPopup}
                 variant="contained"
                 sx={{
-                    backgroundColor: "#000000",
-                    color: "#white",
+                    bgcolor: theme.palette.button.secondary,
+                    color: theme.palette.textButton.secondary,
                     marginRight: "5px",
                     marginTop: "10px",
                     "&:hover": {
                     transform: "scale(1.05)",
-                    backgroundColor: "#000000",
-                    color: "white",
+                    bgcolor: theme.palette.button.secondary,
+                    color: theme.palette.textButton.secondary,
                     },
                 }}
                 >
@@ -447,13 +539,14 @@
                 onClick={handleLogout}
                 variant="contained"
                 sx={{
-                    backgroundColor: "#00B401",
+                    bgcolor: theme.palette.button.main,
                     marginLeft: "5px",
                     marginTop: "10px",
                     marginRight: "50px",
-                    color: "white",
+                    color: theme.palette.textButton.main,
                     "&:hover": {
-                    backgroundColor: "#00B401",
+                    bgcolor: theme.palette.button.main,
+                    color: theme.palette.textButton.main,
                     transform: "scale(1.05)",
                     },
                 }}

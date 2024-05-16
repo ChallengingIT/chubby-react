@@ -1,7 +1,11 @@
 import React                                         from 'react';
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { useUserTheme } from '../TorchyThemeProvider';
 
 function CustomSelectAggiungi({ name, label, options, value, onChange, disabled }) {
+
+  const theme = useUserTheme();
+
   const handleChange = (event) => {
     onChange({ [name]: event.target.value });
   };
@@ -38,7 +42,7 @@ function CustomSelectAggiungi({ name, label, options, value, onChange, disabled 
             cursor: 'not-allowed', 
           },
           '& .MuiFormLabel-root.Mui-focused': {
-            color: '#00B400',
+            color: theme.palette.border.main,
         },
         }}
       >

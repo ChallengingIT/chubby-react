@@ -1,7 +1,9 @@
 import React     from 'react';
 import TextField from '@mui/material/TextField';
+import { useUserTheme } from '../TorchyThemeProvider';
 
 function CustomDatePickerModifica({ name, label, type, onChange, values, initialValues, disabled }) {
+  const theme = useUserTheme();
   const handleChange = (e) => {
     const { name, value } = e.target;
     onChange({ [name]: value });
@@ -48,8 +50,7 @@ function CustomDatePickerModifica({ name, label, type, onChange, values, initial
           cursor: 'not-allowed', 
         },
         '& .MuiFormLabel-root.Mui-focused': {
-          color: '#00B400',
-      },
+          color: theme.palette.border.main,      },
       }}
     />
   );

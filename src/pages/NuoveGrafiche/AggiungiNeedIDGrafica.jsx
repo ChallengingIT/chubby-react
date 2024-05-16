@@ -25,12 +25,15 @@
         Slide,
         } from "@mui/material";
 import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
+import { useUserTheme } from "../../components/TorchyThemeProvider";
 
     const AggiungiNeedIDGragica = () => {
+    const theme = useUserTheme();
     const { id } = useParams();
     const navigate = useNavigate();
     const location = useLocation();
-    const valori = location.state;
+    const idAzienda = id;
+
 
     //stati della pagina
     const [ activeSection,                  setActiveSection                ] = useState("Descrizione Need");
@@ -47,8 +50,7 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
     const [ keypeopleOptions,               setKeypeopleOptions             ] = useState([]);
     const [ isKeypeopleEnabled,             setIsKeypeopleEnabled           ] = useState(false);
 
-    const [ values,                         setValues                       ] = useState([]);
-
+    const [values, setValues] = useState({ idAzienda });
     // Recupera l'token da sessionStorage
     const user = JSON.parse(sessionStorage.getItem("user"));
     const token = user?.token;
@@ -63,23 +65,23 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
         const fetchNeedOptions = async () => {
         try {
             const responseAziende = await axios.get(
-            `http://89.46.196.60:8443/aziende/react/${id}`,
+            `http://localhost:8080/aziende/react/${id}`,
             { headers: headers }
             );
             const responseSkill = await axios.get(
-            "http://89.46.196.60:8443/staffing/react/skill",
+            "http://localhost:8080/staffing/react/skill",
             { headers: headers }
             );
             const ownerResponse = await axios.get(
-            "http://89.46.196.60:8443/aziende/react/owner",
+            "http://localhost:8080/aziende/react/owner",
             { headers: headers }
             );
             const tipologiaResponse = await axios.get(
-            "http://89.46.196.60:8443/need/react/tipologia",
+            "http://localhost:8080/need/react/tipologia",
             { headers: headers }
             );
             const statoResponse = await axios.get(
-            "http://89.46.196.60:8443/need/react/stato",
+            "http://localhost:8080/need/react/stato",
             { headers: headers }
             );
 
@@ -219,7 +221,7 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
     const fetchKeypeopleOptions = async (aziendaConId) => {
         try {
         const responseKeypeople = await axios.get(
-            `http://89.46.196.60:8443/keypeople/react/azienda/${aziendaConId}`,
+            `http://localhost:8080/keypeople/react/azienda/${aziendaConId}`,
             { headers: headers }
         );
         const keypeopleOptions = responseKeypeople.data.map((keypeople) => ({
@@ -301,8 +303,8 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
             delete values.idSkills;
 
             const responseSaveNeed = await axios.post(
-            "http://89.46.196.60:8443/need/react/salva",
-            values,
+            "http://localhost:8080/need/react/salva",
+            { ...values, idAzienda: parseInt(values.idAzienda, 10) }, 
             { params: { skill1: skills }, headers: headers }
             );
             if (responseSaveNeed.data === "ERRORE") {
@@ -310,7 +312,17 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
                 console.error("Il need non è stata salvata.");
                 return;
             }
-            navigate(`/need`);
+            const userString = sessionStorage.getItem("user");
+            if (userString) {
+                const userObj = JSON.parse(userString);
+                if (userObj.roles.includes("ROLE_BUSINESS")) {
+                    navigate(`/need/${idAzienda}`);
+                } else {
+                    navigate('/need');
+                }
+            } else {
+                navigate('/need');
+            } 
         } catch (error) {
             console.error("Errore durante il salvataggio", error);
         }
@@ -336,7 +348,7 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
     ];
 
     const fields = [
-        { label: "Azienda*",                    name: "denominazione",          type: "text", disabled: true },
+        // { label: "Azienda*",                    name: "denominazione",          type: "text", disabled: true },
         { label: "Descrizione Need*",           name: "descrizione",            type: "text", maxLength: 200                 },
         // { label: "Priorità*",                   name: "priorita",               type: "decimalNumber"        },
         { label: "Priorità*",              name: "priorita",                          type: "select",               options: [
@@ -387,13 +399,6 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
         },
         { label: "Note", name: "note", type: "note", maxLength: 4000 },
     ];
-
-    const initialValues = {
-        idAzienda: valori?.id || "",
-        denominazione: valori?.denominazione || "",
-    };
-
-    const disabledFields = ["denominazione"];
 
     //funzione per suddividere fields nelle varie pagine in base a titleGroups
     const groupFields = (fields) => {
@@ -448,21 +453,35 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
         // const errorMessage = errors[field.name];
 
         switch (type) {
+            // case "text":
+            // if (field.name === "denominazione") {
+            //     return (
+            //     <CustomTextFieldModifica
+            //         name={field.name}
+            //         label={field.label}
+            //         type={field.type}
+            //         values={values}
+            //         onChange={handleChange}
+            //         initialValues={initialValues}
+            //         disabled={disabledFields.includes(field.name)}
+            //         maxLength={field.maxLength}
+            //     />
+            //     );
+            // } else {
+            //     return (
+            //     <CustomTextFieldAggiungi
+            //         name={field.name}
+            //         label={field.label}
+            //         type={field.type}
+            //         values={values}
+            //         onChange={handleChange}
+            //         maxLength={field.maxLength}
+
+            //     />
+            //     );
+            // }
+
             case "text":
-            if (field.name === "denominazione") {
-                return (
-                <CustomTextFieldModifica
-                    name={field.name}
-                    label={field.label}
-                    type={field.type}
-                    values={values}
-                    onChange={handleChange}
-                    initialValues={initialValues}
-                    disabled={disabledFields.includes(field.name)}
-                    maxLength={field.maxLength}
-                />
-                );
-            } else {
                 return (
                 <CustomTextFieldAggiungi
                     name={field.name}
@@ -471,10 +490,10 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
                     values={values}
                     onChange={handleChange}
                     maxLength={field.maxLength}
-
                 />
                 );
-            }
+
+
 
             case "note":
             return (
@@ -641,7 +660,7 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
             sx={{
                 width: "280px",
                 height: "98%",
-                background: "#00B400",
+                background: theme.palette.aggiungiSidebar.bg,
                 p: 2,
                 overflow: "hidden",
                 position: "fixed",
@@ -658,7 +677,7 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
                 <Button
                 onClick={handleGoBack}
                 sx={{
-                    color: "black",
+                    color: theme.palette.textButton.main,
                     border: "none",
                     fontSize: "0.8em",
                     cursor: "pointer",
@@ -667,7 +686,7 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
                     mt: 4,
                     ml: 2,
                     "&:hover": {
-                    color: "#EDEDED",
+                        color: theme.palette.textButton.main,
                     },
                 }}
                 >
@@ -685,7 +704,7 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
                 ml: 3,
                 mb: 8,
                 fontSize: "1.8em",
-                color: "black",
+                color: theme.palette.aggiungiSidebar.title
                 }}
             >
                 {" "}
@@ -702,17 +721,17 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
                     mb: 4,
                     "&.Mui-selected": {
                         backgroundColor:
-                        activeSection === item.title ? "black" : "trasparent",
+                        activeSection === item.title ? theme.palette.aggiungiSidebar.hover : theme.palette.aggiungiSidebar.hover,
                         "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
                         color:
-                            activeSection === item.title ? "#EDEDED" : "#EDEDED",
+                            activeSection === item.title ? theme.palette.aggiungiSidebar.textHover : theme.palette.aggiungiSidebar.textHover,
                         },
                         borderRadius: "10px",
                     },
                     }}
                 >
-                    <ListItemIcon>{item.icon}</ListItemIcon>
-                    <ListItemText primary={item.title} />
+                    <ListItemIcon sx={{ color: theme.palette.aggiungiSidebar.text }}>{item.icon}</ListItemIcon>
+                    <ListItemText primary={item.title} sx={{ color: theme.palette.aggiungiSidebar.text }}/>
                 </ListItem>
                 ))}
             </List>
@@ -793,13 +812,14 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
                     sx={{
                     mb: 4,
                     width: "250px",
-                    backgroundColor: "black",
-                    color: "white",
+                    backgroundColor: theme.palette.button.main,
+                    color: theme.palette.textButton.white,
                     fontWeight: "bold",
                     boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
                     borderRadius: "10px",
                     "&:hover": {
-                        backgroundColor: "black",
+                        backgroundColor: theme.palette.button.main,
+                        color: theme.palette.textButton.white,
                         transform: "scale(1.05)",
                         boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
                         borderRadius: "10px",
@@ -815,15 +835,15 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
                     sx={{
                     mb: 4,
                     width: "250px",
-                    backgroundColor: "black",
-                    color: "white",
+                    backgroundColor: theme.palette.button.main,
+                    color: theme.palette.textButton.white,
                     fontWeight: "bold",
                     boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
                     borderRadius: "10px",
 
                     "&:hover": {
-                        backgroundColor: "black",
-                        color: "white",
+                        backgroundColor: theme.palette.button.main,
+                        color: theme.palette.textButton.white,
                         transform: "scale(1.05)",
                         boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
                         borderRadius: "10px",
@@ -840,15 +860,15 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
                     sx={{
                     mb: 4,
                     width: "250px",
-                    backgroundColor: "#00B400",
-                    color: "#EDEDED",
+                    backgroundColor: theme.palette.button.main,
+                    color: theme.palette.textButton.white,
                     fontWeight: "bold",
                     boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
                     borderRadius: "10px",
 
                     "&:hover": {
-                        backgroundColor: "#00B400",
-                        color: "#EDEDED",
+                        backgroundColor: theme.palette.button.main,
+                        color: theme.palette.textButton.white,
                         transform: "scale(1.05)",
                         boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
                         borderRadius: "10px",

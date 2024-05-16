@@ -1,7 +1,9 @@
 import React     from 'react';
 import TextField from '@mui/material/TextField';
+import { useUserTheme } from '../TorchyThemeProvider';
 
 function CustomDecimalNumberModifica({ name, label, type, onChange, values, initialValues, maxLength }) {
+  const theme = useUserTheme();
   const handleChange = (e) => {
     const { name, value } = e.target;
     onChange({ [name]: value });
@@ -39,8 +41,7 @@ function CustomDecimalNumberModifica({ name, label, type, onChange, values, init
             borderBottom: 'none', 
         },
         '& .MuiFormLabel-root.Mui-focused': {
-          color: '#00B400',
-      },
+          color: theme.palette.border.main,      },
         }}
     />
   );

@@ -19,8 +19,12 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import axios from "axios";
 import dayjs from "dayjs";
+import { useUserTheme } from "./TorchyThemeProvider";
 
 function AppuntamentoModal({ open, handleClose }) {
+
+  const theme = useUserTheme();
+
   const user = JSON.parse(sessionStorage.getItem("user"));
   const token = user?.token;
 
@@ -200,7 +204,7 @@ function TransitionDown(props) {
                   borderBottom: "none",
                 },
                 "& .MuiFormLabel-root.Mui-focused": {
-                  color: "#00B400",
+                  color: theme.palette.border.main,
                 },
               }}
             />
@@ -241,7 +245,7 @@ function TransitionDown(props) {
                   borderBottom: "none",
                 },
                 "& .MuiFormLabel-root.Mui-focused": {
-                  color: "#00B400",
+                  color: theme.palette.border.main,
                 },
               }}
             />
@@ -273,7 +277,7 @@ function TransitionDown(props) {
                   borderBottom: "none",
                 },
                 "& .MuiFormLabel-root.Mui-focused": {
-                  color: "#00B400",
+                  color: theme.palette.border.main,
                 },
               }}
             />
@@ -296,20 +300,20 @@ function TransitionDown(props) {
                 "& .MuiFilledInput-root": {
                   backgroundColor: "transparent",
                   "&:after": {
-                    borderBottomColor: "#00B400",
+                    borderBottomColor: theme.palette.border.main,
                   },
                 },
                 "& .MuiFilledInput-underline:before": {
-                  borderBottomColor: "#00B400",
+                  borderBottomColor: theme.palette.border.main,
                 },
                 "& .MuiFilledInput-underline:hover:before": {
-                  borderBottomColor: ["#00B400", "!important"],
+                  borderBottomColor: [theme.palette.border.main, "!important"],
                 },
                 "& .MuiFilledInput-underline:after": {
-                  borderBottomColor: "#00B400",
+                  borderBottomColor: theme.palette.border.main,
                 },
                 "& .MuiFormLabel-root.Mui-focused": {
-                  color: "#00B400",
+                  color: theme.palette.border.main,
                 },
               }}
             />
@@ -357,7 +361,7 @@ function TransitionDown(props) {
                         borderBottom: "none",
                       },
                       "& .MuiFormLabel-root.Mui-focused": {
-                        color: "#00B400",
+                        color: theme.palette.border.main,
                       },
                     }}
                   />
@@ -393,7 +397,7 @@ function TransitionDown(props) {
                   borderBottom: "none",
                 },
                 "& .MuiFormLabel-root.Mui-focused": {
-                  color: "#00B400",
+                  color: theme.palette.border.main,
                 },
               }}
             />
@@ -403,9 +407,11 @@ function TransitionDown(props) {
                 variant="contained"
                 sx={{
                   borderRadius: "5px",
-                  backgroundColor: "#00B401",
+                  backgroundColor: theme.palette.button.main,
+                  color: theme.palette.textButton.main,
                   "&:hover": {
-                    backgroundColor: "#00B401",
+                    backgroundColor: theme.palette.button.main,
+                    color: theme.palette.textButton.main,
                     transform: "scale(1.1)",
                   },
                 }}

@@ -14,11 +14,13 @@
     import CloseIcon from "@mui/icons-material/Close";
     import SearchIcon from "@mui/icons-material/Search";
     import RestartAltIcon from "@mui/icons-material/RestartAlt";
+    import { useUserTheme } from "../TorchyThemeProvider";
 
     function RicercheNeed({
     filtri,
     onFilterChange,
     onReset,
+    onSearch,
     tipologiaOptions,
     statoOptions,
     keyPeopleOptions,
@@ -26,13 +28,24 @@
     onRicerche,
     onNavigate,
     }) {
+
+    const theme = useUserTheme();
+
     const [openFiltri, setOpenFiltri] = useState(false);
     const [isRotated, setIsRotated] = useState(false);
+    const [localFiltri, setLocalFiltri] = useState({ ...filtri });
+
 
     const handleClickReset = () => {
         onReset();
+        setLocalFiltri({ ...filtri });
         setIsRotated(true);
         setTimeout(() => setIsRotated(false), 500);
+    };
+
+    const handleClickSearch = () => {
+        onFilterChange(localFiltri);
+        onSearch();
     };
 
     const handleOpenFiltri = () => setOpenFiltri(true);
@@ -52,16 +65,18 @@
         >
         <Button
             variant="contained"
-            color="primary"
+            // color="primary"
             onClick={onNavigate}
             sx={{
             mt: 2,
             minWidth: "12em",
-            backgroundColor: "#00B401",
+            bgcolor: theme.palette.button.main,
+            color: theme.palette.textButton.main,
             borderRadius: "10px",
             textTransform: "none",
             "&:hover": {
-                backgroundColor: "#00B401",
+                bgcolor: theme.palette.button.main,
+                color: theme.palette.textButton.main,
                 transform: "scale(1.05)",
             },
             }}
@@ -86,7 +101,9 @@
             InputProps={{
                 startAdornment: (
                 <InputAdornment position="start">
-                    <SearchIcon sx={{ color: "#00B401" }} />
+                    <SearchIcon sx={{
+                        color: theme.palette.icon.main
+                        }} />
                 </InputAdornment>
                 ),
             }}
@@ -96,15 +113,15 @@
                 "& .MuiOutlinedInput-root": {
                 borderRadius: "0px",
                 "& fieldset": {
-                    borderColor: "#00B401",
+                    borderColor: theme.palette.border.main,
                     borderRadius: "4px 0 0 4px",
                 },
                 "&:hover fieldset": {
-                    borderColor: "#00B401",
-                },
+                    borderColor: theme.palette.border.main,
+                    },
                 "&.Mui-focused fieldset": {
-                    borderColor: "#00B401",
-                },
+                    borderColor: theme.palette.border.main,
+                    },
                 },
             }}
             />
@@ -114,13 +131,15 @@
             color="primary"
             onClick={handleOpenFiltri}
             sx={{
-            backgroundColor: "#00B401",
+            bgcolor: theme.palette.button.main,
+            color: theme.palette.textButton.main,
             mt: 2,
             minWidth: "12em",
             borderRadius: "10px",
             textTransform: "none",
             "&:hover": {
-                backgroundColor: "#00B401",
+                bgcolor: theme.palette.button.main,
+                color: theme.palette.textButton.main,
                 transform: "scale(1.05)",
             },
             }}
@@ -192,7 +211,7 @@
                             borderBottom: "none",
                         },
                         "& .MuiFormLabel-root.Mui-focused": {
-                            color: "#00B400",
+                            color: theme.palette.border.main,
                         },
                         }}
                     />
@@ -237,7 +256,7 @@
                             borderBottom: "none",
                         },
                         "& .MuiFormLabel-root.Mui-focused": {
-                            color: "#00B400",
+                            color: theme.palette.border.main,
                         },
                         }}
                     />
@@ -282,7 +301,7 @@
                             borderBottom: "none",
                         },
                         "& .MuiFormLabel-root.Mui-focused": {
-                            color: "#00B400",
+                            color: theme.palette.border.main,
                         },
                         }}
                     />
@@ -347,7 +366,7 @@
                             borderBottom: "none",
                         },
                         "& .MuiFormLabel-root.Mui-focused": {
-                            color: "#00B400",
+                            color: theme.palette.border.main,
                         },
                         }}
                     />
@@ -355,7 +374,25 @@
                 />
                 </FormControl>
 
-                <Box sx={{ display: "flex", justifyContent: "center" }}>
+                <Box sx={{ display: "flex", justifyContent: "space-around" }}>
+                <IconButton
+                onClick={handleClickSearch}
+                disableRipple={true}
+                disableFocusRipple={true}
+                    sx={{
+                    backgroundColor: theme.palette.button.main,
+                    color: "white",
+                    textTransform: "lowercase",
+                    fontWeight: "bold",
+                    "&:hover": {
+                        backgroundColor: theme.palette.button.main,
+                        color: "white",
+                        trasform: "scale(1.1)",
+                    },
+                    }}
+                >
+                    <SearchIcon />
+                </IconButton>
                 <IconButton
                     onClick={handleClickReset}
                     disableRipple={true}
