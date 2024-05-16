@@ -35,10 +35,12 @@ import {
     Slide
 
     } from '@mui/material';
+import { useUserTheme } from '../TorchyThemeProvider';
 
 const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
 
     const navigate = useNavigate();
+    const theme = useUserTheme();
     const [ modalStato,        setModalStato      ] = useState(false);
     const [ modalDelete,       setModalDelete     ] = useState(false);
     const [ newStato,          setNewStato        ] = useState(valori.stato?.id); 
@@ -146,7 +148,8 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
         borderRadius: '20px',
         marginLeft: '4em',
         marginRight: '2em',
-        border: 'solid 2px #00B400',
+        border: 'solid 2px',
+        borderColor: theme.palette.border.main,
         transition: 'transform 0.3s ease, border-width 0.3s ease', 
             '&:hover': {
             cursor: 'pointer',
@@ -182,13 +185,13 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
 
     const mediaPriorita = (priorita) => {
         if (priorita >= 0 && priorita <= 1) {
-            return { icon: <CallMadeIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Massima" };
+            return { icon: <CallMadeIcon sx={{ color: theme.palette.icon.main, mr: 1}}/>, text: "Massima" };
         } else if (priorita > 1 && priorita <= 2) {
-            return { icon: <TrendingUpIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Alta" };
+            return { icon: <TrendingUpIcon sx={{ color: theme.palette.icon.main, mr: 1}}/>, text: "Alta" };
         } else if (priorita > 2 && priorita <= 3) {
-            return { icon: <TrendingFlatIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Media" };
+            return { icon: <TrendingFlatIcon sx={{ color: theme.palette.icon.main, mr: 1}}/>, text: "Media" };
         } else if (priorita > 3) {
-            return { icon: <TrendingDownIcon sx={{ color: '#00B401', mr: 1}}/>, text: "Bassa" };
+            return { icon: <TrendingDownIcon sx={{ color: theme.palette.icon.main, mr: 1}}/>, text: "Bassa" };
         } else {
             return { icon: null, text: "" }; 
         }
@@ -263,14 +266,14 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
 
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
-                    <TagIcon sx={{ color: '#00B401', mr: 1 }} />
+                    <TagIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
                     {valori.progressivo}
             </Typography>
 
 
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
-                    <PlaceIcon sx={{ color: '#00B401', mr: 1 }} />
+                    <PlaceIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
                     {valori.location}
             </Typography>
 
@@ -282,14 +285,14 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
 
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
-                    <BusinessCenterIcon sx={{ color: '#00B401', mr: 1 }} />
+                    <BusinessCenterIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
                     {valori.tipologia && valori.tipologia.descrizione
                     ? valori.tipologia.descrizione
                     : "N/A"}
                     </Typography>
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
-                    <AutoModeIcon sx={{ color: '#00B401', mr: 1 }} />
+                    <AutoModeIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
                     {valori.stato.descrizione}
             </Typography>
                 </Box>
@@ -345,7 +348,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
                             sx={{
                                 gap: 0,
                                 '&:hover, &.Mui-selected': {
-                                    backgroundColor: '#00B401',
+                                    backgroundColor: theme.palette.hover.main,
                                     cursor: 'pointer',
                                     '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
                                         color: 'white',
@@ -353,13 +356,13 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
                                     borderRadius: '10px',
                                 },
                                 borderRadius: '10px',
-                                backgroundColor: activeLink === `/${item.title.toLowerCase()}` ? '#00B401' : '',
+                                backgroundColor: activeLink === `/${item.title.toLowerCase()}` ? theme.palette.icon.main : '',
                                 '& .MuiListItemIcon-root': {
-                                    color: activeLink === `/${item.title.toLowerCase()}` ? '#00B400' : '#00B401',
+                                    color: activeLink === `/${item.title.toLowerCase()}` ? theme.palette.icon.main : theme.palette.icon.main,
                                     minWidth: '2.2em',
                                 },
                                 '& .MuiListItemText-primary': {
-                                    color: activeLink === `/${item.title.toLowerCase()}` ? '#00B400' : 'black',
+                                    color: activeLink === `/${item.title.toLowerCase()}` ? theme.palette.icon.main : 'black',
                                 },
                             }}
                         >

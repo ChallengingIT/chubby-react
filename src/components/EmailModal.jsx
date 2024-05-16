@@ -16,8 +16,11 @@ import CloseIcon from "@mui/icons-material/Close";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import axios from "axios";
+import { useUserTheme } from "./TorchyThemeProvider";
 
 function EmailModal({ open, handleClose }) {
+
+  const theme = useUserTheme();
 
 
   const [ alert, setAlert ] = useState(false);
@@ -164,7 +167,7 @@ function EmailModal({ open, handleClose }) {
                   borderBottom: "none",
                 },
                 "& .MuiFormLabel-root.Mui-focused": {
-                  color: "#00B400",
+                  color: theme.palette.border.main,
                 },
               }}
             />
@@ -202,7 +205,7 @@ function EmailModal({ open, handleClose }) {
                   borderBottom: "none",
                 },
                 "& .MuiFormLabel-root.Mui-focused": {
-                  color: "#00B400",
+                  color: theme.palette.border.main,
                 },
               }}
             />
@@ -235,7 +238,7 @@ function EmailModal({ open, handleClose }) {
                   borderBottom: "none",
                 },
                 "& .MuiFormLabel-root.Mui-focused": {
-                  color: "#00B400",
+                  color:theme.palette.border.main,
                 },
               }}
             />
@@ -245,9 +248,11 @@ function EmailModal({ open, handleClose }) {
                 variant="contained"
                 sx={{
                   borderRadius: "5px",
-                  backgroundColor: "#00B401",
+                  backgroundColor: theme.palette.button.main,
+                  color: theme.palette.textButton.main,
                   "&:hover": {
-                    backgroundColor: "#00B401",
+                    backgroundColor: theme.palette.button.main,
+                    color: theme.palette.textButton.main,
                     transform: "scale(1.1)",
                   },
                 }}

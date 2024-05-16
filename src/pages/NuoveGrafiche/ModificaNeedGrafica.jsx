@@ -11,10 +11,12 @@ import CustomDatePickerModifica                                                 
 import CustomDecimalNumberModifica                                                                              from '../../components/fields/CustomDecimalNumberModifica';
 import CustomMultipleSelectModifica                                                                             from '../../components/fields/CustomMultipleSelectModifica';
 import CustomNumberModifica from '../../components/fields/CustomNumberModifica';
+import { useUserTheme } from '../../components/TorchyThemeProvider';
 
 const ModificaNeedGrafica = () => {
     const navigate = useNavigate();
     const {id}                    = useParams();
+    const theme = useUserTheme();
 
 
     //stati della pagina
@@ -329,8 +331,18 @@ const ModificaNeedGrafica = () => {
                     console.error("Il need non è stata salvata.");
                     return;
                 }
-                navigate('/need');
-                } catch(error) {
+                const userString = sessionStorage.getItem("user");
+                if (userString) {
+                    const userObj = JSON.parse(userString);
+                    if (userObj.roles.includes("ROLE_BUSINESS")) {
+                        navigate(`/need/${aziendaID}`);
+                    } else {
+                        navigate('/need');
+                    }
+                } else {
+                    navigate('/need');
+                } 
+            } catch(error) {
                 console.error("Errore durante il salvataggio", error);
                 }
         } else {
@@ -618,12 +630,12 @@ const ModificaNeedGrafica = () => {
 return (
     <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
         <Box sx={{ display: 'flex', height: '98%', width: '100vw', flexDirection: 'row', ml: '12.5em', mt: '0.5em', mb: '0.5em', mr: '0.8em', borderRadius: '20px', overflow: 'hidden' }}>
-        <Box sx={{ width: '280px', height: '98%', background: '#00B400', p:2, overflow: 'hidden', position: 'fixed', borderRadius: '20px 0px 0px 20px' }}>
+        <Box sx={{ width: '280px', height: '98%', background: theme.palette.aggiungiSidebar.bg, p:2, overflow: 'hidden', position: 'fixed', borderRadius: '20px 0px 0px 20px' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%'}}>
                     <Button
                     onClick={handleGoBack}
                     sx={{
-                        color: 'black',
+                        color: theme.palette.textButton.main,
                         border:'none',
                         fontSize: '0.8em',
                         cursor: 'pointer',
@@ -632,7 +644,7 @@ return (
                         mt: 4,
                         ml: 2,
                         '&:hover': {
-                            color: '#EDEDED'
+                            color: theme.palette.textButton.main,
                         }
                     }}
                     >
@@ -640,7 +652,7 @@ return (
                         Indietro
                     </Button>
                 </Box>
-                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: 'black'}}>  Aggiorna <br /> Need </Typography>
+                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: theme.palette.aggiungiSidebar.title}}>  Aggiorna <br /> Need </Typography>
                 <List sx={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
                             {menu.map((item, index) => (
                                 // <ListItem
@@ -670,18 +682,18 @@ return (
                                     mb: 4,
                                     cursor: 'pointer', // Assicurati che l'elemento sembri cliccabile
                                     '&.Mui-selected': {
-                                        backgroundColor: activeSection === item.title ? 'black' : 'transparent',
+                                        backgroundColor: activeSection === item.title ? theme.palette.aggiungiSidebar.hover : theme.palette.aggiungiSidebar.hover,
                                         '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-                                            color: activeSection === item.title ? '#EDEDED' : '#EDEDED'
+                                            color: activeSection === item.title ? theme.palette.aggiungiSidebar.textHover : theme.palette.aggiungiSidebar.textHover
                                         },
                                         borderRadius: '10px',
                                     }
                                 }}
                             >
-                                <ListItemIcon>
+                                <ListItemIcon sx={{ color: theme.palette.aggiungiSidebar.text }}>
                                     {item.icon}
                                 </ListItemIcon>
-                                <ListItemText primary={item.title} />
+                                <ListItemText primary={item.title} sx={{ color: theme.palette.aggiungiSidebar.text }} />
                             </ListItem>
                             ))}
                         </List>
@@ -705,13 +717,14 @@ return (
                             sx={{
                             mb: 4,
                             width: '250px',
-                            backgroundColor: "black",
-                            color: "white",
+                            backgroundColor: theme.palette.button.main,
+                            color: theme.palette.textButton.white,
                             fontWeight:"bold",
                             boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                             borderRadius: '10px',
                             "&:hover": {
-                                backgroundColor: "black",
+                                backgroundColor: theme.palette.button.main,
+                                color: theme.palette.textButton.white,
                                 transform: "scale(1.05)",
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                 borderRadius: '10px',
@@ -723,16 +736,16 @@ return (
                                 sx={{
                                 mb: 4, 
                                 width: '250px',
-                                backgroundColor: "black",
-                                color: "white",
+                                backgroundColor: theme.palette.button.main,
+                                color: theme.palette.textButton.white,
                                 fontWeight:"bold",
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                 borderRadius: '10px',
                                 
                                 
                                 "&:hover": {
-                                    backgroundColor: "black",
-                                    color: "white",
+                                    backgroundColor: theme.palette.button.main,
+                                    color: theme.palette.textButton.white,
                                     transform: "scale(1.05)",
                                     boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                     borderRadius: '10px',
@@ -745,15 +758,15 @@ return (
                             sx={{
                                 mb: 4,
                                 width: '250px',
-                                backgroundColor: "#00B400",
-                                color: "#EDEDED",
+                                backgroundColor: theme.palette.button.main,
+                                color: theme.palette.textButton.white,
                                 fontWeight:"bold",
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                 borderRadius: '10px',
                                 
                                 "&:hover": {
-                                backgroundColor: "#00B400",
-                                color: "#EDEDED",
+                                    backgroundColor: theme.palette.button.main,
+                                    color: theme.palette.textButton.white,
                                 transform: "scale(1.05)",
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                 borderRadius: '10px',

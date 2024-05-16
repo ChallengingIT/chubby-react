@@ -15,6 +15,7 @@
     import SearchIcon from "@mui/icons-material/Search";
     import { useNavigate } from "react-router-dom";
     import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import { useUserTheme } from "../TorchyThemeProvider";
 
     function RicercheKeypeople({
     filtri,
@@ -26,6 +27,7 @@
     ownerOptions,
     }) {
     const navigate = useNavigate();
+    const theme = useUserTheme();
 
     const [openFiltri, setOpenFiltri] = useState(false);
     const [isRotated, setIsRotated] = useState(false);
@@ -66,16 +68,18 @@
         >
         <Button
             variant="contained"
-            color="primary"
+            // color="primary"
             onClick={navigateToAggiungi}
             sx={{
             minWidth: "12em",
-            backgroundColor: "#00B401",
+            bgcolor: theme.palette.button.main,
+            color: theme.palette.textButton.main,
             borderRadius: "10px",
             textTransform: "none",
             mt: 2,
             "&:hover": {
-                backgroundColor: "#00B401",
+                bgcolor: theme.palette.button.main,
+                color: theme.palette.textButton.main,
                 transform: "scale(1.05)",
             },
             }}
@@ -100,7 +104,9 @@
             InputProps={{
                 startAdornment: (
                 <InputAdornment position="start">
-                    <SearchIcon sx={{ color: "#00B401" }} />
+                    <SearchIcon sx={{
+                        color: theme.palette.icon.main
+                        }} />
                 </InputAdornment>
                 ),
             }}
@@ -110,14 +116,14 @@
                 "& .MuiOutlinedInput-root": {
                 borderRadius: "0px",
                 "& fieldset": {
-                    borderColor: "#00B401",
+                    borderColor: theme.palette.border.main,
                     borderRadius: "4px 0 0 4px",
                 },
                 "&:hover fieldset": {
-                    borderColor: "#00B401",
+                    borderColor: theme.palette.border.main,
                 },
                 "&.Mui-focused fieldset": {
-                    borderColor: "#00B401",
+                    borderColor: theme.palette.border.main,
                 },
                 },
             }}
@@ -125,16 +131,18 @@
         </Box>
         <Button
             variant="contained"
-            color="primary"
+            // color="primary"
             onClick={handleOpenFiltri}
             sx={{
-            backgroundColor: "#00B401",
+            bgcolor: theme.palette.button.main,
+            color: theme.palette.textButton.main,
             minWidth: "12em",
             borderRadius: "10px",
             textTransform: "none",
             mt: 2,
             "&:hover": {
-                backgroundColor: "#00B401",
+                bgcolor: theme.palette.button.main,
+                color: theme.palette.textButton.main,
                 transform: "scale(1.05)",
             },
             }}
@@ -206,7 +214,7 @@
                             borderBottom: "none",
                         },
                         "& .MuiFormLabel-root.Mui-focused": {
-                            color: "#00B400",
+                            color: theme.palette.border.main,
                         },
                         }}
                     />
@@ -251,7 +259,7 @@
                             borderBottom: "none",
                         },
                         "& .MuiFormLabel-root.Mui-focused": {
-                            color: "#00B400",
+                            color: theme.palette.border.main,
                         },
                         }}
                     />
@@ -296,7 +304,7 @@
                             borderBottom: "none",
                         },
                         "& .MuiFormLabel-root.Mui-focused": {
-                            color: "#00B400",
+                            color: theme.palette.border.main,
                         },
                         }}
                     />
@@ -310,12 +318,12 @@
                 disableRipple={true}
                 disableFocusRipple={true}
                     sx={{
-                    backgroundColor: "#00B400",
+                    backgroundColor: theme.palette.button.main,
                     color: "white",
                     textTransform: "lowercase",
                     fontWeight: "bold",
                     "&:hover": {
-                        backgroundColor: "#00B400",
+                        backgroundColor: theme.palette.button.main,
                         color: "white",
                         trasform: "scale(1.1)",
                     },

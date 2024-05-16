@@ -15,12 +15,10 @@ import {
 
 const AziendeListaNeedCard = () => {
 
-    const location = useLocation();
     const params = useParams();
     const navigate = useNavigate();
 
     const { id } = params;
-    const valori = location;
 
     const [ originalListaNeed,      setOriginalListaNeed    ] = useState([]);
     const [ loading,                setLoading              ] = useState(false);
@@ -116,14 +114,21 @@ const AziendeListaNeedCard = () => {
 
     useEffect(() => {
         const filtriSalvati = sessionStorage.getItem('filtriRicercaListaNeed');
-        if(filtriSalvati) {
-            setFiltri(JSON.parse(filtriSalvati));
-            handleRicerche();
-        } else {
-        fetchData();
-        }
-        // eslint-disable-next-line
-    }, []);
+        if (filtriSalvati) {
+            const filtriParsed = JSON.parse(filtriSalvati);
+            setFiltri(filtriParsed);
+            
+            const isAnyFilterSet = Object.values(filtriParsed).some(value => value);
+            if (isAnyFilterSet) {
+                handleRicerche();
+            } else {
+                fetchData();
+            }
+            } else {
+            fetchData();
+            }
+            // eslint-disable-next-line
+        }, []);
 
 
     //caricamento dati con paginazione
@@ -163,7 +168,11 @@ const AziendeListaNeedCard = () => {
 
 
       //funzione di ricerca
-      const handleRicerche = async () => {
+    const handleRicerche = async () => {
+        const isAnyFilterSet = Object.values(filtri).some(value => value);
+                if (!isAnyFilterSet) {
+                    return; 
+                }
         const filtriDaInviare = {
             descrizione:        filtri.descrizione  || null,
             tipologia:          filtri.tipologia    || null,
@@ -177,6 +186,30 @@ const AziendeListaNeedCard = () => {
         setLoading(true);
         try {
             const response = await axios.get("http://localhost:8080/need/react/ricerca/modificato", { headers: headers, params: filtriDaInviare });
+                const responseOwner         = await axios.get("http://localhost:8080/aziende/react/owner",           { headers: headers });
+                const responseTipologia     = await axios.get("http://localhost:8080/need/react/tipologia",          { headers: headers });
+                const responseStato         = await axios.get("http://localhost:8080/need/react/stato",              { headers: headers });
+
+
+                if (Array.isArray(responseOwner.data)) {
+                    setOwnerOptions(responseOwner.data.map((owner) => ({ label: owner.descrizione, value: owner.id})));
+                } else {
+                    console.error("I dati ottenuti non sono nel formato Array; ", responseOwner.data);
+                }
+
+
+
+                if (Array.isArray(responseTipologia.data)) {
+                    setTipologiaOptions(responseTipologia.data.map((tipologia) => ({ label: tipologia.descrizione, value: tipologia.id})));
+                } else {
+                    console.error("I dati ottenuti non sono nel formato Array; ", responseTipologia.data);
+                }
+
+                if (Array.isArray(responseStato.data)) {
+                    setStatoOptions(responseStato.data.map((stato) => ({ label: stato.descrizione, value: stato.id})));
+                } else {
+                    console.error("I dati ottenuti non sono nel formato Array; ", responseStato.data);
+                }
 
             if (Array.isArray(response.data)) {
                 setOriginalListaNeed(response.data);
@@ -194,21 +227,33 @@ const AziendeListaNeedCard = () => {
     //funzione cambiamento stato select
     const handleFilterChange = (name) => (event) => {
         const newValue = event.target.value;
-        setFiltri({...filtri, [name]:newValue});
-        if(name === 'descrizione' && newValue === '') {
-            fetchData();
-        } else {
-            handleRicerche();
-        }
+        setFiltri(currentFilters => {
+            const newFilters = { ...currentFilters, [name]: newValue };
+            
+            // Controllo se tutti i filtri sono vuoti 
+            const areFiltersEmpty = Object.values(newFilters).every(value => value === null);
+            if (areFiltersEmpty) {
+                fetchData();
+            } else {
+                setPagina(0);
+                setOriginalListaNeed([]);
+                setHasMore(true);
+                // handleRicerche();
+            }
+            
+            return newFilters;
+        });
     };
 
     useEffect(() => {
-        const { descrizione, ...otherFilters } = filtri;
+        const {  ...otherFilters } = filtri;
         const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x !== null);
         if (filtriHasValues) {
             handleRicerche();
+        } else {
+            fetchData();
         }
-    }, [filtri.tipologia, filtri.stato, filtri.owner, filtri.keyPeople]);
+    }, [filtri.descrizione]);
 
     useEffect(() => {
         sessionStorage.setItem('filtriRicercaListaNeed', JSON.stringify(filtri));
@@ -242,8 +287,32 @@ const AziendeListaNeedCard = () => {
 
 
     const navigateToAggiungi = () => {
-        navigate(`/need/aggiungi/${id}`, { state: { denominazione: valori.state.denominazione }});
+        navigate(`/need/aggiungi/${id}`, 
+        // { state: { denominazione: valori.state.denominazione }}
+    );
     };
+
+
+            //funzione per cancellare il need
+            const handleDelete = async (id) => {
+                try{
+                    const responseDelete = await axios.delete(`http://localhost:8080/need/react/elimina/${id}`, {headers: headers});
+                    await fetchData(0);
+                } catch(error) {
+                    console.error("Errore durante la cancellazione: ", error);
+                }
+            };
+    
+    
+            //funzione per il refresh
+            const handleRefresh = async () => {
+                await fetchData(0);
+            };
+    
+            //funzione per avere il contatto da usare per le ricerche
+            const handleContactChange = (contattoId) => {
+                setFiltri(prev => ({ ...prev, keypeople: contattoId }));
+            };
 
     
 
@@ -270,6 +339,7 @@ const AziendeListaNeedCard = () => {
                     filtri={filtri}
                     onFilterChange={handleFilterChange}
                     onReset={handleReset}
+                    onSearch={handleRicerche}
                     tipologiaOptions={tipologiaOptions}
                     statoOptions={statoOptions}
                     keyPeopleOptions={keyPeopleOptions}
@@ -278,7 +348,7 @@ const AziendeListaNeedCard = () => {
                     onNavigate={navigateToAggiungi}
                     />
                 </Box>
-                <Typography variant='h6' sx={{ fontWeight: 'bold', color: '#00B401', display: 'flex', justifyContent: 'center', fontSize: '2em'}}>Need di {valori.state.denominazione}</Typography>
+                {/* <Typography variant='h6' sx={{ fontWeight: 'bold', color: '#00B401', display: 'flex', justifyContent: 'center', fontSize: '2em'}}>Need di {valori.state.denominazione}</Typography> */}
                 <InfiniteScroll
                 dataLength={originalListaNeed.length}
                 next={fetchMoreData}
@@ -302,7 +372,10 @@ const AziendeListaNeedCard = () => {
                         ) : (
                             originalListaNeed.map((need, index) => (
                                 <Grid item xs={12} md={6} key={index}>
-                                    <ListaNeedCard valori={need} />
+                                    <ListaNeedCard valori={need}
+                                    statoOptions={statoOptions}
+                                    onDelete={() => handleDelete(need.id)}
+                                    onRefresh={handleRefresh} />
                                     </Grid>
                             ))
                         )}
@@ -314,7 +387,7 @@ const AziendeListaNeedCard = () => {
                     alignItems: 'center'
                 }}
                 >
-                <Button
+                {/* <Button
             sx={{
                 backgroundColor: 'black',
                 color: 'white',
@@ -328,7 +401,7 @@ const AziendeListaNeedCard = () => {
             onClick={handleGoBack}
             >
                 Indietro
-            </Button>
+            </Button> */}
             </Box>
 
             </Box>

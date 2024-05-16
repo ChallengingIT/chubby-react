@@ -7,7 +7,6 @@ import PrivateRoute                                                   from './co
 import Aziende                                                         from './pages/Aziende.jsx';
 import Need                                                            from './pages/Need.jsx';
 import Recruiting                                                      from './pages/Recruiting.jsx';
-// import DettaglioNeed                                                   from './pages/DettaglioPagine/DettaglioNeed.jsx';
 import Layout                                                          from './components/Layout.jsx';
 import LoginPage                                                       from './pages/LoginPage.jsx';
 import IntervisteList                                                  from './pages/IntervisteList.jsx';
@@ -31,8 +30,8 @@ import AggiungiNeedIDGragica                                           from './p
 import NotFoundPage                                                    from './pages/NotFoundPage.jsx';
 import AggiungiRecruitingHiring                                        from './pages/NuoveGrafiche/AggiungiRecruitingHiring.jsx';
 import AggiungiHeadHunting                                             from './pages/NuoveGrafiche/AggiungiHeadHunting.jsx';
-// import ProvaDashboard from './pages/ProvaDashboard.jsx';
-
+import TorchyThemeProvider                                             from './components/TorchyThemeProvider.jsx';
+import { AuthProvider } from './services/authContext.js';
 
 
 const App = () => {
@@ -54,14 +53,15 @@ const App = () => {
 
 
   return (
+    <AuthProvider>
+      <TorchyThemeProvider>
     <BrowserRouter>
       <Routes>
       <Route path='/' element={<LoginPage /> } />
       <Route path="/login" element={<LoginPage />} />
       <Route element={<Layout />}>
-
                 <Route path="/dashboard" element={
-                    <PrivateRoute roles={['ROLE_ADMIN',  'ROLE_RECRUITER', 'ROLE_BM', 'ROLE_USER']}>
+                    <PrivateRoute roles={['ROLE_ADMIN',  'ROLE_RECRUITER', 'ROLE_BM', 'ROLE_USER', "ROLE_BUSINESS"]}>
                       <Dashboard />
                     </PrivateRoute>
                   } />
@@ -81,12 +81,12 @@ const App = () => {
                     </PrivateRoute>
                   } />
                 <Route path="/need/:id"element={
-                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM']}>
+                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_BUSINESS']}>
                       <AziendeListaNeedCard />
                     </PrivateRoute>
                   } />
                 <Route path="/need/aggiungi/:id"element={
-                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM']}>
+                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_BUSINESS']}>
                       <AggiungiNeedIDGragica />
                     </PrivateRoute>
                   } />
@@ -110,21 +110,16 @@ const App = () => {
                       <Need />
                     </PrivateRoute>
                   } />
-                <Route path="/need/aggiungi"element={
+                <Route path="/need/aggiungi" element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM']}>
                       <AggiungiNeedGrafica />
                     </PrivateRoute>
                   } />
-                <Route path="/need/modifica/:id"element={
-                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
+                <Route path="/need/modifica/:id" element={
+                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER', 'ROLE_BUSINESS']}>
                       <ModificaNeedGrafica />
                     </PrivateRoute>
                   } />
-                {/* <Route path="/need/dettaglio/:id" element={
-                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
-                      <DettaglioNeed />
-                    </PrivateRoute>
-                  } /> */}
                 <Route path="/need/match/:id"element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
                       <NeedMatch2 />
@@ -186,6 +181,8 @@ const App = () => {
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
+  </TorchyThemeProvider>
+</AuthProvider>
   );
 };
   
