@@ -19,7 +19,7 @@ const ModificaIntervistaGrafica = () => {
     const candidatoID   = rowData.candidato.id;
 
     //stati della pagina
-    const [ activeSection,      setActiveSection        ] = useState('Informazioni Candidato');
+    const [ activeSection,      setActiveSection        ] = useState('Informazioni');
     const [ currentPageIndex,   setCurrentPageIndex     ] = useState(0);
     const [ alert,              setAlert                ] = useState({ open: false, message: ''});
     const [ errors,             setErrors               ] = useState({});
@@ -110,24 +110,24 @@ const ModificaIntervistaGrafica = () => {
         }, []);
 
 
-    const menu = [
-        {
-            title: 'Informazioni Candidato',
-            icon: <CircleOutlinedIcon />
-        },
-        { 
-            title: 'Hard e Soft Skills',
-            icon: <CircleOutlinedIcon />
-        },
-        {
-            title: 'Ultime Osservazione',
-            icon: <CircleOutlinedIcon />
-        },
-        {
-            title: 'Next Steps',
-            icon: <CircleOutlinedIcon />
-        }
-    ];
+        const menu = [
+            {
+                title: 'Informazioni',
+                icon: <CircleOutlinedIcon />
+            },
+            { 
+                title: 'Competenze',
+                icon: <CircleOutlinedIcon />
+            },
+            {
+                title: 'Retribuzione',
+                icon: <CircleOutlinedIcon />
+            },
+            {
+                title: 'Azioni',
+                icon: <CircleOutlinedIcon />
+            }
+        ];
 
       //stato per verificare che tutti i campi obbligatori sono stati compilati e quindi sbloccare il menu di navigazione
     const [sectionCompleted, setSectionCompleted] = useState(new Array(menu.length).fill(true));
@@ -311,56 +311,63 @@ const ModificaIntervistaGrafica = () => {
             }
             
             };
+
+
+            const valoriOptions = [
+                { value: 1, label: "1" },
+                { value: 2, label: "2" },
+                { value: 3, label: "3" },
+                { value: 4, label: "4" },
+            ];
     
 
     const campiObbligatori = [ "dataColloquio"];
-
     const fields = [
-        { type: "titleGroups",                label: "Informazioni candidato"             },
+        { type: "titleGroups",                label: "Informazioni"             },
         { label: "Data Incontro*",            name: "dataColloquio",          type: "date"},
         { label: "Intervistatore",            name: "idOwner",                type: "select", options: ownerOptions },
-        { label: "Tipologia Incontro",        name: "stato",                  type: "text"},
-        { label: "Nome",                      name: "nome",                   type: "text"},
-        { label: "Cognome",                   name: "cognome",                type: "text"},
+        { label: "Tipologia Incontro",        name: "stato",                  type: "text" },
+        { label: "Nome",                      name: "nome",                   type: "text" },
+        { label: "Cognome",                   name: "cognome",                type: "text" },
         { label: "Data di Nascita",           name: "dataNascita",            type: "date"},
-        { label: "Location",                  name: "location",               type: "text"},
+        { label: "Location",                  name: "location",               type: "text" },
         { label: "Job Title",                 name: "tipologia",              type: "text"},
         { label: "Anni di Esperienza",        name: "anniEsperienza",         type: "text"},
         { label: "Recapiti",                  name: "cellulare",              type: "text"},
+        { label: "Descrizione Candidato",     name: "note",                    type: "note", maxLength: 2000},
+
     
     
     
     
-        { type: "titleGroups",                label: "Hard e Soft Skills"                          },
-        { label: "Aderenza Posizione",        name: "aderenza",                type: "number"},
-        { label: "Coerenza Percorso",         name: "coerenza",                type: "number"},
-        { label: "Motivazione Posizione",     name: "motivazione",             type: "number"},
-        { label: "Standing",                  name: "standing",                type: "number"},
-        { label: "Energia",                   name: "energia",                 type: "number"},
-        { label: "Comunicazione",             name: "comunicazione",           type: "number"},
-        { label: "Livello di Inglese",        name: "inglese",                 type: "number"},
+        { type: "titleGroups",                label: "Competenze"                          },
+        { label: "Aderenza Posizione",        name: "aderenza",                type: "select", options: valoriOptions},
+        { label: "Coerenza Percorso",         name: "coerenza",                type: "select", options: valoriOptions},
+        { label: "Motivazione Posizione",     name: "motivazione",             type: "select", options: valoriOptions},
+        { label: "Standing",                  name: "standing",                type: "select", options: valoriOptions},
+        { label: "Energia",                   name: "energia",                 type: "select", options: valoriOptions},
+        { label: "Comunicazione",             name: "comunicazione",           type: "select", options: valoriOptions},
+        { label: "Livello di Inglese",        name: "inglese",                 type: "select", options: valoriOptions},
         { label: "Competenze vs ruolo",       name: "competenze",              type: "text",   maxLength: 90},
-        { label: "Valutazione",               name: "valutazione",             type: "number"},
-    
-    
-        { type: "titleGroups",                label: "Ultime Osservazioni"                 },
+        { label: "Valutazione",               name: "valutazione",             type: "select", options: valoriOptions},
         { label: "One word",                  name: "descrizioneCandidatoUna", type: "text", maxLength: 45},
         { label: "Lo vorresti nel tuo team?", name: "teamSiNo",                type: "text", maxLength: 45},
-        { label: "Descrizione Candidato",     name: "note",                    type: "note", maxLength: 2000},
-        
     
     
-        { type: "titleGroups",                label: "Next Steps"},
+        { type: "titleGroups",                label: "Retribuzione"                 },
         { label: "Disponibilità",             name: "disponibilita",           type: "text", maxLength: 45},
         { label: "RAL Attuale",               name: "attuale",                 type: "text", maxLength: 90},
         { label: "RAL Desiderata",            name: "desiderata",              type: "text", maxLength: 90},
         { label: "Proposta economica",        name: "proposta",                type: "text", maxLength: 90},
-        { label: "Follow Up",                 name: "idTipo",                  type: "select", options: tipoIntervistaOptions },
+        
+    
+    
+        { type: "titleGroups",                label: "Azioni"},
+        { label: "Follow Up",                 name: "tipo",                    type: "select", options: tipoIntervistaOptions },
         { label: "Preavviso",                 name: "preavviso",               type: "text", maxLength: 45},
         { label: "Next Deadline",             name: "dataAggiornamento",       type: "dateOra"},
         { label: "Owner next Deadline",       name: "idNextOwner",             type: "select", options: ownerOptions },
     ];
-
 
     const initialValues = {
         id:                               rowData.id                                  ,  
@@ -674,7 +681,7 @@ const ModificaIntervistaGrafica = () => {
                                 }}
                             >
                                 <ListItemIcon>
-                                    {sectionCompleted[index] ? <CheckCircleIcon /> : item.icon} 
+                                {sectionCompleted[index] ? <CheckCircleIcon /> : item.icon} 
                                 </ListItemIcon>
                                 <ListItemText primary={item.title} />
                             </ListItem>

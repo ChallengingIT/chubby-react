@@ -12,8 +12,12 @@ import {
     Button,
     Typography,
     } from '@mui/material';
+import { theme } from 'antd';
+import { useUserTheme } from '../components/TorchyThemeProvider.jsx';
 
 const AziendeListaNeedCard = () => {
+
+    const theme = useUserTheme();
 
     const params = useParams();
     const navigate = useNavigate();
@@ -355,7 +359,7 @@ const AziendeListaNeedCard = () => {
                 hasMore={hasMore}
                 loader={
                     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '1em', overflow: 'hidden' }}>
-                    <CircularProgress sx={{ color: '#00B400' }} />
+                    <CircularProgress sx={{ color: theme.palette.border.main }} />
                     </Box>
                 }
                 >

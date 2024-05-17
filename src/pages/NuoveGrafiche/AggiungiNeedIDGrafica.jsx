@@ -171,14 +171,16 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
         switch (index) {
         case 0:
             return [
-            "priorita",
-            "week",
-            "pubblicazione",
-            "screening",
-            "tipologia",
-            "stato",
-            "idOwner",
-            "location",
+                "descrizione",
+                "idKeyPeople",
+                "priorita",
+                "week",
+                "tipologia",
+                "idOwner",
+                "stato",
+                "location",
+                "pubblicazione",
+                "screening",
             ];
 
         default:
@@ -321,14 +323,16 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
     };
 
     const fieldObbligatori = [
+        "descrizione",
+        "idKeyPeople",
         "priorita",
         "week",
+        "tipologia",
+        "idOwner",
+        "stato",
+        "location",
         "pubblicazione",
         "screening",
-        "tipologia",
-        "stato",
-        "idOwner",
-        "location",
     ];
 
     const fields = [
@@ -342,14 +346,14 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
                 { value: 4,                   label: "Bassa" } 
                 ] },
             { label: "Week*",               name: "week",                         type: "week"                                                },
-            { label: "Tipologia*",          name: "idTipologia",                  type: "select",               options: tipologiaOptions     },
-            { label: "Tipologia Azienda",   name: "idTipo",                         type: "select",               options: [
+            { label: "Tipologia*",          name: "tipologia",                  type: "select",               options: tipologiaOptions     },
+            { label: "Tipologia Azienda",   name: "tipo",                         type: "select",               options: [
             { value: 1,                   label: "Cliente" },
             { value: 2,                   label: "Consulenza" },
             { value: 3,                   label: "Prospect" }
             ] },
             { label: "Owner*",                    name: "idOwner",                     type: "select",                 options: ownerOptions         },
-            { label: "Stato*",                    name: "idStato",                     type: "select",                 options: statoOptions         },
+            { label: "Stato*",                    name: "stato",                     type: "select",                 options: statoOptions         },
             { label: "Headcount",                 name: "numeroRisorse",               type: "number"                                         },
             { label: "Location*",                 name: "location",                    type: "text", maxLength: 45                                                  },
             { label: "Skills",                    name: "idSkills",                    type: "multipleSelect",         options: skillsOptions        },

@@ -118,7 +118,6 @@
         sessionStorage.setItem('theme', Object.keys(themes).find(key => themes[key] === selectedTheme));
     }, [user]);
 
-    console.log("user", user);
 
     return (
         <UserThemeContext.Provider value={theme}>
