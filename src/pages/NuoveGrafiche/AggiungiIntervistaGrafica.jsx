@@ -18,7 +18,7 @@ const AggiungiIntervistaGrafica = () => {
     const candidatoID   = location.state?.candidatoID;
 
     //stati della pagina
-    const [ activeSection,      setActiveSection        ] = useState('Informazioni Candidato');
+    const [ activeSection,      setActiveSection        ] = useState('Informazioni');
     const [ currentPageIndex,   setCurrentPageIndex     ] = useState(0);
     const [ alert,              setAlert                ] = useState({ open: false, message: ''});
     const [ errors,             setErrors               ] = useState({});
@@ -118,19 +118,19 @@ const AggiungiIntervistaGrafica = () => {
 
     const menu = [
         {
-            title: 'Informazioni Candidato',
+            title: 'Informazioni',
             icon: <CircleOutlinedIcon />
         },
         { 
-            title: 'Hard e Soft Skills',
+            title: 'Competenze',
             icon: <CircleOutlinedIcon />
         },
         {
-            title: 'Ultime Osservazione',
+            title: 'Retribuzione',
             icon: <CircleOutlinedIcon />
         },
         {
-            title: 'Next Steps',
+            title: 'Azioni',
             icon: <CircleOutlinedIcon />
         }
     ];
@@ -303,7 +303,7 @@ const AggiungiIntervistaGrafica = () => {
     const campiObbligatori = [ "dataColloquio"];
 
     const fields = [
-        { type: "titleGroups",                label: "Informazioni candidato"             },
+        { type: "titleGroups",                label: "Informazioni"             },
         { label: "Data Incontro*",            name: "dataColloquio",          type: "date"},
         { label: "Intervistatore",            name: "idOwner",                type: "select", options: ownerOptions },
         { label: "Tipologia Incontro",        name: "stato",                  type: "text" },
@@ -314,11 +314,13 @@ const AggiungiIntervistaGrafica = () => {
         { label: "Job Title",                 name: "tipologia",              type: "text"},
         { label: "Anni di Esperienza",        name: "anniEsperienza",         type: "text"},
         { label: "Recapiti",                  name: "cellulare",              type: "text"},
+        { label: "Descrizione Candidato",     name: "note",                    type: "note", maxLength: 2000},
+
     
     
     
     
-        { type: "titleGroups",                label: "Hard e Soft Skills"                          },
+        { type: "titleGroups",                label: "Competenze"                          },
         { label: "Aderenza Posizione",        name: "aderenza",                type: "select", options: valoriOptions},
         { label: "Coerenza Percorso",         name: "coerenza",                type: "select", options: valoriOptions},
         { label: "Motivazione Posizione",     name: "motivazione",             type: "select", options: valoriOptions},
@@ -328,20 +330,19 @@ const AggiungiIntervistaGrafica = () => {
         { label: "Livello di Inglese",        name: "inglese",                 type: "select", options: valoriOptions},
         { label: "Competenze vs ruolo",       name: "competenze",              type: "text",   maxLength: 90},
         { label: "Valutazione",               name: "valutazione",             type: "select", options: valoriOptions},
-    
-    
-        { type: "titleGroups",                label: "Ultime Osservazioni"                 },
         { label: "One word",                  name: "descrizioneCandidatoUna", type: "text", maxLength: 45},
         { label: "Lo vorresti nel tuo team?", name: "teamSiNo",                type: "text", maxLength: 45},
-        { label: "Descrizione Candidato",     name: "note",                    type: "note", maxLength: 2000},
-        
     
     
-        { type: "titleGroups",                label: "Next Steps"},
+        { type: "titleGroups",                label: "Retribuzione"                 },
         { label: "Disponibilità",             name: "disponibilita",           type: "text", maxLength: 45},
         { label: "RAL Attuale",               name: "attuale",                 type: "text", maxLength: 90},
         { label: "RAL Desiderata",            name: "desiderata",              type: "text", maxLength: 90},
         { label: "Proposta economica",        name: "proposta",                type: "text", maxLength: 90},
+        
+    
+    
+        { type: "titleGroups",                label: "Azioni"},
         { label: "Follow Up",                 name: "tipo",                    type: "select", options: tipoIntervistaOptions },
         { label: "Preavviso",                 name: "preavviso",               type: "text", maxLength: 45},
         { label: "Next Deadline",             name: "dataAggiornamento",       type: "dateOra"},

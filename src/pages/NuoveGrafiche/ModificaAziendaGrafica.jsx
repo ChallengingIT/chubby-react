@@ -101,22 +101,21 @@ const ModificaAziendaGrafica = () => {
         fetchProvinceOptions();
     }, []);
 
-
     const menu = [
         {
             title: 'Profilo',
-            icon: <CircleOutlinedIcon />
-        },
-        { 
-            title: 'Location',
             icon: <CircleOutlinedIcon />
         },
         {
             title: 'IDA',
             icon: <CircleOutlinedIcon />
         },
+        { 
+            title: 'Contratti',
+            icon: <CircleOutlinedIcon />
+        },
         {
-            title: 'File',
+            title: 'Documenti',
             icon: <CircleOutlinedIcon />
         }
     ];
@@ -145,15 +144,15 @@ const ModificaAziendaGrafica = () => {
         navigate(-1);
     };
 
-    //funzione per campire quali campi sono obbligatori nel form corrente
+       //funzione per campire quali campi sono obbligatori nel form corrente
     const getMandatoryFields = (index) => {
         switch (index) {
             case 0: 
-            return [ "denominazione", "settoreMercato" ]
+            return [ "denominazione", "settoreMercato", "citta" ]
             case 1:
-                return [ "citta", "provincia", "sedeOperativa", "cap" ];
+                return [ "status", "potenzialita", "semplicita" ];
             case 2:
-                return ["idOwner", "tipologia", "status", "potenzialita", "semplicita" ];
+                return [ "idOwner", "tipologia" ];
             default: 
                 return [];
         }
@@ -337,58 +336,60 @@ const ModificaAziendaGrafica = () => {
 
 
 
-        const campiObbligatori = [ "denominazione", "ragioneSociale", "idOwner", "citta", "provincia", "sedeOperativa", "cap", "tipologia", "status", "potenzialita", "semplicita" ];
+ 
+        const campiObbligatori = [ "denominazione", "ragioneSociale", "idOwner", "citta", "tipologia", "status", "potenzialita", "semplicita" ];
 
         const fields =[
             { type: "titleGroups",                label: "Profilo"            },
-            { label: 'Nome Azienda*',                   name: 'denominazione',            type:'text', maxLength: 90                                 },
-            { label: 'Settore Mercato*',                name: 'settoreMercato',           type:'text', maxLength: 255                               },
-            // { label: "Email",                           name: "email",                    type: "text"                             },
-            { label: "Partita IVA",                     name: "pi",                       type: "text", maxLength: 45                              },
-            { label: "Codice Fiscale",                  name: "cf",                       type: "text", maxLength: 45                              },
+            { label: 'Nome Azienda*',                   name: 'denominazione',            type:'text', maxLength: 90                              },
+            { label: 'Settore Mercato*',                name: 'settoreMercato',           type:'text', maxLength: 255                             },
+            { label: "Partita IVA",                     name: "pi",                       type: "text", maxLength: 45                             },
+            { label: "Codice Fiscale",                  name: "cf",                       type: "text", maxLength: 45                             },
             { label: "Pec",                             name: "pec",                      type: "text", maxLength: 45                             },
-            { label: "Codice Destinatario",             name: "codiceDestinatario",       type: "text", maxLength: 45                              },
-            { label: "Sito Web",                        name: "sito",                     type: "text", maxLength: 90                              },
-            { label: 'Scadenza Contratto',              name: 'dataScadenzaContratto',    type: 'date'                                              },
-            { label: 'Tipo di contratto',               name: 'ricerca',                  type: 'multipleSelect', options: ricercaOptions         },
-            { label: 'Note',                            name: 'note',                     type: 'note', maxLength: 2000                             },
-    
-    
-            { type: "titleGroups",                label: "Location"            },
-            { label: "Città*",                          name: "citta",                    type: "text", maxLength: 45                              },
-            { label: "Paese",                           name: "paese",                    type: "text", maxLength: 255                              },
-            { label: "Provincia*",                      name: "provincia",                type: "select", options: provinceOptions },
-            { label: "Sede Operativa*",                 name: "sedeOperativa",            type: "text", maxLength: 45                              },
-            { label: "Sede Legale",                     name: "sedeLegale",               type: "text", maxLength: 45                              },
-            { label: "CAP*",                            name: "cap",                      type: "text", maxLength: 6                             },
+            { label: "Codice Destinatario",             name: "codiceDestinatario",       type: "text", maxLength: 45                             },
+            { label: "Sito Web",                        name: "sito",                     type: "text", maxLength: 90                             },
+            { label: "Sede Legale",                      name: "sedeLegale",               type: "text", maxLength: 45                            },
+            { label: "Sede Operativa",                   name: "sedeOperativa",            type: "text", maxLength: 45                            },
+            { label: "Città*",                           name: "citta",                    type: "text", maxLength: 45                            },
+            { label: "Paese",                            name: "paese",                    type: "text", maxLength: 255                           },
 
 
             { type: 'titleGroups',                label: "IDA"     },
-            { label: "Owner*",                          name: "idOwner",                  type: "select", options: ownerOptions    },
-            { label: "Tipologia*",                      name: "tipologia",                type: "select", options: [
+            { label: "Potenzialità*",                          name: "potenzialita",                  type: "select", options: [
+                { value: 1, label: "Basso" },
+                { value: 2, label: "Medio" },
+                { value: 3, label: "Alto" },
+            ]  },
+            { label: "Semplicità*",                            name: "semplicita",                    type: "select", options: [
+                { value: 1, label: "Basso" },
+                { value: 2, label: "Medio" },
+                { value: 3, label: "Alto" },
+            ]  },
+            { label: "Complicità*",                                 name: "status",                        type: "select", options: [
+                { value: 1, label: "Basso" },
+                { value: 2, label: "Medio" },
+                { value: 3, label: "Alto" },
+            ]  },
+
+
+            { type: "titleGroups",                label: "Contratti"            },
+            { label: "Owner*",                                name: "idOwner",                       type: "select", options: ownerOptions    },
+            { label: "Tipologia*",                            name: "tipologia",                     type: "select", options: [
                 { value: "Cliente", label: "Cliente" },
                 { value: "Prospect", label: "Prospect" },
                 { value: "EXCLIENTE", label: "Ex Cliente" }
             ]  },
-            { label: "Potenzialità*",                          name: "potenzialita",                    type: "select", options: [
-                { value: 1, label: "1" },
-                { value: 2, label: "2" },
-                { value: 3, label: "3" },
-            ]  },
-            { label: "Semplicità*",                            name: "semplicita",                    type: "select", options: [
-                { value: 1, label: "1" },
-                { value: 2, label: "2" },
-                { value: 3, label: "3" },
-            ]  },
-            { label: "Stato*",                                 name: "status",                    type: "select", options: [
-                { value: 1, label: "1" },
-                { value: 2, label: "2" },
-                { value: 3, label: "3" },
-            ]  },
+            { label: 'Scadenza Contratto',              name: 'dataScadenzaContratto',    type: 'date'                                            },
+            { label: 'Tipo di servizio',               name: 'ricerca',                  type: 'multipleSelect', options: ricercaOptions         },
+            { label: 'Note',                            name: 'note',                     type: 'note', maxLength: 2000                           },
+
+
+
+
     
 
-            { type: "titleGroups",                label: "File"            },
-            { label: 'Logo',                      name: 'logo',                     type: 'aggiungiImmagine'                             },
+            { type: "titleGroups",   label: "Documenti"                            },
+            { label: 'Logo',         name: 'logo',  type: 'aggiungiImmagine'  },
         ];
 
 

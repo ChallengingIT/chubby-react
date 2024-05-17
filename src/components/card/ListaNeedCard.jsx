@@ -51,6 +51,8 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
     const [activeLink,            ] = useState(null);
     const [alert,     setAlert    ] = useState(false);
 
+
+
      //funzione per la chiusura dell'alert
     const handleCloseAlert = (reason) => {
         if (reason === 'clickaway') {
@@ -294,7 +296,9 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
                     <AutoModeIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
-                    {valori.stato.descrizione}
+                    {valori.stato && valori.stato.descrizione
+                    ? valori.stato.descrizione
+                    : "N/A"}
             </Typography>
                 </Box>
                 <Box sx={{ 
@@ -515,7 +519,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
                                                 borderBottom: 'none', 
                                             },
                                             '& .MuiFormLabel-root.Mui-focused': {
-                                                color: '#00B400',
+                                                color: theme.palette.border.main,
                                             }, 
                                         }}  
                                     />

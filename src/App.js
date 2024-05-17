@@ -33,6 +33,7 @@ import AggiungiHeadHunting                                             from './p
 import TorchyThemeProvider                                             from './components/TorchyThemeProvider.jsx';
 import { AuthProvider }                                                from './services/authContext.js';
 import DashboardClienti                                                from './pages/DashboardClienti.jsx';
+import ProvaDashboard from './pages/ProvaDashboard.jsx';
 
 
 const App = () => {
