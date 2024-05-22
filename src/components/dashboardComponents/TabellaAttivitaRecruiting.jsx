@@ -58,7 +58,7 @@ const TabellaAttivitaBusiness = ({ data = [] }) => {
                             id={`checkbox-list-label-${item.idAzione}`}
                             primary={
                                 <Typography style={{ textDecoration: item.completed ? 'line-through' : 'none' }}>
-                                    <span style={{ color: '#808080', fontWeight: 300}}>{item.data.slice(11, 16)} </span> 
+                                    <span style={{ color: '#808080', fontWeight: 300}}>{(item.data && item.data.slice(11, 16))  || null} </span> 
                                     <span style={{ color: '#00B400', fontWeight: 'bolder'}}> | </span>
                                     <span style={{ fontWeight: 'bold' }}>{item.azione}</span>
                                 </Typography>  
