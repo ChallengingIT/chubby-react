@@ -32,7 +32,8 @@ const TabellaAttivitaBusiness = ({ data = [] }) => {
     const hideScrollbarStyle = {
         width: '100%',
         maxHeight: 280,
-        overflow: 'auto',
+        overflowY: 'auto',
+        overflowX: 'hidden',
         bgcolor: 'transparent',
         '&::-webkit-scrollbar': { display: 'none' },
         scrollbarWidth: 'none',
