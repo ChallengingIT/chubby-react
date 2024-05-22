@@ -1,4 +1,9 @@
     import React, { useState } from "react";
+
+    import CloseIcon from "@mui/icons-material/Close";
+    import SearchIcon from "@mui/icons-material/Search";
+    import RestartAltIcon from "@mui/icons-material/RestartAlt";
+    import { useUserTheme } from "../TorchyThemeProvider";
     import {
     Button,
     Box,
@@ -11,10 +16,6 @@
     InputAdornment,
     Autocomplete,
     } from "@mui/material";
-    import CloseIcon from "@mui/icons-material/Close";
-    import SearchIcon from "@mui/icons-material/Search";
-    import RestartAltIcon from "@mui/icons-material/RestartAlt";
-    import { useUserTheme } from "../TorchyThemeProvider";
 
     function RicercheNeed({
     filtri,
@@ -28,13 +29,11 @@
     onRicerche,
     onNavigate,
     }) {
-
     const theme = useUserTheme();
 
     const [openFiltri, setOpenFiltri] = useState(false);
     const [isRotated, setIsRotated] = useState(false);
     const [localFiltri, setLocalFiltri] = useState({ ...filtri });
-
 
     const handleClickReset = () => {
         onReset();
@@ -101,9 +100,11 @@
             InputProps={{
                 startAdornment: (
                 <InputAdornment position="start">
-                    <SearchIcon sx={{
-                        color: theme.palette.icon.main
-                        }} />
+                    <SearchIcon
+                    sx={{
+                        color: theme.palette.icon.main,
+                    }}
+                    />
                 </InputAdornment>
                 ),
             }}
@@ -118,10 +119,10 @@
                 },
                 "&:hover fieldset": {
                     borderColor: theme.palette.border.main,
-                    },
+                },
                 "&.Mui-focused fieldset": {
                     borderColor: theme.palette.border.main,
-                    },
+                },
                 },
             }}
             />
@@ -308,26 +309,26 @@
                     )}
                 />
                 {/* <InputLabel id="owner-label">Owner</InputLabel>
-                                <Select
-                                    labelId="owner-label"
-                                    displayEmpty
-                                    value={filtri.owner || ''} 
-                                    onChange={onFilterChange('owner')}
-                                    renderValue={(selected) => {
-                                        if (selected === '') {
-                                            return <em></em>;
-                                        }
-                                        const selectedLabel = ownerOptions.find(option => option.value === selected)?.label;
-                                        return selectedLabel || selected;
-                                    }}
-                                >
-                                    
-                                    {ownerOptions.map((option) => (
-                                    <MenuItem key={option.value} value={option.value}>
-                                        {option.label}
-                                    </MenuItem>
-                                    ))}
-                                </Select> */}
+                                    <Select
+                                        labelId="owner-label"
+                                        displayEmpty
+                                        value={filtri.owner || ''} 
+                                        onChange={onFilterChange('owner')}
+                                        renderValue={(selected) => {
+                                            if (selected === '') {
+                                                return <em></em>;
+                                            }
+                                            const selectedLabel = ownerOptions.find(option => option.value === selected)?.label;
+                                            return selectedLabel || selected;
+                                        }}
+                                    >
+                                        
+                                        {ownerOptions.map((option) => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                            {option.label}
+                                        </MenuItem>
+                                        ))}
+                                    </Select> */}
                 </FormControl>
                 <FormControl fullWidth sx={{ mb: 2 }}>
                 <Autocomplete
@@ -376,9 +377,9 @@
 
                 <Box sx={{ display: "flex", justifyContent: "space-around" }}>
                 <IconButton
-                onClick={handleClickSearch}
-                disableRipple={true}
-                disableFocusRipple={true}
+                    onClick={handleClickSearch}
+                    disableRipple={true}
+                    disableFocusRipple={true}
                     sx={{
                     backgroundColor: theme.palette.button.main,
                     color: "white",

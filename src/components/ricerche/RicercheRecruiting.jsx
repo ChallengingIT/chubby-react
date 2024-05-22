@@ -1,4 +1,10 @@
     import React, { useState } from "react";
+
+    import CloseIcon from "@mui/icons-material/Close";
+    import SearchIcon from "@mui/icons-material/Search";
+    import { useNavigate } from "react-router-dom";
+    import RestartAltIcon from "@mui/icons-material/RestartAlt";
+    import { useUserTheme } from "../TorchyThemeProvider";
     import {
     Button,
     Box,
@@ -11,11 +17,6 @@
     InputAdornment,
     Autocomplete,
     } from "@mui/material";
-    import CloseIcon from "@mui/icons-material/Close";
-    import SearchIcon from "@mui/icons-material/Search";
-    import { useNavigate } from "react-router-dom";
-    import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import { useUserTheme } from "../TorchyThemeProvider";
 
     function RicercheRecruiting({
     filtri,
@@ -33,7 +34,6 @@ import { useUserTheme } from "../TorchyThemeProvider";
     const [isRotated, setIsRotated] = useState(false);
     const [localFiltri, setLocalFiltri] = useState({ ...filtri });
 
-
     const handleClickReset = () => {
         onReset();
         setLocalFiltri({ ...filtri });
@@ -41,12 +41,10 @@ import { useUserTheme } from "../TorchyThemeProvider";
         setTimeout(() => setIsRotated(false), 500);
     };
 
-
     const handleClickSearch = () => {
         onFilterChange(localFiltri);
         onSearch();
     };
-    
 
     const handleOpenFiltri = () => setOpenFiltri(true);
     const handleCloseFiltri = () => setOpenFiltri(false);
@@ -64,10 +62,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
             alignItems: "center",
             justifyContent: "space-between",
             borderRadius: "10px",
-            marginBottom: "2rem",
-            width: "100%",
-            overflow: "hidden",
-            p: 2
+            marginBottom: "4rem",
         }}
         >
         <Button
@@ -76,14 +71,15 @@ import { useUserTheme } from "../TorchyThemeProvider";
             onClick={navigateToAggiungi}
             sx={{
             minWidth: "12em",
+            // backgroundColor: "#00B401",
             bgcolor: theme.palette.button.main,
             color: theme.palette.textButton.main,
             borderRadius: "10px",
             textTransform: "none",
-            ml: 2,
+            mt: 2,
             "&:hover": {
                 bgcolor: theme.palette.button.main,
-            color: theme.palette.textButton.main,
+                color: theme.palette.textButton.main,
                 transform: "scale(1.05)",
             },
             }}
@@ -91,7 +87,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
             + Aggiungi Candidato
         </Button>
 
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
             {/* Barra di ricerca */}
             <TextField
             id="search-bar"
@@ -109,9 +105,11 @@ import { useUserTheme } from "../TorchyThemeProvider";
             InputProps={{
                 startAdornment: (
                 <InputAdornment position="start">
-                    <SearchIcon sx={{
-                        color: theme.palette.icon.main
-                        }} />
+                    <SearchIcon
+                    sx={{
+                        color: theme.palette.icon.main,
+                    }}
+                    />
                 </InputAdornment>
                 ),
             }}
@@ -172,7 +170,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
                 color: "black",
                 },
                 "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: theme.palette.border.main,
+                borderColor: theme.palette.border.main,
                 },
                 "& .MuiOutlinedInput-input": {
                 color: "black",
@@ -181,7 +179,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
                 color: "black",
                 },
                 "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
-                    borderColor: theme.palette.border.main,
+                borderColor: theme.palette.border.main,
                 },
             }}
             />
@@ -191,12 +189,12 @@ import { useUserTheme } from "../TorchyThemeProvider";
             color="primary"
             onClick={handleOpenFiltri}
             sx={{
-            minWidth: "12em",
             bgcolor: theme.palette.button.main,
             color: theme.palette.textButton.main,
+            minWidth: "12em",
             borderRadius: "10px",
             textTransform: "none",
-            mr: 2,
+            mt: 2,
             "&:hover": {
                 bgcolor: theme.palette.button.main,
                 color: theme.palette.textButton.main,
@@ -373,9 +371,9 @@ import { useUserTheme } from "../TorchyThemeProvider";
                 </FormControl>
                 <Box sx={{ display: "flex", justifyContent: "space-around" }}>
                 <IconButton
-                onClick={handleClickSearch}
-                disableRipple={true}
-                disableFocusRipple={true}
+                    onClick={handleClickSearch}
+                    disableRipple={true}
+                    disableFocusRipple={true}
                     sx={{
                     backgroundColor: theme.palette.button.main,
                     color: "white",
@@ -389,7 +387,8 @@ import { useUserTheme } from "../TorchyThemeProvider";
                     }}
                 >
                     <SearchIcon />
-                </IconButton>                <IconButton
+                </IconButton>{" "}
+                <IconButton
                     onClick={handleClickReset}
                     disableRipple={true}
                     disableFocusRipple={true}

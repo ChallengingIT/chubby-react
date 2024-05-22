@@ -3,6 +3,22 @@
     import LogoBianco from "../images/logoTorchyChallengingBianco.png";
     import TorciaBianca from "../images/torciaBianca.svg";
     import axios from "axios";
+    import DashboardIcon from "@mui/icons-material/Dashboard";
+    import PersonIcon from "@mui/icons-material/Person";
+    import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
+    import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+    import ExploreIcon from "@mui/icons-material/Explore";
+    import PersonSearchIcon from "@mui/icons-material/PersonSearch";
+    import ChecklistRtlIcon from "@mui/icons-material/ChecklistRtl";
+    import PersonAddIcon from "@mui/icons-material/PersonAdd"; // aggiungi candidato
+    import AddCircleIcon from "@mui/icons-material/AddCircle"; // aggiungi need
+    import AddIcCallIcon from "@mui/icons-material/AddIcCall"; // aggiungi appuntamento
+    import EmailIcon from "@mui/icons-material/Email"; // email
+    import SettingsIcon from '@mui/icons-material/Settings'; //impostazioni
+    import AppuntamentoModal from "./AppuntamentoModal";
+    import EmailModal from "./EmailModal";
+    import GroupAddIcon from '@mui/icons-material/GroupAdd'; //aggiungi owner
+    import { useUserTheme } from "./TorchyThemeProvider";
     import {
     Box,
     Drawer,
@@ -20,20 +36,6 @@
     Popover,
     Typography,
     } from "@mui/material";
-    import DashboardIcon from "@mui/icons-material/Dashboard";
-    import PersonIcon from "@mui/icons-material/Person";
-    import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
-    import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-    import ExploreIcon from "@mui/icons-material/Explore";
-    import PersonSearchIcon from "@mui/icons-material/PersonSearch";
-    import ChecklistRtlIcon from "@mui/icons-material/ChecklistRtl";
-    import PersonAddIcon from "@mui/icons-material/PersonAdd"; // aggiungi candidato
-    import AddCircleIcon from "@mui/icons-material/AddCircle"; // aggiungi need
-    import AddIcCallIcon from "@mui/icons-material/AddIcCall"; // aggiungi appuntamento
-    import EmailIcon from "@mui/icons-material/Email"; // email
-    import AppuntamentoModal from "./AppuntamentoModal";
-    import EmailModal from "./EmailModal";
-    import { useUserTheme } from "./TorchyThemeProvider";
 
     function Sidebar() {
     const theme = useUserTheme();
@@ -56,6 +58,10 @@
 
     const navigate = useNavigate();
     const location = useLocation();
+
+    const handleSettingsClick = () => {
+        navigate("/settings");
+    };
 
     const handleLogoutClick = () => {
         setIsLogoutPopupOpen(true);
@@ -106,6 +112,12 @@
 
     const handleAggiungiCandidatoClick = () => {
         navigate("/recruiting/aggiungi");
+        handleAdditionalDrawerClose();
+    };
+
+
+        const handleAggiungiOwner = () => {
+        navigate("/owner/aggiungi");
         handleAdditionalDrawerClose();
     };
 
@@ -218,7 +230,7 @@
             </ListItemIcon>
             </ListItem>
         )}
-        {!userHasRole("ROLE_BUSINESS") && (
+        {/* {!userHasRole("ROLE_BUSINESS") && (
         <ListItem button onClick={handleAppuntamentoClick}>
             <ListItemText sx={{ color: theme.palette.text.secondary }}>
             Appuntamento
@@ -227,6 +239,16 @@
             <AddIcCallIcon sx={{ color: theme.palette.icon.main }} />
             </ListItemIcon>
         </ListItem>
+        )} */}
+        {userHasRole("ROLE_BUSINESS") && (
+            <ListItem button onClick={handleAggiungiOwner}>
+            <ListItemText sx={{ color: theme.palette.text.secondary }}>
+                Aggiungi owner
+            </ListItemText>
+            <ListItemIcon>
+                <GroupAddIcon sx={{ color: theme.palette.icon.main }} />
+            </ListItemIcon>
+            </ListItem>
         )}
         <ListItem button onClick={handleEmailClick}>
             <ListItemText sx={{ color: theme.palette.text.secondary }}>
@@ -433,6 +455,34 @@
                 {ruolo()}
                 </Typography>
             </Box>
+            {/* <ListItem
+                selected={activeLink === "/settings"}
+                onClick={handleSettingsClick}
+                sx={{
+                "&:hover, &.Mui-selected": {
+                    backgroundColor: theme.palette.primary.main,
+                    cursor: "pointer",
+                    "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
+                    color: theme.palette.icon.secondary,
+                    },
+                    borderRadius: "10px",
+                },
+                borderRadius: "10px",
+                "& .MuiListItemIcon-root": {
+                    color: theme.palette.primary.main,
+                    minWidth: "2.2em",
+                },
+                "& .MuiListItemText-primary": {
+                    color: "white",
+                },
+                }}
+            >
+                <ListItemIcon>
+                <SettingsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Settings" />
+            </ListItem>
+            */}
             <ListItem
                 selected={activeLink === "/logout"}
                 onClick={handleLogoutClick}

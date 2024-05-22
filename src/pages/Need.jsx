@@ -3,6 +3,7 @@ import axios                                            from 'axios';
 import InfiniteScroll                                   from 'react-infinite-scroll-component';
 import RicercheNeed                                     from '../components/ricerche/RicercheNeed';
 import NeedCardFlip                                     from '../components/card/NeedCardFlip';
+import SchemePage                                       from '../components/SchemePage.jsx';
 
 import { 
     Box,
@@ -79,7 +80,7 @@ import {
             try {
             const responseNeed          = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
             const responseAzienda       = await axios.get("http://localhost:8080/aziende/react/select",          { headers: headers });
-            const responseOwner         = await axios.get("http://localhost:8080/aziende/react/owner",           { headers: headers });
+            const responseOwner         = await axios.get("http://localhost:8080/owner",           { headers: headers });
             const responseTipologia     = await axios.get("http://localhost:8080/need/react/tipologia",          { headers: headers });
             const responseStato         = await axios.get("http://localhost:8080/need/react/stato",              { headers: headers });
 
@@ -207,7 +208,7 @@ import {
             try {
                 const response = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
                 const responseAzienda       = await axios.get("http://localhost:8080/aziende/react/select",          { headers: headers });
-                const responseOwner         = await axios.get("http://localhost:8080/aziende/react/owner",           { headers: headers });
+                const responseOwner         = await axios.get("http://localhost:8080/owner",           { headers: headers });
                 const responseTipologia     = await axios.get("http://localhost:8080/need/react/tipologia",          { headers: headers });
                 const responseStato         = await axios.get("http://localhost:8080/need/react/stato",              { headers: headers });
 
@@ -343,19 +344,7 @@ const handleFilterChange = (name) => (event) => {
         };
 
         return(
-            <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto', width: '100vw' }}>
-            <Box sx={{ 
-                flexGrow: 1, 
-                p: 3, 
-                marginLeft: '12.8em', 
-                marginTop: '0.5em', 
-                marginBottom: '0.8em', 
-                marginRight: '0.8em', 
-                backgroundColor: '#FEFCFD', 
-                borderRadius: '20px', 
-                minHeight: '98vh',
-                mt: 1.5
-            }}>
+            <SchemePage>
                 <Box sx={{ 
                     position: 'sticky', 
                     top: 0, 
@@ -414,8 +403,7 @@ const handleFilterChange = (name) => (event) => {
                         }
                         </Grid>
                         </InfiniteScroll>
-                    </Box>
-                </Box>
+                        </SchemePage>
         );
     };
     export default Need;

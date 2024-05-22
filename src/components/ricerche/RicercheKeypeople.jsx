@@ -1,4 +1,10 @@
     import React, { useState } from "react";
+
+    import CloseIcon from "@mui/icons-material/Close";
+    import SearchIcon from "@mui/icons-material/Search";
+    import { useNavigate } from "react-router-dom";
+    import RestartAltIcon from "@mui/icons-material/RestartAlt";
+    import { useUserTheme } from "../TorchyThemeProvider";
     import {
     Button,
     Box,
@@ -11,11 +17,6 @@
     InputAdornment,
     Autocomplete,
     } from "@mui/material";
-    import CloseIcon from "@mui/icons-material/Close";
-    import SearchIcon from "@mui/icons-material/Search";
-    import { useNavigate } from "react-router-dom";
-    import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import { useUserTheme } from "../TorchyThemeProvider";
 
     function RicercheKeypeople({
     filtri,
@@ -33,14 +34,12 @@ import { useUserTheme } from "../TorchyThemeProvider";
     const [isRotated, setIsRotated] = useState(false);
     const [localFiltri, setLocalFiltri] = useState({ ...filtri });
 
-
     const handleClickReset = () => {
         onReset();
         setLocalFiltri({ ...filtri });
         setIsRotated(true);
         setTimeout(() => setIsRotated(false), 500);
     };
-
 
     const handleClickSearch = () => {
         onFilterChange(localFiltri);
@@ -104,9 +103,11 @@ import { useUserTheme } from "../TorchyThemeProvider";
             InputProps={{
                 startAdornment: (
                 <InputAdornment position="start">
-                    <SearchIcon sx={{
-                        color: theme.palette.icon.main
-                        }} />
+                    <SearchIcon
+                    sx={{
+                        color: theme.palette.icon.main,
+                    }}
+                    />
                 </InputAdornment>
                 ),
             }}
@@ -314,9 +315,9 @@ import { useUserTheme } from "../TorchyThemeProvider";
 
                 <Box sx={{ display: "flex", justifyContent: "space-around" }}>
                 <IconButton
-                onClick={handleClickSearch}
-                disableRipple={true}
-                disableFocusRipple={true}
+                    onClick={handleClickSearch}
+                    disableRipple={true}
+                    disableFocusRipple={true}
                     sx={{
                     backgroundColor: theme.palette.button.main,
                     color: "white",

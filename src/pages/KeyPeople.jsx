@@ -11,6 +11,7 @@ import {
     Grid,
     Skeleton
     } from '@mui/material';
+import SchemePage from '../components/SchemePage';
 
 
 const Keypeople = () => {
@@ -33,6 +34,7 @@ const Keypeople = () => {
         };
     });
 
+    
     //stati per la paginazione
     const [ pagina,             setPagina       ] = useState(0);
     const [ hasMore,            setHasMore      ] = useState(false);
@@ -84,7 +86,7 @@ const Keypeople = () => {
     
         const response        = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
         const responseCliente = await axios.get("http://localhost:8080/aziende/react/select",            { headers: headers });
-        const responseOwner   = await axios.get("http://localhost:8080/aziende/react/owner",             { headers: headers });
+        const responseOwner   = await axios.get("http://localhost:8080/owner",             { headers: headers });
         const responseStati   = await axios.get("http://localhost:8080/keypeople/react/stati",            { headers: headers });
 
 
@@ -205,7 +207,7 @@ const Keypeople = () => {
         try {
             const response = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
             const responseCliente = await axios.get("http://localhost:8080/aziende/react/select",            { headers: headers });
-            const responseOwner   = await axios.get("http://localhost:8080/aziende/react/owner",             { headers: headers });
+            const responseOwner   = await axios.get("http://localhost:8080/owner",             { headers: headers });
             const responseStati   = await axios.get("http://localhost:8080/keypeople/react/stati",            { headers: headers });
 
             if (Array.isArray(responseOwner.data)) {
@@ -333,19 +335,7 @@ const Keypeople = () => {
 
 
     return(
-        <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto', width: '100vw' }}>
-            <Box sx={{ 
-                flexGrow: 1, 
-                p: 3, 
-                marginLeft: '12.8em', 
-                marginTop: '0.5em', 
-                marginBottom: '0.8em', 
-                marginRight: '0.8em', 
-                backgroundColor: '#FEFCFD', 
-                borderRadius: '20px', 
-                minHeight: '98vh',
-                mt: 1.5
-            }}>
+       <SchemePage>
                 <Box sx={{ 
                     position: 'sticky', 
                     top: 0, 
@@ -403,8 +393,7 @@ const Keypeople = () => {
                     }
                     </Grid>
                     </InfiniteScroll>
-                    </Box>
-        </Box>
+                    </SchemePage>
     );
 };
 export default Keypeople;

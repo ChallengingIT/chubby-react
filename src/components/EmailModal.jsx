@@ -10,7 +10,7 @@ import {
   Typography,
   Slide,
   Snackbar,
-  Alert
+  Alert,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -19,11 +19,9 @@ import axios from "axios";
 import { useUserTheme } from "./TorchyThemeProvider";
 
 function EmailModal({ open, handleClose }) {
-
   const theme = useUserTheme();
 
-
-  const [ alert, setAlert ] = useState(false);
+  const [alert, setAlert] = useState(false);
 
   const user = JSON.parse(sessionStorage.getItem("user"));
   const token = user?.token;
@@ -68,27 +66,29 @@ function EmailModal({ open, handleClose }) {
         onClose();
       }
       if (responseInviaEmail.data === "ERRORE") {
-        setAlert({ open: true, message: "errore durante il salvataggio dell'azienda!" });
+        setAlert({
+          open: true,
+          message: "errore durante il salvataggio dell'azienda!",
+        });
         console.error("L'azienda non è stata salvata.");
         return;
-    }
+      }
     } catch (error) {
       console.error("Errore durante l'invio dell'email: ", error);
     }
   };
 
-
-   //funzione per la chiusura dell'alert
+  //funzione per la chiusura dell'alert
   const handleCloseAlert = (reason) => {
-    if (reason === 'clickaway') {
-        return;
+    if (reason === "clickaway") {
+      return;
     }
-    setAlert({...alert, open: false});
+    setAlert({ ...alert, open: false });
   };
 
   //funzione per la transizione dell'alert
   function TransitionDown(props) {
-      return <Slide {...props} direction="down" />;
+    return <Slide {...props} direction="down" />;
   }
 
   return (
@@ -238,7 +238,7 @@ function EmailModal({ open, handleClose }) {
                   borderBottom: "none",
                 },
                 "& .MuiFormLabel-root.Mui-focused": {
-                  color:theme.palette.border.main,
+                  color: theme.palette.border.main,
                 },
               }}
             />
@@ -264,11 +264,21 @@ function EmailModal({ open, handleClose }) {
         </DialogContent>
         <DialogActions></DialogActions>
       </LocalizationProvider>
-      <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} TransitionComponent={TransitionDown}>
-                <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
-                    {alert.message}
-                </Alert>
-        </Snackbar>
+      <Snackbar
+        open={alert.open}
+        autoHideDuration={6000}
+        onClose={handleCloseAlert}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        TransitionComponent={TransitionDown}
+      >
+        <Alert
+          onClose={handleCloseAlert}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          {alert.message}
+        </Alert>
+      </Snackbar>
     </Dialog>
   );
 }

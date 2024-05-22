@@ -19,6 +19,7 @@ import {
   Box,
   Typography
 } from '@mui/material';
+import SchemePage from '../components/SchemePage.jsx';
 
 function IntervisteList() {
 
@@ -226,20 +227,7 @@ state={params.row}
 
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', flexGrow: 1, overflow: 'hidden'}}>
-      <Box sx={{
-        p: 2,
-        ml: 25,
-        mt: 1.5,
-        mb: 0.5,
-        mr: 0.8,
-        backgroundColor: '#FEFCFD',
-        borderRadius: '10px',
-        height: '97vh',
-        width: '100%',
-        flexDirection: 'column',
-        overflow: 'hidden'
-      }}>
+    <SchemePage>
               <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%', mt: 5}}>
               <Button 
               variant="contained"
@@ -347,9 +335,7 @@ state={params.row}
                         </Button>
                         </DialogActions>
                     </Dialog>
-                    
-            </Box>
-    </Box>
+                    </SchemePage>
     );
 };
 

@@ -1,4 +1,9 @@
     import React, { useState } from "react";
+
+    import CloseIcon from "@mui/icons-material/Close";
+    import SearchIcon from "@mui/icons-material/Search";
+    import RestartAltIcon from "@mui/icons-material/RestartAlt";
+    import { useUserTheme } from "../TorchyThemeProvider";
     import {
     Button,
     Box,
@@ -11,10 +16,6 @@
     InputAdornment,
     Autocomplete,
     } from "@mui/material";
-    import CloseIcon from "@mui/icons-material/Close";
-    import SearchIcon from "@mui/icons-material/Search";
-    import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import { useUserTheme } from "../TorchyThemeProvider";
 
     function RicercheNeedMatch({
     filtri,
@@ -26,19 +27,15 @@ import { useUserTheme } from "../TorchyThemeProvider";
     seniorityOptions,
     onGoBack,
     }) {
-    
     const theme = useUserTheme();
     const [openFiltri, setOpenFiltri] = useState(false);
     const [isRotated, setIsRotated] = useState(false);
     const [localFiltri, setLocalFiltri] = useState({ ...filtri });
 
-
-
     const handleClickSearch = () => {
         onFilterChange(localFiltri);
         onSearch();
     };
-
 
     const handleClickReset = () => {
         onReset();
@@ -50,7 +47,6 @@ import { useUserTheme } from "../TorchyThemeProvider";
     const handleOpenFiltri = () => setOpenFiltri(true);
     const handleCloseFiltri = () => setOpenFiltri(false);
 
-
     return (
         <Box
         sx={{
@@ -61,33 +57,31 @@ import { useUserTheme } from "../TorchyThemeProvider";
             justifyContent: "space-between",
             borderRadius: "10px",
             marginBottom: "4rem",
-            width: "100%",
-            overflow: "hidden",
-            p: 2
         }}
         >
         <Button
             onClick={onGoBack}
             variant="contained"
             sx={{
-                minWidth: "12em",
+            minWidth: "12em",
+            // backgroundColor: "#00B401",
+            bgcolor: theme.palette.button.main,
+            color: theme.palette.textButton.main,
+            borderRadius: "10px",
+            textTransform: "none",
+            mt: 2,
+            "&:hover": {
                 bgcolor: theme.palette.button.main,
                 color: theme.palette.textButton.main,
-                borderRadius: "10px",
-                textTransform: "none",
-                ml: 2,
-                "&:hover": {
-                    bgcolor: theme.palette.button.main,
-                    color: theme.palette.textButton.main,
-                    transform: "scale(1.05)",
-                },
-                }}
+                transform: "scale(1.05)",
+            },
+            }}
         >
             <span style={{ marginRight: "0.5rem" }}>{"<"}</span>
             Indietro
         </Button>
 
-        <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
             {/* Barra di ricerca */}
             <TextField
             id="search-bar"
@@ -105,9 +99,11 @@ import { useUserTheme } from "../TorchyThemeProvider";
             InputProps={{
                 startAdornment: (
                 <InputAdornment position="start">
-                    <SearchIcon sx={{
-                        color: theme.palette.icon.main
-                        }} />
+                    <SearchIcon
+                    sx={{
+                        color: theme.palette.icon.main,
+                    }}
+                    />
                 </InputAdornment>
                 ),
             }}
@@ -168,7 +164,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
                 color: "black",
                 },
                 "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: theme.palette.border.main,
+                borderColor: theme.palette.border.main,
                 },
                 "& .MuiOutlinedInput-input": {
                 color: "black",
@@ -177,7 +173,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
                 color: "black",
                 },
                 "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
-                    borderColor: theme.palette.border.main,
+                borderColor: theme.palette.border.main,
                 },
             }}
             />
@@ -188,18 +184,18 @@ import { useUserTheme } from "../TorchyThemeProvider";
             color="primary"
             onClick={handleOpenFiltri}
             sx={{
-                minWidth: "12em",
+            bgcolor: theme.palette.button.main,
+            color: theme.palette.textButton.main,
+            minWidth: "12em",
+            borderRadius: "10px",
+            textTransform: "none",
+            mt: 2,
+            "&:hover": {
                 bgcolor: theme.palette.button.main,
                 color: theme.palette.textButton.main,
-                borderRadius: "10px",
-                textTransform: "none",
-                ml: 2,
-                "&:hover": {
-                    bgcolor: theme.palette.button.main,
-                    color: theme.palette.textButton.main,
-                    transform: "scale(1.05)",
-                },
-                }}
+                transform: "scale(1.05)",
+            },
+            }}
         >
             Filtra per:
         </Button>
@@ -370,9 +366,9 @@ import { useUserTheme } from "../TorchyThemeProvider";
                 </FormControl>
                 <Box sx={{ display: "flex", justifyContent: "space-around" }}>
                 <IconButton
-                onClick={handleClickSearch}
-                disableRipple={true}
-                disableFocusRipple={true}
+                    onClick={handleClickSearch}
+                    disableRipple={true}
+                    disableFocusRipple={true}
                     sx={{
                     backgroundColor: theme.palette.button.main,
                     color: "white",
@@ -386,7 +382,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
                     }}
                 >
                     <SearchIcon />
-                </IconButton> 
+                </IconButton>
                 <IconButton
                     onClick={handleClickReset}
                     disableRipple={true}

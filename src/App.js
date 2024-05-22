@@ -1,6 +1,6 @@
 import './App.css';
 import { BrowserRouter, Routes, Route }                               from 'react-router-dom';
-import React                                                          from 'react';
+import React, { useEffect, useState }                                                          from 'react';
 import PrivateRoute                                                   from './components/PrivateRoute.jsx';
 
 
@@ -12,28 +12,35 @@ import LoginPage                                                       from './p
 import IntervisteList                                                  from './pages/IntervisteList.jsx';
 import Keypeople                                                       from './pages/Keypeople.jsx';
 import Hiring                                                          from './pages/Hiring.jsx';
-import NeedMatch2                                                      from './pages/NeedMatch2.jsx';
+import NeedMatch                                                      from './pages/NeedMatch.jsx';
 import AziendeListaNeedCard                                            from './pages/AziendeListaNeedCard.jsx';
 import DettaglioIntervista                                             from './pages/VisualizzaPagine/DettaglioIntervista.jsx';
-import Dashboard                                                       from './pages/Dashboard.jsx';
-import AggiungiAziendaGrafica                                          from './pages/NuoveGrafiche/AggiungiAziendaGrafica.jsx';
-import ModificaAziendaGrafica                                          from './pages/NuoveGrafiche/ModificaAziendaGrafica.jsx';
-import AggiungiKeypeopleGrafica                                        from './pages/NuoveGrafiche/AggiungiKeypeopleGrafica.jsx';
-import ModificaKeypeopleGrafica                                        from './pages/NuoveGrafiche/ModificaKeypeopleGrafica.jsx';
-import AggiungiRecruitingGrafica                                       from './pages/NuoveGrafiche/AggiungiRecruitingGrafica.jsx';
-import ModificaRecruitingGrafica                                       from './pages/NuoveGrafiche/ModificaRecruitingGrafica.jsx';
-import AggiungiIntervistaGrafica                                       from './pages/NuoveGrafiche/AggiungiIntervistaGrafica.jsx';
-import ModificaIntervistaGrafica                                       from './pages/NuoveGrafiche/ModificaIntervistaGrafica.jsx';
-import AggiungiNeedGrafica                                             from './pages/NuoveGrafiche/AggiungiNeedGrafica.jsx';
-import ModificaNeedGrafica                                             from './pages/NuoveGrafiche/ModificaNeedGrafica.jsx';
-import AggiungiNeedIDGragica                                           from './pages/NuoveGrafiche/AggiungiNeedIDGrafica.jsx';
+import AggiungiAziendaGrafica                                          from './pages/AggiungiForm/AggiungiAziendaGrafica.jsx';
+import ModificaAziendaGrafica                                          from './pages/ModificaForm/ModificaAziendaGrafica.jsx';
+import AggiungiKeypeopleGrafica                                        from './pages/AggiungiForm/AggiungiKeypeopleGrafica.jsx';
+import ModificaKeypeopleGrafica                                        from './pages/ModificaForm/ModificaKeypeopleGrafica.jsx';
+import AggiungiRecruitingGrafica                                       from './pages/AggiungiForm/AggiungiRecruitingGrafica.jsx';
+import ModificaRecruitingGrafica                                       from './pages/ModificaForm/ModificaRecruitingGrafica.jsx';
+import AggiungiIntervistaGrafica                                       from './pages/AggiungiForm/AggiungiIntervistaGrafica.jsx';
+import ModificaIntervistaGrafica                                       from './pages/ModificaForm/ModificaIntervistaGrafica.jsx';
+import AggiungiNeedGrafica                                             from './pages/AggiungiForm/AggiungiNeedGrafica.jsx';
+import ModificaNeedGrafica                                             from './pages/ModificaForm/ModificaNeedGrafica.jsx';
+import AggiungiNeedIDGragica                                           from './pages/AggiungiForm/AggiungiNeedIDGrafica.jsx';
 import NotFoundPage                                                    from './pages/NotFoundPage.jsx';
-import AggiungiRecruitingHiring                                        from './pages/NuoveGrafiche/AggiungiRecruitingHiring.jsx';
-import AggiungiHeadHunting                                             from './pages/NuoveGrafiche/AggiungiHeadHunting.jsx';
+import AggiungiRecruitingHiring                                        from './pages/AggiungiForm/AggiungiRecruitingHiring.jsx';
+import AggiungiHeadHunting                                             from './pages/AggiungiForm/AggiungiHeadHunting.jsx';
 import TorchyThemeProvider                                             from './components/TorchyThemeProvider.jsx';
 import { AuthProvider }                                                from './services/authContext.js';
 import DashboardClienti                                                from './pages/DashboardClienti.jsx';
-import ProvaDashboard from './pages/ProvaDashboard.jsx';
+import AggiungiStaffing                                                from './pages/AggiungiForm/AggiungiStaffing.jsx';
+import AggiungiTemporary                                               from './pages/AggiungiForm/AggiungiTemporary.jsx';
+import ProvaDashboard                                                  from './pages/ProvaDashboard.jsx';
+import SettingsPage                                                    from './pages/SettingsPage.jsx';
+import ModificaStaffing                                                from './pages/ModificaForm/ModificaStaffing.jsx';
+import ModificaTemporary                                               from './pages/ModificaForm/ModificaTemporary.jsx';
+import ModificaHeadHunting                                             from './pages/ModificaForm/ModificaHeadHunting.jsx';
+import ModificaHiringRecruiting                                        from './pages/ModificaForm/ModificaHiringRecruiting.jsx';
+import AggiungiOwner                                                   from './pages/AggiungiForm/AggiungiOwner.jsx';
 
 
 const App = () => {
@@ -54,6 +61,8 @@ const App = () => {
 
 
 
+
+
   return (
     <AuthProvider>
       <TorchyThemeProvider>
@@ -64,7 +73,7 @@ const App = () => {
       <Route element={<Layout />}>
                 <Route path="/dashboard" element={
                     <PrivateRoute roles={['ROLE_ADMIN',  'ROLE_RECRUITER', 'ROLE_BM', 'ROLE_USER', "ROLE_BUSINESS"]}>
-                      <Dashboard />
+                      <ProvaDashboard />
                     </PrivateRoute>
                   } />
                   <Route path="/homepage" element={
@@ -129,7 +138,7 @@ const App = () => {
                   } />
                 <Route path="/need/match/:id"element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM', 'ROLE_RECRUITER']}>
-                      <NeedMatch2 />
+                      <NeedMatch />
                     </PrivateRoute>
                   } />
                 <Route path="/recruiting"element={
@@ -173,15 +182,65 @@ const App = () => {
                     </PrivateRoute>
                   } />
                                   
-                  <Route path="/aggiungi/recruiting" element={
+                  <Route path="hiring/aggiungi/recruiting/:id" element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM']}>
                       <AggiungiRecruitingHiring />
                     </PrivateRoute>
                   } />
 
-                <Route path="/aggiungi/headhunting" element={
+                <Route path="hiring/aggiungi/Head_Hunting/:id" element={
                     <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM']}>
                       <AggiungiHeadHunting />
+                    </PrivateRoute>
+                  } />
+                  
+
+                  <Route path="hiring/aggiungi/temporary/:id" element={
+                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM']}>
+                      <AggiungiTemporary />
+                    </PrivateRoute>
+                  } />
+
+                  <Route path="hiring/aggiungi/staffing/:id" element={
+                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM']}>
+                      <AggiungiStaffing />
+                    </PrivateRoute>
+                  } />
+
+                  <Route path="hiring/modifica/staffing/:idHiring/:idScheda" element={
+                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM']}>
+                      <ModificaStaffing />
+                    </PrivateRoute>
+                  } />
+
+                  <Route path="hiring/modifica/temporary/:idHiring/:idScheda" element={
+                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM']}>
+                      <ModificaTemporary />
+                    </PrivateRoute>
+                  } />
+
+                  <Route path="hiring/modifica/Head_Hunting/:idHiring/:idScheda" element={
+                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM']}>
+                      <ModificaHeadHunting />
+                    </PrivateRoute>
+                  } />
+
+                  <Route path="hiring/modifica/recruiting/:idHiring/:idScheda" element={
+                    <PrivateRoute roles={['ROLE_ADMIN', 'ROLE_BM']}>
+                      <ModificaHiringRecruiting />
+                    </PrivateRoute>
+                  } />
+
+
+                  <Route path="owner/aggiungi" element={
+                    <PrivateRoute roles={['ROLE_BUSINESS']}>
+                      <AggiungiOwner />
+                    </PrivateRoute>
+                  } />
+
+                  <Route path="/settings" element={
+                    <PrivateRoute roles={['ROLE_ADMIN',  'ROLE_RECRUITER', 'ROLE_BM', 'ROLE_USER', "ROLE_BUSINESS"]}>
+                      <SettingsPage />
                     </PrivateRoute>
                   } />
                 </Route>

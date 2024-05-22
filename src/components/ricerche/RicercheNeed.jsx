@@ -1,4 +1,11 @@
     import React, { useState } from "react";
+
+    import CloseIcon from "@mui/icons-material/Close";
+    import SearchIcon from "@mui/icons-material/Search";
+    import { useNavigate } from "react-router-dom";
+    import RestartAltIcon from "@mui/icons-material/RestartAlt";
+    import axios from "axios";
+    import { useUserTheme } from "../TorchyThemeProvider";
     import {
     Button,
     Box,
@@ -11,12 +18,6 @@
     InputAdornment,
     Autocomplete,
     } from "@mui/material";
-    import CloseIcon from "@mui/icons-material/Close";
-    import SearchIcon from "@mui/icons-material/Search";
-    import { useNavigate } from "react-router-dom";
-    import RestartAltIcon from "@mui/icons-material/RestartAlt";
-    import axios from "axios";
-import { useUserTheme } from "../TorchyThemeProvider";
 
     function RicercheNeed({
     filtri,
@@ -33,8 +34,6 @@ import { useUserTheme } from "../TorchyThemeProvider";
 
     const theme = useUserTheme();
 
-
-
     const userHasRole = (roleToCheck) => {
         const userString = sessionStorage.getItem("user");
         if (!userString) {
@@ -46,13 +45,11 @@ import { useUserTheme } from "../TorchyThemeProvider";
 
     const isRecruiter = userHasRole("ROLE_RECRUITER");
 
-
     const [openFiltri, setOpenFiltri] = useState(false);
     const [isRotated, setIsRotated] = useState(false);
     const [contactOptions, setContactOptions] = useState([]);
     const [selectedContact, setSelectedContact] = useState("");
     const [localFiltri, setLocalFiltri] = useState({ ...filtri });
-
 
     const handleAziendaChange = async (event, newValue) => {
         onFilterChange("azienda")({ target: { value: newValue?.value || null } });
@@ -83,7 +80,6 @@ import { useUserTheme } from "../TorchyThemeProvider";
         onContactChange(contactId);
     };
 
-
     const handleClickSearch = () => {
         onFilterChange(localFiltri);
         onSearch();
@@ -113,37 +109,35 @@ import { useUserTheme } from "../TorchyThemeProvider";
             flexDirection: "row",
             alignItems: "center",
             // justifyContent: isRecruiter ? "center" : "space-between",
-            justifyContent: 'space-between',
+            justifyContent: "space-between",
             borderRadius: "10px",
             marginBottom: "4rem",
-            gap: 20
+            gap: 20,
         }}
         >
         {!isRecruiter && (
-        <Button
+            <Button
             variant="contained"
             // color="primary"
             onClick={navigateToAggiungi}
             sx={{
-            mt: 2,
-            minWidth: "12em",
-            bgcolor: theme.palette.button.main,
-            color: theme.palette.textButton.main,
-            borderRadius: "10px",
-            textTransform: "none",
-            "&:hover": {
+                mt: 2,
+                minWidth: "12em",
+                bgcolor: theme.palette.button.main,
+                color: theme.palette.textButton.main,
+                borderRadius: "10px",
+                textTransform: "none",
+                "&:hover": {
                 bgcolor: theme.palette.button.main,
                 color: theme.palette.textButton.main,
                 transform: "scale(1.05)",
-            },
+                },
             }}
-        >
+            >
             + Aggiungi Need
-        </Button>
+            </Button>
         )}
-        {isRecruiter && (
-            <Box sx={{ width: '10%'}}/>
-        )}
+        {isRecruiter && <Box sx={{ width: "10%" }} />}
 
         <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
             {/* Barra di ricerca */}
@@ -163,9 +157,11 @@ import { useUserTheme } from "../TorchyThemeProvider";
             InputProps={{
                 startAdornment: (
                 <InputAdornment position="start">
-                    <SearchIcon sx={{
-                        color: theme.palette.icon.main
-                        }} />
+                    <SearchIcon
+                    sx={{
+                        color: theme.palette.icon.main,
+                    }}
+                    />
                 </InputAdornment>
                 ),
             }}
@@ -193,7 +189,6 @@ import { useUserTheme } from "../TorchyThemeProvider";
             // color="primary"
             onClick={handleOpenFiltri}
             sx={{
-            
             bgcolor: theme.palette.button.main,
             color: theme.palette.textButton.main,
             mt: 2,
@@ -457,9 +452,9 @@ import { useUserTheme } from "../TorchyThemeProvider";
 
                 <Box sx={{ display: "flex", justifyContent: "space-around" }}>
                 <IconButton
-                onClick={handleClickSearch}
-                disableRipple={true}
-                disableFocusRipple={true}
+                    onClick={handleClickSearch}
+                    disableRipple={true}
+                    disableFocusRipple={true}
                     sx={{
                     backgroundColor: theme.palette.button.main,
                     color: "white",
@@ -473,7 +468,8 @@ import { useUserTheme } from "../TorchyThemeProvider";
                     }}
                 >
                     <SearchIcon />
-                </IconButton>                <IconButton
+                </IconButton>{" "}
+                <IconButton
                     onClick={handleClickReset}
                     disableRipple={true}
                     disableFocusRipple={true}

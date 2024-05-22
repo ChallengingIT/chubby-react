@@ -1,122 +1,125 @@
-import React, { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
-import CircularProgress from '@mui/material/CircularProgress';
-import { DataGrid } from '@mui/x-data-grid/DataGrid';
+    import React, { useEffect, useState } from "react";
+    import Box from "@mui/material/Box";
+    import CircularProgress from "@mui/material/CircularProgress";
+    import { DataGrid } from "@mui/x-data-grid/DataGrid";
 
-
-const Tabella = ({ data, columns, title, getRowId, pagina, quantita, onPageChange, righeTot }) => {
-
+    const Tabella = ({
+    data,
+    columns,
+    title,
+    getRowId,
+    pagina,
+    quantita,
+    onPageChange,
+    righeTot,
+    }) => {
     // const [ rowPerPage, setRowsPerPage ] = useState( parseInt(sessionStorage.getItem("rowsPerPage") || "25", 10));
     // const [ page, setPage ] = useState( parseInt(sessionStorage.getItem("currentPage" || "0", 10)));
-    const [ loading, setLoading] = useState(false);
-    const [ showNoDataMessage, setShowNoDataMessage ] = useState(false);
-
-
+    const [loading, setLoading] = useState(false);
+    const [showNoDataMessage, setShowNoDataMessage] = useState(false);
 
     useEffect(() => {
-        if(data.length === 0) {
-            setLoading(true);
-            const timer = setTimeout(() => {
-                setLoading(false);
-                setShowNoDataMessage(true);
-            }, 500);
-            return () => clearTimeout(timer);
-        } else {
+        if (data.length === 0) {
+        setLoading(true);
+        const timer = setTimeout(() => {
             setLoading(false);
-            setShowNoDataMessage(false);
+            setShowNoDataMessage(true);
+        }, 500);
+        return () => clearTimeout(timer);
+        } else {
+        setLoading(false);
+        setShowNoDataMessage(false);
         }
     }, [data]);
 
-return (
-    <Box sx={{
-        backgroundColor: 'white',
-        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.6)",
-        borderRadius: '40px',
-        height: 'auto',
-        display: 'flex',
-        mt: 2,
-        border: '1.5px solid #00B401',
-        flexDirection: 'column',
-        fontSize: '1.4em',
-    }}
-    >
-        { title && (
-                    <Box
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'flex-start',
-                        color: 'black',
-                        mt: 2,
-                        mb: 1,
-                        ml: 3,
-                        fontWeight: 'bold'
-                    }}
-                    >
-                        {title}
-                    </Box>
-                )}
+    return (
+        <Box
+        sx={{
+            backgroundColor: "white",
+            boxShadow: "5px 5px 5px rgba(0, 0, 0, 0.2)",
+            borderRadius: "20px",
+            height: "auto",
+            display: "flex",
+            mt: 2,
+            border: "2px solid #00B401",
+            flexDirection: "column",
+            fontSize: "1.4em",
+        }}
+        >
+        {title && (
+            <Box
+            sx={{
+                display: "flex",
+                alignItems: "flex-start",
+                color: "black",
+                mt: 2,
+                mb: 1,
+                ml: 3,
+                fontWeight: "bold",
+            }}
+            >
+            {title}
+            </Box>
+        )}
 
-            <DataGrid
+        <DataGrid
             rows={data}
             columns={columns}
-            paginationMode='server'
+            paginationMode="server"
             pageSizeOptions={[10]}
             rowCount={righeTot}
             autoHeight
-            paginationModel={ {page: pagina, pageSize: quantita}}
+            
+            paginationModel={{ page: pagina, pageSize: quantita }}
             onPaginationModelChange={({ page }) => {
-                onPageChange(page);
+            onPageChange(page);
             }}
-
             loading={data.length === 0 && loading}
             noRowsOverlay={
-                showNoDataMessage ? ( 
-                    <h1>Nessun dato</h1>
-                ) : (
-                <CircularProgress sx={{ color: '#00B400' }} />
-                )
-            }  
-            getRowClassName={(params) => 
-                params.indexRelativeToCurrentPage % 2 === 0 ? 'even-row' : 'odd-row'
-                            }
+            showNoDataMessage ? (
+                <h1>Nessun dato</h1>
+            ) : (
+                <CircularProgress sx={{ color: "#00B400" }} />
+            )
+            }
+            getRowClassName={(params) =>
+            params.indexRelativeToCurrentPage % 2 === 0 ? "even-row" : "odd-row"
+            }
             sx={{
-                borderStyle: 'none',
-                '& .MuiDataGrid-columnHeader': {
-                    borderBottom: '2px solid #c4c4c4',
-                },
-                '& .even-row': {
-                    backgroundColor: '#ffffff',
-                    },
-                '& .odd-row': {
-                    backgroundColor: '#ECECEC',
-                    },
-                '&. MuiDataGrid-row:nth-of-type(even)': {
-                    backgroundColor: '#ececec',
-                },
-                '& .MuiDataGrid-row': {
-                    border: 'hidden',
-                    width: '100%'
-                },
-                '& .MuiDataGrid-footerContainer': {
-                    borderTop: '2px solid #dbd9d9',
-                    width: '100%'
-                },
-                '& .MuiDataGrid-cell': {
-                    fontSize: '1em',
-                    fontFamily: 'Roboto'
-                },
-                '& .MuiDataGrid-columnHeaderTitle': {
-                    color: '#808080',
-                    fontWeight: 'bolder',
-                    fontSize: '1em'
-                },
-                
-
-            }}          
+            borderStyle: "none",
+            "& .MuiDataGrid-columnHeader": {
+                borderBottom: "2px solid #c4c4c4",
+            },
+            "& .even-row": {
+                backgroundColor: "#ffffff",
+            },
+            "& .odd-row": {
+                backgroundColor: "#ECECEC",
+            },
+            "&. MuiDataGrid-row:nth-of-type(even)": {
+                backgroundColor: "#ececec",
+            },
+            "& .MuiDataGrid-row": {
+                border: "hidden",
+                width: "100%",
+            },
+            "& .MuiDataGrid-footerContainer": {
+                borderTop: "2px solid #dbd9d9",
+                width: "100%",
+            },
+            "& .MuiDataGrid-cell": {
+                fontSize: "1em",
+                fontFamily: "Roboto",
+            },
+            "& .MuiDataGrid-columnHeaderTitle": {
+                color: "#808080",
+                fontWeight: "bolder",
+                fontSize: "1em",
+            },
+            }}
         />
-    </Box>
-
-);
+        </Box>
+    );
 
     // return (
     //     <Box
@@ -166,7 +169,6 @@ return (
     //             )}
     //         </Box>
 
-
     //         <DataGrid
     //        rows={data}
     //        columns={columns}
@@ -180,13 +182,13 @@ return (
 
     //         loading={data.length === 0 && loading}
     //         noRowsOverlay={
-    //             showNoDataMessage ? ( 
+    //             showNoDataMessage ? (
     //                 <h1>Nessun dato</h1>
     //             ) : (
     //             <CircularProgress style={{ color: '#00B401' }} />
     //             )
-    //         }  
-    //         getRowClassName={(params) => 
+    //         }
+    //         getRowClassName={(params) =>
     //             params.indexRelativeToCurrentPage % 2 === 0 ? 'even-row' : 'odd-row'
     //                         }
     //         sx={{
@@ -220,14 +222,13 @@ return (
     //                 fontWeight: 'bolder',
     //                 fontSize: '1em'
     //             },
-                
 
-    //         }}          
+    //         }}
 
     //         />
 
     //     </Box>
     // );
-};
+    };
 
-export default Tabella;
+    export default Tabella;

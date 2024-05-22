@@ -1,9 +1,15 @@
-import React                                         from 'react';
-import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
-import { useUserTheme } from '../TorchyThemeProvider';
+import React                                         from "react";
+import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import { useUserTheme }                              from "../TorchyThemeProvider";
 
-function CustomSelectAggiungi({ name, label, options, value, onChange, disabled }) {
-
+function CustomSelectAggiungi({
+  name,
+  label,
+  options,
+  value,
+  onChange,
+  disabled,
+}) {
   const theme = useUserTheme();
 
   const handleChange = (event) => {
@@ -16,34 +22,34 @@ function CustomSelectAggiungi({ name, label, options, value, onChange, disabled 
       <Select
         labelId={`${name}-label`}
         id={name}
-        value={value || ''}
+        value={value || ""}
         onChange={handleChange}
         disabled={disabled}
         label={label}
         sx={{
-          textAlign: "left",
-          borderRadius: '20px',
-          backgroundColor: '#EDEDED',
+            textAlign: "left",
+            borderRadius: "20px",
+            backgroundColor: "#EDEDED",
           "& .MuiFilledInput-input": {
-            backgroundColor: 'transparent',
+            backgroundColor: "transparent",
           },
-          '& .MuiFilledInput-underline:after': {
-              borderBottomColor: 'transparent',
+          "& .MuiFilledInput-underline:after": {
+            borderBottomColor: "transparent",
           },
           "& .MuiOutlinedInput-notchedOutline": {
-            borderColor: 'transparent',
+            borderColor: "transparent",
           },
           "&:hover .MuiFilledInput-root::before": {
-              borderBottom: 'none',
+            borderBottom: "none",
           },
-          '& .Mui-disabled': {
-            WebkitTextFillColor: '#a09f9f',
-            color: '#a09f9f', 
-            cursor: 'not-allowed', 
+          "& .Mui-disabled": {
+            WebkitTextFillColor: "#a09f9f",
+            color: "#a09f9f",
+            cursor: "not-allowed",
           },
-          '& .MuiFormLabel-root.Mui-focused': {
+          "& .MuiFormLabel-root.Mui-focused": {
             color: theme.palette.border.main,
-        },
+          },
         }}
       >
         {options.map((option) => (
