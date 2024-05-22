@@ -11,6 +11,7 @@ import {
     Grid,
     Skeleton
     } from '@mui/material';
+import SchemePage from '../components/SchemePage';
 
 
 const Keypeople = () => {
@@ -33,6 +34,7 @@ const Keypeople = () => {
         };
     });
 
+    
     //stati per la paginazione
     const [ pagina,             setPagina       ] = useState(0);
     const [ hasMore,            setHasMore      ] = useState(false);
@@ -79,13 +81,13 @@ const Keypeople = () => {
             }
         }
 
-        const baseUrl = userHasRole('ROLE_ADMIN') ? "http://89.46.196.60:8443/keypeople/react/mod" : "http://89.46.196.60:8443/keypeople/react/mod/personal";
+        const baseUrl = userHasRole('ROLE_ADMIN') ? "http://localhost:8080/keypeople/react/mod" : "http://localhost:8080/keypeople/react/mod/personal";
         try {
     
         const response        = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
-        const responseCliente = await axios.get("http://89.46.196.60:8443/aziende/react/select",            { headers: headers });
-        const responseOwner   = await axios.get("http://89.46.196.60:8443/aziende/react/owner",             { headers: headers });
-        const responseStati   = await axios.get("http://89.46.196.60:8443/keypeople/react/stati",            { headers: headers });
+        const responseCliente = await axios.get("http://localhost:8080/aziende/react/select",            { headers: headers });
+        const responseOwner   = await axios.get("http://localhost:8080/owner",             { headers: headers });
+        const responseStati   = await axios.get("http://localhost:8080/keypeople/react/stati",            { headers: headers });
 
 
         if (Array.isArray(responseOwner.data)) {
@@ -152,7 +154,7 @@ const Keypeople = () => {
             }
         }
 
-        const baseUrl = userHasRole('ROLE_ADMIN') ? "http://89.46.196.60:8443/keypeople/react/mod" : "http://89.46.196.60:8443/keypeople/react/mod/personal";
+        const baseUrl = userHasRole('ROLE_ADMIN') ? "http://localhost:8080/keypeople/react/mod" : "http://localhost:8080/keypeople/react/mod/personal";
 
 
 
@@ -200,13 +202,13 @@ const Keypeople = () => {
                     }
                 }
             
-                const baseUrl = userHasRole('ROLE_ADMIN') ? "http://89.46.196.60:8443/keypeople/react/ricerca/mod" : "http://89.46.196.60:8443/keypeople/react/ricerca/modpersonal";
+                const baseUrl = userHasRole('ROLE_ADMIN') ? "http://localhost:8080/keypeople/react/ricerca/mod" : "http://localhost:8080/keypeople/react/ricerca/modpersonal";
         setLoading(true);
         try {
             const response = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
-            const responseCliente = await axios.get("http://89.46.196.60:8443/aziende/react/select",            { headers: headers });
-            const responseOwner   = await axios.get("http://89.46.196.60:8443/aziende/react/owner",             { headers: headers });
-            const responseStati   = await axios.get("http://89.46.196.60:8443/keypeople/react/stati",            { headers: headers });
+            const responseCliente = await axios.get("http://localhost:8080/aziende/react/select",            { headers: headers });
+            const responseOwner   = await axios.get("http://localhost:8080/owner",             { headers: headers });
+            const responseStati   = await axios.get("http://localhost:8080/keypeople/react/stati",            { headers: headers });
 
             if (Array.isArray(responseOwner.data)) {
                 setOwnerOptions(responseOwner.data.map((owner, index) => ({ label: owner.descrizione, value: owner.id })));
@@ -319,7 +321,7 @@ const Keypeople = () => {
      //funzione per cancellare l'azienda
     const handleDelete = async (id) => {
         try{
-            const responseDelete = await axios.delete(`http://89.46.196.60:8443/keypeople/react/elimina/${id}`, {headers: headers});
+            const responseDelete = await axios.delete(`http://localhost:8080/keypeople/react/elimina/${id}`, {headers: headers});
             await fetchData(0);
         } catch(error) {
             console.error("Errore durante la cancellazione: ", error);
@@ -333,19 +335,7 @@ const Keypeople = () => {
 
 
     return(
-        <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: 'auto', width: '100vw' }}>
-            <Box sx={{ 
-                flexGrow: 1, 
-                p: 3, 
-                marginLeft: '12.8em', 
-                marginTop: '0.5em', 
-                marginBottom: '0.8em', 
-                marginRight: '0.8em', 
-                backgroundColor: '#FEFCFD', 
-                borderRadius: '20px', 
-                minHeight: '98vh',
-                mt: 1.5
-            }}>
+       <SchemePage>
                 <Box sx={{ 
                     position: 'sticky', 
                     top: 0, 
@@ -403,8 +393,7 @@ const Keypeople = () => {
                     }
                     </Grid>
                     </InfiniteScroll>
-                    </Box>
-        </Box>
+                    </SchemePage>
     );
 };
 export default Keypeople;

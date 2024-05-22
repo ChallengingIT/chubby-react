@@ -11,7 +11,7 @@
     InputAdornment,
     Autocomplete,
     } from "@mui/material";
-    import CloseIcon  from "@mui/icons-material/Close";
+    import CloseIcon from "@mui/icons-material/Close";
     import SearchIcon from "@mui/icons-material/Search";
     import { useNavigate } from "react-router-dom";
     import RestartAltIcon from "@mui/icons-material/RestartAlt";
@@ -34,7 +34,6 @@
     const [isRotated, setIsRotated] = useState(false);
     const [localFiltri, setLocalFiltri] = useState({ ...filtri });
 
-
     const handleClickReset = () => {
         onReset();
         setLocalFiltri({ ...filtri });
@@ -42,12 +41,10 @@
         setTimeout(() => setIsRotated(false), 500);
     };
 
-
     const handleClickSearch = () => {
         onFilterChange(localFiltri);
         onSearch();
     };
-    
 
     const handleOpenFiltri = () => setOpenFiltri(true);
     const handleCloseFiltri = () => setOpenFiltri(false);
@@ -55,8 +52,6 @@
     const navigateToAggiungi = () => {
         navigate("/business/aggiungi");
     };
-
-
 
     const isAdminRole = () => {
         const userString = sessionStorage.getItem("user");
@@ -118,9 +113,11 @@
             InputProps={{
                 startAdornment: (
                 <InputAdornment position="start">
-                    <SearchIcon sx={{
-                        color: theme.palette.icon.main
-                        }} />
+                    <SearchIcon
+                    sx={{
+                        color: theme.palette.icon.main,
+                    }}
+                    />
                 </InputAdornment>
                 ),
             }}
@@ -191,26 +188,29 @@
             <Grid container spacing={2} direction="column" sx={{ p: 2 }}>
             <Grid item>
                 <FormControl fullWidth sx={{ mb: 2 }}>
-                    
                 <Autocomplete
                     id="tipologia-combo-box"
                     options={tipologiaOptions}
                     getOptionLabel={(option) => option.label}
-                            // value={
-                            // tipologiaOptions.find(
-                            //     (option) => option.value === filtri.tipologia
-                            // ) || null
-                            // }
-                            // onChange={(event, newValue) => {
-                            // onFilterChange("tipologia")({
-                            //     target: { value: newValue?.value || null },
-                            // });
-                            // }}
-                    value={tipologiaOptions.find(option => option.value === filtri.tipologia) || null}
-                    onChange={(event, newValue) =>{
-                        onFilterChange("tipologia")({
-                            target: { value: newValue?.value || null },
-                        });
+                    // value={
+                    // tipologiaOptions.find(
+                    //     (option) => option.value === filtri.tipologia
+                    // ) || null
+                    // }
+                    // onChange={(event, newValue) => {
+                    // onFilterChange("tipologia")({
+                    //     target: { value: newValue?.value || null },
+                    // });
+                    // }}
+                    value={
+                    tipologiaOptions.find(
+                        (option) => option.value === filtri.tipologia
+                    ) || null
+                    }
+                    onChange={(event, newValue) => {
+                    onFilterChange("tipologia")({
+                        target: { value: newValue?.value || null },
+                    });
                     }}
                     renderInput={(params) => (
                     <TextField
@@ -242,9 +242,6 @@
                 />
                 </FormControl>
 
-
-
-
                 <FormControl fullWidth sx={{ mb: 2 }}>
                 <Autocomplete
                     id="ida-combo-box"
@@ -259,11 +256,14 @@
                     //     target: { value: newValue?.value || null },
                     // });
                     // }}
-                    value={idaOptions.find(option => option.value === filtri.ida) || null}
-                    onChange={(event, newValue) =>{
-                        onFilterChange("ida")({
-                            target: { value: newValue?.value || null },
-                        });
+                    value={
+                    idaOptions.find((option) => option.value === filtri.ida) ||
+                    null
+                    }
+                    onChange={(event, newValue) => {
+                    onFilterChange("ida")({
+                        target: { value: newValue?.value || null },
+                    });
                     }}
                     renderInput={(params) => (
                     <TextField
@@ -311,10 +311,14 @@
                     //     target: { value: newValue?.value || null },
                     //     });
                     // }}
-                    value={ownerOptions.find(option => option.value === filtri.owner) || null}
-                    onChange={(event, newValue) =>{
+                    value={
+                        ownerOptions.find(
+                        (option) => option.value === filtri.owner
+                        ) || null
+                    }
+                    onChange={(event, newValue) => {
                         onFilterChange("owner")({
-                            target: { value: newValue?.value || null },
+                        target: { value: newValue?.value || null },
                         });
                     }}
                     renderInput={(params) => (
@@ -350,9 +354,9 @@
 
                 <Box sx={{ display: "flex", justifyContent: "space-around" }}>
                 <IconButton
-                onClick={handleClickSearch}
-                disableRipple={true}
-                disableFocusRipple={true}
+                    onClick={handleClickSearch}
+                    disableRipple={true}
+                    disableFocusRipple={true}
                     sx={{
                     backgroundColor: theme.palette.button.main,
                     color: "white",
@@ -399,5 +403,3 @@
     }
 
     export default RicercheAziende;
-
-

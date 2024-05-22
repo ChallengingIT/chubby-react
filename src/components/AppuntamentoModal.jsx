@@ -1,4 +1,10 @@
 import React, { useEffect, useState } from "react";
+import CloseIcon from "@mui/icons-material/Close";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import axios from "axios";
+import dayjs from "dayjs";
+import { useUserTheme } from "./TorchyThemeProvider";
 import {
   Dialog,
   DialogTitle,
@@ -12,17 +18,10 @@ import {
   Typography,
   Snackbar,
   Alert,
-  Slide
+  Slide,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import axios from "axios";
-import dayjs from "dayjs";
-import { useUserTheme } from "./TorchyThemeProvider";
 
 function AppuntamentoModal({ open, handleClose }) {
-
   const theme = useUserTheme();
 
   const user = JSON.parse(sessionStorage.getItem("user"));
@@ -32,21 +31,20 @@ function AppuntamentoModal({ open, handleClose }) {
     Authorization: `Bearer ${token}`,
   };
 
-  const [ alert, setAlert ] = useState(false);
+  const [alert, setAlert] = useState(false);
 
-
-   //funzione per la chiusura dell'alert
+  //funzione per la chiusura dell'alert
   const handleCloseAlert = (reason) => {
-    if (reason === 'clickaway') {
-        return;
+    if (reason === "clickaway") {
+      return;
     }
-    setAlert({...alert, open: false});
-};
+    setAlert({ ...alert, open: false });
+  };
 
-//funzione per la transizione dell'alert
-function TransitionDown(props) {
+  //funzione per la transizione dell'alert
+  function TransitionDown(props) {
     return <Slide {...props} direction="down" />;
-}
+  }
 
   const [ownerOptions, setOwnerOptions] = useState([]);
   const [formData, setFormData] = useState({
@@ -62,7 +60,6 @@ function TransitionDown(props) {
     const newValue = event.target.value;
     setFormData({ ...formData, [name]: newValue });
   };
-
 
   const onClose = () => {
     setFormData({
@@ -80,7 +77,7 @@ function TransitionDown(props) {
   const optionSelect = async () => {
     try {
       const ownerResponse = await axios.get(
-        "http://89.46.196.60:8443/aziende/react/owner",
+        "http://localhost:8080/owner",
         { headers: headers }
       );
       if (Array.isArray(ownerResponse.data)) {
@@ -118,7 +115,7 @@ function TransitionDown(props) {
     };
     try {
       const responseInviaAppuntamento = await axios.post(
-        "http://89.46.196.60:8443/calendar/insert",
+        "http://localhost:8080/calendar/insert",
         datiDaInviare,
         { headers: headers }
       );
@@ -126,10 +123,13 @@ function TransitionDown(props) {
         onClose();
       }
       if (responseInviaAppuntamento.data === "ERRORE") {
-        setAlert({ open: true, message: "errore durante il salvataggio dell'appuntamento!" });
+        setAlert({
+          open: true,
+          message: "errore durante il salvataggio dell'appuntamento!",
+        });
         console.error("L'azienda non è stata salvata.");
         return;
-    }
+      }
     } catch (error) {
       console.error("Errore durante l'invio dell'appuntamento: ", error);
     }
@@ -223,7 +223,7 @@ function TransitionDown(props) {
               name="oggetto"
               value={formData.oggetto}
               inputProps={{
-                maxLength: 120
+                maxLength: 120,
               }}
               onChange={handleChange("oggetto")}
               sx={{
@@ -423,13 +423,22 @@ function TransitionDown(props) {
         </DialogContent>
         <DialogActions></DialogActions>
       </LocalizationProvider>
-        <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} TransitionComponent={TransitionDown}>
-                <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
-                    {alert.message}
-                </Alert>
-        </Snackbar>
+      <Snackbar
+        open={alert.open}
+        autoHideDuration={6000}
+        onClose={handleCloseAlert}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        TransitionComponent={TransitionDown}
+      >
+        <Alert
+          onClose={handleCloseAlert}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          {alert.message}
+        </Alert>
+      </Snackbar>
     </Dialog>
-    
   );
 }
 

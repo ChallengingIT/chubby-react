@@ -12,7 +12,7 @@ function VisibilityButton({onClick, to, recruitingData}) {
       }
         };
 
- 
+
 return (
     <Button 
     variant="contained" 

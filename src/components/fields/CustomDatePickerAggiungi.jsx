@@ -1,6 +1,6 @@
-import React     from 'react';
-import TextField from '@mui/material/TextField';
-import { useUserTheme } from '../TorchyThemeProvider';
+import React            from "react";
+import TextField        from "@mui/material/TextField";
+import { useUserTheme } from "../TorchyThemeProvider";
 
 function CustomDatePickerAggiungi({ name, label, type, onChange, values }) {
   const theme = useUserTheme();
@@ -15,37 +15,37 @@ function CustomDatePickerAggiungi({ name, label, type, onChange, values }) {
       label={label}
       variant="filled"
       fullWidth
-      type='date'
-      value={values[name] || ''}
+      type="date"
+      value={values[name] || ""}
       onChange={handleChange}
-      sx={{ 
+      sx={{
         m: 2,
-        height: '4em',
+        height: "4em",
         width: "100%",
         textAlign: "left",
-        borderRadius: '20px', 
-        backgroundColor: '#EDEDED', 
-        '& .MuiFilledInput-root': {
-            backgroundColor: 'transparent',
+        borderRadius: "20px",
+        backgroundColor: "#EDEDED",
+        "& .MuiFilledInput-root": {
+          backgroundColor: "transparent",
         },
-        '& .MuiFilledInput-underline:after': {
-            borderBottomColor: 'transparent',
+        "& .MuiFilledInput-underline:after": {
+          borderBottomColor: "transparent",
         },
-        '& .MuiFilledInput-root::before': {
-            borderBottom: 'none', 
+        "& .MuiFilledInput-root::before": {
+          borderBottom: "none",
         },
-        '&:hover .MuiFilledInput-root::before': {
-            borderBottom: 'none', 
+        "&:hover .MuiFilledInput-root::before": {
+          borderBottom: "none",
         },
-        '& .MuiInputLabel-filled': { 
-            transform: 'translate(12px, 5px) scale(1)',
+        "& .MuiInputLabel-filled": {
+          transform: "translate(12px, 5px) scale(1)",
         },
-        '& .MuiInputLabel-filled.MuiInputLabel-shrink': { 
-            transform: 'translate(12px, 10px) scale(0.75)',
+        "& .MuiInputLabel-filled.MuiInputLabel-shrink": {
+          transform: "translate(12px, 10px) scale(0.75)",
         },
-        '& .MuiFormLabel-root.Mui-focused': {
+        "& .MuiFormLabel-root.Mui-focused": {
           color: theme.palette.border.main,
-      },
+        },
       }}
     />
   );

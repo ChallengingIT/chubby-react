@@ -449,7 +449,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
                             </Box>
                 </Modal>
 
-{ /* MODAL PER IL CAMBIO STATO */ }
+                { /* MODAL PER IL CAMBIO STATO */ }
                 <Modal
                     open={modalStato}
                     onClose={() => setModalStato(false)}

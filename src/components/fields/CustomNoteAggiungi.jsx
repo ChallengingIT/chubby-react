@@ -1,15 +1,21 @@
-import React     from 'react';
-import TextField from '@mui/material/TextField';
-import { useUserTheme } from '../TorchyThemeProvider';
+import React            from "react";
+import TextField        from "@mui/material/TextField";
+import { useUserTheme } from "../TorchyThemeProvider";
 
-function CustomNoteAggiungi({ name, label, type, onChange, values, maxLength }) {
+function CustomNoteAggiungi({
+  name,
+  label,
+  type,
+  onChange,
+  values,
+  maxLength,
+}) {
   const theme = useUserTheme();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     onChange({ [name]: value });
   };
-
 
   return (
     <TextField
@@ -19,31 +25,31 @@ function CustomNoteAggiungi({ name, label, type, onChange, values, maxLength }) 
       variant="filled"
       fullWidth
       inputProps={{
-        maxLength: maxLength
-        }}
+        maxLength: maxLength,
+      }}
       multiline
       rows={4}
-      value={values[name] || ''}
+      value={values[name] || ""}
       onChange={handleChange}
-      sx={{ 
+      sx={{
         m: 2,
         width: "100%",
         textAlign: "left",
-        borderRadius: '20px', 
-        backgroundColor: '#EDEDED', 
-        '& .MuiFilledInput-root': {
-            backgroundColor: 'transparent',
+        borderRadius: "20px",
+        backgroundColor: "#EDEDED",
+        "& .MuiFilledInput-root": {
+          backgroundColor: "transparent",
         },
-        '& .MuiFilledInput-underline:after': {
-            borderBottomColor: 'transparent',
+        "& .MuiFilledInput-underline:after": {
+          borderBottomColor: "transparent",
         },
-        '& .MuiFilledInput-root::before': {
-            borderBottom: 'none', 
+        "& .MuiFilledInput-root::before": {
+          borderBottom: "none",
         },
-        '&:hover .MuiFilledInput-root::before': {
-            borderBottom: 'none', 
+        "&:hover .MuiFilledInput-root::before": {
+          borderBottom: "none",
         },
-        '& .MuiFormLabel-root.Mui-focused': {
+        "& .MuiFormLabel-root.Mui-focused": {
           color: theme.palette.border.main,
         },
       }}

@@ -1,8 +1,15 @@
-import React     from 'react';
-import TextField from '@mui/material/TextField';
-import { useUserTheme } from '../TorchyThemeProvider';
+import React              from "react";
+import TextField          from "@mui/material/TextField";
+import { useUserTheme }   from "../TorchyThemeProvider";
 
-function CustomTextFieldAggiungi({ name, label, type, onChange, values, maxLength }) {
+function CustomTextFieldAggiungi({
+  name,
+  label,
+  type,
+  onChange,
+  values,
+  maxLength,
+}) {
   const theme = useUserTheme();
 
   const handleChange = (e) => {
@@ -10,41 +17,40 @@ function CustomTextFieldAggiungi({ name, label, type, onChange, values, maxLengt
     onChange({ [name]: value });
   };
 
-
   return (
     <TextField
       name={name}
       label={label}
       type={type}
       inputProps={{
-      maxLength: maxLength
+        maxLength: maxLength,
       }}
       variant="filled"
       fullWidth
-      value={values[name] || ''}
+      value={values[name] || ""}
       onChange={handleChange}
-      sx={{ 
-        m: 2,
-        width: "100%",
-        textAlign: "left",
-        borderRadius: '20px', 
-        backgroundColor: '#EDEDED', 
-        '& .MuiFilledInput-root': {
-            backgroundColor: 'transparent',
+      sx={{
+          m: 2,
+          width: "100%",
+          textAlign: "left",
+          borderRadius: "20px",
+          backgroundColor: "#EDEDED",
+        "& .MuiFilledInput-root": {
+          backgroundColor: "transparent",
         },
-        '& .MuiFilledInput-underline:after': {
-            borderBottomColor: 'transparent',
+        "& .MuiFilledInput-underline:after": {
+          borderBottomColor: "transparent",
         },
-        '& .MuiFilledInput-root::before': {
-            borderBottom: 'none', 
+        "& .MuiFilledInput-root::before": {
+          borderBottom: "none",
         },
-        '&:hover .MuiFilledInput-root::before': {
-            borderBottom: 'none', 
+        "&:hover .MuiFilledInput-root::before": {
+          borderBottom: "none",
         },
-        '& .MuiFormLabel-root.Mui-focused': {
+        "& .MuiFormLabel-root.Mui-focused": {
           color: theme.palette.border.main,
-      },
-        }}
+        },
+      }}
     />
   );
 }

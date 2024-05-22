@@ -1,6 +1,6 @@
-import React from 'react';
+import React            from 'react';
 import SpeakerNotesIcon from '@mui/icons-material/SpeakerNotes';
-import Button from "@mui/material/Button";
+import Button           from "@mui/material/Button";
 
 function NoteButton({onClick}) {
 
