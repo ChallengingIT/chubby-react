@@ -87,12 +87,12 @@ const Hiring = () => {
 
 
     try {
-        // const response          = await axios.get("http://localhost:8080/staffing/react/mod",          { headers: headers, params: filtriDaInviare });
+        // const response          = await axios.get("http://89.46.196.60:8443/staffing/react/mod",          { headers: headers, params: filtriDaInviare });
 
-        const responseHiring    = await axios.get("http://localhost:8080/hiring",                       { headers: headers });
-        const responseTermini   = await axios.get("http://localhost:8080/hiring/termini",            { headers: headers });
-        const responseServizi   = await axios.get("http://localhost:8080/hiring/servizi",              { headers: headers });
-        const responseCliente = await axios.get("http://localhost:8080/aziende/react/select",            { headers: headers });
+        const responseHiring    = await axios.get("http://89.46.196.60:8443/hiring",                       { headers: headers });
+        const responseTermini   = await axios.get("http://89.46.196.60:8443/hiring/termini",            { headers: headers });
+        const responseServizi   = await axios.get("http://89.46.196.60:8443/hiring/servizi",              { headers: headers });
+        const responseCliente = await axios.get("http://89.46.196.60:8443/aziende/react/select",            { headers: headers });
 
 
         if (Array.isArray(responseCliente.data)) {
@@ -193,7 +193,7 @@ const handleRicerche = async () => {
     setLoading(true);
 
     try {
-        const responseRicerca          = await axios.get("http://localhost:8080/hiring/ricerca", { headers: headers, params: filtriDaInviare });
+        const responseRicerca          = await axios.get("http://89.46.196.60:8443/hiring/ricerca", { headers: headers, params: filtriDaInviare });
 
       if (Array.isArray(responseRicerca.data)) {
             const hiringConId = responseRicerca.data.map((hiring) => ({

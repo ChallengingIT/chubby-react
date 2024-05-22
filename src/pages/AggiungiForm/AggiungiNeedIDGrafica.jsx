@@ -65,27 +65,27 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
         const fetchNeedOptions = async () => {
         try {
             const responseAziende = await axios.get(
-            `http://localhost:8080/aziende/react/${id}`,
+            `http://89.46.196.60:8443/aziende/react/${id}`,
             { headers: headers }
             );
             const responseSkill = await axios.get(
-            "http://localhost:8080/staffing/react/skill",
+            "http://89.46.196.60:8443/staffing/react/skill",
             { headers: headers }
             );
             const ownerResponse = await axios.get(
-            "http://localhost:8080/owner",
+            "http://89.46.196.60:8443/owner",
             { headers: headers }
             );
             const tipologiaResponse = await axios.get(
-            "http://localhost:8080/need/react/tipologia",
+            "http://89.46.196.60:8443/need/react/tipologia",
             { headers: headers }
             );
             const statoResponse = await axios.get(
-            "http://localhost:8080/need/react/stato",
+            "http://89.46.196.60:8443/need/react/stato",
             { headers: headers }
             );
             const responseKeypeople = await axios.get(
-                `http://localhost:8080/keypeople/react/azienda/${idAzienda}`,
+                `http://89.46.196.60:8443/keypeople/react/azienda/${idAzienda}`,
                 { headers: headers }
             );
             const keypeopleOptions = responseKeypeople.data.map((keypeople) => ({
@@ -289,7 +289,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
             delete values.idSkills;
 
             const responseSaveNeed = await axios.post(
-            "http://localhost:8080/need/react/salva",
+            "http://89.46.196.60:8443/need/react/salva",
             { ...values, idAzienda: parseInt(values.idAzienda, 10) }, 
             { params: { skill1: skills }, headers: headers }
             );

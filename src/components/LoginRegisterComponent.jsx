@@ -197,7 +197,7 @@ const handleLogin = async (e) => {
             event.preventDefault();
         }
         try {
-            const response = await axios.post("http://localhost:8080/api/auth/signup", values);
+            const response = await axios.post("http://89.46.196.60:8443/api/auth/signup", values);
             // const response = await authService.register(values);
             if (response.data.message === 'OK') {
                 handleFlip();

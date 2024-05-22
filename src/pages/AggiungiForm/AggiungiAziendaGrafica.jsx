@@ -79,15 +79,15 @@ import CustomMultipleSelectAggiunta from "../../components/fields/CustomMultiple
         const fetchProvinceOptions = async () => {
         try {
             const provinceResponse = await axios.get(
-            "http://localhost:8080/aziende/react/province",
+            "http://89.46.196.60:8443/aziende/react/province",
             { headers: headers }
             );
             const ownerResponse = await axios.get(
-            "http://localhost:8080/owner",
+            "http://89.46.196.60:8443/owner",
             { headers: headers }
             );
             const ricercaResponse = await axios.get(
-            "http://localhost:8080/hiring/servizi",
+            "http://89.46.196.60:8443/hiring/servizi",
             { headers: headers }
             );
 
@@ -284,7 +284,7 @@ import CustomMultipleSelectAggiunta from "../../components/fields/CustomMultiple
             delete values.image;
 
             const response = await axios.post(
-            "http://localhost:8080/aziende/react/salva",
+            "http://89.46.196.60:8443/aziende/react/salva",
             values,
             {
                 headers: headers,
@@ -311,7 +311,7 @@ import CustomMultipleSelectAggiunta from "../../components/fields/CustomMultiple
                 formDataIMG.append("logo", fileIMG);
 
                 const responseIMG = await axios.post(
-                `http://localhost:8080/aziende/react/salva/file/${aziendaID}`,
+                `http://89.46.196.60:8443/aziende/react/salva/file/${aziendaID}`,
                 formDataIMG,
                 {
                     headers: {

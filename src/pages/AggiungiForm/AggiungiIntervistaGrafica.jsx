@@ -63,23 +63,23 @@
         try {
             //jobtitle = tipologia, tipologiaIncontro = stato, owner = owner
             const ownerResponse = await axios.get(
-            "http://localhost:8080/owner",
+            "http://89.46.196.60:8443/owner",
             { headers: headers }
             );
             const responseTipoIntervista = await axios.get(
-            "http://localhost:8080/intervista/react/tipointervista",
+            "http://89.46.196.60:8443/intervista/react/tipointervista",
             { headers: headers }
             );
             const responseIntervista = await axios.get(
-            `http://localhost:8080/intervista/react/mod/${candidatoID}`,
+            `http://89.46.196.60:8443/intervista/react/mod/${candidatoID}`,
             { headers: headers, params: paginazione }
             ); //questa è la lista delle interviste di cui devo prendere sempre l'ultima
             const responseCandidato = await axios.get(
-            `http://localhost:8080/staffing/react/${candidatoID}`,
+            `http://89.46.196.60:8443/staffing/react/${candidatoID}`,
             { headers: headers }
             ); //questo è il candidato
             const responseStato = await axios.get(
-            "http://localhost:8080/staffing/react/stato/candidato",
+            "http://89.46.196.60:8443/staffing/react/stato/candidato",
             { headers: headers }
             );
 
@@ -298,7 +298,7 @@
             const note = values.note;
             const modifica = 0;
             const response = await axios.post(
-            "http://localhost:8080/intervista/react/salva",
+            "http://89.46.196.60:8443/intervista/react/salva",
             values,
             {
                 params: {

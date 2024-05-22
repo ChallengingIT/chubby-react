@@ -66,23 +66,23 @@ import SchemePage from "../components/SchemePage.jsx";
         };
         try {
         const response = await axios.get(
-            `http://localhost:8080/need/react/cliente/modificato/${id}`,
+            `http://89.46.196.60:8443/need/react/cliente/modificato/${id}`,
             { headers: headers, params: filtriDaInviare }
         );
         const responseOwner = await axios.get(
-            "http://localhost:8080/owner",
+            "http://89.46.196.60:8443/owner",
             { headers: headers }
         );
         const responseTipologia = await axios.get(
-            "http://localhost:8080/need/react/tipologia",
+            "http://89.46.196.60:8443/need/react/tipologia",
             { headers: headers }
         );
         const responseStato = await axios.get(
-            "http://localhost:8080/need/react/stato",
+            "http://89.46.196.60:8443/need/react/stato",
             { headers: headers }
         );
         const responseKeyPeople = await axios.get(
-            `http://localhost:8080/keypeople/react/azienda/${id}`,
+            `http://89.46.196.60:8443/keypeople/react/azienda/${id}`,
             { headers: headers }
         );
 
@@ -185,8 +185,8 @@ import SchemePage from "../components/SchemePage.jsx";
         );
 
         const url = filtriAttivi
-        ? "http://localhost:8080/need/react/ricerca/modificato"
-        : `http://localhost:8080/need/react/cliente/modificato/${id}`;
+        ? "http://89.46.196.60:8443/need/react/ricerca/modificato"
+        : `http://89.46.196.60:8443/need/react/cliente/modificato/${id}`;
 
         const filtriDaInviare = {
         owner: filtri.owner || null,
@@ -238,19 +238,19 @@ import SchemePage from "../components/SchemePage.jsx";
         setLoading(true);
         try {
         const response = await axios.get(
-            "http://localhost:8080/need/react/ricerca/modificato",
+            "http://89.46.196.60:8443/need/react/ricerca/modificato",
             { headers: headers, params: filtriDaInviare }
         );
         const responseOwner = await axios.get(
-            "http://localhost:8080/owner",
+            "http://89.46.196.60:8443/owner",
             { headers: headers }
         );
         const responseTipologia = await axios.get(
-            "http://localhost:8080/need/react/tipologia",
+            "http://89.46.196.60:8443/need/react/tipologia",
             { headers: headers }
         );
         const responseStato = await axios.get(
-            "http://localhost:8080/need/react/stato",
+            "http://89.46.196.60:8443/need/react/stato",
             { headers: headers }
         );
 
@@ -382,7 +382,7 @@ import SchemePage from "../components/SchemePage.jsx";
     const handleDelete = async (id) => {
         try {
         const responseDelete = await axios.delete(
-            `http://localhost:8080/need/react/elimina/${id}`,
+            `http://89.46.196.60:8443/need/react/elimina/${id}`,
             { headers: headers }
         );
         await fetchData(0);

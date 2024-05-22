@@ -64,16 +64,16 @@
         }
 
         const baseUrlPipeline = userHasRole("ROLE_ADMIN")
-        ? "http://localhost:8080/dashboard/pipeline/admin"
-        : "http://localhost:8080/dashboard/pipeline";
+        ? "http://89.46.196.60:8443/dashboard/pipeline/admin"
+        : "http://89.46.196.60:8443/dashboard/pipeline";
 
         const baseUrlAttivitaRecruiting = userHasRole("ROLE_ADMIN")
-        ? "http://localhost:8080/dashboard/attivita/recruting"
-        : "http://localhost:8080/dashboard/attivita/recruting/personal";
+        ? "http://89.46.196.60:8443/dashboard/attivita/recruting"
+        : "http://89.46.196.60:8443/dashboard/attivita/recruting/personal";
 
         const baseUrlAttivitaBusiness = userHasRole("ROLE_ADMIN")
-        ? "http://localhost:8080/dashboard/attivita/business"
-        : "http://localhost:8080/dashboard/attivita/business/personal";
+        ? "http://89.46.196.60:8443/dashboard/attivita/business"
+        : "http://89.46.196.60:8443/dashboard/attivita/business/personal";
 
         try {
         const [
@@ -92,7 +92,7 @@
             }),
         ]);
 
-        const responseAzienda       = await axios.get("http://localhost:8080/aziende/react/select",          { headers: headers });
+        const responseAzienda       = await axios.get("http://89.46.196.60:8443/aziende/react/select",          { headers: headers });
 
         if (Array.isArray(responseAzienda.data)) {
                 setAziendaOptions(responseAzienda.data.map((azienda) => ({ label: azienda.denominazione, value: azienda.id })));

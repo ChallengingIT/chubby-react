@@ -50,8 +50,8 @@
 //         const fetchProvinceOptions = async () => {
 //         try {
     
-//             const provinceResponse = await axios.get("http://localhost:8080/aziende/react/province", { headers: headers });
-//             const ownerResponse    = await axios.get("http://localhost:8080/owner",    { headers: headers }   );
+//             const provinceResponse = await axios.get("http://89.46.196.60:8443/aziende/react/province", { headers: headers });
+//             const ownerResponse    = await axios.get("http://89.46.196.60:8443/owner",    { headers: headers }   );
     
 //             if (Array.isArray(ownerResponse.data)) {
 //             const ownerOptions = ownerResponse.data.map((owner) => ({
@@ -167,7 +167,7 @@
 //             Authorization: `Bearer ${token}`
 //             };
     
-//             const response = await axios.post("http://localhost:8080/aziende/react/salva", values, {
+//             const response = await axios.post("http://89.46.196.60:8443/aziende/react/salva", values, {
 //             headers: headers
 //             });
 //             if (response.data === "DUPLICATO") {

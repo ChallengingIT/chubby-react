@@ -50,15 +50,15 @@
         const fetchAziendeOptions = async () => {
         try {
             const aziendeResponse = await axios.get(
-            "http://localhost:8080/aziende/react/select",
+            "http://89.46.196.60:8443/aziende/react/select",
             { headers: headers }
             );
             const ownerResponse = await axios.get(
-            "http://localhost:8080/owner",
+            "http://89.46.196.60:8443/owner",
             { headers: headers }
             );
             const statiResponse = await axios.get(
-            "http://localhost:8080/keypeople/react/stati",
+            "http://89.46.196.60:8443/keypeople/react/stati",
             { headers: headers }
             );
 
@@ -215,7 +215,7 @@
             });
 
             const response = await axios.post(
-            "http://localhost:8080/keypeople/react/salva",
+            "http://89.46.196.60:8443/keypeople/react/salva",
             values,
             {
                 headers: headers,

@@ -72,7 +72,7 @@ const ModificaStaffing = () => {
         try {
 
           const schedaResponse = await axios.get(
-                "http://localhost:8080/hiring/scheda",
+                "http://89.46.196.60:8443/hiring/scheda",
                 { headers: headers,
                     params: { idScheda: idScheda}
                 }
@@ -80,7 +80,7 @@ const ModificaStaffing = () => {
     
 
             const terminiPagamentoResponse = await axios.get(
-            "http://localhost:8080/hiring/termini",
+            "http://89.46.196.60:8443/hiring/termini",
             { headers: headers }
             );
 
@@ -275,7 +275,7 @@ const ModificaStaffing = () => {
                     const valuesWithId = { ...values, id: idScheda };
 
     
-                    const response = await axios.post("http://localhost:8080/hiring/salva/scheda", valuesWithId, {
+                    const response = await axios.post("http://89.46.196.60:8443/hiring/salva/scheda", valuesWithId, {
                         headers: headers,
                         params: { idHiring: idHiring }
                     });

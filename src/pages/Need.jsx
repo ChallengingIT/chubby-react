@@ -75,14 +75,14 @@ import {
                 }
             }
     
-            const baseUrl = userHasRole('ROLE_ADMIN') ? "http://localhost:8080/need/react/modificato" : "http://localhost:8080/need/react/modificato/personal";
+            const baseUrl = userHasRole('ROLE_ADMIN') ? "http://89.46.196.60:8443/need/react/modificato" : "http://89.46.196.60:8443/need/react/modificato/personal";
 
             try {
             const responseNeed          = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
-            const responseAzienda       = await axios.get("http://localhost:8080/aziende/react/select",          { headers: headers });
-            const responseOwner         = await axios.get("http://localhost:8080/owner",           { headers: headers });
-            const responseTipologia     = await axios.get("http://localhost:8080/need/react/tipologia",          { headers: headers });
-            const responseStato         = await axios.get("http://localhost:8080/need/react/stato",              { headers: headers });
+            const responseAzienda       = await axios.get("http://89.46.196.60:8443/aziende/react/select",          { headers: headers });
+            const responseOwner         = await axios.get("http://89.46.196.60:8443/owner",           { headers: headers });
+            const responseTipologia     = await axios.get("http://89.46.196.60:8443/need/react/tipologia",          { headers: headers });
+            const responseStato         = await axios.get("http://89.46.196.60:8443/need/react/stato",              { headers: headers });
 
 
             if (Array.isArray(responseOwner.data)) {
@@ -158,7 +158,7 @@ import {
                 }
             }
     
-            const baseUrl = userHasRole('ROLE_ADMIN') ? "http://localhost:8080/need/react/modificato" : "http://localhost:8080/need/react/modificato/personal";
+            const baseUrl = userHasRole('ROLE_ADMIN') ? "http://89.46.196.60:8443/need/react/modificato" : "http://89.46.196.60:8443/need/react/modificato/personal";
 
             const filtriDaInviare = {
                 ...filtri,
@@ -203,14 +203,14 @@ import {
                     }
                 }
             
-                const baseUrl = userHasRole('ROLE_ADMIN') ? "http://localhost:8080/need/react/ricerca/modificato" : "http://localhost:8080/need/react/ricerca/modificato/personal";
+                const baseUrl = userHasRole('ROLE_ADMIN') ? "http://89.46.196.60:8443/need/react/ricerca/modificato" : "http://89.46.196.60:8443/need/react/ricerca/modificato/personal";
             setLoading(true);
             try {
                 const response = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
-                const responseAzienda       = await axios.get("http://localhost:8080/aziende/react/select",          { headers: headers });
-                const responseOwner         = await axios.get("http://localhost:8080/owner",           { headers: headers });
-                const responseTipologia     = await axios.get("http://localhost:8080/need/react/tipologia",          { headers: headers });
-                const responseStato         = await axios.get("http://localhost:8080/need/react/stato",              { headers: headers });
+                const responseAzienda       = await axios.get("http://89.46.196.60:8443/aziende/react/select",          { headers: headers });
+                const responseOwner         = await axios.get("http://89.46.196.60:8443/owner",           { headers: headers });
+                const responseTipologia     = await axios.get("http://89.46.196.60:8443/need/react/tipologia",          { headers: headers });
+                const responseStato         = await axios.get("http://89.46.196.60:8443/need/react/stato",              { headers: headers });
 
 
                 if (Array.isArray(responseOwner.data)) {
@@ -325,7 +325,7 @@ const handleFilterChange = (name) => (event) => {
         //funzione per cancellare il need
         const handleDelete = async (id) => {
             try{
-                const responseDelete = await axios.delete(`http://localhost:8080/need/react/elimina/${id}`, {headers: headers});
+                const responseDelete = await axios.delete(`http://89.46.196.60:8443/need/react/elimina/${id}`, {headers: headers});
                 await fetchData(0);
             } catch(error) {
                 console.error("Errore durante la cancellazione: ", error);
