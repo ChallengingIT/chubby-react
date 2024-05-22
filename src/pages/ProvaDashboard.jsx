@@ -4,7 +4,6 @@
     import AttivitaBusinessBox from "../components/dashboardComponents/AttivitaBusinessBox";
     import TabellaPipelineNeed from "../components/dashboardComponents/TabellaPipelineNeed";
     import axios from "axios";
-import SchemePage from "../components/SchemePage";
 
     function ProvaDashboard() {
     //stato paginazione
@@ -229,7 +228,29 @@ import SchemePage from "../components/SchemePage";
     const getRowId = (row) => row.id;
 
     return (
-        <SchemePage>
+        <Box
+        sx={{
+            display: "inline",
+            backgroundColor: "#EEEDEE",
+            height: "100vh",
+            width: "100vw",
+            overflow: "hidden",
+        }}
+        >
+        <Box
+            sx={{
+            flexGrow: 1,
+            p: 3,
+            marginLeft: "12.8em",
+            marginTop: "0.5em",
+            marginBottom: "0.8em",
+            marginRight: "0.8em",
+            backgroundColor: "#FEFCFD",
+            borderRadius: "20px",
+            minHeight: "97vh",
+            mt: 1.5,
+            }}
+        >
             <Grid container spacing={2}>
             <Grid item xs={12}>
                 <Card
@@ -283,7 +304,8 @@ import SchemePage from "../components/SchemePage";
             </Grid>
             <Grid item xs={6}></Grid>
             </Grid>
-</SchemePage>
+        </Box>
+        </Box>
     );
     }
 
