@@ -12,6 +12,7 @@
     createTheme,
     IconButton,
     InputAdornment,
+    Container
     } from "@mui/material";
     import VisibilityIcon from "@mui/icons-material/Visibility";
     import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -143,21 +144,21 @@
         const response = await axios.post("http://89.46.196.60:8443/api/auth/lost/password", {
             email,
         });
-        console.log("Password recovery email sent:", response.data);
         } catch (error) {
         console.error("Error during password recovery:", error);
         }
     };
 
     return (
-        <Box
+        <Container
+        maxWidth="sm"
         sx={{
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            width: "20vw",
-            minHeight: "94vh",
+            width: "35vw",
+            minHeight: "70vh",
             p: 2,
             backgroundColor: "#FEFCFD",
             borderRadius: 8,
@@ -669,7 +670,7 @@
             )}
             </Box>
         </Box>
-        </Box>
+        </Container>
     );
     };
 

@@ -45,6 +45,9 @@ const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
         }
     ];
 
+
+
+
     return (
         <Box sx={{ height: '100%', width: '100%' }}>
             <DataGrid
@@ -87,6 +90,13 @@ const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
                         color: '#808080',
                         fontWeight: 'bolder',
                         fontSize: '1em',
+                    },
+                    '& .MuiDataGrid-virtualScroller': {
+                        '&::-webkit-scrollbar': {
+                            display: 'none', // per Chrome, Safari, e Opera
+                        },
+                        scrollbarWidth: 'none', // per Firefox
+                        msOverflowStyle: 'none', // per Internet Explorer 10+
                     },
                 }}
             />
