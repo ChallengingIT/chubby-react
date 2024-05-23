@@ -43,24 +43,18 @@ import ModificaHiringRecruiting                                        from './p
 import AggiungiOwner                                                   from './pages/AggiungiForm/AggiungiOwner.jsx';
 
 
+
+
+// const App = ({ server, location }) => {
+//   return (
+//     <RouterComponent server={server} location={location}>
+//       <Routes />
+//     </RouterComponent>
+//   );
+// };
+
+
 const App = () => {
-
-
-// useEffect(() => {
-//   const handleBeforeUnload = () => {
-//     sessionStorage.clear();
-//   };
-
-//   window.addEventListener('beforeunload', handleBeforeUnload);
-
-//   return () => {
-//     window.removeEventListener('beforeunload', handleBeforeUnload);
-//   };
-// }, []);
-
-
-
-
 
 
   return (
@@ -253,3 +247,17 @@ const App = () => {
 };
   
 export default App;
+
+
+
+// useEffect(() => {
+//   const handleBeforeUnload = () => {
+//     sessionStorage.clear();
+//   };
+
+//   window.addEventListener('beforeunload', handleBeforeUnload);
+
+//   return () => {
+//     window.removeEventListener('beforeunload', handleBeforeUnload);
+//   };
+// }, []);

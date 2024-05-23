@@ -22,8 +22,8 @@
     Grid,
     Snackbar,
     Slide,
+    Container
     } from "@mui/material";
-import CustomMultipleSelectAggiunta from "../../components/fields/CustomMultipleSelectAggiunta";
 
     const AggiungiAziendaGrafica = () => {
     const theme = useUserTheme();
@@ -530,7 +530,7 @@ import CustomMultipleSelectAggiunta from "../../components/fields/CustomMultiple
 
 
     return (
-        <Box
+        <Container maxWidth="false"
         sx={{
             display: "flex",
             backgroundColor: "#EEEDEE",
@@ -809,7 +809,7 @@ import CustomMultipleSelectAggiunta from "../../components/fields/CustomMultiple
             </Box>
             </Box>
         </Box>
-        </Box>
+        </Container>
     );
     };
 

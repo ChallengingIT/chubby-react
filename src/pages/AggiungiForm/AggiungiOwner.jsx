@@ -18,8 +18,7 @@
     Alert,
     Snackbar,
     Grid,
-    Popover,
-    IconButton,
+    Container,
     Slide,
     } from "@mui/material";
 import { useUserTheme } from "../../components/TorchyThemeProvider";
@@ -274,7 +273,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
     };
 
     return (
-        <Box
+        <Container maxWidth="false"
         sx={{
             display: "flex",
             backgroundColor: "#EEEDEE",
@@ -522,7 +521,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
             </Box>
             </Box>
         </Box>
-        </Box>
+        </Container>
     );
     };
 
