@@ -120,11 +120,13 @@
         }
 
         if (Array.isArray(responsePipeline.data)) {
-            setOriginalPipeline(responsePipeline.data);
-            setHasMore(responsePipeline.data.length >= quantita);
+            const pipelineConId = responsePipeline.data.map((pipeline) => ({
+            ...pipeline,
+            }));
+            setOriginalPipeline(pipelineConId);
         } else {
             console.error(
-            "I dati ottenuti dalla pipeline non sono nel formato Array:",
+            "I dati ottenuti non sono nel formato Array:",
             responsePipeline.data
             );
         }

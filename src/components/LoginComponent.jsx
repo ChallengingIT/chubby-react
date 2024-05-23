@@ -57,10 +57,14 @@
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
+    const [nome, setNome] = useState("");
+    const [cognome, setCognome] = useState("");
     const [loginError, setLoginError] = useState({
         username: false,
         password: false,
         email: false,
+        name: false,
+        surname: false
     });
     const [showPassword, setShowPassword] = useState(false);
     const [isFlipped, setIsFlipped] = useState(false);
@@ -158,7 +162,7 @@
             alignItems: "center",
             justifyContent: "center",
             width: "35vw",
-            minHeight: "70vh",
+            minHeight: "92vh",
             p: 2,
             backgroundColor: "#FEFCFD",
             borderRadius: 8,
@@ -359,7 +363,7 @@
                     }}
                     />
                     <Button
-                    // onClick={toggleFlip}
+                    onClick={toggleFlip}
                     sx={{
                         display: "flex",
                         justifyContent: "center",
@@ -504,6 +508,72 @@
                     }}
                     sx={{
                         mb: 2,
+                        "& .MuiFormLabel-root.Mui-focused": {
+                        color: "#00B400",
+                        },
+                        "& .MuiOutlinedInput-root": {
+                        "&.Mui-focused fieldset": {
+                            borderColor: "#00B400",
+                        },
+                        },
+                    }}
+                    />
+                    <Typography
+                    variant="h6"
+                    component="h2"
+                    sx={{ alignSelf: "flex-start", fontSize: "1em" }}
+                    >
+                    Enter your name
+                    </Typography>
+                    <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="nome"
+                    label="Nome"
+                    autoFocus
+                    value={nome}
+                    onKeyDown={handleKeyDown}
+                    error={loginError.nome}
+                    onChange={(e) => {
+                        setEmail(e.target.value);
+                        setLoginError((errors) => ({ ...errors, nome: false }));
+                    }}
+                    sx={{
+                        mb: 4,
+                        "& .MuiFormLabel-root.Mui-focused": {
+                        color: "#00B400",
+                        },
+                        "& .MuiOutlinedInput-root": {
+                        "&.Mui-focused fieldset": {
+                            borderColor: "#00B400",
+                        },
+                        },
+                    }}
+                    />
+                    <Typography
+                    variant="h6"
+                    component="h2"
+                    sx={{ alignSelf: "flex-start", fontSize: "1em" }}
+                    >
+                    Enter your surname
+                    </Typography>
+                    <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="cognome"
+                    label="Cognome"
+                    autoFocus
+                    value={cognome}
+                    onKeyDown={handleKeyDown}
+                    error={loginError.cognome}
+                    onChange={(e) => {
+                        setEmail(e.target.value);
+                        setLoginError((errors) => ({ ...errors, cognome: false }));
+                    }}
+                    sx={{
+                        mb: 4,
                         "& .MuiFormLabel-root.Mui-focused": {
                         color: "#00B400",
                         },
