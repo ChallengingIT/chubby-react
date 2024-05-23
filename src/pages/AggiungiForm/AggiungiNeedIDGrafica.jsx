@@ -9,7 +9,6 @@
     import CustomDecimalNumberAggiungi                          from "../../components/fields/CustomDecimalNumberAggiungi";
     import CustomMultipleSelectAggiunta                         from "../../components/fields/CustomMultipleSelectAggiunta";
     import CustomWeekDateAggiungi                               from "../../components/fields/CustomWeekDateAggiungi";
-    import CustomTextFieldModifica                              from "../../components/fields/CustomTextFieldModifica";
     import {
         Box,
         Typography,
@@ -23,6 +22,7 @@
         Snackbar,
         Grid,
         Slide,
+        Container
         } from "@mui/material";
 import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
 import { useUserTheme } from "../../components/TorchyThemeProvider";
@@ -595,7 +595,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
     };
 
     return (
-        <Box
+        <Container maxWidth="false"
         sx={{
             display: "flex",
             backgroundColor: "#EEEDEE",
@@ -843,7 +843,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
             </Box>
             </Box>
         </Box>
-        </Box>
+        </Container>
     );
     };
 

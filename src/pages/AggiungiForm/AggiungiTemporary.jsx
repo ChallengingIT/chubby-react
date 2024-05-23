@@ -1,6 +1,6 @@
 import React, { useState, useEffect }                                                                 from 'react';
 import { useNavigate, useParams }                                                                                from 'react-router-dom';
-import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Grid, Snackbar, Slide, Dialog, DialogTitle, IconButton, DialogContent, Autocomplete, DialogActions, Skeleton, TextField} from '@mui/material';
+import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Grid, Snackbar, Slide, Dialog, DialogTitle, IconButton, DialogContent, Autocomplete, DialogActions, Skeleton, TextField, Container} from '@mui/material';
 import CircleOutlinedIcon                                                                             from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
 import axios                                                                                          from 'axios';
 import CustomAutocomplete                                                                             from '../../components/fields/CustomAutocomplete';
@@ -494,7 +494,7 @@ const confirmSelection = () => {
         
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
+    <Container maxWidth="false" sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
         <Box sx={{ display: 'flex', height: '98%', width: '100vw', flexDirection: 'row', ml: '12.5em', mt: '0.5em', mb: '0.5em', mr: '0.8em', borderRadius: '20px', overflow: 'hidden' }}>
             <Box sx={{ width: '280px', height: '98%', background: theme.palette.aggiungiSidebar.bg, p:2, overflow: 'hidden', position: 'fixed', borderRadius: '20px 0px 0px 20px' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%'}}>
@@ -677,7 +677,7 @@ const confirmSelection = () => {
                         }}>OK</Button>
                 </DialogActions>
             </Dialog>
-    </Box>
+    </Container>
     )
 }
 

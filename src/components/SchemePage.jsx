@@ -1,9 +1,9 @@
     import React from "react";
-    import { Box } from "@mui/material";
+    import { Box, Container } from "@mui/material";
 
     const SchemePage = ({ children }) => {
     return (
-        <Box
+        <Container maxWidth="false"
         sx={{
             display: "flex",
             backgroundColor: "#EEEDEE",
@@ -11,23 +11,26 @@
             width: "100vw",
         }}
         >
-        <Box
+        <Container
+        maxWidth="xl"
             sx={{
-                flexGrow: 1,
-                p: 3,
-                marginLeft: "12.8em",
-                marginTop: "0.5em",
-                marginBottom: "0.8em",
-                marginRight: "0.8em",
-                backgroundColor: "#FEFCFD",
-                borderRadius: "20px",
-                minHeight: "98vh",
-                mt: 1.5,
+            display: "flex",
+            flexGrow: 1,
+            flexDirection: 'column',
+            p: 3,
+            marginLeft: "12.8em",
+            marginTop: "0.5em",
+            marginBottom: "0.8em",
+            marginRight: "0.8em",
+            backgroundColor: "#FEFCFD",
+            borderRadius: "20px",
+            minHeight: "97vh",
+            mt: 1.5,
             }}
         >
             {children}
-        </Box>
-        </Box>
+        </Container>
+        </Container>
     );
     };
 

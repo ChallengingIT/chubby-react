@@ -21,6 +21,7 @@
     Popover,
     IconButton,
     Slide,
+    Container
     } from "@mui/material";
 
     const AggiungiKeypeopleGrafica = () => {
@@ -617,7 +618,7 @@
     };
 
     return (
-        <Box
+        <Container maxWidth="false"
         sx={{
             display: "flex",
             backgroundColor: "#EEEDEE",
@@ -865,7 +866,7 @@
             </Box>
             </Box>
         </Box>
-        </Box>
+        </Container>
     );
     };
 

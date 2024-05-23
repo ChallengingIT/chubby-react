@@ -22,6 +22,7 @@
     Snackbar,
     Grid,
     Slide,
+    Container
     } from "@mui/material";
 
     const AggiungiIntervistaGrafica = () => {
@@ -585,7 +586,7 @@
 
 
     return (
-        <Box
+        <Container maxWidth="false"
         sx={{
             display: "flex",
             backgroundColor: "#EEEDEE",
@@ -855,7 +856,7 @@
             </Box>
             </Box>
         </Box>
-        </Box>
+        </Container>
     );
     };
 

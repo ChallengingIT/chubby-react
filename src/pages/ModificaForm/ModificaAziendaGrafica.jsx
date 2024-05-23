@@ -1,6 +1,6 @@
 import React, { useState, useEffect }                                                                           from 'react';
 import { useNavigate, useLocation }                                                                             from 'react-router-dom';
-import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Snackbar, Skeleton, Grid, Slide} from '@mui/material';
+import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Snackbar, Skeleton, Grid, Slide, Container} from '@mui/material';
 import CircleOutlinedIcon                                                                                       from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
 import axios                                                                                                    from 'axios';
 import CustomAutocomplete                                                                                       from '../../components/fields/CustomAutocomplete';
@@ -10,7 +10,6 @@ import CustomNoteModifica                                                       
 import CustomDatePickerModifica                                                                                 from '../../components/fields/CustomDatePickerModifica';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CustomMultipleSelectModificaAziende from '../../components/fields/CustomMultipleSelectModificaAziende';
-import CustomMultipleSelectModifica from '../../components/fields/CustomMultipleSelectModifica';
 
 
 const ModificaAziendaGrafica = () => {
@@ -705,7 +704,7 @@ const ModificaAziendaGrafica = () => {
 
 
 return (
-    <Box sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
+    <Container maxWidth="false" sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
         <Box sx={{ display: 'flex', height: '98%', width: '100vw', flexDirection: 'row', ml: '12.5em', mt: '0.5em', mb: '0.5em', mr: '0.8em', borderRadius: '20px', overflow: 'hidden' }}>
         <Box sx={{ width: '280px', height: '98%', background: '#00B400', p:2, overflow: 'hidden', position: 'fixed', borderRadius: '20px 0px 0px 20px' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%'}}>
@@ -856,7 +855,7 @@ return (
                 </Box>
             </Box>
         </Box>
-    </Box>
+    </Container>
     )
 }
 

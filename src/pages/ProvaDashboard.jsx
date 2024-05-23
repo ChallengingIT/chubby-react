@@ -11,6 +11,7 @@
     import AttivitaBusinessBox from "../components/dashboardComponents/AttivitaBusinessBox";
     import TabellaPipelineNeed from "../components/dashboardComponents/TabellaPipelineNeed";
     import axios from "axios";
+import SchemePage from "../components/SchemePage";
 
     function ProvaDashboard() {
     //stato paginazione
@@ -245,40 +246,41 @@
     const getRowId = (row) => row.id;
 
     return (
-        <Container
-        maxWidth="false"
-        className="mainContainerFisso"
-        id="mainContainerFisso"
-        sx={{
-            // display: "inline",
-            display: "flex",
-            flexGrow: 1,
-            width: "100%",
-            backgroundColor: "#EEEDEE",
-            height: "100vh",
-            overflow: "hidden",
-            p: 0,
-            m: 0,
-        }}
-        >
-        <Container
-            maxWidth="xl"
-            className="containerBianco"
-            id="containerBianco"
+        <SchemePage>
+        {/*     <Container
+            maxWidth="false"
+            className="mainContainerFisso"
+            id="mainContainerFisso"
             sx={{
-            display: "flex",
-            flexGrow: 1,
-            p: 3,
-            marginLeft: "12.8em",
-            marginTop: "0.5em",
-            marginBottom: "0.8em",
-            marginRight: "0.8em",
-            backgroundColor: "#FEFCFD",
-            borderRadius: "20px",
-            minHeight: "97vh",
-            mt: 1.5,
+                // display: "inline",
+                display: "flex",
+                flexGrow: 1,
+                width: "100%",
+                backgroundColor: "#EEEDEE",
+                height: "100vh",
+                overflow: "hidden",
+                p: 0,
+                m: 0,
             }}
-        >
+            >
+            <Container
+                maxWidth="xl"
+                className="containerBianco"
+                id="containerBianco"
+                sx={{
+                display: "flex",
+                flexGrow: 1,
+                p: 3,
+                marginLeft: "12.8em",
+                marginTop: "0.5em",
+                marginBottom: "0.8em",
+                marginRight: "0.8em",
+                backgroundColor: "#FEFCFD",
+                borderRadius: "20px",
+                minHeight: "97vh",
+                mt: 1.5,
+                }}
+            > */}
             <Grid container spacing={2}>
             <Grid item xs={12}>
                 <Card
@@ -333,8 +335,9 @@
                 />
             </Grid>
             </Grid>
-        </Container>
-        </Container>
+        {/* </Container>
+            </Container> */}
+        </SchemePage>
     );
     }
 
