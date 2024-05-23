@@ -17,12 +17,13 @@ const TabellaAttivitaBusiness = ({ data = [] }) => {
     const [expandedId, setExpandedId] = useState(null);
 
     const handleToggleExpanded = (id) => {
-        setExpandedId(expandedId === id ? null : id);
-    };
+    setExpandedId(expandedId === id ? null : id);
+};
+
 
     const handleToggleCompleted = (id) => {
         const updatedActivities = activities.map(item =>
-            item.idAzione === id ? { ...item, completed: !item.completed } : item
+            item.idIntervista === id ? { ...item, completed: !item.completed } : item
         );
         setActivities(updatedActivities);
     };
@@ -43,20 +44,20 @@ const TabellaAttivitaBusiness = ({ data = [] }) => {
     return (
         <List sx={hideScrollbarStyle}>
             {activities.map((item, index) => (
-                <React.Fragment key={item.idAzione || index}>
+                <React.Fragment key={item.idIntervista || index}>
                     <ListItem 
                         sx={{ bgcolor: 'transparent', borderBottom: '2px solid #ccc7c7' }} 
                         secondaryAction={
                             <Checkbox 
                                 edge="end"
                                 checked={item.completed}
-                                onChange={() => handleToggleCompleted(item.idAzione)}
-                                inputProps={{ 'aria-labelledby': `checkbox-list-label-${item.idAzione}` }}
+                                onChange={() => handleToggleCompleted(item.idIntervista)}
+                                inputProps={{ 'aria-labelledby': `checkbox-list-label-${item.idIntervista}` }}
                             />
                         }
                     >
                         <ListItemText 
-                            id={`checkbox-list-label-${item.idAzione}`}
+                            id={`checkbox-list-label-${item.idIntervista}`}
                             primary={
                                 <Typography style={{ textDecoration: item.completed ? 'line-through' : 'none' }}>
                                     <span style={{ color: '#808080', fontWeight: 300}}>{(item.data && item.data.slice(11, 16))  || null} </span> 
@@ -66,13 +67,13 @@ const TabellaAttivitaBusiness = ({ data = [] }) => {
                             }
                         />
                         <IconButton
-                            onClick={() => handleToggleExpanded(item.idAzione)}
+                            onClick={() => handleToggleExpanded(item.idIntervista)}
                             aria-label="show more"
                         >
-                            {expandedId === item.idAzione ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                            {expandedId === item.idIntervista ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                         </IconButton>
                     </ListItem>
-                    <Collapse in={expandedId === item.idAzione} timeout="auto" unmountOnExit>
+                    <Collapse in={expandedId === item.idIntervista} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
                             <ListItem sx={{ pl: 4 }}>
                                 <ListItemText 

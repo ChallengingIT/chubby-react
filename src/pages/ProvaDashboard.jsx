@@ -1,5 +1,12 @@
     import React, { useEffect, useState } from "react";
-    import { Box, Grid, Card, CardContent, Typography } from "@mui/material";
+    import {
+    Box,
+    Grid,
+    Card,
+    CardContent,
+    Typography,
+    Container,
+    } from "@mui/material";
     import AttivitaRecruitingBox from "../components/dashboardComponents/AttivitaRecruitingBox";
     import AttivitaBusinessBox from "../components/dashboardComponents/AttivitaBusinessBox";
     import TabellaPipelineNeed from "../components/dashboardComponents/TabellaPipelineNeed";
@@ -14,10 +21,11 @@
     //stati per i valori
     const [originalPipeline, setOriginalPipeline] = useState([]);
     const [originalAttivitaBusiness, setOriginalAttivitaBusiness] = useState([]);
-    const [originalAttivitaRecruiting, setOriginalAttivitaRecruiting] = useState([]);
-    const [aziendeOptions, setAziendaOptions ] = useState([]);
+    const [originalAttivitaRecruiting, setOriginalAttivitaRecruiting] = useState(
+        []
+    );
+    const [aziendeOptions, setAziendaOptions] = useState([]);
     const [loading, setLoading] = useState(false);
-
 
     const [filtri, setFiltri] = useState(() => {
         const filtriSalvati = sessionStorage.getItem("filtriRicercaPipeline");
@@ -92,17 +100,24 @@
             }),
         ]);
 
-        const responseAzienda       = await axios.get("http://localhost:8080/aziende/react/select",          { headers: headers });
+        const responseAzienda = await axios.get(
+            "http://localhost:8080/aziende/react/select",
+            { headers: headers }
+        );
 
         if (Array.isArray(responseAzienda.data)) {
-                setAziendaOptions(responseAzienda.data.map((azienda) => ({ label: azienda.denominazione, value: azienda.id })));
-            } else {
-                console.error("I dati ottenuti dalla chiamata delle aziendenon sono nel formato Array:", responseAzienda.data);
-            }
-
-
-
-
+            setAziendaOptions(
+            responseAzienda.data.map((azienda) => ({
+                label: azienda.denominazione,
+                value: azienda.id,
+            }))
+            );
+        } else {
+            console.error(
+            "I dati ottenuti dalla chiamata delle aziendenon sono nel formato Array:",
+            responseAzienda.data
+            );
+        }
 
         if (Array.isArray(responsePipeline.data)) {
             setOriginalPipeline(responsePipeline.data);
@@ -181,7 +196,7 @@
         renderCell: (params) => {
             const owner = params.value;
             return `${owner.nome} ${owner.cognome}`;
-        }
+        },
         },
         {
         field: "cliente",
@@ -193,7 +208,7 @@
         renderCell: (params) => {
             const cliente = params.value;
             return `${cliente.denominazione}`;
-        }
+        },
         },
         {
         field: "descrizione",
@@ -221,24 +236,35 @@
         renderCell: (params) => {
             const stato = params.value;
             return `${stato.descrizione}`;
-        }
+        },
         },
     ];
 
     const getRowId = (row) => row.id;
 
     return (
-        <Box
+        <Container
+        maxWidth="false"
+        className="mainContainerFisso"
+        id="mainContainerFisso"
         sx={{
-            display: "inline",
+            // display: "inline",
+            display: "flex",
+            flexGrow: 1,
+            width: "100%",
             backgroundColor: "#EEEDEE",
             height: "100vh",
-            width: "100vw",
             overflow: "hidden",
+            p: 0,
+            m: 0,
         }}
         >
-        <Box
+        <Container
+            maxWidth="xl"
+            className="containerBianco"
+            id="containerBianco"
             sx={{
+            display: "flex",
             flexGrow: 1,
             p: 3,
             marginLeft: "12.8em",
@@ -260,7 +286,6 @@
                     maxWidth: "100%",
                     height: "50vh",
                     border: "2px solid #00B401",
-                    // p: 2,
                     display: "flex",
                     flexDirection: "column",
                     overflow: "hidden",
@@ -296,16 +321,18 @@
                 </CardContent>
                 </Card>
             </Grid>
-            <Grid item xs={6} sx={{ maxHeight: '100%', mb: 2}}>
+            <Grid item xs={6}>
                 <AttivitaRecruitingBox data={originalAttivitaRecruiting} />
             </Grid>
-            <Grid item xs={6} sx={{ maxHeight: '100%', mb: 2}}>
-                <AttivitaBusinessBox data={originalAttivitaBusiness} aziendeOptions={aziendeOptions} />
+            <Grid item xs={6}>
+                <AttivitaBusinessBox
+                data={originalAttivitaBusiness}
+                aziendeOptions={aziendeOptions}
+                />
             </Grid>
-            <Grid item xs={6}></Grid>
             </Grid>
-        </Box>
-        </Box>
+        </Container>
+        </Container>
     );
     }
 

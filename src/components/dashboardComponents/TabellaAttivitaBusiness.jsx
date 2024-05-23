@@ -17,8 +17,9 @@ const TabellaAttivitaBusiness = ({ data = [], aziendeOptions = [] }) => {
     const [expandedId, setExpandedId] = useState(null);
 
     const handleToggleExpanded = (id) => {
-        setExpandedId(expandedId === id ? null : id);
-    };
+    setExpandedId(expandedId === id ? null : id);
+};
+
 
     const handleToggleCompleted = (id) => {
         const updatedActivities = activities.map(item =>
