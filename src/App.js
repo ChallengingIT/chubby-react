@@ -34,13 +34,15 @@ import { AuthProvider }                                                from './s
 import DashboardClienti                                                from './pages/DashboardClienti.jsx';
 import AggiungiStaffing                                                from './pages/AggiungiForm/AggiungiStaffing.jsx';
 import AggiungiTemporary                                               from './pages/AggiungiForm/AggiungiTemporary.jsx';
-import ProvaDashboard                                                  from './pages/ProvaDashboard.jsx';
+import Dashboard                                                       from './pages/Dashboard.jsx';
 import SettingsPage                                                    from './pages/SettingsPage.jsx';
 import ModificaStaffing                                                from './pages/ModificaForm/ModificaStaffing.jsx';
 import ModificaTemporary                                               from './pages/ModificaForm/ModificaTemporary.jsx';
 import ModificaHeadHunting                                             from './pages/ModificaForm/ModificaHeadHunting.jsx';
 import ModificaHiringRecruiting                                        from './pages/ModificaForm/ModificaHiringRecruiting.jsx';
 import AggiungiOwner                                                   from './pages/AggiungiForm/AggiungiOwner.jsx';
+import { NotificationProvider }                                        from './components/NotificationContext.js';
+
 
 
 
@@ -60,6 +62,8 @@ const App = () => {
   return (
     <AuthProvider>
       <TorchyThemeProvider>
+    <NotificationProvider>
+
     <BrowserRouter>
       <Routes>
       <Route path='/' element={<LoginPage /> } />
@@ -67,7 +71,7 @@ const App = () => {
       <Route element={<Layout />}>
                 <Route path="/dashboard" element={
                     <PrivateRoute roles={['ROLE_ADMIN',  'ROLE_RECRUITER', 'ROLE_BM', 'ROLE_USER', "ROLE_BUSINESS"]}>
-                      <ProvaDashboard />
+                      <Dashboard />
                     </PrivateRoute>
                   } />
                   <Route path="/homepage" element={
@@ -241,6 +245,7 @@ const App = () => {
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
+    </NotificationProvider>
   </TorchyThemeProvider>
 </AuthProvider>
   );
