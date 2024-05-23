@@ -162,12 +162,18 @@
             alignItems: "center",
             justifyContent: "center",
             width: "35vw",
-            minHeight: "92vh",
-            p: 2,
+            minHeight: "88vh",
+            pr: 2,
+            pl: 2,
             backgroundColor: "#FEFCFD",
             borderRadius: 8,
             boxShadow: "-10px -10px 10px 0 rgba(0.1, 0.1, 0.1, 0.1)",
-            overflow: "hidden",
+            overflow: "auto",
+            '&::-webkit-scrollbar': {
+              display: 'none', // per Chrome, Safari, e Opera
+            },
+            scrollbarWidth: 'none', // per Firefox
+            msOverflowStyle: 'none', // per Internet Explorer 10+
         }}
         >
         <Box sx={{ width: "100%", height: "100%", perspective: "1000px" }}>
@@ -203,24 +209,24 @@
                         variant="h5"
                         component="h2"
                         sx={{
-                        mb: 5,
+                        mb: 3,
                         color: "#00B401",
                         fontSize: "3em",
                         alignSelf: "flex-start",
-                        mt: 2,
+                        // mt: 1,
                         fontWeight: 600,
                         }}
                     >
                         Sign in
                     </Typography>
                     </Box>
-                    <Typography
+                    {/* <Typography
                     variant="h6"
                     component="h2"
                     sx={{ alignSelf: "flex-start", fontSize: "1em" }}
                     >
                     Enter your username
-                    </Typography>
+                    </Typography> */}
                     <TextField
                     margin="normal"
                     required
@@ -238,7 +244,7 @@
                         setLoginError((errors) => ({ ...errors, username: false }));
                     }}
                     sx={{
-                        mb: 4,
+                        mb: 2,
                         "& .MuiFormLabel-root.Mui-focused": {
                         color: "#00B400",
                         },
@@ -250,13 +256,13 @@
                     }}
                     />
 
-                    <Typography
+                    {/* <Typography
                     variant="h6"
                     component="h2"
                     sx={{ alignSelf: "flex-start", fontSize: "1em" }}
                     >
                     Enter your password
-                    </Typography>
+                    </Typography> */}
                     <TextField
                     margin="normal"
                     required
@@ -294,7 +300,7 @@
                         ),
                     }}
                     sx={{
-                        mb: 2,
+                        mb: 6,
                         "& .MuiFormLabel-root.Mui-focused": {
                         color: "#00B400",
                         },
@@ -318,8 +324,8 @@
                         color: "white",
                         fontWeight: "bold",
                         borderRadius: 2,
-                        mt: 3,
-                        mb: 1,
+                        // mt: 3,
+                        mb: 2,
                         "&:hover": {
                         backgroundColor: "#116d0e",
                         color: "white",
@@ -358,12 +364,12 @@
                         width: "100%",
                         border: "solid 1px #00B401",
                         borderRadius: 2,
-                        mt: 2,
-                        mb: 1,
+                        // mt: 2,
+                        mb: 2,
                     }}
                     />
                     <Button
-                    onClick={toggleFlip}
+                    // onClick={toggleFlip}
                     sx={{
                         display: "flex",
                         justifyContent: "center",
@@ -373,8 +379,8 @@
                         color: "white",
                         fontWeight: "bold",
                         borderRadius: 2,
+                        // mt: 1,
                         mt: 2,
-                        mb: 1,
                         "&:hover": {
                         backgroundColor: "#116d0e",
                         color: "white",
@@ -390,9 +396,8 @@
 
             {/* Back side (Register) */}
             {isFlipped && !forgotPassword && (
-                <Box
+                <Container maxWidth="false"
                 sx={{
-                    position: "absolute",
                     width: "100%",
                     height: "100%",
                     backfaceVisibility: "hidden",
@@ -402,40 +407,68 @@
                     alignItems: "center",
                     justifyContent: "center",
                     p: 2,
+                    
                 }}
                 >
                 <ThemeProvider theme={theme}>
                     <Box
                     sx={{
                         display: "flex",
+                        flexDirection: 'column',
                         alignItems: "center",
-                        justifyContent: "space-between",
+                        justifyContent: "center",
                         width: "100%",
+                        height: '100%'
                     }}
                     >
                     <Typography
                         variant="h5"
                         component="h2"
                         sx={{
-                        mb: 5,
+                        // mb: 5,
                         color: "#00B401",
                         fontSize: "3em",
                         alignSelf: "flex-start",
-                        mt: 2,
+                        // mt: 2,
                         fontWeight: 600,
                         }}
                     >
                         Sign up
                     </Typography>
-                    </Box>
 
-                    <Typography
+                    {/* <Typography
                     variant="h6"
                     component="h2"
                     sx={{ alignSelf: "flex-start", fontSize: "1em" }}
                     >
                     Enter your email
-                    </Typography>
+                    </Typography> */}
+                    <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="username"
+                    label="Username"
+                    autoFocus
+                    value={username}
+                    onKeyDown={handleKeyDown}
+                    error={loginError.username}
+                    onChange={(e) => {
+                        setUsername(e.target.value);
+                        setLoginError((errors) => ({ ...errors, username: false }));
+                    }}
+                    sx={{
+                        // mb: 1,
+                        "& .MuiFormLabel-root.Mui-focused": {
+                        color: "#00B400",
+                        },
+                        "& .MuiOutlinedInput-root": {
+                        "&.Mui-focused fieldset": {
+                            borderColor: "#00B400",
+                        },
+                        },
+                    }}
+                    />
                     <TextField
                     margin="normal"
                     required
@@ -451,7 +484,7 @@
                         setLoginError((errors) => ({ ...errors, email: false }));
                     }}
                     sx={{
-                        mb: 4,
+                        // mb: 1,
                         "& .MuiFormLabel-root.Mui-focused": {
                         color: "#00B400",
                         },
@@ -463,13 +496,13 @@
                     }}
                     />
 
-                    <Typography
+                    {/* <Typography
                     variant="h6"
                     component="h2"
                     sx={{ alignSelf: "flex-start", fontSize: "1em" }}
                     >
                     Enter your password
-                    </Typography>
+                    </Typography> */}
                     <TextField
                     margin="normal"
                     required
@@ -507,7 +540,7 @@
                         ),
                     }}
                     sx={{
-                        mb: 2,
+                        // mb: 1,
                         "& .MuiFormLabel-root.Mui-focused": {
                         color: "#00B400",
                         },
@@ -518,13 +551,13 @@
                         },
                     }}
                     />
-                    <Typography
+                    {/* <Typography
                     variant="h6"
                     component="h2"
                     sx={{ alignSelf: "flex-start", fontSize: "1em" }}
                     >
                     Enter your name
-                    </Typography>
+                    </Typography> */}
                     <TextField
                     margin="normal"
                     required
@@ -540,7 +573,7 @@
                         setLoginError((errors) => ({ ...errors, nome: false }));
                     }}
                     sx={{
-                        mb: 4,
+                        // mb: 1,
                         "& .MuiFormLabel-root.Mui-focused": {
                         color: "#00B400",
                         },
@@ -551,13 +584,13 @@
                         },
                     }}
                     />
-                    <Typography
+                    {/* <Typography
                     variant="h6"
                     component="h2"
                     sx={{ alignSelf: "flex-start", fontSize: "1em" }}
                     >
                     Enter your surname
-                    </Typography>
+                    </Typography> */}
                     <TextField
                     margin="normal"
                     required
@@ -573,7 +606,7 @@
                         setLoginError((errors) => ({ ...errors, cognome: false }));
                     }}
                     sx={{
-                        mb: 4,
+                        // mb: 4,
                         "& .MuiFormLabel-root.Mui-focused": {
                         color: "#00B400",
                         },
@@ -598,8 +631,8 @@
                         color: "white",
                         fontWeight: "bold",
                         borderRadius: 2,
-                        mt: 5,
-                        mb: 1,
+                        mt: 2,
+                        // mb: 1,
                         "&:hover": {
                         backgroundColor: "#116d0e",
                         color: "white",
@@ -609,8 +642,9 @@
                     >
                     Go Sign In
                     </Button>
-                </ThemeProvider>
                 </Box>
+                </ThemeProvider>
+                </Container>
             )}
 
             {/* Forgot Password side */}
@@ -644,11 +678,11 @@
                         variant="h5"
                         component="h2"
                         sx={{
-                        mb: 5,
+                        // mb: 5,
                         color: "#00B401",
                         fontSize: "3em",
                         alignSelf: "flex-start",
-                        mt: 2,
+                        // mt: 2,
                         fontWeight: 600,
                         }}
                     >
@@ -678,7 +712,7 @@
                         setLoginError((errors) => ({ ...errors, email: false }));
                     }}
                     sx={{
-                        mb: 4,
+                        // mb: 4,
                         "& .MuiFormLabel-root.Mui-focused": {
                         color: "#00B400",
                         },
@@ -703,8 +737,8 @@
                         color: "white",
                         fontWeight: "bold",
                         borderRadius: 2,
-                        mt: 3,
-                        mb: 1,
+                        // mt: 3,
+                        // mb: 1,
                         "&:hover": {
                         backgroundColor: "#116d0e",
                         color: "white",

@@ -1,7 +1,7 @@
     import React                    from "react";
     import { useNavigate }          from "react-router-dom";
     import loginTorchy              from "../images/loginTorchy.svg";
-    import { Box }                  from "@mui/material";
+    import { Box, Container }                  from "@mui/material";
     import LoginComponent           from "../components/LoginComponent";
     import TorchyChallenging        from "../images/tochyChallenging.svg";
 import LoginRegisterComponent from "../components/LoginRegisterComponent";
@@ -9,7 +9,7 @@ import LoginRegisterComponent from "../components/LoginRegisterComponent";
     const LoginPage = () => {
     const navigate = useNavigate();
     return (
-        <Box
+        <Container maxWidth="false"
         sx={{
             display: "flex",
             flexDirection: "column",
@@ -58,18 +58,18 @@ import LoginRegisterComponent from "../components/LoginRegisterComponent";
             <img alt="Torchy logo" src={TorchyChallenging} style={{ width: '100%', height: '100%' }} />
         </Box>
 
-        <Box
+        <Container
             sx={{
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            minWidth: "40%",
+            // minWidth: "40%",
             // height: "50vh",
             }}
         >
             <LoginComponent navigate={navigate} />
-        </Box>
-        </Box>
+        </Container>
+        </Container>
     );
     };
 

@@ -29,16 +29,18 @@ const TabellaAttivitaBusiness = ({ data = [] }) => {
     };
 
 
-
     const hideScrollbarStyle = {
         width: '100%',
         maxHeight: 280,
         overflowY: 'auto',
         overflowX: 'hidden',
         bgcolor: 'transparent',
-        '&::-webkit-scrollbar': { display: 'none' },
-        scrollbarWidth: 'none',
-        msOverflowStyle: 'none'
+        '&::-webkit-scrollbar': {
+            width: '0px',
+            background: 'transparent'  // Chrome/Safari/Webkit
+        },
+        scrollbarWidth: 'none',  // Firefox
+        msOverflowStyle: 'none'  // IE 10+
     };
 
     return (

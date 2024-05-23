@@ -12,14 +12,13 @@ const TabellaAttivitaBusiness = ({ data = [], aziendeOptions = [] }) => {
             completed: item.completed || false 
         }));
         setActivities(initializedData);
-    }, [data]); 
+    }, [data]);
 
     const [expandedId, setExpandedId] = useState(null);
 
     const handleToggleExpanded = (id) => {
-    setExpandedId(expandedId === id ? null : id);
-};
-
+        setExpandedId(expandedId === id ? null : id);
+    };
 
     const handleToggleCompleted = (id) => {
         const updatedActivities = activities.map(item =>
@@ -28,7 +27,7 @@ const TabellaAttivitaBusiness = ({ data = [], aziendeOptions = [] }) => {
         setActivities(updatedActivities);
     };
 
-    //funzione per trovare il nome del cliente dal suo id
+    // funzione per trovare il nome del cliente dal suo id
     const getAziendaLabel = (idCliente) => {
         const azienda = aziendeOptions.find(option => option.value === idCliente);
         return azienda ? azienda.label : 'Azienda Sconosciuta';
@@ -40,19 +39,22 @@ const TabellaAttivitaBusiness = ({ data = [], aziendeOptions = [] }) => {
         overflowY: 'auto',
         overflowX: 'hidden',
         bgcolor: 'transparent',
-        '&::-webkit-scrollbar': { display: 'none' },
-        scrollbarWidth: 'none',
-        msOverflowStyle: 'none'
+        '&::-webkit-scrollbar': {
+            width: '0px',
+            background: 'transparent'  // Chrome/Safari/Webkit
+        },
+        scrollbarWidth: 'none',  // Firefox
+        msOverflowStyle: 'none'  // IE 10+
     };
 
     return (
         <List sx={hideScrollbarStyle}>
             {activities.map((item, index) => (
                 <React.Fragment key={item.idAzione || index}>
-                    <ListItem 
-                        sx={{ bgcolor: 'transparent', borderBottom: '2px solid #ccc7c7' }} 
+                    <ListItem
+                        sx={{ bgcolor: 'transparent', borderBottom: '2px solid #ccc7c7' }}
                         secondaryAction={
-                            <Checkbox 
+                            <Checkbox
                                 edge="end"
                                 checked={item.completed}
                                 onChange={() => handleToggleCompleted(item.idAzione)}
@@ -60,14 +62,14 @@ const TabellaAttivitaBusiness = ({ data = [], aziendeOptions = [] }) => {
                             />
                         }
                     >
-                        <ListItemText 
+                        <ListItemText
                             id={`checkbox-list-label-${item.idAzione}`}
                             primary={
                                 <Typography style={{ textDecoration: item.completed ? 'line-through' : 'none' }}>
-                                    <span style={{ color: '#808080', fontWeight: 300}}>Today </span> 
-                                    <span style={{ color: '#00B400', fontWeight: 'bolder'}}> | </span>
+                                    <span style={{ color: '#808080', fontWeight: 300 }}>Today </span>
+                                    <span style={{ color: '#00B400', fontWeight: 'bolder' }}> | </span>
                                     <span style={{ fontWeight: 'bold' }}>{item.azione}</span>
-                                </Typography>  
+                                </Typography>
                             }
                         />
                         <IconButton
@@ -80,7 +82,7 @@ const TabellaAttivitaBusiness = ({ data = [], aziendeOptions = [] }) => {
                     <Collapse in={expandedId === item.idAzione} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
                             <ListItem sx={{ pl: 4 }}>
-                                <ListItemText 
+                                <ListItemText
                                     primary={
                                         <Typography>
                                             <span style={{ fontWeight: 'bold' }}>Owner:</span> {item.siglaOwner}
@@ -89,7 +91,7 @@ const TabellaAttivitaBusiness = ({ data = [], aziendeOptions = [] }) => {
                                 />
                             </ListItem>
                             <ListItem sx={{ pl: 4 }}>
-                                <ListItemText 
+                                <ListItemText
                                     primary={
                                         <Typography>
                                             <span style={{ fontWeight: 'bold' }}>Cliente:</span> {getAziendaLabel(item.idCliente)}
@@ -98,7 +100,7 @@ const TabellaAttivitaBusiness = ({ data = [], aziendeOptions = [] }) => {
                                 />
                             </ListItem>
                             <ListItem sx={{ pl: 4 }}>
-                                <ListItemText 
+                                <ListItemText
                                     primary={
                                         <Typography>
                                             <span style={{ fontWeight: 'bold' }}>Contatto:</span> {item.nomeContatto}
