@@ -662,7 +662,7 @@ const confirmSelection = () => {
                     /> */}
                 <FormControl fullWidth sx={{ mb: 2 }}>
                 <Autocomplete
-                    id="tipologia-combo-box"
+                    id="candidato-combo-box"
                     options={candidatiData}
                     getOptionLabel={(option) => `${option.nome} ${option.cognome} (${option.email})`}
                     value={candidatoSelezionato}
@@ -672,7 +672,7 @@ const confirmSelection = () => {
                     renderInput={(params) => (
                     <TextField
                         {...params}
-                        label="Tipologia"
+                        label="Candidato"
                         variant="filled"
                         sx={{
                         textAlign: "left",
