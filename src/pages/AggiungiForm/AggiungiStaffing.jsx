@@ -1,6 +1,6 @@
 import React, { useState, useEffect }                                                                 from 'react';
 import { useNavigate, useParams }                                                                                from 'react-router-dom';
-import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Grid, Snackbar, Slide, Dialog, DialogTitle, IconButton, DialogContent, DialogActions, TextField, Autocomplete, Skeleton, Container  } from '@mui/material';
+import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Grid, Snackbar, Slide, Dialog, DialogTitle, IconButton, DialogContent, DialogActions, TextField, Autocomplete, Skeleton, Container, FormControl  } from '@mui/material';
 import CircleOutlinedIcon                                                                             from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
 import axios                                                                                          from 'axios';
 import CustomAutocomplete                                                                             from '../../components/fields/CustomAutocomplete';
@@ -639,14 +639,44 @@ const confirmSelection = () => {
                     </IconButton>
                 </DialogTitle>
                 <DialogContent>
-                    <Autocomplete
-                        options={candidatiData}
-                        getOptionLabel={(option) => `${option.nome} ${option.cognome} (${option.email})`}
-                        renderInput={(params) => <TextField {...params} label="Candidato" variant="outlined" />}
-                        onChange={handleSelectCandidato}
-                        loading={loading}
-                        value={candidatoSelezionato}
+                     <FormControl fullWidth sx={{ mb: 2 }}>
+                <Autocomplete
+                    id="tipologia-combo-box"
+                    options={candidatiData}
+                    getOptionLabel={(option) => `${option.nome} ${option.cognome} (${option.email})`}
+                    value={candidatoSelezionato}
+
+                    onChange={handleSelectCandidato}
+
+                    renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        label="Tipologia"
+                        variant="filled"
+                        sx={{
+                        textAlign: "left",
+                        borderRadius: "20px",
+                        backgroundColor: "#EDEDED",
+                        "& .MuiFilledInput-root": {
+                            backgroundColor: "transparent",
+                        },
+                        "& .MuiFilledInput-underline:after": {
+                            borderBottomColor: "transparent",
+                        },
+                        "& .MuiFilledInput-root::before": {
+                            borderBottom: "none",
+                        },
+                        "&:hover .MuiFilledInput-root::before": {
+                            borderBottom: "none",
+                        },
+                        "& .MuiFormLabel-root.Mui-focused": {
+                            color: theme.palette.border.main,
+                        },
+                        }}
                     />
+                    )}
+                />
+                </FormControl>
                 </DialogContent>
                 <DialogActions>
                     <Button 
