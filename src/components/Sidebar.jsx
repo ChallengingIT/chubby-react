@@ -455,7 +455,7 @@
                 {ruolo()}
                 </Typography>
             </Box>
-            {/* <ListItem
+            <ListItem
                 selected={activeLink === "/settings"}
                 onClick={handleSettingsClick}
                 sx={{
@@ -482,7 +482,7 @@
                 </ListItemIcon>
                 <ListItemText primary="Settings" />
             </ListItem>
-            */}
+           
             <ListItem
                 selected={activeLink === "/logout"}
                 onClick={handleLogoutClick}

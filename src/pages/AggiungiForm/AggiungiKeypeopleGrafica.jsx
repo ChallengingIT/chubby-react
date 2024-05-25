@@ -23,9 +23,11 @@
     Slide,
     Container
     } from "@mui/material";
+import { useUserTheme } from "../../components/TorchyThemeProvider";
 
     const AggiungiKeypeopleGrafica = () => {
     const navigate = useNavigate();
+    const theme = useUserTheme();
 
     //stati della pagina
     const [ activeSection,                  setActiveSection                ] = useState("Anagrafica");
@@ -662,7 +664,7 @@
                 <Button
                 onClick={handleGoBack}
                 sx={{
-                    color: "black",
+                    color: theme.palette.textButton.main,
                     border: "none",
                     fontSize: "0.8em",
                     cursor: "pointer",
@@ -671,7 +673,7 @@
                     mt: 4,
                     ml: 2,
                     "&:hover": {
-                    color: "#EDEDED",
+                    color: theme.palette.textButton.main,
                     },
                 }}
                 >

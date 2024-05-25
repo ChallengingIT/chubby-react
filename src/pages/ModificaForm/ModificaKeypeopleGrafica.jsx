@@ -631,7 +631,7 @@ return (
                     <Button
                     onClick={handleGoBack}
                     sx={{
-                        color: 'black',
+                        color: '#EDEDED',
                         border:'none',
                         fontSize: '0.8em',
                         cursor: 'pointer',

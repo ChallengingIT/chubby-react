@@ -337,7 +337,7 @@
                     </Button>
 
                     <Button
-                    // onClick={toggleForgot}
+                    onClick={toggleForgot}
                     sx={{
                         display: "flex",
                         justifyContent: "center",
@@ -369,7 +369,7 @@
                     }}
                     />
                     <Button
-                    // onClick={toggleFlip}
+                    onClick={toggleFlip}
                     sx={{
                         display: "flex",
                         justifyContent: "center",

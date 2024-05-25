@@ -66,9 +66,9 @@ const TabellaHiring = ({ data, columns, getRowId }) => {
       <Table stickyHeader>
         <TableHead>
           <TableRow>
-            <TableCell sx={{ fontWeight: "bold" }}>Nome Azienda</TableCell>
-            <TableCell sx={{ fontWeight: "bold" }}>Tipo di Servizio</TableCell>
-            <TableCell sx={{ fontWeight: "bold" }}>Azioni</TableCell>
+            <TableCell sx={{ fontWeight: "bold", borderBottom: '1.5px solid #ccc7c7' }}>Nome Azienda</TableCell>
+            <TableCell sx={{ fontWeight: "bold", borderBottom: '1.5px solid #ccc7c7' }}>Tipo di Servizio</TableCell>
+            <TableCell sx={{ fontWeight: "bold", borderBottom: '1.5px solid #ccc7c7' }}>Azioni</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -78,9 +78,9 @@ const TabellaHiring = ({ data, columns, getRowId }) => {
             return (
               <React.Fragment key={getRowId(row)}>
                 <TableRow>
-                  <TableCell>{row.denominazioneCliente}</TableCell>
-                  <TableCell>{row.tipoServizio.descrizione}</TableCell>
-                  <TableCell>
+                  <TableCell sx={{borderBottom: '1.5px solid #ccc7c7'}}>{row.denominazioneCliente}</TableCell>
+                  <TableCell sx={{borderBottom: '1.5px solid #ccc7c7'}}>{row.tipoServizio.descrizione}</TableCell>
+                  <TableCell sx={{borderBottom: '1.5px solid #ccc7c7'}}>
                     <IconButton onClick={() => handleExpandClick(getRowId(row))}>
                       {expanded === getRowId(row) ? <ExpandLess /> : <ExpandMore />}
                     </IconButton>
@@ -106,23 +106,24 @@ const TabellaHiring = ({ data, columns, getRowId }) => {
                         <TableHead>
                           <TableRow>
                             {["Nome", "Cognome", "Ruolo"].concat(columnsToShow).map((colName) => (
-                              <TableCell sx={{ fontWeight: "bold" }} key={colName}>{colName}</TableCell>
+                              <TableCell sx={{ fontWeight: "bold", borderBottom: '1.5px solid #ccc7c7' }} key={colName}>{colName}</TableCell>
                             ))}
+                            <TableCell sx={{fontWeight: 'bold', borderBottom: '1.5px solid #ccc7c7'}}> Aggiorna </TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
                           {row.schedeCandidato.map((candidato, index) => (
                             <TableRow key={index}>
-                              <TableCell>{candidato.nomeCandidato}</TableCell>
-                              <TableCell>{candidato.cognomeCandidato}</TableCell>
-                              <TableCell>{candidato.descrizione}</TableCell>
-                              {columnsToShow.includes("Inizio Attività") && <TableCell>{candidato.inizioAttivita}</TableCell>}
-                              {columnsToShow.includes("Fine Attività") && <TableCell>{candidato.fineAttivita}</TableCell>}
-                              {columnsToShow.includes("RAL") && <TableCell>{candidato.economics}</TableCell>}
-                              {columnsToShow.includes("Rate") && <TableCell>{candidato.economics}</TableCell>}
-                              {columnsToShow.includes("Canone") && <TableCell>{candidato.canoneMensile}</TableCell>}
-                              {columnsToShow.includes("Importo Fatturato") && <TableCell>{candidato.fatturato}</TableCell>}
-                              <TableCell>
+                              <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.nomeCandidato}</TableCell>
+                              <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.cognomeCandidato}</TableCell>
+                              <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.descrizione}</TableCell>
+                              {columnsToShow.includes("Inizio Attività") && <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.inizioAttivita}</TableCell>}
+                              {columnsToShow.includes("Fine Attività") && <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.fineAttivita}</TableCell>}
+                              {columnsToShow.includes("RAL") && <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.economics}</TableCell>}
+                              {columnsToShow.includes("Rate") && <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.economics}</TableCell>}
+                              {columnsToShow.includes("Canone") && <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.canoneMensile}</TableCell>}
+                              {columnsToShow.includes("Importo Fatturato") && <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.fatturato}</TableCell>}
+                              <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7'}}>
                                 <IconButton
                                   onClick={() => handleEditClick(getRowId(row), row.tipoServizio.descrizione, candidato.id)}
                                 >
