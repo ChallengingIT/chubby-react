@@ -312,7 +312,7 @@ const ModificaHeadHunting = () => {
             { type: 'titleGroups',                label: "Economics"     },
             { label: "Ral",                          name: "economics",    type: "decimalNumber", maxLength: 45                    },
             { label: "Fee%",                         name: "fee",          type: "decimalNumber", maxLength: 45                    },
-            { label: "Importo da fatturare",         name: "importo",      type: "decimalNumber", maxLength: 45                    }, //il risultato lo calcolo e stampo direttamente io non appena inseriscono i valori
+            { label: "Importo da fatturare",         name: "fatturato",      type: "decimalNumber", maxLength: 45                    }, //il risultato lo calcolo e stampo direttamente io non appena inseriscono i valori
 
 
 
@@ -328,8 +328,10 @@ const ModificaHeadHunting = () => {
             cognome:                      datiModifica.cognomeCandidato                   || null,
             descrizione:                  datiModifica.descrizione                        || null,
             inizioAttivita:               datiModifica.inizioAttivita                     || null,
-            economics:                       datiModifica.economics                             || null,
-            fee:                datiModifica.fee                      || null,
+            economics:                    datiModifica.economics                          || null,
+            fee:                          datiModifica.fee                                || null,
+            fatturato:                    datiModifica.fatturato                          || null,
+
             dataFatturazione:             datiModifica.dataFatturazione                   || null,
             // idTerminePagamento:          (datiModifica.idTerminePagamento && datiModifica.idTerminePagamento.id)  || null,
             idTerminePagamento:          (datiModifica.terminePagamento && datiModifica.terminePagamento.id) || null,

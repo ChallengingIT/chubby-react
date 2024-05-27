@@ -217,6 +217,7 @@ const ModificaStaffing = () => {
         };
 
 
+
         //funzione per la chiusura dell'alert
         const handleCloseAlert = (reason) => {
             if (reason === 'clickaway') {
@@ -328,8 +329,8 @@ const ModificaStaffing = () => {
             inizioAttivita:               datiModifica.inizioAttivita                     || null,
             fineAttivita:                 datiModifica.fineAttivita                       || null,
             durata:                       datiModifica.durata                             || null,
-            rate:                datiModifica.rate                      || null,
-            giorniLavorati:                    datiModifica.giorniLavorati                          || null,
+            rate:                         datiModifica.rate                      || null,
+            giorniLavorati:               datiModifica.giorniLavorati                          || null,
             fatturato:                    datiModifica.fatturato                          || null,
 
             dataFatturazione:             datiModifica.dataFatturazione                   || null,

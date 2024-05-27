@@ -35,7 +35,7 @@ const TabellaHiring = ({ data, columns, getRowId }) => {
 
   const columnsByServiceType = {
     "Head Hunting": ["RAL", "Rate"],
-    "Recruiting": ["Fine Attività", "RAL", "Importo Fatturato"],
+    "Recruiting": [ "RAL", "Importo Fatturato"],
     "Temporary": ["Canone", "Importo Fatturato"],
     "Staffing": ["Inizio Attività", "Fine Attività", "Importo Fatturato"]
   };

@@ -48,10 +48,10 @@ const ModificaAziendaGrafica = () => {
         const fetchProvinceOptions = async () => {
         try {
             const responseProvince = await axios.get("http://localhost:8080/aziende/react/province",         { headers: headers });
-            const responseOwner    = await axios.get("http://localhost:8080/owner",            { headers: headers });
+            const responseOwner    = await axios.get("http://localhost:8080/owner",                          { headers: headers });
             const responseAziende  = await axios.get("http://localhost:8080/aziende/react/select",           { headers: headers });
             const responseModifica = await axios.get(`http://localhost:8080/aziende/react/${id}`,            { headers: headers });
-            const tipoServizioResponse  = await axios.get("http://localhost:8080/staffing/react/tipo/ricerca",    { headers: headers });
+            const tipoServizioResponse  = await axios.get("http://localhost:8080/hiring/servizi",            { headers: headers });
 
             if (Array.isArray(tipoServizioResponse.data)) {
             const tipoServizioOptions = tipoServizioResponse.data.map((tipoServizio) => ({
