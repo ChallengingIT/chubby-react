@@ -10,7 +10,7 @@ import Recruiting                                                      from './p
 import Layout                                                          from './components/Layout.jsx';
 import LoginPage                                                       from './pages/LoginPage.jsx';
 import IntervisteList                                                  from './pages/IntervisteList.jsx';
-import Keypeople                                                       from './pages/Keypeople.jsx';
+import Keypeople                                                       from './pages/KeyPeople.jsx';
 import Hiring                                                          from './pages/Hiring.jsx';
 import NeedMatch                                                      from './pages/NeedMatch.jsx';
 import AziendeListaNeedCard                                            from './pages/AziendeListaNeedCard.jsx';
