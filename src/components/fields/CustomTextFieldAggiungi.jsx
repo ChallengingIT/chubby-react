@@ -50,6 +50,13 @@ function CustomTextFieldAggiungi({
         "& .MuiFormLabel-root.Mui-focused": {
           color: theme.palette.border.main,
         },
+        "& .MuiFilledInput-root.Mui-disabled": {
+            bgcolor: 'transparent',
+            cursor: 'not-allowed'
+        },
+        "& .Mui-disabled": {
+            cursor: 'not-allowed'
+        }
       }}
     />
   );

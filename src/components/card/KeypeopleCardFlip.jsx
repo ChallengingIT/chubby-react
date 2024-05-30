@@ -619,8 +619,8 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                     justifyContent: 'center',
                     
                 }}>
-                    <Box sx={{ display:'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: '#EDEDED', overflow: 'auto'}}>
-                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', p: 3}}>
+                    <Box sx={{ display:'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: 'white', borderRadius: '20px', overflow: 'auto'}}>
+                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', p: 3, borderBottom: '2.5px solid #e0e0e0'}}>
                             <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', mt: 0.5, mb: 0.5}}>Storico delle azioni</Typography>
                             <IconButton sx={{ mr: 2, backgroundColor: 'transparent', border: 'none' }} onClick={() => setModalStorico(false)}>
                                 <CloseIcon sx={{ backgroundColor: 'transparent' }}/>
@@ -827,14 +827,14 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                     alignItems: 'center',
                     justifyContent: 'center',
                 }}>
-                    <Box sx={{ display:'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: '#EDEDED'}}>
-                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', p: 3}}>
+                    <Box sx={{ display:'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: 'white', borderRadius: '20px'}}>
+                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', p: 3, borderBottom: '2.5 solid #e0e0e0', borderTop: '2.5 solid #e0e0e0'}}>
                             <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', mt: 0.5, mb: 0.5}}>Lista dei Need</Typography>
                             <IconButton sx={{ mr: 2, backgroundColor: 'transparent', border: 'none' }} onClick={() => setModalNeed(false)}>
                                 <CloseIcon sx={{ backgroundColor: 'transparent' }}/>
                             </IconButton>
                         </Box>
-                        <TableContainer component={Paper}>
+                        <TableContainer component={Paper} >
                         <Table>
                             <TableHead>
                                 <TableRow>

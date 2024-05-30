@@ -98,7 +98,7 @@ const TabellaHiring = ({ data, columns, getRowId }) => {
                       border: `2px solid ${theme.palette.border.main}`,
                       borderRadius: "20px",
                       padding: 2,
-                      width: '132%'
+                      width: '98%'
                     }}
                   >
                     {row.schedeCandidato && row.schedeCandidato.length > 0 ? (

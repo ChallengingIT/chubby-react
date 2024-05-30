@@ -60,6 +60,14 @@ function CustomAutocomplete({
             "& .MuiFormLabel-root.Mui-focused": {
               color: theme.palette.border.main,
             },
+            "& .MuiFilledInput-root.Mui-disabled": {
+            bgcolor: 'transparent',
+            cursor: 'not-allowed',
+            borderBottom: 'none'
+        },
+        "& .Mui-disabled": {
+            cursor: 'not-allowed'
+        }
           }}
         />
       )}
