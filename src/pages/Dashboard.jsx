@@ -209,7 +209,7 @@
         {
         field: "owner",
         headerName: "Owner",
-        flex: 1,
+        flex: 0.6,
         sortable: false,
         filterable: false,
         disableColumnMenu: true,
@@ -241,7 +241,7 @@
         {
         field: "priorita",
         headerName: "Priorità",
-        flex: 1,
+        flex: 0.4,
         sortable: false,
         filterable: false,
         disableColumnMenu: true,
@@ -249,7 +249,7 @@
         {
         field: "stato",
         headerName: "Stato",
-        flex: 1,
+        flex: 0.4,
         sortable: false,
         filterable: false,
         disableColumnMenu: true,

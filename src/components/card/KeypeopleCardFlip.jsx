@@ -1,4 +1,4 @@
-import React, {useState}                    from 'react';
+import React, {useEffect, useState}                    from 'react';
 import { useNavigate }                      from 'react-router-dom';
 import EmailIcon                            from '@mui/icons-material/Email';
 import BusinessCenterIcon                   from '@mui/icons-material/BusinessCenter';
@@ -37,7 +37,7 @@ import {
     
 
 
-const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
+const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCard}) => {
 
 
     //stati per la paginazione
@@ -50,6 +50,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
     const [ modalNeed,           setModalNeed         ] = useState(false);
     const [ modalCambiaStato,    setModalCambiaStato  ] = useState(false);
     const [ isFlipped,           setIsFlipped         ] = useState(false);
+    const [ mezzoFlip,           setMezzoFlip         ] = useState(false);
     const [ activeLink,                               ] = useState(null);
     const [ idKeypeople,         setIdKeypeople       ] = useState(null);
     const [ needAssociati,       setNeedAssociati     ] = useState([]);
@@ -57,6 +58,8 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
     const [ azioni,              setAzioni            ] = useState([]);
     const [ anchorElStato,       setAnchorElStato     ] = useState(null);
     const [ alert,               setAlert             ] = useState(false);
+    const [hasAnimated, setHasAnimated] = useState(false);
+
 
     const [values,               setValues            ] = useState({
         tipologie: '',
@@ -83,6 +86,19 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
         }
         setSnackbarOpen(false);
     };
+
+    useEffect(() => {
+        if (isFirstCard && !hasAnimated) {
+            setTimeout(() => {
+                setMezzoFlip(true);
+                setTimeout(() => {
+                    setMezzoFlip(false);
+                    setHasAnimated(true);
+                }, 500); // Durata della rotazione (mezzo secondo)
+            }, 500); // Attendere mezzo secondo prima di iniziare l'animazione
+        }
+    }, [isFirstCard, hasAnimated]);
+    
     
 
     //funzione per bloccare il flip quando i modal sono aperti
@@ -294,7 +310,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
     const cardStyle = {
         transformStyle: 'preserve-3d',
         transition: 'transform 0.6s',
-        transform: isFlipped ? 'rotateY(180deg)' : 'none',
+        transform: isFlipped ? "rotateY(180deg)" : mezzoFlip ? "rotateY(40deg)" : "none",
         width: '100%',
         perspective: '1000px',
         borderRadius: '20px',

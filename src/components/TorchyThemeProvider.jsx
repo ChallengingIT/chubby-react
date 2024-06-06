@@ -41,7 +41,7 @@
         sidebarText: { main: "#EDEDED" },
         },
     }),
-    
+
     ribaMundo: createTheme({
         palette: {
         primary: { main: "#EDEDED" },

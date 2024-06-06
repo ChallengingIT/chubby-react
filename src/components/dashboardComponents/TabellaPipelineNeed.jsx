@@ -4,6 +4,8 @@ import { Box, Dialog, DialogTitle, DialogContent, IconButton, Table, TableHead, 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CircularProgress from '@mui/material/CircularProgress';
 import CloseIcon from '@mui/icons-material/Close';
+import DragHandleIcon from '@mui/icons-material/DragHandle'; //icona per spostare le righe
+
 
 const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -36,6 +38,14 @@ const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
 
 
     const modifiedColumns = [
+        {
+        field: 'drag',
+        headerName: '',
+        width: 50,
+        sortable: false,
+        disableColumnMenu: true,
+        renderCell: () => <DragHandleIcon />,
+    },
         ...columns,
         {
             field: 'actions',

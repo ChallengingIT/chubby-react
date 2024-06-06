@@ -37,7 +37,7 @@ import {
     } from '@mui/material';
 import { useUserTheme } from '../TorchyThemeProvider';
 
-const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
+const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard }) => {
 
     const navigate = useNavigate();
     const theme = useUserTheme();
@@ -49,8 +49,25 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
         stato: ''
     });
     const [isFlipped, setIsFlipped] = useState(false);
+    const [mezzoFlip, setMezzoFlip] = useState(false);
     const [activeLink,            ] = useState(null);
     const [alert,     setAlert    ] = useState(false);
+    const [hasAnimated, setHasAnimated] = useState(false);
+
+
+
+
+    useEffect(() => {
+        if (isFirstCard && !hasAnimated) {
+            setTimeout(() => {
+                setMezzoFlip(true);
+                setTimeout(() => {
+                    setMezzoFlip(false);
+                    setHasAnimated(true);
+                }, 500); // Durata della rotazione (mezzo secondo)
+            }, 500); // Attendere mezzo secondo prima di iniziare l'animazione
+        }
+    }, [isFirstCard, hasAnimated]);
 
      //funzione per la chiusura dell'alert
     const handleCloseAlert = (reason) => {
@@ -160,7 +177,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
     const cardStyle = {
         transformStyle: 'preserve-3d',
         transition: 'transform 0.6s',
-        transform: isFlipped ? 'rotateY(180deg)' : 'none',
+        transform: isFlipped ? "rotateY(180deg)" : mezzoFlip ? "rotateY(40deg)" : "none",
         width: '100%',
         perspective: '1000px',
         borderRadius: '20px',
