@@ -24,7 +24,7 @@
     const navigate = useNavigate();
 
     //stati della pagina
-    const [activeSection, setActiveSection] = useState("Password");
+    const [activeSection, setActiveSection] = useState("Cambia Password");
     const [currentPageIndex, setCurrentPageIndex] = useState(0);
     const [alert, setAlert] = useState({ open: false, message: "", severity: "success" });
     const [errors, setErrors] = useState([]);
@@ -34,28 +34,28 @@
 
     const menu = [
         {
-        title: "Password",
+        title: "Cambia Password",
         icon: <CircleOutlinedIcon />,
         },
         // {
         // title: "Lingua",
         // icon: <CircleOutlinedIcon />,
         // },
-        {
-        title: "Elimina Account",
-        icon: <CircleOutlinedIcon />,
-        },
+        // {
+        // title: "Elimina Account",
+        // icon: <CircleOutlinedIcon />,
+        // },
     ];
 
     //funzione per campire quali campi sono obbligatori nel form corrente
     const getMandatoryFields = (index) => {
         switch (index) {
         case 0:
-            return ["username", "vecchia", "nuova"];
-        case 1:
-            return ["username", "password"];
-        case 2:
-            return ["lingua"];
+            return ["username", "oldPassword", "newPassword"];
+        // case 1:
+        //     return ["username", "password"];
+        // case 2:
+        //     return ["lingua"];
         default:
             return [];
         }
@@ -132,8 +132,8 @@
 
         if (!hasErrors) {
         try {
-            const { username, vecchia, nuova } = values;
-            const payload = { username, vecchia, nuova };
+            const { username, oldPassword, newPassword } = values;
+            const payload = { username, oldPassword, newPassword };
 
             if (!token) {
             console.error("Nessun token di accesso disponibile");
@@ -144,7 +144,7 @@
             Authorization: `Bearer ${token}`
             };
 
-            const response = await axios.post("http://89.46.196.60:8443/api/auth/change/password", payload, {
+            const response = await axios.post("http://localhost:8080/api/auth/change/password", payload, {
             headers: headers
             });
             if (response.data === "ERRORE") {
@@ -164,56 +164,56 @@
     };
 
 
-    const handleSubmitCambioLingua = async (values) => {
-        console.log("salvataggio cambio lingua");
-    };
+    // const handleSubmitCambioLingua = async (values) => {
+    //     console.log("salvataggio cambio lingua");
+    // };
 
-    const handleSubmitEliminaUtente = async (values) => {
-        const currentIndex = menu.findIndex(item => item.title.toLowerCase() === activeSection.toLowerCase());
-        const mandatoryFields = getMandatoryFields(currentIndex);
-        const errors = validateFields(values, mandatoryFields);
-        const hasErrors = Object.keys(errors).length > 0;
+    // const handleSubmitEliminaUtente = async (values) => {
+    //     const currentIndex = menu.findIndex(item => item.title.toLowerCase() === activeSection.toLowerCase());
+    //     const mandatoryFields = getMandatoryFields(currentIndex);
+    //     const errors = validateFields(values, mandatoryFields);
+    //     const hasErrors = Object.keys(errors).length > 0;
 
-        if (!hasErrors) {
-        try {
-            const { username, password } = values;
-            const payload = { username, password };
+    //     if (!hasErrors) {
+    //     try {
+    //         const { username, password } = values;
+    //         const payload = { username, password };
 
-            if (!token) {
-            console.error("Nessun token di accesso disponibile");
-            return;
-            }
+    //         if (!token) {
+    //         console.error("Nessun token di accesso disponibile");
+    //         return;
+    //         }
 
-            const headers = {
-            Authorization: `Bearer ${token}`
-            };
+    //         const headers = {
+    //         Authorization: `Bearer ${token}`
+    //         };
 
-            const response = await axios.post("http://89.46.196.60:8443/api/auth/delete", payload, {
-            headers: headers
-            });
-            if (response.data === "ERRORE") {
-            setAlert({ open: true, message: "Errore durante la cancellazione dell'utente!", severity: "error" });
-            console.error("L'utente non è stato cancellato.");
-            return;
-            }
-            console.log("qui buttare fuori l'utente alla login");
-        } catch (error) {
-            console.error("Errore durante l'eliminazione dell'utente:", error);
-            setAlert({ open: true, message: "Errore durante l'eliminazione dell'utente!", severity: "error" });
-        }
-        } else {
-        setErrors(errors);
-        setAlert({ open: true, message: "Compilare tutti i campi obbligatori presenti prima di avanzare", severity: "error" });
-        }
-    };
+    //         const response = await axios.post("http://localhost:8080/api/auth/delete", payload, {
+    //         headers: headers
+    //         });
+    //         if (response.data === "ERRORE") {
+    //         setAlert({ open: true, message: "Errore durante la cancellazione dell'utente!", severity: "error" });
+    //         console.error("L'utente non è stato cancellato.");
+    //         return;
+    //         }
+    //         console.log("qui buttare fuori l'utente alla login");
+    //     } catch (error) {
+    //         console.error("Errore durante l'eliminazione dell'utente:", error);
+    //         setAlert({ open: true, message: "Errore durante l'eliminazione dell'utente!", severity: "error" });
+    //     }
+    //     } else {
+    //     setErrors(errors);
+    //     setAlert({ open: true, message: "Compilare tutti i campi obbligatori presenti prima di avanzare", severity: "error" });
+    //     }
+    // };
 
 
 
     //array per capire quale handleSubmit deve chiamare il bottone "salva"
     const handleSubmitFunctions = {
     0: handleSubmitChangePassword,  //per la sezione "Password"
-    1: handleSubmitEliminaUtente,   //per la sezione "Elimina Account"
-    2: handleSubmitCambioLingua    //per la sezione "Lingua"
+    // 1: handleSubmitEliminaUtente,   //per la sezione "Elimina Account"
+    // 2: handleSubmitCambioLingua    //per la sezione "Lingua"
 };
 
 const handleSaveSection = (sectionIndex) => {
@@ -227,7 +227,7 @@ const handleSaveSection = (sectionIndex) => {
 };
 
     const fields = [
-        { type: "titleGroups", label: "Password" },
+        { type: "titleGroups", label: "Cambia Password" },
         {
         label: "Username",
         name: "username",
@@ -236,37 +236,37 @@ const handleSaveSection = (sectionIndex) => {
         },
         {
         label: "Vecchia Password",
-        name: "vecchia",
+        name: "oldPassword",
         type: "text",
         maxLength: 90,
         },
-        { label: "Nuova Password", name: "nuova", type: "text", maxLength: 255 },
+        { label: "Nuova Password", name: "newPassword", type: "text", maxLength: 255 },
 
-        { type: "titleGroups", label: "Elimina account" },
-        {
-        label: "Username",
-        name: "username",
-        type: "text",
-        maxLength: 90,
-        },
-        {
-        label: "Password",
-        name: "password",
-        type: "text",
-        maxLength: 90,
-        },
+        // { type: "titleGroups", label: "Elimina account" },
+        // {
+        // label: "Username",
+        // name: "username",
+        // type: "text",
+        // maxLength: 90,
+        // },
+        // {
+        // label: "Password",
+        // name: "password",
+        // type: "text",
+        // maxLength: 90,
+        // },
 
-        { type: "titleGroups", label: "Lingua" },
-        {
-        label: "Lingua",
-        name: "lingua",
-        type: "select",
-        options: [
-            { value: 1, label: "Italiano" },
-            { value: 2, label: "Spagnolo" },
-            { value: 3, label: "Inglese" },
-        ],
-        },
+        // { type: "titleGroups", label: "Lingua" },
+        // {
+        // label: "Lingua",
+        // name: "lingua",
+        // type: "select",
+        // options: [
+        //     { value: 1, label: "Italiano" },
+        //     { value: 2, label: "Spagnolo" },
+        //     { value: 3, label: "Inglese" },
+        // ],
+        // },
     ];
 
     //funzione per suddividere fields nelle varie pagine in base a titleGroups
