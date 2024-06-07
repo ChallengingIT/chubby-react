@@ -502,14 +502,14 @@ const ModificaAziendaGrafica = () => {
             semplicita:                   datiModifica.semplicita                      || null,
             potenzialita:                 datiModifica.potenzialita                    || null, 
             idOwner:                     (datiModifica.owner && datiModifica.owner.id) || null,
-            idTipiServizio:               datiModifica.tipiServizio ? datiModifica.tipiServizio.map((tipoServizio) => tipoServizio.id) :            [],
+            idTipiServizio:               datiModifica.tipiServizio ? datiModifica.tipiServizio.map((tipoServizio) => tipoServizio.id) :            [] || null,
             note:                         datiModifica.note                            || null,
             logo:                         datiModifica.logo                            || null,
         };
 
-        const fieldMapping = {
-            idTipiServizio: "tipiServizio"
-        };
+        // const fieldMapping = {
+        //     idTipiServizio: "tipiServizio"
+        // };
 
 
 

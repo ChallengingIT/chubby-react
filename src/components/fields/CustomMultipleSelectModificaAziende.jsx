@@ -123,9 +123,17 @@
     }) => {
     const theme = useUserTheme();
 
+    // const handleChangeSkills = (event) => {
+    //     const value = event.target.value;
+    //     onChange({ [name]: value });
+    // };
+
     const handleChangeSkills = (event) => {
-        const value = event.target.value;
-        onChange({ [name]: value });
+        const {
+            target: { value: newValue },
+        } = event;
+
+        onChange({ [name]: newValue.length > 0 ? newValue : null });
     };
 
     const currentValue = Array.isArray(value) ? value : [];
@@ -178,7 +186,7 @@
                 .map(
                 (tipiServizioId) =>
                     tipiServizioOptions.find((option) => option.value === tipiServizioId)
-                    ?.label || ""
+                    ?.label || null
                 )
                 .join(", ")
             }

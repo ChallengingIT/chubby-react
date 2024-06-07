@@ -24,7 +24,7 @@
     const navigate = useNavigate();
 
     //stati della pagina
-    const [activeSection, setActiveSection] = useState("Password");
+    const [activeSection, setActiveSection] = useState("Cambia Password");
     const [currentPageIndex, setCurrentPageIndex] = useState(0);
     const [alert, setAlert] = useState({ open: false, message: "", severity: "success" });
     const [errors, setErrors] = useState([]);
@@ -34,24 +34,24 @@
 
     const menu = [
         {
-        title: "Password",
+        title: "Cambia Password",
         icon: <CircleOutlinedIcon />,
         },
         // {
         // title: "Lingua",
         // icon: <CircleOutlinedIcon />,
         // },
-        {
-        title: "Elimina Account",
-        icon: <CircleOutlinedIcon />,
-        },
+        // {
+        // title: "Elimina Account",
+        // icon: <CircleOutlinedIcon />,
+        // },
     ];
 
     //funzione per campire quali campi sono obbligatori nel form corrente
     const getMandatoryFields = (index) => {
         switch (index) {
         case 0:
-            return ["username", "vecchia", "nuova"];
+            return ["username", "oldPassword", "newPassword"];
         case 1:
             return ["username", "password"];
         case 2:
@@ -132,8 +132,8 @@
 
         if (!hasErrors) {
         try {
-            const { username, vecchia, nuova } = values;
-            const payload = { username, vecchia, nuova };
+            const { username, oldPassword, newPassword } = values;
+            const payload = { username, oldPassword, newPassword };
 
             if (!token) {
             console.error("Nessun token di accesso disponibile");
@@ -236,11 +236,11 @@ const handleSaveSection = (sectionIndex) => {
         },
         {
         label: "Vecchia Password",
-        name: "vecchia",
+        name: "oldPassword",
         type: "text",
         maxLength: 90,
         },
-        { label: "Nuova Password", name: "nuova", type: "text", maxLength: 255 },
+        { label: "Nuova Password", name: "newPassword", type: "text", maxLength: 255 },
 
         { type: "titleGroups", label: "Elimina account" },
         {

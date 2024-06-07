@@ -289,7 +289,7 @@ const ModificaIntervistaGrafica = () => {
 
 
                 const note = values.note;
-                const modifica = 0; 
+                const modifica = 1; 
                 const response = await axios.post("http://localhost:8080/intervista/react/salva",  transformedValues, {
                 params: {
                     idCandidato: candidatoID,
