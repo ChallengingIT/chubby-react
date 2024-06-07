@@ -34,6 +34,8 @@ const AggiungiTemporary = () => {
 
     const [openDialog, setOpenDialog] = useState(true);
     const [candidatoSelezionato, setCandidatoSelezionato] = useState(null);
+    const [isCandidatoSelezionato, setIsCandidatoSelezionato] = useState(false);
+
 
 
 
@@ -470,8 +472,9 @@ const AggiungiTemporary = () => {
             );
         };
 
-                const handleSelectCandidato = (event, newValue) => {
+    const handleSelectCandidato = (event, newValue) => {
         setCandidatoSelezionato(newValue);
+        setIsCandidatoSelezionato(!!newValue);
     };
 
 const handleClose = () => {
@@ -703,9 +706,10 @@ const confirmSelection = () => {
                 <DialogActions>
                     <Button 
                     onClick={confirmSelection}
+                    disabled={!isCandidatoSelezionato}
                     sx={{ 
                         fontWeight: 'bold',
-                        bgcolor: '#00B400', 
+                        bgcolor: isCandidatoSelezionato ? '#00B400' : '#CCCCCC',
                         color: 'white', 
                         borderRadius: '10px',
                         '&:hover': {

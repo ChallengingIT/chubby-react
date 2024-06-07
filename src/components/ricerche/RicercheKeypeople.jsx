@@ -92,7 +92,7 @@
             variant="outlined"
             placeholder="Cerca Contatto"
             size="small"
-            value={filtri.nome}
+            value={filtri.nome || ""}
             onChange={onFilterChange("nome")}
             onKeyDown={(event) => {
                 if (event.key === "Enter") {

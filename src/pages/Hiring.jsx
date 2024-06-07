@@ -287,7 +287,7 @@ const columns = [
       serviziOptions={serviziOptions}
       onRicerche={handleRicerche}
       />
-<Box container sx={{ mr: 0.2}}>
+<Box sx={{ mr: 0.2}}>
         { loading ? (
             <>
             {Array.from(new Array(1)).map((_, index) => (
