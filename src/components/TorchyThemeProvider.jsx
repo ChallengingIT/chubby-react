@@ -41,7 +41,8 @@
         sidebarText: { main: "#EDEDED" },
         },
     }),
-    user1: createTheme({
+
+    ribaMundo: createTheme({
         palette: {
         primary: { main: "#EDEDED" },
         secondary: { main: "#EDEDED" },
@@ -79,6 +80,11 @@
     }),
     };
 
+    // Mappa degli ID azienda ai temi
+    const aziendaThemes = {
+    18: themes.ribaMundo,
+    };
+
     const UserThemeContext = createContext();
 
     export const useUserTheme = () => useContext(UserThemeContext);
@@ -90,41 +96,45 @@
         return themes[savedTheme] || themes.default;
     });
 
-    let selectedTheme = themes.default;
-
     useEffect(() => {
+        let selectedTheme = themes.default;
+
         if (user && user.roles) {
-        for (const role of user.roles) {
-            switch (role) {
-            case "ROLE_ADMIN":
-                selectedTheme = themes.default;
-                break;
-            case "ROLE_BUSINESS":
-                selectedTheme = themes.user1;
-                break;
-            case "ROLE_RECRUITER":
-                selectedTheme = themes.default;
-                break;
-            case "ROLE_BM":
-                selectedTheme = themes.default;
-                break;
-            default:
-                selectedTheme = themes.default;
-            }
+            user.roles.forEach(role => {
+                switch (role) {
+                    case "ROLE_ADMIN":
+                    case "ROLE_RECRUITER":
+                    case "ROLE_BM":
+                        selectedTheme = themes.default;
+                        break;
+                    case "ROLE_BUSINESS":
+                        if (user.idAzienda) {
+                            const aziendaIds = Array.isArray(user.idAzienda) ? user.idAzienda : [user.idAzienda];
+                            aziendaIds.forEach(aziendaId => {
+                                if (aziendaThemes[aziendaId]) {
+                                    selectedTheme = aziendaThemes[aziendaId];
+                                }
+                            });
+                        }
+                        break;
+                    default:
+                        selectedTheme = themes.default;
+                }
+            });
         }
-        }
+
         setTheme(selectedTheme);
         sessionStorage.setItem(
-        "theme",
-        Object.keys(themes).find((key) => themes[key] === selectedTheme)
+            "theme",
+            Object.keys(themes).find(key => themes[key] === selectedTheme)
         );
     }, [user]);
 
     return (
         <UserThemeContext.Provider value={theme}>
-        <ThemeProvider theme={theme}>{children}</ThemeProvider>
+            <ThemeProvider theme={theme}>{children}</ThemeProvider>
         </UserThemeContext.Provider>
     );
-    };
+};
 
-    export default TorchyThemeProvider;
+export default TorchyThemeProvider;

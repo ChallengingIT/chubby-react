@@ -19,8 +19,8 @@ const AttivitaRecruitingBox = ({data}) => {
     const dataOdierna = `${day} ${month} ${year}`;
 
     return (
-        <Card  style={{width: '100%', height: '95%', display: 'flex', position: 'relative', borderRadius: '20px'}}>
-            <CardContent style={{width: '100%', height: '100%', display: 'flex', flexDirection: 'column', background: 'rgba(217, 217, 217, 0)', borderRadius: 20, border: '2px #00B400 solid'}}>
+       <Card className="cardTabellaBusiness" id="cardTabellaBusiness" style={{width: '100%', minHeight: '82%', maxHeight: '82%', display: 'flex', position: 'relative', borderRadius: '20px'}}>
+            <CardContent style={{width: '100%',  display: 'flex', flexDirection: 'column', background: 'rgba(217, 217, 217, 0)', borderRadius: 20, border: '2px #00B400 solid'}}>
                 {/* <Typography variant="h5" style={{marginBottom: 16, fontWeight: 'bold'}}>Attività ed Eventi</Typography> */}
                 <Typography variant='h5' sx={{ display: 'flex',mt: 1, mb: 1, fontWeight: 'bold', justifyContent: 'flex-end', fontSize: '1.2em'}}>Attività ed Eventi Recruiting</Typography>
                 <Container sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end', height: '100%', width: '100%', pt: 5, overflowY: 'auto' }}>

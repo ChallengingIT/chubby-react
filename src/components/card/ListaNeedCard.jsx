@@ -36,7 +36,7 @@ import {
     } from '@mui/material';
 import { useUserTheme } from '../TorchyThemeProvider';
 
-const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
+const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard }) => {
 
     const navigate = useNavigate();
     const theme = useUserTheme();
@@ -50,6 +50,21 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh }) => {
     const [isFlipped, setIsFlipped] = useState(false);
     const [activeLink,            ] = useState(null);
     const [alert,     setAlert    ] = useState(false);
+    const [hasAnimated, setHasAnimated] = useState(false);
+
+
+    useEffect(() => {
+        if (isFirstCard && !hasAnimated) {
+            setTimeout(() => {
+                setIsFlipped(true);
+                setTimeout(() => {
+                    setIsFlipped(false);
+                    setHasAnimated(true);
+                }, 500); // Durata della rotazione (mezzo secondo)
+            }, 500); // Attendere mezzo secondo prima di iniziare l'animazione
+        }
+    }, [isFirstCard, hasAnimated]);
+
 
 
 

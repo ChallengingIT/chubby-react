@@ -303,7 +303,7 @@ const Recruiting = () => {
   const getSmileIcon = (params) => {
     const rating = params.row.rating;
 
-    if (rating <= 1) {
+    if (rating <= 1.9) {
       return <SmileRedIcon />;
     } else if (rating >= 2 && rating < 3) {
       return <SmileOrangeIcon />;

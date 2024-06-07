@@ -287,7 +287,7 @@
                         <InputAdornment position="end">
                             <IconButton
                             aria-label="toggle password visibility"
-                            onClick={togglePasswordVisibility}
+                            // onClick={togglePasswordVisibility}
                             edge="end"
                             >
                             {showPassword ? (
@@ -527,7 +527,7 @@
                         <InputAdornment position="end">
                             <IconButton
                             aria-label="toggle password visibility"
-                            onClick={togglePasswordVisibility}
+                            // onClick={togglePasswordVisibility}
                             edge="end"
                             >
                             {showPassword ? (
@@ -621,7 +621,7 @@
                     <Button
                     color="primary"
                     variant="contained"
-                    onClick={toggleFlip}
+                    // onClick={toggleFlip}
                     sx={{
                         display: "flex",
                         justifyContent: "center",
@@ -750,7 +750,7 @@
                     </Button>
 
                     <Button
-                    onClick={toggleForgot}
+                    // onClick={toggleForgot}
                     sx={{
                         display: "flex",
                         justifyContent: "center",

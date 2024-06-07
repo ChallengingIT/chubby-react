@@ -19,7 +19,7 @@
             flexDirection: 'column',
             p: 3,
             marginLeft: "12.8em",
-            marginTop: "0.5em",
+            // marginTop: "0.5em",
             marginBottom: "0.8em",
             marginRight: "0.8em",
             backgroundColor: "#FEFCFD",

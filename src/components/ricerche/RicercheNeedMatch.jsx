@@ -56,7 +56,7 @@
             alignItems: "center",
             justifyContent: "space-between",
             borderRadius: "10px",
-            marginBottom: "4rem",
+            marginBottom: "1rem",
         }}
         >
         <Button

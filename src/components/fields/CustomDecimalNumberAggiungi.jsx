@@ -51,6 +51,12 @@ function CustomDecimalNumberAggiungi({
         "& .MuiFormLabel-root.Mui-focused": {
           color: theme.palette.border.main,
         },
+        "& .MuiFilledInput-root.Mui-disabled": {
+            bgcolor: 'transparent',
+        },
+        "& .Mui-disabled": {
+            cursor: 'not-allowed'
+        }
       }}
     />
   );

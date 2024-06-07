@@ -4,6 +4,8 @@ import { Box, Dialog, DialogTitle, DialogContent, IconButton, Table, TableHead, 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CircularProgress from '@mui/material/CircularProgress';
 import CloseIcon from '@mui/icons-material/Close';
+import DragHandleIcon from '@mui/icons-material/DragHandle'; //icona per spostare le righe
+
 
 const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -36,6 +38,14 @@ const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
 
 
     const modifiedColumns = [
+        {
+        field: 'drag',
+        headerName: '',
+        width: 50,
+        sortable: false,
+        disableColumnMenu: true,
+        renderCell: () => <DragHandleIcon />,
+    },
         ...columns,
         {
             field: 'actions',
@@ -106,10 +116,12 @@ const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
                         '& .MuiDialog-paper': {
                             width: '50%',
                             maxWidth: 'none',
-                            height: 'auto'
+                            height: 'auto',
+                            borderRadius: '20px',
+                            border: '2.5px solid #00B400'
                         }
                     }}>
-                <DialogTitle>
+                <DialogTitle sx={{ fontWeight: 600, fontSize: '1.2em'}}>
                     Dettagli Azioni
                     <IconButton
                         aria-label="close"
@@ -129,16 +141,18 @@ const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
                         <TableHead>
                             <TableRow>
                                 {dialogData.map((column) => (
-                                    <TableCell key={column.header} align="center">{column.header}</TableCell>
+                                    <TableCell key={column.header} align="center" style={{ fontWeight: 'bold', borderBottom: '2px solid #ccc7c7' }}>
+                                        {column.header}
+                                    </TableCell>
                                 ))}
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {dialogData[0].data.map((_, index) => (
-                                <TableRow key={index}>
+                                <TableRow key={index} sx={{ borderBottom: '2px solid #ccc7c7' }}>
                                     {dialogData.map((column) => (
                                         <TableCell key={column.header} align="center">
-                                            <div>{column.data[index].title}</div>
+                                            <div style={{ fontWeight: 500 }}>{column.data[index].title}</div>
                                             <div>{column.data[index].value}</div>
                                         </TableCell>
                                     ))}

@@ -99,6 +99,7 @@ function EmailModal({ open, handleClose }) {
         "& .MuiDialog-paper": {
           width: "70%",
           maxWidth: "70%",
+          borderRadius: '20px'
         },
       }}
     >

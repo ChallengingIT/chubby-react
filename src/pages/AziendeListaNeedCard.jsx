@@ -460,6 +460,8 @@ import SchemePage from "../components/SchemePage.jsx";
                     statoOptions={statoOptions}
                     onDelete={() => handleDelete(need.id)}
                     onRefresh={handleRefresh}
+                    isFirstCard={index === 0}
+
                     />
                 </Grid>
                 ))

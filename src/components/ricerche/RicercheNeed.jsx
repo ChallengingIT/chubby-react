@@ -111,7 +111,7 @@
             // justifyContent: isRecruiter ? "center" : "space-between",
             justifyContent: "space-between",
             borderRadius: "10px",
-            marginBottom: "4rem",
+            marginBottom: "1rem",
             gap: 20,
         }}
         >
@@ -308,6 +308,14 @@
                         "& .MuiFormLabel-root.Mui-focused": {
                             color: theme.palette.border.main,
                         },
+                        "& .MuiFilledInput-root.Mui-disabled": {
+                            bgcolor: 'transparent',
+                            cursor: 'not-allowed',
+                            borderBottom: 'none'
+                        },
+                        "& .Mui-disabled": {
+                            cursor: 'not-allowed'
+                        }
                         }}
                     />
                     )}

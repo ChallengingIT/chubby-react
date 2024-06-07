@@ -386,6 +386,7 @@ const Keypeople = () => {
                                 statiOptions={statiOptions}
                                 onDelete={() => handleDelete(keypeople.id)}
                                 onRefresh={handleRefresh}
+                                isFirstCard={index === 0}
                                 />
                             </Grid>
                         ))

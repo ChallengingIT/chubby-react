@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { List, ListItem, ListItemText, Collapse, Checkbox, Typography, IconButton } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import DragHandleIcon from '@mui/icons-material/DragHandle'; //icona per spostare le righe
+
 
 const TabellaAttivitaBusiness = ({ data = [], aziendeOptions = [] }) => {
     const [activities, setActivities] = useState([]);
@@ -62,6 +64,9 @@ const TabellaAttivitaBusiness = ({ data = [], aziendeOptions = [] }) => {
                             />
                         }
                     >
+                        <IconButton edge="start">
+                            <DragHandleIcon />
+                        </IconButton>
                         <ListItemText
                             id={`checkbox-list-label-${item.idAzione}`}
                             primary={

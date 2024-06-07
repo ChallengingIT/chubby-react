@@ -1,4 +1,4 @@
-import React, {useState}                    from 'react';
+import React, {useEffect, useState}                    from 'react';
 import { useNavigate }                      from 'react-router-dom';
 import EmailIcon                            from '@mui/icons-material/Email';
 import BusinessCenterIcon                   from '@mui/icons-material/BusinessCenter';
@@ -37,7 +37,7 @@ import {
     
 
 
-const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
+const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCard}) => {
 
 
     //stati per la paginazione
@@ -50,6 +50,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
     const [ modalNeed,           setModalNeed         ] = useState(false);
     const [ modalCambiaStato,    setModalCambiaStato  ] = useState(false);
     const [ isFlipped,           setIsFlipped         ] = useState(false);
+    const [ mezzoFlip,           setMezzoFlip         ] = useState(false);
     const [ activeLink,                               ] = useState(null);
     const [ idKeypeople,         setIdKeypeople       ] = useState(null);
     const [ needAssociati,       setNeedAssociati     ] = useState([]);
@@ -57,6 +58,8 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
     const [ azioni,              setAzioni            ] = useState([]);
     const [ anchorElStato,       setAnchorElStato     ] = useState(null);
     const [ alert,               setAlert             ] = useState(false);
+    const [hasAnimated, setHasAnimated] = useState(false);
+
 
     const [values,               setValues            ] = useState({
         tipologie: '',
@@ -83,6 +86,19 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
         }
         setSnackbarOpen(false);
     };
+
+    useEffect(() => {
+        if (isFirstCard && !hasAnimated) {
+            setTimeout(() => {
+                setMezzoFlip(true);
+                setTimeout(() => {
+                    setMezzoFlip(false);
+                    setHasAnimated(true);
+                }, 500); // Durata della rotazione (mezzo secondo)
+            }, 500); // Attendere mezzo secondo prima di iniziare l'animazione
+        }
+    }, [isFirstCard, hasAnimated]);
+    
     
 
     //funzione per bloccare il flip quando i modal sono aperti
@@ -294,7 +310,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
     const cardStyle = {
         transformStyle: 'preserve-3d',
         transition: 'transform 0.6s',
-        transform: isFlipped ? 'rotateY(180deg)' : 'none',
+        transform: isFlipped ? "rotateY(180deg)" : mezzoFlip ? "rotateY(40deg)" : "none",
         width: '100%',
         perspective: '1000px',
         borderRadius: '20px',
@@ -619,8 +635,8 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                     justifyContent: 'center',
                     
                 }}>
-                    <Box sx={{ display:'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: '#EDEDED', overflow: 'auto'}}>
-                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', p: 3}}>
+                    <Box sx={{ display:'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: 'white', borderRadius: '20px', overflow: 'auto'}}>
+                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', p: 3, borderBottom: '2.5px solid #e0e0e0'}}>
                             <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', mt: 0.5, mb: 0.5}}>Storico delle azioni</Typography>
                             <IconButton sx={{ mr: 2, backgroundColor: 'transparent', border: 'none' }} onClick={() => setModalStorico(false)}>
                                 <CloseIcon sx={{ backgroundColor: 'transparent' }}/>
@@ -827,14 +843,14 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh}) => {
                     alignItems: 'center',
                     justifyContent: 'center',
                 }}>
-                    <Box sx={{ display:'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: '#EDEDED'}}>
-                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', p: 3}}>
+                    <Box sx={{ display:'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: 'white', borderRadius: '20px'}}>
+                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', p: 3, borderBottom: '2.5 solid #e0e0e0', borderTop: '2.5 solid #e0e0e0'}}>
                             <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', mt: 0.5, mb: 0.5}}>Lista dei Need</Typography>
                             <IconButton sx={{ mr: 2, backgroundColor: 'transparent', border: 'none' }} onClick={() => setModalNeed(false)}>
                                 <CloseIcon sx={{ backgroundColor: 'transparent' }}/>
                             </IconButton>
                         </Box>
-                        <TableContainer component={Paper}>
+                        <TableContainer component={Paper} >
                         <Table>
                             <TableHead>
                                 <TableRow>

@@ -522,6 +522,7 @@
                         valori={aziende}
                         onDelete={() => handleDelete(aziende.id)}
                         onRefresh={handleRefresh}
+                        isFirstCard={index === 0}
                     />
                     </Grid>
                 ))
