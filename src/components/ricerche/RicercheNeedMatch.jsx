@@ -388,12 +388,12 @@
                     disableRipple={true}
                     disableFocusRipple={true}
                     sx={{
-                    backgroundColor: theme.palette.button.main,
+                    backgroundColor: "black",
                     color: "white",
                     textTransform: "lowercase",
                     fontWeight: "bold",
                     "&:hover": {
-                        backgroundColor: theme.palette.button.main,
+                    backgroundColor: "black",
                         color: "white",
                         trasform: "scale(1.1)",
                     },
