@@ -144,7 +144,7 @@
             Authorization: `Bearer ${token}`
             };
 
-            const response = await axios.post("http://localhost:8080/api/auth/change/password", payload, {
+            const response = await axios.post("http://89.46.196.60:8443/api/auth/change/password", payload, {
             headers: headers
             });
             if (response.data === "ERRORE") {
@@ -188,7 +188,7 @@
     //         Authorization: `Bearer ${token}`
     //         };
 
-    //         const response = await axios.post("http://localhost:8080/api/auth/delete", payload, {
+    //         const response = await axios.post("http://89.46.196.60:8443/api/auth/delete", payload, {
     //         headers: headers
     //         });
     //         if (response.data === "ERRORE") {
