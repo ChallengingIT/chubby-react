@@ -8,6 +8,24 @@ const API_LOGOUT = "http://89.46.196.60:8443/logout";
 
 
 class AuthService {
+  // login(username, password) {
+  //   return axios
+  //     .post(API_URL + "signin", {
+  //       username,
+  //       password
+  //     })
+  //     .then(response => {
+  //       if (response.data) {
+  //         sessionStorage.setItem("user", JSON.stringify(response.data));
+  //       } else {
+  //         console.log("login fallito!");
+  //       }
+
+  //       return response.data;
+  //     });
+  // }
+
+
   login(username, password) {
     return axios
       .post(API_URL + "signin", {
@@ -17,14 +35,15 @@ class AuthService {
       .then(response => {
         if (response.data) {
           sessionStorage.setItem("user", JSON.stringify(response.data));
+          return response.data;
         } else {
-          console.log("login fallito!");
+          throw new Error("Login failed"); // Lancia un errore se la login fallisce
         }
-
-        return response.data;
+      })
+      .catch(error => {
+        throw error; // Propaga l'errore al chiamante
       });
   }
-
   logout() {
     
     const user = JSON.parse(sessionStorage.getItem("user"));

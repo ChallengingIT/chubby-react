@@ -102,7 +102,7 @@
             variant="outlined"
             placeholder="Cerca Azienda"
             size="small"
-            value={filtri.denominazione}
+            value={filtri.denominazione || ""}
             onChange={onFilterChange("denominazione")}
             onKeyDown={(event) => {
                 if (event.key === "Enter") {

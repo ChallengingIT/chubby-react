@@ -9,6 +9,7 @@ import {
   IconButton,
   Collapse,
   Paper,
+  Box,
 } from "@mui/material";
 import { AddCircle, ExpandMore, ExpandLess } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
@@ -91,54 +92,58 @@ const TabellaHiring = ({ data, columns, getRowId }) => {
                     </IconButton>
                   </TableCell>
                 </TableRow>
-                <Collapse in={expanded === getRowId(row)} timeout="auto" unmountOnExit>
-                  <Paper
-                    sx={{
-                      margin: 1,
-                      border: `2px solid ${theme.palette.border.main}`,
-                      borderRadius: "20px",
-                      padding: 2,
-                      width: '98%'
-                    }}
-                  >
-                    {row.schedeCandidato && row.schedeCandidato.length > 0 ? (
-                      <Table>
-                        <TableHead>
-                          <TableRow>
-                            {["Nome", "Cognome", "Ruolo"].concat(columnsToShow).map((colName) => (
-                              <TableCell sx={{ fontWeight: "bold", borderBottom: '1.5px solid #ccc7c7' }} key={colName}>{colName}</TableCell>
-                            ))}
-                            <TableCell sx={{fontWeight: 'bold', borderBottom: '1.5px solid #ccc7c7'}}> Aggiorna </TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {row.schedeCandidato.map((candidato, index) => (
-                            <TableRow key={index}>
-                              <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.nomeCandidato}</TableCell>
-                              <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.cognomeCandidato}</TableCell>
-                              <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.descrizione}</TableCell>
-                              {columnsToShow.includes("Inizio Attività") && <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.inizioAttivita}</TableCell>}
-                              {columnsToShow.includes("Fine Attività") && <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.fineAttivita}</TableCell>}
-                              {columnsToShow.includes("RAL") && <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.economics}</TableCell>}
-                              {columnsToShow.includes("Rate") && <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.economics}</TableCell>}
-                              {columnsToShow.includes("Canone") && <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.canoneMensile}</TableCell>}
-                              {columnsToShow.includes("Importo Fatturato") && <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.fatturato}</TableCell>}
-                              <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7'}}>
-                                <IconButton
-                                  onClick={() => handleEditClick(getRowId(row), row.tipoServizio.descrizione, candidato.id)}
-                                >
-                                  <EditIcon sx={{ color: theme.palette.icon.black }} />
-                                </IconButton>
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    ) : (
-                      <div>Nessun dato di candidato disponibile.</div>
-                    )}
-                  </Paper>
-                </Collapse>
+                <TableRow>
+                  <TableCell colSpan={3} sx={{ paddingBottom: 0, paddingTop: 0, borderBottom: 'none' }}>
+                    <Collapse in={expanded === getRowId(row)} timeout="auto" unmountOnExit>
+                      <Box
+                        sx={{
+                          margin: 1,
+                          border: `2px solid ${theme.palette.border.main}`,
+                          borderRadius: "20px",
+                          padding: 2,
+                          width: '98%'
+                        }}
+                      >
+                        {row.schedeCandidato && row.schedeCandidato.length > 0 ? (
+                          <Table>
+                            <TableHead>
+                              <TableRow>
+                                {["Nome", "Cognome", "Ruolo"].concat(columnsToShow).map((colName) => (
+                                  <TableCell sx={{ fontWeight: "bold", borderBottom: '1.5px solid #ccc7c7' }} key={colName}>{colName}</TableCell>
+                                ))}
+                                <TableCell sx={{fontWeight: 'bold', borderBottom: '1.5px solid #ccc7c7'}}> Aggiorna </TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              {row.schedeCandidato.map((candidato, index) => (
+                                <TableRow key={index}>
+                                  <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.nomeCandidato}</TableCell>
+                                  <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.cognomeCandidato}</TableCell>
+                                  <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.descrizione}</TableCell>
+                                  {columnsToShow.includes("Inizio Attività") && <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.inizioAttivita}</TableCell>}
+                                  {columnsToShow.includes("Fine Attività") && <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.fineAttivita}</TableCell>}
+                                  {columnsToShow.includes("RAL") && <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.economics}</TableCell>}
+                                  {columnsToShow.includes("Rate") && <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.economics}</TableCell>}
+                                  {columnsToShow.includes("Canone") && <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.canoneMensile}</TableCell>}
+                                  {columnsToShow.includes("Importo Fatturato") && <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.fatturato}</TableCell>}
+                                  <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7'}}>
+                                    <IconButton
+                                      onClick={() => handleEditClick(getRowId(row), row.tipoServizio.descrizione, candidato.id)}
+                                    >
+                                      <EditIcon sx={{ color: theme.palette.icon.black }} />
+                                    </IconButton>
+                                  </TableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
+                        ) : (
+                          <div>Nessun dato di candidato disponibile.</div>
+                        )}
+                      </Box>
+                    </Collapse>
+                  </TableCell>
+                </TableRow>
               </React.Fragment>
             );
           })}

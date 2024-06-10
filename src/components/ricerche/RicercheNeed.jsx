@@ -146,7 +146,7 @@
             variant="outlined"
             placeholder="Cerca Need"
             size="small"
-            value={filtri.descrizione}
+            value={filtri.descrizione || ""}
             onChange={onFilterChange("descrizione")}
             onKeyDown={(event) => {
                 if (event.key === "Enter") {

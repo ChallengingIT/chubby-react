@@ -94,7 +94,7 @@
             variant="outlined"
             placeholder="Nome"
             size="small"
-            value={filtri.nome}
+            value={filtri.nome || ""}
             onChange={onFilterChange("nome")}
             onKeyDown={(event) => {
                 if (event.key === "Enter") {
@@ -139,7 +139,7 @@
             variant="outlined"
             placeholder="Cognome"
             size="small"
-            value={filtri.cognome}
+            value={filtri.cognome || ""}
             onChange={onFilterChange("cognome")}
             onKeyDown={(event) => {
                 if (event.key === "Enter") {

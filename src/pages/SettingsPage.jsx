@@ -229,18 +229,18 @@ const handleSaveSection = (sectionIndex) => {
     const fields = [
         { type: "titleGroups", label: "Cambia Password" },
         {
-        label: "Username",
+        label: "Username*",
         name: "username",
         type: "text",
         maxLength: 90,
         },
         {
-        label: "Vecchia Password",
+        label: "Vecchia Password*",
         name: "oldPassword",
         type: "text",
         maxLength: 90,
         },
-        { label: "Nuova Password", name: "newPassword", type: "text", maxLength: 255 },
+        { label: "Nuova Password*", name: "newPassword", type: "text", maxLength: 255 },
 
         // { type: "titleGroups", label: "Elimina account" },
         // {
@@ -344,9 +344,19 @@ const handleSaveSection = (sectionIndex) => {
                 sx={{
                 backgroundColor: theme.palette.button.main,
                 color: "white",
+                fontWeight:"bold",
+                borderRadius: '10px',
+                boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
+
+
+
                 "&:hover": {
                     backgroundColor: theme.palette.button.main,
-                    transform: 'scale(1.01)'
+                    transform: 'scale(1.01)',
+                    borderRadius: '10px',
+                    boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
+
+
                 },
                 }}
             >

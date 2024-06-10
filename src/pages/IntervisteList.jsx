@@ -197,11 +197,12 @@ renderCell: (params) => (
       </div>
     ),
 },
-  { field: "dataAggiornamento",   headerName: (
-      <div style={{ lineHeight: '1' }}>
-        Follow Up <br /> Data Aggiornamento
-      </div>
-    ),
+  { field: "dataAggiornamento",   headerName: "Follow Up",
+  // : (
+  //     <div style={{ lineHeight: '1' }}>
+  //       Follow Up <br /> Data Aggiornamento
+  //     </div>
+  //   ),
     width: 350,
     renderCell: (params) => (
       <div style={{ textAlign: "start" }}>
@@ -281,7 +282,7 @@ state={params.row}
                   }}
                     >Aggiungi Intervista</Button>
                     </Box>
-                    <Box sx={{ mr: 0.2, mt: 10}}>
+                    <Box sx={{ mr: 0.2, mt: 2}}>
 
                     <Tabella
                         data={originalInterviste} 

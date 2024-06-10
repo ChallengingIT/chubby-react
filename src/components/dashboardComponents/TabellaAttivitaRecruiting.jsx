@@ -51,14 +51,14 @@ const TabellaAttivitaBusiness = ({ data = [] }) => {
                 <React.Fragment key={item.idIntervista || index}>
                     <ListItem 
                         sx={{ bgcolor: 'transparent', borderBottom: '2px solid #ccc7c7' }} 
-                        secondaryAction={
-                            <Checkbox 
-                                edge="end"
-                                checked={item.completed}
-                                onChange={() => handleToggleCompleted(item.idIntervista)}
-                                inputProps={{ 'aria-labelledby': `checkbox-list-label-${item.idIntervista}` }}
-                            />
-                        }
+                        // secondaryAction={
+                        //     <Checkbox 
+                        //         edge="end"
+                        //         checked={item.completed}
+                        //         onChange={() => handleToggleCompleted(item.idIntervista)}
+                        //         inputProps={{ 'aria-labelledby': `checkbox-list-label-${item.idIntervista}` }}
+                        //     />
+                        // }
                     >
                         <IconButton edge="start">
                             <DragHandleIcon />

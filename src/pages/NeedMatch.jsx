@@ -82,6 +82,7 @@
     const [ paginaAssociati,   setPaginaAssociati       ] = useState(0);
     const [ righeTotAssociati, setRigheTotAssociati     ] = useState(0);
 
+
     const quantita = 10;
 
     const user = JSON.parse(sessionStorage.getItem("user"));
@@ -280,24 +281,33 @@
             `http://89.46.196.60:8443/need/react/storico/${id}`,
             { headers: headers, params: paginazione }
         );
-        const { recordStorico, storico } = storicoResponse.data;
+        // const { recordStorico, storico } = storicoResponse.data;
 
-        if (storico && Array.isArray(storico)) {
-            setOriginalStorico(storico);
-            if (typeof storicoResponse === "number") {
-            setRigheTotAssociati(recordStorico);
-            } else {
-            console.error(
-                "Il numero di record di storico ottenuto non è un numero: ",
-                recordStorico
-            );
-            }
-        } else {
-            console.error(
-            "I dati ottenuti di storico non sono nel formato Array:",
-            storicoResponse.data
-            );
-        }
+        // if (storico && Array.isArray(storico)) {
+        //     setOriginalStorico(storico);
+        //     if (typeof storicoResponse === "number") {
+        //     setRigheTotAssociati(recordStorico);
+        //     } else {
+        //     console.error(
+        //         "Il numero di record di storico ottenuto non è un numero: ",
+        //         recordStorico
+        //     );
+        //     }
+        // } else {
+        //     console.error(
+        //     "I dati ottenuti di storico non sono nel formato Array:",
+        //     storicoResponse.data
+        //     );
+        // }
+        // } catch (error) {
+        // console.error("Errore durante il recupero dei dati: ", error);
+        // }
+        const { data: storicoData } = storicoResponse;
+        const recordStorico = storicoData.record;
+        const storico = storicoData.associazioni;
+
+        setRigheTotStorico(recordStorico);
+        setOriginalStorico(storico);
         } catch (error) {
         console.error("Errore durante il recupero dei dati: ", error);
         }
@@ -313,27 +323,37 @@
             `http://89.46.196.60:8443/need/react/match/associati/mod/${id}`,
             { headers: headers, params: paginazione }
         );
-        const { recordAssociati, associati } = associatiResponse.data;
+        // const { recordAssociati, associati } = associatiResponse.data;
 
-        if (associati && Array.isArray(associati)) {
-            setOriginalAssociati(associati);
-            if (typeof recordAssociati === "number") {
-            setRigheTotAssociati(recordAssociati);
-            } else {
-            console.error(
-                "Il numero di record ottenuto non è un numero: ",
-                recordAssociati
-            );
-            }
-        } else {
-            console.error(
-            "I dati ottenuti non sono nel formato Array:",
-            associatiResponse.data
-            );
-        }
+        // if (associati && Array.isArray(associati)) {
+        //     setOriginalAssociati(associati);
+        //     if (typeof recordAssociati === "number") {
+        //     setRigheTotAssociati(recordAssociati);
+        //     } else {
+        //     console.error(
+        //         "Il numero di record ottenuto non è un numero: ",
+        //         recordAssociati
+        //     );
+        //     }
+        // } else {
+        //     console.error(
+        //     "I dati ottenuti non sono nel formato Array:",
+        //     associatiResponse.data
+        //     );
+        // }
+        // } catch (error) {
+        // console.error("Errore durante il recupero dei dati: ", error);
+        // }
+        const { data: associatiData } = associatiResponse;
+        const recordAssociati = associatiData.record;
+        const associati = associatiData.candidati;
+
+        setRigheTotAssociati(recordAssociati);
+        setOriginalAssociati(associati);
         } catch (error) {
         console.error("Errore durante il recupero dei dati: ", error);
         }
+        
     };
 
     //funzione per il cambio pagina
@@ -343,14 +363,14 @@
         fetchMoreDataCandidati(newPage);
     };
 
-    const handlePageChangeStorico = (newPage) => {
-        setPaginaStorico(newPage);
-        fetchMoreDataStorico(newPage);
+    const handlePageChangeStorico = (newPageStorico) => {
+        setPaginaStorico(newPageStorico);
+        fetchMoreDataStorico(newPageStorico);
     };
 
-    const handlePageChangeAssociati = (newPage) => {
-        setPaginaAssociati(newPage);
-        fetchMoreDataAssociati(newPage);
+    const handlePageChangeAssociati = (newPageAssociati) => {
+        setPaginaAssociati(newPageAssociati);
+        fetchMoreDataAssociati(newPageAssociati);
     };
 
     // //funzione per il cambio stato dei select

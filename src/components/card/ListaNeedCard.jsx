@@ -48,6 +48,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
         stato: ''
     });
     const [isFlipped, setIsFlipped] = useState(false);
+    const [mezzoFlip, setMezzoFlip] = useState(false);
     const [activeLink,            ] = useState(null);
     const [alert,     setAlert    ] = useState(false);
     const [hasAnimated, setHasAnimated] = useState(false);
@@ -56,9 +57,9 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
     useEffect(() => {
         if (isFirstCard && !hasAnimated) {
             setTimeout(() => {
-                setIsFlipped(true);
+                setMezzoFlip(true);
                 setTimeout(() => {
-                    setIsFlipped(false);
+                    setMezzoFlip(false);
                     setHasAnimated(true);
                 }, 500); // Durata della rotazione (mezzo secondo)
             }, 500); // Attendere mezzo secondo prima di iniziare l'animazione
@@ -178,7 +179,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
     const cardStyle = {
         transformStyle: 'preserve-3d',
         transition: 'transform 0.6s',
-        transform: isFlipped ? 'rotateY(180deg)' : 'none',
+        transform: isFlipped ? "rotateY(180deg)" : mezzoFlip ? "rotateY(40deg)" : "none",
         width: '100%',
         perspective: '1000px',
         borderRadius: '20px',

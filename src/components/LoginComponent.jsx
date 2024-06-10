@@ -287,7 +287,7 @@
                         <InputAdornment position="end">
                             <IconButton
                             aria-label="toggle password visibility"
-                            // onClick={togglePasswordVisibility}
+                            onClick={togglePasswordVisibility}
                             edge="end"
                             >
                             {showPassword ? (
@@ -527,7 +527,7 @@
                         <InputAdornment position="end">
                             <IconButton
                             aria-label="toggle password visibility"
-                            // onClick={togglePasswordVisibility}
+                            onClick={togglePasswordVisibility}
                             edge="end"
                             >
                             {showPassword ? (

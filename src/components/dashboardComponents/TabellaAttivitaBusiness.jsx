@@ -52,23 +52,23 @@ const TabellaAttivitaBusiness = ({ data = [], aziendeOptions = [] }) => {
     return (
         <List sx={hideScrollbarStyle}>
             {activities.map((item, index) => (
-                <React.Fragment key={item.idAzione || index}>
+                <React.Fragment key={item.idAzioneKeyPeople || index}>
                     <ListItem
                         sx={{ bgcolor: 'transparent', borderBottom: '2px solid #ccc7c7' }}
-                        secondaryAction={
-                            <Checkbox
-                                edge="end"
-                                checked={item.completed}
-                                onChange={() => handleToggleCompleted(item.idAzione)}
-                                inputProps={{ 'aria-labelledby': `checkbox-list-label-${item.idAzione}` }}
-                            />
-                        }
+                        // secondaryAction={
+                        //     <Checkbox
+                        //         edge="end"
+                        //         checked={item.completed}
+                        //         onChange={() => handleToggleCompleted(item.idAzione)}
+                        //         inputProps={{ 'aria-labelledby': `checkbox-list-label-${item.idAzione}` }}
+                        //     />
+                        // }
                     >
                         <IconButton edge="start">
                             <DragHandleIcon />
                         </IconButton>
                         <ListItemText
-                            id={`checkbox-list-label-${item.idAzione}`}
+                            id={`checkbox-list-label-${item.idAzioneKeyPeople}`}
                             primary={
                                 <Typography style={{ textDecoration: item.completed ? 'line-through' : 'none' }}>
                                     <span style={{ color: '#808080', fontWeight: 300 }}>Today </span>
@@ -78,13 +78,13 @@ const TabellaAttivitaBusiness = ({ data = [], aziendeOptions = [] }) => {
                             }
                         />
                         <IconButton
-                            onClick={() => handleToggleExpanded(item.idAzione)}
+                            onClick={() => handleToggleExpanded(item.idAzioneKeyPeople)}
                             aria-label="show more"
                         >
-                            {expandedId === item.idAzione ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                            {expandedId === item.idAzioneKeyPeople ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                         </IconButton>
                     </ListItem>
-                    <Collapse in={expandedId === item.idAzione} timeout="auto" unmountOnExit>
+                    <Collapse in={expandedId === item.idAzioneKeyPeople} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
                             <ListItem sx={{ pl: 4 }}>
                                 <ListItemText
