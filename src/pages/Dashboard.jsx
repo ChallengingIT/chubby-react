@@ -1,5 +1,5 @@
     // Dashboard.js
-    import React, { useEffect, useState } from "react";
+    import React, { useContext, useEffect, useState } from "react";
     import {
     Box,
     Grid,
@@ -14,6 +14,9 @@
     import axios from "axios";
     import SchemePage from "../components/SchemePage";
     import { useNotification } from "../components/NotificationContext.js";
+import TabellaAntDesign from "../prove/TabellaAntDesign.jsx";
+
+
 
     function Dashboard() {
     const { showNotification } = useNotification();
@@ -50,6 +53,7 @@
     const headers = {
         Authorization: `Bearer ${token}`,
     };
+
 
     const userHasRole = (roleToCheck) => {
         const userString = sessionStorage.getItem("user");
@@ -259,6 +263,52 @@
         },
         },
     ];
+
+
+
+
+
+//     const columns = [
+//   {
+//     title: "Owner",
+//     dataIndex: 'owner',
+//     key: 'owner',
+//     render: (owner) => `${owner.nome} ${owner.cognome}`,
+//     width: 200,  
+
+//   },
+//   {
+//     title: "Cliente",
+//     dataIndex: 'cliente',
+//     key: 'cliente',
+//     render: (cliente) => `${cliente.denominazione}`,
+//     width: 250,  
+
+//   },
+//   {
+//     title: "Descrizione",
+//     dataIndex: 'descrizione',
+//     key: 'descrizione',
+//     width: 250,  
+
+//   },
+//   {
+//     title: "Priorità",
+//     dataIndex: 'priorita',
+//     key: 'priorita',
+//     width: 100,  
+
+//   },
+//   {
+//     title: "Stato",
+//     dataIndex: 'stato',
+//     key: 'stato',
+//     render: (stato) => `${stato.descrizione}`,
+//     width: 100,  
+
+//   }
+// ];
+
 
     const getRowId = (row) => row.id;
 

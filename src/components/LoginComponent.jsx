@@ -220,8 +220,14 @@
                         Sign in
                     </Typography>
                     </Box>
-
-                    {/* <TextField
+                    {/* <Typography
+                    variant="h6"
+                    component="h2"
+                    sx={{ alignSelf: "flex-start", fontSize: "1em" }}
+                    >
+                    Enter your username
+                    </Typography> */}
+                    <TextField
                     margin="normal"
                     required
                     fullWidth
@@ -248,9 +254,16 @@
                         },
                         },
                     }}
-                    /> */}
+                    />
 
-                    {/* <TextField
+                    {/* <Typography
+                    variant="h6"
+                    component="h2"
+                    sx={{ alignSelf: "flex-start", fontSize: "1em" }}
+                    >
+                    Enter your password
+                    </Typography> */}
+                    <TextField
                     margin="normal"
                     required
                     fullWidth
@@ -274,7 +287,7 @@
                         <InputAdornment position="end">
                             <IconButton
                             aria-label="toggle password visibility"
-                            // onClick={togglePasswordVisibility}
+                            onClick={togglePasswordVisibility}
                             edge="end"
                             >
                             {showPassword ? (
@@ -297,69 +310,7 @@
                         },
                         },
                     }}
-                    /> */}
-
-
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="username"
-                        label="Username"
-                        autoComplete="username"
-                        autoFocus
-                        value={username}
-                        onKeyDown={handleKeyDown}
-                        onChange={(e) => {
-                            setUsername(e.target.value);
-                            setLoginError((errors) => ({ ...errors, username: false }));
-                        }}
-                        error={loginError.username}
-                        helperText={loginError.username ? "Username non valido" : ""}
-                        sx={{
-                            mb: 2,
-                            "& .MuiFormLabel-root.Mui-focused": {
-                                color: loginError.username ? "#f44336" : "#00B400", // Cambia colore a rosso se errore
-                            },
-                            "& .MuiOutlinedInput-root": {
-                                "&.Mui-focused fieldset": {
-                                    borderColor: loginError.username ? "#f44336" : "#00B400", // Cambia colore a rosso se errore
-                                },
-                            },
-                        }}
                     />
-
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type={showPassword ? "text" : "password"}
-                        id="password"
-                        autoComplete="current-password"
-                        value={password}
-                        onKeyDown={handleKeyDown}
-                        onChange={(e) => {
-                            setPassword(e.target.value);
-                            setLoginError((errors) => ({ ...errors, password: false }));
-                        }}
-                        error={loginError.password}
-                        helperText={loginError.password ? "Password non valida" : ""}
-                        sx={{
-                            mb: 6,
-                            "& .MuiFormLabel-root.Mui-focused": {
-                                color: loginError.password ? "#f44336" : "#00B400", // Cambia colore a rosso se errore
-                            },
-                            "& .MuiOutlinedInput-root": {
-                                "&.Mui-focused fieldset": {
-                                    borderColor: loginError.password ? "#f44336" : "#00B400", // Cambia colore a rosso se errore
-                                },
-                            },
-                        }}
-                    />
-
-
                     <Button
                     color="primary"
                     variant="contained"
@@ -576,7 +527,7 @@
                         <InputAdornment position="end">
                             <IconButton
                             aria-label="toggle password visibility"
-                            // onClick={togglePasswordVisibility}
+                            onClick={togglePasswordVisibility}
                             edge="end"
                             >
                             {showPassword ? (
