@@ -384,10 +384,10 @@ import TabellaAntDesign from "../prove/TabellaAntDesign.jsx";
                 </CardContent>
                 </Card>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={6} sx={{ display: 'flex', height: '50vh'}}>
                 <AttivitaRecruitingBox data={originalAttivitaRecruiting} />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={6} sx={{ display: 'flex', height: '50vh'}}>
                 <AttivitaBusinessBox
                 data={originalAttivitaBusiness}
                 aziendeOptions={aziendeOptions}
