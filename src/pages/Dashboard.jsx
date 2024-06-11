@@ -268,46 +268,46 @@ import TabellaAntDesign from "../prove/TabellaAntDesign.jsx";
 
 
 
-//     const columns = [
-//   {
-//     title: "Owner",
-//     dataIndex: 'owner',
-//     key: 'owner',
-//     render: (owner) => `${owner.nome} ${owner.cognome}`,
-//     width: 200,  
+    //     const columns = [
+    // {
+    //     title: "Owner",
+    //     dataIndex: 'owner',
+    //     key: 'owner',
+    //     render: (owner) => `${owner.nome} ${owner.cognome}`,
+    //     width: 200,  
 
-//   },
-//   {
-//     title: "Cliente",
-//     dataIndex: 'cliente',
-//     key: 'cliente',
-//     render: (cliente) => `${cliente.denominazione}`,
-//     width: 250,  
+    // },
+    // {
+    //     title: "Cliente",
+    //     dataIndex: 'cliente',
+    //     key: 'cliente',
+    //     render: (cliente) => `${cliente.denominazione}`,
+    //     width: 250,  
 
-//   },
-//   {
-//     title: "Descrizione",
-//     dataIndex: 'descrizione',
-//     key: 'descrizione',
-//     width: 250,  
+    // },
+    // {
+    //     title: "Descrizione",
+    //     dataIndex: 'descrizione',
+    //     key: 'descrizione',
+    //     width: 250,  
 
-//   },
-//   {
-//     title: "Priorità",
-//     dataIndex: 'priorita',
-//     key: 'priorita',
-//     width: 100,  
+    // },
+    // {
+    //     title: "Priorità",
+    //     dataIndex: 'priorita',
+    //     key: 'priorita',
+    //     width: 100,  
 
-//   },
-//   {
-//     title: "Stato",
-//     dataIndex: 'stato',
-//     key: 'stato',
-//     render: (stato) => `${stato.descrizione}`,
-//     width: 100,  
+    // },
+    // {
+    //     title: "Stato",
+    //     dataIndex: 'stato',
+    //     key: 'stato',
+    //     render: (stato) => `${stato.descrizione}`,
+    //     width: 100,  
 
-//   }
-// ];
+    // }
+    // ];
 
 
     const getRowId = (row) => row.id;

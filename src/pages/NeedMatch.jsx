@@ -596,24 +596,39 @@
         }
     };
 
+    // const handleOpenModal = (selectedRow) => {
+    //     const initialValuesWithDefaults = {
+    //     cliente: nomeAzienda || "",
+    //     idNeed: descrizione || "",
+    //     candidato: `${selectedRow.nome || ""} ${
+    //         selectedRow.cognome || ""
+    //     }`.trim(),
+    //     idCandidato: selectedRow.id || "",
+    //     };
+    //     fieldsAggiorna.forEach((field) => {
+    //     if (field.type === "select" && !initialValuesWithDefaults[field.name]) {
+    //         initialValuesWithDefaults[field.name] = field.options?.[0]?.value || "";
+    //     }
+    //     });
+
+    //     setInitialValuesAggiorna(initialValuesWithDefaults);
+    //     setIsModalOpen(true);
+    // };
+
+
     const handleOpenModal = (selectedRow) => {
-        const initialValuesWithDefaults = {
+    const initialValuesWithDefaults = {
         cliente: nomeAzienda || "",
         idNeed: descrizione || "",
-        candidato: `${selectedRow.nome || ""} ${
-            selectedRow.cognome || ""
-        }`.trim(),
+        candidato: `${selectedRow.nome || ""} ${selectedRow.cognome || ""}`.trim(),
         idCandidato: selectedRow.id || "",
-        };
-        fieldsAggiorna.forEach((field) => {
-        if (field.type === "select" && !initialValuesWithDefaults[field.name]) {
-            initialValuesWithDefaults[field.name] = field.options?.[0]?.value || "";
-        }
-        });
-
-        setInitialValuesAggiorna(initialValuesWithDefaults);
-        setIsModalOpen(true);
+        stato: null,  // Assicurati che stato non abbia un valore predefinito
+        idOwner: null // Assicurati che idOwner non abbia un valore predefinito
     };
+
+    setInitialValuesAggiorna(initialValuesWithDefaults);
+    setIsModalOpen(true);
+};
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
