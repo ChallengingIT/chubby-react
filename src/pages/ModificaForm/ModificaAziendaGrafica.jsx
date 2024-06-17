@@ -844,7 +844,7 @@ return (
                                 borderRadius: '10px',
                                 
                                 "&:hover": {
-                                backgroundColor: "#00B400",
+                                    backgroundColor: "#019301",
                                 color: "#EDEDED",
                                 transform: "scale(1.05)",
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',

@@ -1,5 +1,6 @@
     import React from "react";
     import { Box, Container } from "@mui/material";
+    import FormaOnda from '../images/FormaLoginNoOnda.svg';
 
     const SchemePage = ({ children }) => {
     return (

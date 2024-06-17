@@ -2,7 +2,7 @@
     import { Link, useParams }                              from "react-router-dom";
     import { useNavigate }                                  from "react-router-dom";
     import axios                                            from "axios";
-    import { Modal, Box, Button, Typography, Dialog, DialogContent, DialogTitle, IconButton }               from "@mui/material";
+    import { Modal, Box, Button, Typography, Dialog, DialogContent, DialogTitle, IconButton, Fab, Popover }               from "@mui/material";
     import { useLocation }                                  from "react-router-dom";
     import Tabella                                          from "../components/Tabella.jsx";
     import ModalBox                                         from "../components/ModalBox.jsx";
@@ -12,6 +12,8 @@
     import ClipButton                                       from "../components/button/ClipButton.jsx";
     import AddCircleIcon from '@mui/icons-material/AddCircle';
     import SchemePage from "../components/SchemePage.jsx";
+        import AddIcon                                          from '@mui/icons-material/Add'; //bottone per chatgpt
+    import GptChat                                          from '../components/GptChat';
     const NeedMatch = () => {
 
     const navigate      = useNavigate();
@@ -34,6 +36,31 @@
         //stati per il dialog
         const [ openDialog,         setOpenDialog           ] = useState(false);
         const [ selectedRow,        setSelectedRow          ] = useState(null);
+
+
+         //stato di AddIcon
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [isRotated, setIsRotated] = useState(false);
+    const [showChat, setShowChat] = useState(false);
+
+    const handleClick = (event) => {
+
+    if (showChat) {
+            handleClose();
+        } else {
+            setAnchorEl(event.currentTarget);
+            setIsRotated(!isRotated);
+            setShowChat(true);
+        }
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+        setIsRotated(false);
+        setShowChat(false);
+    };
+
+    const open = Boolean(anchorEl);
     
     
         const handleOpenDialog = (row) => {
@@ -963,6 +990,45 @@
 
     return (
         <SchemePage>
+              <Fab aria-label="add" sx={{
+                    position: 'fixed',
+                    bottom: 30,
+                    right: 30,
+                    bgcolor: '#00B400',
+                    transition: 'transform 0.3s ease, border-width 0.3s ease',
+                    '&:hover': {
+                        bgcolor: '#00B400',
+                        transform: 'scale(1.2)'
+                    }
+                }} onClick={handleClick}>
+                    <AddIcon sx={{
+                        color: 'white',
+                        transition: 'transform 0.3s ease',
+                        transform: isRotated ? 'rotate(225deg)' : 'none'
+                    }} />
+                </Fab>
+                <Popover
+                open={Boolean(anchorEl) && showChat}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                }}
+                transformOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                }}
+                PaperProps={{ 
+                    style: { 
+                        borderRadius: '20px',
+                        overflow: 'hidden' 
+                    },
+                    }}
+            >
+                <GptChat />
+            </Popover>
+
             <Box
             sx={{
                 position: "sticky",

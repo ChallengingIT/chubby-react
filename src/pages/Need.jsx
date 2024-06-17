@@ -4,12 +4,16 @@ import InfiniteScroll                                   from 'react-infinite-scr
 import RicercheNeed                                     from '../components/ricerche/RicercheNeed';
 import NeedCardFlip                                     from '../components/card/NeedCardFlip';
 import SchemePage                                       from '../components/SchemePage.jsx';
+    import AddIcon                                          from '@mui/icons-material/Add'; //bottone per chatgpt
+    import GptChat                                          from '../components/GptChat';
 
 import { 
     Box,
     CircularProgress,
     Grid,
-    Skeleton
+    Skeleton,
+        Fab,
+    Popover,
     } from '@mui/material';
 
     const Need = () => {
@@ -39,6 +43,38 @@ import {
         //stati per la paginazione
         const [ pagina,                 setPagina           ] = useState(0);
         const [ hasMore,                setHasMore          ] = useState(true);
+
+
+         //stato di AddIcon
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [isRotated, setIsRotated] = useState(false);
+    const [showChat, setShowChat] = useState(false);
+
+    const handleClick = (event) => {
+
+    if (showChat) {
+            handleClose();
+        } else {
+            setAnchorEl(event.currentTarget);
+            setIsRotated(!isRotated);
+            setShowChat(true);
+        }
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+        setIsRotated(false);
+        setShowChat(false);
+    };
+
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
+
+    const getValueLabel = (value) => {
+        const option = ownerOptions.find((option) => option.value === value);
+        return option ? option.label : null;
+    };
+
 
         const user = JSON.parse(sessionStorage.getItem('user'));
         const token = user?.token;
@@ -80,7 +116,7 @@ import {
             try {
             const responseNeed          = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
             const responseAzienda       = await axios.get("http://localhost:8080/aziende/react/select",          { headers: headers });
-            const responseOwner         = await axios.get("http://localhost:8080/owner",           { headers: headers });
+            const responseOwner         = await axios.get("http://localhost:8080/owner",                         { headers: headers });
             const responseTipologia     = await axios.get("http://localhost:8080/need/react/tipologia",          { headers: headers });
             const responseStato         = await axios.get("http://localhost:8080/need/react/stato",              { headers: headers });
 
@@ -345,6 +381,44 @@ const handleFilterChange = (name) => (event) => {
 
         return(
             <SchemePage>
+                                         <Fab aria-label="add" sx={{
+                    position: 'fixed',
+                    bottom: 30,
+                    right: 30,
+                    bgcolor: '#00B400',
+                    transition: 'transform 0.3s ease, border-width 0.3s ease',
+                    '&:hover': {
+                        bgcolor: '#00B400',
+                        transform: 'scale(1.2)'
+                    }
+                }} onClick={handleClick}>
+                    <AddIcon sx={{
+                        color: 'white',
+                        transition: 'transform 0.3s ease',
+                        transform: isRotated ? 'rotate(225deg)' : 'none'
+                    }} />
+                </Fab>
+                 <Popover
+                open={Boolean(anchorEl) && showChat}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                }}
+                transformOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                }}
+                PaperProps={{ 
+                    style: { 
+                        borderRadius: '20px',
+                        overflow: 'hidden' 
+                    },
+                    }}
+            >
+                <GptChat />
+            </Popover>
                 <Box sx={{ 
                     position: 'sticky', 
                     top: 0, 
@@ -375,6 +449,7 @@ const handleFilterChange = (name) => (event) => {
                     >
                                 {/* Main Content Area */}
                     <Grid container spacing={2} sx={{ mt: 1, mb: 4}}>
+
                         { loading ? (
                             <>
                             {Array.from(new Array(quantita)).map((_, index) => (

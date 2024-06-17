@@ -175,10 +175,10 @@
                     borderRadius: "4px 0 0 4px",
                 },
                 "&:hover fieldset": {
-                    borderColor: theme.palette.border.main,
+                    borderColor: theme.palette.border.mainHover,
                 },
                 "&.Mui-focused fieldset": {
-                    borderColor: theme.palette.border.main,
+                    borderColor: theme.palette.border.mainHover,
                 },
                 },
             }}
@@ -196,7 +196,7 @@
             borderRadius: "10px",
             textTransform: "none",
             "&:hover": {
-                bgcolor: theme.palette.button.main,
+                bgcolor: theme.palette.button.mainHover,
                 color: theme.palette.textButton.main,
                 transform: "scale(1.05)",
             },
@@ -469,7 +469,7 @@
                     textTransform: "lowercase",
                     fontWeight: "bold",
                     "&:hover": {
-                        backgroundColor: theme.palette.button.main,
+                        backgroundColor: theme.palette.button.mainHover,
                         color: "white",
                         trasform: "scale(1.1)",
                     },

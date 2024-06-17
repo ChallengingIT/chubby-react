@@ -610,7 +610,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                                 color: 'white',
                                 borderRadius: '5px',
                                 '&:hover': {
-                                    backgroundColor: '#00B401',
+                                    backgroundColor: "#019301",
                                     color: 'white',
                                     transform: 'scale(1.01)'
                                 },
@@ -819,8 +819,9 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                             color: 'white',
                             mt: 2,
                             borderRadius: '5px',
+                            fontWeight: 'bold',
                             '&:hover': {
-                                backgroundColor: '#00B400',
+                                backgroundColor: '#019301',
                                 transform: 'scale(1.01)'
                             },
                         }}
@@ -974,8 +975,9 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                                 backgroundColor: '#00B400',
                                 color: 'white',
                                 borderRadius: '10px',
+                                fontWeight: 'bold',
                                 '&:hover': {
-                                    backgroundColor: '#00B400',
+                                    backgroundColor: '#019301',
                                     transform: 'scale(1.02)',
                                 },
                             }}

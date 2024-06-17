@@ -454,7 +454,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
                                 color: 'white',
                                 borderRadius: '5px',
                                 '&:hover': {
-                                    backgroundColor: '#00B401',
+                                    backgroundColor: "#019301",
                                     color: 'white',
                                     transform: 'scale(1.01)'
                                 },

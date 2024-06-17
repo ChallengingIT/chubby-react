@@ -306,13 +306,13 @@
         {
         title: "Business",
         icon: <BusinessCenterIcon />,
-        isVisible: !userHasRole("ROLE_RECRUITER" && "ROLE_BUSINESS"),
+        isVisible: !userHasRole("ROLE_RECRUITER") && !userHasRole("ROLE_BUSINESS"),
         onClick: () => navigate("/business"),
         },
         {
         title: "Contacts",
         icon: <PersonIcon />,
-        isVisible: !userHasRole("ROLE_RECRUITER" && "ROLE_BUSINESS"),
+        isVisible: !userHasRole("ROLE_RECRUITER") && !userHasRole("ROLE_BUSINESS"),
         onClick: () => navigate("/contacts"),
         },
         {
@@ -329,7 +329,7 @@
         {
         title: "Hiring",
         icon: <ChecklistRtlIcon />,
-        isVisible: !userHasRole("ROLE_USER" && "ROLE_RECRUITER" && "ROLE_BUSINESS"),
+        isVisible: !userHasRole("ROLE_USER") && !userHasRole("ROLE_RECRUITER") && !userHasRole("ROLE_BUSINESS"),
         onClick: () => navigate("/hiring"),
         },
     ];
@@ -601,7 +601,7 @@
                     marginRight: "50px",
                     color: theme.palette.textButton.main,
                     "&:hover": {
-                    bgcolor: theme.palette.button.main,
+                    bgcolor: theme.palette.button.mainHover,
                     color: theme.palette.textButton.main,
                     transform: "scale(1.05)",
                     },

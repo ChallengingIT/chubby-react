@@ -17,6 +17,7 @@
     import VisibilityIcon from "@mui/icons-material/Visibility";
     import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
     import { useAuth } from "../services/authContext";
+    import LoginScheme from '../prove/LoginScheme.jsx';
 
     const LoginComponent = () => {
     const theme = createTheme({
@@ -154,6 +155,7 @@
     };
 
     return (
+        <LoginScheme>
         <Container
         maxWidth="sm"
         sx={{
@@ -619,23 +621,42 @@
                     />
 
                     <Button
-                    color="primary"
-                    variant="contained"
                     // onClick={toggleFlip}
                     sx={{
+                        width: '100%',
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
-                        width: "100%",
-                        backgroundColor: "#00B401",
+                        backgroundColor: "#00b400",
                         color: "white",
                         fontWeight: "bold",
                         borderRadius: 2,
+                        mb: 2,
                         mt: 2,
-                        // mb: 1,
                         "&:hover": {
                         backgroundColor: "#116d0e",
                         color: "white",
+                        transform: "scale(1.05)",
+                        },
+                    }}
+                    >
+                    Sign in
+                    </Button>
+
+                    <Button
+                    // onClick={toggleFlip}
+                   sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        width: "80%",
+                        backgroundColor: "transparent",
+                        color: "#00b400",
+                        fontWeight: "bold",
+                        borderRadius: 2,
+                        "&:hover": {
+                        backgroundColor: "transparent",
+                        color: "#116d0e",
                         transform: "scale(1.05)",
                         },
                     }}
@@ -663,6 +684,7 @@
                     alignItems: "center",
                     justifyContent: "center",
                     p: 2,
+                    gap: 4
                 }}
                 >
                 <ThemeProvider theme={theme}>
@@ -775,6 +797,7 @@
             </Box>
         </Box>
         </Container>
+        </LoginScheme>
     );
     };
 
