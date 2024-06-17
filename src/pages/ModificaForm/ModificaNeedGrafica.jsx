@@ -781,7 +781,7 @@ return (
                                 borderRadius: '10px',
                                 
                                 "&:hover": {
-                                    backgroundColor: theme.palette.button.main,
+                                    backgroundColor: theme.palette.button.mainHover,
                                     color: theme.palette.textButton.white,
                                 transform: "scale(1.05)",
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',

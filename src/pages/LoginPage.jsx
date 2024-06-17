@@ -4,7 +4,8 @@
     import { Box, Container }                  from "@mui/material";
     import LoginComponent           from "../components/LoginComponent";
     import TorchyChallenging        from "../images/tochyChallenging.svg";
-import LoginRegisterComponent from "../components/LoginRegisterComponent";
+import NuovaLogin from "../prove/NuovaLogin";
+// import LoginRegisterComponent from "../components/LoginRegisterComponent";
 
     const LoginPage = () => {
     const navigate = useNavigate();
@@ -67,7 +68,7 @@ import LoginRegisterComponent from "../components/LoginRegisterComponent";
             // height: "50vh",
             }}
         >
-            <LoginComponent navigate={navigate} />
+            <NuovaLogin navigate={navigate} />
         </Container>
         </Container>
     );

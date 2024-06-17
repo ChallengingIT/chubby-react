@@ -42,7 +42,10 @@ import ModificaHeadHunting                                             from './p
 import ModificaHiringRecruiting                                        from './pages/ModificaForm/ModificaHiringRecruiting.jsx';
 import AggiungiOwner                                                   from './pages/AggiungiForm/AggiungiOwner.jsx';
 import { NotificationProvider }                                        from './components/NotificationContext.js';
-import TabellaAntDesign from './prove/TabellaAntDesign.jsx';
+import NuovaSignUpComponent from './prove/NuovaSignUpComponent.jsx';
+import NuovaLogin from './prove/NuovaLogin.jsx';
+import ForgotPasswordComponent from './prove/ForgotPasswordComponent.jsx';
+import LoginComponent from './components/LoginComponent.jsx';
 
 
 
@@ -66,8 +69,11 @@ const App = () => {
 
     <BrowserRouter>
       <Routes>
-      <Route path='/' element={<LoginPage /> } />
-      <Route path="/login" element={<LoginPage />} />
+      <Route path='/' element={<LoginComponent /> } />
+      <Route path="/login" element={<LoginComponent />} />
+      {/* <Route path="/signup" element={<NuovaSignUpComponent/>} />
+      <Route path="/forgotPassword" element={<ForgotPasswordComponent/>} /> */}
+
       <Route element={<Layout />}>
                 <Route path="/dashboard" element={
                     <PrivateRoute roles={['ROLE_ADMIN',  'ROLE_RECRUITER', 'ROLE_BM', 'ROLE_USER', "ROLE_BUSINESS"]}>

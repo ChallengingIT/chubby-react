@@ -21,8 +21,7 @@
     // TableHead,
     // TableRow,
     // } from "@mui/material";
-    // import CloseIconButton from "../components/button/CloseIconButton";
-
+    // import { CloseOutlined } from "@ant-design/icons";
     // const RowContext = React.createContext({});
 
     // const DragHandle = () => {
@@ -76,39 +75,80 @@
     // const TabellaAntDesign = ({ data, columns, getRowId }) => {
     // const [dataSource, setDataSource] = useState([]);
 
-
     // const [dialogOpen, setDialogOpen] = useState(false);
     // const [currentPipelineData, setCurrentPipelineData] = useState({});
 
+    // const renderCell = (dataKey, title) => (value, record) => {
+    //     return (
+    //     <div style={{ textAlign: "center" }}>
+    //         <div style={{ fontWeight: "bold" }}>{title}</div>
+    //         <div>{record[dataKey]}</div>
+    //     </div>
+    //     );
+    // };
+
+    // const dialogColumns = [
+    //     {
+    //     title: "ITW",
+    //     dataIndex: "ITW",
+    //     key: "ITW",
+    //     align: "center",
+    //     render: (text, record) => (
+    //         <>
+    //         {renderCell("ITWPianificate", "Pianificata")(text, record)}
+    //         {renderCell("ITWFatte", "Fatte")(text, record)}
+    //         </>
+    //     ),
+    //     },
+    //     {
+    //     title: "CF",
+    //     dataIndex: "CF",
+    //     key: "CF",
+    //     align: "center",
+    //     render: (text, record) => (
+    //         <>
+    //         {renderCell("CFDisponibili", "Disponibili")(text, record)}
+    //         {renderCell("CFInviati", "Inviati")(text, record)}
+    //         </>
+    //     ),
+    //     },
+    //     {
+    //     title: "QM",
+    //     dataIndex: "QM",
+    //     key: "QM",
+    //     align: "center",
+    //     render: (text, record) => (
+    //         <>
+    //         {renderCell("QMPianificate", "Pianif.")(text, record)}
+    //         {renderCell("QMFatte", "Fatte")(text, record)}
+    //         </>
+    //     ),
+    //     },
+    //     {
+    //     title: "F/U",
+    //     dataIndex: "FU",
+    //     key: "FU",
+    //     align: "center",
+    //     render: (text, record) => (
+    //         <>
+    //         {renderCell("FUPositivi", "OK")(text, record)}
+    //         {renderCell("FUPool", "Pool")(text, record)}
+    //         </>
+    //     ),
+    //     },
+    // ];
 
     // const dialogData = [
     //     {
-    //     header: "ITW",
-    //     data: [
-    //         { title: "Pianificata", value: currentPipelineData.itwPianificate },
-    //         { title: "Fatte", value: currentPipelineData.itwFatte },
-    //     ],
-    //     },
-    //     {
-    //     header: "CF",
-    //     data: [
-    //         { title: "Disponibili", value: currentPipelineData.cfDisponibili },
-    //         { title: "Inviati", value: currentPipelineData.cfInviati },
-    //     ],
-    //     },
-    //     {
-    //     header: "QM",
-    //     data: [
-    //         { title: "Pianif.", value: currentPipelineData.qmPianificate },
-    //         { title: "Fatte", value: currentPipelineData.qmFatte },
-    //     ],
-    //     },
-    //     {
-    //     header: "F/U",
-    //     data: [
-    //         { title: "OK", value: currentPipelineData.followUpPositivi },
-    //         { title: "Pool", value: currentPipelineData.followUpPool },
-    //     ],
+    //     key: "1",
+    //     ITWPianificate: currentPipelineData.itwPianificate,
+    //     ITWFatte: currentPipelineData.itwFatte,
+    //     CFDisponibili: currentPipelineData.cfDisponibili,
+    //     CFInviati: currentPipelineData.cfInviati,
+    //     QMPianificate: currentPipelineData.qmPianificate,
+    //     QMFatte: currentPipelineData.qmFatte,
+    //     FUPositivi: currentPipelineData.followUpPositivi,
+    //     FUPool: currentPipelineData.followUpPool,
     //     },
     // ];
 
@@ -122,8 +162,6 @@
     // };
 
     // const renderActionCell = (record, index) => {
-    //     console.log("Params received in renderActionCell:", record, index); // Aggiungi questo per controllare cosa contiene params
-
     //     return (
     //     <IconButton onClick={() => handleOpenDialog(record.pipeline)}>
     //         <MoreVertIcon />
@@ -155,7 +193,6 @@
     //     );
     // }, [data]);
 
-
     // const onDragEnd = ({ active, over }) => {
     //     if (active.id !== over?.id) {
     //     setDataSource((prevState) => {
@@ -183,11 +220,78 @@
     //             columns={colonne}
     //             dataSource={dataSource}
     //             pagination={false}
-    //             scroll={{ y: 240 }}
-    //             style={{ maxHeight: "50em", overflowY: "auto" }}
+    //             scroll={{ y: 340 }}
+    //             style={{ height: "500px", overflowY: "auto", width: "100%" }}
+    //             size="large"
     //         />
     //         </SortableContext>
     //     </DndContext>
+    //     {/* <Dialog
+    //                 open={dialogOpen}
+    //                 onClose={handleCloseDialog}
+    //                 sx={{
+    //                 "& .MuiDialog-paper": {
+    //                     width: "50%",
+    //                     maxWidth: "none",
+    //                     height: "auto",
+    //                     borderRadius: "20px",
+    //                     border: "2.5px solid #00B400",
+    //                 },
+    //                 }}
+    //             >
+    //                 <DialogTitle sx={{ fontWeight: 600, fontSize: "1.2em" }}>
+    //                 Dettagli Azioni
+    //                 <IconButton
+    //                     aria-label="close"
+    //                     onClick={handleCloseDialog}
+    //                     sx={{
+    //                     position: "absolute",
+    //                     right: 8,
+    //                     top: 8,
+    //                     color: (theme) => theme.palette.grey[500],
+    //                     }}
+    //                 >
+    //                     <CloseIconButton />
+    //                 </IconButton>
+    //                 </DialogTitle>
+    //                 <DialogContent>
+    //                 <Table size="small" aria-label="simple table">
+    //                     <TableHead>
+    //                     <TableRow>
+    //                         {dialogData.map((column) => (
+    //                         <TableCell
+    //                             key={column.header}
+    //                             align="center"
+    //                             style={{
+    //                             fontWeight: "bold",
+    //                             borderBottom: "2px solid #ccc7c7",
+    //                             }}
+    //                         >
+    //                             {column.header}
+    //                         </TableCell>
+    //                         ))}
+    //                     </TableRow>
+    //                     </TableHead>
+    //                     <TableBody>
+    //                     {dialogData[0].data.map((_, index) => (
+    //                         <TableRow
+    //                         key={index}
+    //                         sx={{ borderBottom: "2px solid #ccc7c7" }}
+    //                         >
+    //                         {dialogData.map((column) => (
+    //                             <TableCell key={column.header} align="center">
+    //                             <div style={{ fontWeight: 500 }}>
+    //                                 {column.data[index].title}
+    //                             </div>
+    //                             <div>{column.data[index].value}</div>
+    //                             </TableCell>
+    //                         ))}
+    //                         </TableRow>
+    //                     ))}
+    //                     </TableBody>
+    //                 </Table>
+    //                 </DialogContent>
+    //             </Dialog> */}
     //     <Dialog
     //         open={dialogOpen}
     //         onClose={handleCloseDialog}
@@ -203,55 +307,28 @@
     //     >
     //         <DialogTitle sx={{ fontWeight: 600, fontSize: "1.2em" }}>
     //         Dettagli Azioni
-    //         <IconButton
-    //             aria-label="close"
+    //         <Button
+    //             icon={<CloseOutlined />}
     //             onClick={handleCloseDialog}
-    //             sx={{
+    //             style={{
     //             position: "absolute",
     //             right: 8,
-    //             top: 8,
-    //             color: (theme) => theme.palette.grey[500],
+    //             top: 16,
+    //             border: "none",
+    //             background: "none",
+    //             color: "rgba(0, 0, 0, 0.45)",
     //             }}
-    //         >
-    //             <CloseIconButton />
-    //         </IconButton>
+    //             size="medium"
+    //         />
     //         </DialogTitle>
     //         <DialogContent>
-    //         <Table size="small" aria-label="simple table">
-    //             <TableHead>
-    //             <TableRow>
-    //                 {dialogData.map((column) => (
-    //                 <TableCell
-    //                     key={column.header}
-    //                     align="center"
-    //                     style={{
-    //                     fontWeight: "bold",
-    //                     borderBottom: "2px solid #ccc7c7",
-    //                     }}
-    //                 >
-    //                     {column.header}
-    //                 </TableCell>
-    //                 ))}
-    //             </TableRow>
-    //             </TableHead>
-    //             <TableBody>
-    //             {dialogData[0].data.map((_, index) => (
-    //                 <TableRow
-    //                 key={index}
-    //                 sx={{ borderBottom: "2px solid #ccc7c7" }}
-    //                 >
-    //                 {dialogData.map((column) => (
-    //                     <TableCell key={column.header} align="center">
-    //                     <div style={{ fontWeight: 500 }}>
-    //                         {column.data[index].title}
-    //                     </div>
-    //                     <div>{column.data[index].value}</div>
-    //                     </TableCell>
-    //                 ))}
-    //                 </TableRow>
-    //             ))}
-    //             </TableBody>
-    //         </Table>
+    //         <Table
+    //             size="small"
+    //             aria-label="simple table"
+    //             columns={dialogColumns}
+    //             dataSource={dialogData}
+    //             pagination={false}
+    //         />
     //         </DialogContent>
     //     </Dialog>
     //     </>

@@ -454,7 +454,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
                                 color: 'white',
                                 borderRadius: '5px',
                                 '&:hover': {
-                                    backgroundColor: '#00B401',
+                                    backgroundColor: "#019301",
                                     color: 'white',
                                     transform: 'scale(1.01)'
                                 },
@@ -547,11 +547,11 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
                             sx={{
                                 mt: 2,
                                 width: '60%',
-                                backgroundColor: theme.palette.button.black,
+                                backgroundColor: theme.palette.button.main,
                                 color: 'white',
                                 borderRadius: '10px',
                                 '&:hover': {
-                                    backgroundColor: theme.palette.button.black,
+                                    backgroundColor: theme.palette.button.main,
                                     transform: 'scale(1.02)',
                                 },
                             }}

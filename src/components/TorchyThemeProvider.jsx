@@ -23,6 +23,7 @@
             main: "#00B400",
             secondary: "#191919",
             black: "#191919",
+            mainHover: '#019301'
         },
         textButton: {
             main: "#EDEDED",
@@ -37,7 +38,11 @@
             textHover: "#EDEDED",
         },
         background: { paper: "#ffffff" },
-        border: { main: "#00B400" },
+        border: { 
+            main: "#00B400",
+            mainHover: '#019301'
+
+         },
         sidebarText: { main: "#EDEDED" },
         },
     }),
@@ -68,13 +73,14 @@
             main: "#191919",
             secondary: "#EDEDED",
             black: "#191919",
+            mainHover: '#191919'
         },
         textButton: {
             main: "#EDEDED",
             secondary: "#191919",
             white: "#EDEDED",
         },
-        border: { main: "#191919" },
+        border: { main: "#191919", mainHover: '#191919' },
         background: { paper: "#ffffff" },
         },
     }),

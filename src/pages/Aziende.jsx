@@ -3,8 +3,8 @@
     import InfiniteScroll from "react-infinite-scroll-component";
     import RicercheAziende from "../components/ricerche/RicercheAziende";
     import AziendeCardFlip from "../components/card/AziendeCardFlip";
-    // import AddIcon                                          from '@mui/icons-material/Add'; //bottone per chatgpt
-    // import GptChat                                          from '../components/GptChat';
+    import AddIcon                                          from '@mui/icons-material/Add'; //bottone per chatgpt
+    import GptChat                                          from '../components/GptChat';
     import SchemePage from '../components/SchemePage.jsx';
 
     import {
@@ -12,8 +12,8 @@
     CircularProgress,
     Grid,
     Skeleton,
-    // Fab,
-    // Popover,
+    Fab,
+    Popover,
     } from "@mui/material";
 
     const Aziende = () => {
@@ -29,30 +29,30 @@
     const [hasMore, setHasMore] = useState(true);
     const quantita = 10;
 
-    // //stato di AddIcon
-    // const [anchorEl, setAnchorEl] = useState(null);
-    // const [isRotated, setIsRotated] = useState(false);
-    // const [showChat, setShowChat] = useState(false);
+    //stato di AddIcon
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [isRotated, setIsRotated] = useState(false);
+    const [showChat, setShowChat] = useState(false);
 
-    // const handleClick = (event) => {
+    const handleClick = (event) => {
 
-    // if (showChat) {
-    //         handleClose();
-    //     } else {
-    //         setAnchorEl(event.currentTarget);
-    //         setIsRotated(!isRotated);
-    //         setShowChat(true);
-    //     }
-    // };
+    if (showChat) {
+            handleClose();
+        } else {
+            setAnchorEl(event.currentTarget);
+            setIsRotated(!isRotated);
+            setShowChat(true);
+        }
+    };
 
-    // const handleClose = () => {
-    //     setAnchorEl(null);
-    //     setIsRotated(false);
-    //     setShowChat(false);
-    // };
+    const handleClose = () => {
+        setAnchorEl(null);
+        setIsRotated(false);
+        setShowChat(false);
+    };
 
-    // const open = Boolean(anchorEl);
-    // const id = open ? 'simple-popover' : undefined;
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
 
     const getValueLabel = (value) => {
         const option = ownerOptions.find((option) => option.value === value);
@@ -420,7 +420,7 @@
 
     return (
         <SchemePage>
-        {/* <Fab aria-label="add" sx={{
+        <Fab aria-label="add" sx={{
                     position: 'fixed',
                     bottom: 30,
                     right: 30,
@@ -457,7 +457,7 @@
                     }}
             >
                 <GptChat />
-            </Popover> */}
+            </Popover>
 
             <Box
             sx={{

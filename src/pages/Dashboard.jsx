@@ -7,6 +7,8 @@
     CardContent,
     Typography,
     Container,
+    Fab,
+    Popover
     } from "@mui/material";
     import AttivitaRecruitingBox from "../components/dashboardComponents/AttivitaRecruitingBox";
     import AttivitaBusinessBox from "../components/dashboardComponents/AttivitaBusinessBox";
@@ -15,6 +17,8 @@
     import SchemePage from "../components/SchemePage";
     import { useNotification } from "../components/NotificationContext.js";
 import TabellaAntDesign from "../prove/TabellaAntDesign.jsx";
+    import AddIcon                                          from '@mui/icons-material/Add'; //bottone per chatgpt
+    import GptChat                                          from '../components/GptChat';
 
 
 
@@ -33,6 +37,31 @@ import TabellaAntDesign from "../prove/TabellaAntDesign.jsx";
     );
     const [aziendeOptions, setAziendaOptions] = useState([]);
     const [loading, setLoading] = useState(false);
+
+
+     //stato di AddIcon
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [isRotated, setIsRotated] = useState(false);
+    const [showChat, setShowChat] = useState(false);
+
+    const handleClick = (event) => {
+
+    if (showChat) {
+            handleClose();
+        } else {
+            setAnchorEl(event.currentTarget);
+            setIsRotated(!isRotated);
+            setShowChat(true);
+        }
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+        setIsRotated(false);
+        setShowChat(false);
+    };
+
+    const open = Boolean(anchorEl);
 
     const [filtri, setFiltri] = useState(() => {
         const filtriSalvati = sessionStorage.getItem("filtriRicercaPipeline");
@@ -268,46 +297,46 @@ import TabellaAntDesign from "../prove/TabellaAntDesign.jsx";
 
 
 
-//     const columns = [
-//   {
-//     title: "Owner",
-//     dataIndex: 'owner',
-//     key: 'owner',
-//     render: (owner) => `${owner.nome} ${owner.cognome}`,
-//     width: 200,  
+    //     const columns = [
+    // {
+    //     title: "Owner",
+    //     dataIndex: 'owner',
+    //     key: 'owner',
+    //     render: (owner) => `${owner.nome} ${owner.cognome}`,
+    //     width: 200,  
 
-//   },
-//   {
-//     title: "Cliente",
-//     dataIndex: 'cliente',
-//     key: 'cliente',
-//     render: (cliente) => `${cliente.denominazione}`,
-//     width: 250,  
+    // },
+    // {
+    //     title: "Cliente",
+    //     dataIndex: 'cliente',
+    //     key: 'cliente',
+    //     render: (cliente) => `${cliente.denominazione}`,
+    //     width: 250,  
 
-//   },
-//   {
-//     title: "Descrizione",
-//     dataIndex: 'descrizione',
-//     key: 'descrizione',
-//     width: 250,  
+    // },
+    // {
+    //     title: "Descrizione",
+    //     dataIndex: 'descrizione',
+    //     key: 'descrizione',
+    //     width: 250,  
 
-//   },
-//   {
-//     title: "Priorità",
-//     dataIndex: 'priorita',
-//     key: 'priorita',
-//     width: 100,  
+    // },
+    // {
+    //     title: "Priorità",
+    //     dataIndex: 'priorita',
+    //     key: 'priorita',
+    //     width: 100,  
 
-//   },
-//   {
-//     title: "Stato",
-//     dataIndex: 'stato',
-//     key: 'stato',
-//     render: (stato) => `${stato.descrizione}`,
-//     width: 100,  
+    // },
+    // {
+    //     title: "Stato",
+    //     dataIndex: 'stato',
+    //     key: 'stato',
+    //     render: (stato) => `${stato.descrizione}`,
+    //     width: 100,  
 
-//   }
-// ];
+    // }
+    // ];
 
 
     const getRowId = (row) => row.id;
@@ -322,6 +351,44 @@ import TabellaAntDesign from "../prove/TabellaAntDesign.jsx";
             width: "100vw",
         }}
         >
+        <Fab aria-label="add" sx={{
+                    position: 'fixed',
+                    bottom: 30,
+                    right: 30,
+                    bgcolor: '#00B400',
+                    transition: 'transform 0.3s ease, border-width 0.3s ease',
+                    '&:hover': {
+                        bgcolor: '#00B400',
+                        transform: 'scale(1.2)'
+                    }
+                }} onClick={handleClick}>
+                    <AddIcon sx={{
+                        color: 'white',
+                        transition: 'transform 0.3s ease',
+                        transform: isRotated ? 'rotate(225deg)' : 'none'
+                    }} />
+                </Fab>
+                <Popover
+                open={Boolean(anchorEl) && showChat}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                }}
+                transformOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                }}
+                PaperProps={{ 
+                    style: { 
+                        borderRadius: '20px',
+                        overflow: 'hidden' 
+                    },
+                    }}
+            >
+                <GptChat />
+            </Popover>
         <Container
             maxWidth="xl"
             sx={{
@@ -384,10 +451,10 @@ import TabellaAntDesign from "../prove/TabellaAntDesign.jsx";
                 </CardContent>
                 </Card>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={6} sx={{ display: 'flex', height: '50vh'}}>
                 <AttivitaRecruitingBox data={originalAttivitaRecruiting} />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={6} sx={{ display: 'flex', height: '50vh'}}>
                 <AttivitaBusinessBox
                 data={originalAttivitaBusiness}
                 aziendeOptions={aziendeOptions}

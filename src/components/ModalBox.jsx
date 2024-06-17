@@ -9,6 +9,7 @@ import {
   FormControl,
   Box,
   Typography,
+  Container
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -214,8 +215,8 @@ const ModalBox = ({
   };
 
   return (
-    <div
-      style={{
+    <Container
+      sx={{
         display: "flex",
         flexDirection: "column",
         width: "80%",
@@ -262,7 +263,7 @@ const ModalBox = ({
             </Grid>
           ))}
         </Grid>
-        <div
+        <Container
           className="bottoni"
           style={{
             display: "flex",
@@ -293,9 +294,9 @@ const ModalBox = ({
               Salva
             </Button>
           )}
-        </div>
+        </Container>
       </form>
-    </div>
+    </Container>
   );
 };
 
