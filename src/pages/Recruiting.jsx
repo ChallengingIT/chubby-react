@@ -12,8 +12,6 @@ import SmileOrangeIcon from "../components/icone/SmileOrangeIcon.jsx";
 import SmileRedIcon from "../components/icone/SmileRedIcon.jsx";
 import Tabella from "../components/Tabella.jsx";
 import RicercheRecruiting from "../components/ricerche/RicercheRecruiting.jsx";
-    import GptChat                                          from '../components/GptChat';
-        import AddIcon                                          from '@mui/icons-material/Add'; //bottone per chatgpt
 
 
 import CloseIcon from "@mui/icons-material/Close";
@@ -29,8 +27,6 @@ import {
   Grid,
   Skeleton,
   IconButton,
-      Fab,
-    Popover,
 } from "@mui/material";
 import SchemePage from "../components/SchemePage.jsx";
 
@@ -74,31 +70,6 @@ const Recruiting = () => {
   const [openDialogNome, setOpenDialogNome] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
 
-
-   //stato di AddIcon
-    const [anchorEl, setAnchorEl] = useState(null);
-    const [isRotated, setIsRotated] = useState(false);
-    const [showChat, setShowChat] = useState(false);
-
-    const handleClick = (event) => {
-
-    if (showChat) {
-            handleClose();
-        } else {
-            setAnchorEl(event.currentTarget);
-            setIsRotated(!isRotated);
-            setShowChat(true);
-        }
-    };
-
-    const handleCloseChat = () => {
-        setAnchorEl(null);
-        setIsRotated(false);
-        setShowChat(false);
-    };
-
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
 
 
 
@@ -664,44 +635,6 @@ const Recruiting = () => {
 
   return (
     <SchemePage>
-                               <Fab aria-label="add" sx={{
-                    position: 'fixed',
-                    bottom: 30,
-                    right: 30,
-                    bgcolor: '#00B400',
-                    transition: 'transform 0.3s ease, border-width 0.3s ease',
-                    '&:hover': {
-                        bgcolor: '#00B400',
-                        transform: 'scale(1.2)'
-                    }
-                }} onClick={handleClick}>
-                    <AddIcon sx={{
-                        color: 'white',
-                        transition: 'transform 0.3s ease',
-                        transform: isRotated ? 'rotate(225deg)' : 'none'
-                    }} />
-                </Fab>
-                 <Popover
-                open={Boolean(anchorEl) && showChat}
-                anchorEl={anchorEl}
-                onClose={handleCloseChat}
-                anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'center',
-                }}
-                transformOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center',
-                }}
-                PaperProps={{ 
-                    style: { 
-                        borderRadius: '20px',
-                        overflow: 'hidden' 
-                    },
-                    }}
-            >
-                <GptChat />
-            </Popover>
       <RicercheRecruiting
         filtri={filtri}
         onFilterChange={handleFilterChange}

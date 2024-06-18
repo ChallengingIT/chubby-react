@@ -1,6 +1,6 @@
     import React, { useState }                                      from 'react';
     import SendIcon                                                 from '@mui/icons-material/Send';
-    import { Button, TextField, Box, Typography }                   from '@mui/material';
+    import { Button, TextField, Box, Typography, Container }                   from '@mui/material';
     import Logo from '../images/tochyChallenging.svg';
 
 
@@ -86,64 +86,53 @@
     
 
     return (
-        <Box sx={{ position: 'relative', width: '600px', height: '600px', border: 'solid 2.5px #00B400', borderRadius: '20px' }}>
-        {/* Header della chat */}
-        <Box sx={{ display: 'flex', bgcolor: '#EDEDED', borderRadius: '16px 16px 0px 0px', height: '20%', justifyContent: 'center', alignItems: 'center' }}>
-            {/* <Typography variant="h5" sx={{ color: 'black', fontWeight: 'bold' }}>TorchyAI</Typography> */}
-            <img
+        <Box  sx={{ display: 'flex', flexDirection: 'column', borderRadius: '20px', border: 'solid 2.5px #00B400', overflow: 'auto', width: '500px', height: '500px'}}>
+    <Box sx={{ bgcolor: '#EDEDED', borderRadius: '16px 16px 0px 0px', height: '15%' }}>
+        <img
             src={Logo}
             alt='Logo'
             style={{ 
                 width: '100%',
-                height: '200%',  // Definisci un'altezza specifica
-                objectFit: 'contain',  // Mantiene le proporzioni ma riempie lo spazio dato
+                height: '200%',  
+                objectFit: 'contain',
                 marginLeft: 'auto',
                 marginRight: 'auto',
                 display: 'block',
                 justifyContent: 'flex-start',
                 marginTop: '-40px',
-                marginBottom: '-50px'
+                marginBottom: '-50px',
             }}
-            
-            />
-            
-        </Box>
+        />
+    </Box>
 
-        {/* Area di visualizzazione dei messaggi */}
-        <Box
-            sx={{
-            height: 'calc(100% - 104px)',
-            overflowY: 'scroll',
+    <Box 
+        sx={{ 
             display: 'flex',
             flexDirection: 'column',
-            pb: 5,
-            pl: 2,
-            pr: 2,
-            pt: 2
-
-            }}
-        >
-            {messages.map((message, index) => (
+            p: 2,
+            height: 'calc(100% - 150px)',
+            overflowY: 'scroll',
+        }}>
+        {messages.map((message, index) => (
             <Box
                 key={index}
                 sx={{
-                bgcolor: message.sender === 'user' ? '#00B400' : '#EDEDED',
-                color: message.sender === 'user' ? 'white' : 'black',
-                borderRadius: '20px',
-                p: 1,
-                maxWidth: '75%',
-                alignSelf: message.sender === 'user' ? 'end' : 'start',
-                my: 1,
+                    bgcolor: message.sender === 'user' ? '#00B400' : '#EDEDED',
+                    color: message.sender === 'user' ? 'white' : 'black',
+                    borderRadius: '20px',
+                    p: 1,
+                    maxWidth: '75%',
+                    alignSelf: message.sender === 'user' ? 'end' : 'start',
+                    mt: 1,
                 }}
             >
                 {message.message}
             </Box>
-            ))}
-        </Box>
+        ))}
+    </Box>
 
-        {/* Area di input per i nuovi messaggi */}
-        <Box sx={{ display: 'flex', alignItems: 'center', p: 2, position: 'absolute', bottom: 0, width: '100%', justifyContent: 'space-between', gap: 2 }}>
-            <TextField
+    <Box sx={{ height: '50px', width: '100%', display: 'flex', alignItems: 'center', position: 'absolute', bottom: 4, left: 0, p: 5, borderRadius: '0px 0px 20px 20px', justifyContent: 'center', gap: 2 }}>
+        <TextField
             fullWidth
             variant="filled"
             placeholder="Scrivi un messaggio..."
@@ -154,9 +143,10 @@
                     e.preventDefault();
                     handleSend(e); 
                 }
-            }}            sx={{
+            }}        
+            sx={{
                 width: "100%",
-                textAlign: "left",
+                textAlign: "bottom",
                 borderRadius: '20px', 
                 backgroundColor: '#EDEDED', 
                 '& .MuiFilledInput-root': {
@@ -177,20 +167,21 @@
                     },
                 },
             }}
-            />
-            <Button variant="contained"  onClick={handleSend} sx={{
+        />
+        <Button variant="contained"  onClick={handleSend} sx={{
+            bgcolor: '#00B400',
+            transition: 'transform 0.3s ease, border-width 0.3s ease',
+            borderRadius: '10px',
+            '&:hover': {
                 bgcolor: '#00B400',
-                transition: 'transform 0.3s ease, border-width 0.3s ease',
-                borderRadius: '10px',
-                '&:hover': {
-                    bgcolor: '#00B400',
-                    transform:'scale(1.05)',
-                }
-                }}>
+                transform:'scale(1.05)',
+            }
+        }}>
             <SendIcon sx={{bgcolor: '#00B400', color: 'white'}} />
-            </Button>
-        </Box>
-        </Box>
+        </Button>
+    </Box>
+</Box>
+
     );
     };
 

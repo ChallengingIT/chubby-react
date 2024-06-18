@@ -6,9 +6,6 @@ import EditButton from '../components/button/EditButton.jsx';
 import TabellaHiring from '../components/TabellaHiring.jsx';
 import SchemePage from '../components/SchemePage.jsx';
 import axios from 'axios';
-    import GptChat                                          from '../components/GptChat';
-        import AddIcon                                          from '@mui/icons-material/Add'; //bottone per chatgpt
-
 
 const Hiring = () => {
 
@@ -41,30 +38,7 @@ const Hiring = () => {
   const quantita = 10;
 
 
-   //stato di AddIcon
-    const [anchorEl, setAnchorEl] = useState(null);
-    const [isRotated, setIsRotated] = useState(false);
-    const [showChat, setShowChat] = useState(false);
-
-    const handleClick = (event) => {
-
-    if (showChat) {
-            handleClose();
-        } else {
-            setAnchorEl(event.currentTarget);
-            setIsRotated(!isRotated);
-            setShowChat(true);
-        }
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-        setIsRotated(false);
-        setShowChat(false);
-    };
-
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
+  
 
 
   const userHasRole = (role) => {
@@ -308,44 +282,6 @@ const columns = [
 
   return (
     <SchemePage>
-       <Fab aria-label="add" sx={{
-                    position: 'fixed',
-                    bottom: 30,
-                    right: 30,
-                    bgcolor: '#00B400',
-                    transition: 'transform 0.3s ease, border-width 0.3s ease',
-                    '&:hover': {
-                        bgcolor: '#00B400',
-                        transform: 'scale(1.2)'
-                    }
-                }} onClick={handleClick}>
-                    <AddIcon sx={{
-                        color: 'white',
-                        transition: 'transform 0.3s ease',
-                        transform: isRotated ? 'rotate(225deg)' : 'none'
-                    }} />
-                </Fab>
-                <Popover
-                open={Boolean(anchorEl) && showChat}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'center',
-                }}
-                transformOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center',
-                }}
-                PaperProps={{ 
-                    style: { 
-                        borderRadius: '20px',
-                        overflow: 'hidden' 
-                    },
-                    }}
-            >
-                <GptChat />
-            </Popover>
       <RicercheHiring 
       filtri={filtri}
       onFilterChange={handleFilterChange}

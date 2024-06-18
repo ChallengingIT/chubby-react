@@ -1,8 +1,32 @@
-    import React from "react";
-    import { Box, Container } from "@mui/material";
-    import FormaOnda from '../images/FormaLoginNoOnda.svg';
+    import React, { useState } from "react";
+    import { Box, Container, Fab, Popover } from "@mui/material";
+    import AddIcon                                          from '@mui/icons-material/Add'; //bottone per chatgpt
+    import GptChat                                          from '../components/GptChat';
 
     const SchemePage = ({ children }) => {
+         //stato di AddIcon
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [isRotated, setIsRotated] = useState(false);
+    const [showChat, setShowChat] = useState(false);
+
+    const handleClick = (event) => {
+
+    if (showChat) {
+            handleClose();
+        } else {
+            setAnchorEl(event.currentTarget);
+            setIsRotated(!isRotated);
+            setShowChat(true);
+        }
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+        setIsRotated(false);
+        setShowChat(false);
+    };
+
+    const open = Boolean(anchorEl);
     return (
         <Container maxWidth="false"
         sx={{
@@ -12,6 +36,44 @@
             width: "100vw",
         }}
         >
+            <Fab aria-label="add" sx={{
+                    position: 'fixed',
+                    bottom: 30,
+                    right: 30,
+                    bgcolor: '#00B400',
+                    transition: 'transform 0.3s ease, border-width 0.3s ease',
+                    '&:hover': {
+                        bgcolor: '#00B400',
+                        transform: 'scale(1.2)'
+                    }
+                }} onClick={handleClick}>
+                    <AddIcon sx={{
+                        color: 'white',
+                        transition: 'transform 0.3s ease',
+                        transform: isRotated ? 'rotate(225deg)' : 'none'
+                    }} />
+                </Fab>
+                <Popover
+                open={Boolean(anchorEl) && showChat}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                }}
+                transformOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                }}
+                PaperProps={{ 
+                    style: { 
+                        borderRadius: '20px',
+                        overflow: 'hidden' 
+                    },
+                    }}
+            >
+                <GptChat />
+            </Popover>
         <Container
         maxWidth="xl"
             sx={{
