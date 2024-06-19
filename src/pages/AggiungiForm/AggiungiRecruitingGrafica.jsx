@@ -465,7 +465,7 @@ const AggiungiRecruitingGrafica = () => {
         { label: "Skills",                             name: "skills",                    type: "multipleSelect",        options: skillsOptions                    },
         { label: "RAL/Tariffa",                        name: "ral",                      type: "text", maxLength: 100                                                           },
         { label: "Disponibilità",                      name: "disponibilita",            type: "text", maxLength: 45                                                            },
-        { label: "Note",                               name: "note",                     type: "note", maxLength: 4000                                                            },
+        { label: "Note",                               name: "note",                     type: "note", maxLength: 8000                                                            },
     
     
             { type: "titleGroups",                label: "Allegati"            },
