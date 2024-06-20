@@ -289,7 +289,7 @@ const ModificaKeypeopleGrafica = () => {
            
             
             { label: "Data di Creazione*",    name: "dataCreazione",       type: "date" },
-            { label: 'Ultima attività',       name: 'dataUltimaAttivita',  type: 'date' },
+            // { label: 'Ultima attività',       name: 'dataUltimaAttivita',  type: 'date' },
             { label: "Note",                  name: "note",                type: "note", maxLength: 20000 },
         ];
 
@@ -703,7 +703,7 @@ return (
                     {alert.message}
                 </Alert>
             </Snackbar>
-            <Typography variant="h4" component="h1" sx={{ mt:1, fontWeight: 'bold', fontSize: '1.8'}}>{activeSection}</Typography>
+            <Typography variant="h4" component="h1" sx={{ mt:1, fontWeight: 'bold', fontSize: '1.8'}}>{datiModifica.nome}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', width: '100%', height: '100%', flexDirection: 'column', pl: 5, pr: 5, overflow: 'auto'}}>
                 {renderFieldsGroups(groupedFields)}

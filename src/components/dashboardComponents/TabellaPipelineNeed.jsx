@@ -38,14 +38,14 @@ const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
 
 
     const modifiedColumns = [
-        {
-        field: 'drag',
-        headerName: '',
-        width: 50,
-        sortable: false,
-        disableColumnMenu: true,
-        renderCell: () => <DragHandleIcon />,
-    },
+    //     {
+    //     field: 'drag',
+    //     headerName: '',
+    //     width: 50,
+    //     sortable: false,
+    //     disableColumnMenu: true,
+    //     renderCell: () => <DragHandleIcon />,
+    // },
         ...columns,
         {
             field: 'actions',

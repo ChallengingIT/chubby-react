@@ -246,9 +246,8 @@
         field: "owner",
         headerName: "Owner",
         flex: 0.6,
-        sortable: false,
-        filterable: false,
-        disableColumnMenu: true,
+        sortable: true,
+        filterable: true,
         renderCell: (params) => {
             const owner = params.value;
             return `${owner.nome} ${owner.cognome}`;
@@ -258,9 +257,9 @@
         field: "cliente",
         headerName: "Cliente",
         flex: 1,
-        sortable: false,
-        filterable: false,
-        disableColumnMenu: true,
+        sortable: true,
+        filterable: true,
+
         renderCell: (params) => {
             const cliente = params.value;
             return `${cliente.denominazione}`;
@@ -270,9 +269,10 @@
         field: "descrizione",
         headerName: "Descrizione",
         flex: 1,
-        sortable: false,
-        filterable: false,
-        disableColumnMenu: true,
+        sortable: true,
+        filterable: true,
+
+
         renderCell: (params) => {
         const descrizione = params.value;
         return (
@@ -290,17 +290,19 @@
         field: "priorita",
         headerName: "Priorità",
         flex: 0.4,
-        sortable: false,
-        filterable: false,
-        disableColumnMenu: true,
+        sortable: true,
+        filterable: true,
+
+
         },
         {
         field: "stato",
         headerName: "Stato",
         flex: 0.4,
-        sortable: false,
-        filterable: false,
-        disableColumnMenu: true,
+        sortable: true,
+        filterable: true,
+
+
         renderCell: (params) => {
             const stato = params.value;
             return `${stato.descrizione}`;
@@ -366,44 +368,7 @@
             width: "100vw",
         }}
         >
-        {/* <Fab aria-label="add" sx={{
-                    position: 'fixed',
-                    bottom: 30,
-                    right: 30,
-                    bgcolor: '#00B400',
-                    transition: 'transform 0.3s ease, border-width 0.3s ease',
-                    '&:hover': {
-                        bgcolor: '#00B400',
-                        transform: 'scale(1.2)'
-                    }
-                }} onClick={handleClick}>
-                    <AddIcon sx={{
-                        color: 'white',
-                        transition: 'transform 0.3s ease',
-                        transform: isRotated ? 'rotate(225deg)' : 'none'
-                    }} />
-                </Fab>
-                <Popover
-                open={Boolean(anchorEl) && showChat}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'center',
-                }}
-                transformOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center',
-                }}
-                PaperProps={{ 
-                    style: { 
-                        borderRadius: '20px',
-                        overflow: 'hidden' 
-                    },
-                    }}
-            >
-                <GptChat />
-            </Popover> */}
+
         <Container
             maxWidth="xl"
             sx={{

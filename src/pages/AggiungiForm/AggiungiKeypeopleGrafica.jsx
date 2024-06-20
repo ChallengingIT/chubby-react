@@ -307,7 +307,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
         { label: "Cellulare",               name: "cellulare",          type: "text",               maxLength: 20         },
 
         { label: "Data di Creazione*",      name: "dataCreazione",      type: "date"                                      },
-        { label: "Ultima attività",         name: "dataUltimaAttivita", type: "date"                                      },
+        // { label: "Ultima attività",         name: "dataUltimaAttivita", type: "date"                                      },
         { label: "Note",                    name: "note",               type: "note",               maxLength: 2000       },
     ];
 
