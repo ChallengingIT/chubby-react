@@ -257,7 +257,7 @@ state={params.row}
                 Indietro
                 </Button>
                 
-                <Typography variant="h4" component="h1" sx={{  fontWeight: 'bold', fontSize: '1.4em'}}>Lista ITW di {candidato.nome} {candidato.cognome}</Typography>
+                <Typography variant="h4" component="h1" sx={{  fontWeight: 'bold', fontSize: '1.4em', color: '#00B400'}}>Lista ITW di {candidato.nome} {candidato.cognome}</Typography>
                     <Button onClick={navigateToAggiungiIntervista}
                     startIcon={<AddIcon />}
                     variant='contained'
@@ -303,6 +303,11 @@ state={params.row}
                         onClose={() => setOpenDialog(false)}
                         aria-labelledby="alert-dialog-title"
                         aria-describedby="alert-dialog-description"
+                        PaperProps={{
+                          sx: {
+                            borderRadius: '20px',
+                          },
+                        }}
                         
                     >
                         <DialogTitle id="alert-dialog-title">{"Conferma Eliminazione"}</DialogTitle>
@@ -311,8 +316,10 @@ state={params.row}
                             Sei sicuro di voler eliminare questa intervista?
                         </DialogContentText>
                         </DialogContent>
-                        <DialogActions>
-                        <Button onClick={() => setOpenDialog(false)} color="primary" style={{
+                        <DialogActions sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, mb: 1}}>
+                        <Button onClick={() => setOpenDialog(false)} color="primary" sx={{
+                                    width: '8em',
+                                    borderRadius: '10px',
                                     backgroundColor: "black",
                                     color: "white",
                                     "&:hover": {
@@ -323,7 +330,9 @@ state={params.row}
                             Annulla
                         </Button>
                         <Button onClick={handleDelete} color="primary" variant="contained" type="submit"
-                                    style={{
+                                    sx={{
+                                    width: '8em',
+                                    borderRadius: '10px',
                                     backgroundColor: "#00B401",
                                     color: "white",
                                     "&:hover": {

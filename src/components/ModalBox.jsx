@@ -9,7 +9,8 @@ import {
   FormControl,
   Box,
   Typography,
-  Container
+  Container,
+  FormHelperText
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -23,22 +24,43 @@ const ModalBox = ({
   showSaveButton = true,
 }) => {
   const [values, setValues] = useState(initialValues || {});
+    const [errors, setErrors] = useState({});
+
 
   const handleChange = (fieldName) => (event) => {
     setValues((prevValues) => ({
       ...prevValues,
       [fieldName]: event.target.value,
     }));
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [fieldName]: "",
+    }));
   };
 
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const newErrors = {};
+    if (!values.idOwner) {
+      newErrors.idOwner = "Owner is required";
+    }
+    if (!values.stato) {
+      newErrors.stato = "Stato is required";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
     onSubmit(values);
   };
 
   const renderField = (field) => {
     const isDisabled = disableFields[field.name];
+    const isError = !!errors[field.name];
+    const helperText = errors[field.name] || "";
     switch (field.type) {
       case "text":
         return (
@@ -80,6 +102,7 @@ const ModalBox = ({
             fullWidth
             disabled={isDisabled}
             variant="filled"
+            error={isError}
             sx={{
               textAlign: "left",
               borderRadius: "20px",
@@ -136,6 +159,7 @@ const ModalBox = ({
                 </MenuItem>
               ))}
             </Select>
+            {isError && <FormHelperText>{helperText}</FormHelperText>}
           </FormControl>
         );
 
@@ -174,48 +198,13 @@ const ModalBox = ({
           />
         );
 
-      case "note":
-        return (
-          <TextField
-            label={field.label}
-            name={field.name}
-            multiline
-            rows={4}
-            onChange={handleChange(field.name)}
-            value={values[field.name] || ""}
-            fullWidth
-            variant="filled"
-            sx={{
-              width: "100%",
-              textAlign: "left",
-              borderRadius: "20px",
-              backgroundColor: "#EDEDED",
-              "& .MuiFilledInput-root": {
-                backgroundColor: "transparent",
-              },
-              "& .MuiFilledInput-underline:after": {
-                borderBottomColor: "transparent",
-              },
-              "& .MuiFilledInput-root::before": {
-                borderBottom: "none",
-              },
-              "&:hover .MuiFilledInput-root::before": {
-                borderBottom: "none",
-              },
-              "& .MuiFormLabel-root.Mui-focused": {
-                color: "#00B400",
-              },
-            }}
-          />
-        );
-
       default:
         return null;
     }
   };
 
   return (
-    <Container
+   <Container
       sx={{
         display: "flex",
         flexDirection: "column",

@@ -4,7 +4,7 @@
     import { DataGrid } from "@mui/x-data-grid/DataGrid";
 
     const Tabella = ({
-    data,
+    data = [],
     columns,
     title,
     getRowId,

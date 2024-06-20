@@ -7,8 +7,7 @@
     CardContent,
     Typography,
     Container,
-    Fab,
-    Popover
+    Link
     } from "@mui/material";
     import AttivitaRecruitingBox from "../components/dashboardComponents/AttivitaRecruitingBox";
     import AttivitaBusinessBox from "../components/dashboardComponents/AttivitaBusinessBox";
@@ -16,13 +15,12 @@
     import axios from "axios";
     import SchemePage from "../components/SchemePage";
     import { useNotification } from "../components/NotificationContext.js";
-import TabellaAntDesign from "../prove/TabellaAntDesign.jsx";
-    import AddIcon                                          from '@mui/icons-material/Add'; //bottone per chatgpt
-    import GptChat                                          from '../components/GptChat';
-
+    import TabellaAntDesign from "../prove/TabellaAntDesign.jsx";
+    import { useNavigate } from "react-router-dom";
 
 
     function Dashboard() {
+    const navigate = useNavigate();
     const { showNotification } = useNotification();
 
     // Altri stati e variabili...
@@ -39,29 +37,29 @@ import TabellaAntDesign from "../prove/TabellaAntDesign.jsx";
     const [loading, setLoading] = useState(false);
 
 
-     //stato di AddIcon
-    const [anchorEl, setAnchorEl] = useState(null);
-    const [isRotated, setIsRotated] = useState(false);
-    const [showChat, setShowChat] = useState(false);
+    //  //stato di AddIcon
+    // const [anchorEl, setAnchorEl] = useState(null);
+    // const [isRotated, setIsRotated] = useState(false);
+    // const [showChat, setShowChat] = useState(false);
 
-    const handleClick = (event) => {
+    // const handleClick = (event) => {
 
-    if (showChat) {
-            handleClose();
-        } else {
-            setAnchorEl(event.currentTarget);
-            setIsRotated(!isRotated);
-            setShowChat(true);
-        }
-    };
+    // if (showChat) {
+    //         handleClose();
+    //     } else {
+    //         setAnchorEl(event.currentTarget);
+    //         setIsRotated(!isRotated);
+    //         setShowChat(true);
+    //     }
+    // };
 
-    const handleClose = () => {
-        setAnchorEl(null);
-        setIsRotated(false);
-        setShowChat(false);
-    };
+    // const handleClose = () => {
+    //     setAnchorEl(null);
+    //     setIsRotated(false);
+    //     setShowChat(false);
+    // };
 
-    const open = Boolean(anchorEl);
+    // const open = Boolean(anchorEl);
 
     const [filtri, setFiltri] = useState(() => {
         const filtriSalvati = sessionStorage.getItem("filtriRicercaPipeline");
@@ -238,6 +236,11 @@ import TabellaAntDesign from "../prove/TabellaAntDesign.jsx";
         console.log("handleRicerche");
     };
 
+
+      const handleDescrizioneClick = (descrizione) => {
+        navigate('/need', { state: { descrizione } });
+    };
+
     const columns = [
         {
         field: "owner",
@@ -270,6 +273,18 @@ import TabellaAntDesign from "../prove/TabellaAntDesign.jsx";
         sortable: false,
         filterable: false,
         disableColumnMenu: true,
+        renderCell: (params) => {
+        const descrizione = params.value;
+        return (
+        <Link
+            component="button"
+            onClick={() => handleDescrizioneClick(descrizione)}
+            sx={{ textDecoration: 'none', color: 'black', borderBottom: 'solid 1px black' }}
+        >
+            {descrizione}
+        </Link>
+        );
+    },
         },
         {
         field: "priorita",
@@ -351,7 +366,7 @@ import TabellaAntDesign from "../prove/TabellaAntDesign.jsx";
             width: "100vw",
         }}
         >
-        <Fab aria-label="add" sx={{
+        {/* <Fab aria-label="add" sx={{
                     position: 'fixed',
                     bottom: 30,
                     right: 30,
@@ -388,7 +403,7 @@ import TabellaAntDesign from "../prove/TabellaAntDesign.jsx";
                     }}
             >
                 <GptChat />
-            </Popover>
+            </Popover> */}
         <Container
             maxWidth="xl"
             sx={{

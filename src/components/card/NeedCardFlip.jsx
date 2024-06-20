@@ -410,7 +410,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
                             sx={{
                             backgroundColor: 'white',
                             p: 4,
-                            borderRadius: 2,
+                            borderRadius: '20px',
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
@@ -434,7 +434,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
                                 sx={{
                                     backgroundColor: 'black',
                                     color: 'white',
-                                    borderRadius: '5px',
+                                    borderRadius: '10px',
                                     '&:hover': {
                                         backgroundColor: 'black',
                                         color: 'white',
@@ -448,7 +448,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
                             sx={{
                                 backgroundColor: '#00B401',
                                 color: 'white',
-                                borderRadius: '5px',
+                                borderRadius: '10px',
                                 '&:hover': {
                                     backgroundColor: "#019301",
                                     color: 'white',
@@ -477,7 +477,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
                         sx={{
                             backgroundColor: 'white',
                             p: 4,
-                            borderRadius: 2,
+                            borderRadius: '20px',
                             display: 'flex',
                             position: 'relative', 
                             justifyContent: 'center',
@@ -491,9 +491,23 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
                     >
                         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
                             <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', ml: 2, mt: 0.5, mb: 0.5}}>Cambia Stato al Need</Typography>
-                            <IconButton sx={{ mr: 2, backgroundColor: 'transparent', border: 'none' }} onClick={() => setModalStato(false)}>
-                                <CloseIcon sx={{ backgroundColor: 'transparent' }}/>
-                            </IconButton>
+                            <IconButton sx={{
+                                    mr: 2, 
+                                    backgroundColor: 'transparent', 
+                                    border: 'none',
+                                    '&:hover': {
+                                        bgcolor: 'transparent'
+                                    }
+
+                             }} onClick={() => setModalStato(false)}>
+                                    <CloseIcon sx={{ 
+                                    backgroundColor: 'transparent',
+                                    '&:hover': {
+                                        color: 'red',
+                                        backgroundColor: 'transparent',
+
+                                    }
+                                    }}/>                            </IconButton>
                         </Box>
                         
                         <FormControl fullWidth >

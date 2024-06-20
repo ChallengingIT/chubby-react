@@ -3,8 +3,7 @@
     import InfiniteScroll from "react-infinite-scroll-component";
     import RicercheAziende from "../components/ricerche/RicercheAziende";
     import AziendeCardFlip from "../components/card/AziendeCardFlip";
-    import AddIcon                                          from '@mui/icons-material/Add'; //bottone per chatgpt
-    import GptChat                                          from '../components/GptChat';
+
     import SchemePage from '../components/SchemePage.jsx';
 
     import {
@@ -12,8 +11,6 @@
     CircularProgress,
     Grid,
     Skeleton,
-    Fab,
-    Popover,
     } from "@mui/material";
 
     const Aziende = () => {
@@ -29,30 +26,7 @@
     const [hasMore, setHasMore] = useState(true);
     const quantita = 10;
 
-    //stato di AddIcon
-    const [anchorEl, setAnchorEl] = useState(null);
-    const [isRotated, setIsRotated] = useState(false);
-    const [showChat, setShowChat] = useState(false);
-
-    const handleClick = (event) => {
-
-    if (showChat) {
-            handleClose();
-        } else {
-            setAnchorEl(event.currentTarget);
-            setIsRotated(!isRotated);
-            setShowChat(true);
-        }
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-        setIsRotated(false);
-        setShowChat(false);
-    };
-
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
+  
 
     const getValueLabel = (value) => {
         const option = ownerOptions.find((option) => option.value === value);
@@ -420,44 +394,6 @@
 
     return (
         <SchemePage>
-        <Fab aria-label="add" sx={{
-                    position: 'fixed',
-                    bottom: 30,
-                    right: 30,
-                    bgcolor: '#00B400',
-                    transition: 'transform 0.3s ease, border-width 0.3s ease',
-                    '&:hover': {
-                        bgcolor: '#00B400',
-                        transform: 'scale(1.2)'
-                    }
-                }} onClick={handleClick}>
-                    <AddIcon sx={{
-                        color: 'white',
-                        transition: 'transform 0.3s ease',
-                        transform: isRotated ? 'rotate(225deg)' : 'none'
-                    }} />
-                </Fab>
-                <Popover
-                open={Boolean(anchorEl) && showChat}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'center',
-                }}
-                transformOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center',
-                }}
-                PaperProps={{ 
-                    style: { 
-                        borderRadius: '20px',
-                        overflow: 'hidden' 
-                    },
-                    }}
-            >
-                <GptChat />
-            </Popover>
 
             <Box
             sx={{

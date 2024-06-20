@@ -570,7 +570,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                             sx={{
                             backgroundColor: 'white',
                             p: 4,
-                            borderRadius: 2,
+                            borderRadius: '20px',
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
@@ -594,7 +594,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                                 sx={{
                                     backgroundColor: 'black',
                                     color: 'white',
-                                    borderRadius: '5px',
+                                    borderRadius: '10px',
                                     '&:hover': {
                                         backgroundColor: 'black',
                                         color: 'white',
@@ -608,7 +608,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                             sx={{
                                 backgroundColor: '#00B401',
                                 color: 'white',
-                                borderRadius: '5px',
+                                borderRadius: '10px',
                                 '&:hover': {
                                     backgroundColor: "#019301",
                                     color: 'white',
@@ -635,11 +635,24 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                     justifyContent: 'center',
                     
                 }}>
-                    <Box sx={{ display:'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: 'white', borderRadius: '20px', overflow: 'auto'}}>
-                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', p: 3, borderBottom: '2.5px solid #e0e0e0'}}>
+                    <Box sx={{ display:'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: 'white', borderRadius: '20px', overflow: 'auto', border: 'solid 2.2px #00B400'}}>
+                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', p: 3,}}>
                             <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', mt: 0.5, mb: 0.5}}>Storico delle azioni</Typography>
-                            <IconButton sx={{ mr: 2, backgroundColor: 'transparent', border: 'none' }} onClick={() => setModalStorico(false)}>
-                                <CloseIcon sx={{ backgroundColor: 'transparent' }}/>
+                            <IconButton sx={{ 
+                                mr: 2, 
+                                backgroundColor: 'transparent', 
+                                border: 'none',
+                                '&:hover': {
+                                    backgroundColor: 'transparent'
+                                }}} onClick={() => setModalStorico(false)}>
+                                <CloseIcon sx={{ 
+                                    backgroundColor: 'transparent',
+                                    '&:hover': {
+                                        color: 'red',
+                                        backgroundColor: 'transparent',
+
+                                    }
+                                    }}/>
                             </IconButton>
                         </Box>
                         <TableContainer component={Paper}>
@@ -684,7 +697,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                         sx={{
                             backgroundColor: 'white',
                             p: 4,
-                            borderRadius: 2,
+                            borderRadius: '20px',
                             display: 'flex',
                             position: 'relative', 
                             justifyContent: 'center',
@@ -698,8 +711,23 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                     >
                         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
                             <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', ml: 2, mt: 0.5, mb: 0.5}}>Azioni</Typography>
-                            <IconButton sx={{ mr: 2, backgroundColor: 'transparent', border: 'none' }} onClick={() => setModalAzioni(false)}>
-                                <CloseIcon sx={{ backgroundColor: 'transparent' }}/>
+                            <IconButton sx={{ 
+                                mr: 2, 
+                                backgroundColor: 'transparent', 
+                                border: 'none',
+                                '&:hover': {
+                                    bgcolor: 'transparent'
+                                }
+                                
+                                }} onClick={() => setModalAzioni(false)}>
+                                <CloseIcon sx={{ 
+                                    backgroundColor: 'transparent',
+                                    '&:hover': {
+                                        color: 'red',
+                                        backgroundColor: 'transparent',
+
+                                    }
+                                    }}/>
                             </IconButton>
                         </Box>
                         <FormControl fullWidth >
@@ -818,7 +846,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                             backgroundColor: '#00B400',
                             color: 'white',
                             mt: 2,
-                            borderRadius: '5px',
+                            borderRadius: '10px',
                             fontWeight: 'bold',
                             '&:hover': {
                                 backgroundColor: '#019301',
@@ -844,12 +872,27 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                     alignItems: 'center',
                     justifyContent: 'center',
                 }}>
-                    <Box sx={{ display:'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: 'white', borderRadius: '20px'}}>
+                    <Box sx={{ display:'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: 'white', borderRadius: '20px', border: 'solid 2.2px #00B400'}}>
                         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', p: 3, borderBottom: '2.5 solid #e0e0e0', borderTop: '2.5 solid #e0e0e0'}}>
                             <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', mt: 0.5, mb: 0.5}}>Lista dei Need</Typography>
-                            <IconButton sx={{ mr: 2, backgroundColor: 'transparent', border: 'none' }} onClick={() => setModalNeed(false)}>
-                                <CloseIcon sx={{ backgroundColor: 'transparent' }}/>
-                            </IconButton>
+                            <IconButton sx={{ 
+                                mr: 2, 
+                                backgroundColor: 'transparent', 
+                                border: 'none',
+                                '&:hover': {
+                                    bgcolor: 'transparent'
+                                }
+
+                                }} onClick={() => setModalNeed(false)}>
+                                    <CloseIcon sx={{ 
+                                    backgroundColor: 'transparent',
+                                    '&:hover': {
+                                        color: 'red',
+                                        backgroundColor: 'transparent',
+
+                                    }
+                                    }}/> 
+                                    </IconButton>
                         </Box>
                         <TableContainer component={Paper} >
                         <Table>
@@ -899,7 +942,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                         sx={{
                             backgroundColor: 'white',
                             p: 4,
-                            borderRadius: 2,
+                            borderRadius: '20px',
                             display: 'flex',
                             position: 'relative', 
                             justifyContent: 'center',
@@ -913,8 +956,21 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                     >
                         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
                             <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', ml: 2, mt: 0.5, mb: 0.5}}>Cambia Stato del Contatto</Typography>
-                            <IconButton sx={{ mr: 2, backgroundColor: 'transparent', border: 'none' }} onClick={() => setModalCambiaStato(false)}>
-                                <CloseIcon sx={{ backgroundColor: 'transparent' }}/>
+                            <IconButton sx={{ 
+                                mr: 2, 
+                                backgroundColor: 'transparent', 
+                                border: 'none',
+                                '&:hover': {
+                                    backgroundColor: 'transparent'
+                                }}} onClick={() => setModalCambiaStato(false)}>
+                                <CloseIcon sx={{ 
+                                    backgroundColor: 'transparent',
+                                    '&:hover': {
+                                        color: 'red',
+                                        backgroundColor: 'transparent',
+
+                                    }
+                                    }}/>
                             </IconButton>
                         </Box>
                         <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%'}}>

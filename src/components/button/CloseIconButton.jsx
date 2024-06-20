@@ -10,9 +10,11 @@ function CloseIconButton({ onClick, id }) {
         color: "black",
         minWidth: "2em",
         height: "2em",
+        bgcolor: 'transparent',
         "&:hover": {
           color: "red",
           cursor: "pointer",
+          bgcolor: 'transparent'
         },
       }}
       onClick={() => onClick(id)}

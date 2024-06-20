@@ -121,7 +121,8 @@
     //             borderRadius: "20px",
     //             bgcolor: "white",
     //             boxShadow: "10px 10px 10px 10px rgba(0, 0, 0, 0.4)",
-    //             height: "80vh",
+    //             height: 'auto',
+    //             minHeight: "80vh",
     //             overflow: "hidden", // il contenuto non esce fuori dal container
     //         }}
     //         >
@@ -154,7 +155,8 @@
     //             alignItems: "center",
     //             justifyContent: "center",
     //             width: "100%",
-    //             p: 10,
+    //             height: '90%',
+    //             p: 3,
     //             m: "auto",
     //             zIndex: 2,
     //             }}
@@ -164,8 +166,6 @@
     //                     display: 'flex',
     //                     alignItems: "center", 
     //                     justifyContent: 'center', 
-    //                     mb: 2, 
-    //                     mt: 6, 
     //                     flexDirection: 'column' 
     //                 }}
     //             >

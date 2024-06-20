@@ -126,7 +126,8 @@
     //             borderRadius: "20px",
     //             bgcolor: "white",
     //             boxShadow: "10px 10px 10px 10px rgba(0, 0, 0, 0.4)",
-    //             height: "80vh",
+    //             height: "auto",
+    //             minHeight: '80vh',
     //             overflow: "hidden", // il contenuto non esce fuori dal container
     //         }}
     //         >
@@ -159,7 +160,8 @@
     //             alignItems: "center",
     //             justifyContent: "flex-start",
     //             width: "100%",
-    //             p: 10,
+    //             pr: 4,
+    //             pl: 4,
     //             m: "auto",
     //             zIndex: 2,
     //             }}
@@ -411,6 +413,7 @@
     //         </Container>
     //     </LoginScheme>
     //     </ThemeProvider>
+        
     // );
     // };
 

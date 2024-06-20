@@ -11,6 +11,7 @@ import {
   Slide,
   Snackbar,
   Alert,
+  Container,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -103,6 +104,7 @@ function EmailModal({ open, handleClose }) {
         },
       }}
     >
+      <Container maxWidth='l'>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
           <Button
@@ -243,18 +245,19 @@ function EmailModal({ open, handleClose }) {
                 },
               }}
             />
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
               <Button
                 onClick={handleSubmitEmail}
                 variant="contained"
                 sx={{
+                  width: '50%',
                   borderRadius: "5px",
                   backgroundColor: theme.palette.button.main,
                   color: theme.palette.textButton.main,
                   "&:hover": {
-                    backgroundColor: theme.palette.button.main,
+                    backgroundColor: theme.palette.button.mainHover,
                     color: theme.palette.textButton.main,
-                    transform: "scale(1.1)",
+                    transform: "scale(1.02)",
                   },
                 }}
               >
@@ -280,6 +283,7 @@ function EmailModal({ open, handleClose }) {
           {alert.message}
         </Alert>
       </Snackbar>
+      </Container>
     </Dialog>
   );
 }
