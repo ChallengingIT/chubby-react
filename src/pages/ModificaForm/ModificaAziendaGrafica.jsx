@@ -720,7 +720,7 @@ return (
                         mt: 4,
                         ml: 2,
                         '&:hover': {
-                            color: '#EDEDED'
+                            color: 'black'
                         }
                     }}
                     >

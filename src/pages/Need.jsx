@@ -4,7 +4,7 @@ import InfiniteScroll                                   from 'react-infinite-scr
 import RicercheNeed                                     from '../components/ricerche/RicercheNeed';
 import NeedCardFlip                                     from '../components/card/NeedCardFlip';
 import SchemePage                                       from '../components/SchemePage.jsx';
-
+import { useLocation } from 'react-router-dom';
 import { 
     Box,
     CircularProgress,
@@ -13,6 +13,7 @@ import {
     } from '@mui/material';
 
     const Need = () => {
+        const location = useLocation();
 
         const [ originalNeed,              setOriginalNeed          ] = useState([]);
         const [ loading,                   setLoading               ] = useState(false);

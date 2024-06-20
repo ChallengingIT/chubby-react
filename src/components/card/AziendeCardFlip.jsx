@@ -407,7 +407,7 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
                     sx={{
                         backgroundColor: "white",
                         p: 4,
-                        borderRadius: 2,
+                        borderRadius: '20px',
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",

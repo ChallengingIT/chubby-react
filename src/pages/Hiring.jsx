@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Grid, Skeleton, Typography, Fab, Popover } from '@mui/material'
+import { Box, Grid, Skeleton, Typography, Fab, Popover, IconButton } from '@mui/material'
 import RicercheHiring from '../components/ricerche/RicercheHiring'
 import { useNavigate } from 'react-router-dom';
 import EditButton from '../components/button/EditButton.jsx';
@@ -272,11 +272,12 @@ const columns = [
   }
   },
   { field: "azioni",        headerName: "Azioni",          flex: 1.6, renderCell: (params) => (
-    <Box>
+    <IconButton sx={{ bgcolor: 'transparent'}}>
       <EditButton onClick={() => {
         navigateToModificaHiring(params.row.id);
-      }} />
-    </Box>
+      }}
+      />
+    </IconButton>
   ), },];
 
 

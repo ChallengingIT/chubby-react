@@ -538,6 +538,7 @@
             style: {
                 backgroundColor: "#FEFCFD",
                 color: theme.palette.primary.main,
+                borderRadius: '20px'
             },
             }}
         >
@@ -578,6 +579,8 @@
                 onClick={closeLogoutPopup}
                 variant="contained"
                 sx={{
+                    borderRadius: '10px',
+                    width: '8em',
                     bgcolor: theme.palette.button.secondary,
                     color: theme.palette.textButton.secondary,
                     marginRight: "5px",
@@ -595,6 +598,8 @@
                 onClick={handleLogout}
                 variant="contained"
                 sx={{
+                    borderRadius: '10px',
+                    width: '8em',
                     bgcolor: theme.palette.button.main,
                     marginLeft: "5px",
                     marginTop: "10px",

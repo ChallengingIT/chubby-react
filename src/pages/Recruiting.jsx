@@ -14,6 +14,7 @@ import Tabella from "../components/Tabella.jsx";
 import RicercheRecruiting from "../components/ricerche/RicercheRecruiting.jsx";
 
 
+
 import CloseIcon from "@mui/icons-material/Close";
 
 import {
@@ -302,6 +303,10 @@ const Recruiting = () => {
 
   const handleCloseNotesModal = () => {
     setNotePopup(false);
+  };
+
+  const handleCloseRalModal = () => {
+    setRalPopup(false);
   };
 
   const getSmileIcon = (params) => {
@@ -673,33 +678,38 @@ const Recruiting = () => {
       </Box>
       {notePopup && (
         <Dialog
-          open={notePopup}
-          onClose={handleCloseNotesModal}
-          sx={{ "& .MuiDialog-paper": { width: "400px", height: "auto" } }}
-        >
-          <DialogTitle>Note</DialogTitle>
-          <DialogContent>
-            <DialogContentText>{selectedNote}</DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseNotesModal}>Chiudi</Button>
-          </DialogActions>
-        </Dialog>
+            open={notePopup}
+            onClose={handleCloseNotesModal}
+            sx={{ "& .MuiDialog-paper": { width: "400px", height: "auto", borderRadius: '20px' } }}
+          >
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
+              <DialogTitle sx={{ m: 0, p: 0 }}>Note</DialogTitle>
+              <IconButton onClick={handleCloseNotesModal} sx={{ bgcolor: 'transparent', ml: 2, '&:hover': { bgcolor: 'transparent'} }}>
+                <CloseIcon sx={{ '&:hover': { color: 'red'}}} />
+              </IconButton>
+            </Box>
+            <DialogContent>
+              <DialogContentText sx={{ pb: 2}}>{selectedNote}</DialogContentText>
+            </DialogContent>
+          </Dialog>
+
       )}
 
       {ralPopup && (
         <Dialog
           open={ralPopup}
           onClose={() => setRalPopup(false)}
-          sx={{ "& .MuiDialog-paper": { width: "400px", height: "auto" } }}
+          sx={{ "& .MuiDialog-paper": { width: "400px", height: "auto", borderRadius: '20px' } }}
         >
-          <DialogTitle>RAL</DialogTitle>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
+              <DialogTitle sx={{ m: 0, p: 0 }}>Ral</DialogTitle>
+              <IconButton onClick={handleCloseRalModal} sx={{ bgcolor: 'transparent', ml: 2, '&:hover': { bgcolor: 'transparent'} }}>
+                <CloseIcon sx={{ '&:hover': { color: 'red'}}} />
+              </IconButton>
+            </Box>
           <DialogContent>
-            <DialogContentText>{selectedRal}</DialogContentText>
+            <DialogContentText sx={{ pb: 2}}>{selectedRal}</DialogContentText>
           </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setRalPopup(false)}>Chiudi</Button>
-          </DialogActions>
         </Dialog>
       )}
 
@@ -708,6 +718,11 @@ const Recruiting = () => {
         onClose={() => setOpenDialog(false)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        PaperProps={{
+          sx: {
+            borderRadius: '20px',
+          },
+        }}
       >
         <DialogTitle id="alert-dialog-title">
           {"Conferma Eliminazione"}
@@ -717,11 +732,13 @@ const Recruiting = () => {
             Sei sicuro di voler eliminare questo candidato?
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, mb:2}}>
           <Button
             onClick={() => setOpenDialog(false)}
             color="primary"
-            style={{
+            sx={{
+              width: '8em',
+              borderRadius: '10px',
               backgroundColor: "black",
               color: "white",
               "&:hover": {
@@ -737,7 +754,9 @@ const Recruiting = () => {
             color="primary"
             variant="contained"
             type="submit"
-            style={{
+            sx={{
+              width: '8em',
+              borderRadius: '10px',
               backgroundColor: "#00B401",
               color: "white",
               "&:hover": {
@@ -751,6 +770,7 @@ const Recruiting = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
 
       <Dialog
         open={openDialogNome}

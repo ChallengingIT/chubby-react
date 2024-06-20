@@ -334,7 +334,7 @@ const ModificaIntervistaGrafica = () => {
         { label: "Job Title",                 name: "tipologia",              type: "text"},
         { label: "Anni di Esperienza",        name: "anniEsperienza",         type: "text"},
         { label: "Recapiti",                  name: "cellulare",              type: "text"},
-        { label: "Descrizione Candidato",     name: "note",                    type: "note", maxLength: 2000},
+        { label: "Descrizione Candidato",     name: "note",                    type: "note", maxLength: 8000},
 
     
     
@@ -634,7 +634,7 @@ const ModificaIntervistaGrafica = () => {
                         mt: 4,
                         ml: 2,
                         '&:hover': {
-                            color: '#EDEDED'
+                            color: 'black'
                         }
                     }}
                     >

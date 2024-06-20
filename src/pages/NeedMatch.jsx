@@ -617,8 +617,8 @@
         idNeed: descrizione || "",
         candidato: `${selectedRow.nome || ""} ${selectedRow.cognome || ""}`.trim(),
         idCandidato: selectedRow.id || "",
-        stato: null,  // Assicurati che stato non abbia un valore predefinito
-        idOwner: null // Assicurati che idOwner non abbia un valore predefinito
+        stato: null, 
+        idOwner: null 
     };
 
     setInitialValuesAggiorna(initialValuesWithDefaults);

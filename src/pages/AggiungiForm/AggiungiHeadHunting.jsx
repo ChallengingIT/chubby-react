@@ -502,7 +502,7 @@ const confirmSelection = () => {
                         mt: 4,
                         ml: 2,
                         '&:hover': {
-                            color: theme.palette.textButton.main,
+                            color: 'black',
                         }
                     }}
                     >

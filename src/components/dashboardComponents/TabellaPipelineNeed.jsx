@@ -131,9 +131,12 @@ const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
                             right: 8,
                             top: 8,
                             color: (theme) => theme.palette.grey[500],
+                            '&:hover': {
+                                bgcolor: 'transparent'
+                            }
                         }}
                     >
-                        <CloseIcon />
+                        <CloseIcon sx={{ '&:hover': { color: 'red'}}} />
                     </IconButton>
                 </DialogTitle>
                 <DialogContent>

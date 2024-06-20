@@ -82,7 +82,7 @@ const TabellaHiring = ({ data, columns, getRowId }) => {
                   <TableCell sx={{borderBottom: '1.5px solid #ccc7c7'}}>{row.denominazioneCliente}</TableCell>
                   <TableCell sx={{borderBottom: '1.5px solid #ccc7c7'}}>{row.tipoServizio.descrizione}</TableCell>
                   <TableCell sx={{borderBottom: '1.5px solid #ccc7c7'}}>
-                    <IconButton onClick={() => handleExpandClick(getRowId(row))}>
+                    <IconButton onClick={() => handleExpandClick(getRowId(row))} sx={{ '&:hover': { bgcolor: 'transparent', transform: 'scale(1.1)'}}}>
                       {expanded === getRowId(row) ? <ExpandLess /> : <ExpandMore />}
                     </IconButton>
                     <IconButton
@@ -129,8 +129,9 @@ const TabellaHiring = ({ data, columns, getRowId }) => {
                                   <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7'}}>
                                     <IconButton
                                       onClick={() => handleEditClick(getRowId(row), row.tipoServizio.descrizione, candidato.id)}
+                                      sx={{ '&:hover': { bgcolor: 'transparent'}}}
                                     >
-                                      <EditIcon sx={{ color: theme.palette.icon.black }} />
+                                      <EditIcon sx={{ color: theme.palette.icon.black, '&:hover': { color: 'black'} }} />
                                     </IconButton>
                                   </TableCell>
                                 </TableRow>

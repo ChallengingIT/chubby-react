@@ -6,6 +6,8 @@
     import RestartAltIcon from "@mui/icons-material/RestartAlt";
     import axios from "axios";
     import { useUserTheme } from "../TorchyThemeProvider";
+    import { useLocation } from 'react-router-dom';
+
     import {
     Button,
     Box,
@@ -225,9 +227,21 @@
                 >
                 Filtri
                 </Typography>
-                <IconButton onClick={handleCloseFiltri} sx={{ mb: 2 }}>
-                <CloseIcon />
-                </IconButton>
+                <IconButton onClick={handleCloseFiltri} sx={{ 
+                    mb: 2,
+                    bgcolor: 'transparent',
+                    '&:hover': {
+                        bgcolor: 'transparent'
+                    }
+                    }}>
+                <CloseIcon sx={{ 
+                    backgroundColor: 'transparent',
+                    '&:hover': {
+                        color: 'red',
+                        backgroundColor: 'transparent'
+                    }
+                    }}/>                 
+                    </IconButton>
             </Box>
             </Box>
             <Grid container spacing={2} direction="column" sx={{ p: 2 }}>
