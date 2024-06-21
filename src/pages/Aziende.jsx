@@ -12,6 +12,7 @@
     Grid,
     Skeleton,
     } from "@mui/material";
+import NuovaRicercaAziende from "../components/nuoveRicerche/NuovaRicercaAziende.jsx";
 
     const Aziende = () => {
     const [originalAziende, setOriginalAziende] = useState([]);
@@ -305,16 +306,16 @@
         });
     };
 
-    useEffect(() => {
-        const { ...otherFilters } = filtri;
-        const filtriHasValues = Object.values(otherFilters).some(
-        (x) => x !== "" && x != null
-        );
+    // useEffect(() => {
+    //     const { ...otherFilters } = filtri;
+    //     const filtriHasValues = Object.values(otherFilters).some(
+    //     (x) => x !== "" && x != null
+    //     );
 
-        if (filtriHasValues) {
-        handleRicerche();
-        }
-    }, [filtri.denominazione]);
+    //     if (filtriHasValues) {
+    //     handleRicerche();
+    //     }
+    // }, [filtri.denominazione]);
 
     // const handleFilterChange = (name) => (event) => {
     //     const newValue = event.target.value;
@@ -402,7 +403,7 @@
                 zIndex: 1000,
             }}
             >
-            <RicercheAziende
+            <NuovaRicercaAziende
                 filtri={filtri}
                 onFilterChange={handleFilterChange}
                 onReset={handleReset}
