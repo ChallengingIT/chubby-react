@@ -78,7 +78,7 @@
             <TextField
             id="search-bar"
             variant="filled"
-            placeholder="Cerca Contatto"
+            label="Cerca Contatto"
             value={filtri.nome || ""}
             onChange={onFilterChange("nome")}
             onKeyDown={(event) => {

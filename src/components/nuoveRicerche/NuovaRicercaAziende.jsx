@@ -85,7 +85,7 @@
             <TextField
             id="search-bar"
             variant="filled"
-            placeholder="Cerca Azienda"
+            label="Cerca Azienda"
             // size="small"
             value={filtri.denominazione || ""}
             onChange={onFilterChange("denominazione")}

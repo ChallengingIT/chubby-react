@@ -78,7 +78,7 @@
             <TextField
             id="search-bar"
             variant="filled"
-            placeholder="Nome"
+            label="Nome"
             value={filtri.nome || ""}
             onChange={onFilterChange("nome")}
             onKeyDown={(event) => {
@@ -116,7 +116,7 @@
             <TextField
             id="search-location"
             variant="filled"
-            placeholder="Cognome"
+            label="Cognome"
             value={filtri.cognome || ""}
             onChange={onFilterChange("cognome")}
             onKeyDown={(event) => {
