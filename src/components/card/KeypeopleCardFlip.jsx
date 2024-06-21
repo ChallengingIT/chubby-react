@@ -776,7 +776,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                         <TextField
                             fullWidth
                             label="Seleziona Data"
-                            type="date"
+                            type="datetime-local"
                             defaultValue={""} 
                             variant="filled"
                             sx={{

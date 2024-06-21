@@ -110,6 +110,18 @@
         setAnchorEl(null);
     };
 
+    const handleAggiungiAziendaClick = () => {
+        navigate("/business/aggiungi");
+        handleAdditionalDrawerClose();
+    };
+
+    const handleAggiungiContattoClick = () => {
+        navigate("/contacts/aggiungi");
+        handleAdditionalDrawerClose();
+    };
+
+
+
     const handleAggiungiCandidatoClick = () => {
         navigate("/recruiting/aggiungi");
         handleAdditionalDrawerClose();
@@ -211,25 +223,49 @@
     const additionalDrawerContent = (
         <List>
         {!userHasRole("ROLE_BUSINESS") && (
-            <ListItem button onClick={handleAggiungiCandidatoClick}>
+            <ListItem button onClick={handleAggiungiAziendaClick}>
             <ListItemText sx={{ color: theme.palette.text.secondary }}>
-                Aggiungi candidato
+                Aggiungi azienda
             </ListItemText>
             <ListItemIcon>
-                <PersonAddIcon sx={{ color: theme.palette.icon.main }} />
+                <BusinessCenterIcon sx={{ color: theme.palette.icon.main }} />
             </ListItemIcon>
             </ListItem>
         )}
+
+        {!userHasRole("ROLE_BUSINESS") && (
+            <ListItem button onClick={handleAggiungiContattoClick}>
+            <ListItemText sx={{ color: theme.palette.text.secondary }}>
+                Aggiungi contatto
+            </ListItemText>
+            <ListItemIcon>
+                <PersonIcon sx={{ color: theme.palette.icon.main }} />
+            </ListItemIcon>
+            </ListItem>
+        )}
+
         {!userHasRole("ROLE_RECRUITER") && (
             <ListItem button onClick={handleAggiungiNeedClick}>
             <ListItemText sx={{ color: theme.palette.text.secondary }}>
                 Aggiungi need
             </ListItemText>
             <ListItemIcon>
-                <AddCircleIcon sx={{ color: theme.palette.icon.main }} />
+                <ExploreIcon sx={{ color: theme.palette.icon.main }} />
             </ListItemIcon>
             </ListItem>
         )}
+
+        {!userHasRole("ROLE_BUSINESS") && (
+            <ListItem button onClick={handleAggiungiCandidatoClick}>
+            <ListItemText sx={{ color: theme.palette.text.secondary }}>
+                Aggiungi candidato
+            </ListItemText>
+            <ListItemIcon>
+                <PersonSearchIcon sx={{ color: theme.palette.icon.main }} />
+            </ListItemIcon>
+            </ListItem>
+        )}
+        
         {/* {!userHasRole("ROLE_BUSINESS") && (
         <ListItem button onClick={handleAppuntamentoClick}>
             <ListItemText sx={{ color: theme.palette.text.secondary }}>

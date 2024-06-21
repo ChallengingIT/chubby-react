@@ -321,7 +321,7 @@ const ModificaIntervistaGrafica = () => {
             ];
     
 
-    const campiObbligatori = [ "dataColloquio"];
+    const campiObbligatori = ["dataColloquio, coerenza, standing,energia,comunicazione,inglese,competenze,valutazione,descrizioneCandidatoUna,teamSiNo"];
     const fields = [
         { type: "titleGroups",                label: "Informazioni"             },
         { label: "Data Incontro*",            name: "dataColloquio",          type: "date"},
@@ -341,14 +341,12 @@ const ModificaIntervistaGrafica = () => {
     
     
         { type: "titleGroups",                label: "Competenze"                          },
-        { label: "Aderenza Posizione",        name: "aderenza",                type: "select", options: valoriOptions},
         { label: "Coerenza Percorso",         name: "coerenza",                type: "select", options: valoriOptions},
-        { label: "Motivazione Posizione",     name: "motivazione",             type: "select", options: valoriOptions},
         { label: "Standing",                  name: "standing",                type: "select", options: valoriOptions},
         { label: "Energia",                   name: "energia",                 type: "select", options: valoriOptions},
         { label: "Comunicazione",             name: "comunicazione",           type: "select", options: valoriOptions},
         { label: "Livello di Inglese",        name: "inglese",                 type: "select", options: valoriOptions},
-        { label: "Competenze vs ruolo",       name: "competenze",              type: "text",   maxLength: 90},
+        { label: "Competenze vs ruolo",       name: "competenze",              type: "text",   options: valoriOptions},
         { label: "Valutazione",               name: "valutazione",             type: "select", options: valoriOptions},
         { label: "One word",                  name: "descrizioneCandidatoUna", type: "text", maxLength: 45},
         { label: "Lo vorresti nel tuo team?", name: "teamSiNo",                type: "text", maxLength: 45},

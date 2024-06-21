@@ -5,6 +5,7 @@ import RicercheNeed                                     from '../components/rice
 import NeedCardFlip                                     from '../components/card/NeedCardFlip';
 import SchemePage                                       from '../components/SchemePage.jsx';
 import { useLocation } from 'react-router-dom';
+
 import { 
     Box,
     CircularProgress,
@@ -13,8 +14,8 @@ import {
     } from '@mui/material';
 
     const Need = () => {
-        const location = useLocation();
 
+        const location = useLocation();
         const [ originalNeed,              setOriginalNeed          ] = useState([]);
         const [ loading,                   setLoading               ] = useState(false);
         const [                            setAlert                 ] = useState(false);
@@ -135,23 +136,6 @@ import {
         };
 
 
-            useEffect(() => {
-                const filtriSalvati = sessionStorage.getItem('filtriRicercaNeed');
-                if (filtriSalvati) {
-                const filtriParsed = JSON.parse(filtriSalvati);
-                setFiltri(filtriParsed);
-                
-                const isAnyFilterSet = Object.values(filtriParsed).some(value => value);
-                if (isAnyFilterSet) {
-                    handleRicerche();
-                } else {
-                    fetchData();
-                }
-                } else {
-                fetchData();
-                }
-                // eslint-disable-next-line
-            }, []);
             
 
 
@@ -193,17 +177,24 @@ import {
 
 
         //funzione di ricerca
-        const handleRicerche = async () => {
-            const isAnyFilterSet = Object.values(filtri).some(value => value);
-                if (!isAnyFilterSet) {
-                    return; 
-                }
-            
-                const filtriDaInviare = {
-                    ...filtri,
-                    pagina: 0,
-                    quantita: quantita
-                };
+        const handleRicerche = async (filters) => {
+            // const isAnyFilterSet = Object.values(filtri).some(value => value);
+            // console.log("isAnyFilterSet: ", isAnyFilterSet);
+            //     if (!isAnyFilterSet) {
+            //         return; 
+            //     }
+
+                        const filtriDaInviare = filters ? {
+                        ...filters,
+                        pagina: 0,
+                        quantita: quantita
+                    } : {
+                        ...filtri,
+                        pagina: 0,
+                        quantita: quantita
+                    };
+
+                console.log("filtri in ricerca: ", filtri);
             
                 if (!userHasRole('ROLE_ADMIN')) {
                     const userString = sessionStorage.getItem('user');
@@ -273,47 +264,105 @@ const handleFilterChange = (name) => (event) => {
             setPagina(0);
             setOriginalNeed([]);
             setHasMore(true);
-            // handleRicerche();
+            handleRicerche();
         }
         
         return newFilters;
     });
 };
 
-        useEffect(() => {
-            const { ...otherFilters } = filtri;
-            const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x !== null);
-            if (filtriHasValues) {
-                handleRicerche();
-            } else {
-                fetchData();
-            }
-        }, [filtri.descrizione]);
 
 
-            // const handleFilterChange = (name) => (event) => {
-            //     const newValue = event.target.value;
-            //     setFiltri(currentFilters => {
-            //         const newFilters = { ...currentFilters, [name]: newValue };
-            //         setPagina(0);
-            //         return newFilters;
-            //     });
-            // };
+  useEffect(() => {
+        if (location.state?.descrizione) {
+            const newFiltri = { ...filtri, descrizione: location.state.descrizione };
+            console.log("newFiltri: ", newFiltri);
+            setFiltri(newFiltri);
+            handleRicerche(newFiltri); 
+        } else {
+            const filtriSalvati = sessionStorage.getItem('filtriRicercaNeed');
+            if (filtriSalvati) {
+                const filtriParsed = JSON.parse(filtriSalvati);
+                setFiltri(filtriParsed);
+
+                const isAnyFilterSet = Object.values(filtriParsed).some(value => value);
+                if (isAnyFilterSet) {
+                    handleRicerche(filtriParsed);
+                } else {
+                    fetchData();
+                }
+        }
+        }
+        // eslint-disable-next-line
+    }, [location.state]);
+
+    useEffect(() => {
+        sessionStorage.setItem('filtriRicercaNeed', JSON.stringify(filtri));
+    }, [filtri]);
+
+
+        // useEffect(() => {
             
-            
-            // useEffect(() => {
-            //     // Controllo se tutti i filtri sono vuoti 
-            //     const areFiltersEmpty = Object.values(filtri).every(value => value === null || value === '');
-            //     if (areFiltersEmpty) {
-            //         fetchData();
-            //     } else {
-            //         handleRicerche();
-            //     }
-            // }, [filtri, pagina]);
+        //     const { ...otherFilters } = filtri;
+        //     console.log("otherFilters: ", otherFilters);
+        //     const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x !== null);
+        //     console.log("filtrihasvalues: ", filtriHasValues);
+        //     if (filtriHasValues) {
+        //         handleRicerche();
+        //     } else {
+        //         fetchData();
+        //     }
+        // }, [filtri]);
 
-        useEffect(() => {
-            sessionStorage.setItem('filtriRicercaNeed', JSON.stringify(filtri));
-        }, [filtri]);
+
+//         useEffect(() => {
+//     const filtriHasValues = Object.values(filtri).some(x => x !== '' && x !== null);
+//     if (filtriHasValues) {
+//         handleRicerche(filtri);
+//     } else {
+//         fetchData();
+//     }
+// }, [filtri.descrizione]);
+
+
+
+
+//         useEffect(() => {
+//                 const filtriSalvati = sessionStorage.getItem('filtriRicercaNeed');
+//                 if (filtriSalvati) {
+//                 const filtriParsed = JSON.parse(filtriSalvati);
+//                 setFiltri(filtriParsed);
+                
+//                 const isAnyFilterSet = Object.values(filtriParsed).some(value => value);
+//                 if (isAnyFilterSet) {
+//                     handleRicerche(isAnyFilterSet);
+//                 } else {
+//                     fetchData();
+//                 }
+//                 }
+//                 // eslint-disable-next-line
+//             }, []);
+
+
+
+//         useEffect(() => {
+//             sessionStorage.setItem('filtriRicercaNeed', JSON.stringify(filtri));
+//         }, [filtri]);
+
+
+//     useEffect(() => {
+//     if (location.state?.descrizione) {
+//         const newFiltri = { ...filtri, descrizione: location.state.descrizione };
+//         setFiltri(newFiltri);
+//         handleRicerche(newFiltri);
+//     } else {
+//         const filtriHasValues = Object.values(filtri).some(x => x !== '' && x !== null);
+//         if (filtriHasValues) {
+//             handleRicerche(filtri);
+//         }
+//     }
+// }, [location.state]);
+
         
 
         //funzione di reset dei campi di ricerca

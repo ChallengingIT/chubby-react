@@ -35,11 +35,13 @@ const TabellaHiring = ({ data, columns, getRowId }) => {
   };
 
   const columnsByServiceType = {
-    "Head Hunting": ["RAL", "Rate"],
+    "Head Hunting": ["RAL"],
     "Recruiting": [ "RAL", "Importo Fatturato"],
-    "Temporary": ["Canone", "Importo Fatturato"],
-    "Staffing": ["Inizio Attività", "Fine Attività", "Importo Fatturato"]
+    "Temporary": ["Canone", "Importo Fatturato", "Rate"],
+    "Staffing": ["Inizio Attività", "Fine Attività", "Importo Fatturato", "Rate"]
   };
+
+console.log("valori: ", data);
 
   const handleEditClick = (rowId, tipoServizio, candidatoId) => {
     const normalizedServiceType = normalizeServiceType(tipoServizio);

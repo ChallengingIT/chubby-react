@@ -783,7 +783,7 @@ return (
                     {alert.message}
                 </Alert>
             </Snackbar>
-            <Typography variant="h4" component="h1" sx={{ mt:1, fontWeight: 'bold', fontSize: '1.8'}}>{activeSection}</Typography>
+            <Typography variant="h4" component="h1" sx={{ mt:1, fontWeight: 'bold', fontSize: '1.8'}}>{datiModifica.denominazione}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', width: '100%', height: '100%', flexDirection: 'column', pl: 5, pr: 5, overflow: 'auto'}}>
                 {renderFieldsGroups(groupedFields)}

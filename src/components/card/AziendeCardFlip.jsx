@@ -70,24 +70,25 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
             case "Ex cliente":
                 return {
                     backgroundColor: "#f0f0f0", // Grigio Chiaro
-                    borderColor: "#f0f0f0",
+                    border: "solid 1px black",
                     margin: "auto",
                 };
             default:
                 return {
+                    // bgcolor: '#E4FFE5',
                     borderRadius: "20px",
                     maxWidth: "80%",
                     justifyContent: "center",
                     margin: "auto",
                     cursor: "pointer",
                     height: "auto",
-                    border: "2px solid",
+                    border: "5px solid",
                     borderColor: theme.palette.border.main,
                     transition: "transform 0.3s ease, border-width 0.3s ease",
                     "&:hover": {
                         transform: "scale(1.02)",
-                        border: "4px solid",
-                        borderColor: theme.palette.border.main,
+                        // border: "4px solid",
+                        // borderColor: theme.palette.border.main,
                     },
                 };
         }
