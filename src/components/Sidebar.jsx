@@ -412,7 +412,7 @@
                 <img
                 src={TorciaBianca}
                 alt="Torcia"
-                style={{ width: "4vw" }}
+                style={{ width: "3.5vw", marginBottom: '1em' }}
                 />
             </IconButton>
             </Box>
