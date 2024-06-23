@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { DataGrid } from '@mui/x-data-grid';
 import { Box, Dialog, DialogTitle, DialogContent, IconButton, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -6,11 +6,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 import CloseIcon from '@mui/icons-material/Close';
 import DragHandleIcon from '@mui/icons-material/DragHandle'; //icona per spostare le righe
 
-
 const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
     const [dialogOpen, setDialogOpen] = useState(false);
-    const [ currentPipelineData, setCurrentPipelineData ] = useState({});
-
+    const [currentPipelineData, setCurrentPipelineData] = useState({});
+    const [rowHeight, setRowHeight] = useState(52); // altezza predefinita
+    const dataGridRef = useRef(null);
 
     const dialogData = [
         { header: "ITW", data: [{ title: "Pianificata", value: currentPipelineData.itwPianificate }, { title: "Fatte", value: currentPipelineData.itwFatte }] },
@@ -21,31 +21,28 @@ const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
 
     const handleOpenDialog = (pipelineData) => {
         setDialogOpen(true);
-        setCurrentPipelineData(pipelineData)
+        setCurrentPipelineData(pipelineData);
     };
 
     const handleCloseDialog = () => {
         setDialogOpen(false);
     };
 
-    const renderActionCell = (params) => {
-        return (
-            <IconButton onClick={() => handleOpenDialog(params.row.pipeline)}>
-                <MoreVertIcon />
-            </IconButton>
-        );
-    };
-
+    const renderActionCell = (params) => (
+        <IconButton onClick={() => handleOpenDialog(params.row.pipeline)}>
+            <MoreVertIcon />
+        </IconButton>
+    );
 
     const modifiedColumns = [
-    //     {
-    //     field: 'drag',
-    //     headerName: '',
-    //     width: 50,
-    //     sortable: false,
-    //     disableColumnMenu: true,
-    //     renderCell: () => <DragHandleIcon />,
-    // },
+        // {
+        //     field: 'drag',
+        //     headerName: '',
+        //     width: 50,
+        //     sortable: false,
+        //     disableColumnMenu: true,
+        //     renderCell: () => <DragHandleIcon />,
+        // },
         ...columns,
         {
             field: 'actions',
@@ -55,23 +52,38 @@ const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
         }
     ];
 
+    useEffect(() => {
+        const calculateRowHeight = () => {
+            if (dataGridRef.current) {
+                const availableHeight = dataGridRef.current.clientHeight;
+                const calculatedRowHeight = Math.floor(availableHeight / data.length);
+                setRowHeight(calculatedRowHeight);
+            }
+        };
 
+        calculateRowHeight();
+        window.addEventListener('resize', calculateRowHeight);
 
+        return () => {
+            window.removeEventListener('resize', calculateRowHeight);
+        };
+    }, [dataGridRef, data.length]);
 
     return (
-        <Box sx={{ height: '100%', width: '100%' }}>
+        <Box ref={dataGridRef} sx={{ height: '100%', width: '100%' }}>
             <DataGrid
                 rows={data}
                 columns={modifiedColumns}
                 getRowId={getRowId}
                 components={{
-                    NoRowsOverlay: () => <h3 style={{ display: 'flex', justifyContent: 'center', marginTop: '10%', fontWeight: 300}}>Nessun dato</h3>,
+                    NoRowsOverlay: () => <h3 style={{ display: 'flex', justifyContent: 'center', marginTop: '10%', fontWeight: 300 }}>Nessun dato</h3>,
                     LoadingOverlay: CircularProgress,
                 }}
                 hideFooter
+                rowHeight={rowHeight}
                 sx={{
                     borderStyle: 'none',
-                    height: '100%', 
+                    height: '100%',
                     '& .MuiDataGrid-columnHeader': {
                         borderBottom: '2px solid #c4c4c4',
                     },
@@ -81,7 +93,7 @@ const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
                     '& .odd-row': {
                         backgroundColor: '#ECECEC',
                     },
-                    '&. MuiDataGrid-row:nth-of-type(even)': {
+                    '& .MuiDataGrid-row:nth-of-type(even)': {
                         backgroundColor: '#ececec',
                     },
                     '& .MuiDataGrid-row': {
@@ -110,18 +122,18 @@ const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
                     },
                 }}
             />
-            
+
             <Dialog open={dialogOpen} onClose={handleCloseDialog}
-                    sx={{
-                        '& .MuiDialog-paper': {
-                            width: '50%',
-                            maxWidth: 'none',
-                            height: 'auto',
-                            borderRadius: '20px',
-                            border: '2.5px solid #00B400'
-                        }
-                    }}>
-                <DialogTitle sx={{ fontWeight: 600, fontSize: '1.2em'}}>
+                sx={{
+                    '& .MuiDialog-paper': {
+                        width: '50%',
+                        maxWidth: 'none',
+                        height: 'auto',
+                        borderRadius: '20px',
+                        border: '2.5px solid #00B400'
+                    }
+                }}>
+                <DialogTitle sx={{ fontWeight: 600, fontSize: '1.2em' }}>
                     Dettagli Azioni
                     <IconButton
                         aria-label="close"
@@ -136,7 +148,7 @@ const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
                             }
                         }}
                     >
-                        <CloseIcon sx={{ '&:hover': { color: 'red'}}} />
+                        <CloseIcon sx={{ '&:hover': { color: 'red' } }} />
                     </IconButton>
                 </DialogTitle>
                 <DialogContent>

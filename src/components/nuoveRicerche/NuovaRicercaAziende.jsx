@@ -96,8 +96,8 @@
                 }
             }}
             
-            sx={{
-                        textAlign: "start",
+             sx={{
+                        textAlign: "left",
                         borderRadius: "20px",
                         backgroundColor: "#EDEDED",
                         "& .MuiFilledInput-root": {

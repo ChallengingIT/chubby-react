@@ -73,7 +73,7 @@
         }}
         >
         
-            <FormControl fullWidth sx={{ mb: 0.2 }}>
+            <FormControl fullWidth sx={{ mb: 0.2}}>
 
             <TextField
             id="search-bar"

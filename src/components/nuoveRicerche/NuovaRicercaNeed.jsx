@@ -111,7 +111,8 @@
         sx={{
             width: '100%',
             backgroundColor: "#FEFCFD",
-            border: 'solid 2px #00B400',
+            border: 'solid 2px',
+            borderColor: theme.palette.border.main,
             borderRadius: '20px',
             display: "flex",
             flexDirection: "row",

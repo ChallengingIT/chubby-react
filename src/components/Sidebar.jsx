@@ -396,14 +396,14 @@
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                padding: "8px",
+                // padding: "1em",
                 flexDirection: "column",
             }}
             >
             <img
                 src={LogoBianco}
                 alt="Logo"
-                style={{ width: "6.5vw", marginTop: "1em", marginBottom: "0.5em" }}
+                style={{ width: "8vw", marginTop: "1em", marginBottom: "1em" }}
             />
             <IconButton
                 onClick={handleTorciaClick}
@@ -412,7 +412,7 @@
                 <img
                 src={TorciaBianca}
                 alt="Torcia"
-                style={{ width: "3vw", marginTop: "1em", marginBottom: "1em" }}
+                style={{ width: "4vw" }}
                 />
             </IconButton>
             </Box>
@@ -466,8 +466,7 @@
                 justifyContent: "center",
                 alignItems: "center",
                 gap: 1,
-                padding: 1,
-                mb: 2,
+                mb: 1,
                 flexDirection: "column",
                 }}
             >
@@ -480,7 +479,7 @@
                     width: 80,
                     height: 80,
                     borderRadius: "50%",
-                    marginBottom: 2,
+                    marginBottom: 1,
                     }}
                 />
                 )}
@@ -608,7 +607,7 @@
                 justifyContent: "center",
                 alignItems: "center",
                 flexDirection: "row",
-                marginBottom: "10px",
+                marginBottom: "1em",
                 }}
             >
                 <Button
