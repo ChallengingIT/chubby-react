@@ -153,17 +153,38 @@
             );
         }
 
+        // if (Array.isArray(responsePipeline.data)) {
+        //     const pipelineConId = responsePipeline.data.map((pipeline) => ({
+        //     ...pipeline,
+        //     }));
+        //     setOriginalPipeline(pipelineConId);
+        // } else {
+        //     console.error(
+        //     "I dati ottenuti non sono nel formato Array:",
+        //     responsePipeline.data
+        //     );
+        // }
+
+
         if (Array.isArray(responsePipeline.data)) {
-            const pipelineConId = responsePipeline.data.map((pipeline) => ({
-            ...pipeline,
-            }));
-            setOriginalPipeline(pipelineConId);
-        } else {
-            console.error(
+        const pipelineConId = responsePipeline.data.map((pipeline) => ({
+            id: pipeline.id,
+            descrizione: pipeline.descrizione,
+            cliente: pipeline.cliente?.denominazione,
+            owner: `${pipeline.owner?.nome} ${pipeline.owner?.cognome}`,
+            priorita: pipeline.priorita,
+            stato: pipeline.stato?.descrizione,
+            pipelineData: pipeline.pipeline
+            
+        }));
+        setOriginalPipeline(pipelineConId);
+    } else {
+        console.error(
             "I dati ottenuti non sono nel formato Array:",
             responsePipeline.data
-            );
-        }
+        );
+    }
+
 
         if (Array.isArray(responseAttivitaRecruiting.data)) {
             setOriginalAttivitaRecruiting(responseAttivitaRecruiting.data);
@@ -241,70 +262,126 @@
         navigate('/need', { state: { descrizione } });
     };
 
-        const columns = [
-        {
-            field: "owner",
-            headerName: "Owner",
-            flex: 0.6,
-            sortable: true,
-            filterable: true,
-            renderCell: (params) => {
-                const owner = params.value;
-                return `${owner.nome} ${owner.cognome}`;
-            },
-            sortComparator: (v1, v2) => {
-                return `${v1.nome} ${v1.cognome}`.localeCompare(`${v2.nome} ${v2.cognome}`);
-            }
+    //     const columns = [
+    //     {
+    //         field: "owner",
+    //         headerName: "Owner",
+    //         flex: 0.6,
+    //         sortable: true,
+    //         filterable: true,
+    //         renderCell: (params) => {
+    //             const owner = params.value;
+    //             return `${owner.nome} ${owner.cognome}`;
+    //         },
+    //         sortComparator: (v1, v2) => {
+    //             return `${v1.nome} ${v1.cognome}`.localeCompare(`${v2.nome} ${v2.cognome}`);
+    //         }
+    //     },
+    //     {
+    //         field: "cliente",
+    //         headerName: "Cliente",
+    //         flex: 1,
+    //         sortable: true,
+    //         filterable: true,
+    //         renderCell: (params) => {
+    //             const cliente = params.value;
+    //             return `${cliente.denominazione}`;
+    //         },
+    //         sortComparator: (v1, v2) => v1.denominazione.localeCompare(v2.denominazione)
+    //     },
+    //     {
+    //         field: "descrizione",
+    //         headerName: "Descrizione",
+    //         flex: 1,
+    //         sortable: true,
+    //         filterable: true,
+    //         renderCell: (params) => {
+    //             const descrizione = params.value;
+    //             return (
+    //                 <Link
+    //                     component="button"
+    //                     onClick={() => handleDescrizioneClick(descrizione)}
+    //                     sx={{ textDecoration: 'none', color: 'black', borderBottom: 'solid 1px black' }}
+    //                 >
+    //                     {descrizione}
+    //                 </Link>
+    //             );
+    //         },
+    //     },
+    //     {
+    //         field: "priorita",
+    //         headerName: "Priorità",
+    //         flex: 0.4,
+    //         sortable: true,
+    //         filterable: true,
+    //     },
+    //     {
+    //         field: "stato",
+    //         headerName: "Stato",
+    //         flex: 0.4,
+    //         sortable: true,
+    //         filterable: true,
+    //         renderCell: (params) => {
+    //             const stato = params.value;
+    //             return `${stato.descrizione}`;
+    //         },
+    //         sortComparator: (v1, v2) => v1.descrizione.localeCompare(v2.descrizione)
+    //     },
+    // ];
+
+
+
+    const columns = [
+    {
+        field: "owner",
+        headerName: "Owner",
+        flex: 0.6,
+        sortable: true,
+        filterable: true,
         },
         {
-            field: "cliente",
-            headerName: "Cliente",
-            flex: 1,
-            sortable: true,
-            filterable: true,
-            renderCell: (params) => {
-                const cliente = params.value;
-                return `${cliente.denominazione}`;
-            },
-            sortComparator: (v1, v2) => v1.denominazione.localeCompare(v2.denominazione)
+        field: "cliente",
+        headerName: "Cliente",
+        flex: 1,
+        sortable: true,
+        filterable: true,
         },
         {
-            field: "descrizione",
-            headerName: "Descrizione",
-            flex: 1,
-            sortable: true,
-            filterable: true,
-            renderCell: (params) => {
-                const descrizione = params.value;
-                return (
-                    <Link
-                        component="button"
-                        onClick={() => handleDescrizioneClick(descrizione)}
-                        sx={{ textDecoration: 'none', color: 'black', borderBottom: 'solid 1px black' }}
-                    >
-                        {descrizione}
-                    </Link>
-                );
-            },
+        field: "descrizione",
+        headerName: "Descrizione",
+        flex: 1,
+        sortable: true,
+        filterable: true,
+        renderCell: (params) => {
+            const descrizione = params.value;
+            return (
+            <Link
+                component="button"
+                onClick={() => handleDescrizioneClick(descrizione)}
+                sx={{
+                textDecoration: "none",
+                color: "black",
+                borderBottom: "solid 1px black",
+                }}
+            >
+                {descrizione}
+            </Link>
+            );
+        },
         },
         {
-            field: "priorita",
-            headerName: "Priorità",
-            flex: 0.4,
-            sortable: true,
-            filterable: true,
+        field: "priorita",
+        headerName: "Priorità",
+        flex: 0.4,
+        sortable: true,
+        filterable: true,
         },
         {
-            field: "stato",
-            headerName: "Stato",
-            flex: 0.4,
-            sortable: true,
-            filterable: true,
-            renderCell: (params) => {
-                const stato = params.value;
-                return `${stato.descrizione}`;
-            },
-            sortComparator: (v1, v2) => v1.descrizione.localeCompare(v2.descrizione)
+        field: "stato",
+        headerName: "Stato",
+        flex: 0.4,
+        sortable: true,
+        filterable: true,
         },
     ];
 

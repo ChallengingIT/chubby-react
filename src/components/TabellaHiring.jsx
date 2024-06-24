@@ -41,7 +41,7 @@ const TabellaHiring = ({ data, columns, getRowId }) => {
     "Staffing": ["Inizio Attività", "Fine Attività", "Importo Fatturato", "Rate"]
   };
 
-console.log("valori: ", data);
+
 
   const handleEditClick = (rowId, tipoServizio, candidatoId) => {
     const normalizedServiceType = normalizeServiceType(tipoServizio);

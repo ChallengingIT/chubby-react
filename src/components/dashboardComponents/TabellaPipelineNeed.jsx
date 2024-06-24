@@ -4,12 +4,17 @@ import { Box, Dialog, DialogTitle, DialogContent, IconButton, Table, TableHead, 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CircularProgress from '@mui/material/CircularProgress';
 import CloseIcon from '@mui/icons-material/Close';
-import DragHandleIcon from '@mui/icons-material/DragHandle'; //icona per spostare le righe
 
 const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
     const [dialogOpen, setDialogOpen] = useState(false);
     const [currentPipelineData, setCurrentPipelineData] = useState({});
     const [rowHeight, setRowHeight] = useState(52); // altezza predefinita
+    const [filteredData, setFilteredData] = useState(data);
+
+    useEffect(() => {
+        setFilteredData(data);
+    }, [data]);
+
     const dataGridRef = useRef(null);
 
     const dialogData = [
@@ -29,20 +34,12 @@ const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
     };
 
     const renderActionCell = (params) => (
-        <IconButton onClick={() => handleOpenDialog(params.row.pipeline)}>
+        <IconButton onClick={() => handleOpenDialog(params.row.pipelineData)}>
             <MoreVertIcon />
         </IconButton>
     );
 
     const modifiedColumns = [
-        // {
-        //     field: 'drag',
-        //     headerName: '',
-        //     width: 50,
-        //     sortable: false,
-        //     disableColumnMenu: true,
-        //     renderCell: () => <DragHandleIcon />,
-        // },
         ...columns,
         {
             field: 'actions',
@@ -51,6 +48,38 @@ const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
             width: 100
         }
     ];
+
+    const handleFilterChange = (filterModel) => {
+        
+        const filteredRows = data.filter((row) => {
+            return filterModel.items.every((filter) => {
+                if (!filter.value) {
+                    return true;
+                }
+                const column = columns.find((col) => col.field === filter.columnField);
+                if (!column) {
+                    return true;
+                }
+                const value = row[filter.columnField];
+
+                if (typeof value === 'object') {
+                    if (filter.columnField === 'owner') {
+                        return value.nome.toLowerCase().includes(filter.value.toLowerCase()) || 
+                               value.cognome.toLowerCase().includes(filter.value.toLowerCase());
+                    } else if (filter.columnField === 'cliente') {
+                        return value.denominazione.toLowerCase().includes(filter.value.toLowerCase());
+                    }
+                }
+
+                if (typeof value === 'string') {
+                    return value.toLowerCase().includes(filter.value.toLowerCase());
+                }
+                return value === filter.value;
+            });
+        });
+
+        setFilteredData(filteredRows);
+    };
 
     useEffect(() => {
         const calculateRowHeight = () => {
@@ -72,9 +101,11 @@ const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
     return (
         <Box ref={dataGridRef} sx={{ height: '100%', width: '100%' }}>
             <DataGrid
-                rows={data}
+                rows={filteredData}
                 columns={modifiedColumns}
                 getRowId={getRowId}
+                filterMode="client"
+                onFilterModelChange={handleFilterChange}
                 components={{
                     NoRowsOverlay: () => <h3 style={{ display: 'flex', justifyContent: 'center', marginTop: '10%', fontWeight: 300 }}>Nessun dato</h3>,
                     LoadingOverlay: CircularProgress,

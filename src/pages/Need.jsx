@@ -195,7 +195,6 @@ import NuovaRicercaNeed from '../components/nuoveRicerche/NuovaRicercaNeed.jsx';
                         quantita: quantita
                     };
 
-                console.log("filtri in ricerca: ", filtri);
             
                 if (!userHasRole('ROLE_ADMIN')) {
                     const userString = sessionStorage.getItem('user');
@@ -277,7 +276,6 @@ const handleFilterChange = (name) => (event) => {
   useEffect(() => {
         if (location.state?.descrizione) {
             const newFiltri = { ...filtri, descrizione: location.state.descrizione };
-            console.log("newFiltri: ", newFiltri);
             setFiltri(newFiltri);
             handleRicerche(newFiltri); 
         } else {
