@@ -30,6 +30,7 @@ import {
   IconButton,
 } from "@mui/material";
 import SchemePage from "../components/SchemePage.jsx";
+import NuovaRicercaRecruiting from "../components/nuoveRicerche/NuovaRicercaRecruiting.jsx";
 
 const Recruiting = () => {
   const navigate = useNavigate();
@@ -640,7 +641,7 @@ const Recruiting = () => {
 
   return (
     <SchemePage>
-      <RicercheRecruiting
+      <NuovaRicercaRecruiting
         filtri={filtri}
         onFilterChange={handleFilterChange}
         onReset={handleReset}

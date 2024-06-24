@@ -12,6 +12,7 @@ import {
     Skeleton,
     } from '@mui/material';
 import SchemePage from '../components/SchemePage';
+import NuovaRicercaKeypeople from '../components/nuoveRicerche/NuovaRicercaKeypeople';
 
 
 const Keypeople = () => {
@@ -273,14 +274,14 @@ const Keypeople = () => {
     };
 
 
-    useEffect(() => {
-        const { ...otherFilters } = filtri;
-        const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x != null);
+    // useEffect(() => {
+    //     const { ...otherFilters } = filtri;
+    //     const filtriHasValues = Object.values(otherFilters).some(x => x !== '' && x != null);
     
-        if (filtriHasValues) {
-            handleRicerche();
-        }
-    }, [ filtri.nome]);
+    //     if (filtriHasValues) {
+    //         handleRicerche();
+    //     }
+    // }, [ filtri.nome]);
 
 
     // const handleFilterChange = (name) => (event) => {
@@ -349,7 +350,7 @@ const Keypeople = () => {
                     top: 0, 
                     zIndex: 1000, 
                 }}>
-                    <RicercheKeypeople
+                    <NuovaRicercaKeypeople
                         filtri={filtri}
                         onFilterChange={handleFilterChange}
                         onReset={handleReset}

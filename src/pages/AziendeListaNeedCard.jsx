@@ -9,6 +9,7 @@
     import { theme } from "antd";
     import { useUserTheme } from "../components/TorchyThemeProvider.jsx";
 import SchemePage from "../components/SchemePage.jsx";
+import NuovaRicercaListaNeed from "../components/nuoveRicerche/NuovaRicercaListaNeed.jsx";
 
     const AziendeListaNeedCard = () => {
     const theme = useUserTheme();
@@ -410,7 +411,7 @@ import SchemePage from "../components/SchemePage.jsx";
             zIndex: 1000,
             }}
         >
-            <RicercheListaNeed
+            <NuovaRicercaListaNeed
             filtri={filtri}
             onFilterChange={handleFilterChange}
             onReset={handleReset}

@@ -12,6 +12,7 @@
     import ClipButton                                       from "../components/button/ClipButton.jsx";
     import AddCircleIcon from '@mui/icons-material/AddCircle';
     import SchemePage from "../components/SchemePage.jsx";
+import NuovaRicercaNeedMatch from "../components/nuoveRicerche/NuovaRicercaNeedMatch.jsx";
     const NeedMatch = () => {
 
     const navigate      = useNavigate();
@@ -966,7 +967,7 @@
                 zIndex: 1000,
             }}
             >
-            <RicercheNeedMatch
+            <NuovaRicercaNeedMatch
                 filtri={filtri}
                 onFilterChange={handleFilterChange}
                 onReset={handleReset}

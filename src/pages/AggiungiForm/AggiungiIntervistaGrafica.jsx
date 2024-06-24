@@ -161,7 +161,7 @@
         icon: <CircleOutlinedIcon />,
         },
         {
-        title: "Retribuzione",
+        title: "Info contrattuali",
         icon: <CircleOutlinedIcon />,
         },
         {
@@ -359,7 +359,7 @@
         { label: "One word",                    name: "descrizioneCandidatoUna",    type: "text",               maxLength: 45,          },
         { label: "Lo vorresti nel tuo team?",   name: "teamSiNo",                   type: "text",               maxLength: 45,          },
 
-        { type: "titleGroups", label: "Retribuzione" },
+        { type: "titleGroups", label: "Info contrattuali" },
         { label: "Disponibilità",               name: "disponibilita",              type: "text",               maxLength: 45,          },
         { label: "RAL Attuale",                 name: "attuale",                    type: "text",               maxLength: 90           },
         { label: "RAL Desiderata",              name: "desiderata",                 type: "text",               maxLength: 90,          },

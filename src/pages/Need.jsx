@@ -12,6 +12,7 @@ import {
     Grid,
     Skeleton,
     } from '@mui/material';
+import NuovaRicercaNeed from '../components/nuoveRicerche/NuovaRicercaNeed.jsx';
 
     const Need = () => {
 
@@ -194,7 +195,6 @@ import {
                         quantita: quantita
                     };
 
-                console.log("filtri in ricerca: ", filtri);
             
                 if (!userHasRole('ROLE_ADMIN')) {
                     const userString = sessionStorage.getItem('user');
@@ -276,7 +276,6 @@ const handleFilterChange = (name) => (event) => {
   useEffect(() => {
         if (location.state?.descrizione) {
             const newFiltri = { ...filtri, descrizione: location.state.descrizione };
-            console.log("newFiltri: ", newFiltri);
             setFiltri(newFiltri);
             handleRicerche(newFiltri); 
         } else {
@@ -409,7 +408,7 @@ const handleFilterChange = (name) => (event) => {
                     top: 0, 
                     zIndex: 1000, 
                 }}>
-                    <RicercheNeed 
+                    <NuovaRicercaNeed 
                     filtri={filtri}
                     onFilterChange={handleFilterChange}
                     onReset={handleReset}
