@@ -64,7 +64,7 @@
             alignItems: "center",
             justifyContent: "space-between",
             marginBottom: "1rem",
-            p: 3,
+            p: 1.2,
             gap: 3
         }}
         >
