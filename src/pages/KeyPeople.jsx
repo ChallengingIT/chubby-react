@@ -80,12 +80,12 @@ const Keypeople = () => {
             }
         }
 
-        const baseUrl = userHasRole('ROLE_ADMIN') ? "http://localhost:8080/keypeople/react/mod" : "http://localhost:8080/keypeople/react/mod/personal";
+        const baseUrl = userHasRole('ROLE_ADMIN') ? "http://89.46.196.60:8443/keypeople/react/mod" : "http://89.46.196.60:8443/keypeople/react/mod/personal";
         try {
             const response = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
-            const responseCliente = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
-            const responseOwner = await axios.get("http://localhost:8080/owner", { headers: headers });
-            const responseStati = await axios.get("http://localhost:8080/keypeople/react/stati", { headers: headers });
+            const responseCliente = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers: headers });
+            const responseOwner = await axios.get("http://89.46.196.60:8443/owner", { headers: headers });
+            const responseStati = await axios.get("http://89.46.196.60:8443/keypeople/react/stati", { headers: headers });
 
             if (Array.isArray(responseOwner.data)) {
                 setOwnerOptions(responseOwner.data.map((owner) => ({ label: owner.descrizione, value: owner.id })));
@@ -159,8 +159,8 @@ const Keypeople = () => {
         }
 
         const baseUrl = userHasRole('ROLE_ADMIN')
-            ? (isSearchActive ? "http://localhost:8080/keypeople/react/ricerca/mod" : "http://localhost:8080/keypeople/react/mod")
-            : (isSearchActive ? "http://localhost:8080/keypeople/react/ricerca/mod/personal" : "http://localhost:8080/keypeople/react/mod/personal");
+            ? (isSearchActive ? "http://89.46.196.60:8443/keypeople/react/ricerca/mod" : "http://89.46.196.60:8443/keypeople/react/mod")
+            : (isSearchActive ? "http://89.46.196.60:8443/keypeople/react/ricerca/mod/personal" : "http://89.46.196.60:8443/keypeople/react/mod/personal");
 
         try {
             const responsePaginazione = await axios.get(baseUrl, {
@@ -218,15 +218,15 @@ const Keypeople = () => {
         }
 
         const baseUrl = userHasRole('ROLE_ADMIN')
-            ? "http://localhost:8080/keypeople/react/ricerca/mod"
-            : "http://localhost:8080/keypeople/react/ricerca/mod/personal";
+            ? "http://89.46.196.60:8443/keypeople/react/ricerca/mod"
+            : "http://89.46.196.60:8443/keypeople/react/ricerca/mod/personal";
 
         setLoading(true);
         try {
             const response = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
-            const responseCliente = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
-            const responseOwner = await axios.get("http://localhost:8080/owner", { headers: headers });
-            const responseStati = await axios.get("http://localhost:8080/keypeople/react/stati", { headers: headers });
+            const responseCliente = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers: headers });
+            const responseOwner = await axios.get("http://89.46.196.60:8443/owner", { headers: headers });
+            const responseStati = await axios.get("http://89.46.196.60:8443/keypeople/react/stati", { headers: headers });
 
             if (Array.isArray(responseOwner.data)) {
                 setOwnerOptions(responseOwner.data.map((owner) => ({ label: owner.descrizione, value: owner.id })));
@@ -306,7 +306,7 @@ const Keypeople = () => {
     //funzione per cancellare l'azienda
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:8080/keypeople/react/elimina/${id}`, { headers: headers });
+            await axios.delete(`http://89.46.196.60:8443/keypeople/react/elimina/${id}`, { headers: headers });
             await fetchData();
         } catch (error) {
             console.error("Errore durante la cancellazione:", error);
