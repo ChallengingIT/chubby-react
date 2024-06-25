@@ -75,6 +75,7 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
 
             case "Cliente":
             case "cliente":
+            case "CLIENTE":
                 return {
                     bgcolor: '#8dd68d',
                     borderRadius: "20px",
@@ -93,6 +94,17 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
             default:
                 return {
 
+                    borderRadius: "20px",
+                    maxWidth: "80%",
+                    justifyContent: "center",
+                    margin: "auto",
+                    cursor: "pointer",
+                    height: "auto",
+                    transition: "transform 0.3s ease, border-width 0.3s ease",
+                    "&:hover": {
+                        transform: "scale(1.02)",
+                        border: "4px solid #ffae44",
+                    },
                 };
         }
     };
