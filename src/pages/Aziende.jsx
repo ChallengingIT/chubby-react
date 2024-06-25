@@ -26,6 +26,8 @@ import NuovaRicercaAziende from "../components/nuoveRicerche/NuovaRicercaAziende
     const [pagina, setPagina] = useState(0);
     const [hasMore, setHasMore] = useState(true);
     const quantita = 10;
+    const [isSearchActive, setIsSearchActive] = useState(false);
+
 
   
 
@@ -89,8 +91,8 @@ import NuovaRicercaAziende from "../components/nuoveRicerche/NuovaRicercaAziende
         }
 
         const baseUrl = userHasRole("ROLE_ADMIN")
-        ? "http://89.46.196.60:8443/aziende/react/mod"
-        : "http://89.46.196.60:8443/aziende/react/mod/personal";
+        ? "http://localhost:8080/aziende/react/mod"
+        : "http://localhost:8080/aziende/react/mod/personal";
 
         try {
         const responseAziende = await axios.get(baseUrl, {
@@ -98,14 +100,14 @@ import NuovaRicercaAziende from "../components/nuoveRicerche/NuovaRicercaAziende
             params: filtriDaInviare,
         });
 
-        // const responseAziende   = await axios.get("http://89.46.196.60:8443/aziende/react/mod",     { headers: headers , params: filtriDaInviare });
-        // const responseCliente   = await axios.get("http://89.46.196.60:8443/aziende/react/select",  { headers });
+        // const responseAziende   = await axios.get("http://localhost:8080/aziende/react/mod",     { headers: headers , params: filtriDaInviare });
+        // const responseCliente   = await axios.get("http://localhost:8080/aziende/react/select",  { headers });
         const responseOwner = await axios.get(
-            "http://89.46.196.60:8443/owner",
+            "http://localhost:8080/owner",
             { headers: headers }
         );
         const provinceResponse = await axios.get(
-            "http://89.46.196.60:8443/aziende/react/province",
+            "http://localhost:8080/aziende/react/province",
             { headers: headers }
         );
 
@@ -173,115 +175,166 @@ import NuovaRicercaAziende from "../components/nuoveRicerche/NuovaRicercaAziende
     }, []);
 
     //funzione per la paginazione
-    const fetchMoreData = async () => {
-        const paginaSuccessiva = pagina + 1;
+    // const fetchMoreData = async () => {
+    //     const paginaSuccessiva = pagina + 1;
 
-        if (!userHasRole("ROLE_ADMIN")) {
+    //     if (!userHasRole("ROLE_ADMIN")) {
+    //     const userString = sessionStorage.getItem("user");
+    //     if (userString) {
+    //         const userObj = JSON.parse(userString);
+    //         filtri.username = userObj.username;
+    //     }
+    //     }
+
+    //     const baseUrl = userHasRole("ROLE_ADMIN")
+    //     ? "http://localhost:8080/aziende/react/mod"
+    //     : "http://localhost:8080/aziende/react/mod/personal";
+
+    //     const filtriDaInviare = {
+    //     ...filtri,
+    //     pagina: paginaSuccessiva,
+    //     quantita: quantita,
+    //     };
+    //     try {
+    //     const responsePaginazione = await axios.get(baseUrl, {
+    //         headers: headers,
+    //         params: filtriDaInviare,
+    //     });
+    //     if (Array.isArray(responsePaginazione.data)) {
+    //         const aziendeConId = responsePaginazione.data.map((aziende) => ({
+    //         ...aziende,
+    //         }));
+    //         setOriginalAziende((prev) => [...prev, ...aziendeConId]);
+    //         setHasMore(responsePaginazione.data.length >= quantita);
+    //     } else {
+    //         console.error(
+    //         "I dati ottenuti non sono nel formato Array:",
+    //         responsePaginazione.data
+    //         );
+    //     }
+    //     setLoading(false);
+    //     } catch (error) {
+    //     console.error("Errore durante il recupero dei dati:", error);
+    //     }
+    //     setPagina((prevPagina) => prevPagina + 1);
+    // };
+
+
+    const fetchMoreData = async () => {
+    const paginaSuccessiva = pagina + 1;
+
+    if (!userHasRole("ROLE_ADMIN")) {
         const userString = sessionStorage.getItem("user");
         if (userString) {
             const userObj = JSON.parse(userString);
             filtri.username = userObj.username;
         }
-        }
+    }
 
-        const baseUrl = userHasRole("ROLE_ADMIN")
-        ? "http://89.46.196.60:8443/aziende/react/mod"
-        : "http://89.46.196.60:8443/aziende/react/mod/personal";
+    const baseUrl = userHasRole("ROLE_ADMIN")
+        ? "http://localhost:8080/aziende/react/mod"
+        : "http://localhost:8080/aziende/react/mod/personal";
 
-        const filtriDaInviare = {
+    const filtriDaInviare = {
         ...filtri,
         pagina: paginaSuccessiva,
         quantita: quantita,
-        };
-        try {
+    };
+
+    try {
         const responsePaginazione = await axios.get(baseUrl, {
             headers: headers,
             params: filtriDaInviare,
         });
         if (Array.isArray(responsePaginazione.data)) {
             const aziendeConId = responsePaginazione.data.map((aziende) => ({
-            ...aziende,
+                ...aziende,
             }));
             setOriginalAziende((prev) => [...prev, ...aziendeConId]);
             setHasMore(responsePaginazione.data.length >= quantita);
         } else {
             console.error(
-            "I dati ottenuti non sono nel formato Array:",
-            responsePaginazione.data
+                "I dati ottenuti non sono nel formato Array:",
+                responsePaginazione.data
             );
         }
         setLoading(false);
-        } catch (error) {
+    } catch (error) {
         console.error("Errore durante il recupero dei dati:", error);
-        }
-        setPagina((prevPagina) => prevPagina + 1);
-    };
+    }
+    setPagina((prevPagina) => prevPagina + 1);
+};
+
 
     //funzione di ricerca
     const handleRicerche = async () => {
-        const isAnyFilterSet = Object.values(filtri).some((value) => value);
-        if (!isAnyFilterSet) {
+    const isAnyFilterSet = Object.values(filtri).some((value) => value);
+    if (!isAnyFilterSet) {
+        setIsSearchActive(false);
         return;
-        }
+    }
 
-        const filtriDaInviare = {
+    const filtriDaInviare = {
         ...filtri,
         pagina: 0,
         quantita: quantita,
-        };
+    };
 
-        if (!userHasRole("ROLE_ADMIN")) {
+    if (!userHasRole("ROLE_ADMIN")) {
         const userString = sessionStorage.getItem("user");
         if (userString) {
             const userObj = JSON.parse(userString);
             filtriDaInviare.username = userObj.username;
         }
-        }
+    }
 
-        const baseUrl = userHasRole("ROLE_ADMIN")
-        ? "http://89.46.196.60:8443/aziende/react/ricerca/mod"
-        : "http://89.46.196.60:8443/aziende/react/ricerca/mod/personal";
+    const baseUrl = userHasRole("ROLE_ADMIN")
+        ? "http://localhost:8080/aziende/react/ricerca/mod"
+        : "http://localhost:8080/aziende/react/ricerca/mod/personal";
 
-        setLoading(true);
-        try {
+    setLoading(true);
+    try {
         const response = await axios.get(baseUrl, {
             headers: headers,
             params: filtriDaInviare,
         });
         const responseOwner = await axios.get(
-            "http://89.46.196.60:8443/owner",
+            "http://localhost:8080/owner",
             { headers }
         );
 
         if (Array.isArray(responseOwner.data)) {
             setOwnerOptions(
-            responseOwner.data.map((owner, index) => ({
-                label: owner.descrizione,
-                value: owner.id,
-            }))
+                responseOwner.data.map((owner, index) => ({
+                    label: owner.descrizione,
+                    value: owner.id,
+                }))
             );
         } else {
             console.error(
-            "I dati ottenuti non sono nel formato Array:",
-            responseOwner.data
+                "I dati ottenuti non sono nel formato Array:",
+                responseOwner.data
             );
         }
 
         if (Array.isArray(response.data)) {
             setOriginalAziende(response.data);
             setHasMore(response.data.length >= quantita);
+            setIsSearchActive(true);
+            setPagina(0);
         } else {
             console.error(
-            "I dati ottenuti non sono nel formato Array:",
-            response.data
+                "I dati ottenuti non sono nel formato Array:",
+                response.data
             );
         }
-        } catch (error) {
+    } catch (error) {
         console.error("Errore durante il recupero dei dati filtrati:", error);
-        } finally {
+    } finally {
         setLoading(false);
-        }
-    };
+    }
+};
+
 
     //funzione cambio stato select
     const handleFilterChange = (name) => (event) => {
@@ -361,7 +414,7 @@ import NuovaRicercaAziende from "../components/nuoveRicerche/NuovaRicercaAziende
     const handleDelete = async (id) => {
         try {
         const responseDelete = await axios.delete(
-            `http://89.46.196.60:8443/aziende/react/elimina/${id}`,
+            `http://localhost:8080/aziende/react/elimina/${id}`,
             { headers: headers }
         );
         await fetchData(0);
@@ -417,7 +470,7 @@ import NuovaRicercaAziende from "../components/nuoveRicerche/NuovaRicercaAziende
             <InfiniteScroll
             dataLength={originalAziende.length}
             next={fetchMoreData}
-            hasMore={hasMore}
+            hasMore={isSearchActive && hasMore}
             // loader={'Caricamento in corso...'}
             loader={
                 <Box

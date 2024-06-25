@@ -41,6 +41,8 @@ const Keypeople = () => {
     const [ pagina,             setPagina       ] = useState(0);
     const [ hasMore,            setHasMore      ] = useState(false);
     const quantita = 10;
+    const [isSearchActive, setIsSearchActive] = useState(false);
+
 
 
     const getValueLabel = (value) => {
@@ -242,6 +244,8 @@ const Keypeople = () => {
             if (Array.isArray(response.data)) {
                 setOriginalKeypeople(response.data);
                 setHasMore(response.data.length >= quantita);
+                setIsSearchActive(true);
+                setPagina(0);
             } else {
                 console.error("I dati dei keypeople in ricerca ottenuti non sono nel formato Array:", response.data);
             }
@@ -364,7 +368,7 @@ const Keypeople = () => {
                 <InfiniteScroll
                 dataLength={originalKeypeople.length}
                 next={fetchMoreData}
-                hasMore={hasMore}
+                hasMore={isSearchActive && hasMore}
                 // loader={'Caricamento in corso...'}
                 loader={
                     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '1em', overflow: 'hidden' }}>

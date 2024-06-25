@@ -42,6 +42,8 @@ import NuovaRicercaNeed from '../components/nuoveRicerche/NuovaRicercaNeed.jsx';
         //stati per la paginazione
         const [ pagina,                 setPagina           ] = useState(0);
         const [ hasMore,                setHasMore          ] = useState(true);
+        const [isSearchActive, setIsSearchActive] = useState(false);
+
 
 
 
@@ -241,6 +243,8 @@ import NuovaRicercaNeed from '../components/nuoveRicerche/NuovaRicercaNeed.jsx';
                 if (Array.isArray(response.data)) {
                     setOriginalNeed(response.data);
                     setHasMore(response.data.length >= quantita);
+                    setIsSearchActive(true);
+                    setPagina(0);
                 } else {
                     console.error("I dati ottenuti non sono nel formato Array: ", response.data);
                 }
@@ -424,7 +428,7 @@ const handleFilterChange = (name) => (event) => {
                     <InfiniteScroll
                     dataLength={originalNeed.length}
                     next={fetchMoreData}
-                    hasMore={hasMore}
+                    hasMore={isSearchActive && hasMore}
                     loader={
                         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '1em', overflow: 'hidden' }}>
                         <CircularProgress sx={{ color: '#00B400' }} />
