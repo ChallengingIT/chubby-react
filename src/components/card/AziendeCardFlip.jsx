@@ -48,6 +48,7 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
         setIsFlipped(!isFlipped);
     };
 
+
     const getCardStyle = (tipologia) => {
         switch (tipologia) {
             case "PROSPECT":
@@ -69,107 +70,28 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
             case "Ex cliente":
                 return {
                     backgroundColor: "#f0f0f0", // Grigio Chiaro
-                    // border: "solid 1px black",
+                    borderColor: "#f0f0f0",
                     margin: "auto",
                 };
-
-            case "Cliente":
-            case "cliente":
-            case "CLIENTE":
-                return {
-                    bgcolor: '#8dd68d',
-                    borderRadius: "20px",
-                    maxWidth: "80%",
-                    justifyContent: "center",
-                    margin: "auto",
-                    cursor: "pointer",
-                    height: "auto",
-                    transition: "transform 0.3s ease, border-width 0.3s ease",
-                    "&:hover": {
-                        transform: "scale(1.02)",
-
-                    }
-                };
-
             default:
                 return {
-
                     borderRadius: "20px",
                     maxWidth: "80%",
                     justifyContent: "center",
                     margin: "auto",
                     cursor: "pointer",
                     height: "auto",
+                    border: "5px solid",
+                    borderColor: theme.palette.border.main,
                     transition: "transform 0.3s ease, border-width 0.3s ease",
                     "&:hover": {
                         transform: "scale(1.02)",
-                        border: "4px solid #ffae44",
+                        border: "5px solid",
+                        borderColor: theme.palette.border.main,
                     },
                 };
         }
     };
-
-    const getTextStyle = (tipologia) => {
-        return {
-            color: tipologia.toLowerCase() === 'cliente' ? 'white' : 'black',
-        };
-    };
-
-    const getIconStyle = (tipologia) => {
-        switch (tipologia.toLowerCase()) {
-            case 'cliente':
-                return { color: 'white' };
-            case 'prospect':
-                return { color: '#00B400' };
-            case 'ex cliente':
-                return { color: 'black' };
-            default:
-                return { color: 'black' };
-        }
-    };
-
-    const getIconHoverStyle = (tipologia) => {
-        switch (tipologia.toLowerCase()) {
-            case 'cliente':
-                return { color: 'white' };
-            case 'prospect':
-                return { color: '#white' };
-            case 'ex cliente':
-                return { color: 'white' };
-            default:
-                return { color: 'white' };
-        }
-    };
-
-
-    const getTitleStyle = (tipologia) => {
-        switch (tipologia.toLowerCase()) {
-            case 'cliente':
-                return { color: 'white' };
-            case 'prospect':
-                return { color: '#00B400' };
-            case 'ex cliente':
-                return { color: 'black' };
-            default:
-                return { color: 'black' };
-        }
-    };
-
-    const getHoverStyle = (tipologia) => {
-        switch (tipologia.toLowerCase()) {
-            case 'cliente':
-                return { bgcolor: 'black' };
-            case 'prospect':
-                return { bgcolor: '#00B400' };
-            case 'ex cliente':
-                return { bgcolor: 'black' };
-            default:
-                return { bgcolor: 'black' };
-        }
-    };
-
-
-    
 
     const cardContainerStyle = {
         width: "80%",
@@ -211,17 +133,17 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
     const mediaIda = (ida) => {
         if (ida >= 0 && ida <= 1) {
             return {
-                icon: <TrendingDownIcon sx={{ ...getIconStyle(valori.tipologia), mr: 1 }} />,
+                icon: <TrendingDownIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />,
                 text: "Basso",
             };
         } else if (ida > 1 && ida <= 2) {
             return {
-                icon: <TrendingFlatIcon sx={{ ...getIconStyle(valori.tipologia), mr: 1 }} />,
+                icon: <TrendingFlatIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />,
                 text: "Medio",
             };
         } else if (ida > 2) {
             return {
-                icon: <TrendingUpIcon sx={{ ...getIconStyle(valori.tipologia), mr: 1 }} />,
+                icon: <TrendingUpIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />,
                 text: "Alto",
             };
         } else {
@@ -264,21 +186,21 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
     const menuData = [
         {
             title: "Need Associati",
-            icon: <JoinInnerIcon sx={{ ...getIconStyle(valori.tipologia) }} />,
+            icon: <JoinInnerIcon />,
             onClick: () => {
                 navigateToAssocia(valori.id);
             },
         },
         {
             title: "Aggiorna Azienda",
-            icon: <SettingsIcon sx={{ ...getIconStyle(valori.tipologia) }} />,
+            icon: <SettingsIcon />,
             onClick: (event) => {
                 navigateToAggiorna(valori.id, event);
             },
         },
         {
             title: "Elimina Azienda",
-            icon: <DeleteIcon sx={{ ...getIconStyle(valori.tipologia) }} />,
+            icon: <DeleteIcon />,
             onClick: (event) => {
                 handleOpenModalDelete(event);
             },
@@ -315,12 +237,12 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
                                     variant="h5"
                                     component="div"
                                     sx={{
+                                        color: "black",
                                         fontWeight: "bold",
                                         overflow: "hidden",
                                         whiteSpace: "nowrap",
                                         textOverflow: "ellipsis",
                                         width: "100%",
-                                        ...getTitleStyle(valori.tipologia),
                                     }}
                                 >
                                     {valori.denominazione}
@@ -330,15 +252,15 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
                                     variant="body2"
                                     color="text.primary"
                                     sx={{
+                                        color: "black",
                                         display: "flex",
                                         justifyContent: "flex-start",
                                         alignItems: "flex-end",
                                         mt: 1,
                                         mb: 1,
-                                        ...getTextStyle(valori.tipologia),
                                     }}
                                 >
-                                    <PlaceIcon sx={{ ...getIconStyle(valori.tipologia), mr: 1 }} />
+                                    <PlaceIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
                                     {valori.citta} - {valori.sedeOperativa}
                                 </Typography>
 
@@ -346,15 +268,15 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
                                     variant="body2"
                                     color="text.secondary"
                                     sx={{
+                                        color: "black",
                                         display: "flex",
                                         justifyContent: "flex-start",
                                         alignItems: "flex-end",
                                         mt: 1,
                                         mb: 1,
-                                        ...getTextStyle(valori.tipologia),
                                     }}
                                 >
-                                    <FactoryIcon sx={{ ...getIconStyle(valori.tipologia), mr: 1 }} />
+                                    <FactoryIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
                                     {valori.settoreMercato}
                                 </Typography>
 
@@ -363,8 +285,8 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
                                     sx={{
                                         display: "flex",
                                         alignItems: "center",
+                                        color: "black",
                                         mt: 1,
-                                        ...getTextStyle(valori.tipologia),
                                     }}
                                 >
                                     {icon}
@@ -401,12 +323,12 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
                             variant="h5"
                             component="div"
                             sx={{
+                                color: "black",
                                 fontWeight: "bold",
                                 overflow: "hidden",
                                 whiteSpace: "nowrap",
                                 textOverflow: "ellipsis",
                                 width: "100%",
-                                ...getTitleStyle(valori.tipologia),
                             }}
                         >
                             {valori.denominazione}
@@ -432,7 +354,7 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
                                             sx={{
                                                 gap: 0,
                                                 "&:hover, &.Mui-selected": {
-                                                    ...getHoverStyle(valori.tipologia),
+                                                    backgroundColor: theme.palette.hover.main,
                                                     cursor: "pointer",
                                                     "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
                                                         color: "white",
@@ -442,7 +364,7 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
                                                 borderRadius: "10px",
                                                 backgroundColor:
                                                     activeLink === `/${item.title.toLowerCase()}`
-                                                        ? 'theme.palette.icon.main'
+                                                        ? theme.palette.icon.main
                                                         : "",
                                                 "& .MuiListItemIcon-root": {
                                                     color:
@@ -452,7 +374,10 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
                                                     minWidth: "2.2em",
                                                 },
                                                 "& .MuiListItemText-primary": {
-                                                    ...getTextStyle(valori.tipologia),
+                                                    color:
+                                                        activeLink === `/${item.title.toLowerCase()}`
+                                                            ? theme.palette.icon.main
+                                                            : "black",
                                                 },
                                             }}
                                         >
@@ -482,7 +407,7 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
                     sx={{
                         backgroundColor: "white",
                         p: 4,
-                        borderRadius: '20px',
+                        borderRadius: 2,
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
