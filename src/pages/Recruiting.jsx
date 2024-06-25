@@ -665,6 +665,7 @@ const Recruiting = () => {
             ))}
           </>
         ) : (
+          
           <Tabella
             data={originalRecruiting}
             columns={columns}

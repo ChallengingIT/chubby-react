@@ -286,14 +286,14 @@
             </ListItemIcon>
             </ListItem>
         )}
-        <ListItem button onClick={handleEmailClick}>
+        {/* <ListItem button onClick={handleEmailClick}>
             <ListItemText sx={{ color: theme.palette.text.secondary }}>
             Email
             </ListItemText>
             <ListItemIcon>
             <EmailIcon sx={{ color: theme.palette.icon.main }} />
             </ListItemIcon>
-        </ListItem>
+        </ListItem> */}
         </List>
     );
 
