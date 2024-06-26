@@ -61,7 +61,7 @@
         sx={{
             width: '100%',
             backgroundColor: "#FEFCFD",
-            border: 'solid 2px #00B400',
+            // border: 'solid 2px #00B400',
             borderRadius: '20px',
             display: "flex",
             flexDirection: "row",
@@ -90,7 +90,8 @@
             sx={{
                         textAlign: "start",
                         borderRadius: "20px",
-                        backgroundColor: "#EDEDED",
+                        border: 'solid 1px #00B400',
+                        // backgroundColor: "#EDEDED",
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },
@@ -128,7 +129,8 @@
             sx={{
                         textAlign: "start",
                         borderRadius: "20px",
-                        backgroundColor: "#EDEDED",
+                        border: 'solid 1px #00B400',
+                        // backgroundColor: "#EDEDED",
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },
@@ -171,7 +173,8 @@
                         sx={{
                         textAlign: "left",
                         borderRadius: "20px",
-                        backgroundColor: "#EDEDED",
+                        border: 'solid 1px #00B400',
+                        // backgroundColor: "#EDEDED",
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },
@@ -216,7 +219,8 @@
                         sx={{
                         textAlign: "left",
                         borderRadius: "20px",
-                        backgroundColor: "#EDEDED",
+                        border: 'solid 1px #00B400',
+                        // backgroundColor: "#EDEDED",
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },
@@ -260,7 +264,8 @@
                         sx={{
                         textAlign: "left",
                         borderRadius: "20px",
-                        backgroundColor: "#EDEDED",
+                        border: 'solid 1px #00B400',
+                        // backgroundColor: "#EDEDED",
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },

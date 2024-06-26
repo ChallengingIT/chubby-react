@@ -86,8 +86,8 @@ function NuovaRicercaNeed({
                 sx={{
                     width: '100%',
                     backgroundColor: "#FEFCFD",
-                    border: 'solid 2px',
-                    borderColor: theme.palette.border.main,
+                    // border: 'solid 2px',
+                    // borderColor: theme.palette.border.main,
                     borderRadius: '20px',
                     display: "flex",
                     flexDirection: "row",
@@ -114,7 +114,8 @@ function NuovaRicercaNeed({
                         sx={{
                             textAlign: "start",
                             borderRadius: "20px",
-                            backgroundColor: "#EDEDED",
+                            border: 'solid 1px #00B400',
+                            // backgroundColor: "#EDEDED",
                             "& .MuiFilledInput-root": {
                                 backgroundColor: "transparent",
                             },
@@ -153,7 +154,8 @@ function NuovaRicercaNeed({
                                 sx={{
                                     textAlign: "left",
                                     borderRadius: "20px",
-                                    backgroundColor: "#EDEDED",
+                                    border: 'solid 1px #00B400',
+                                    // backgroundColor: "#EDEDED",
                                     "& .MuiFilledInput-root": {
                                         backgroundColor: "transparent",
                                     },
@@ -194,7 +196,8 @@ function NuovaRicercaNeed({
                                 sx={{
                                     textAlign: "left",
                                     borderRadius: "20px",
-                                    backgroundColor: "#EDEDED",
+                                    border: 'solid 1px #00B400',
+                                    // backgroundColor: "#EDEDED",
                                     "& .MuiFilledInput-root": {
                                         backgroundColor: "transparent",
                                     },
@@ -235,7 +238,8 @@ function NuovaRicercaNeed({
                                 sx={{
                                     textAlign: "left",
                                     borderRadius: "20px",
-                                    backgroundColor: "#EDEDED",
+                                    border: 'solid 1px #00B400',
+                                    // backgroundColor: "#EDEDED",
                                     "& .MuiFilledInput-root": {
                                         backgroundColor: "transparent",
                                     },
@@ -276,7 +280,8 @@ function NuovaRicercaNeed({
                                 sx={{
                                     textAlign: "left",
                                     borderRadius: "20px",
-                                    backgroundColor: "#EDEDED",
+                                    border: 'solid 1px #00B400',
+                                    // backgroundColor: "#EDEDED",
                                     "& .MuiFilledInput-root": {
                                         backgroundColor: "transparent",
                                     },
