@@ -37,7 +37,7 @@ function NuovaRicercaNeed({
         if (aziendaId) {
             try {
                 const response = await axios.get(
-                    `http://localhost:8080/keypeople/react/azienda/${aziendaId}`
+                    `http://89.46.196.60:8443/keypeople/react/azienda/${aziendaId}`
                 );
                 setContactOptions(
                     response.data.map((keyPeople) => ({

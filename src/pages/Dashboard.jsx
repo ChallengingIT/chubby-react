@@ -68,12 +68,12 @@ function Dashboard() {
         }
 
         const baseUrlPipeline = userHasRole("ROLE_ADMIN")
-            ? "http://localhost:8080/dashboard/pipeline/admin"
-            : "http://localhost:8080/dashboard/pipeline";
+            ? "http://89.46.196.60:8443/dashboard/pipeline/admin"
+            : "http://89.46.196.60:8443/dashboard/pipeline";
 
         try {
             const responsePipeline = await axios.get(baseUrlPipeline, { headers, params: filtriDaInviare });
-            const responseAzienda = await axios.get("http://localhost:8080/aziende/react/select", { headers });
+            const responseAzienda = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers });
 
             if (Array.isArray(responseAzienda.data)) {
                 setAziendaOptions(responseAzienda.data.map((azienda) => ({

@@ -86,8 +86,8 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
             };
 
             const baseUrl = isAdmin
-                ? `http://localhost:8080/dashboard/attivita/${type}`
-                : `http://localhost:8080/dashboard/attivita/${type}/personal`;
+                ? `http://89.46.196.60:8443/dashboard/attivita/${type}`
+                : `http://89.46.196.60:8443/dashboard/attivita/${type}/personal`;
 
             try {
                 const response = await axios.get(`${baseUrl}/interval`, {
