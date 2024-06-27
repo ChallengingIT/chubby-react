@@ -1,19 +1,13 @@
     import React, { useState } from "react";
 
-    import CloseIcon from "@mui/icons-material/Close";
     import SearchIcon from "@mui/icons-material/Search";
     import RestartAltIcon from "@mui/icons-material/RestartAlt";
     import { useUserTheme } from "../TorchyThemeProvider";
     import {
-    Button,
     Box,
-    Grid,
     FormControl,
     IconButton,
-    Drawer,
-    Typography,
     TextField,
-    InputAdornment,
     Autocomplete,
     Container
     } from "@mui/material";
@@ -32,24 +26,28 @@
     }) {
     const theme = useUserTheme();
 
-    const [openFiltri, setOpenFiltri] = useState(false);
     const [isRotated, setIsRotated] = useState(false);
-    const [localFiltri, setLocalFiltri] = useState({ ...filtri });
 
     const handleClickReset = () => {
         onReset();
-        setLocalFiltri({ ...filtri });
         setIsRotated(true);
         setTimeout(() => setIsRotated(false), 500);
     };
 
-    const handleClickSearch = () => {
-        onFilterChange(localFiltri);
-        onSearch();
+    const handleInputChange = (name) => (event) => {
+        onFilterChange({
+            ...filtri,
+            [name]: event.target.value,
+        });
     };
 
-    const handleOpenFiltri = () => setOpenFiltri(true);
-    const handleCloseFiltri = () => setOpenFiltri(false);
+    const handleAutocompleteChange = (name) => (event, newValue) => {
+        onFilterChange({
+            ...filtri,
+            [name]: newValue?.value || null,
+        });
+    };
+
 
     return (
         <Container maxWidth='false' sx={{ maxWidth: '75vw', display: 'flex', justifyContent: 'space-around'}}>
@@ -58,15 +56,15 @@
         sx={{
             width: '100%',
             backgroundColor: "#FEFCFD",
-            border: 'solid 2px',
-            borderColor: theme.palette.border.main,
+            // border: 'solid 2px',
+            // borderColor: theme.palette.border.main,
             borderRadius: '20px',
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
             marginBottom: "1rem",
-            p: 3,
+            p: 1.2,
             gap: 3
         }}
         >
@@ -77,7 +75,7 @@
             variant="filled"
             label="Cerca Need"
             value={filtri.descrizione || ""}
-            onChange={onFilterChange("descrizione")}
+            onChange={handleInputChange("denominazione")}
             onKeyDown={(event) => {
                 if (event.key === "Enter") {
                 event.preventDefault();
@@ -88,7 +86,8 @@
             sx={{
                         textAlign: "start",
                         borderRadius: "20px",
-                        backgroundColor: "#EDEDED",
+                        border: 'solid 1px #00B400',
+                        // backgroundColor: "#EDEDED",
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },
@@ -118,11 +117,8 @@
                         (option) => option.value === filtri.tipologia
                     ) || null
                     }
-                    onChange={(event, newValue) => {
-                    onFilterChange("tipologia")({
-                        target: { value: newValue?.value || null },
-                    });
-                    }}
+                    onChange={handleAutocompleteChange("tipologia")}
+
                     renderInput={(params) => (
                     <TextField
                         {...params}
@@ -131,7 +127,8 @@
                         sx={{
                         textAlign: "left",
                         borderRadius: "20px",
-                        backgroundColor: "#EDEDED",
+                        border: 'solid 1px #00B400',
+                        // backgroundColor: "#EDEDED",
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },
@@ -163,11 +160,8 @@
                         (option) => option.value === filtri.stato
                     ) || null
                     }
-                    onChange={(event, newValue) => {
-                    onFilterChange("stato")({
-                        target: { value: newValue?.value || null },
-                    });
-                    }}
+                    onChange={handleAutocompleteChange("stato")}
+
                     renderInput={(params) => (
                     <TextField
                         {...params}
@@ -176,7 +170,8 @@
                         sx={{
                         textAlign: "left",
                         borderRadius: "20px",
-                        backgroundColor: "#EDEDED",
+                        border: 'solid 1px #00B400',
+                        // backgroundColor: "#EDEDED",
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },
@@ -208,11 +203,8 @@
                         (option) => option.value === filtri.owner
                     ) || null
                     }
-                    onChange={(event, newValue) => {
-                    onFilterChange("owner")({
-                        target: { value: newValue?.value || null },
-                    });
-                    }}
+                    onChange={handleAutocompleteChange("owner")}
+
                     renderInput={(params) => (
                     <TextField
                         {...params}
@@ -221,7 +213,8 @@
                         sx={{
                         textAlign: "left",
                         borderRadius: "20px",
-                        backgroundColor: "#EDEDED",
+                        border: 'solid 1px #00B400',
+                        // backgroundColor: "#EDEDED",
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },
@@ -252,11 +245,8 @@
                         (option) => option.value === filtri.keyPeople
                     ) || null
                     }
-                    onChange={(event, newValue) => {
-                    onFilterChange("keyPeople")({
-                        target: { value: newValue?.value || null },
-                    });
-                    }}
+                    onChange={handleAutocompleteChange("keyPeople")}
+
                     renderInput={(params) => (
                     <TextField
                         {...params}
@@ -265,7 +255,8 @@
                         sx={{
                         textAlign: "left",
                         borderRadius: "20px",
-                        backgroundColor: "#EDEDED",
+                        border: 'solid 1px #00B400',
+                        // backgroundColor: "#EDEDED",
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },
@@ -288,7 +279,7 @@
                 </FormControl>
 
                 <IconButton
-                    onClick={handleClickSearch}
+                    onClick={onSearch}
                     disableRipple={true}
                     disableFocusRipple={true}
                     sx={{

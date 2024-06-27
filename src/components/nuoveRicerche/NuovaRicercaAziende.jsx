@@ -1,24 +1,18 @@
-    import React, { useState } from "react";
-    import {
-    Button,
+import React, { useState } from "react";
+import {
     Box,
-    Grid,
     FormControl,
     IconButton,
-    Drawer,
-    Typography,
     TextField,
-    InputAdornment,
     Autocomplete,
     Container,
-    } from "@mui/material";
-    import CloseIcon from "@mui/icons-material/Close";
-    import SearchIcon from "@mui/icons-material/Search";
-    import { useNavigate } from "react-router-dom";
-    import RestartAltIcon from "@mui/icons-material/RestartAlt";
-    import { useUserTheme } from "../TorchyThemeProvider";
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import { useNavigate } from "react-router-dom";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import { useUserTheme } from "../TorchyThemeProvider";
 
-    function NuovaRicercaAziende({
+function NuovaRicercaAziende({
     filtri,
     onFilterChange,
     onReset,
@@ -26,279 +20,235 @@
     tipologiaOptions,
     ownerOptions,
     idaOptions,
-    }) {
-    const navigate = useNavigate();
-
+}) {
     const theme = useUserTheme();
 
-    const [openFiltri, setOpenFiltri] = useState(false);
     const [isRotated, setIsRotated] = useState(false);
-    const [localFiltri, setLocalFiltri] = useState({ ...filtri });
 
     const handleClickReset = () => {
         onReset();
-        setLocalFiltri({ ...filtri });
         setIsRotated(true);
         setTimeout(() => setIsRotated(false), 500);
     };
 
-    const handleClickSearch = () => {
-        onFilterChange(localFiltri);
-        onSearch();
+    const handleInputChange = (name) => (event) => {
+        onFilterChange({
+            ...filtri,
+            [name]: event.target.value,
+        });
     };
 
-    const handleOpenFiltri = () => setOpenFiltri(true);
-    const handleCloseFiltri = () => setOpenFiltri(false);
-
-    const navigateToAggiungi = () => {
-        navigate("/business/aggiungi");
+    const handleAutocompleteChange = (name) => (event, newValue) => {
+        onFilterChange({
+            ...filtri,
+            [name]: newValue?.value || null,
+        });
     };
 
     const isAdminRole = () => {
         const userString = sessionStorage.getItem("user");
         if (userString) {
-        const userObj = JSON.parse(userString);
-        return userObj.roles.includes("ROLE_ADMIN");
+            const userObj = JSON.parse(userString);
+            return userObj.roles.includes("ROLE_ADMIN");
         }
         return false;
     };
 
     return (
-        <Container maxWidth='false' sx={{ maxWidth: '75vw', display: 'flex', justifyContent: 'space-around'}}>
-        <Box
-        sx={{
-            width: '100%',
-            backgroundColor: "#FEFCFD",
-            border: 'solid 2px #00B400',
-            borderRadius: '20px',
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginBottom: "1rem",
-            p: 3,
-            gap: 3
-        }}
-        >
-            <FormControl fullWidth sx={{ mb: 0.2 }}>
-
-            <TextField
-            id="search-bar"
-            variant="filled"
-            label="Cerca Azienda"
-            // size="small"
-            value={filtri.denominazione || ""}
-            onChange={onFilterChange("denominazione")}
-            onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                event.preventDefault();
-                onSearch();
-                }
-            }}
-            
-             sx={{
-                        textAlign: "left",
-                        borderRadius: "20px",
-                        backgroundColor: "#EDEDED",
-                        "& .MuiFilledInput-root": {
-                            backgroundColor: "transparent",
-                        },
-                        "& .MuiFilledInput-underline:after": {
-                            borderBottomColor: "transparent",
-                        },
-                        "& .MuiFilledInput-root::before": {
-                            borderBottom: "none",
-                        },
-                        "&:hover .MuiFilledInput-root::before": {
-                            borderBottom: "none",
-                        },
-                        "& .MuiFormLabel-root.Mui-focused": {
-                            color: theme.palette.border.main,
-                        },
-                        }}
-            />
-            </FormControl>
-            
-
+        <Container maxWidth='false' sx={{ maxWidth: '75vw', maxHeight: '20vh', display: 'flex', justifyContent: 'space-around'}}>
+            <Box
+                sx={{
+                    width: '100%',
+                    backgroundColor: "#FEFCFD",
+                    // border: 'solid 2px #00B400',
+                    borderRadius: '20px',
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginBottom: "1rem",
+                    p: 1.2,
+                    gap: 3
+                }}
+            >
                 <FormControl fullWidth sx={{ mb: 0.2 }}>
-                <Autocomplete
-                    id="tipologia-combo-box"
-                    options={tipologiaOptions}
-                    getOptionLabel={(option) => option.label}
-                    // value={
-                    // tipologiaOptions.find(
-                    //     (option) => option.value === filtri.tipologia
-                    // ) || null
-                    // }
-                    // onChange={(event, newValue) => {
-                    // onFilterChange("tipologia")({
-                    //     target: { value: newValue?.value || null },
-                    // });
-                    // }}
-                    value={
-                    tipologiaOptions.find(
-                        (option) => option.value === filtri.tipologia
-                    ) || null
-                    }
-                    onChange={(event, newValue) => {
-                    onFilterChange("tipologia")({
-                        target: { value: newValue?.value || null },
-                    });
-                    }}
-                    renderInput={(params) => (
                     <TextField
-                        {...params}
-                        label="Tipologia"
+                        id="search-bar"
                         variant="filled"
-                        sx={{
-                        textAlign: "left",
-                        borderRadius: "20px",
-                        backgroundColor: "#EDEDED",
-                        "& .MuiFilledInput-root": {
-                            backgroundColor: "transparent",
-                        },
-                        "& .MuiFilledInput-underline:after": {
-                            borderBottomColor: "transparent",
-                        },
-                        "& .MuiFilledInput-root::before": {
-                            borderBottom: "none",
-                        },
-                        "&:hover .MuiFilledInput-root::before": {
-                            borderBottom: "none",
-                        },
-                        "& .MuiFormLabel-root.Mui-focused": {
-                            color: theme.palette.border.main,
-                        },
+                        label="Cerca Azienda"
+                        value={filtri.denominazione || ""}
+                        onChange={handleInputChange("denominazione")}
+                        onKeyDown={(event) => {
+                            if (event.key === "Enter") {
+                                event.preventDefault();
+                                onSearch();
+                            }
                         }}
-                    />
-                    )}
-                />
-                </FormControl>
-
-                <FormControl fullWidth sx={{ mb: 0.2 }}>
-                <Autocomplete
-                    id="ida-combo-box"
-                    options={idaOptions}
-                    getOptionLabel={(option) => option.label}
-                    // value={
-                    // idaOptions.find((option) => option.value === filtri.ida) ||
-                    // null
-                    // }
-                    // onChange={(event, newValue) => {
-                    // onFilterChange("ida")({
-                    //     target: { value: newValue?.value || null },
-                    // });
-                    // }}
-                    value={
-                    idaOptions.find((option) => option.value === filtri.ida) ||
-                    null
-                    }
-                    onChange={(event, newValue) => {
-                    onFilterChange("ida")({
-                        target: { value: newValue?.value || null },
-                    });
-                    }}
-                    renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        label="IDA"
-                        variant="filled"
-                        sx={{
-                        textAlign: "left",
-                        borderRadius: "20px",
-                        backgroundColor: "#EDEDED",
-                        "& .MuiFilledInput-root": {
-                            backgroundColor: "transparent",
-                        },
-                        "& .MuiFilledInput-underline:after": {
-                            borderBottomColor: "transparent",
-                        },
-                        "& .MuiFilledInput-root::before": {
-                            borderBottom: "none",
-                        },
-                        "&:hover .MuiFilledInput-root::before": {
-                            borderBottom: "none",
-                        },
-                        "& .MuiFormLabel-root.Mui-focused": {
-                            color: theme.palette.border.main,
-                        },
-                        }}
-                    />
-                    )}
-                />
-                </FormControl>
-
-                {isAdminRole() && (
-                <FormControl fullWidth sx={{ mb: 0.2 }}>
-                    <Autocomplete
-                    id="owner-combo-box"
-                    options={ownerOptions}
-                    getOptionLabel={(option) => option.label}
-                    // value={
-                    //     ownerOptions.find(
-                    //     (option) => option.value === filtri.owner
-                    //     ) || null
-                    // }
-                    // onChange={(event, newValue) => {
-                    //     onFilterChange("owner")({
-                    //     target: { value: newValue?.value || null },
-                    //     });
-                    // }}
-                    value={
-                        ownerOptions.find(
-                        (option) => option.value === filtri.owner
-                        ) || null
-                    }
-                    onChange={(event, newValue) => {
-                        onFilterChange("owner")({
-                        target: { value: newValue?.value || null },
-                        });
-                    }}
-                    renderInput={(params) => (
-                        <TextField
-                        {...params}
-                        label="Owner"
-                        variant="filled"
                         sx={{
                             textAlign: "left",
                             borderRadius: "20px",
-                            backgroundColor: "#EDEDED",
+                            border: 'solid 1px #00B400',
+                            // backgroundColor: "#EDEDED",
                             "& .MuiFilledInput-root": {
-                            backgroundColor: "transparent",
+                                backgroundColor: "transparent",
                             },
                             "& .MuiFilledInput-underline:after": {
-                            borderBottomColor: "transparent",
+                                borderBottomColor: "transparent",
                             },
                             "& .MuiFilledInput-root::before": {
-                            borderBottom: "none",
+                                borderBottom: "none",
                             },
                             "&:hover .MuiFilledInput-root::before": {
-                            borderBottom: "none",
+                                borderBottom: "none",
                             },
                             "& .MuiFormLabel-root.Mui-focused": {
-                            color: theme.palette.border.main,
+                                color: theme.palette.border.main,
                             },
                         }}
-                        />
-                    )}
                     />
                 </FormControl>
+            
+                <FormControl fullWidth sx={{ mb: 0.2 }}>
+                    <Autocomplete
+                        id="tipologia-combo-box"
+                        options={tipologiaOptions}
+                        getOptionLabel={(option) => option.label}
+                        value={
+                            tipologiaOptions.find(
+                                (option) => option.value === filtri.tipologia
+                            ) || null
+                        }
+                        onChange={handleAutocompleteChange("tipologia")}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                label="Tipologia"
+                                variant="filled"
+                                sx={{
+                                    textAlign: "left",
+                                    borderRadius: "20px",
+                                    border: 'solid 1px #00B400',
+                                    // backgroundColor: "#EDEDED",
+                                    "& .MuiFilledInput-root": {
+                                        backgroundColor: "transparent",
+                                    },
+                                    "& .MuiFilledInput-underline:after": {
+                                        borderBottomColor: "transparent",
+                                    },
+                                    "& .MuiFilledInput-root::before": {
+                                        borderBottom: "none",
+                                    },
+                                    "&:hover .MuiFilledInput-root::before": {
+                                        borderBottom: "none",
+                                    },
+                                    "& .MuiFormLabel-root.Mui-focused": {
+                                        color: theme.palette.border.main,
+                                    },
+                                }}
+                            />
+                        )}
+                    />
+                </FormControl>
+
+                <FormControl fullWidth sx={{ mb: 0.2 }}>
+                    <Autocomplete
+                        id="ida-combo-box"
+                        options={idaOptions}
+                        getOptionLabel={(option) => option.label}
+                        value={
+                            idaOptions.find((option) => option.value === filtri.ida) ||
+                            null
+                        }
+                        onChange={handleAutocompleteChange("ida")}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                label="IDA"
+                                variant="filled"
+                                sx={{
+                                    textAlign: "left",
+                                    borderRadius: "20px",
+                                    border: 'solid 1px #00B400',
+                                    // backgroundColor: "#EDEDED",
+                                    "& .MuiFilledInput-root": {
+                                        backgroundColor: "transparent",
+                                    },
+                                    "& .MuiFilledInput-underline:after": {
+                                        borderBottomColor: "transparent",
+                                    },
+                                    "& .MuiFilledInput-root::before": {
+                                        borderBottom: "none",
+                                    },
+                                    "&:hover .MuiFilledInput-root::before": {
+                                        borderBottom: "none",
+                                    },
+                                    "& .MuiFormLabel-root.Mui-focused": {
+                                        color: theme.palette.border.main,
+                                    },
+                                }}
+                            />
+                        )}
+                    />
+                </FormControl>
+
+                {isAdminRole() && (
+                    <FormControl fullWidth sx={{ mb: 0.2 }}>
+                        <Autocomplete
+                            id="owner-combo-box"
+                            options={ownerOptions}
+                            getOptionLabel={(option) => option.label}
+                            value={
+                                ownerOptions.find(
+                                    (option) => option.value === filtri.owner
+                                ) || null
+                            }
+                            onChange={handleAutocompleteChange("owner")}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="Owner"
+                                    variant="filled"
+                                    sx={{
+                                        textAlign: "left",
+                                        borderRadius: "20px",
+                                        border: 'solid 1px #00B400',
+                                        // backgroundColor: "#EDEDED",
+                                        "& .MuiFilledInput-root": {
+                                            backgroundColor: "transparent",
+                                        },
+                                        "& .MuiFilledInput-underline:after": {
+                                            borderBottomColor: "transparent",
+                                        },
+                                        "& .MuiFilledInput-root::before": {
+                                            borderBottom: "none",
+                                        },
+                                        "&:hover .MuiFilledInput-root::before": {
+                                            borderBottom: "none",
+                                        },
+                                        "& .MuiFormLabel-root.Mui-focused": {
+                                            color: theme.palette.border.main,
+                                        },
+                                    }}
+                                />
+                            )}
+                        />
+                    </FormControl>
                 )}
 
                 <IconButton
-                    onClick={handleClickSearch}
+                    onClick={onSearch}
                     disableRipple={true}
                     disableFocusRipple={true}
                     sx={{
-                    backgroundColor: theme.palette.button.main,
-                    color: "white",
-                    textTransform: "lowercase",
-                    fontWeight: "bold",
-                    "&:hover": {
-                        backgroundColor: theme.palette.button.mainHover,
+                        backgroundColor: theme.palette.button.main,
                         color: "white",
-                        trasform: "scale(1.1)",
-                    },
+                        textTransform: "lowercase",
+                        fontWeight: "bold",
+                        "&:hover": {
+                            backgroundColor: theme.palette.button.mainHover,
+                            color: "white",
+                            transform: "scale(1.1)",
+                        },
                     }}
                 >
                     <SearchIcon />
@@ -308,27 +258,27 @@
                     disableRipple={true}
                     disableFocusRipple={true}
                     sx={{
-                    backgroundColor: "black",
-                    color: "white",
-                    textTransform: "lowercase",
-                    fontWeight: "bold",
-                    "&:hover": {
                         backgroundColor: "black",
                         color: "white",
-                        trasform: "scale(1.1)",
-                    },
+                        textTransform: "lowercase",
+                        fontWeight: "bold",
+                        "&:hover": {
+                            backgroundColor: "black",
+                            color: "white",
+                            trasform: "scale(1.1)",
+                        },
                     }}
                 >
                     <RestartAltIcon
-                    sx={{
-                        transition: "transform 0.5s ease-in-out",
-                        transform: isRotated ? "rotate(720deg)" : "none",
-                    }}
+                        sx={{
+                            transition: "transform 0.5s ease-in-out",
+                            transform: isRotated ? "rotate(720deg)" : "none",
+                        }}
                     />
                 </IconButton>
-        </Box>
+            </Box>
         </Container>
     );
-    }
+}
 
-    export default NuovaRicercaAziende;
+export default NuovaRicercaAziende;

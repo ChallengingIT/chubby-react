@@ -264,24 +264,30 @@ const Keypeople = () => {
         }
     };
 
-    const handleFilterChange = (name) => (event) => {
-        const newValue = event.target.value;
-        setFiltri(currentFilters => {
-            const newFilters = { ...currentFilters, [name]: newValue };
 
-            // Controllo se tutti i filtri sono vuoti
-            const areFiltersEmpty = Object.values(newFilters).every(value => value === null);
-            if (areFiltersEmpty) {
-                fetchData();
-            } else {
-                setPagina(0);
-                setFilteredKeypeople([]);
-                setHasMore(true);
-                // handleRicerche();
-            }
+    // const handleFilterChange = (name) => (event) => {
+    //     const newValue = event.target.value;
+    //     setFiltri(currentFilters => {
+    //         const newFilters = { ...currentFilters, [name]: newValue };
 
-            return newFilters;
-        });
+    //         // Controllo se tutti i filtri sono vuoti
+    //         const areFiltersEmpty = Object.values(newFilters).every(value => value === null);
+    //         if (areFiltersEmpty) {
+    //             fetchData();
+    //         } else {
+    //             setPagina(0);
+    //             setFilteredKeypeople([]);
+    //             setHasMore(true);
+    //             // handleRicerche();
+    //         }
+
+    //         return newFilters;
+    //     });
+    // };
+
+
+        const handleFilterChange = (newFilters) => {
+        setFiltri(newFilters);
     };
 
     useEffect(() => {

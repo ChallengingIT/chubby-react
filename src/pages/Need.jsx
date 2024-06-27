@@ -192,6 +192,7 @@ const baseUrl = userHasRole('ROLE_ADMIN')
             quantita: quantita
         };
 
+
         if (!userHasRole('ROLE_ADMIN')) {
             const userString = sessionStorage.getItem('user');
             if (userString) {
@@ -251,25 +252,32 @@ const baseUrl = userHasRole('ROLE_ADMIN')
         }
     };
 
-    const handleFilterChange = (name) => (event) => {
-        const newValue = event.target.value;
-        setFiltri(currentFilters => {
-            const newFilters = { ...currentFilters, [name]: newValue };
+    // const handleFilterChange = (name) => (event) => {
+    //     const newValue = event.target.value;
+    //     setFiltri(currentFilters => {
+    //         const newFilters = { ...currentFilters, [name]: newValue };
 
-            // Controllo se tutti i filtri sono vuoti
-            const areFiltersEmpty = Object.values(newFilters).every(value => value === null);
-            if (areFiltersEmpty) {
-                fetchData();
-            } else {
-                setPagina(0);
-                setFilteredNeed([]);
-                setHasMore(true);
-                handleRicerche();
-            }
+    //         // Controllo se tutti i filtri sono vuoti
+    //         const areFiltersEmpty = Object.values(newFilters).every(value => value === null);
+    //         if (areFiltersEmpty) {
+    //             fetchData();
+    //         } else {
+    //             setPagina(0);
+    //             setFilteredNeed([]);
+    //             setHasMore(true);
+    //             handleRicerche();
+    //         }
 
-            return newFilters;
-        });
+    //         return newFilters;
+    //     });
+    // };
+
+
+
+    const handleFilterChange = (newFilters) => {
+        setFiltri(newFilters);
     };
+
 
     useEffect(() => {
         if (location.state?.descrizione) {

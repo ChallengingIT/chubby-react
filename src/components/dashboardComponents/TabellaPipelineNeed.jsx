@@ -65,7 +65,7 @@ const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
                 if (typeof value === 'object') {
                     if (filter.columnField === 'owner') {
                         return value.nome.toLowerCase().includes(filter.value.toLowerCase()) || 
-                               value.cognome.toLowerCase().includes(filter.value.toLowerCase());
+                                value.cognome.toLowerCase().includes(filter.value.toLowerCase());
                     } else if (filter.columnField === 'cliente') {
                         return value.denominazione.toLowerCase().includes(filter.value.toLowerCase());
                     }

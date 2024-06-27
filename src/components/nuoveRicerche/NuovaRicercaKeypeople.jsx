@@ -1,23 +1,15 @@
-    import React, { useState } from "react";
-
-    import CloseIcon from "@mui/icons-material/Close";
-    import SearchIcon from "@mui/icons-material/Search";
-    import { useNavigate } from "react-router-dom";
-    import RestartAltIcon from "@mui/icons-material/RestartAlt";
-    import { useUserTheme } from "../TorchyThemeProvider";
-    import {
-    Button,
+import React, { useState } from "react";
+import {
     Box,
-    Grid,
     FormControl,
     IconButton,
-    Drawer,
-    Typography,
     TextField,
-    InputAdornment,
     Autocomplete,
     Container,
-    } from "@mui/material";
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import { useUserTheme } from "../TorchyThemeProvider";
 
     function NuovaRicercaKeypeople({
     filtri,
@@ -28,30 +20,28 @@
     statiOptions,
     ownerOptions,
     }) {
-    const navigate = useNavigate();
     const theme = useUserTheme();
 
-    const [openFiltri, setOpenFiltri] = useState(false);
     const [isRotated, setIsRotated] = useState(false);
-    const [localFiltri, setLocalFiltri] = useState({ ...filtri });
 
     const handleClickReset = () => {
         onReset();
-        setLocalFiltri({ ...filtri });
         setIsRotated(true);
         setTimeout(() => setIsRotated(false), 500);
     };
 
-    const handleClickSearch = () => {
-        onFilterChange(localFiltri);
-        onSearch();
+    const handleInputChange = (name) => (event) => {
+        onFilterChange({
+            ...filtri,
+            [name]: event.target.value,
+        });
     };
 
-    const handleOpenFiltri = () => setOpenFiltri(true);
-    const handleCloseFiltri = () => setOpenFiltri(false);
-
-    const navigateToAggiungi = () => {
-        navigate("/contacts/aggiungi");
+    const handleAutocompleteChange = (name) => (event, newValue) => {
+        onFilterChange({
+            ...filtri,
+            [name]: newValue?.value || null,
+        });
     };
 
     return (
@@ -61,14 +51,14 @@
         sx={{
             width: '100%',
             backgroundColor: "#FEFCFD",
-            border: 'solid 2px #00B400',
+            // border: 'solid 2px #00B400',
             borderRadius: '20px',
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
             marginBottom: "1rem",
-            p: 3,
+            p: 1.2,
             gap: 3
         }}
         >
@@ -80,7 +70,7 @@
             variant="filled"
             label="Cerca Contatto"
             value={filtri.nome || ""}
-            onChange={onFilterChange("nome")}
+            onChange={handleInputChange("nome")}
             onKeyDown={(event) => {
                 if (event.key === "Enter") {
                 event.preventDefault();
@@ -90,7 +80,9 @@
             sx={{
                         textAlign: "start",
                         borderRadius: "20px",
-                        backgroundColor: "#EDEDED",
+                        border: 'solid 1px #00B400',
+
+                        // backgroundColor: "#EDEDED",
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },
@@ -111,48 +103,45 @@
             </FormControl>
 
                 <FormControl fullWidth sx={{ mb: 0.2 }}>
-                <Autocomplete
-                    id="azienda-combo-box"
-                    options={aziendaOptions}
-                    getOptionLabel={(option) => option.label}
-                    value={
-                    aziendaOptions.find(
-                        (option) => option.value === filtri.azienda
-                    ) || null
-                    }
-                    onChange={(event, newValue) => {
-                    onFilterChange("azienda")({
-                        target: { value: newValue?.value || null },
-                    });
-                    }}
-                    renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        label="Azienda"
-                        variant="filled"
-                        sx={{
-                        textAlign: "left",
-                        borderRadius: "20px",
-                        backgroundColor: "#EDEDED",
-                        "& .MuiFilledInput-root": {
-                            backgroundColor: "transparent",
-                        },
-                        "& .MuiFilledInput-underline:after": {
-                            borderBottomColor: "transparent",
-                        },
-                        "& .MuiFilledInput-root::before": {
-                            borderBottom: "none",
-                        },
-                        "&:hover .MuiFilledInput-root::before": {
-                            borderBottom: "none",
-                        },
-                        "& .MuiFormLabel-root.Mui-focused": {
-                            color: theme.palette.border.main,
-                        },
-                        }}
+                    <Autocomplete
+                        id="aziende-combo-box"
+                        options={aziendaOptions}
+                        getOptionLabel={(option) => option.label}
+                        value={
+                            aziendaOptions.find(
+                                (option) => option.value === filtri.azienda
+                            ) || null
+                        }
+                        onChange={handleAutocompleteChange("azienda")}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                label="Aziende"
+                                variant="filled"
+                                sx={{
+                                    textAlign: "left",
+                                    borderRadius: "20px",
+                                    border: 'solid 1px #00B400',
+                                    // backgroundColor: "#EDEDED",
+                                    "& .MuiFilledInput-root": {
+                                        backgroundColor: "transparent",
+                                    },
+                                    "& .MuiFilledInput-underline:after": {
+                                        borderBottomColor: "transparent",
+                                    },
+                                    "& .MuiFilledInput-root::before": {
+                                        borderBottom: "none",
+                                    },
+                                    "&:hover .MuiFilledInput-root::before": {
+                                        borderBottom: "none",
+                                    },
+                                    "& .MuiFormLabel-root.Mui-focused": {
+                                        color: theme.palette.border.main,
+                                    },
+                                }}
+                            />
+                        )}
                     />
-                    )}
-                />
                 </FormControl>
 
                 <FormControl fullWidth sx={{ mb: 0.2 }}>
@@ -165,11 +154,7 @@
                         (option) => option.value === filtri.stato
                     ) || null
                     }
-                    onChange={(event, newValue) => {
-                    onFilterChange("stato")({
-                        target: { value: newValue?.value || null },
-                    });
-                    }}
+                    onChange={handleAutocompleteChange("stato")}
                     renderInput={(params) => (
                     <TextField
                         {...params}
@@ -178,7 +163,8 @@
                         sx={{
                         textAlign: "left",
                         borderRadius: "20px",
-                        backgroundColor: "#EDEDED",
+                        border: 'solid 1px #00B400',
+                        // backgroundColor: "#EDEDED",
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },
@@ -210,11 +196,8 @@
                         (option) => option.value === filtri.owner
                     ) || null
                     }
-                    onChange={(event, newValue) => {
-                    onFilterChange("owner")({
-                        target: { value: newValue?.value || null },
-                    });
-                    }}
+                    onChange={handleAutocompleteChange("owner")}
+
                     renderInput={(params) => (
                     <TextField
                         {...params}
@@ -223,7 +206,8 @@
                         sx={{
                         textAlign: "left",
                         borderRadius: "20px",
-                        backgroundColor: "#EDEDED",
+                        border: 'solid 1px #00B400',
+                        // backgroundColor: "#EDEDED",
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },
@@ -246,7 +230,7 @@
                 </FormControl>
 
                 <IconButton
-                    onClick={handleClickSearch}
+                    onClick={onSearch}
                     disableRipple={true}
                     disableFocusRipple={true}
                     sx={{

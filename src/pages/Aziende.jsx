@@ -27,19 +27,10 @@ const Aziende = () => {
     const [isSearchActive, setIsSearchActive] = useState(false);
     const [recordTot, setRecordTot] = useState(0);
 
-
-    const getValueLabel = (value) => {
-        const option = ownerOptions.find((option) => option.value === value);
-        return option ? option.label : null;
-    };
-
     const [filtri, setFiltri] = useState(() => {
         const filtriSalvati = sessionStorage.getItem("filtriRicercaAziende");
         if (filtriSalvati) {
             const filtriParsed = JSON.parse(filtriSalvati);
-            if (filtriParsed.owner) {
-                filtriParsed.ownerLabel = getValueLabel(filtriParsed.owner);
-            }
             return filtriParsed;
         }
         return {
@@ -48,9 +39,10 @@ const Aziende = () => {
             stato: null,
             owner: null,
             ida: null,
-            ownerLabel: null,
         };
     });
+
+
 
     const user = JSON.parse(sessionStorage.getItem("user"));
     const token = user?.token;
@@ -59,7 +51,6 @@ const Aziende = () => {
         Authorization: `Bearer ${token}`,
     };
 
-    //controllo del ruolo dell'utente loggato
     const userHasRole = (roleToCheck) => {
         const userString = sessionStorage.getItem("user");
         if (!userString) {
@@ -88,8 +79,8 @@ const Aziende = () => {
         }
 
         const baseUrl = userHasRole("ROLE_ADMIN")
-            ? "http://89.46.196.60:8443/aziende/react/mod"
-            : "http://89.46.196.60:8443/aziende/react/mod/personal";
+            ? "http://localhost:8080/aziende/react/mod"
+            : "http://localhost:8080/aziende/react/mod/personal";
 
         try {
             const responseAziende = await axios.get(baseUrl, {
@@ -98,11 +89,11 @@ const Aziende = () => {
             });
 
             const responseOwner = await axios.get(
-                "http://89.46.196.60:8443/owner",
+                "http://localhost:8080/owner",
                 { headers: headers }
             );
             const provinceResponse = await axios.get(
-                "http://89.46.196.60:8443/aziende/react/province",
+                "http://localhost:8080/aziende/react/province",
                 { headers: headers }
             );
 
@@ -173,66 +164,64 @@ const Aziende = () => {
         // eslint-disable-next-line
     }, []);
 
-  const fetchMoreData = async () => {
-    const paginaSuccessiva = pagina + 1;
+    const fetchMoreData = async () => {
+        const paginaSuccessiva = pagina + 1;
 
-    const filtriDaInviare = {
-        ...filtri,
-        pagina: paginaSuccessiva,
-        quantita: quantita,
+        const filtriDaInviare = {
+            ...filtri,
+            pagina: paginaSuccessiva,
+            quantita: quantita,
+        };
+
+        if (!userHasRole("ROLE_ADMIN")) {
+            const userString = sessionStorage.getItem("user");
+            if (userString) {
+                const userObj = JSON.parse(userString);
+                filtriDaInviare.username = userObj.username;
+            }
+        }
+
+        const baseUrl = userHasRole("ROLE_ADMIN")
+            ? (isSearchActive ? "http://localhost:8080/aziende/react/ricerca/mod" : "http://localhost:8080/aziende/react/mod")
+            : (isSearchActive ? "http://localhost:8080/aziende/react/ricerca/mod/personal" : "http://localhost:8080/aziende/react/mod/personal");
+
+        try {
+            const responsePaginazione = await axios.get(baseUrl, {
+                headers: headers,
+                params: filtriDaInviare,
+            });
+
+            if (isSearchActive) {
+                const { record, clienti } = responsePaginazione.data;
+
+                if (Array.isArray(clienti)) {
+                    const aziendeConId = clienti.map((aziende) => ({
+                        ...aziende,
+                    }));
+                    setFilteredAziende((prev) => [...prev, ...aziendeConId]);
+                    setHasMore(filteredAziende.length + aziendeConId.length < recordTot);
+                } else {
+                    console.error("I dati ottenuti non sono nel formato Array:", responsePaginazione.data);
+                }
+            } else {
+                if (Array.isArray(responsePaginazione.data)) {
+                    const aziendeConId = responsePaginazione.data.map((aziende) => ({
+                        ...aziende,
+                    }));
+                    setOriginalAziende((prev) => [...prev, ...aziendeConId]);
+                    setHasMore(aziendeConId.length >= quantita);
+                } else {
+                    console.error("I dati ottenuti non sono nel formato Array:", responsePaginazione.data);
+                }
+            }
+            setLoading(false);
+        } catch (error) {
+            console.error("Errore durante il recupero dei dati:", error);
+            setLoading(false);
+        }
+        setPagina((prevPagina) => prevPagina + 1);
     };
 
-    if (!userHasRole("ROLE_ADMIN")) {
-        const userString = sessionStorage.getItem("user");
-        if (userString) {
-            const userObj = JSON.parse(userString);
-            filtriDaInviare.username = userObj.username;
-        }
-    }
-
-    const baseUrl = userHasRole("ROLE_ADMIN")
-        ? (isSearchActive ? "http://89.46.196.60:8443/aziende/react/ricerca/mod" : "http://89.46.196.60:8443/aziende/react/mod")
-        : (isSearchActive ? "http://89.46.196.60:8443/aziende/react/ricerca/mod/personal" : "http://89.46.196.60:8443/aziende/react/mod/personal");
-
-    try {
-        const responsePaginazione = await axios.get(baseUrl, {
-            headers: headers,
-            params: filtriDaInviare,
-        });
-
-        if (isSearchActive) {
-            const { record, clienti } = responsePaginazione.data;
-
-            if (Array.isArray(clienti)) {
-                const aziendeConId = clienti.map((aziende) => ({
-                    ...aziende,
-                }));
-                setFilteredAziende((prev) => [...prev, ...aziendeConId]);
-                setHasMore(filteredAziende.length + aziendeConId.length < recordTot);
-            } else {
-                console.error("I dati ottenuti non sono nel formato Array:", responsePaginazione.data);
-            }
-        } else {
-            if (Array.isArray(responsePaginazione.data)) {
-                const aziendeConId = responsePaginazione.data.map((aziende) => ({
-                    ...aziende,
-                }));
-                setOriginalAziende((prev) => [...prev, ...aziendeConId]);
-                setHasMore(aziendeConId.length >= quantita);
-            } else {
-                console.error("I dati ottenuti non sono nel formato Array:", responsePaginazione.data);
-            }
-        }
-        setLoading(false);
-    } catch (error) {
-        console.error("Errore durante il recupero dei dati:", error);
-        setLoading(false);
-    }
-    setPagina((prevPagina) => prevPagina + 1);
-};
-
-
-    //chiamata per le ricerche
     const handleRicerche = async () => {
         const isAnyFilterSet = Object.values(filtri).some((value) => value);
         if (!isAnyFilterSet) {
@@ -255,8 +244,8 @@ const Aziende = () => {
         }
 
         const baseUrl = userHasRole("ROLE_ADMIN")
-            ? "http://89.46.196.60:8443/aziende/react/ricerca/mod"
-            : "http://89.46.196.60:8443/aziende/react/ricerca/mod/personal";
+            ? "http://localhost:8080/aziende/react/ricerca/mod"
+            : "http://localhost:8080/aziende/react/ricerca/mod/personal";
 
         setLoading(true);
         try {
@@ -265,7 +254,7 @@ const Aziende = () => {
                 params: filtriDaInviare,
             });
             const responseOwner = await axios.get(
-                "http://89.46.196.60:8443/owner",
+                "http://localhost:8080/owner",
                 { headers }
             );
 
@@ -304,26 +293,8 @@ const Aziende = () => {
         }
     };
 
-    const handleFilterChange = (name) => (event) => {
-        const newValue = event.target.value;
-        setFiltri((currentFilters) => {
-            const newFilters = { ...currentFilters, [name]: newValue };
-
-            // Controllo se tutti i filtri sono vuoti
-            const areFiltersEmpty = Object.values(newFilters).every(
-                (value) => value === null
-            );
-            if (areFiltersEmpty) {
-                fetchData();
-            } else {
-                setPagina(0);
-                setFilteredAziende([]);
-                setHasMore(true);
-                // handleRicerche();
-            }
-
-            return newFilters;
-        });
+    const handleFilterChange = (newFilters) => {
+        setFiltri(newFilters);
     };
 
     useEffect(() => {
@@ -349,7 +320,7 @@ const Aziende = () => {
     const handleDelete = async (id) => {
         try {
             await axios.delete(
-                `http://89.46.196.60:8443/aziende/react/elimina/${id}`,
+                `http://localhost:8080/aziende/react/elimina/${id}`,
                 { headers: headers }
             );
             await fetchData();

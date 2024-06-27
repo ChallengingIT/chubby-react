@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { List, ListItem, ListItemText, Collapse, Checkbox, Typography, IconButton } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Collapse, IconButton, Typography, Paper } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import DragHandleIcon from '@mui/icons-material/DragHandle'; //icona per spostare le righe
-
+import { format } from 'date-fns';
 
 const TabellaAttivitaBusiness = ({ data = [], aziendeOptions = [] }) => {
     const [activities, setActivities] = useState([]);
@@ -29,95 +28,63 @@ const TabellaAttivitaBusiness = ({ data = [], aziendeOptions = [] }) => {
         setActivities(updatedActivities);
     };
 
-    // funzione per trovare il nome del cliente dal suo id
     const getAziendaLabel = (idCliente) => {
         const azienda = aziendeOptions.find(option => option.value === idCliente);
         return azienda ? azienda.label : 'Azienda Sconosciuta';
     };
 
-    const hideScrollbarStyle = {
-        width: '100%',
-        maxHeight: 280,
-        overflowY: 'auto',
-        overflowX: 'hidden',
-        bgcolor: 'transparent',
-        '&::-webkit-scrollbar': {
-            width: '0px',
-            background: 'transparent'  // Chrome/Safari/Webkit
-        },
-        scrollbarWidth: 'none',  // Firefox
-        msOverflowStyle: 'none'  // IE 10+
-    };
-
     return (
-        <List sx={hideScrollbarStyle}>
-            {activities.map((item, index) => (
-                <React.Fragment key={item.idAzioneKeyPeople || index}>
-                    <ListItem
-                        sx={{ bgcolor: 'transparent', borderBottom: '2px solid #ccc7c7' }}
-                        // secondaryAction={
-                        //     <Checkbox
-                        //         edge="end"
-                        //         checked={item.completed}
-                        //         onChange={() => handleToggleCompleted(item.idAzione)}
-                        //         inputProps={{ 'aria-labelledby': `checkbox-list-label-${item.idAzione}` }}
-                        //     />
-                        // }
-                    >
-                        <IconButton edge="start">
-                            <DragHandleIcon />
-                        </IconButton>
-                        <ListItemText
-                            id={`checkbox-list-label-${item.idAzioneKeyPeople}`}
-                            primary={
-                                <Typography style={{ textDecoration: item.completed ? 'line-through' : 'none' }}>
-                                    <span style={{ color: '#808080', fontWeight: 300 }}>Today </span>
-                                    <span style={{ color: '#00B400', fontWeight: 'bolder' }}> | </span>
-                                    <span style={{ fontWeight: 'bold' }}>{item.azione}</span>
-                                </Typography>
-                            }
-                        />
-                        <IconButton
-                            onClick={() => handleToggleExpanded(item.idAzioneKeyPeople)}
-                            aria-label="show more"
-                        >
-                            {expandedId === item.idAzioneKeyPeople ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                        </IconButton>
-                    </ListItem>
-                    <Collapse in={expandedId === item.idAzioneKeyPeople} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>
-                            <ListItem sx={{ pl: 4 }}>
-                                <ListItemText
-                                    primary={
-                                        <Typography>
-                                            <span style={{ fontWeight: 'bold' }}>Owner:</span> {item.siglaOwner}
-                                        </Typography>
-                                    }
-                                />
-                            </ListItem>
-                            <ListItem sx={{ pl: 4 }}>
-                                <ListItemText
-                                    primary={
-                                        <Typography>
-                                            <span style={{ fontWeight: 'bold' }}>Cliente:</span> {getAziendaLabel(item.idCliente)}
-                                        </Typography>
-                                    }
-                                />
-                            </ListItem>
-                            <ListItem sx={{ pl: 4 }}>
-                                <ListItemText
-                                    primary={
-                                        <Typography>
-                                            <span style={{ fontWeight: 'bold' }}>Contatto:</span> {item.nomeContatto}
-                                        </Typography>
-                                    }
-                                />
-                            </ListItem>
-                        </List>
-                    </Collapse>
-                </React.Fragment>
-            ))}
-        </List>
+        <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="collapsible table">
+                <TableHead>
+                    <TableRow>
+                        <TableCell sx={{ color: '#191919', fontWeight: 'bold'}}>Data</TableCell>
+                        <TableCell sx={{ color: '#191919', fontWeight: 'bold'}}>Ora</TableCell>
+                        <TableCell sx={{ color: '#191919', fontWeight: 'bold'}}>Azione</TableCell>
+                        <TableCell sx={{ color: '#191919', fontWeight: 'bold'}}>Owner</TableCell>
+                        <TableCell sx={{ color: '#191919', fontWeight: 'bold'}}>Cliente</TableCell>
+                        <TableCell sx={{ color: '#191919', fontWeight: 'bold'}}>Contatto</TableCell>
+                        <TableCell />
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {activities.map((item, index) => {
+                        const formattedDate = format(new Date(item.data), 'dd-MM-yyyy');
+                        const formattedTime = format(new Date(item.data), 'HH:mm');
+
+                        return (
+                            <React.Fragment key={item.idAzioneKeyPeople || index}>
+                                <TableRow>
+                                    <TableCell>{formattedDate}</TableCell>
+                                    <TableCell>{formattedTime}</TableCell>
+                                    <TableCell>{item.azione}</TableCell>
+                                    <TableCell>{item.siglaOwner}</TableCell>
+                                    <TableCell>{getAziendaLabel(item.idCliente)}</TableCell>
+                                    <TableCell>{item.nomeContatto}</TableCell>
+                                    <TableCell>
+                                        <IconButton
+                                            onClick={() => handleToggleExpanded(item.idAzioneKeyPeople)}
+                                            aria-label="expand row"
+                                        >
+                                            {expandedId === item.idAzioneKeyPeople ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                                        </IconButton>
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
+                                        <Collapse in={expandedId === item.idAzioneKeyPeople} timeout="auto" unmountOnExit>
+                                            <Typography variant="body2" style={{ padding: '10px' }}>
+                                                <strong>Note:</strong> {item.note || 'Nessuna nota'}
+                                            </Typography>
+                                        </Collapse>
+                                    </TableCell>
+                                </TableRow>
+                            </React.Fragment>
+                        );
+                    })}
+                </TableBody>
+            </Table>
+        </TableContainer>
     );
 };
 
