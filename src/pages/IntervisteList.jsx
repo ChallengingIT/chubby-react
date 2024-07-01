@@ -212,7 +212,7 @@ renderCell: (params) => (
   },
   
    //dataAggiornamento e follo up si chiama intervista.tipo.descrizione
-  { field: "azioni",         headerName: "Azioni",          flex: 1, renderCell: (params) => (
+  { field: "azioni",         headerName: "",          flex: 1, renderCell: (params) => (
     <div>
 <Link
 to={`/intervista/modifica/${params.row.id}`}

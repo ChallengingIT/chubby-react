@@ -85,7 +85,7 @@ function NuovaRicercaNeed({
             <Box
                 sx={{
                     width: '100%',
-                    backgroundColor: "#FEFCFD",
+                    bgcolor: theme.palette.button.main,
                     // border: 'solid 2px',
                     // borderColor: theme.palette.border.main,
                     borderRadius: '20px',
@@ -115,7 +115,7 @@ function NuovaRicercaNeed({
                             textAlign: "start",
                             borderRadius: "20px",
                             border: 'solid 1px #00B400',
-                            // backgroundColor: "#EDEDED",
+                            bgcolor: 'white',
                             "& .MuiFilledInput-root": {
                                 backgroundColor: "transparent",
                             },
@@ -155,7 +155,7 @@ function NuovaRicercaNeed({
                                     textAlign: "left",
                                     borderRadius: "20px",
                                     border: 'solid 1px #00B400',
-                                    // backgroundColor: "#EDEDED",
+                                    bgcolor: 'white',
                                     "& .MuiFilledInput-root": {
                                         backgroundColor: "transparent",
                                     },
@@ -197,7 +197,7 @@ function NuovaRicercaNeed({
                                     textAlign: "left",
                                     borderRadius: "20px",
                                     border: 'solid 1px #00B400',
-                                    // backgroundColor: "#EDEDED",
+                                    bgcolor: 'white',
                                     "& .MuiFilledInput-root": {
                                         backgroundColor: "transparent",
                                     },
@@ -239,7 +239,7 @@ function NuovaRicercaNeed({
                                     textAlign: "left",
                                     borderRadius: "20px",
                                     border: 'solid 1px #00B400',
-                                    // backgroundColor: "#EDEDED",
+                                    bgcolor: 'white',
                                     "& .MuiFilledInput-root": {
                                         backgroundColor: "transparent",
                                     },
@@ -281,7 +281,7 @@ function NuovaRicercaNeed({
                                     textAlign: "left",
                                     borderRadius: "20px",
                                     border: 'solid 1px #00B400',
-                                    // backgroundColor: "#EDEDED",
+                                    bgcolor: 'white',
                                     "& .MuiFilledInput-root": {
                                         backgroundColor: "transparent",
                                     },
@@ -308,12 +308,12 @@ function NuovaRicercaNeed({
                     disableRipple={true}
                     disableFocusRipple={true}
                     sx={{
-                        backgroundColor: theme.palette.button.main,
+                        // backgroundColor: theme.palette.button.main,
                         color: "white",
                         textTransform: "lowercase",
                         fontWeight: "bold",
                         "&:hover": {
-                            backgroundColor: theme.palette.button.mainHover,
+                            backgroundColor: 'black',
                             color: "white",
                             trasform: "scale(1.1)",
                         },
@@ -326,7 +326,7 @@ function NuovaRicercaNeed({
                     disableRipple={true}
                     disableFocusRipple={true}
                     sx={{
-                        backgroundColor: "black",
+                        // backgroundColor: "black",
                         color: "white",
                         textTransform: "lowercase",
                         fontWeight: "bold",

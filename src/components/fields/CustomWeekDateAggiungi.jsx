@@ -20,7 +20,7 @@ function CustomWeekDateAggiungi({ name, label, type, onChange, values }) {
       value={values[name] || ""}
       onChange={handleChange}
       sx={{
-          m: 2,
+          // m: 2,
           height: "4em",
           width: "100%",
           textAlign: "left",

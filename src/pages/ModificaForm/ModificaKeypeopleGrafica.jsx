@@ -282,8 +282,9 @@ const ModificaKeypeopleGrafica = () => {
                 { value: 2, label: "Hook" },
                 { value: 3, label: 'Link'}
               ] },
-              { label: "Stato*",              name: "idStato",              type: "select",      options: statiOptions },
               { label: "Owner*",              name: "idOwner",              type: "select",      options: ownerOptions},
+              { label: "Stato*",              name: "idStato",              type: "select",      options: statiOptions },
+
             { label: "Email*",                name: "email",                type: "text", maxLength: 45 },
             { label: "Cellulare",             name: "cellulare",            type: "text", maxLength: 20},
            

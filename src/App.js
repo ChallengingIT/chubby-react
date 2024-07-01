@@ -1,6 +1,6 @@
 import './App.css';
 import { BrowserRouter, Routes, Route }                               from 'react-router-dom';
-import React, { useEffect, useState }                                                          from 'react';
+import React                                                          from 'react';
 import PrivateRoute                                                   from './components/PrivateRoute.jsx';
 
 
@@ -8,7 +8,6 @@ import Aziende                                                         from './p
 import Need                                                            from './pages/Need.jsx';
 import Recruiting                                                      from './pages/Recruiting.jsx';
 import Layout                                                          from './components/Layout.jsx';
-import LoginPage                                                       from './pages/LoginPage.jsx';
 import IntervisteList                                                  from './pages/IntervisteList.jsx';
 import Keypeople                                                       from './pages/KeyPeople.jsx';
 import Hiring                                                          from './pages/Hiring.jsx';
@@ -31,7 +30,6 @@ import AggiungiRecruitingHiring                                        from './p
 import AggiungiHeadHunting                                             from './pages/AggiungiForm/AggiungiHeadHunting.jsx';
 import TorchyThemeProvider                                             from './components/TorchyThemeProvider.jsx';
 import { AuthProvider }                                                from './services/authContext.js';
-import DashboardClienti                                                from './pages/DashboardClienti.jsx';
 import AggiungiStaffing                                                from './pages/AggiungiForm/AggiungiStaffing.jsx';
 import AggiungiTemporary                                               from './pages/AggiungiForm/AggiungiTemporary.jsx';
 import Dashboard                                                       from './pages/Dashboard.jsx';
@@ -42,10 +40,11 @@ import ModificaHeadHunting                                             from './p
 import ModificaHiringRecruiting                                        from './pages/ModificaForm/ModificaHiringRecruiting.jsx';
 import AggiungiOwner                                                   from './pages/AggiungiForm/AggiungiOwner.jsx';
 import { NotificationProvider }                                        from './components/NotificationContext.js';
-import NuovaSignUpComponent from './prove/NuovaSignUpComponent.jsx';
-import NuovaLogin from './prove/NuovaLogin.jsx';
-import ForgotPasswordComponent from './prove/ForgotPasswordComponent.jsx';
+// import NuovaSignUpComponent from './prove/NuovaSignUpComponent.jsx';
+// import NuovaLogin from './prove/NuovaLogin.jsx';
+// import ForgotPasswordComponent from './prove/ForgotPasswordComponent.jsx';
 import LoginComponent from './components/LoginComponent.jsx';
+import DashboardClienti from './components/componentiCliente/DashboardClienti.jsx';
 
 
 

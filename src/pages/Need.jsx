@@ -280,8 +280,12 @@ const baseUrl = userHasRole('ROLE_ADMIN')
 
 
     useEffect(() => {
-        if (location.state?.descrizione) {
-            const newFiltri = { ...filtri, descrizione: location.state.descrizione };
+        if (location.state?.descrizione || location.state?.clienteId) {
+            const newFiltri = {
+                ...filtri,
+                descrizione: location.state.descrizione || filtri.descrizione,
+                azienda: location.state.clienteId || filtri.azienda
+            };
             setFiltri(newFiltri);
             handleRicerche(newFiltri);
         } else {
@@ -302,6 +306,7 @@ const baseUrl = userHasRole('ROLE_ADMIN')
         }
         // eslint-disable-next-line
     }, [location.state]);
+
 
     useEffect(() => {
         sessionStorage.setItem('filtriRicercaNeed', JSON.stringify(filtri));

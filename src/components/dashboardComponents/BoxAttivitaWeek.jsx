@@ -5,8 +5,11 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import TabellaAttivitaBusiness from './TabellaAttivitaBusiness';
 import TabellaAttivitaRecruiting from './TabellaAttivitaRecruiting.jsx';
 import axios from 'axios';
+import { useUserTheme } from '../TorchyThemeProvider.jsx';
 
 const BoxAttivitaWeek = ({ aziendeOptions }) => {
+    const theme = useUserTheme();
+
     const [currentDate, setCurrentDate] = useState(new Date());
     const [weekDataBusiness, setWeekDataBusiness] = useState([]);
     const [weekDataRecruiting, setWeekDataRecruiting] = useState([]);
@@ -114,7 +117,7 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
         <Box className="cardTabellaBusiness" id="cardTabellaBusiness" sx={{ width: '100%', height: '100%', position: 'relative', }}>
             <Box display="flex" justifyContent="flex-end" alignItems="center" mb={2}>
                 <Typography variant='h5' sx={{ mt: 1, mb: 1, mr: 2, fontWeight: 'bold', fontSize: '1.2em' }}>
-                    Attività ed Eventi
+                    To do list
                 </Typography>
                 <Box>
                     {isAdmin && (
@@ -136,7 +139,7 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
                         variant="contained"
                         onClick={() => setCurrentData('recruiting')}
                         sx={{
-                            bgcolor: currentData === 'recruiting' ? '#00B400' : '#191919',
+                            bgcolor: theme.palette.button.main,
                             borderRadius: '10px',
                             color: 'white',
                             fontWeight: 'bold'
@@ -157,7 +160,7 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
                         aziendeOptions={aziendeOptions} />
                 )}
             </Box>
-            <Box style={{ width: 250, height: 76, left: -16, top: 1, position: 'absolute', background: '#00B400', borderTopRightRadius: 20, borderBottomRightRadius: 20, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Box style={{ width: 250, height: 76, left: -16, top: 1, position: 'absolute', background: theme.palette.button.main, borderTopRightRadius: 20, borderBottomRightRadius: 20, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <IconButton onClick={handlePreviousWeek} style={{ color: 'white' }}>
                     <ArrowBackIosIcon />
                 </IconButton>

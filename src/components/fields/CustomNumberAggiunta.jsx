@@ -25,7 +25,7 @@
         value={values[name] || ""}
         onChange={handleChange}
         sx={{
-                m: 2,
+                // m: 2,
                 width: "100%",
                 textAlign: "left",
                 borderRadius: "20px",

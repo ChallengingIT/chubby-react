@@ -144,8 +144,8 @@
         <FormControl fullWidth>
         <InputLabel
             sx={{
-            ml: 2,
-            mt: 2,
+            // ml: 2,
+            // mt: 2,
             "&.Mui-focused": {
                 color: theme.palette.border.main,
             },
@@ -160,7 +160,7 @@
             variant="filled"
             onChange={handleChangeSkills}
             sx={{
-                m: 2,
+                // m: 2,
                 width: "100%",
                 textAlign: "left",
                 borderRadius: "20px",

@@ -4,8 +4,10 @@ import { Box, Dialog, DialogTitle, DialogContent, IconButton, Table, TableHead, 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CircularProgress from '@mui/material/CircularProgress';
 import CloseIcon from '@mui/icons-material/Close';
+import { useUserTheme } from "../TorchyThemeProvider";
 
 const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
+    const theme = useUserTheme();
     const [dialogOpen, setDialogOpen] = useState(false);
     const [currentPipelineData, setCurrentPipelineData] = useState({});
     const [rowHeight, setRowHeight] = useState(52); // altezza predefinita
@@ -161,7 +163,8 @@ const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
                         maxWidth: 'none',
                         height: 'auto',
                         borderRadius: '20px',
-                        border: '2.5px solid #00B400'
+                        border: '2.5px solid',
+                        borderColor: theme.palette.border.main
                     }
                 }}>
                 <DialogTitle sx={{ fontWeight: 600, fontSize: '1.2em' }}>

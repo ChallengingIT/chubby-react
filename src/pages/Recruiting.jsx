@@ -593,7 +593,7 @@ const Recruiting = () => {
     },
     {
       field: "azioni",
-      headerName: "Azioni",
+      headerName: "",
       flex: 1.6,
       sortable: false,
       filterable: false,

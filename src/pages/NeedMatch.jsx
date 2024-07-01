@@ -746,7 +746,7 @@ import NuovaRicercaNeedMatch from "../components/nuoveRicerche/NuovaRicercaNeedM
         { field: "dataUltimoContatto", headerName: "Contatto", flex: 1, sortable: false, filterable: false, disableColumnMenu: true },
         {
         field: "azioni",
-        headerName: "Azioni",
+        headerName: "",
         flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
         renderCell: (params) => (
             <div>
@@ -833,7 +833,7 @@ import NuovaRicercaNeedMatch from "../components/nuoveRicerche/NuovaRicercaNeedM
         },
         {
         field: "azioni",
-        headerName: "Azioni",
+        headerName: "",
         flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
         renderCell: (params) => (
             <div>
@@ -909,7 +909,7 @@ import NuovaRicercaNeedMatch from "../components/nuoveRicerche/NuovaRicercaNeedM
         { field: "dataUltimoContatto", headerName: "Contatto", flex: 0.8, sortable: false, filterable: false, disableColumnMenu: true },
         {
         field: "azioni",
-        headerName: "Azioni",
+        headerName: "",
         flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
         renderCell: (params) => (
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
@@ -933,7 +933,7 @@ import NuovaRicercaNeedMatch from "../components/nuoveRicerche/NuovaRicercaNeedM
         },
         {
         field: "status",
-        headerName: "Status",
+        headerName: "",
         flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
         renderCell: (params) => (
             <div>

@@ -10,15 +10,16 @@ import {
     Container,
     Link
 } from "@mui/material";
-import TabellaPipelineNeed from "../components/dashboardComponents/TabellaPipelineNeed";
 import axios from "axios";
-import { useNotification } from "../components/NotificationContext.js";
 import { useNavigate } from "react-router-dom";
-import BoxAttivitaWeek from "../components/dashboardComponents/BoxAttivitaWeek.jsx";
+import TabellaPipelineNeed from "../dashboardComponents/TabellaPipelineNeed.jsx";
+import BoxAttivitaWeek from "../dashboardComponents/BoxAttivitaWeek.jsx";
+import { useUserTheme } from "../TorchyThemeProvider.jsx";
 
-function Dashboard() {
+function DashboardClienti() {
     const navigate = useNavigate();
-    const { showNotification } = useNotification();
+    const theme = useUserTheme();
+
 
     const [originalPipeline, setOriginalPipeline] = useState([]);
     const [aziendeOptions, setAziendaOptions] = useState([]);
@@ -68,12 +69,12 @@ function Dashboard() {
         }
 
         const baseUrlPipeline = userHasRole("ROLE_ADMIN")
-            ? "http://89.46.196.60:8443/dashboard/pipeline/admin"
-            : "http://89.46.196.60:8443/dashboard/pipeline";
+            ? "http://localhost:8080/dashboard/pipeline/admin"
+            : "http://localhost:8080/dashboard/pipeline";
 
         try {
             const responsePipeline = await axios.get(baseUrlPipeline, { headers, params: filtriDaInviare });
-            const responseAzienda = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers });
+            const responseAzienda = await axios.get("http://localhost:8080/aziende/react/select", { headers });
 
             if (Array.isArray(responseAzienda.data)) {
                 setAziendaOptions(responseAzienda.data.map((azienda) => ({
@@ -88,8 +89,7 @@ function Dashboard() {
                 const pipelineConId = responsePipeline.data.map((pipeline) => ({
                     id: pipeline.id,
                     descrizione: pipeline.descrizione,
-                    // cliente: pipeline.cliente?.denominazione,
-                    cliente: pipeline.cliente,
+                    cliente: pipeline.cliente?.denominazione,
                     owner: `${pipeline.owner?.nome} ${pipeline.owner?.cognome}`,
                     priorita: pipeline.priorita,
                     stato: pipeline.stato?.descrizione,
@@ -129,8 +129,8 @@ function Dashboard() {
         console.log("handleRicerche");
     };
 
-    const handleDescrizioneClick = (descrizione, clienteId) => {
-        navigate('/need', { state: { descrizione, clienteId } });
+    const handleDescrizioneClick = (descrizione) => {
+        navigate('/need', { state: { descrizione } });
     };
 
     const columns = [
@@ -147,9 +147,6 @@ function Dashboard() {
             flex: 1,
             sortable: true,
             filterable: true,
-            renderCell: (params) => {
-                return params.value.denominazione;
-            }
         },
         {
             field: "descrizione",
@@ -159,11 +156,10 @@ function Dashboard() {
             filterable: true,
             renderCell: (params) => {
                 const descrizione = params.value;
-                const clienteId = params.row.cliente?.id;
                 return (
                     <Link
                         component="button"
-                        onClick={() => handleDescrizioneClick(descrizione, clienteId)}
+                        onClick={() => handleDescrizioneClick(descrizione)}
                         sx={{
                             textDecoration: "none",
                             color: "black",
@@ -227,7 +223,8 @@ function Dashboard() {
                                 borderRadius: "20px",
                                 maxWidth: "100%",
                                 height: "50vh",
-                                border: "2px solid #00B401",
+                                border: "2px solid",
+                                borderColor: theme.palette.border.main,
                                 display: "flex",
                                 flexDirection: "column",
                                 overflow: "hidden",
@@ -273,7 +270,8 @@ function Dashboard() {
                                     borderRadius: "20px",
                                     maxWidth: "100%",
                                     height: "40vh",
-                                    border: "2px solid #00B401",
+                                    border: "2px solid",
+                                    borderColor: theme.palette.border.main,
                                     display: "flex",
                                     flexDirection: "column",
                                     overflow: "hidden",
@@ -302,4 +300,5 @@ function Dashboard() {
     );
 }
 
-export default Dashboard;
+
+export default DashboardClienti;

@@ -2,25 +2,26 @@ import React, { useEffect, useState, useRef } from "react";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import { DataGrid } from "@mui/x-data-grid";
-import { useUserTheme } from "./TorchyThemeProvider";
+import { TextField } from "@mui/material";
+import { useUserTheme } from "../TorchyThemeProvider";
 
-const Tabella = ({
+const DataGridClienti = ({
     data = [],
     columns,
-    title,
     getRowId,
     pagina,
     quantita,
     onPageChange,
     righeTot,
+    onFilterChange
 }) => {
-
     const theme = useUserTheme();
 
     const [loading, setLoading] = useState(false);
     const [showNoDataMessage, setShowNoDataMessage] = useState(false);
     const [rowHeight, setRowHeight] = useState(52); // altezza predefinita
     const dataGridRef = useRef(null);
+    const [filters, setFilters] = useState({});
 
     useEffect(() => {
         if (data.length === 0) {
@@ -40,7 +41,7 @@ const Tabella = ({
         const calculateRowHeight = () => {
             if (dataGridRef.current) {
                 const availableHeight = dataGridRef.current.clientHeight;
-                const minRowHeight = 35; // altezza minima delle righe
+                const minRowHeight = 35;
                 const calculatedRowHeight = Math.max(minRowHeight);
                 setRowHeight(calculatedRowHeight);
             }
@@ -54,6 +55,63 @@ const Tabella = ({
         };
     }, [data.length]);
 
+    const handleFilterChange = (field, value) => {
+        const newFilters = { ...filters, [field]: value };
+        setFilters(newFilters);
+        onFilterChange(newFilters);
+    };
+
+    // Funzione per filtrare i dati in base ai filtri locali
+    const getFilteredData = () => {
+        return data.filter(row => {
+            return Object.keys(filters).every(key => {
+                return row[key].toString().toLowerCase().includes(filters[key].toString().toLowerCase());
+            });
+        });
+    };
+
+    const filteredData = getFilteredData();
+
+    const renderHeaderWithFilter = (params) => {
+        if (params.colDef.field === 'azioni') {
+            return null;
+        }
+        return (
+            <Box>
+                <div>{params.colDef.headerName}</div>
+                <TextField
+                    fullWidth
+                    variant="outlined"
+                    size="small"
+                    placeholder={`Filtra ${params.colDef.field}`}
+                    onChange={(e) => handleFilterChange(params.colDef.field, e.target.value)}
+                    sx={{
+                        mt: 1,
+                        borderRadius: '20px',
+                        bgcolor: '#EDEDED',
+                        "& .MuiOutlinedInput-root": {
+                            backgroundColor: "transparent",
+                        },
+                        "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "transparent",
+                        },
+                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "transparent",
+                        },
+                        "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
+                            borderColor: 'transparent',
+                        },
+                    }}
+                />
+            </Box>
+        );
+    };
+
+    const columnsWithFilter = columns.map((col) => ({
+        ...col,
+        renderHeader: (params) => renderHeaderWithFilter(params),
+    }));
+
     return (
         <Box
             ref={dataGridRef}
@@ -65,31 +123,14 @@ const Tabella = ({
                 display: "flex",
                 mt: 2,
                 border: "2px solid",
-                borderColor: theme.palette.primary.main,
-                // borderColor: theme.palette.primary,
+                borderColor: theme.palette.primary,
                 flexDirection: "column",
                 fontSize: "1.4em",
             }}
         >
-            {title && (
-                <Box
-                    sx={{
-                        display: "flex",
-                        alignItems: "flex-start",
-                        color: "black",
-                        mt: 2,
-                        mb: 1,
-                        ml: 3,
-                        fontWeight: "bold",
-                    }}
-                >
-                    {title}
-                </Box>
-            )}
-
             <DataGrid
-                rows={data}
-                columns={columns}
+                rows={filteredData}
+                columns={columnsWithFilter}
                 paginationMode="server"
                 pageSizeOptions={[10]}
                 rowCount={righeTot}
@@ -147,4 +188,4 @@ const Tabella = ({
     );
 };
 
-export default Tabella;
+export default DataGridClienti;
