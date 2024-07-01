@@ -10,10 +10,10 @@
     import ExploreIcon from "@mui/icons-material/Explore";
     import PersonSearchIcon from "@mui/icons-material/PersonSearch";
     import ChecklistRtlIcon from "@mui/icons-material/ChecklistRtl";
-    import PersonAddIcon from "@mui/icons-material/PersonAdd"; // aggiungi candidato
-    import AddCircleIcon from "@mui/icons-material/AddCircle"; // aggiungi need
-    import AddIcCallIcon from "@mui/icons-material/AddIcCall"; // aggiungi appuntamento
-    import EmailIcon from "@mui/icons-material/Email"; // email
+    // import PersonAddIcon from "@mui/icons-material/PersonAdd"; // aggiungi candidato
+    // import AddCircleIcon from "@mui/icons-material/AddCircle"; // aggiungi need
+    // import AddIcCallIcon from "@mui/icons-material/AddIcCall"; // aggiungi appuntamento
+    // import EmailIcon from "@mui/icons-material/Email"; // email
     import SettingsIcon from '@mui/icons-material/Settings'; //impostazioni
     import AppuntamentoModal from "./AppuntamentoModal";
     import EmailModal from "./EmailModal";
@@ -42,8 +42,8 @@
     const [activeLink, setActiveLink] = useState(null);
     const [isLogoutPopupOpen, setIsLogoutPopupOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null); // Nuovo stato per l'ancoraggio del Popover
-    const [appuntamentoModal, setAppuntamentoModal] = useState(false);
-    const [emailModal, setEmailModal] = useState(false);
+    // const [appuntamentoModal, setAppuntamentoModal] = useState(false);
+    // const [emailModal, setEmailModal] = useState(false);
     const [companyLogo, setCompanyLogo] = useState(""); // Stato per il logo aziendale
     const [ roleBusiness, setRoleBusiness ] = useState(false); // Stato per il ruolo aziendale
 
@@ -77,21 +77,21 @@
         closeLogoutPopup();
     };
 
-    const handleAppuntamentoClick = () => {
-        setAppuntamentoModal(true);
-    };
+    // const handleAppuntamentoClick = () => {
+    //     setAppuntamentoModal(true);
+    // };
 
-    const closeAppuntamentoModal = () => {
-        setAppuntamentoModal(false);
-    };
+    // const closeAppuntamentoModal = () => {
+    //     setAppuntamentoModal(false);
+    // };
 
-    const handleEmailClick = () => {
-        setEmailModal(true);
-    };
+    // const handleEmailClick = () => {
+    //     setEmailModal(true);
+    // };
 
-    const closeEmailModal = () => {
-        setEmailModal(false);
-    };
+    // const closeEmailModal = () => {
+    //     setEmailModal(false);
+    // };
 
     useEffect(() => {
         setActiveLink(location.pathname);
@@ -654,12 +654,12 @@
             </DialogActions>
         </Dialog>
 
-        <AppuntamentoModal
+        {/* <AppuntamentoModal
             open={appuntamentoModal}
             handleClose={closeAppuntamentoModal}
-        />
+        /> */}
 
-        <EmailModal open={emailModal} handleClose={closeEmailModal} />
+        {/* <EmailModal open={emailModal} handleClose={closeEmailModal} /> */}
         </Box>
     );
     }

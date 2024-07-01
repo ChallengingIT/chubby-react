@@ -50,7 +50,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
         <Box
         sx={{
             width: '100%',
-            backgroundColor: "#FEFCFD",
+            bgcolor: "#00B400",
             // border: 'solid 2px #00B400',
             borderRadius: '20px',
             display: "flex",
@@ -82,7 +82,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
                         borderRadius: "20px",
                         border: 'solid 1px #00B400',
 
-                        // backgroundColor: "#EDEDED",
+                        bgcolor: 'white',
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },
@@ -122,7 +122,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
                                     textAlign: "left",
                                     borderRadius: "20px",
                                     border: 'solid 1px #00B400',
-                                    // backgroundColor: "#EDEDED",
+                                    bgcolor: 'white',
                                     "& .MuiFilledInput-root": {
                                         backgroundColor: "transparent",
                                     },
@@ -164,7 +164,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
                         textAlign: "left",
                         borderRadius: "20px",
                         border: 'solid 1px #00B400',
-                        // backgroundColor: "#EDEDED",
+                        bgcolor: 'white',
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },
@@ -207,7 +207,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
                         textAlign: "left",
                         borderRadius: "20px",
                         border: 'solid 1px #00B400',
-                        // backgroundColor: "#EDEDED",
+                        bgcolor: 'white',
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },
@@ -234,12 +234,12 @@ import { useUserTheme } from "../TorchyThemeProvider";
                     disableRipple={true}
                     disableFocusRipple={true}
                     sx={{
-                    backgroundColor: theme.palette.button.main,
+                    // backgroundColor: theme.palette.button.main,
                     color: "white",
                     textTransform: "lowercase",
                     fontWeight: "bold",
                     "&:hover": {
-                        backgroundColor: theme.palette.button.mainHover,
+                        backgroundColor: "black",
                         color: "white",
                         trasform: "scale(1.1)",
                     },
@@ -252,7 +252,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
                     disableRipple={true}
                     disableFocusRipple={true}
                     sx={{
-                    backgroundColor: "black",
+                    // backgroundColor: "black",
                     color: "white",
                     textTransform: "lowercase",
                     fontWeight: "bold",

@@ -35,7 +35,7 @@ function CustomAutocomplete({
           label={label}
           disabled={disabled}
           sx={{
-            m: 2,
+           
             width: "100%",
             textAlign: "left",
             borderRadius: "20px",

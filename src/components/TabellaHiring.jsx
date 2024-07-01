@@ -71,7 +71,7 @@ const TabellaHiring = ({ data, columns, getRowId }) => {
           <TableRow>
             <TableCell sx={{ fontWeight: "bold", borderBottom: '1.5px solid #ccc7c7' }}>Nome Azienda</TableCell>
             <TableCell sx={{ fontWeight: "bold", borderBottom: '1.5px solid #ccc7c7' }}>Tipo di Servizio</TableCell>
-            <TableCell sx={{ fontWeight: "bold", borderBottom: '1.5px solid #ccc7c7' }}>Azioni</TableCell>
+            <TableCell sx={{ fontWeight: "bold", borderBottom: '1.5px solid #ccc7c7' }}></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

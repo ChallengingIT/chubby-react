@@ -17,7 +17,9 @@ function CustomSelectAggiungi({
   };
 
   return (
-    <FormControl variant="filled" fullWidth sx={{ m: 2 }}>
+    <FormControl variant="filled" fullWidth 
+    // sx={{ m: 2 }}
+    >
       <InputLabel id={`${name}-label`}>{label}</InputLabel>
       <Select
         labelId={`${name}-label`}

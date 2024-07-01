@@ -26,7 +26,25 @@
         setShowChat(false);
     };
 
+
+    const user = JSON.parse(sessionStorage.getItem("user"));
+
+
+    const userHasRole = (roleToCheck) => {
+        const userString = sessionStorage.getItem("user");
+        if (!userString) {
+            return false;
+        }
+        const userObj = JSON.parse(userString);
+        return userObj.roles.includes(roleToCheck);
+    };
+
+
+    
+
     const open = Boolean(anchorEl);
+    const isBusinessUser = userHasRole('ROLE_BUSINESS');
+
     return (
         <Container maxWidth="false"
         sx={{
@@ -36,6 +54,7 @@
             width: "100vw",
         }}
         >
+        {!isBusinessUser && (
             <Fab aria-label="add" sx={{
                     position: 'fixed',
                     bottom: 30,
@@ -53,6 +72,7 @@
                         transform: isRotated ? 'rotate(225deg)' : 'none'
                     }} />
                 </Fab>
+                 )}
                 <Popover
                 open={Boolean(anchorEl) && showChat}
                 anchorEl={anchorEl}

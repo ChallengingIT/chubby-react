@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import { DataGrid } from "@mui/x-data-grid";
+import { useUserTheme } from "./TorchyThemeProvider";
 
 const Tabella = ({
     data = [],
@@ -13,6 +14,9 @@ const Tabella = ({
     onPageChange,
     righeTot,
 }) => {
+
+    const theme = useUserTheme();
+
     const [loading, setLoading] = useState(false);
     const [showNoDataMessage, setShowNoDataMessage] = useState(false);
     const [rowHeight, setRowHeight] = useState(52); // altezza predefinita
@@ -60,7 +64,8 @@ const Tabella = ({
                 height: "100%",
                 display: "flex",
                 mt: 2,
-                border: "2px solid #00B401",
+                border: "2px solid",
+                borderColor: theme.palette.primary,
                 flexDirection: "column",
                 fontSize: "1.4em",
             }}

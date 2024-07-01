@@ -88,7 +88,8 @@ function Dashboard() {
                 const pipelineConId = responsePipeline.data.map((pipeline) => ({
                     id: pipeline.id,
                     descrizione: pipeline.descrizione,
-                    cliente: pipeline.cliente?.denominazione,
+                    // cliente: pipeline.cliente?.denominazione,
+                    cliente: pipeline.cliente,
                     owner: `${pipeline.owner?.nome} ${pipeline.owner?.cognome}`,
                     priorita: pipeline.priorita,
                     stato: pipeline.stato?.descrizione,
@@ -128,8 +129,8 @@ function Dashboard() {
         console.log("handleRicerche");
     };
 
-    const handleDescrizioneClick = (descrizione) => {
-        navigate('/need', { state: { descrizione } });
+    const handleDescrizioneClick = (descrizione, clienteId) => {
+        navigate('/need', { state: { descrizione, clienteId } });
     };
 
     const columns = [
@@ -146,6 +147,9 @@ function Dashboard() {
             flex: 1,
             sortable: true,
             filterable: true,
+            renderCell: (params) => {
+                return params.value.denominazione;
+            }
         },
         {
             field: "descrizione",
@@ -155,10 +159,11 @@ function Dashboard() {
             filterable: true,
             renderCell: (params) => {
                 const descrizione = params.value;
+                const clienteId = params.row.cliente?.id;
                 return (
                     <Link
                         component="button"
-                        onClick={() => handleDescrizioneClick(descrizione)}
+                        onClick={() => handleDescrizioneClick(descrizione, clienteId)}
                         sx={{
                             textDecoration: "none",
                             color: "black",

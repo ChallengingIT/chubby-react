@@ -1,15 +1,13 @@
     import React, { useState, useEffect } from "react";
     import axios from "axios";
     import InfiniteScroll from "react-infinite-scroll-component";
-    import ListaNeedCard from "../components/card/ListaNeedCard";
     import { useLocation, useParams, useNavigate } from "react-router-dom";
-    import RicercheListaNeed from "../components/ricerche/RicercheListaNeed.jsx";
 
     import { Box, Grid, CircularProgress, Button, Typography } from "@mui/material";
-    import { theme } from "antd";
     import { useUserTheme } from "../components/TorchyThemeProvider.jsx";
 import SchemePage from "../components/SchemePage.jsx";
 import NuovaRicercaListaNeed from "../components/nuoveRicerche/NuovaRicercaListaNeed.jsx";
+import ListaNeedCardV2 from "../components/card/ListaNeedCardV2.jsx";
 
     const AziendeListaNeedCard = () => {
     const theme = useUserTheme();
@@ -52,6 +50,7 @@ import NuovaRicercaListaNeed from "../components/nuoveRicerche/NuovaRicercaLista
     const headers = {
         Authorization: `Bearer ${token}`,
     };
+
 
     const fetchData = async () => {
         setLoading(true);
@@ -456,7 +455,7 @@ import NuovaRicercaListaNeed from "../components/nuoveRicerche/NuovaRicercaLista
             ) : (
                 originalListaNeed.map((need, index) => (
                 <Grid item xs={12} md={6} key={index}>
-                    <ListaNeedCard
+                    <ListaNeedCardV2
                     valori={need}
                     statoOptions={statoOptions}
                     onDelete={() => handleDelete(need.id)}
