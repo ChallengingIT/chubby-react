@@ -7,7 +7,7 @@
     import { useUserTheme } from "../components/TorchyThemeProvider.jsx";
 import SchemePage from "../components/SchemePage.jsx";
 import NuovaRicercaListaNeed from "../components/nuoveRicerche/NuovaRicercaListaNeed.jsx";
-import ListaNeedCardV2 from "../components/card/ListaNeedCardV2.jsx";
+import ListaNeedCard from "../components/card/ListaNeedCard.jsx";
 
     const AziendeListaNeedCard = () => {
     const theme = useUserTheme();
@@ -455,7 +455,7 @@ import ListaNeedCardV2 from "../components/card/ListaNeedCardV2.jsx";
             ) : (
                 originalListaNeed.map((need, index) => (
                 <Grid item xs={12} md={6} key={index}>
-                    <ListaNeedCardV2
+                    <ListaNeedCard
                     valori={need}
                     statoOptions={statoOptions}
                     onDelete={() => handleDelete(need.id)}
