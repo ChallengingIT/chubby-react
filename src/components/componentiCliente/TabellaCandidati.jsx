@@ -45,7 +45,7 @@ const TabellaCandidati = () => {
         };
         try {
             const candidatiResponse = await axios.get(
-                `http://localhost:8080/need/react/match/associabili/ricerca/mod/${id}`,
+                `http://89.46.196.60:8443/need/react/match/associabili/ricerca/mod/${id}`,
                 { headers: headers, params: paginazione }
             );
 
@@ -70,7 +70,7 @@ const TabellaCandidati = () => {
     }, []);
 
     const fetchMoreDataCandidati = async (paginaCandidati, filters = filtri) => {
-        const url = `http://localhost:8080/need/react/match/associabili/ricerca/mod/${id}`
+        const url = `http://89.46.196.60:8443/need/react/match/associabili/ricerca/mod/${id}`
 
         const filtriCandidati = {
             ...filters,
@@ -102,7 +102,7 @@ const TabellaCandidati = () => {
         try {
             const idNeed = parseInt(id);
             const idCandidato = row.id;
-            const url = `http://localhost:8080/need/job/description/add/shortlist?id=${idNeed}&idCandidato=${idCandidato}`;
+            const url = `http://89.46.196.60:8443/need/job/description/add/shortlist?id=${idNeed}&idCandidato=${idCandidato}`;
             const responseAssocia = await axios.post(url, { headers: headers });
             fetchData();
         } catch (error) {

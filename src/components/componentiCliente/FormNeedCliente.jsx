@@ -49,26 +49,26 @@ const FormNeedCliente = ({idNeed}) => {
     const fetchNeedOptions = async () => {
       try {
         const responseSkill = await axios.get(
-          "http://localhost:8080/staffing/react/skill",
+          "http://89.46.196.60:8443/staffing/react/skill",
           { headers: headers }
         );
         const needResponse = await axios.get(
-          `http://localhost:8080/job/description/need/${idNeed}`,
+          `http://89.46.196.60:8443/job/description/need/${idNeed}`,
           { headers: headers }
         );
 
         const impiegoResponse = await axios.get(
-          "http://localhost:8080/job/description/impiego",
+          "http://89.46.196.60:8443/job/description/impiego",
           { headers: headers }
         );
 
         const lavoroResponse = await axios.get(
-          "http://localhost:8080/job/description/lavoro",
+          "http://89.46.196.60:8443/job/description/lavoro",
           { headers: headers }
         )
 
         const responseJobtitle = await axios.get(
-          "http://localhost:8080/aziende/react/tipologia",
+          "http://89.46.196.60:8443/aziende/react/tipologia",
           { headers: headers }
         )
 
@@ -183,7 +183,7 @@ const FormNeedCliente = ({idNeed}) => {
         delete values.idSkills;
 
         const responseSaveNeed = await axios.post(
-          "http://localhost:8080/need/react/salva",
+          "http://89.46.196.60:8443/need/react/salva",
           { ...values, idAzienda: parseInt(values.idAzienda, 10) },
           { params: { skill1: skills }, headers: headers }
         );
