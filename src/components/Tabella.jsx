@@ -65,7 +65,8 @@ const Tabella = ({
                 display: "flex",
                 mt: 2,
                 border: "2px solid",
-                borderColor: theme.palette.primary,
+                borderColor: theme.palette.primary.main,
+                // borderColor: theme.palette.primary,
                 flexDirection: "column",
                 fontSize: "1.4em",
             }}
