@@ -112,6 +112,7 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
     }, [interval]);
 
     const isAdmin = userHasRole("ROLE_ADMIN");
+    const isBM = userHasRole("ROLE_BM");
 
     return (
         <Box className="cardTabellaBusiness" id="cardTabellaBusiness" sx={{ width: '100%', height: '100%', position: 'relative', }}>
@@ -120,7 +121,7 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
                     To do list
                 </Typography>
                 <Box>
-                    {isAdmin && (
+                    {( isAdmin || isBM) && (
                         <Button
                             variant="contained"
                             onClick={() => setCurrentData('business')}

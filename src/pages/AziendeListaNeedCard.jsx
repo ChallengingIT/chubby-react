@@ -8,6 +8,7 @@
 import SchemePage from "../components/SchemePage.jsx";
 import NuovaRicercaListaNeed from "../components/nuoveRicerche/NuovaRicercaListaNeed.jsx";
 import ListaNeedCard from "../components/card/ListaNeedCard.jsx";
+import ListaNeedCardV2 from '../components/card/ListaNeedCardV2.jsx';
 
     const AziendeListaNeedCard = () => {
     const theme = useUserTheme();
