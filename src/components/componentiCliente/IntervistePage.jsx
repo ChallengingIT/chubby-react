@@ -4,10 +4,12 @@ import { useUserTheme } from '../TorchyThemeProvider';
 import CloseIcon from "@mui/icons-material/Close";
 
 const initialData = [
+  { name: 'Andrea Rizza', email: 'andrea@example.com', stato: 'int 1', progress: 30 },
   { name: 'Ludovica La Torre', email: 'ludovica@example.com', stato: 'int 1', progress: 50 },
   { name: 'Ramona Ruoppo', email: 'ramona@example.com', stato: 'int 1', progress: 75 },
-  { name: 'Andrea Rizza', email: 'andrea@example.com', stato: 'int 1', progress: 30 },
-  { name: 'Marco Sciuto', email: 'marco@example.com', stato: 'int 1', progress: 90 }
+  { name: 'Marco Sciuto', email: 'marco@example.com', stato: 'int 1', progress: 90 },
+  { name: 'Martina Squadrilli', email: 'smartys@example.com', stato: 'int 1' }
+
 ];
 
 const IntervistePage = () => {
