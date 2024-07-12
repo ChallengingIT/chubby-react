@@ -123,6 +123,13 @@ const AggiungiNeedGrafica = () => {
         ];
 
 
+        const seniorityOptions = [
+            { label: "Neo", value: 1},
+            { label: "Junior", value: 2},
+            { label: "Middle", value: 3 },
+            { label: "Senior", value: 4 },
+        ];
+
 
     const menu = [
         {
@@ -311,7 +318,7 @@ const AggiungiNeedGrafica = () => {
             { label: "Headcount",                  name: "numeroRisorse",                type: "number"                                                 },
             { label: "Location*",                  name: "location",                     type: "text",                   maxLength: 45                  },
             { label: "Skills",                     name: "skills",                       type: "multipleSelect",    options: skillsOptions              },
-            { label: "Seniority",                  name: "anniEsperienza",               type: "decimalNumber"                                          },
+            { label: "Seniority",                  name: "anniEsperienza",               type: "select",             options: seniorityOptions                            },
             { label: 'Pubblicazione Annuncio*',    name: 'pubblicazione',                type: 'select',                 options: pubblicazioneOptions  },
             { label: 'Screening*',                 name: 'screening',                    type: 'select',                 options: screeningOptions      },
             { label: "Note",                       name: "note",                         type: "note",                   maxLength: 4000                },

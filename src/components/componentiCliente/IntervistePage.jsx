@@ -1,7 +1,8 @@
 import { Box, Checkbox, Grid, IconButton, Switch, Typography, CircularProgress } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useUserTheme } from '../TorchyThemeProvider';
 import CloseIcon from "@mui/icons-material/Close";
+import axios from 'axios';
 
 const initialData = [
   { name: 'Andrea Rizza', email: 'andrea@example.com', stato: 'int 1', progress: 30 },
@@ -12,9 +13,9 @@ const initialData = [
 
 ];
 
-const IntervistePage = () => {
+const IntervistePage = ({ idNeed }) => {
   const theme = useUserTheme();
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState([]);
   const [switchStates, setSwitchStates] = useState(data.map(() => false));
 
   const handleSwitchChange = (index) => {
@@ -24,6 +25,33 @@ const IntervistePage = () => {
       return newStates;
     });
   };
+
+  const user = JSON.parse(sessionStorage.getItem("user"));
+  const token = user?.token;
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const responseIntervista = await axios.get(
+          `http://localhost:8080/need/react/${idNeed}`,
+          { headers: headers }
+        );
+        const dataIntervista = responseIntervista.data?.candidati || [];
+        setData(dataIntervista);
+        setSwitchStates(dataIntervista.map(() => false));
+      } catch (error) {
+        console.error("Errore durante il recupero della shortList: ", error);
+      }
+    };
+
+    fetchData();
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <Box sx={{
@@ -61,13 +89,13 @@ const IntervistePage = () => {
             </IconButton>
             </Grid>
             <Grid item xs={2}>
-              <Typography variant="h8">{item.name}</Typography>
+              <Typography variant="h8">{item.nome} {item.cognome}</Typography>
             </Grid>
             <Grid item xs={2}>
               <Typography variant="body2">{item.email}</Typography>
             </Grid>
             <Grid item xs={1}>
-              <Typography variant="body2">{item.stato}</Typography>
+              <Typography variant="body2">{item.stato?.descrizione}</Typography>
             </Grid>
             <Grid item xs={1}>
               <Switch

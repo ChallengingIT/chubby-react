@@ -11,6 +11,9 @@ const steps = ['Job Description', 'Candidati', 'Rating e shortlist', 'Interviste
 const DialogNeed = ({idNeed}) => {
   const theme = useUserTheme();
 
+
+
+
   const [activeStep, setActiveStep] = React.useState(0);
 
   const handleStepClick = (index) => {
@@ -32,9 +35,9 @@ const DialogNeed = ({idNeed}) => {
       </Stepper>
       <Box sx={{ mt: 2 }}>
         {activeStep === 0 && <FormNeedCliente idNeed={idNeed} />}
-        {activeStep === 1 && <TabellaCandidati />}
+        {activeStep === 1 && <TabellaCandidati idNeed={idNeed}/>}
         {activeStep === 2 && <Shortlist idNeed={idNeed} />}
-        {activeStep === 3 && <IntervistePage />}
+        {activeStep === 3 && <IntervistePage idNeed={idNeed} />}
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
         <Button

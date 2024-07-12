@@ -8,7 +8,10 @@ import CustomTextFieldModifica                                                  
 import CustomNoteModifica                                                                                       from '../../components/fields/CustomNoteModifica';
 import CustomDatePickerModifica                                                                                 from '../../components/fields/CustomDatePickerModifica';
 import InfoIcon                                                                                                 from '@mui/icons-material/Info';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CheckCircleIcon                                                                                          from '@mui/icons-material/CheckCircle';
+import ClearIcon                                                                                                from '@mui/icons-material/Clear';
+import CheckIcon                                                                                                from '@mui/icons-material/Check';
+import CustomEmailFieldModfifica                                                                                from '../../components/fields/CustomEmailFieldModifica.jsx';
 
 
 const ModificaKeypeopleGrafica = () => {
@@ -27,11 +30,14 @@ const ModificaKeypeopleGrafica = () => {
     const [ loading,            setLoading              ] = useState(true);
 
     //stati per i valori
-    const [ aziendeOptions, setAziendeOptions] = useState([]);
-    const [ ownerOptions,   setOwnerOptions  ] = useState([]);
-    const [ statiOptions,   setStatiOptions  ] = useState([]);
-    const [ datiModifica,   setDatiModifica  ] = useState([]);
-    const [ values,         setValues        ] = useState({});
+    const [ aziendeOptions,     setAziendeOptions  ] = useState([]);
+    const [ ownerOptions,       setOwnerOptions    ] = useState([]);
+    const [ statiOptions,       setStatiOptions    ] = useState([]);
+    const [ datiModifica,       setDatiModifica    ] = useState([]);
+    const [ values,             setValues          ] = useState({});
+    const [ emailValidation,    setEmailValidation ] = useState(null);
+    const [ emailTouched,       setEmailTouched    ] = useState(false);
+
 
 
 
@@ -181,6 +187,23 @@ const ModificaKeypeopleGrafica = () => {
             }
         }
     };
+    
+    //verifica se l'email è già presente o meno a db
+    const verifyEmail = async (email) => {
+        try {
+          const emailResponse = await axios.get(
+            `http://localhost:8080/keypeople/${email}`,
+            { headers: headers }
+          );
+          if (emailResponse.data === "KO") {
+            setEmailValidation("error");
+          } else if (emailResponse.data === "OK") {
+            setEmailValidation("success");
+          }
+        } catch (error) {
+          console.error("errore durante la verifica della email: ", error);
+        }
+      };    
 
 
         // Funzione per il cambio stato degli input
@@ -189,6 +212,10 @@ const ModificaKeypeopleGrafica = () => {
             ...prevValues,
             ...fieldValue
         }));
+        if (fieldValue.email) {
+            setEmailTouched(true);
+            verifyEmail(fieldValue.email);
+          }
     };
 
         //funzione per la chiusura dell'alert
@@ -285,7 +312,7 @@ const ModificaKeypeopleGrafica = () => {
               { label: "Owner*",              name: "idOwner",              type: "select",      options: ownerOptions},
               { label: "Stato*",              name: "idStato",              type: "select",      options: statiOptions },
 
-            { label: "Email*",                name: "email",                type: "text", maxLength: 45 },
+            { label: "Email*",                name: "email",                type: "email", maxLength: 45 },
             { label: "Cellulare",             name: "cellulare",            type: "text", maxLength: 20},
            
             
@@ -398,6 +425,32 @@ const ModificaKeypeopleGrafica = () => {
                         onChange={handleChange}
                         initialValues={initialValues}
                         maxLength={field.maxLength}
+                        />
+                    );
+
+
+                    case 'email':
+                    return (
+                        <CustomEmailFieldModfifica
+                        name={field.name}
+                        label={field.label}
+                        type={field.type}
+                        values={values}
+                        onChange={handleChange}
+                        initialValues={initialValues}
+                        maxLength={field.maxLength}
+                        error={emailTouched && emailValidation === "error"}
+                            helperText={emailTouched && emailValidation === "error" ? "Email già presente" : ""}
+                            InputProps={{
+                                endAdornment: emailTouched && emailValidation === "error" ? (
+                                    <ClearIcon color="error" />
+                                ) : emailTouched && emailValidation === "success" ? (
+                                    <CheckIcon color="success" />
+                                ) : null,
+                            }}
+                            sx={{
+                                borderBottom: emailTouched && emailValidation === "error" ? "2px solid red" : emailTouched && emailValidation === "success" ? "2px solid green" : "none"
+                            }}
                         />
                     );
 
