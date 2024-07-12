@@ -55,10 +55,13 @@
         }}
         >
         {!isBusinessUser && (
-            <Fab aria-label="add" sx={{
+            <Fab 
+            aria-label="add"
+            size="small" 
+            sx={{
                     position: 'fixed',
-                    bottom: 30,
-                    right: 30,
+                    bottom: 10,
+                    right: 10,
                     bgcolor: '#00B400',
                     transition: 'transform 0.3s ease, border-width 0.3s ease',
                     '&:hover': {

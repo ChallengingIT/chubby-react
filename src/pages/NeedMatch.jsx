@@ -893,7 +893,16 @@ import NuovaRicercaNeedMatch from "../components/nuoveRicerche/NuovaRicercaNeedM
             </div>
         ),
         },
-        { field: "rating", headerName: "Rating", flex: 0.5, sortable: false, filterable: false, disableColumnMenu: true },
+        {
+            field: "rating",
+            headerName: "Rating",
+            flex: 0.5, sortable: false, filterable: false, disableColumnMenu: true,
+            renderCell: (params) => (
+                <div style={{ textAlign: "start" }}>
+                    {params.row.rating ? params.row.rating.toFixed(2) : ""}
+                </div>
+            ),
+        },
         {
         field: "stato",
         headerName: "Stato",
