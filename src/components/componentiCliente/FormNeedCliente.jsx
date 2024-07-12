@@ -2,91 +2,78 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import CustomAutocomplete from "../../components/fields/CustomAutocomplete";
-import CustomMultipleSelectAggiunta from "../../components/fields/CustomMultipleSelectAggiunta";
-import {
-  Box,
-  Skeleton,
-  Grid,
-  Slide,
-} from "@mui/material";
-import { useUserTheme } from "../../components/TorchyThemeProvider";
+import CustomMultipleSelectModifica from "../../components/fields/CustomMultipleSelectModifica";
+import { Box, Skeleton, Grid } from "@mui/material";
 import CustomTextFieldModifica from "../fields/CustomTextFieldModifica";
 import CustomNoteModifica from "../fields/CustomNoteModifica";
+import CustomAutocompleteSeniority from "../fields/CustomAutocompleteSeniority";
 
-const FormNeedCliente = ({idNeed}) => {
-
-
-  const theme = useUserTheme();
+const FormNeedCliente = ({ idNeed }) => {
   const { id } = useParams();
   const idAzienda = id;
 
-
-  //stati della pagina
   const [alert, setAlert] = useState({ open: false, message: "" });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(true);
-
   const [skillsOptions, setSkillsOptions] = useState([]);
-  const [datiModifica, setDatiModifica] = useState([]);
-  const [aziendaID, setAziendaID] = useState(null);
+  const [datiModifica, setDatiModifica] = useState({});
   const [impiegoOptions, setImpiegoOptions] = useState([]);
   const [lavoroOptions, setLavoroOptions] = useState([]);
   const [jobtitleOptions, setJobtitleOptions] = useState([]);
-
-
   const [values, setValues] = useState({ idAzienda });
-  // Recupera l'token da sessionStorage
+
   const user = JSON.parse(sessionStorage.getItem("user"));
   const token = user?.token;
 
-  // Configura gli headers della richiesta con l'Authorization token
   const headers = {
     Authorization: `Bearer ${token}`,
   };
 
-  //chiamata per ricevere i dati dal db
   useEffect(() => {
     const fetchNeedOptions = async () => {
       try {
         const responseSkill = await axios.get(
-          "http://89.46.196.60:8443/staffing/react/skill",
+          "http://localhost:8080/staffing/react/skill",
           { headers: headers }
         );
         const needResponse = await axios.get(
-          `http://89.46.196.60:8443/job/description/need/${idNeed}`,
+          `http://localhost:8080/need/react/${idNeed}`,
           { headers: headers }
         );
 
         const impiegoResponse = await axios.get(
-          "http://89.46.196.60:8443/job/description/impiego",
+          "http://localhost:8080/need/impiego",
           { headers: headers }
         );
 
         const lavoroResponse = await axios.get(
-          "http://89.46.196.60:8443/job/description/lavoro",
+          "http://localhost:8080/need/lavoro",
           { headers: headers }
-        )
+        );
 
         const responseJobtitle = await axios.get(
-          "http://89.46.196.60:8443/aziende/react/tipologia",
+          "http://localhost:8080/aziende/react/tipologia",
           { headers: headers }
-        )
-
+        );
 
         if (Array.isArray(responseJobtitle.data)) {
           const jobtitleOptions = responseJobtitle.data.map((jobtitle) => ({
-              label: jobtitle.descrizione,
-              value: jobtitle.id,
+            label: jobtitle.descrizione,
+            value: jobtitle.id,
           }));
           setJobtitleOptions(jobtitleOptions);
-      }
-
+        }
 
         const modificaData = needResponse.data;
         const aziendaId = needResponse.data.cliente.id;
-        setAziendaID(aziendaId);
         setDatiModifica(modificaData);
-
+        setValues({
+          ...modificaData,
+          idAzienda: aziendaId,
+          idSkills: modificaData.skills
+            ? modificaData.skills.map((skill) => skill.id)
+            : [],
+        });
 
         if (Array.isArray(impiegoResponse.data)) {
           const impiegoOptions = impiegoResponse.data.map((impiego) => ({
@@ -96,7 +83,6 @@ const FormNeedCliente = ({idNeed}) => {
           setImpiegoOptions(impiegoOptions);
         }
 
-
         if (Array.isArray(lavoroResponse.data)) {
           const lavoroOptions = lavoroResponse.data.map((lavoro) => ({
             label: lavoro.descrizione,
@@ -104,8 +90,6 @@ const FormNeedCliente = ({idNeed}) => {
           }));
           setLavoroOptions(lavoroOptions);
         }
-
-
 
         if (Array.isArray(responseSkill.data)) {
           const skillsOptions = responseSkill.data.map((skill) => ({
@@ -121,20 +105,8 @@ const FormNeedCliente = ({idNeed}) => {
     };
 
     fetchNeedOptions();
-  }, []);
+  }, [idNeed]);
 
-  //funzione per la validazione dei field
-  const validateFields = (values, mandatoryFields) => {
-    let errors = {};
-    mandatoryFields.forEach((field) => {
-      if (!values[field]) {
-        errors[field] = "Questo campo è obbligatorio";
-      }
-    });
-    return errors;
-  };
-
-  // Funzione per il cambio stato degli input
   const handleChange = (fieldValue) => {
     setValues((prevValues) => ({
       ...prevValues,
@@ -142,18 +114,32 @@ const FormNeedCliente = ({idNeed}) => {
     }));
   };
 
-  //funzione per il cambio stato delle skill
   const handleChangeSkill = (fieldValue) => {
     const fieldName = Object.keys(fieldValue)[0];
-    const newValues = fieldValue[fieldName];
+    const newSelections = fieldValue[fieldName];
 
-    setValues((prevValues) => ({
-      ...prevValues,
-      [fieldName]: [...newValues],
-    }));
+    setValues((prevValues) => {
+      const currentSelections = prevValues[fieldName] || [];
+
+      const selectionsToAdd = newSelections.filter(
+        (selection) => !currentSelections.includes(selection)
+      );
+
+      const selectionsToRemove = currentSelections.filter(
+        (selection) => !newSelections.includes(selection)
+      );
+
+      const updatedSelections = currentSelections
+        .filter((selection) => !selectionsToRemove.includes(selection))
+        .concat(selectionsToAdd);
+
+      return {
+        ...prevValues,
+        [fieldName]: updatedSelections,
+      };
+    });
   };
 
-  //funzione per la chiusura dell'alert
   const handleCloseAlert = (reason) => {
     if (reason === "clickaway") {
       return;
@@ -161,12 +147,22 @@ const FormNeedCliente = ({idNeed}) => {
     setAlert({ ...alert, open: false });
   };
 
-  //funzione per la transizione dell'alert
-  function TransitionDown(props) {
-    return <Slide {...props} direction="down" />;
-  }
+  const fieldMapping = {
+    idSkills: "skills",
+  };
 
-  //funzione per il salvataggio
+  const replaceKeysInValues = (values, mapping) => {
+    const newValues = { ...values };
+    Object.keys(mapping).forEach((key) => {
+      if (key in newValues) {
+        const newKey = mapping[key];
+        newValues[newKey] = newValues[key];
+        delete newValues[key];
+      }
+    });
+    return newValues;
+  };
+
   const handleSubmit = async (values) => {
     const hasErrors = Object.keys(errors).length > 0;
 
@@ -182,10 +178,15 @@ const FormNeedCliente = ({idNeed}) => {
 
         delete values.idSkills;
 
+        const transformedValues = replaceKeysInValues(values, fieldMapping);
+
         const responseSaveNeed = await axios.post(
-          "http://89.46.196.60:8443/need/react/salva",
-          { ...values, idAzienda: parseInt(values.idAzienda, 10) },
-          { params: { skill1: skills }, headers: headers }
+          "http://localhost:8080/need/react/salva",
+          transformedValues,
+          {
+            params: { skill: skills },
+            headers: headers,
+          }
         );
         if (responseSaveNeed.data === "ERRORE") {
           setAlert({
@@ -208,14 +209,20 @@ const FormNeedCliente = ({idNeed}) => {
     }
   };
 
-
   const seniorityOptions = [
-    { label: "Neo", value: "0", min: 0, max: 1 },
-    { label: "Junior", value: "1", min: 1, max: 2 },
-    { label: "Middle", value: "2", min: 2, max: 3 },
-    { label: "Senior", value: "3", min: 3 },
-];
+    { label: "Neo", value: 1 },
+    { label: "Junior", value: 2 },
+    { label: "Middle", value: 3 },
+    { label: "Senior", value: 4 },
+    ...(values.anniEsperienza > 4 ? [{ label: "Senior", value: values.anniEsperienza }] : [])
+  ];
+  
 
+  const getSeniorityLabel = (value) => {
+    if (value > 4) return "Senior";
+    const option = seniorityOptions.find((opt) => opt.value === value);
+    return option ? option.label : "Unknown";
+  };
 
   const fieldObbligatori = [
     "descrizione",
@@ -223,7 +230,7 @@ const FormNeedCliente = ({idNeed}) => {
     "modalitaLavoro",
     "modalitaImpiego",
     "localita",
-    "anniEsperienza"
+    "anniEsperienza",
   ];
 
   const fields = [
@@ -245,7 +252,9 @@ const FormNeedCliente = ({idNeed}) => {
     modalitaImpiego: datiModifica.modalitaImpiego || null,
     location: datiModifica.location || null,
     anniEsperienza: datiModifica.anniEsperienza || null,
-    idSkills: datiModifica.skills ? datiModifica.skills.map((skills) => skills.id) : [],
+    idSkills: datiModifica.skills
+      ? datiModifica.skills.map((skills) => skills.id)
+      : [],
     note: datiModifica.note || null,
   };
 
@@ -254,24 +263,18 @@ const FormNeedCliente = ({idNeed}) => {
       case "text":
         return <Skeleton variant="text" sx={{ fontSize: "3rem" }} />;
 
-      case "date":
-        return <Skeleton variant="text" sx={{ fontSize: "3rem" }} />;
-
-      case "decimalNumber":
-        return <Skeleton variant="text" sx={{ fontSize: "3rem" }} />;
+      case "note":
+        return <Skeleton variant="text" width={710} height={120} />;
 
       case "select":
       case "multipleSelect":
         return <Skeleton variant="text" sx={{ fontSize: "3rem" }} />;
 
-      case "note":
-        return <Skeleton variant="text" width={710} height={120} />;
       default:
         return <Skeleton variant="text" sx={{ fontSize: "3rem" }} />;
     }
   };
 
-  //funzione per richiamare i vari field
   const renderFields = (field) => {
     if (loading) {
       return renderFieldSkeleton(field.type);
@@ -306,6 +309,7 @@ const FormNeedCliente = ({idNeed}) => {
             />
           );
 
+
         case "select":
           return (
             <CustomAutocomplete
@@ -320,15 +324,12 @@ const FormNeedCliente = ({idNeed}) => {
 
         case "multipleSelect":
           return (
-            <CustomMultipleSelectAggiunta
+            <CustomMultipleSelectModifica
               name={field.name}
               label={field.label}
-              options={field.options}
-              value={values[field.name] || null}
+              value={values[field.name] || []}
               onChange={handleChangeSkill}
-              getOptionSelected={(option, value) => option.value === value.value}
               skillsOptions={skillsOptions}
-              initialValues={initialValues}
             />
           );
 
@@ -339,23 +340,20 @@ const FormNeedCliente = ({idNeed}) => {
   };
 
   return (
-    
     <Box sx={{ pl: 10, pr: 10, pt: 2, pb: 2 }}>
-        <Grid container spacing={2}>
-          {fields.map((field, index) => (
-            <Grid
-              item
-              xs={12}
-              md={
-                ["note", "descrizione", "tipologia"].includes(field.name) ? 12 : 6
-              }
-              key={index}
-            >
-              {renderFields(field)}
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
+      <Grid container spacing={2}>
+        {fields.map((field, index) => (
+          <Grid
+            item
+            xs={12}
+            md={["note", "descrizione", "tipologia"].includes(field.name) ? 12 : 6}
+            key={index}
+          >
+            {renderFields(field)}
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
   );
 };
 

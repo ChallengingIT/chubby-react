@@ -1,21 +1,14 @@
 import { Box, Grid, Rating, Switch, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useUserTheme } from '../TorchyThemeProvider';
 import CustomDatePickerAggiungi from '../fields/CustomDatePickerAggiungi';
 import axios from 'axios';
 
-const initialData = [
-  { id: 1, name: 'Andrea Rizza', email: 'andrea@example.com', rating: 0, date: '' },
-  { id: 2, name: 'Ludovica La Torre', email: 'ludovica@example.com', rating: 0, date: '' },
-  { id: 3, name: 'Ramona Ruoppo', email: 'ramona@example.com', rating: 0, date: '' },
-  { id: 4, name: 'Marco Sciuto', email: 'marco@example.com', rating: 0, date: '' },
-  { id: 5, name: 'Martina Squadrilli', email: 'smartys@example.com', rating: 0, date: '' }
-];
-
 const Shortlist = ({ idNeed }) => {
   const theme = useUserTheme();
-  const [data, setData] = useState(initialData);
-  const [switchStates, setSwitchStates] = useState(data.map(() => false));
+  const [data, setData] = useState([]);
+  const [switchStates, setSwitchStates] = useState([]);
+  const [shortlistData, setShortlistData] = useState([]);
 
   const user = JSON.parse(sessionStorage.getItem("user"));
   const token = user?.token;
@@ -23,6 +16,26 @@ const Shortlist = ({ idNeed }) => {
   const headers = {
     Authorization: `Bearer ${token}`,
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const responseShortlist = await axios.get(
+          `http://localhost:8080/need/react/${idNeed}`,
+          { headers: headers }
+        );
+        const dataShortlist = responseShortlist.data?.candidati || [];
+        setShortlistData(dataShortlist);
+        setData(dataShortlist);
+        setSwitchStates(dataShortlist.map(() => false));
+      } catch (error) {
+        console.error("Errore durante il recupero della shortList: ", error);
+      }
+    };
+
+    fetchData();
+    // eslint-disable-next-line
+  }, []);
 
   const handleRatingChange = async (index, newRating) => {
     const newData = [...data];
@@ -41,7 +54,7 @@ const Shortlist = ({ idNeed }) => {
           }
         }
       );
-      console.log(responseRating.data); 
+      console.log(responseRating.data);
     } catch (error) {
       console.error("Errore durante l'invio del rating:", error);
     }
@@ -82,7 +95,7 @@ const Shortlist = ({ idNeed }) => {
         }}>
           <Grid container spacing={2} alignItems="center" justifyContent="space-between">
             <Grid item xs={2}>
-              <Typography variant="h8">{item.name}</Typography>
+              <Typography variant="h8">{item.nome} {item.cognome}</Typography>
             </Grid>
             <Grid item xs={2}>
               <Typography variant="body2">{item.email}</Typography>

@@ -87,13 +87,12 @@ function Dashboard() {
             if (Array.isArray(responsePipeline.data)) {
                 const pipelineConId = responsePipeline.data.map((pipeline) => ({
                     id: pipeline.id,
-                    descrizione: pipeline.descrizione,
-                    // cliente: pipeline.cliente?.denominazione,
-                    cliente: pipeline.cliente,
-                    owner: `${pipeline.owner?.nome} ${pipeline.owner?.cognome}`,
-                    priorita: pipeline.priorita,
-                    stato: pipeline.stato?.descrizione,
-                    pipelineData: pipeline.pipeline
+                    descrizione: pipeline.descrizione || "N/A",
+                    cliente: pipeline.cliente || { denominazione: "Cliente non disponibile", id: null },
+                    owner: pipeline.owner ? `${pipeline.owner?.nome} ${pipeline.owner?.cognome}` : "Owner non disponibile",
+                    priorita: pipeline.priorita || "Priorità non disponibile",
+                    stato: pipeline.stato ? pipeline.stato.descrizione : "Stato non disponibile",
+                    pipelineData: pipeline.pipeline || "Dati non disponibili"
                 }));
                 setOriginalPipeline(pipelineConId);
             } else {
@@ -148,7 +147,7 @@ function Dashboard() {
             sortable: true,
             filterable: true,
             renderCell: (params) => {
-                return params.value.denominazione;
+                return params.value ? params.value.denominazione : "Cliente non disponibile";
             }
         },
         {
@@ -158,8 +157,8 @@ function Dashboard() {
             sortable: true,
             filterable: true,
             renderCell: (params) => {
-                const descrizione = params.value;
-                const clienteId = params.row.cliente?.id;
+                const descrizione = params.value || "Descrizione non disponibile";
+                const clienteId = params.row.cliente?.id || null;
                 return (
                     <Link
                         component="button"

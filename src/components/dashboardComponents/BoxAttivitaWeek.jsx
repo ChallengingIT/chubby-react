@@ -121,7 +121,7 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
                     To do list
                 </Typography>
                 <Box>
-                    {( isAdmin || isBM) && (
+                    {(isAdmin || isBM) && (
                         <Button
                             variant="contained"
                             onClick={() => setCurrentData('business')}
@@ -130,7 +130,7 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
                                 bgcolor: currentData === 'business' ? '#00B400' : '#191919',
                                 borderRadius: '10px',
                                 color: 'white',
-                                fontWeight: 'bold'
+                                fontWeight: 'bold',
                             }}
                         >
                             Business
@@ -140,10 +140,10 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
                         variant="contained"
                         onClick={() => setCurrentData('recruiting')}
                         sx={{
-                            bgcolor: theme.palette.button.main,
+                            bgcolor: currentData === 'recruiting' ? '#00B400' : '#191919',
                             borderRadius: '10px',
                             color: 'white',
-                            fontWeight: 'bold'
+                            fontWeight: 'bold',
                         }}
                     >
                         Recruiting

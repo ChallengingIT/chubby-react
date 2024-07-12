@@ -7,6 +7,9 @@
     import CustomNoteAggiungi                               from "../../components/fields/CustomNoteAggiungi";
     import CustomDatePickerAggiungi                         from "../../components/fields/CustomDatePickerAggiungi";
     import InfoIcon                                         from "@mui/icons-material/Info";
+    import ClearIcon                                        from '@mui/icons-material/Clear';
+    import CheckIcon                                        from '@mui/icons-material/Check';
+    import CustomEmailAFieldAggiungi                        from "../../components/fields/CustomEmailFieldAggiungi";
     import {
     Box,
     Typography,
@@ -40,6 +43,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
     const [ ownerOptions,                   setOwnerOptions                 ] = useState([]);
     const [ statiOptions,                   setStatiOptions                 ] = useState([]);
     const [ values,                         setValues                       ] = useState({});
+    const [ emailValidation,                setEmailValidation              ] = useState(null);
 
     const user = JSON.parse(sessionStorage.getItem("user"));
     const token = user?.token;
@@ -190,6 +194,9 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
         ...prevValues,
         ...fieldValue,
         }));
+        if (fieldValue.email) {
+            verifyEmail(fieldValue.email);
+          }
     };
 
     //funzione per la chiusura dell'alert
@@ -251,6 +258,24 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
         }
     };
 
+    //verifica se l'email è già presente o meno a db
+    const verifyEmail = async (email) => {
+        try {
+          const emailResponse = await axios.get(
+            `http://localhost:8080/keypeople/${email}`,
+            { headers: headers }
+          );
+          if (emailResponse.data === "KO") {
+            setEmailValidation("error");
+          } else if (emailResponse.data === "OK") {
+            setEmailValidation("success");
+          }
+        } catch (error) {
+          console.error("errore durante la verifica della email: ", error);
+        }
+      };
+      
+
     //funzione per il popover
     const [anchorElStato, setAnchorElStato] = useState(null);
     const [anchorElTipo, setAnchorElTipo] = useState(null);
@@ -304,7 +329,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
         { label: "Owner*",                  name: "idOwner",            type: "select",             options: ownerOptions },
         { label: "Stato*",                  name: "idStato",            type: "select",             options: statiOptions },
 
-        { label: "Email*",                  name: "email",              type: "text",               maxLength: 45         },
+        { label: "Email*",                  name: "email",              type: "email",              maxLength: 45         },
         { label: "Cellulare",               name: "cellulare",          type: "text",               maxLength: 20         },
 
         { label: "Data di Creazione*",      name: "dataCreazione",      type: "date"                                      },
@@ -349,6 +374,31 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
                 values={values}
                 onChange={handleChange}
                 maxLength={field.maxLength}
+            />
+            );
+           
+
+        case "email":
+            return (
+            <CustomEmailAFieldAggiungi
+                name={field.name}
+                label={field.label}
+                type={field.type}
+                values={values}
+                onChange={handleChange}
+                maxLength={field.maxLength}
+                error={emailValidation === "error"}
+                helperText={emailValidation === "error" ? "Email già presente" : ""}
+                InputProps={{
+                endAdornment: emailValidation === "error" ? (
+                    <ClearIcon color="error" />
+                ) : emailValidation === "success" ? (
+                    <CheckIcon color="success" />
+                ) : null,
+                }}
+                sx={{
+                borderBottom: emailValidation === "error" ? "2px solid red" : emailValidation === "success" ? "2px solid green" : "none"
+                }}
             />
             );
 

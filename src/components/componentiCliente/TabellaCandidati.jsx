@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { useUserTheme } from "../TorchyThemeProvider";
 import DataGridClienti from './DataGridClienti';
 
-const TabellaCandidati = () => {
+const TabellaCandidati = ({ idNeed }) => {
     const theme = useUserTheme();
 
     const params = useParams();
@@ -32,6 +32,8 @@ const TabellaCandidati = () => {
 
     const user = JSON.parse(sessionStorage.getItem("user"));
     const token = user?.token;
+    const username = user.username;
+    console.log("username: ", username);
 
     const headers = {
         Authorization: `Bearer ${token}`,
@@ -45,7 +47,7 @@ const TabellaCandidati = () => {
         };
         try {
             const candidatiResponse = await axios.get(
-                `http://89.46.196.60:8443/need/react/match/associabili/ricerca/mod/${id}`,
+                `http://localhost:8080/staffing/react/mod`,
                 { headers: headers, params: paginazione }
             );
 
@@ -70,7 +72,7 @@ const TabellaCandidati = () => {
     }, []);
 
     const fetchMoreDataCandidati = async (paginaCandidati, filters = filtri) => {
-        const url = `http://89.46.196.60:8443/need/react/match/associabili/ricerca/mod/${id}`
+        const url = `http://localhost:8080/need/react/match/associabili/ricerca/mod/${id}`
 
         const filtriCandidati = {
             ...filters,
@@ -100,11 +102,13 @@ const TabellaCandidati = () => {
 
     const handleAssocia = async (row) => {
         try {
-            const idNeed = parseInt(id);
             const idCandidato = row.id;
-            const url = `http://89.46.196.60:8443/need/job/description/add/shortlist?id=${idNeed}&idCandidato=${idCandidato}`;
+            const url = `http://localhost:8080/need/add/shortlist?id=${idNeed}&idCandidato=${idCandidato}&username=${username}`;
             const responseAssocia = await axios.post(url, { headers: headers });
-            fetchData();
+            if (responseAssocia.data === "OK") {
+                setOriginalCandidati((prevCandidati) => prevCandidati.filter(candidato => candidato.id !== idCandidato));
+                setRigheTotCandidati((prevRighe) => prevRighe - 1);
+            }
         } catch (error) {
             console.error("Errore durante il recuper dei dati: ", error);
         }
