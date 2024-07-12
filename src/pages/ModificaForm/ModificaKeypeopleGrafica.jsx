@@ -192,7 +192,7 @@ const ModificaKeypeopleGrafica = () => {
     const verifyEmail = async (email) => {
         try {
           const emailResponse = await axios.get(
-            `http://localhost:8080/keypeople/${email}`,
+            `http://89.46.196.60:8443/keypeople/${email}`,
             { headers: headers }
           );
           if (emailResponse.data === "KO") {

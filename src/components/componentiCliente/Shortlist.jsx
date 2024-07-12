@@ -21,7 +21,7 @@ const Shortlist = ({ idNeed }) => {
     const fetchData = async () => {
       try {
         const responseShortlist = await axios.get(
-          `http://localhost:8080/need/react/${idNeed}`,
+          `http://89.46.196.60:8443/need/react/${idNeed}`,
           { headers: headers }
         );
         const dataShortlist = responseShortlist.data?.candidati || [];

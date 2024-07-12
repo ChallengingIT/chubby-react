@@ -33,26 +33,26 @@ const FormNeedCliente = ({ idNeed }) => {
     const fetchNeedOptions = async () => {
       try {
         const responseSkill = await axios.get(
-          "http://localhost:8080/staffing/react/skill",
+          "http://89.46.196.60:8443/staffing/react/skill",
           { headers: headers }
         );
         const needResponse = await axios.get(
-          `http://localhost:8080/need/react/${idNeed}`,
+          `http://89.46.196.60:8443/need/react/${idNeed}`,
           { headers: headers }
         );
 
         const impiegoResponse = await axios.get(
-          "http://localhost:8080/need/impiego",
+          "http://89.46.196.60:8443/need/impiego",
           { headers: headers }
         );
 
         const lavoroResponse = await axios.get(
-          "http://localhost:8080/need/lavoro",
+          "http://89.46.196.60:8443/need/lavoro",
           { headers: headers }
         );
 
         const responseJobtitle = await axios.get(
-          "http://localhost:8080/aziende/react/tipologia",
+          "http://89.46.196.60:8443/aziende/react/tipologia",
           { headers: headers }
         );
 
@@ -181,7 +181,7 @@ const FormNeedCliente = ({ idNeed }) => {
         const transformedValues = replaceKeysInValues(values, fieldMapping);
 
         const responseSaveNeed = await axios.post(
-          "http://localhost:8080/need/react/salva",
+          "http://89.46.196.60:8443/need/react/salva",
           transformedValues,
           {
             params: { skill: skills },
