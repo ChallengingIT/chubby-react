@@ -2,6 +2,7 @@
     import { Box, Container, Fab, Popover } from "@mui/material";
     import AddIcon                                          from '@mui/icons-material/Add'; //bottone per chatgpt
     import GptChat                                          from '../components/GptChat';
+    import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 
     const SchemePage = ({ children }) => {
          //stato di AddIcon
@@ -69,13 +70,12 @@
                         transform: 'scale(1.2)'
                     }
                 }} onClick={handleClick}>
-                    <AddIcon sx={{
+                    <QuestionAnswerIcon sx={{
                         color: 'white',
                         transition: 'transform 0.3s ease',
-                        transform: isRotated ? 'rotate(225deg)' : 'none'
                     }} />
                 </Fab>
-                 )}
+                )}
                 <Popover
                 open={Boolean(anchorEl) && showChat}
                 anchorEl={anchorEl}

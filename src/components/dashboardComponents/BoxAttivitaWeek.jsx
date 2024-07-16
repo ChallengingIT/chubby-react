@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Typography, IconButton } from '@mui/material';
+import { Box, Button, Typography, IconButton, Divider } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import TabellaAttivitaBusiness from './TabellaAttivitaBusiness';
@@ -116,10 +116,23 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
 
     return (
         <Box className="cardTabellaBusiness" id="cardTabellaBusiness" sx={{ width: '100%', height: '100%', position: 'relative', }}>
-            <Box display="flex" justifyContent="flex-end" alignItems="center" mb={2}>
-                <Typography variant='h5' sx={{ mt: 1, mb: 1, mr: 2, fontWeight: 'bold', fontSize: '1.2em' }}>
-                    To do list
-                </Typography>
+            <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                <Box sx={{ display: 'flex', flexDirection: 'row', gap: 5 }}>
+                    <Typography variant='h5' sx={{ mt: 1, mb: 1, ml: 2, fontWeight: 'bold', fontSize: '1.2em' }}>
+                        To Do List
+                    </Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.4 }}>
+                        <IconButton onClick={handlePreviousWeek} sx={{ color: '#00B400' }}>
+                            <ArrowBackIosIcon />
+                        </IconButton>
+                        <Typography variant="h8" style={{ color: 'black', textAlign: 'center', padding: 8, fontWeight: 'bold', fontSize: '0.9em' }}>
+                            {weekRange}
+                        </Typography>
+                        <IconButton onClick={handleNextWeek} style={{ color: '#00B400' }}>
+                            <ArrowForwardIosIcon />
+                        </IconButton>
+                    </Box>
+                </Box>
                 <Box>
                     {(isAdmin || isBM) && (
                         <Button
@@ -131,6 +144,8 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
                                 borderRadius: '10px',
                                 color: 'white',
                                 fontWeight: 'bold',
+                                transform: currentData === 'business' ? 'scale(1.2)' : 'scale(1)',
+                                transition: 'transform 0.2s',
                             }}
                         >
                             Business
@@ -144,13 +159,16 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
                             borderRadius: '10px',
                             color: 'white',
                             fontWeight: 'bold',
+                            transform: currentData === 'recruiting' ? 'scale(1.2)' : 'scale(1)',
+                            transition: 'transform 0.2s',
                         }}
                     >
                         Recruiting
                     </Button>
                 </Box>
             </Box>
-            <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end', height: 'calc(100% - 76px)', width: '100%', pt: 5, overflowY: 'auto' }}>
+            <Divider sx={{ bgcolor: 'lightgray', height: 2 }} />
+            <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end', height: 'calc(100% - 76px)', width: '100%', overflowY: 'auto' }}>
                 {currentData === 'business' ? (
                     <TabellaAttivitaBusiness
                         data={weekDataBusiness}
@@ -160,17 +178,6 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
                         data={weekDataRecruiting}
                         aziendeOptions={aziendeOptions} />
                 )}
-            </Box>
-            <Box style={{ width: 250, height: 76, left: -16, top: 1, position: 'absolute', background: theme.palette.button.main, borderTopRightRadius: 20, borderBottomRightRadius: 20, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <IconButton onClick={handlePreviousWeek} style={{ color: 'white' }}>
-                    <ArrowBackIosIcon />
-                </IconButton>
-                <Typography variant="h8" style={{ color: 'white', textAlign: 'center', padding: 8, fontWeight: 'bold', fontSize: '0.9em' }}>
-                    {weekRange}
-                </Typography>
-                <IconButton onClick={handleNextWeek} style={{ color: 'white' }}>
-                    <ArrowForwardIosIcon />
-                </IconButton>
             </Box>
         </Box>
     );
