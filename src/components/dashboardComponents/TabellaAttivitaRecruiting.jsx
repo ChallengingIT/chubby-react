@@ -19,11 +19,11 @@ const TabellaAttivitaBusiness = ({ data = [] }) => {
             <Table sx={{ minWidth: 650 }} aria-label="collapsible table">
                 <TableHead>
                     <TableRow>
-                        <TableCell sx={{ color: '#191919', fontWeight: 'bold' }}>Data</TableCell>
-                        <TableCell sx={{ color: '#191919', fontWeight: 'bold' }}>Ora</TableCell>
-                        <TableCell sx={{ color: '#191919', fontWeight: 'bold' }}>Azione</TableCell>
-                        <TableCell sx={{ color: '#191919', fontWeight: 'bold' }}>Owner</TableCell>
-                        <TableCell sx={{ color: '#191919', fontWeight: 'bold' }}>Candidato</TableCell>
+                        <TableCell sx={{ color: '#808080', fontWeight: 'bold' }}>Data</TableCell>
+                        <TableCell sx={{ color: '#808080', fontWeight: 'bold' }}>Ora</TableCell>
+                        <TableCell sx={{ color: '#808080', fontWeight: 'bold' }}>Azione</TableCell>
+                        <TableCell sx={{ color: '#808080', fontWeight: 'bold' }}>Owner</TableCell>
+                        <TableCell sx={{ color: '#808080', fontWeight: 'bold' }}>Candidato</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
