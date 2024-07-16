@@ -165,7 +165,7 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
                 <IconButton onClick={handlePreviousWeek} style={{ color: 'white' }}>
                     <ArrowBackIosIcon />
                 </IconButton>
-                <Typography variant="h6" style={{ color: 'white', textAlign: 'center', padding: 8, fontWeight: 'bold' }}>
+                <Typography variant="h8" style={{ color: 'white', textAlign: 'center', padding: 8, fontWeight: 'bold', fontSize: '0.9em' }}>
                     {weekRange}
                 </Typography>
                 <IconButton onClick={handleNextWeek} style={{ color: 'white' }}>
