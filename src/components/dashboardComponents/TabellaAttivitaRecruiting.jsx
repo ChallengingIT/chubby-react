@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton, Typography, Paper } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { format } from 'date-fns';
 
-const TabellaAttivitaBusiness = ({ data = [] }) => {
+const TabellaAttivitaRecruiting = ({ data = [] }) => {
     const [activities, setActivities] = useState([]);
 
     useEffect(() => {
@@ -14,16 +13,20 @@ const TabellaAttivitaBusiness = ({ data = [] }) => {
         setActivities(initializedData);
     }, [data]);
 
+    const cellStyle = {
+        padding: '8px 8px', 
+    };
+
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="collapsible table">
                 <TableHead>
                     <TableRow>
-                        <TableCell sx={{ color: '#808080', fontWeight: 'bold' }}>Data</TableCell>
-                        <TableCell sx={{ color: '#808080', fontWeight: 'bold' }}>Ora</TableCell>
-                        <TableCell sx={{ color: '#808080', fontWeight: 'bold' }}>Azione</TableCell>
-                        <TableCell sx={{ color: '#808080', fontWeight: 'bold' }}>Owner</TableCell>
-                        <TableCell sx={{ color: '#808080', fontWeight: 'bold' }}>Candidato</TableCell>
+                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold' }}>Data</TableCell>
+                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold' }}>Ora</TableCell>
+                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold' }}>Azione</TableCell>
+                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold' }}>Owner</TableCell>
+                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold' }}>Candidato</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -33,11 +36,11 @@ const TabellaAttivitaBusiness = ({ data = [] }) => {
 
                         return (
                             <TableRow key={item.idIntervista || index}>
-                                <TableCell>{formattedDate}</TableCell>
-                                <TableCell>{formattedTime}</TableCell>
-                                <TableCell>{item.azione}</TableCell>
-                                <TableCell>{item.siglaOwner}</TableCell>
-                                <TableCell>{item.nomeCandidato} {item.cognomeCandidato}</TableCell>
+                                <TableCell style={cellStyle}>{formattedDate}</TableCell>
+                                <TableCell style={cellStyle}>{formattedTime}</TableCell>
+                                <TableCell style={cellStyle}>{item.azione}</TableCell>
+                                <TableCell style={cellStyle}>{item.siglaOwner}</TableCell>
+                                <TableCell style={cellStyle}>{item.nomeCandidato} {item.cognomeCandidato}</TableCell>
                             </TableRow>
                         );
                     })}
@@ -47,4 +50,4 @@ const TabellaAttivitaBusiness = ({ data = [] }) => {
     );
 };
 
-export default TabellaAttivitaBusiness;
+export default TabellaAttivitaRecruiting;

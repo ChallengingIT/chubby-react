@@ -332,6 +332,12 @@
         { value: 4, label: "4" },
     ];
 
+    const siNoOptions = [
+        { value: 1, label: "SI" },
+        { value: 2, label: "NO" },
+        { value: 3, label: "KO" },
+    ];
+
     const campiObbligatori = ["dataColloquio, coerenza, standing,energia,comunicazione,inglese,competenze,valutazione,descrizioneCandidatoUna,teamSiNo"];
 
     const fields = [
@@ -349,15 +355,15 @@
         { label: "Descrizione Candidato",       name: "note",                       type: "note",                maxLength: 8000,      },
 
         { type: "titleGroups", label: "Competenze" },
-        { label: "Coerenza Percorso",           name: "coerenza",                   type: "select",             options: valoriOptions, },
-        { label: "Standing",                    name: "standing",                   type: "select",             options: valoriOptions, },
-        { label: "Energia",                     name: "energia",                    type: "select",             options: valoriOptions, },
-        { label: "Comunicazione",               name: "comunicazione",              type: "select",             options: valoriOptions, },
-        { label: "Livello di Inglese",          name: "inglese",                    type: "select",             options: valoriOptions, },
+        { label: "Coerenza Percorso",           name: "coerenza",                   type: "select",             options: valoriOptions  },
+        { label: "Standing",                    name: "standing",                   type: "select",             options: valoriOptions  },
+        { label: "Energia",                     name: "energia",                    type: "select",             options: valoriOptions  },
+        { label: "Comunicazione",               name: "comunicazione",              type: "select",             options: valoriOptions  },
+        { label: "Livello di Inglese",          name: "inglese",                    type: "select",             options: valoriOptions  },
         { label: "Competenze vs ruolo",         name: "competenze",                 type: "text",               options: valoriOptions  },
-        { label: "Valutazione",                 name: "valutazione",                type: "select",             options: valoriOptions, },
+        { label: "Valutazione",                 name: "valutazione",                type: "select",             options: valoriOptions  },
         { label: "One word",                    name: "descrizioneCandidatoUna",    type: "text",               maxLength: 45,          },
-        { label: "Lo vorresti nel tuo team?",   name: "teamSiNo",                   type: "text",               maxLength: 45,          },
+        { label: "Lo vorresti nel tuo team?",   name: "teamSiNo",                   type: "select",             options: siNoOptions    },
 
         { type: "titleGroups", label: "Info contrattuali" },
         { label: "Disponibilità",               name: "disponibilita",              type: "text",               maxLength: 45,          },

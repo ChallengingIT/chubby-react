@@ -319,6 +319,12 @@ const ModificaIntervistaGrafica = () => {
                 { value: 3, label: "3" },
                 { value: 4, label: "4" },
             ];
+
+            const siNoOptions = [
+                { value: 1, label: "SI" },
+                { value: 2, label: "NO" },
+                { value: 3, label: "KO" },
+            ];
     
 
     const campiObbligatori = ["dataColloquio, coerenza, standing,energia,comunicazione,inglese,competenze,valutazione,descrizioneCandidatoUna,teamSiNo"];
@@ -348,8 +354,8 @@ const ModificaIntervistaGrafica = () => {
         { label: "Livello di Inglese",        name: "inglese",                 type: "select", options: valoriOptions},
         { label: "Competenze vs ruolo",       name: "competenze",              type: "text",   options: valoriOptions},
         { label: "Valutazione",               name: "valutazione",             type: "select", options: valoriOptions},
-        { label: "One word",                  name: "descrizioneCandidatoUna", type: "text", maxLength: 45},
-        { label: "Lo vorresti nel tuo team?", name: "teamSiNo",                type: "text", maxLength: 45},
+        { label: "One word",                  name: "descrizioneCandidatoUna", type: "text",   maxLength: 45         },
+        { label: "Lo vorresti nel tuo team?", name: "teamSiNo",                type: "text",   options: siNoOptions  },
     
     
         { type: "titleGroups",                label: "Info contrattuali"                 },

@@ -182,13 +182,7 @@ const candidatoCognome = candidatoData.length > 0 ? candidatoData[0].cognome : '
   
 const table1 = [
   // { field: "id", headerName: "Id", width: 70},
-  { field: "stato",               headerName: "Stato",          flex: 1,
-    renderCell: (params) => (
-      <div style={{ textAlign: "start" }}>
-      {params.row.stato?.descrizione || "N/A"}
-      </div>
-    ),
-  },
+
   { field: "dataColloquio",       headerName: "Data Colloquio", flex: 1},
   { field: "candidato",           headerName: "Intervistatore", flex: 1,
 renderCell: (params) => (
@@ -197,21 +191,16 @@ renderCell: (params) => (
       </div>
     ),
 },
-  { field: "dataAggiornamento",   headerName: "Follow Up",
-  // : (
-  //     <div style={{ lineHeight: '1' }}>
-  //       Follow Up <br /> Data Aggiornamento
-  //     </div>
-  //   ),
+  { field: "rating",   headerName: "Rating",
     width: 350,
     renderCell: (params) => (
       <div style={{ textAlign: "start" }}>
-        {params.row.tipo?.descrizione || "N/A"}
+          {params.row.candidato?.rating ? params.row.candidato?.rating?.toFixed(2) : "N/A"}
       </div>
-    ),
+  ),
   },
   
-   //dataAggiornamento e follo up si chiama intervista.tipo.descrizione
+   //dataAggiornamento e follow up si chiama intervista.tipo.descrizione
   { field: "azioni",         headerName: "",          flex: 1, renderCell: (params) => (
     <div>
 <Link
@@ -257,9 +246,9 @@ state={params.row}
                 Indietro
                 </Button>
                 
-                <Typography variant="h4" component="h1" sx={{  fontWeight: 'bold', fontSize: '1.4em', color: '#00B400'}}>Lista ITW di {candidato.nome} {candidato.cognome}</Typography>
+                <Typography variant="h4" component="h1" sx={{  fontWeight: 'bold', fontSize: '1.4em', color: '#00B400'}}>Intervista di {candidato.nome} {candidato.cognome}</Typography>
                     <Button onClick={navigateToAggiungiIntervista}
-                    startIcon={<AddIcon />}
+                    // startIcon={<AddIcon />}
                     variant='contained'
                     sx={{
                       minWidth: "12em",
@@ -280,7 +269,7 @@ state={params.row}
                         transform: 'scale(1.05)'
                       }
                   }}
-                    >Aggiungi Intervista</Button>
+                    >Compila Scheda Intervista</Button>
                     </Box>
                     <Box sx={{ mr: 0.2, mt: 2}}>
 
