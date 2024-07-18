@@ -5,10 +5,12 @@ import React, { useEffect, useState}          from 'react'
 import { Link, useParams }                    from 'react-router-dom';
 import { useNavigate, useLocation }           from "react-router-dom";
 import axios                                  from 'axios';
-import AddIcon                                from "@mui/icons-material/Add";
+// import AddIcon                                from "@mui/icons-material/Add";
 import Tabella                                from '../components/Tabella.jsx';
 import DeleteButton                           from '../components/button/DeleteButton.jsx';
 import EditButton                             from '../components/button/EditButton.jsx';
+import IntervisteModalButton                  from '../components/button/IntervisteModalButton.jsx';
+import IntervisteModal                        from '../components/modal/IntervisteModal.jsx';
 import {
   Dialog,
   DialogTitle,
@@ -36,6 +38,10 @@ function IntervisteList() {
   const [ deleteId,                 setDeleteId             ] = useState(null);
   const [ intervistaCaricata,       setIntervistaCaricata   ] = useState(false);
   const [ candidato,                setCandidato            ] = useState([]);
+
+  //stati per la gestione del modal
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedIntervista, setSelectedIntervista] = useState(null);
 
 
   //stati per la paginazione
@@ -175,13 +181,15 @@ function IntervisteList() {
     }
   };
 
+  const handleModal = (intervista) => {
+    setSelectedIntervista(intervista);
+    setOpenModal(true);
+  };
 
-const candidatoNome    = candidatoData.length > 0 ? candidatoData[0].nome : '';
-const candidatoCognome = candidatoData.length > 0 ? candidatoData[0].cognome : '';
 
-  
+// const candidatoNome    = candidatoData.length > 0 ? candidatoData[0].nome : '';
+// const candidatoCognome = candidatoData.length > 0 ? candidatoData[0].cognome : '';  
 const table1 = [
-  // { field: "id", headerName: "Id", width: 70},
 
   { field: "dataColloquio",       headerName: "Data Colloquio", flex: 1},
   { field: "candidato",           headerName: "Intervistatore", flex: 1,
@@ -191,29 +199,30 @@ renderCell: (params) => (
       </div>
     ),
 },
-  { field: "rating",   headerName: "Rating",
-    width: 350,
-    renderCell: (params) => (
+{ field: "rating", headerName: "Rating", width: 350,
+  renderCell: (params) => {
+    return (
       <div style={{ textAlign: "start" }}>
-          {params.row.candidato?.rating ? params.row.candidato?.rating?.toFixed(2) : "N/A"}
+        {candidato?.rating ? candidato?.rating?.toFixed(2) : "N/A"}
       </div>
-  ),
+    );
   },
+},
   
    //dataAggiornamento e follow up si chiama intervista.tipo.descrizione
   { field: "azioni",         headerName: "",          flex: 1, renderCell: (params) => (
     <div>
-<Link
-to={`/intervista/modifica/${params.row.id}`}
-state={params.row}
->
-<EditButton />
-</Link>
-      
-<DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
-    </div>
-  ), },
-];
+  <IntervisteModalButton onClick={() => handleModal(params.row)} />
+    <Link
+  to={`/intervista/modifica/${params.row.id}`}
+  state={params.row}
+  >
+  <EditButton />
+  </Link>
+  <DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
+      </div>
+    ), },
+  ];
 
 
   return (
@@ -334,6 +343,12 @@ state={params.row}
                         </Button>
                         </DialogActions>
                     </Dialog>
+                    <IntervisteModal
+                      open={openModal}
+                      handleClose={() => setOpenModal(false)}
+                      intervista={selectedIntervista}
+                      candidato={candidato}
+                    />
                     </SchemePage>
     );
 };
