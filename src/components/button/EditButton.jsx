@@ -18,14 +18,14 @@ function EditButton({ onClick, to, rowData }) {
 
   return (
     <Button 
-      variant="contained" 
+      // variant="contained" 
       size="medium" 
       startIcon={<EditIcon />} 
       onClick={handleEditAction}
       sx={{
         marginRight: '10%',
-        backgroundColor: 'black',
-        color: 'white',
+        backgroundColor: 'transparent',
+        color: 'black',
         borderRadius: '50%',
         minWidth: '2em', 
         width: '2em', 
@@ -38,9 +38,9 @@ function EditButton({ onClick, to, rowData }) {
           justifyContent: 'center'
         },
         '&:hover': {
-          backgroundColor: 'black',
+          backgroundColor: 'transparent',
           transform:'scale(1.05)',
-          color: 'white',
+          color: 'black',
           cursor: 'pointer',
           borderRadius: '50%',
           borderStyle: 'none',

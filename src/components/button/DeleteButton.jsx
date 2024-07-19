@@ -5,13 +5,13 @@ import Button                   from "@mui/material/Button";
 function DeleteButton({ onClick, id }) {
   return (
     <Button
-      variant="contained"
+      // variant="contained"
       size="medium"
       startIcon={<DeleteIcon />}
       sx={{
         marginRight: '10%',
-        backgroundColor: '#00B401',
-        color: 'white',
+        backgroundColor: 'transparent',
+        color: 'black',
         borderRadius: '50%', 
         minWidth: '2em', 
         width: '2em', 
@@ -24,9 +24,9 @@ function DeleteButton({ onClick, id }) {
           justifyContent: 'center' 
         },
         '&:hover': {
-          backgroundColor: 'red',
+          backgroundColor: 'transparent',
           transform:'scale(1.05)',
-          color: 'white',
+          color: 'red',
           cursor: 'pointer',
           borderRadius: '50%',
           borderStyle: 'none',

@@ -400,7 +400,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
         };
         try {
             const responseSubmitAzione = await axios.post(`http://localhost:8080/azioni/react/salva/${id}`, valoriDaInviare, { headers: headers });
-            if (responseSubmitAzione.status === 200 || responseSubmitAzione.status === 201) {
+            if (responseSubmitAzione.data === "OK") {
                 setValues({
                     data: '',
                     tipologie: '',
@@ -849,7 +849,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                 </Modal>
 
                 { /* MODAL DELLE AZIONI */ }
-                <Modal
+                {/* <Modal
                     open={modalAzioni}
                     onClose={() => setModalAzioni(false)}
                     aria-labelledby="modal-modal-title"
@@ -1025,10 +1025,10 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                             Invia
                         </Button>
                     </Box>
-                </Modal>
+                </Modal> */}
 
 
-                { /* MODAL PERLA LISTA DEI NEED */}
+                { /* MODAL PER LA LISTA DEI NEED */}
                 <Modal
                 open={modalNeed}
                 onClose={() => setModalNeed(false)}

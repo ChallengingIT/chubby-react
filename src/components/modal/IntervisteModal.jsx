@@ -10,21 +10,24 @@
     Card,
     CardContent,
     Divider,
-    Grid
+    Grid,
+    Tooltip
     } from '@mui/material';
     import CloseIcon from "@mui/icons-material/Close";
 
     const IntervisteModal = ({ open, handleClose, intervista, candidato }) => {
+
+    const skillsDescriptions = candidato?.skills?.map(skill => skill.descrizione).join(', ') || '';
+
     return (
         <Dialog open={open} onClose={handleClose} PaperProps={{ sx: { borderRadius: '20px',  display: 'flex', minWidth: '60vw', minHeight: '60vh', height: 'auto' } }}>
-        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', pr: 3}}>
+        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
             <DialogTitle variant='h5' sx={{ fontWeight: 'bold'}}>{"Dettagli Intervista"}</DialogTitle>
             <Button
             onClick={handleClose}
             variant="outlined"
             sx={{
-                mt: 3,
-                mr: 3,
+                mt: 1,
                 backgroundColor: "transparent",
                 border: "none",
                 color: "#898989",
@@ -66,6 +69,9 @@
                     <Grid item xs={6}>
                     <Typography variant="body1"><strong>Job Title:</strong> {candidato?.tipologia?.descrizione || ''}</Typography>
                     </Grid>
+                    <Grid item xs={6}>
+                    <Typography variant="body1"><strong>Skills:</strong> {skillsDescriptions}</Typography>
+                    </Grid>
                 </Grid>
                 </CardContent>
             </Card>
@@ -96,6 +102,12 @@
                     <Grid item xs={6}>
                     <Typography variant="body1"><strong>Valutazione:</strong> {intervista?.valutazione || ''}</Typography>
                     </Grid>
+                    <Grid item xs={6}>
+                    <Typography variant="body1"><strong>One Word:</strong> {intervista?.descrizioneCandidatoUna || ''}</Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                    <Typography variant="body1"><strong>Team SI NO:</strong> {intervista?.teamSiNo || ''}</Typography>
+                    </Grid>
                 </Grid>
                 </CardContent>
             </Card>
@@ -118,6 +130,14 @@
                     <Typography variant="body1"><strong>Proposta Economica:</strong> {intervista?.proposta || ''}</Typography>
                     </Grid>
                 </Grid>
+                </CardContent>
+            </Card>
+            {/* Note */}
+            <Card sx={{ borderRadius: '15px', border: '1px solid #00B400'}}>
+                <CardContent>
+                    <Typography variant='h6' sx={{ fontWeight: 'bold', textAlign: 'flex-start' }}>Note</Typography>
+                    <Divider sx={{ mb: 2}} />
+                    <Typography variant='body1'>{candidato?.note}</Typography>
                 </CardContent>
             </Card>
             </Box>
