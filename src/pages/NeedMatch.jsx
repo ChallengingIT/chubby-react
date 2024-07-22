@@ -927,9 +927,24 @@
         {
         field: "azioni",
         headerName: "",
-        flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
+        flex: 1.2, sortable: false, filterable: false, disableColumnMenu: true,
         renderCell: (params) => (
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
+            <Button
+                onClick={() => handleOpenModal(params.row)}
+                sx={{
+                backgroundColor: "transparent",
+                fontWeight: "bold",
+                color: "black",
+                "&:hover": {
+                    backgroundColor: "transparent",
+                    transform: "scale(1.05)",
+                    color: "black",
+                },
+                }}
+                startIcon={<ChecklistIcon sx={{ backgroundColor: "transparent" }} />}
+            >
+            </Button>
             <Link
                 to={`/recruiting/intervista/${params.row.id}`}
                 state = {{ recruitingData: params.row}}
@@ -946,31 +961,6 @@
             />
             <CloseIconButton onClick={handleDeleteAssociati} id={params.row.id} />
             </Box>
-        ),
-        },
-        {
-        field: "status",
-        headerName: "",
-        flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
-        renderCell: (params) => (
-            <div>
-            <Button
-                onClick={() => handleOpenModal(params.row)}
-                sx={{
-                backgroundColor: "transparent",
-                fontWeight: "bold",
-                color: "black",
-                "&:hover": {
-                    backgroundColor: "transparent",
-                    transform: "scale(1.05)",
-                    color: "black",
-                },
-                }}
-                startIcon={<ChecklistIcon sx={{ backgroundColor: "transparent" }} />}
-
-            >
-            </Button>
-            </div>
         ),
         },
     ];

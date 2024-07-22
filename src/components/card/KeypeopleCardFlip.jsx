@@ -694,7 +694,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    minHeight: '70vh'
+                    minHeight: '80vh'
                     }}>
                     <Box sx={{ display: 'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: 'white', borderRadius: '20px', overflow: 'hidden', border: 'solid 2.2px #00B400' }}>
                     <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', p: 3, }}>

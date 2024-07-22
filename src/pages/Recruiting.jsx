@@ -12,6 +12,7 @@ import SmileOrangeIcon from "../components/icone/SmileOrangeIcon.jsx";
 import SmileRedIcon from "../components/icone/SmileRedIcon.jsx";
 import Tabella from "../components/Tabella.jsx";
 import CloseIcon from "@mui/icons-material/Close";
+import NoCFModal from '../components/modal/NoCFModal.jsx';
 
 import {
   Dialog,
@@ -513,8 +514,10 @@ const Recruiting = () => {
         setNomeCandidato(nome);
         setCognomeCandidato(cognome);
       } else {
-        setSnackbarMessage("Errore: Descrizione non trovata.");
-        setSnackbarOpen(true);
+        setNoCFModal(true);
+        setNomeCandidato(nome);
+        setCognomeCandidato(cognome);
+        setIdCandidato(idCandidato);
       }
     } catch(error) {
       console.error ("errore duerante il recupero della descrizione: ", error);
@@ -989,18 +992,28 @@ const Recruiting = () => {
       </Snackbar>
       {loadingCF ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-        <CircularProgress />
+          <CircularProgress />
         </Box>
       ) : (
-        <CFModal
-          open={descrizioneModalOpen}
-          handleClose={() => setDescrizioneModalOpen(false)}
-          idCandidato={idCandidato}
-          descrizione={descrizione}
-          handleDownloadCF={handleDownloadCF}
-          nomeCandidato={nomeCandidato}
-          cognomeCandidato={cognomeCandidato}
-        />
+        <>
+          <CFModal
+            open={descrizioneModalOpen}
+            handleClose={() => setDescrizioneModalOpen(false)}
+            idCandidato={idCandidato}
+            descrizione={descrizione}
+            handleDownloadCF={handleDownloadCF}
+            nomeCandidato={nomeCandidato}
+            cognomeCandidato={cognomeCandidato}
+          />
+          <NoCFModal
+            open={noCFModal}
+            handleClose={() => setNoCFModal(false)}
+            idCandidato={idCandidato}
+            handleDownloadCF={handleDownloadCF}
+            nomeCandidato={nomeCandidato}
+            cognomeCandidato={cognomeCandidato}
+          />
+        </>
       )}
     </SchemePage>
   );
