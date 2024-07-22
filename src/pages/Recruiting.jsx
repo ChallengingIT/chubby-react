@@ -500,7 +500,7 @@ const Recruiting = () => {
 
 
   const handleDescrizione = async (idCandidato, nome, cognome) => {
-    const url = `http://localhost:8080/files/descrizione/cf/${idCandidato}`;
+    const url = `http://89.46.196.60:8443/files/descrizione/cf/${idCandidato}`;
     try {
       const responseDescrizione = await axios.get(url, { headers: headers });
       const descrizione = responseDescrizione.data;
@@ -524,7 +524,7 @@ const Recruiting = () => {
 
   const handleDownloadCF = async (idCandidato, descrizione, nomeCandidato, cognomeCandidato) => {
     try {
-        const downloadUrl = `http://localhost:8080/files/download/cf/${idCandidato}`;
+        const downloadUrl = `http://89.46.196.60:8443/files/download/cf/${idCandidato}`;
         const responseDownloadCF = await axios({
           method: "GET",
           url: downloadUrl,
