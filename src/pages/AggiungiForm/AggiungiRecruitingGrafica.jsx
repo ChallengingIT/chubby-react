@@ -211,7 +211,7 @@ const AggiungiRecruitingGrafica = () => {
             case 1:
                 return [ "anniEsperienzaRuolo", "livelloScolastico"]; 
             case 2: 
-                return ["candidatura", "tipologia", "dataUltimoContatto", "stato", "funzioneAziendale", "ricerca", "tipo"];
+                return ["candidatura", "tipologia", "dataUltimoContatto", "funzioneAziendale", "ricerca", "tipo"];
             default:
                 return [];
         }
@@ -429,7 +429,7 @@ const AggiungiRecruitingGrafica = () => {
         }
     };
 
-        const fieldObbligatori = [ "nome", "cognome", "email", "anniEsperienzaRuolo", "tipologia", "dataUltimoContatto", "tipo", "stato", "livelloScolastico", "funzioneAziendale", "tipo" ];
+        const fieldObbligatori = [ "nome", "cognome", "email", "anniEsperienzaRuolo", "tipologia", "dataUltimoContatto", "tipo", "livelloScolastico", "funzioneAziendale", "tipo" ];
 
         const fields =[
             { type: "titleGroups",                label: "Profilo Candidato"            },
@@ -460,7 +460,7 @@ const AggiungiRecruitingGrafica = () => {
         { label: "Funzione Aziendale*",                name: "funzioneAziendale",        type: "select",               options: funzioniAziendaliOptions         },
         { label: "Job Title*",                         name: "tipologia",                type: "select",               options: jobTitleOptions                  },
         { label: "Data Inserimento*",                  name: "dataUltimoContatto",       type: "date"                                                            },
-        { label: "Stato*",                             name: "stato",                    type: "select",               options: statoOptions                     },
+        // { label: "Stato*",                             name: "stato",                    type: "select",               options: statoOptions                     },
         { label: "Owner",                              name: "owner",                    type: "select",               options: ownerOptions                     },
         { label: "Skills",                             name: "skills",                    type: "multipleSelect",        options: skillsOptions                    },
         { label: "RAL/Tariffa",                        name: "ral",                      type: "text", maxLength: 100                                                           },

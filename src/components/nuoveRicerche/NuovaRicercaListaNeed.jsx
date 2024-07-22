@@ -55,7 +55,7 @@
         <Box
         sx={{
             width: '100%',
-            bgcolor: theme.palette.button.main,
+            bgcolor: 'transparent',
             // border: 'solid 2px',
             // borderColor: theme.palette.border.main,
             borderRadius: '20px',
@@ -87,6 +87,7 @@
                         textAlign: "start",
                         borderRadius: "20px",
                         bgcolor: 'white',
+                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },
@@ -127,6 +128,7 @@
                         textAlign: "left",
                         borderRadius: "20px",
                         bgcolor: 'white',
+                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },
@@ -169,6 +171,7 @@
                         textAlign: "left",
                         borderRadius: "20px",
                         bgcolor: 'white',
+                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },
@@ -211,6 +214,7 @@
                         textAlign: "left",
                         borderRadius: "20px",
                         bgcolor: 'white',
+                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },
@@ -252,6 +256,7 @@
                         textAlign: "left",
                         borderRadius: "20px",
                         bgcolor: 'white',
+                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },
@@ -278,7 +283,7 @@
                     disableRipple={true}
                     disableFocusRipple={true}
                     sx={{
-                    // backgroundColor: theme.palette.button.main,
+                    backgroundColor: theme.palette.button.main,
                     color: "white",
                     textTransform: "lowercase",
                     fontWeight: "bold",
@@ -296,7 +301,7 @@
                     disableRipple={true}
                     disableFocusRipple={true}
                     sx={{
-                    // backgroundColor: "black",
+                    backgroundColor: "black",
                     color: "white",
                     textTransform: "lowercase",
                     fontWeight: "bold",

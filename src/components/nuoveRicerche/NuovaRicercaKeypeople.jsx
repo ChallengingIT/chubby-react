@@ -50,7 +50,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
         <Box
         sx={{
             width: '100%',
-            bgcolor: "#00B400",
+            bgcolor: "transparent",
             // border: 'solid 2px #00B400',
             borderRadius: '20px',
             display: "flex",
@@ -83,6 +83,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
                         border: 'solid 1px #00B400',
 
                         bgcolor: 'white',
+                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },
@@ -123,6 +124,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
                                     borderRadius: "20px",
                                     border: 'solid 1px #00B400',
                                     bgcolor: 'white',
+                                    boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
                                     "& .MuiFilledInput-root": {
                                         backgroundColor: "transparent",
                                     },
@@ -165,6 +167,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
                         borderRadius: "20px",
                         border: 'solid 1px #00B400',
                         bgcolor: 'white',
+                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },
@@ -208,6 +211,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
                         borderRadius: "20px",
                         border: 'solid 1px #00B400',
                         bgcolor: 'white',
+                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },
@@ -234,7 +238,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
                     disableRipple={true}
                     disableFocusRipple={true}
                     sx={{
-                    // backgroundColor: theme.palette.button.main,
+                    backgroundColor: theme.palette.button.main,
                     color: "white",
                     textTransform: "lowercase",
                     fontWeight: "bold",
@@ -252,7 +256,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
                     disableRipple={true}
                     disableFocusRipple={true}
                     sx={{
-                    // backgroundColor: "black",
+                    backgroundColor: "black",
                     color: "white",
                     textTransform: "lowercase",
                     fontWeight: "bold",

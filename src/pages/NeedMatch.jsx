@@ -10,9 +10,11 @@
     import CloseIconButton                                  from "../components/button/CloseIconButton.jsx";
     import IntervistaButton                                 from "../components/button/IntervistaButton.jsx";
     import ClipButton                                       from "../components/button/ClipButton.jsx";
-    import AddCircleIcon from '@mui/icons-material/AddCircle';
-    import SchemePage from "../components/SchemePage.jsx";
-import NuovaRicercaNeedMatch from "../components/nuoveRicerche/NuovaRicercaNeedMatch.jsx";
+    import AddCircleIcon                                    from '@mui/icons-material/AddCircle';
+    import SchemePage                                       from "../components/SchemePage.jsx";
+    import NuovaRicercaNeedMatch                            from "../components/nuoveRicerche/NuovaRicercaNeedMatch.jsx";
+    import ChecklistIcon                                    from '@mui/icons-material/Checklist';
+
     const NeedMatch = () => {
 
     const navigate      = useNavigate();
@@ -955,17 +957,18 @@ import NuovaRicercaNeedMatch from "../components/nuoveRicerche/NuovaRicercaNeedM
             <Button
                 onClick={() => handleOpenModal(params.row)}
                 sx={{
-                backgroundColor: "#00B401",
+                backgroundColor: "transparent",
                 fontWeight: "bold",
-                color: "white",
+                color: "black",
                 "&:hover": {
-                    backgroundColor: "#00B401",
+                    backgroundColor: "transparent",
                     transform: "scale(1.05)",
-                    color: "white",
+                    color: "black",
                 },
                 }}
+                startIcon={<ChecklistIcon sx={{ backgroundColor: "transparent" }} />}
+
             >
-                To do
             </Button>
             </div>
         ),
