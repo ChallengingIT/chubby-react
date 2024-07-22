@@ -255,7 +255,7 @@ const ModificaRecruitingGrafica = () => {
             case 1:
                 return [ "anniEsperienzaRuolo", "idLivelloScolastico"]; 
             case 2: 
-                return ["idCandidatura", "idTipologia", "dataUltimoContatto", "idFunzioneAziendale", "idRicerca", "idTipo"];
+                return ["idCandidatura", "idTipologia", "dataUltimoContatto", "idFunzioneAziendale"];
             default:
                 return [];
         }
@@ -556,7 +556,7 @@ const ModificaRecruitingGrafica = () => {
 
 
 
-        const campiObbligatori = [ "nome", "cognome", "email", "anniEsperienzaRuolo", "idTipologia", "dataUltimoContatto", "idCandidatura", "idLivelloScolastico", "idFunzioneAziendale", "idRicerca", "idTipo" ];
+        const campiObbligatori = [ "nome", "cognome", "email", "anniEsperienzaRuolo", "idTipologia", "dataUltimoContatto", "idCandidatura", "idLivelloScolastico", "idFunzioneAziendale" ];
 
         const fields =[
             { type: "titleGroups",                label: "Profilo Candidato"            },
