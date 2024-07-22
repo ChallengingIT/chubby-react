@@ -255,7 +255,7 @@ const ModificaRecruitingGrafica = () => {
             case 1:
                 return [ "anniEsperienzaRuolo", "idLivelloScolastico"]; 
             case 2: 
-                return ["idCandidatura", "idTipologia", "dataUltimoContatto", "idStato", "idFunzioneAziendale", "idRicerca", "idTipo"];
+                return ["idCandidatura", "idTipologia", "dataUltimoContatto", "idFunzioneAziendale", "idRicerca", "idTipo"];
             default:
                 return [];
         }
@@ -556,7 +556,7 @@ const ModificaRecruitingGrafica = () => {
 
 
 
-        const campiObbligatori = [ "nome", "cognome", "email", "anniEsperienzaRuolo", "idTipologia", "dataUltimoContatto", "idCandidatura", "idStato", "idLivelloScolastico", "idFunzioneAziendale", "idRicerca", "idTipo" ];
+        const campiObbligatori = [ "nome", "cognome", "email", "anniEsperienzaRuolo", "idTipologia", "dataUltimoContatto", "idCandidatura", "idLivelloScolastico", "idFunzioneAziendale", "idRicerca", "idTipo" ];
 
         const fields =[
             { type: "titleGroups",                label: "Profilo Candidato"            },
@@ -588,7 +588,7 @@ const ModificaRecruitingGrafica = () => {
         { label: "Funzione Aziendale*",                name: "idFunzioneAziendale",        type: "select",               options: funzioniAziendaliOptions         },
         { label: "Job Title*",                         name: "idTipologia",                type: "select",               options: jobTitleOptions                  },
         { label: "Data Inserimento*",                  name: "dataUltimoContatto",         type: "date"                                                            },
-        { label: "Stato*",                             name: "idStato",                    type: "select",               options: statoOptions                     },
+        // { label: "Stato*",                             name: "idStato",                    type: "select",               options: statoOptions                     },
         { label: "Owner",                              name: "idOwner",                    type: "select",               options: ownerOptions                     },
         { label: "Skills",                             name: "idSkills",                   type: "multipleSelect",  options: skillsOptions                         },
         { label: "RAL/Tariffa",                        name: "ral",                        type: "text", maxLength: 100                                                            },

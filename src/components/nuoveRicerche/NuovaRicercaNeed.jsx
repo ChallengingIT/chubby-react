@@ -85,7 +85,7 @@ function NuovaRicercaNeed({
             <Box
                 sx={{
                     width: '100%',
-                    bgcolor: theme.palette.button.main,
+                    bgcolor: 'transparent',
                     // border: 'solid 2px',
                     // borderColor: theme.palette.border.main,
                     borderRadius: '20px',
@@ -116,6 +116,7 @@ function NuovaRicercaNeed({
                             borderRadius: "20px",
                             border: 'solid 1px #00B400',
                             bgcolor: 'white',
+                            boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
                             "& .MuiFilledInput-root": {
                                 backgroundColor: "transparent",
                             },
@@ -156,6 +157,7 @@ function NuovaRicercaNeed({
                                     borderRadius: "20px",
                                     border: 'solid 1px #00B400',
                                     bgcolor: 'white',
+                                    boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
                                     "& .MuiFilledInput-root": {
                                         backgroundColor: "transparent",
                                     },
@@ -198,6 +200,7 @@ function NuovaRicercaNeed({
                                     borderRadius: "20px",
                                     border: 'solid 1px #00B400',
                                     bgcolor: 'white',
+                                    boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
                                     "& .MuiFilledInput-root": {
                                         backgroundColor: "transparent",
                                     },
@@ -240,6 +243,7 @@ function NuovaRicercaNeed({
                                     borderRadius: "20px",
                                     border: 'solid 1px #00B400',
                                     bgcolor: 'white',
+                                    boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
                                     "& .MuiFilledInput-root": {
                                         backgroundColor: "transparent",
                                     },
@@ -282,6 +286,7 @@ function NuovaRicercaNeed({
                                     borderRadius: "20px",
                                     border: 'solid 1px #00B400',
                                     bgcolor: 'white',
+                                    boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
                                     "& .MuiFilledInput-root": {
                                         backgroundColor: "transparent",
                                     },
@@ -308,7 +313,7 @@ function NuovaRicercaNeed({
                     disableRipple={true}
                     disableFocusRipple={true}
                     sx={{
-                        // backgroundColor: theme.palette.button.main,
+                        backgroundColor: theme.palette.button.main,
                         color: "white",
                         textTransform: "lowercase",
                         fontWeight: "bold",
@@ -326,7 +331,7 @@ function NuovaRicercaNeed({
                     disableRipple={true}
                     disableFocusRipple={true}
                     sx={{
-                        // backgroundColor: "black",
+                        backgroundColor: "black",
                         color: "white",
                         textTransform: "lowercase",
                         fontWeight: "bold",

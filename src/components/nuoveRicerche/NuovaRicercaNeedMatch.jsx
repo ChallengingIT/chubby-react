@@ -53,7 +53,7 @@
         <Box
         sx={{
             width: '100%',
-            bgcolor: theme.palette.button.main,
+            bgcolor: 'transparent',
             // border: 'solid 2px #00B400',
             borderRadius: '20px',
             display: "flex",
@@ -83,8 +83,9 @@
             sx={{
                         textAlign: "start",
                         borderRadius: "20px",
-                        // border: 'solid 1px #00B400',
+                        border: 'solid 1px #00B400',
                         bgcolor: 'white',
+                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },
@@ -121,8 +122,9 @@
             sx={{
                         textAlign: "start",
                         borderRadius: "20px",
-                        // border: 'solid 1px #00B400',
+                        border: 'solid 1px #00B400',
                         bgcolor: 'white',
+                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },
@@ -164,8 +166,9 @@
                         sx={{
                         textAlign: "left",
                         borderRadius: "20px",
-                        // border: 'solid 1px #00B400',
+                        border: 'solid 1px #00B400',
                         bgcolor: 'white',
+                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
                         },
@@ -210,7 +213,8 @@
                         sx={{
                         textAlign: "left",
                         borderRadius: "20px",
-                        // border: 'solid 1px #00B400',
+                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
+                        border: 'solid 1px #00B400',
                         bgcolor: 'white',
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
@@ -256,7 +260,8 @@
                         sx={{
                         textAlign: "left",
                         borderRadius: "20px",
-                        // border: 'solid 1px #00B400',
+                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
+                        border: 'solid 1px #00B400',
                         bgcolor: 'white',
                         "& .MuiFilledInput-root": {
                             backgroundColor: "transparent",
@@ -283,7 +288,7 @@
                     disableRipple={true}
                     disableFocusRipple={true}
                     sx={{
-                    // backgroundColor: theme.palette.button.main,
+                    backgroundColor: theme.palette.button.main,
                     color: "white",
                     textTransform: "lowercase",
                     fontWeight: "bold",
@@ -301,7 +306,7 @@
                     disableRipple={true}
                     disableFocusRipple={true}
                     sx={{
-                    // backgroundColor: "black",
+                    backgroundColor: "black",
                     color: "white",
                     textTransform: "lowercase",
                     fontWeight: "bold",

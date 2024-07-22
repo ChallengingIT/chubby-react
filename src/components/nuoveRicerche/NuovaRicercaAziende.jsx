@@ -59,7 +59,7 @@ function NuovaRicercaAziende({
             <Box
                 sx={{
                     width: '100%',
-                    bgcolor: "#00B400",
+                    bgcolor: "transparent",
                     // border: 'solid 2px #00B400',
                     borderRadius: '20px',
                     display: "flex",
@@ -89,6 +89,8 @@ function NuovaRicercaAziende({
                             borderRadius: "20px",
                             border: 'solid 1px #00B400',
                             bgcolor: 'white',
+                            boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
+
                             // backgroundColor: "#EDEDED",
                             "& .MuiFilledInput-root": {
                                 backgroundColor: "transparent",
@@ -130,6 +132,8 @@ function NuovaRicercaAziende({
                                     borderRadius: "20px",
                                     border: 'solid 1px #00B400',
                                     bgcolor: 'white',
+                                    boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
+
 
                                     // backgroundColor: "#EDEDED",
                                     "& .MuiFilledInput-root": {
@@ -173,6 +177,8 @@ function NuovaRicercaAziende({
                                     borderRadius: "20px",
                                     border: 'solid 1px #00B400',
                                     bgcolor: 'white',
+                                    boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
+
 
                                     // backgroundColor: "#EDEDED",
                                     "& .MuiFilledInput-root": {
@@ -218,6 +224,7 @@ function NuovaRicercaAziende({
                                         borderRadius: "20px",
                                         border: 'solid 1px #00B400',
                                         bgcolor: 'white',
+                                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
 
                                         // backgroundColor: "#EDEDED",
                                         "& .MuiFilledInput-root": {
@@ -247,12 +254,12 @@ function NuovaRicercaAziende({
                     disableRipple={true}
                     disableFocusRipple={true}
                     sx={{
-                        // backgroundColor: "black",
+                        backgroundColor: "#00B400",
                         color: "white",
                         textTransform: "lowercase",
                         fontWeight: "bold",
                         "&:hover": {
-                            backgroundColor: 'black',
+                            backgroundColor: '#00B400',
                             color: "white",
                             transform: "scale(1.1)",
                         },
@@ -265,7 +272,7 @@ function NuovaRicercaAziende({
                     disableRipple={true}
                     disableFocusRipple={true}
                     sx={{
-                        // backgroundColor: "black",
+                        backgroundColor: "black",
                         color: "white",
                         textTransform: "lowercase",
                         fontWeight: "bold",
