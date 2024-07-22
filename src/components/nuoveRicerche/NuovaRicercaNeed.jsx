@@ -85,7 +85,7 @@ function NuovaRicercaNeed({
             <Box
                 sx={{
                     width: '100%',
-                    bgcolor: 'transparent',
+                    bgcolor: 'white',
                     // border: 'solid 2px',
                     // borderColor: theme.palette.border.main,
                     borderRadius: '20px',

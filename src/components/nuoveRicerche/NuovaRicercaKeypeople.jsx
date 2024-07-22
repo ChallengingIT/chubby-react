@@ -50,7 +50,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
         <Box
         sx={{
             width: '100%',
-            bgcolor: "transparent",
+            bgcolor: "white",
             // border: 'solid 2px #00B400',
             borderRadius: '20px',
             display: "flex",
