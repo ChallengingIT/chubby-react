@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import NoteButton from "../components/button/NoteButton.jsx";
-import EuroButton from "../components/button/EuroButton.jsx";
+// import NoteButton from "../components/button/NoteButton.jsx";
+// import EuroButton from "../components/button/EuroButton.jsx";
 import PersonInfoButton from "../components/button/PersonInfoButton.jsx";
 import DeleteButton from "../components/button/DeleteButton.jsx";
 import ClipButton from "../components/button/ClipButton.jsx";
@@ -11,10 +11,6 @@ import SmileGreenIcon from "../components/icone/SmileGreenIcon.jsx";
 import SmileOrangeIcon from "../components/icone/SmileOrangeIcon.jsx";
 import SmileRedIcon from "../components/icone/SmileRedIcon.jsx";
 import Tabella from "../components/Tabella.jsx";
-import RicercheRecruiting from "../components/ricerche/RicercheRecruiting.jsx";
-
-
-
 import CloseIcon from "@mui/icons-material/Close";
 
 import {
@@ -28,22 +24,26 @@ import {
   Grid,
   Skeleton,
   IconButton,
+  Snackbar,
+  Alert,
+  Slide
 } from "@mui/material";
 import SchemePage from "../components/SchemePage.jsx";
 import NuovaRicercaRecruiting from "../components/nuoveRicerche/NuovaRicercaRecruiting.jsx";
+import CFButton from "../components/button/CFButton.jsx";
+import CFModal from "../components/modal/CFModal.jsx";
 
 const Recruiting = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const [originalRecruiting, setOriginalRecruiting] = useState([]);
-  const [filteredRecruiting, setFilteredRecruiting] = useState([]);
-  const [searchText, setSearchText] = useState([]);
+  // const [filteredRecruiting, setFilteredRecruiting] = useState([]);
   const [notePopup, setNotePopup] = useState(false);
   const [ralPopup, setRalPopup] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
-  const [selectedNote, setSelectedNote] = useState("");
-  const [selectedRal, setSelectedRal] = useState("");
+  // const [selectedNote, setSelectedNote] = useState("");
+  // const [selectedRal, setSelectedRal] = useState("");
   const [deleteId, setDeleteId] = useState(null);
   const [tipologiaOptions, setTipologiaOptions] = useState([]);
   const [tipoOptions, setTipoOptions] = useState([]);
@@ -51,6 +51,10 @@ const Recruiting = () => {
   const [openFiltri, setOpenFiltri] = useState(false);
   const [loading, setLoading] = useState(false);
   const [righeTot, setRigheTot] = useState(0);
+  const [idCandidato, setIdCandidato] = useState([]);
+  const [nomeCandidato, setNomeCandidato] = useState([]);
+  const [cognomeCandidato, setCognomeCandidato ] = useState([]);
+  const [descrizione, setDescrizione ] = useState([]);
   const [filtri, setFiltri] = useState(() => {
     const filtriSalvati = sessionStorage.getItem("filtriRicercaRecruiting");
     return filtriSalvati
@@ -64,6 +68,7 @@ const Recruiting = () => {
         };
   });
 
+
   //stati per la paginazione
   const [pagina, setPagina] = useState(0);
   const quantita = 10;
@@ -72,16 +77,27 @@ const Recruiting = () => {
   const [openDialogNome, setOpenDialogNome] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
 
+  // Stato per snackbar
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [descrizioneModalOpen, setDescrizioneModalOpen] = useState(false);
 
 
+  // const handleClickOpen = (row) => {
+  //   setSelectedRow(row);
+  //   setOpenDialogNome(true);
+  // };
 
-  const handleClickOpen = (row) => {
-    setSelectedRow(row);
-    setOpenDialogNome(true);
+  // const handleClose = () => {
+  //   setOpenDialogNome(false);
+  // };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
-  const handleClose = () => {
-    setOpenDialogNome(false);
+  const handleDescrizioneModalClose = () => {
+    setDescrizioneModalOpen(false);
   };
 
   const userHasRole = (role) => {
@@ -441,19 +457,6 @@ const Recruiting = () => {
     });
   };
 
-  // useEffect(() => {
-  //   // Controllo se tutti i filtri sono vuoti
-  //   const areFiltersEmpty = Object.values(filtri).every(value => value === null || value === '');
-  //   if (areFiltersEmpty) {
-  //       fetchData();
-  //   } else {
-  //       handleRicerche();
-  //   }
-  // }, [filtri, pagina]);
-
-  const handleOpenFiltri = () => setOpenFiltri(true);
-  const handleCloseFiltri = () => setOpenFiltri(false);
-
   const handleReset = () => {
     setFiltri({
       nome: "",
@@ -489,6 +492,58 @@ const Recruiting = () => {
     } catch (error) {
       console.error(
         "Si è verificato un errore durante il download del file: ",
+        error
+      );
+    }
+  };
+
+
+
+  const handleDescrizione = async (idCandidato, nome, cognome) => {
+    const url = `http://localhost:8080/files/descrizione/cf/${idCandidato}`;
+    try {
+      const responseDescrizione = await axios.get(url, { headers: headers });
+      const descrizione = responseDescrizione.data;
+
+      if (descrizione) {
+        setIdCandidato(idCandidato);
+        setDescrizione(descrizione);
+        setDescrizioneModalOpen(true);
+        setNomeCandidato(nome);
+        setCognomeCandidato(cognome);
+      } else {
+        setSnackbarMessage("Errore: Descrizione non trovata.");
+        setSnackbarOpen(true);
+      }
+    } catch(error) {
+      console.error ("errore duerante il recupero della descrizione: ", error);
+    }
+  };
+
+
+
+  const handleDownloadCF = async (idCandidato, descrizione, nomeCandidato, cognomeCandidato) => {
+    try {
+        const downloadUrl = `http://localhost:8080/files/download/cf/${idCandidato}`;
+        const responseDownloadCF = await axios({
+          method: "GET",
+          url: downloadUrl,
+          responseType: "blob",
+          headers: headers,
+          params: { descrizione: descrizione },
+        });
+        const fileURL = window.URL.createObjectURL(
+          new Blob([responseDownloadCF.data], { type: "application/pdf" })
+        );
+        const link = document.createElement("a");
+        link.href = fileURL;
+        link.setAttribute("download", `CF_${nomeCandidato}_${cognomeCandidato}.pdf`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } catch (error) {
+      console.error(
+        "Si è verificato un errore durante il download del CF: ",
         error
       );
     }
@@ -636,6 +691,16 @@ const Recruiting = () => {
               )
             }
           />
+          <CFButton
+            idCandidato={params.row?.id ? params.row?.id : null}
+            onClick={() =>
+              handleDescrizione(
+                params.row?.id ? params.row?.id : null,
+                params.row?.nome ? params.row?.nome : null,
+                params.row?.cognome ? params.row?.cognome : null,
+              )
+            }
+          />
           {userHasRole("ROLE_ADMIN") && (
             <DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
           )}
@@ -643,6 +708,10 @@ const Recruiting = () => {
       ),
     },
   ];
+
+  function TransitionLeft(props) {
+    return <Slide {...props} direction="up" />;
+}
 
   return (
     <SchemePage>
@@ -683,7 +752,7 @@ const Recruiting = () => {
           />
         )}
       </Box>
-      {notePopup && (
+      {/* {notePopup && (
         <Dialog
             open={notePopup}
             onClose={handleCloseNotesModal}
@@ -718,7 +787,7 @@ const Recruiting = () => {
             <DialogContentText sx={{ pb: 2}}>{selectedRal}</DialogContentText>
           </DialogContent>
         </Dialog>
-      )}
+      )} */}
 
       <Dialog
         open={openDialog}
@@ -904,6 +973,26 @@ const Recruiting = () => {
           )}
         </DialogContent>
       </Dialog>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        TransitionComponent={TransitionLeft}
+      >
+        <Alert variant='filled' onClose={handleSnackbarClose} severity="error" sx={{ width: "100%" }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+      <CFModal
+      open={descrizioneModalOpen}
+      handleClose={() => setDescrizioneModalOpen(false)}
+      idCandidato={idCandidato}
+      descrizione={descrizione}
+      handleDownloadCF={handleDownloadCF}
+      nomeCandidato={nomeCandidato}
+      cognomeCandidato={cognomeCandidato}
+      />
     </SchemePage>
   );
 };

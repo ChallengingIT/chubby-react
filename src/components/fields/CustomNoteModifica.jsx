@@ -18,6 +18,9 @@ function CustomNoteModifica({
     onChange({ [name]: value });
   };
 
+  console.log("values: ", values);
+  console.log("initialValues: ", initialValues);
+
   return (
     <TextField
       name={name}
