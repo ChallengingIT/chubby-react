@@ -26,7 +26,8 @@ import {
   IconButton,
   Snackbar,
   Alert,
-  Slide
+  Slide,
+  CircularProgress
 } from "@mui/material";
 import SchemePage from "../components/SchemePage.jsx";
 import NuovaRicercaRecruiting from "../components/nuoveRicerche/NuovaRicercaRecruiting.jsx";
@@ -50,6 +51,7 @@ const Recruiting = () => {
   const [statoOptions, setStatoOptions] = useState([]);
   const [openFiltri, setOpenFiltri] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingCF, setLoadingCF] = useState(false);
   const [righeTot, setRigheTot] = useState(0);
   const [idCandidato, setIdCandidato] = useState([]);
   const [nomeCandidato, setNomeCandidato] = useState([]);
@@ -502,6 +504,7 @@ const Recruiting = () => {
   const handleDescrizione = async (idCandidato, nome, cognome) => {
     const url = `http://89.46.196.60:8443/files/descrizione/cf/${idCandidato}`;
     try {
+      setLoadingCF(true);
       const responseDescrizione = await axios.get(url, { headers: headers });
       const descrizione = responseDescrizione.data;
 
@@ -517,7 +520,9 @@ const Recruiting = () => {
       }
     } catch(error) {
       console.error ("errore duerante il recupero della descrizione: ", error);
-    }
+    } finally {
+    setLoadingCF(false);
+  }
   };
 
 
@@ -984,15 +989,21 @@ const Recruiting = () => {
           {snackbarMessage}
         </Alert>
       </Snackbar>
-      <CFModal
-      open={descrizioneModalOpen}
-      handleClose={() => setDescrizioneModalOpen(false)}
-      idCandidato={idCandidato}
-      descrizione={descrizione}
-      handleDownloadCF={handleDownloadCF}
-      nomeCandidato={nomeCandidato}
-      cognomeCandidato={cognomeCandidato}
-      />
+      {loadingCF ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+        <CircularProgress />
+        </Box>
+      ) : (
+        <CFModal
+          open={descrizioneModalOpen}
+          handleClose={() => setDescrizioneModalOpen(false)}
+          idCandidato={idCandidato}
+          descrizione={descrizione}
+          handleDownloadCF={handleDownloadCF}
+          nomeCandidato={nomeCandidato}
+          cognomeCandidato={cognomeCandidato}
+        />
+      )}
     </SchemePage>
   );
 };
