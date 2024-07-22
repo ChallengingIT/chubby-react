@@ -449,9 +449,9 @@ const AggiungiRecruitingGrafica = () => {
             { label: "Facoltà",                         name: "facolta",                  type: "select",               options: facoltaOptions                   },
     
             { type: "titleGroups",                label: "Posizione Lavorativa"            },
-            { label: 'Tipologia*',                      name: 'tipo',                     type: 'select',          options: tipoOptions                           },
+            { label: 'Tipo Ingaggio*',                 name: 'tipo',                     type: 'select',          options: tipoOptions                           },
             { label: "Tipo Candidatura*",              name: "candidatura",              type: "select",          options: tipologiaOptions                       },
-            { label: "Tipo Ricerca*",                  name: "ricerca",                  type: "select",          options: ricercaOptions                         },
+            // { label: "Tipo Ricerca*",                  name: "ricerca",                  type: "select",          options: ricercaOptions                         },
             { label: "Modalità di lavoro",             name: "modalita",                 type: "select",          options: [ 
                 { value: 1, label: "Full Remote" },
                 { value: 2, label: "Ibrido" },

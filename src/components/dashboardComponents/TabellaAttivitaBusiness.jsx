@@ -33,18 +33,22 @@ const TabellaAttivitaBusiness = ({ data = [], aziendeOptions = [] }) => {
         return azienda ? azienda.label : 'Azienda Sconosciuta';
     };
 
+    const cellStyle = {
+        padding: '8px 8px', 
+    };
+
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="collapsible table">
                 <TableHead>
                     <TableRow>
-                        <TableCell sx={{ color: '#808080', fontWeight: 'bold'}}>Data</TableCell>
-                        <TableCell sx={{ color: '#808080', fontWeight: 'bold'}}>Ora</TableCell>
-                        <TableCell sx={{ color: '#808080', fontWeight: 'bold'}}>Azione</TableCell>
-                        <TableCell sx={{ color: '#808080', fontWeight: 'bold'}}>Owner</TableCell>
-                        <TableCell sx={{ color: '#808080', fontWeight: 'bold'}}>Cliente</TableCell>
-                        <TableCell sx={{ color: '#808080', fontWeight: 'bold'}}>Contatto</TableCell>
-                        <TableCell />
+                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold'}}>Data</TableCell>
+                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold'}}>Ora</TableCell>
+                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold'}}>Azione</TableCell>
+                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold'}}>Owner</TableCell>
+                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold'}}>Cliente</TableCell>
+                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold'}}>Contatto</TableCell>
+                        <TableCell style={cellStyle} />
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -55,16 +59,17 @@ const TabellaAttivitaBusiness = ({ data = [], aziendeOptions = [] }) => {
                         return (
                             <React.Fragment key={item.idAzioneKeyPeople || index}>
                                 <TableRow>
-                                    <TableCell>{formattedDate}</TableCell>
-                                    <TableCell>{formattedTime}</TableCell>
-                                    <TableCell>{item.azione}</TableCell>
-                                    <TableCell>{item.siglaOwner}</TableCell>
-                                    <TableCell>{getAziendaLabel(item.idCliente)}</TableCell>
-                                    <TableCell>{item.nomeContatto}</TableCell>
-                                    <TableCell>
+                                    <TableCell style={cellStyle}>{formattedDate}</TableCell>
+                                    <TableCell style={cellStyle}>{formattedTime}</TableCell>
+                                    <TableCell style={cellStyle}>{item.azione}</TableCell>
+                                    <TableCell style={cellStyle}>{item.siglaOwner}</TableCell>
+                                    <TableCell style={cellStyle}>{getAziendaLabel(item.idCliente)}</TableCell>
+                                    <TableCell style={cellStyle}>{item.nomeContatto}</TableCell>
+                                    <TableCell style={cellStyle}>
                                         <IconButton
                                             onClick={() => handleToggleExpanded(item.idAzioneKeyPeople)}
                                             aria-label="expand row"
+                                            size="small"
                                         >
                                             {expandedId === item.idAzioneKeyPeople ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                                         </IconButton>

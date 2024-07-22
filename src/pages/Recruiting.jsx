@@ -551,7 +551,12 @@ const Recruiting = () => {
       filterable: false,
       disableColumnMenu: true,
       flex: 0.6,
-      renderCell: (params) => getSmileIcon(params),
+      renderCell: (params) => (
+        <div style={{ textAlign: "start" }}>
+            {params.row.rating ? params.row.rating.toFixed(2) : ""}
+        </div>
+    ),
+      // renderCell: (params) => getSmileIcon(params),
     }, //fino a 1.9 è rosso, da 2 a 3 giallo, sopra 3 è verde
     {
       field: "owner",
@@ -594,13 +599,13 @@ const Recruiting = () => {
     {
       field: "azioni",
       headerName: "",
-      flex: 1.6,
+      flex: 1,
       sortable: false,
       filterable: false,
       disableColumnMenu: true,
       renderCell: (params) => (
         <Box>
-          <NoteButton
+          {/* <NoteButton
             onClick={() => {
               setNotePopup(true);
               setSelectedNote(params.row.note);
@@ -612,7 +617,7 @@ const Recruiting = () => {
               setRalPopup(true);
               setSelectedRal(params.row.ral);
             }}
-          />
+          /> */}
           <Link
             to={`/recruiting/intervista/${params.row.id}`}
             state={{ recruitingData: params.row }}

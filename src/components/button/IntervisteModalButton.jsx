@@ -1,18 +1,16 @@
-import React                    from 'react';
-import EditIcon                 from '@mui/icons-material/Edit';
-import Button                   from "@mui/material/Button";
-import { useNavigate }          from "react-router-dom";
+import React from 'react';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
-function EditButton({ onClick, to, rowData }) {
+function IntervisteModalButton({ onClick, to, recruitingData }) {
   const navigate = useNavigate();
 
   const handleEditAction = () => {
     if (onClick) {
-      onClick(rowData.id); 
+      onClick();
     } else if (to) {
       navigate(to);
-    } else {
-      console.warn("L'URL non è definito");
     }
   };
 
@@ -20,7 +18,7 @@ function EditButton({ onClick, to, rowData }) {
     <Button 
       // variant="contained" 
       size="medium" 
-      startIcon={<EditIcon />} 
+      startIcon={<VisibilityIcon />} 
       onClick={handleEditAction}
       sx={{
         marginRight: '10%',
@@ -48,6 +46,6 @@ function EditButton({ onClick, to, rowData }) {
       }}
     />
   );
-}
+};
 
-export default EditButton;
+export default IntervisteModalButton;

@@ -581,9 +581,9 @@ const ModificaRecruitingGrafica = () => {
             { label: "Facoltà",                         name: "idFacolta",                type: "select",               options: facoltaOptions                   },
     
             { type: "titleGroups",                label: "Posizione Lavorativa"            },
-            { label: 'Tipologia',                      name: 'idTipo',                     type: 'select',          options: tipoOptions                           },
+            { label: 'Tipo Ingaggio',                  name: 'idTipo',                     type: 'select',          options: tipoOptions                           },
             { label: "Tipo Candidatura*",              name: "idCandidatura",              type: "select",          options: tipologiaOptions                      },
-            { label: "Tipo Ricerca*",                  name: "idRicerca",                  type: "select",          options: ricercaOptions                        },
+            // { label: "Tipo Ricerca*",                  name: "idRicerca",                  type: "select",          options: ricercaOptions                        },
 
             { label: "Modalità di lavoro",             name: "modalita",                 type: "select",          options: [ 
                 { value: 1, label: "Full Remote" },
@@ -612,7 +612,7 @@ const ModificaRecruitingGrafica = () => {
 
             id:                                 datiModifica.id                                                                   ,
             idCandidatura:                     (datiModifica.candidatura && datiModifica.candidatura.id )                                      || null,
-            idRicerca:                         (datiModifica.ricerca && datiModifica.ricerca.id )                                  || null,
+            // idRicerca:                         (datiModifica.ricerca && datiModifica.ricerca.id )                                  || null,
             nome:                               datiModifica.nome                                                                 || null,
             cognome:                            datiModifica.cognome                                                              || null,
             dataNascita:                        datiModifica.dataNascita                                                          || null,

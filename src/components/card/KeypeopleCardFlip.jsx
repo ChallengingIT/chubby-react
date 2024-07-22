@@ -15,6 +15,7 @@ import PersonIcon                           from '@mui/icons-material/Person'; /
 import CloseIcon                            from '@mui/icons-material/Close';
 import axios                                from 'axios';
 import InfoIcon                             from '@mui/icons-material/Info';
+import AddCircleIcon                        from '@mui/icons-material/AddCircle';
 
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Alert, Stack, Pagination, Popover, Slide } from '@mui/material';
 import { 
@@ -129,15 +130,16 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
 
     const handleOpenModalStorico = (event) => {
         setModalStorico(true);
+        azioniData();
         azioniKeypeople(valori.id, event)
     };
 
-    const handleOpenModalAzioni = (event) => {
-        event.stopPropagation();
-        setModalAzioni(true);
-        azioniData();
-    };
-    const handleCloseModalAzioni = () => setModalAzioni(false);
+    // const handleOpenModalAzioni = (event) => {
+    //     event.stopPropagation();
+    //     setModalAzioni(true);
+    //     azioniData();
+    // };
+    // const handleCloseModalAzioni = () => setModalAzioni(false);
 
 
     const handleOpenModalDelete = (event) => {
@@ -188,7 +190,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
 
     const azioniKeypeople = async(id, event) => {
         try{
-            const responseAzioni = await axios.get(`http://89.46.196.60:8443/azioni/react/${id}`, { header: headers });
+            const responseAzioni = await axios.get(`http://localhost:8080/azioni/react/${id}`, { header: headers });
             if (Array.isArray(responseAzioni.data)) {
                 const azioni = responseAzioni.data.map((azione) => ({ ...azione}));
                 setAzioni(azioni);
@@ -212,7 +214,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
             quantita: 10
         };
         try {
-            const responseNeed = await axios.get(`http://89.46.196.60:8443/need/react/keypeople/modificato/${id}`, { headers: headers, params: datiDaInviare });
+            const responseNeed = await axios.get(`http://localhost:8080/need/react/keypeople/modificato/${id}`, { headers: headers, params: datiDaInviare });
             if (Array.isArray(responseNeed.data)) {
                 const needDaAssociare = responseNeed.data.map((keypeople) => ({ ...keypeople}));
                 setNeedAssociati(needDaAssociare);
@@ -232,7 +234,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                 quantita: 10
             };
             try {
-                const responseNeed = await axios.get(`http://89.46.196.60:8443/need/react/keypeople/modificato/${id}`, { headers: headers, params: datiDaInviare });
+                const responseNeed = await axios.get(`http://localhost:8080/need/react/keypeople/modificato/${id}`, { headers: headers, params: datiDaInviare });
                 if (Array.isArray(responseNeed.data)) {
                     const needDaAssociare = responseNeed.data.map((keypeople) => ({ ...keypeople }));
                     setNeedAssociati(needDaAssociare);
@@ -253,7 +255,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
 
     const azioniData = async(id, event) => {
         try{
-            const responseAzioni = await axios.get(`http://89.46.196.60:8443/azioni/react/tipologie`, { headers: headers });
+            const responseAzioni = await axios.get(`http://localhost:8080/azioni/react/tipologie`, { headers: headers });
             if (Array.isArray(responseAzioni.data)) {
                 setTipologieOptions(responseAzioni.data.map((tipologie) => ({ label: tipologie.descrizione, value: tipologie.id })));
             } else {
@@ -279,7 +281,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
         const idStato = values.stato;  
         const params = new URLSearchParams({ stato: idStato });
         try {
-            const responseUpdateStato = await axios.post(`http://89.46.196.60:8443/keypeople/react/salva/stato/${idKeypeople}?${params.toString()}`, {}, { headers: headers });
+            const responseUpdateStato = await axios.post(`http://localhost:8080/keypeople/react/salva/stato/${idKeypeople}?${params.toString()}`, {}, { headers: headers });
             setModalCambiaStato(false);
             onRefresh();
             handleOpenSnackbar('Stato aggiornato con successo!', 'success');
@@ -346,33 +348,33 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
 
     const menuData = [
         {
-            title: 'Azione',
+            title: 'Azioni Commerciali',
             icon: <DoubleArrowIcon />,
             onClick: (event) => {
-                handleOpenModalAzioni(event);
+                handleOpenModalStorico(event);
             }
         },
         {
-            title: 'Cambia Stato',
+            title: 'Cambia Stato Contatto',
             icon: <ChangeCircleIcon />,
             onClick: (event) => {
                 handleOpenModalCambiaStato(valori.id, event);
             }
         },
         {
-            title: 'Need',
+            title: 'Need Correlati',
             icon : <ExploreIcon />,
             onClick: (event) => {
                 handleOpenModalNeed(event);
             }
         },
-        {
-            title: 'Storico',
-            icon: <AutoStoriesIcon />,
-            onClick: (event) => {
-                handleOpenModalStorico(event);
-            }
-        },
+        // {
+        //     title: 'Storico',
+        //     icon: <AutoStoriesIcon />,
+        //     onClick: (event) => {
+        //         handleOpenModalStorico(event);
+        //     }
+        // },
         {
             title: 'Aggiorna Contatto',
             icon: <SettingsIcon />,
@@ -397,18 +399,19 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
             note: values.note,
         };
         try {
-            const responseSubmitAzione = await axios.post(`http://89.46.196.60:8443/azioni/react/salva/${id}`, valoriDaInviare, { headers: headers });
-            if (responseSubmitAzione.status === 200 || responseSubmitAzione.status === 201) {
+            const responseSubmitAzione = await axios.post(`http://localhost:8080/azioni/react/salva/${id}`, valoriDaInviare, { headers: headers });
+            if (responseSubmitAzione.data === "OK") {
                 setValues({
                     data: '',
                     tipologie: '',
                     note: ''
                 });
                 handleOpenSnackbar('Azione salvata con successo!', 'success');
+                await azioniKeypeople(valori.id);
             } else {
                 handleOpenSnackbar('Qualcosa è andato storto, riprova!', 'error');
             }
-            handleCloseModalAzioni();
+            // handleCloseModalAzioni();
         } catch (error) {
             console.error("Errore durante l'invio dei dati: ", error);
             handleOpenSnackbar('Errore durante l invio dei dati.', 'error');
@@ -624,7 +627,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
 
 
                 { /* MODAL PER LO STORICO */ }
-                <Modal
+                {/* <Modal
                 open={modalStorico}
                 onClose={() => setModalStorico(false)}
                 aria-labelledby="modal-modal-title"
@@ -678,11 +681,175 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                         </Table>
                     </TableContainer>
                     </Box>
+                </Modal> */}
+
+
+            { /* MODAL PER LO STORICO */ }
+                <Modal
+                    open={modalStorico}
+                    onClose={() => setModalStorico(false)}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    minHeight: '70vh'
+                    }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: 'white', borderRadius: '20px', overflow: 'hidden', border: 'solid 2.2px #00B400' }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', p: 3, }}>
+                        <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', mt: 0.5, mb: 0.5 }}>Storico delle azioni</Typography>
+                        <IconButton sx={{
+                        mr: 2,
+                        backgroundColor: 'transparent',
+                        border: 'none',
+                        '&:hover': {
+                            backgroundColor: 'transparent'
+                        }
+                        }} onClick={() => setModalStorico(false)}>
+                        <CloseIcon sx={{
+                            backgroundColor: 'transparent',
+                            '&:hover': {
+                            color: 'red',
+                            backgroundColor: 'transparent',
+                            }
+                        }} />
+                        </IconButton>
+                    </Box>
+                    <TableContainer component={Paper} sx={{ maxHeight: '300px', overflow: 'auto' }}>
+                        <Table stickyHeader>
+                        <TableHead>
+                            <TableRow>
+                            <TableCell sx={{ fontWeight: 'bold', fontSize: 'large' }}>Data</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', fontSize: 'large' }}>Tipologia</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', fontSize: 'large' }}>Note</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', fontSize: 'large' }}></TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {azioni.slice(pagina * righePerPagina, pagina * righePerPagina + righePerPagina).map((azione) => (
+                            <TableRow key={azione.id}>
+                                <TableCell>{azione.dataModifica}</TableCell>
+                                <TableCell>{azione.tipologia && azione.tipologia?.descrizione}</TableCell>
+                                <TableCell>{azione.note}</TableCell>
+                                <TableCell></TableCell>
+                            </TableRow>
+                            ))}
+                        </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2, backgroundColor: 'white', borderTop: 'solid 1px #E0E0E0' }}>
+                        <TextField
+                        label="Seleziona Data"
+                        type="datetime-local"
+                        defaultValue={""}
+                        variant="filled"
+                        sx={{
+                            height: '4em',
+                            p: 1,
+                            borderRadius: '20px',
+                            backgroundColor: '#EDEDED',
+                            '& .MuiFilledInput-root': {
+                            backgroundColor: 'transparent',
+                            },
+                            '& .MuiFilledInput-underline:after': {
+                            borderBottomColor: 'transparent',
+                            },
+                            '& .MuiFilledInput-root::before': {
+                            borderBottom: 'none',
+                            },
+                            '&:hover .MuiFilledInput-root::before': {
+                            borderBottom: 'none',
+                            },
+                            '& .MuiFormLabel-root.Mui-focused': {
+                            color: '#00B400',
+                            },
+                        }}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        onChange={(event) => handleValueChange('data', event.target.value)}
+                        />
+                        {/* <FormControl fullWidth sx={{ ml: 2, mr: 2 }}> */}
+                        <Autocomplete
+                            id="stato-combo-box"
+                            options={tipologieOptions}
+                            getOptionLabel={(option) => option.label}
+                            value={tipologieOptions.find(option => option.value === values.tipologie) || null}
+                            onChange={(event, newValue) => {
+                            handleValueChange('tipologie', newValue ? newValue.value : null);
+                            }}
+                            sx={{ width: '15em'}}
+                            renderInput={(params) =>
+                            <TextField
+                                {...params}
+                                label="Azione"
+                                variant='filled'
+                                sx={{
+                                height: '4em',
+                                p: 1,
+                                borderRadius: '20px',
+                                backgroundColor: '#EDEDED',
+                                '& .MuiFilledInput-root': {
+                                    backgroundColor: 'transparent',
+                                },
+                                '& .MuiFilledInput-underline:after': {
+                                    borderBottomColor: 'transparent',
+                                },
+                                '& .MuiFilledInput-root::before': {
+                                    borderBottom: 'none',
+                                },
+                                '&:hover .MuiFilledInput-root::before': {
+                                    borderBottom: 'none',
+                                },
+                                '& .MuiFormLabel-root.Mui-focused': {
+                                    color: '#00B400',
+                                },
+                                }}
+                            />}
+                        />
+                        {/* </FormControl> */}
+                        <TextField
+                        label="Note"
+                        variant="filled"
+                        inputProps={{
+                            maxLength: 4000
+                        }}
+                        rows={4}
+                        sx={{
+                            height: '4em',
+                            p: 1,
+                            borderRadius: '20px',
+                            backgroundColor: '#EDEDED',
+                            '& .MuiFilledInput-root': {
+                            backgroundColor: 'transparent',
+                            },
+                            '& .MuiFilledInput-underline:after': {
+                            borderBottomColor: 'transparent',
+                            },
+                            '& .MuiFilledInput-root::before': {
+                            borderBottom: 'none',
+                            },
+                            '&:hover .MuiFilledInput-root::before': {
+                            borderBottom: 'none',
+                            },
+                            '& .MuiFormLabel-root.Mui-focused': {
+                            color: '#00B400',
+                            },
+                        }}
+                        onChange={(event) => handleValueChange('note', event.target.value)}
+                        />
+                        <IconButton
+                        onClick={() => handleAzioniSubmit(valori.id)}
+                        >
+                        <AddCircleIcon sx={{ color: '#00B400'}} />
+                        </IconButton>
+                    </Box>
+                    </Box>
                 </Modal>
 
-
                 { /* MODAL DELLE AZIONI */ }
-                <Modal
+                {/* <Modal
                     open={modalAzioni}
                     onClose={() => setModalAzioni(false)}
                     aria-labelledby="modal-modal-title"
@@ -858,10 +1025,10 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                             Invia
                         </Button>
                     </Box>
-                </Modal>
+                </Modal> */}
 
 
-                { /* MODAL PERLA LISTA DEI NEED */}
+                { /* MODAL PER LA LISTA DEI NEED */}
                 <Modal
                 open={modalNeed}
                 onClose={() => setModalNeed(false)}

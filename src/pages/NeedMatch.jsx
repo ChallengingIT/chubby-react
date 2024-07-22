@@ -730,7 +730,13 @@ import NuovaRicercaNeedMatch from "../components/nuoveRicerche/NuovaRicercaNeedM
             </div>
         ),
         },
-        { field: "rating", headerName: "Rating", flex: 1, sortable: false, filterable: false, disableColumnMenu: true },
+        { field: "rating", headerName: "Rating", flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
+            renderCell: (params) => (
+                <div style={{ textAlign: "start" }}>
+                    {params.row.rating ? params.row.rating.toFixed(2) : ""}
+                </div>
+            ),
+         },
         {
         field: "stato",
         headerName: "Stato",
@@ -905,7 +911,7 @@ import NuovaRicercaNeedMatch from "../components/nuoveRicerche/NuovaRicercaNeedM
         },
         {
         field: "stato",
-        headerName: "Stato",
+        headerName: "Stato Candidato",
         flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
         renderCell: (params) => (
             <div style={{ textAlign: "start" }}>
@@ -959,7 +965,7 @@ import NuovaRicercaNeedMatch from "../components/nuoveRicerche/NuovaRicercaNeedM
                 },
                 }}
             >
-                Aggiorna
+                To do
             </Button>
             </div>
         ),
