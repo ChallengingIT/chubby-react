@@ -33,7 +33,6 @@ const TabellaCandidati = ({ idNeed }) => {
     const user = JSON.parse(sessionStorage.getItem("user"));
     const token = user?.token;
     const username = user.username;
-    console.log("username: ", username);
 
     const headers = {
         Authorization: `Bearer ${token}`,

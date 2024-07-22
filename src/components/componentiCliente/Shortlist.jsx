@@ -54,7 +54,6 @@ const Shortlist = ({ idNeed }) => {
           }
         }
       );
-      console.log(responseRating.data);
     } catch (error) {
       console.error("Errore durante l'invio del rating:", error);
     }

@@ -94,7 +94,6 @@
                 const ultimaIntervista = intervisteData[intervisteData.length - 1];
                 setInterviste(ultimaIntervista);
             } else if (intervisteData.length === 0) {
-                // Gestisci il caso in cui non ci siano interviste
             } else {
                 console.error(
                 "I dati ottenuti da intervista non sono nel formato Array:",
@@ -338,6 +337,20 @@
         { value: 3, label: "KO" },
     ];
 
+    // Funzione per fare il mapping dei valori di teamSiNo
+    const getTeamSiNoLabel = (value) => {
+        switch (value) {
+            case 1:
+                return "SI";
+            case 2:
+                return "NO";
+            case 3:
+                return "KO";
+            default:
+                return "";
+        }
+    };
+
     const campiObbligatori = ["dataColloquio, coerenza, standing,energia,comunicazione,inglese,competenze,valutazione,descrizioneCandidatoUna,teamSiNo"];
 
     const fields = [
@@ -360,7 +373,7 @@
         { label: "Energia",                     name: "energia",                    type: "select",             options: valoriOptions  },
         { label: "Comunicazione",               name: "comunicazione",              type: "select",             options: valoriOptions  },
         { label: "Livello di Inglese",          name: "inglese",                    type: "select",             options: valoriOptions  },
-        { label: "Competenze vs ruolo",         name: "competenze",                 type: "text",               options: valoriOptions  },
+        { label: "Competenze vs ruolo",         name: "competenze",                 type: "select",             options: valoriOptions  },
         { label: "Valutazione",                 name: "valutazione",                type: "select",             options: valoriOptions  },
         { label: "One word",                    name: "descrizioneCandidatoUna",    type: "text",               maxLength: 45,          },
         { label: "Lo vorresti nel tuo team?",   name: "teamSiNo",                   type: "select",             options: siNoOptions    },
