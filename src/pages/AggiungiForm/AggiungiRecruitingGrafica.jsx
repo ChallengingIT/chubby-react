@@ -211,7 +211,7 @@ const AggiungiRecruitingGrafica = () => {
             case 1:
                 return [ "anniEsperienzaRuolo", "livelloScolastico"]; 
             case 2: 
-                return ["candidatura", "tipologia", "dataUltimoContatto", "funzioneAziendale", "ricerca", "tipo"];
+                return ["candidatura", "tipologia", "dataUltimoContatto", "funzioneAziendale"];
             default:
                 return [];
         }
@@ -429,7 +429,7 @@ const AggiungiRecruitingGrafica = () => {
         }
     };
 
-        const fieldObbligatori = [ "nome", "cognome", "email", "anniEsperienzaRuolo", "tipologia", "dataUltimoContatto", "tipo", "livelloScolastico", "funzioneAziendale", "tipo" ];
+        const fieldObbligatori = [ "nome", "cognome", "email", "anniEsperienzaRuolo", "tipologia", "dataUltimoContatto", "livelloScolastico", "funzioneAziendale" ];
 
         const fields =[
             { type: "titleGroups",                label: "Profilo Candidato"            },

@@ -78,6 +78,7 @@ const Recruiting = () => {
   //stato per il dialog
   const [openDialogNome, setOpenDialogNome] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
+  const [noCFModal, setNoCFModal] = useState(false);
 
   // Stato per snackbar
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -98,9 +99,6 @@ const Recruiting = () => {
     setSnackbarOpen(false);
   };
 
-  const handleDescrizioneModalClose = () => {
-    setDescrizioneModalOpen(false);
-  };
 
   const userHasRole = (role) => {
     const userString = sessionStorage.getItem("user");
