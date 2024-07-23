@@ -14,6 +14,7 @@
     import SchemePage                                       from "../components/SchemePage.jsx";
     import NuovaRicercaNeedMatch                            from "../components/nuoveRicerche/NuovaRicercaNeedMatch.jsx";
     import ChecklistIcon                                    from '@mui/icons-material/Checklist';
+    import CheckListButton from "../components/button/CheckListButton.jsx";
 
     const NeedMatch = () => {
 
@@ -927,10 +928,10 @@
         {
         field: "azioni",
         headerName: "",
-        flex: 1.2, sortable: false, filterable: false, disableColumnMenu: true,
+        flex: 1.5, sortable: false, filterable: false, disableColumnMenu: true,
         renderCell: (params) => (
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
-            <Button
+            {/* <Button
                 onClick={() => handleOpenModal(params.row)}
                 sx={{
                 backgroundColor: "transparent",
@@ -944,7 +945,8 @@
                 }}
                 startIcon={<ChecklistIcon sx={{ backgroundColor: "transparent" }} />}
             >
-            </Button>
+            </Button> */}
+            <CheckListButton onClick={() => handleOpenModal(params.row)} />
             <Link
                 to={`/recruiting/intervista/${params.row.id}`}
                 state = {{ recruitingData: params.row}}

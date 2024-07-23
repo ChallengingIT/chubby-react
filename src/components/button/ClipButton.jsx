@@ -18,7 +18,7 @@ function ClipButton({ idFile, fileDescrizione, onClick }) {
       startIcon={<AttachmentIcon />}
       onClick={handleDownload}
       sx={{
-        marginRight: "10%",
+        // marginRight: "10%",
         backgroundColor: "transparent",
         color: "black",
         borderRadius: "50%",
