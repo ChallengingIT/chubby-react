@@ -259,7 +259,7 @@ function NuovaRicercaAziende({
                         textTransform: "lowercase",
                         fontWeight: "bold",
                         "&:hover": {
-                            backgroundColor: '#00B400',
+                            backgroundColor: '#116d0e',
                             color: "white",
                             transform: "scale(1.1)",
                         },
@@ -277,9 +277,9 @@ function NuovaRicercaAziende({
                         textTransform: "lowercase",
                         fontWeight: "bold",
                         "&:hover": {
-                            backgroundColor: "black",
+                            backgroundColor: "#282828",
                             color: "white",
-                            trasform: "scale(1.1)",
+                            transform: "scale(1.1)",
                         },
                     }}
                 >

@@ -309,18 +309,18 @@ function NuovaRicercaNeed({
                 </FormControl>
 
                 <IconButton
-                    onClick={() => onSearch(filtri)}
+                    onClick={onSearch}
                     disableRipple={true}
                     disableFocusRipple={true}
                     sx={{
-                        backgroundColor: theme.palette.button.main,
+                        backgroundColor: "#00B400",
                         color: "white",
                         textTransform: "lowercase",
                         fontWeight: "bold",
                         "&:hover": {
-                            backgroundColor: 'black',
+                            backgroundColor: '#116d0e',
                             color: "white",
-                            trasform: "scale(1.1)",
+                            transform: "scale(1.1)",
                         },
                     }}
                 >
@@ -336,9 +336,9 @@ function NuovaRicercaNeed({
                         textTransform: "lowercase",
                         fontWeight: "bold",
                         "&:hover": {
-                            backgroundColor: "black",
+                            backgroundColor: "#282828",
                             color: "white",
-                            trasform: "scale(1.1)",
+                            transform: "scale(1.1)",
                         },
                     }}
                 >
