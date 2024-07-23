@@ -242,6 +242,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
                         color: "white",
                         textTransform: "lowercase",
                         fontWeight: "bold",
+                        boxShadow: "9px 9px 9px rgba(0, 0, 0, 0.1)",
                         "&:hover": {
                             backgroundColor: '#116d0e',
                             color: "white",
@@ -260,6 +261,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
                         color: "white",
                         textTransform: "lowercase",
                         fontWeight: "bold",
+                        boxShadow: "9px 9px 9px rgba(0, 0, 0, 0.1)",
                         "&:hover": {
                             backgroundColor: "#282828",
                             color: "white",

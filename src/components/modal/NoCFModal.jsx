@@ -52,6 +52,7 @@
                 color: 'white', 
                 fontWeight: 'bold', 
                 minWidth: '10em',
+                borderRadius: '10px',
                 '&:hover': {
                 bgcolor: 'black',
                 transform: 'scale(1.02)'
@@ -65,6 +66,7 @@
                 color: 'white', 
                 fontWeight: 'bold', 
                 minWidth: '10em',
+                borderRadius: '10px',
                 '&:hover': {
                 bgcolor: '#00B400',
                 transform: 'scale(1.02)'
