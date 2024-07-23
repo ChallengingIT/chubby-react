@@ -29,6 +29,7 @@
 
     const handleSubmit = () => {
         handleDownloadCF(idCandidato, values.descrizione, nomeCandidato, cognomeCandidato);
+        handleClose();
     };
 
     return (

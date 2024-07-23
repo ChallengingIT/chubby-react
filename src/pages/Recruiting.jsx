@@ -530,23 +530,30 @@ const Recruiting = () => {
 
   const handleDownloadCF = async (idCandidato, descrizione, nomeCandidato, cognomeCandidato) => {
     try {
-        const downloadUrl = `http://localhost:8080/files/download/cf/${idCandidato}`;
-        const responseDownloadCF = await axios({
-          method: "GET",
-          url: downloadUrl,
-          responseType: "blob",
-          headers: headers,
-          params: { descrizione: descrizione },
-        });
-        const fileURL = window.URL.createObjectURL(
-          new Blob([responseDownloadCF.data], { type: "application/pdf" })
-        );
-        const link = document.createElement("a");
-        link.href = fileURL;
-        link.setAttribute("download", `CF_${nomeCandidato}_${cognomeCandidato}.pdf`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+      const downloadUrl = `http://localhost:8080/files/download/cf/${idCandidato}`;
+      const params = new URLSearchParams();
+      if (descrizione !== null) {
+        params.append('descrizione', descrizione);
+      } else {
+        params.append('descrizione', '');
+      }
+      
+      const responseDownloadCF = await axios({
+        method: "GET",
+        url: `${downloadUrl}?${params.toString()}`,
+        responseType: "blob",
+        headers: headers,
+      });
+      
+      const fileURL = window.URL.createObjectURL(
+        new Blob([responseDownloadCF.data], { type: "application/pdf" })
+      );
+      const link = document.createElement("a");
+      link.href = fileURL;
+      link.setAttribute("download", `CF_${nomeCandidato}_${cognomeCandidato}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } catch (error) {
       console.error(
         "Si è verificato un errore durante il download del CF: ",
@@ -554,6 +561,7 @@ const Recruiting = () => {
       );
     }
   };
+  
 
   const columns = [
     {
