@@ -59,7 +59,7 @@ function NuovaRicercaAziende({
             <Box
                 sx={{
                     width: '100%',
-                    bgcolor: "transparent",
+                    bgcolor: "white",
                     // border: 'solid 2px #00B400',
                     borderRadius: '20px',
                     display: "flex",
@@ -258,8 +258,9 @@ function NuovaRicercaAziende({
                         color: "white",
                         textTransform: "lowercase",
                         fontWeight: "bold",
+                        boxShadow: "9px 9px 9px rgba(0, 0, 0, 0.1)",
                         "&:hover": {
-                            backgroundColor: '#00B400',
+                            backgroundColor: '#116d0e',
                             color: "white",
                             transform: "scale(1.1)",
                         },
@@ -276,10 +277,11 @@ function NuovaRicercaAziende({
                         color: "white",
                         textTransform: "lowercase",
                         fontWeight: "bold",
+                        boxShadow: "9px 9px 9px rgba(0, 0, 0, 0.1)",
                         "&:hover": {
-                            backgroundColor: "black",
+                            backgroundColor: "#282828",
                             color: "white",
-                            trasform: "scale(1.1)",
+                            transform: "scale(1.1)",
                         },
                     }}
                 >

@@ -21,7 +21,7 @@ function PersonInfoButton({ onClick, to }) {
       startIcon={<PersonSearchIcon />}
       onClick={handleEditAction}
       sx={{
-        marginRight: "10%",
+        // marginRight: "10%",
         backgroundColor: "transparent",
         color: "black",
         borderRadius: "50%",

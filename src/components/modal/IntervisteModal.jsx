@@ -11,6 +11,7 @@ import {
     CardContent,
     Divider,
     Grid,
+    Chip,
 } from '@mui/material';
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -30,6 +31,16 @@ const IntervisteModal = ({ open, handleClose, intervista, candidato }) => {
             default:
                 return "";
         }
+    };
+
+    // Funzione per rendere condizionalmente il Chip solo se il valore esiste
+    const renderChip = (label, value) => {
+        return (
+            <Grid item xs={6}>
+                <Typography variant="body1"><strong>{label}:</strong></Typography>
+                {value && <Chip label={value} />}
+            </Grid>
+        );
     };
 
     return (
@@ -61,30 +72,14 @@ const IntervisteModal = ({ open, handleClose, intervista, candidato }) => {
                             <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'flex-start' }}>Informazioni di Base</Typography>
                             <Divider sx={{ mb: 2 }} />
                             <Grid container spacing={2}>
-                                <Grid item xs={6}>
-                                    <Typography variant="body1"><strong>Nome:</strong> {intervista?.candidato?.nome || ''}</Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Typography variant="body1"><strong>Cognome:</strong> {intervista?.candidato?.cognome || ''}</Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Typography variant="body1"><strong>Data Colloquio:</strong> {intervista?.dataColloquio || ''}</Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Typography variant="body1"><strong>Intervistatore:</strong> {intervista?.nextOwner?.nome || ''} {intervista?.nextOwner?.cognome || ''}</Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Typography variant="body1"><strong>Data di Nascita:</strong> {candidato?.dataNascita || ''}</Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Typography variant="body1"><strong>Cellulare:</strong> {candidato?.cellulare || ''}</Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Typography variant="body1"><strong>Job Title:</strong> {candidato?.tipologia?.descrizione || ''}</Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Typography variant="body1"><strong>Skills:</strong> {skillsDescriptions}</Typography>
-                                </Grid>
+                                {renderChip("Nome", intervista?.candidato?.nome)}
+                                {renderChip("Cognome", intervista?.candidato?.cognome)}
+                                {renderChip("Data Colloquio", intervista?.dataColloquio)}
+                                {renderChip("Intervistatore", `${intervista?.nextOwner?.nome || ''} ${intervista?.nextOwner?.cognome || ''}`.trim())}
+                                {renderChip("Data di Nascita", candidato?.dataNascita)}
+                                {renderChip("Cellulare", candidato?.cellulare)}
+                                {renderChip("Job Title", candidato?.tipologia?.descrizione)}
+                                {renderChip("Skills", skillsDescriptions)}
                             </Grid>
                         </CardContent>
                     </Card>
@@ -94,33 +89,15 @@ const IntervisteModal = ({ open, handleClose, intervista, candidato }) => {
                             <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'flex-start' }}>Competenze</Typography>
                             <Divider sx={{ mb: 2 }} />
                             <Grid container spacing={2}>
-                                <Grid item xs={6}>
-                                    <Typography variant="body1"><strong>Coerenza Percorso:</strong> {intervista?.coerenza || ''}</Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Typography variant="body1"><strong>Standing:</strong> {intervista?.standing || ''}</Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Typography variant="body1"><strong>Energia:</strong> {intervista?.energia || ''}</Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Typography variant="body1"><strong>Comunicazione:</strong> {intervista?.comunicazione || ''}</Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Typography variant="body1"><strong>Livello di Inglese:</strong> {intervista?.inglese || ''}</Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Typography variant="body1"><strong>Competenze vs Ruolo:</strong> {intervista?.competenze || ''}</Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Typography variant="body1"><strong>Valutazione:</strong> {intervista?.valutazione || ''}</Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Typography variant="body1"><strong>One Word:</strong> {intervista?.descrizioneCandidatoUna || ''}</Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Typography variant="body1"><strong>Team SI NO:</strong> {getTeamSiNoLabel(intervista?.teamSiNo)}</Typography>
-                                </Grid>
+                                {renderChip("Coerenza Percorso", intervista?.coerenza)}
+                                {renderChip("Standing", intervista?.standing)}
+                                {renderChip("Energia", intervista?.energia)}
+                                {renderChip("Comunicazione", intervista?.comunicazione)}
+                                {renderChip("Livello di Inglese", intervista?.inglese)}
+                                {renderChip("Competenze vs Ruolo", intervista?.competenze)}
+                                {renderChip("Valutazione", intervista?.valutazione)}
+                                {renderChip("One Word", intervista?.descrizioneCandidatoUna)}
+                                {renderChip("Team SI NO", getTeamSiNoLabel(intervista?.teamSiNo))}
                             </Grid>
                         </CardContent>
                     </Card>
@@ -130,18 +107,10 @@ const IntervisteModal = ({ open, handleClose, intervista, candidato }) => {
                             <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'flex-start' }}>Informazioni Contrattuali</Typography>
                             <Divider sx={{ mb: 2 }} />
                             <Grid container spacing={2}>
-                                <Grid item xs={6}>
-                                    <Typography variant="body1"><strong>Disponibilità:</strong> {intervista?.disponibilita || ''}</Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Typography variant="body1"><strong>RAL Attuale:</strong> {intervista?.attuale || ''}</Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Typography variant="body1"><strong>RAL Desiderata:</strong> {intervista?.desiderata || ''}</Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Typography variant="body1"><strong>Proposta Economica:</strong> {intervista?.proposta || ''}</Typography>
-                                </Grid>
+                                {renderChip("Disponibilità", intervista?.disponibilita)}
+                                {renderChip("RAL Attuale", intervista?.attuale)}
+                                {renderChip("RAL Desiderata", intervista?.desiderata)}
+                                {renderChip("Proposta Economica", intervista?.proposta)}
                             </Grid>
                         </CardContent>
                     </Card>

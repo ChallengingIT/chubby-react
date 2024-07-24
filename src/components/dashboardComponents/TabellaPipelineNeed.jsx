@@ -22,7 +22,7 @@ const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
     const dialogData = [
         { header: "ITW", data: [{ title: "Pianificata", value: currentPipelineData.itwPianificate }, { title: "Fatte", value: currentPipelineData.itwFatte }] },
         { header: "CF", data: [{ title: "Disponibili", value: currentPipelineData.cfDisponibili }, { title: "Inviati", value: currentPipelineData.cfInviati }] },
-        { header: "QM", data: [{ title: "Pianificata", value: currentPipelineData.qmPianificate }, { title: "Fatte", value: currentPipelineData.qmFatte }] },
+        { header: "QM", data: [{ title: "OK", value: currentPipelineData.qmPianificate }, { title: "KO", value: currentPipelineData.qmFatte }] },
         { header: "F/U", data: [{ title: "OK", value: currentPipelineData.followUpPositivi }, { title: "Pool", value: currentPipelineData.followUpPool }] }
     ];
 

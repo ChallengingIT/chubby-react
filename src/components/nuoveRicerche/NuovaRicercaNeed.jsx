@@ -85,7 +85,7 @@ function NuovaRicercaNeed({
             <Box
                 sx={{
                     width: '100%',
-                    bgcolor: 'transparent',
+                    bgcolor: 'white',
                     // border: 'solid 2px',
                     // borderColor: theme.palette.border.main,
                     borderRadius: '20px',
@@ -309,18 +309,19 @@ function NuovaRicercaNeed({
                 </FormControl>
 
                 <IconButton
-                    onClick={() => onSearch(filtri)}
+                    onClick={onSearch}
                     disableRipple={true}
                     disableFocusRipple={true}
                     sx={{
-                        backgroundColor: theme.palette.button.main,
+                        backgroundColor: "#00B400",
                         color: "white",
                         textTransform: "lowercase",
                         fontWeight: "bold",
+                        boxShadow: "9px 9px 9px rgba(0, 0, 0, 0.1)",
                         "&:hover": {
-                            backgroundColor: 'black',
+                            backgroundColor: '#116d0e',
                             color: "white",
-                            trasform: "scale(1.1)",
+                            transform: "scale(1.1)",
                         },
                     }}
                 >
@@ -335,10 +336,11 @@ function NuovaRicercaNeed({
                         color: "white",
                         textTransform: "lowercase",
                         fontWeight: "bold",
+                        boxShadow: "9px 9px 9px rgba(0, 0, 0, 0.1)",
                         "&:hover": {
-                            backgroundColor: "black",
+                            backgroundColor: "#282828",
                             color: "white",
-                            trasform: "scale(1.1)",
+                            transform: "scale(1.1)",
                         },
                     }}
                 >

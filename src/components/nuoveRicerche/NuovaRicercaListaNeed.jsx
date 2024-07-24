@@ -55,7 +55,7 @@
         <Box
         sx={{
             width: '100%',
-            bgcolor: 'transparent',
+            bgcolor: 'white',
             // border: 'solid 2px',
             // borderColor: theme.palette.border.main,
             borderRadius: '20px',
@@ -283,15 +283,16 @@
                     disableRipple={true}
                     disableFocusRipple={true}
                     sx={{
-                    backgroundColor: theme.palette.button.main,
-                    color: "white",
-                    textTransform: "lowercase",
-                    fontWeight: "bold",
-                    "&:hover": {
-                        backgroundColor: 'black',
+                        backgroundColor: "#00B400",
                         color: "white",
-                        trasform: "scale(1.1)",
-                    },
+                        textTransform: "lowercase",
+                        fontWeight: "bold",
+                        boxShadow: "9px 9px 9px rgba(0, 0, 0, 0.1)",
+                        "&:hover": {
+                            backgroundColor: '#116d0e',
+                            color: "white",
+                            transform: "scale(1.1)",
+                        },
                     }}
                 >
                     <SearchIcon />
@@ -301,22 +302,23 @@
                     disableRipple={true}
                     disableFocusRipple={true}
                     sx={{
-                    backgroundColor: "black",
-                    color: "white",
-                    textTransform: "lowercase",
-                    fontWeight: "bold",
-                    "&:hover": {
                         backgroundColor: "black",
                         color: "white",
-                        trasform: "scale(1.1)",
-                    },
+                        textTransform: "lowercase",
+                        fontWeight: "bold",
+                        boxShadow: "9px 9px 9px rgba(0, 0, 0, 0.1)",
+                        "&:hover": {
+                            backgroundColor: "#282828",
+                            color: "white",
+                            transform: "scale(1.1)",
+                        },
                     }}
                 >
                     <RestartAltIcon
-                    sx={{
-                        transition: "transform 0.5s ease-in-out",
-                        transform: isRotated ? "rotate(720deg)" : "none",
-                    }}
+                        sx={{
+                            transition: "transform 0.5s ease-in-out",
+                            transform: isRotated ? "rotate(720deg)" : "none",
+                        }}
                     />
                 </IconButton>
         </Box>

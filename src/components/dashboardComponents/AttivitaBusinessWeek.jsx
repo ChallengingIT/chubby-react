@@ -4,6 +4,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import TabellaAttivitaBusiness from './TabellaAttivitaBusiness';
 import axios from 'axios';
+import { current } from '@reduxjs/toolkit';
 
 const AttivitaBusinessBox = ({ data, aziendeOptions }) => {
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -13,6 +14,7 @@ const AttivitaBusinessBox = ({ data, aziendeOptions }) => {
     const [interval, setInterval ] = useState(0);
     const pagina = 0;
     const quantita = 10;
+
 
     const user = JSON.parse(sessionStorage.getItem("user"));
     const token = user?.token;
