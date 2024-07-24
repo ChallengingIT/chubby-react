@@ -1005,8 +1005,17 @@ const Recruiting = () => {
         </Alert>
       </Snackbar>
       {loadingCF ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-          <CircularProgress />
+        <Box 
+          position="absolute"
+          top="50%"
+          left="50%"
+          transform="translate(-50%, -50%)"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          zIndex={1}
+          >
+          <CircularProgress size={80} />
         </Box>
       ) : (
         <>
