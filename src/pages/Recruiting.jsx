@@ -133,19 +133,19 @@ const Recruiting = () => {
 
     try {
       const response = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/mod",
+        "http://localhost:8080/staffing/react/mod",
         { headers: headers, params: filtriDaInviare }
       );
       const responseTipologia = await axios.get(
-        "http://89.46.196.60:8443/aziende/react/tipologia",
+        "http://localhost:8080/aziende/react/tipologia",
         { headers }
       );
       const responseTipo = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/tipo",
+        "http://localhost:8080/staffing/react/tipo",
         { headers }
       );
       const responseStato = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/stato/candidato",
+        "http://localhost:8080/staffing/react/stato/candidato",
         { headers }
       );
 
@@ -244,8 +244,8 @@ const Recruiting = () => {
       (value) => value !== null && value !== ""
     );
     const url = filtriAttivi
-      ? "http://89.46.196.60:8443/staffing/react/mod/ricerca"
-      : "http://89.46.196.60:8443/staffing/react/mod";
+      ? "http://localhost:8080/staffing/react/mod/ricerca"
+      : "http://localhost:8080/staffing/react/mod";
 
     const filtriDaInviare = {
       nome: filtri.nome || null,
@@ -309,7 +309,7 @@ const Recruiting = () => {
   const handleDelete = async () => {
     try {
       const responseDelete = await axios.delete(
-        `http://89.46.196.60:8443/staffing/elimina/${deleteId}`,
+        `http://localhost:8080/staffing/elimina/${deleteId}`,
         { headers: headers }
       );
       setOpenDialog(false);
@@ -366,19 +366,19 @@ const Recruiting = () => {
 
     try {
       const response = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/mod/ricerca",
+        "http://localhost:8080/staffing/react/mod/ricerca",
         { headers: headers, params: filtriDaInviare }
       );
       const responseTipologia = await axios.get(
-        "http://89.46.196.60:8443/aziende/react/tipologia",
+        "http://localhost:8080/aziende/react/tipologia",
         { headers }
       );
       const responseTipo = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/tipo",
+        "http://localhost:8080/staffing/react/tipo",
         { headers }
       );
       const responseStato = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/stato/candidato",
+        "http://localhost:8080/staffing/react/stato/candidato",
         { headers }
       );
 
@@ -473,7 +473,7 @@ const Recruiting = () => {
   };
 
   const handleDownloadCV = async (idFile, fileDescrizione) => {
-    const url = `http://89.46.196.60:8443/files/react/download/file/${idFile}`;
+    const url = `http://localhost:8080/files/react/download/file/${idFile}`;
     try {
       const responseDownloadCV = await axios({
         method: "GET",
@@ -501,7 +501,7 @@ const Recruiting = () => {
 
 
   const handleDescrizione = async (idCandidato, nome, cognome) => {
-    const url = `http://89.46.196.60:8443/files/descrizione/cf/${idCandidato}`;
+    const url = `http://localhost:8080/files/descrizione/cf/${idCandidato}`;
     try {
       setLoadingCF(true);
       const responseDescrizione = await axios.get(url, { headers: headers });
@@ -528,15 +528,13 @@ const Recruiting = () => {
 
 
 
-  const handleDownloadCF = async (idCandidato, descrizione, nomeCandidato, cognomeCandidato) => {
+  const handleDownloadCF = async (idCandidato, nomeCandidato, cognomeCandidato, file) => {
+    console.log("file presente: ", file);
+    if ( file != null) {
     try {
-      const downloadUrl = `http://89.46.196.60:8443/files/download/cf/${idCandidato}`;
+      setLoadingCF(true);
+      const downloadUrl = `http://localhost:8080/files/download/cf/${idCandidato}`;
       const params = new URLSearchParams();
-      if (descrizione !== null) {
-        params.append('descrizione', descrizione);
-      } else {
-        params.append('descrizione', '');
-      }
       
       const responseDownloadCF = await axios({
         method: "GET",
@@ -554,12 +552,19 @@ const Recruiting = () => {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      setLoadingCF(false);
     } catch (error) {
       console.error(
         "Si è verificato un errore durante il download del CF: ",
         error
       );
     }
+  } else {
+        setNoCFModal(true);
+        setNomeCandidato(nomeCandidato);
+        setCognomeCandidato(cognomeCandidato);
+        setIdCandidato(idCandidato);
+  }
   };
   
 
@@ -708,10 +713,11 @@ const Recruiting = () => {
           <CFButton
             idCandidato={params.row?.id ? params.row?.id : null}
             onClick={() =>
-              handleDescrizione(
+              handleDownloadCF(
                 params.row?.id ? params.row?.id : null,
                 params.row?.nome ? params.row?.nome : null,
                 params.row?.cognome ? params.row?.cognome : null,
+                params.row?.file ? params.row?.file : null,
               )
             }
           />
@@ -999,8 +1005,17 @@ const Recruiting = () => {
         </Alert>
       </Snackbar>
       {loadingCF ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-          <CircularProgress />
+        <Box 
+          position="absolute"
+          top="50%"
+          left="50%"
+          transform="translate(-50%, -50%)"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          zIndex={1}
+          >
+          <CircularProgress size={80} />
         </Box>
       ) : (
         <>
