@@ -10,7 +10,7 @@ const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
     const theme = useUserTheme();
     const [dialogOpen, setDialogOpen] = useState(false);
     const [currentPipelineData, setCurrentPipelineData] = useState({});
-    const [rowHeight, setRowHeight] = useState(52); // altezza predefinita
+    const [rowHeight, setRowHeight] = useState(40); // altezza predefinita
     const [filteredData, setFilteredData] = useState(data);
 
     useEffect(() => {

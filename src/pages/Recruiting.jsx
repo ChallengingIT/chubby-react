@@ -528,15 +528,13 @@ const Recruiting = () => {
 
 
 
-  const handleDownloadCF = async (idCandidato, descrizione, nomeCandidato, cognomeCandidato) => {
+  const handleDownloadCF = async (idCandidato, nomeCandidato, cognomeCandidato, file) => {
+    console.log("file presente: ", file);
+    if ( file != null) {
     try {
+      setLoadingCF(true);
       const downloadUrl = `http://localhost:8080/files/download/cf/${idCandidato}`;
       const params = new URLSearchParams();
-      if (descrizione !== null) {
-        params.append('descrizione', descrizione);
-      } else {
-        params.append('descrizione', '');
-      }
       
       const responseDownloadCF = await axios({
         method: "GET",
@@ -554,12 +552,19 @@ const Recruiting = () => {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      setLoadingCF(false);
     } catch (error) {
       console.error(
         "Si è verificato un errore durante il download del CF: ",
         error
       );
     }
+  } else {
+        setNoCFModal(true);
+        setNomeCandidato(nomeCandidato);
+        setCognomeCandidato(cognomeCandidato);
+        setIdCandidato(idCandidato);
+  }
   };
   
 
@@ -708,10 +713,11 @@ const Recruiting = () => {
           <CFButton
             idCandidato={params.row?.id ? params.row?.id : null}
             onClick={() =>
-              handleDescrizione(
+              handleDownloadCF(
                 params.row?.id ? params.row?.id : null,
                 params.row?.nome ? params.row?.nome : null,
                 params.row?.cognome ? params.row?.cognome : null,
+                params.row?.file ? params.row?.file : null,
               )
             }
           />
