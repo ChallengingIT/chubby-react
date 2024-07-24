@@ -59,7 +59,7 @@ function NuovaRicercaAziende({
             <Box
                 sx={{
                     width: '100%',
-                    bgcolor: "white",
+                    bgcolor: "#FEFCFD",
                     // border: 'solid 2px #00B400',
                     borderRadius: '20px',
                     display: "flex",

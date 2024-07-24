@@ -42,7 +42,7 @@
         </Box>
         <DialogContent>
             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <Typography variant="body1">{`Non è presente il CV di ${nomeCandidato} ${cognomeCandidato}, procedere alla creazione del CF senza le esperienze lavorative?`}</Typography>
+            <Typography variant="body1">{`Non è presente il CV di ${nomeCandidato} ${cognomeCandidato}, non si può procedere con la creazione del CF.`}</Typography>
             </Box>
         </DialogContent>
         <DialogActions sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 2, mb: 1 }}>

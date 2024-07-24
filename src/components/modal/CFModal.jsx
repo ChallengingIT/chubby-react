@@ -10,14 +10,9 @@
     } from '@mui/material';
     import CloseIcon from "@mui/icons-material/Close";
 
-    const CFModal = ({ open, handleClose, idCandidato, descrizione, handleDownloadCF, nomeCandidato, cognomeCandidato }) => {
-    const [values, setValues] = useState({ descrizione: '' });
+    const CFModal = ({ open, handleClose, idCandidato, handleDownloadCF, nomeCandidato, cognomeCandidato }) => {
+    const [values, setValues] = useState('');
 
-    useEffect(() => {
-        if (descrizione) {
-        setValues({ descrizione });
-        }
-    }, [descrizione]);
 
     const handleChange = (event) => {
         const { name, value } = event.target;

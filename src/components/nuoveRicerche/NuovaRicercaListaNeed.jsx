@@ -55,7 +55,7 @@
         <Box
         sx={{
             width: '100%',
-            bgcolor: 'white',
+            bgcolor: '#FEFCFD',
             // border: 'solid 2px',
             // borderColor: theme.palette.border.main,
             borderRadius: '20px',

@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-// import NoteButton from "../components/button/NoteButton.jsx";
-// import EuroButton from "../components/button/EuroButton.jsx";
 import PersonInfoButton from "../components/button/PersonInfoButton.jsx";
 import DeleteButton from "../components/button/DeleteButton.jsx";
 import ClipButton from "../components/button/ClipButton.jsx";
 import { Link } from "react-router-dom";
-import SmileGreenIcon from "../components/icone/SmileGreenIcon.jsx";
-import SmileOrangeIcon from "../components/icone/SmileOrangeIcon.jsx";
-import SmileRedIcon from "../components/icone/SmileRedIcon.jsx";
 import Tabella from "../components/Tabella.jsx";
 import CloseIcon from "@mui/icons-material/Close";
-import NoCFModal from '../components/modal/NoCFModal.jsx';
 
 import {
   Dialog,
@@ -36,28 +30,19 @@ import CFButton from "../components/button/CFButton.jsx";
 import CFModal from "../components/modal/CFModal.jsx";
 
 const Recruiting = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
 
   const [originalRecruiting, setOriginalRecruiting] = useState([]);
-  // const [filteredRecruiting, setFilteredRecruiting] = useState([]);
-  const [notePopup, setNotePopup] = useState(false);
-  const [ralPopup, setRalPopup] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
-  // const [selectedNote, setSelectedNote] = useState("");
-  // const [selectedRal, setSelectedRal] = useState("");
   const [deleteId, setDeleteId] = useState(null);
   const [tipologiaOptions, setTipologiaOptions] = useState([]);
   const [tipoOptions, setTipoOptions] = useState([]);
   const [statoOptions, setStatoOptions] = useState([]);
-  const [openFiltri, setOpenFiltri] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingCF, setLoadingCF] = useState(false);
   const [righeTot, setRigheTot] = useState(0);
   const [idCandidato, setIdCandidato] = useState([]);
   const [nomeCandidato, setNomeCandidato] = useState([]);
   const [cognomeCandidato, setCognomeCandidato ] = useState([]);
-  const [descrizione, setDescrizione ] = useState([]);
   const [filtri, setFiltri] = useState(() => {
     const filtriSalvati = sessionStorage.getItem("filtriRicercaRecruiting");
     return filtriSalvati
@@ -87,18 +72,13 @@ const Recruiting = () => {
   const [descrizioneModalOpen, setDescrizioneModalOpen] = useState(false);
 
 
-  // const handleClickOpen = (row) => {
-  //   setSelectedRow(row);
-  //   setOpenDialogNome(true);
-  // };
-
-  // const handleClose = () => {
-  //   setOpenDialogNome(false);
-  // };
-
-  const handleSnackbarClose = () => {
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
     setSnackbarOpen(false);
   };
+  
 
 
   const userHasRole = (role) => {
@@ -215,10 +195,6 @@ const Recruiting = () => {
     }
   };
 
-  // useEffect(() => {
-  //     fetchData();
-  //     // eslint-disable-next-line
-  // }, []);
 
   useEffect(() => {
     const filtriSalvati = sessionStorage.getItem("filtriRicercaRecruiting");
@@ -298,13 +274,6 @@ const Recruiting = () => {
     setOpenDialog(true);
   };
 
-  const navigateToAggiungi = () => {
-    navigate("/recruiting/aggiungi");
-  };
-
-  const navigateToModificaCandidato = (nome) => {
-    navigate(`/recruiting/modifica/${nome}`);
-  };
 
   const handleDelete = async () => {
     try {
@@ -319,27 +288,6 @@ const Recruiting = () => {
     }
   };
 
-  const handleCloseNotesModal = () => {
-    setNotePopup(false);
-  };
-
-  const handleCloseRalModal = () => {
-    setRalPopup(false);
-  };
-
-  const getSmileIcon = (params) => {
-    const rating = params.row.rating;
-
-    if (rating <= 1.9) {
-      return <SmileRedIcon />;
-    } else if (rating >= 2 && rating < 3) {
-      return <SmileOrangeIcon />;
-    } else if (rating >= 3) {
-      return <SmileGreenIcon />;
-    } else {
-      return rating;
-    }
-  };
 
   useEffect(() => {
     sessionStorage.setItem("filtriRicercaRecruiting", JSON.stringify(filtri));
@@ -498,74 +446,42 @@ const Recruiting = () => {
     }
   };
 
-
-
-  const handleDescrizione = async (idCandidato, nome, cognome) => {
-    const url = `http://localhost:8080/files/descrizione/cf/${idCandidato}`;
-    try {
-      setLoadingCF(true);
-      const responseDescrizione = await axios.get(url, { headers: headers });
-      const descrizione = responseDescrizione.data;
-
-      if (descrizione) {
-        setIdCandidato(idCandidato);
-        setDescrizione(descrizione);
-        setDescrizioneModalOpen(true);
-        setNomeCandidato(nome);
-        setCognomeCandidato(cognome);
-      } else {
-        setNoCFModal(true);
-        setNomeCandidato(nome);
-        setCognomeCandidato(cognome);
-        setIdCandidato(idCandidato);
-      }
-    } catch(error) {
-      console.error ("errore duerante il recupero della descrizione: ", error);
-    } finally {
-    setLoadingCF(false);
-  }
-  };
-
-
-
   const handleDownloadCF = async (idCandidato, nomeCandidato, cognomeCandidato, file) => {
-    console.log("file presente: ", file);
-    if ( file != null) {
-    try {
-      setLoadingCF(true);
-      const downloadUrl = `http://localhost:8080/files/download/cf/${idCandidato}`;
-      const params = new URLSearchParams();
-      
-      const responseDownloadCF = await axios({
-        method: "GET",
-        url: `${downloadUrl}?${params.toString()}`,
-        responseType: "blob",
-        headers: headers,
-      });
-      
-      const fileURL = window.URL.createObjectURL(
-        new Blob([responseDownloadCF.data], { type: "application/pdf" })
-      );
-      const link = document.createElement("a");
-      link.href = fileURL;
-      link.setAttribute("download", `CF_${nomeCandidato}_${cognomeCandidato}.pdf`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      setLoadingCF(false);
-    } catch (error) {
-      console.error(
-        "Si è verificato un errore durante il download del CF: ",
-        error
-      );
+    if (file != null) {
+      try {
+        setLoadingCF(true);
+        const downloadUrl = `http://localhost:8080/files/download/cf/${idCandidato}`;
+        const params = new URLSearchParams();
+  
+        const responseDownloadCF = await axios({
+          method: "GET",
+          url: `${downloadUrl}?${params.toString()}`,
+          responseType: "blob",
+          headers: headers,
+        });
+  
+        const fileURL = window.URL.createObjectURL(
+          new Blob([responseDownloadCF.data], { type: "application/pdf" })
+        );
+        const link = document.createElement("a");
+        link.href = fileURL;
+        link.setAttribute("download", `CF_${nomeCandidato}_${cognomeCandidato}.pdf`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setLoadingCF(false);
+      } catch (error) {
+        console.error(
+          "Si è verificato un errore durante il download del CF: ",
+          error
+        );
+      }
+    } else {
+      setSnackbarMessage(`Attenzione: non è presente il CV per il candidato ${nomeCandidato} ${cognomeCandidato}, non è possibile procedere alla creazione del CF.`);
+      setSnackbarOpen(true);
     }
-  } else {
-        setNoCFModal(true);
-        setNomeCandidato(nomeCandidato);
-        setCognomeCandidato(cognomeCandidato);
-        setIdCandidato(idCandidato);
-  }
   };
+  
   
 
   const columns = [
@@ -1022,15 +938,6 @@ const Recruiting = () => {
           <CFModal
             open={descrizioneModalOpen}
             handleClose={() => setDescrizioneModalOpen(false)}
-            idCandidato={idCandidato}
-            descrizione={descrizione}
-            handleDownloadCF={handleDownloadCF}
-            nomeCandidato={nomeCandidato}
-            cognomeCandidato={cognomeCandidato}
-          />
-          <NoCFModal
-            open={noCFModal}
-            handleClose={() => setNoCFModal(false)}
             idCandidato={idCandidato}
             handleDownloadCF={handleDownloadCF}
             nomeCandidato={nomeCandidato}
