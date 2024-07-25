@@ -12,65 +12,66 @@
     Grid,
     Snackbar,
     Slide,
+    TextField,
+    Container,
     } from "@mui/material";
-    import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined"; //cerchio vuoto
+    import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
+    import { useTranslation } from "react-i18next";
     import axios from "axios";
-    import CustomAutocomplete from "../components/fields/CustomAutocomplete";
+    import Autocomplete from "@mui/material/Autocomplete";
     import CustomTextFieldAggiungi from "../components/fields/CustomTextFieldAggiungi";
     import { useUserTheme } from "../components/TorchyThemeProvider";
 
     const SettingsPage = () => {
     const theme = useUserTheme();
     const navigate = useNavigate();
+    const { t, i18n } = useTranslation();
 
-    //stati della pagina
+    const languageOptions = [
+        { value: "it", label: t("Italiano"), flag: "🇮🇹" },
+        { value: "es", label: t("Spagnolo"), flag: "🇪🇸" },
+        { value: "en", label: t("Inglese"), flag: "🇬🇧" },
+    ];
+
     const [activeSection, setActiveSection] = useState("Cambia Password");
     const [currentPageIndex, setCurrentPageIndex] = useState(0);
-    const [alert, setAlert] = useState({ open: false, message: "", severity: "success" });
+    const [alert, setAlert] = useState({
+        open: false,
+        message: "",
+        severity: "success",
+    });
     const [errors, setErrors] = useState([]);
-
-    //stati per i valori
-    const [values, setValues] = useState({});
+    const [values, setValues] = useState({ lingua: i18n.language });
 
     const menu = [
         {
-        title: "Cambia Password",
+        title: t("Cambia Password"),
         icon: <CircleOutlinedIcon />,
         },
-        // {
-        // title: "Lingua",
-        // icon: <CircleOutlinedIcon />,
-        // },
-        // {
-        // title: "Elimina Account",
-        // icon: <CircleOutlinedIcon />,
-        // },
+        {
+        title: t("Lingua"),
+        icon: <CircleOutlinedIcon />,
+        },
     ];
 
-    //funzione per campire quali campi sono obbligatori nel form corrente
     const getMandatoryFields = (index) => {
         switch (index) {
         case 0:
             return ["username", "oldPassword", "newPassword"];
-        // case 1:
-        //     return ["username", "password"];
-        // case 2:
-        //     return ["lingua"];
         default:
             return [];
         }
     };
 
-    //funzione per la validazione dei campi
     const validateFields = (values, mandatoryFields) => {
         let errors = {};
         mandatoryFields.forEach((field) => {
         if (!values[field]) {
-            errors[field] = "Questo campo è obbligatorio";
+            errors[field] = t("Questo campo è obbligatorio");
         }
         });
         if (values.nuova && values.ripeti && values.nuova !== values.ripeti) {
-        errors.ripeti = "Le nuove password non coincidono";
+        errors.ripeti = t("Le nuove password non coincidono");
         }
         return errors;
     };
@@ -82,7 +83,6 @@
         Authorization: `Bearer ${token}`,
     };
 
-    // Funzione per la navigazione dal menu laterale
     const handleMenuItemClick = (section, index) => {
         setActiveSection(section);
         setCurrentPageIndex(index);
@@ -92,7 +92,6 @@
         navigate(-1);
     };
 
-    // Funzione per il cambio stato degli input
     const handleChange = (fieldValue) => {
         setValues((prevValues) => ({
         ...prevValues,
@@ -100,7 +99,6 @@
         }));
     };
 
-    //funzione per la chiusura dell'alert
     const handleCloseAlert = (reason) => {
         if (reason === "clickaway") {
         return;
@@ -108,24 +106,14 @@
         setAlert({ ...alert, open: false });
     };
 
-    //funzione per la transizione dell'alert
     function TransitionDown(props) {
         return <Slide {...props} direction="down" />;
     }
 
-    // // Gestisce il salvataggio delle modifiche per la sezione corrente
-    // const handleSaveSection = (sectionIndex) => {
-    //     console.log("Salvataggio dati per la sezione:", menu[sectionIndex].title);
-    //     setAlert({ open: true, message: "Modifiche salvate con successo!" });
-    // };
-
-
-
-
-
-    //funzione per il salvataggio del cambio password
     const handleSubmitChangePassword = async () => {
-        const currentIndex = menu.findIndex(item => item.title.toLowerCase() === activeSection.toLowerCase());
+        const currentIndex = menu.findIndex(
+        (item) => item.title.toLowerCase() === activeSection.toLowerCase()
+        );
         const mandatoryFields = getMandatoryFields(currentIndex);
         const errors = validateFields(values, mandatoryFields);
         const hasErrors = Object.keys(errors).length > 0;
@@ -141,135 +129,107 @@
             }
 
             const headers = {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
             };
 
-            const response = await axios.post("http://89.46.196.60:8443/api/auth/change/password", payload, {
-            headers: headers
-            });
+            const response = await axios.post(
+            "http://localhost:8080/api/auth/change/password",
+            payload,
+            {
+                headers: headers,
+            }
+            );
             if (response.data === "ERRORE") {
-            setAlert({ open: true, message: "Errore durante il salvataggio della password!", severity: "error" });
+            setAlert({
+                open: true,
+                message: t("Errore durante il salvataggio della password!"),
+                severity: "error",
+            });
             console.error("La password non è stata cambiata.");
             return;
             }
-            setAlert({ open: true, message: "Password cambiata con successo!", severity: "success" });
+            setAlert({
+            open: true,
+            message: t("Password cambiata con successo!"),
+            severity: "success",
+            });
         } catch (error) {
             console.error("Errore durante il salvataggio:", error);
-            setAlert({ open: true, message: "Errore durante il salvataggio!", severity: "error" });
+            setAlert({
+            open: true,
+            message: t("Errore durante il salvataggio!"),
+            severity: "error",
+            });
         }
         } else {
         setErrors(errors);
-        setAlert({ open: true, message: "Compilare tutti i campi obbligatori presenti prima di avanzare", severity: "error" });
+        setAlert({
+            open: true,
+            message: t(
+            "Compilare tutti i campi obbligatori presenti prima di avanzare"
+            ),
+            severity: "error",
+        });
         }
     };
 
+    const handleSubmitCambioLingua = async () => {
+        const selectedLanguage = values.lingua;
+        i18n.changeLanguage(selectedLanguage, (err, t) => {
+        if (err) return console.error("Errore cambiando lingua", err);
+        });
+        setAlert({
+        open: true,
+        message: t("Lingua cambiata con successo!"),
+        severity: "success",
+        });
+    };
 
-    // const handleSubmitCambioLingua = async (values) => {
-    //     console.log("salvataggio cambio lingua");
-    // };
-
-    // const handleSubmitEliminaUtente = async (values) => {
-    //     const currentIndex = menu.findIndex(item => item.title.toLowerCase() === activeSection.toLowerCase());
-    //     const mandatoryFields = getMandatoryFields(currentIndex);
-    //     const errors = validateFields(values, mandatoryFields);
-    //     const hasErrors = Object.keys(errors).length > 0;
-
-    //     if (!hasErrors) {
-    //     try {
-    //         const { username, password } = values;
-    //         const payload = { username, password };
-
-    //         if (!token) {
-    //         console.error("Nessun token di accesso disponibile");
-    //         return;
-    //         }
-
-    //         const headers = {
-    //         Authorization: `Bearer ${token}`
-    //         };
-
-    //         const response = await axios.post("http://89.46.196.60:8443/api/auth/delete", payload, {
-    //         headers: headers
-    //         });
-    //         if (response.data === "ERRORE") {
-    //         setAlert({ open: true, message: "Errore durante la cancellazione dell'utente!", severity: "error" });
-    //         console.error("L'utente non è stato cancellato.");
-    //         return;
-    //         }
-    //         console.log("qui buttare fuori l'utente alla login");
-    //     } catch (error) {
-    //         console.error("Errore durante l'eliminazione dell'utente:", error);
-    //         setAlert({ open: true, message: "Errore durante l'eliminazione dell'utente!", severity: "error" });
-    //     }
-    //     } else {
-    //     setErrors(errors);
-    //     setAlert({ open: true, message: "Compilare tutti i campi obbligatori presenti prima di avanzare", severity: "error" });
-    //     }
-    // };
-
-
-
-    //array per capire quale handleSubmit deve chiamare il bottone "salva"
     const handleSubmitFunctions = {
-    0: handleSubmitChangePassword,  //per la sezione "Password"
-    // 1: handleSubmitEliminaUtente,   //per la sezione "Elimina Account"
-    // 2: handleSubmitCambioLingua    //per la sezione "Lingua"
-};
+        0: handleSubmitChangePassword,
+        1: handleSubmitCambioLingua,
+    };
 
-const handleSaveSection = (sectionIndex) => {
-    //chiamo la funzione di salvataggio appropriata
-    const handleSubmit = handleSubmitFunctions[sectionIndex];
-    if (handleSubmit) {
-        handleSubmit(values); 
-    } else {
+    const handleSaveSection = (sectionIndex) => {
+        const handleSubmit = handleSubmitFunctions[sectionIndex];
+        if (handleSubmit) {
+        handleSubmit();
+        } else {
         console.error("Nessuna funzione di salvataggio trovata per l'indice:", sectionIndex);
-    }
-};
+        }
+    };
+
+    useEffect(() => {
+        setValues((prevValues) => ({
+        ...prevValues,
+        lingua: i18n.language,
+        }));
+    }, [i18n.language]);
 
     const fields = [
-        { type: "titleGroups", label: "Cambia Password" },
+        { type: "titleGroups", label: t("Cambia Password") },
         {
-        label: "Username*",
+        label: t("Username*"),
         name: "username",
         type: "text",
         maxLength: 90,
         },
         {
-        label: "Vecchia Password*",
+        label: t("Vecchia Password*"),
         name: "oldPassword",
         type: "text",
         maxLength: 90,
         },
-        { label: "Nuova Password*", name: "newPassword", type: "text", maxLength: 255 },
+        { label: t("Nuova Password*"), name: "newPassword", type: "text", maxLength: 255 },
 
-        // { type: "titleGroups", label: "Elimina account" },
-        // {
-        // label: "Username",
-        // name: "username",
-        // type: "text",
-        // maxLength: 90,
-        // },
-        // {
-        // label: "Password",
-        // name: "password",
-        // type: "text",
-        // maxLength: 90,
-        // },
-
-        // { type: "titleGroups", label: "Lingua" },
-        // {
-        // label: "Lingua",
-        // name: "lingua",
-        // type: "select",
-        // options: [
-        //     { value: 1, label: "Italiano" },
-        //     { value: 2, label: "Spagnolo" },
-        //     { value: 3, label: "Inglese" },
-        // ],
-        // },
+        { type: "titleGroups", label: t("Lingua") },
+        {
+        label: t("Lingua"),
+        name: "lingua",
+        type: "autocomplete",
+        },
     ];
 
-    //funzione per suddividere fields nelle varie pagine in base a titleGroups
     const groupFields = (fields) => {
         const groupedFields = [];
         let currentGroup = [];
@@ -289,9 +249,8 @@ const handleSaveSection = (sectionIndex) => {
         return groupedFields;
     };
 
-    const groupedFields = groupFields(fields); //questo è l'array suddiviso
+    const groupedFields = groupFields(fields);
 
-    //funzione per richiamare i vari campi
     const renderFields = (field) => {
         if (field.type === "titleGroups" && field.label !== activeSection) {
         return null;
@@ -310,15 +269,75 @@ const handleSaveSection = (sectionIndex) => {
             />
             );
 
-        case "select":
+        case "autocomplete":
             return (
-            <CustomAutocomplete
-                name={field.name}
-                label={field.label}
-                options={field.options}
-                value={values[field.name] || null}
-                onChange={handleChange}
-                getOptionSelected={(option, value) => option.value === value.value}
+            <Autocomplete
+                options={languageOptions}
+                getOptionLabel={(option) => option.label}
+                renderOption={(props, option) => (
+                <Box component="li" {...props}>
+                    {option.flag} {option.label}
+                </Box>
+                )}
+                value={languageOptions.find(
+                (option) => option.value === values.lingua
+                )}
+                onChange={(event, newValue) => {
+                handleChange({ lingua: newValue ? newValue.value : "" });
+                }}
+                renderInput={(params) => (
+                <TextField
+                    {...params}
+                    label={field.label}
+                    variant="filled"
+                    sx={{
+                    width: "100%",
+                    textAlign: "left",
+                    borderRadius: "20px",
+                    backgroundColor: "#EDEDED",
+                    "& .MuiFilledInput-root": {
+                        backgroundColor: "transparent",
+                    },
+                    "& .MuiFilledInput-underline:after": {
+                        borderBottomColor: "transparent",
+                    },
+                    "& .MuiFilledInput-root::before": {
+                        borderBottom: "none",
+                    },
+                    "&:hover .MuiFilledInput-root::before": {
+                        borderBottom: "none",
+                    },
+                    "& .Mui-disabled": {
+                        WebkitTextFillColor: "#a09f9f", // Questo sovrascrive il colore del testo per i browser basati su Webkit come Chrome e Safari
+                        color: "#a09f9f",
+                        cursor: "not-allowed",
+                    },
+                    "& .MuiFormLabel-root.Mui-focused": {
+                        color: theme.palette.border.main,
+                    },
+                    "& .MuiFilledInput-root.Mui-disabled": {
+                        bgcolor: "transparent",
+                        cursor: "not-allowed",
+                        borderBottom: "none",
+                    },
+                    "& .Mui-disabled": {
+                        cursor: "not-allowed",
+                    },
+                    }}
+                    InputProps={{
+                    ...params.InputProps,
+                    startAdornment: values.lingua && (
+                        <Box component="span" sx={{ mr: 1 }}>
+                        {
+                            languageOptions.find(
+                            (option) => option.value === values.lingua
+                            )?.flag
+                        }
+                        </Box>
+                    ),
+                    }}
+                />
+                )}
             />
             );
 
@@ -327,7 +346,6 @@ const handleSaveSection = (sectionIndex) => {
         }
     };
 
-    // Renderizza i gruppi di campi
     const renderFieldsGroups = () => {
         return (
         <Box sx={{ ml: 15, mr: 15 }}>
@@ -344,23 +362,18 @@ const handleSaveSection = (sectionIndex) => {
                 sx={{
                 backgroundColor: theme.palette.button.main,
                 color: "white",
-                fontWeight:"bold",
-                borderRadius: '10px',
-                boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
-
-
-
+                fontWeight: "bold",
+                borderRadius: "10px",
+                boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
                 "&:hover": {
                     backgroundColor: theme.palette.button.main,
-                    transform: 'scale(1.01)',
-                    borderRadius: '10px',
-                    boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
-
-
+                    transform: "scale(1.01)",
+                    borderRadius: "10px",
+                    boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
                 },
                 }}
             >
-                Salva Modifiche
+                {t("Salva Modifiche")}
             </Button>
             </Box>
         </Box>
@@ -368,7 +381,8 @@ const handleSaveSection = (sectionIndex) => {
     };
 
     return (
-        <Box
+        <Container
+        maxWidth="false"
         sx={{
             display: "flex",
             backgroundColor: "#EEEDEE",
@@ -426,7 +440,7 @@ const handleSaveSection = (sectionIndex) => {
                 }}
                 >
                 <span style={{ marginRight: "0.5em" }}>{"<"}</span>
-                Indietro
+                {t("Indietro")}
                 </Button>
             </Box>
             <Typography
@@ -442,12 +456,9 @@ const handleSaveSection = (sectionIndex) => {
                 color: theme.palette.aggiungiSidebar.title,
                 }}
             >
-                {" "}
-                Settings{" "}
+                {t("Settings")}
             </Typography>
-            <List
-                sx={{ display: "flex", flexDirection: "column", width: "100%" }}
-            >
+            <List sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
                 {menu.map((item, index) => (
                 <ListItem
                     key={item.title}
@@ -469,9 +480,7 @@ const handleSaveSection = (sectionIndex) => {
                     },
                     }}
                 >
-                    <ListItemIcon
-                    sx={{ color: theme.palette.aggiungiSidebar.text }}
-                    >
+                    <ListItemIcon sx={{ color: theme.palette.aggiungiSidebar.text }}>
                     {item.icon}
                     </ListItemIcon>
                     <ListItemText
@@ -519,9 +528,9 @@ const handleSaveSection = (sectionIndex) => {
                 <Typography
                 variant="h4"
                 component="h1"
-                sx={{ mt: 1, fontWeight: "bold", fontSize: "1.8" }}
+                sx={{ mt: 1, fontWeight: "bold", fontSize: "1.8em" }}
                 >
-                {activeSection}
+                {t(activeSection)}
                 </Typography>
             </Box>
             <Box
@@ -535,13 +544,13 @@ const handleSaveSection = (sectionIndex) => {
                 overflow: "auto",
                 }}
             >
-                {renderFieldsGroups(groupedFields)}
+                {renderFieldsGroups()}
             </Box>
             <Typography
                 variant="h6"
                 sx={{ mt: 2, color: "#666565", fontSize: "1em", ml: 16 }}
             >
-                * Campo Obbligatorio
+                {t("* Campo Obbligatorio")}
             </Typography>
 
             <Box
@@ -552,11 +561,10 @@ const handleSaveSection = (sectionIndex) => {
                 mt: 5,
                 gap: 6,
                 }}
-            >
-            </Box>
+            ></Box>
             </Box>
         </Box>
-        </Box>
+        </Container>
     );
     };
 

@@ -15,8 +15,12 @@ import axios from "axios";
 import { useNotification } from "../components/NotificationContext.js";
 import { useNavigate } from "react-router-dom";
 import BoxAttivitaWeek from "../components/dashboardComponents/BoxAttivitaWeek.jsx";
+import { useTranslation } from "react-i18next"; 
+
 
 function Dashboard() {
+    const { t } = useTranslation(); 
+
     const navigate = useNavigate();
     const { showNotification } = useNotification();
 
@@ -135,14 +139,14 @@ function Dashboard() {
     const columns = [
         {
             field: "owner",
-            headerName: "Owner",
+            headerName: t("Owner"),
             flex: 0.6,
             sortable: true,
             filterable: true,
         },
         {
             field: "cliente",
-            headerName: "Cliente",
+            headerName: t("Cliente"),
             flex: 1,
             sortable: true,
             filterable: true,
@@ -152,7 +156,7 @@ function Dashboard() {
         },
         {
             field: "descrizione",
-            headerName: "Descrizione",
+            headerName: t("Descrizione"),
             flex: 1,
             sortable: true,
             filterable: true,
@@ -176,14 +180,14 @@ function Dashboard() {
         },
         {
             field: "priorita",
-            headerName: "Priorità",
+            headerName: t("Priorità"),
             flex: 0.4,
             sortable: true,
             filterable: true,
         },
         {
             field: "stato",
-            headerName: "Stato",
+            headerName: t("Stato"),
             flex: 0.4,
             sortable: true,
             filterable: true,

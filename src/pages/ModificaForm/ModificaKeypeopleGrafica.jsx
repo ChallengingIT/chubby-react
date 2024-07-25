@@ -12,6 +12,7 @@ import CheckCircleIcon                                                          
 import ClearIcon                                                                                                from '@mui/icons-material/Clear';
 import CheckIcon                                                                                                from '@mui/icons-material/Check';
 import CustomEmailFieldModfifica                                                                                from '../../components/fields/CustomEmailFieldModifica.jsx';
+import { useTranslation }                                                                                       from 'react-i18next';
 
 
 const ModificaKeypeopleGrafica = () => {
@@ -19,11 +20,13 @@ const ModificaKeypeopleGrafica = () => {
     const location = useLocation();
     const valori = location.state;
     const { id } = useParams();
+    const { t } = useTranslation();
+
 
 
 
     //stati della pagina
-    const [ activeSection,      setActiveSection        ] = useState('Anagrafica');
+    const [ activeSection,      setActiveSection        ] = useState(t("Anagrafica"));
     const [ currentPageIndex,   setCurrentPageIndex     ] = useState(0);
     const [ alert,              setAlert                ] = useState({ open: false, message: ''});
     const [ errors,             setErrors               ] = useState({});
@@ -101,7 +104,7 @@ const ModificaKeypeopleGrafica = () => {
 
     const menu = [
         {
-            title: 'Anagrafica',
+            title: t("Anagrafica"),
             icon: <CircleOutlinedIcon />
         },
     ];
@@ -122,7 +125,7 @@ const ModificaKeypeopleGrafica = () => {
             setActiveSection(section);
             setCurrentPageIndex(index);
         } else {
-            setAlert({ open: true, message: 'Compilare tutti i campi obbligatori presenti per poter cambiare sezione'});
+            setAlert({ open: true, message: t('Compilare tutti i campi obbligatori presenti per poter cambiare sezione')});
         }
     };
 
@@ -148,7 +151,7 @@ const ModificaKeypeopleGrafica = () => {
 
         mandatoryFields.forEach(field => {
             if (!values[field]) {
-                errors[field] = 'Questo campo è obbligatorio';
+                errors[field] = t('Questo campo è obbligatorio');
                 allFieldsValid = false;
             }
         });
@@ -183,7 +186,7 @@ const ModificaKeypeopleGrafica = () => {
                 setActiveSection(menu[currentIndex + 1].title);
                 setCurrentPageIndex(currentIndex + 1);
             } else {
-                setAlert({ open: true, message: 'Compilare tutti i campi obbligatori presenti per poter avanzare'});
+                setAlert({ open: true, message: t('Compilare tutti i campi obbligatori presenti per poter avanzare')});
             }
         }
     };
@@ -252,12 +255,12 @@ const ModificaKeypeopleGrafica = () => {
                         headers: headers
                     });
                     if (response.data === "DUPLICATO") {
-                        setAlert({ open: true, message: "contatto già esistente!" });
+                        setAlert({ open: true, message: t("contatto già esistente!") });
                         console.error("il contatto è già stata salvato.");
                         return; 
                     }
                     if (response.data === "ERRORE") {
-                        setAlert({ open: true, message: "errore durante il salvataggio del contatto!" });
+                        setAlert({ open: true, message: t("errore durante il salvataggio del contatto!") });
                         console.error("Il contatto non è stata salvata.");
                         return;
                     }
@@ -267,7 +270,7 @@ const ModificaKeypeopleGrafica = () => {
                 }
             } else {
                 setErrors(errors);
-                setAlert({ open: true, message: "Compilare tutti i campi obbligatori presenti prima di avanzare" });
+                setAlert({ open: true, message: t("Compilare tutti i campi obbligatori presenti prima di avanzare") });
             }
         };
 
@@ -300,25 +303,25 @@ const ModificaKeypeopleGrafica = () => {
         const campiObbligatori = [ "nome", "idAzienda", "email", "idOwner", "idStato", "ruolo", "dataCreazione" ];
 
         const fields =[
-            { type: "titleGroups",                label: "Anagrafica"            },
-            { label: "Nome Contatto*",        name: "nome",                type: "text", maxLength: 255 },
-            { label: "Ruolo*",                name: "ruolo",               type: "text", maxLength: 255 },
-            { label: "Azienda*",              name: "idAzienda",           type: "select",      options: aziendeOptions },
-            { label: 'Tipo',                  name: 'tipo',                type: 'select',      options: [
+            { type: "titleGroups",                label: t("Anagrafica")            },
+            { label: t("Nome Contatto*"),        name: "nome",                type: "text", maxLength: 255 },
+            { label: t("Ruolo*"),                name: "ruolo",               type: "text", maxLength: 255 },
+            { label: t("Azienda*"),              name: "idAzienda",           type: "select",      options: aziendeOptions },
+            { label: t('Tipo'),                  name: 'tipo',                type: 'select',      options: [
                 { value: 1, label: "Keypeople" },
                 { value: 2, label: "Hook" },
                 { value: 3, label: 'Link'}
               ] },
-              { label: "Owner*",              name: "idOwner",              type: "select",      options: ownerOptions},
-              { label: "Stato*",              name: "idStato",              type: "select",      options: statiOptions },
+              { label: t("Owner*"),              name: "idOwner",              type: "select",      options: ownerOptions},
+              { label: t("Stato*"),              name: "idStato",              type: "select",      options: statiOptions },
 
             { label: "Email*",                name: "email",                type: "email", maxLength: 45 },
-            { label: "Cellulare",             name: "cellulare",            type: "text", maxLength: 20},
+            { label: t("Cellulare"),             name: "cellulare",            type: "text", maxLength: 20},
            
             
-            { label: "Data di Creazione*",    name: "dataCreazione",       type: "date" },
+            { label: t("Data di Creazione*"),    name: "dataCreazione",       type: "date" },
             // { label: 'Ultima attività',       name: 'dataUltimaAttivita',  type: 'date' },
-            { label: "Note",                  name: "note",                type: "note", maxLength: 20000 },
+            { label: t("Note"),                  name: "note",                type: "note", maxLength: 20000 },
         ];
 
 
@@ -440,7 +443,7 @@ const ModificaKeypeopleGrafica = () => {
                         initialValues={initialValues}
                         maxLength={field.maxLength}
                         error={emailTouched && emailValidation === "error"}
-                            helperText={emailTouched && emailValidation === "error" ? "Email già presente" : ""}
+                            helperText={emailTouched && emailValidation === "error" ? t("Email già presente") : ""}
                             InputProps={{
                                 endAdornment: emailTouched && emailValidation === "error" ? (
                                     <ClearIcon color="error" />
@@ -515,7 +518,7 @@ const ModificaKeypeopleGrafica = () => {
                                                     primary={
                                                     <Box>
                                                         <Typography component="span" sx={{ fontWeight: 'bold' }}>Keypeople:</Typography>
-                                                        {" lavora in azienda target, ha budget da gestire e potere decisionale "}
+                                                        {t(" lavora in azienda target, ha budget da gestire e potere decisionale ")}
                                                     </Box>
                                                     } 
                                                 />
@@ -525,7 +528,7 @@ const ModificaKeypeopleGrafica = () => {
                                                     primary={
                                                     <Box>
                                                         <Typography component="span" sx={{ fontWeight: 'bold' }}>Hook:</Typography>
-                                                        {" lavora in azienda target, ma non ha budget e potere decisionale "}
+                                                        {t(" lavora in azienda target, ma non ha budget e potere decisionale ")}
                                                     </Box>
                                                     } 
                                                 />
@@ -535,7 +538,7 @@ const ModificaKeypeopleGrafica = () => {
                                                     primary={
                                                     <Box>
                                                         <Typography component="span" sx={{ fontWeight: 'bold' }}>Link:</Typography>
-                                                        {" persona che fa parte del nostro network e potrebbe avere contatti utili "}
+                                                        {t(" persona che fa parte del nostro network e potrebbe avere contatti utili ")}
                                                     </Box>
                                                     } 
                                                 />
@@ -579,7 +582,7 @@ const ModificaKeypeopleGrafica = () => {
                                                     primary={
                                                     <Box>
                                                         <Typography component="span" sx={{ fontWeight: 'bold' }}>Gold:</Typography>
-                                                        {" ho ricevuto un’esigenza di business"}
+                                                        {t(" ho ricevuto un’esigenza di business ")}
                                                     </Box>
                                                     } 
                                                 />
@@ -589,7 +592,7 @@ const ModificaKeypeopleGrafica = () => {
                                                     primary={
                                                     <Box>
                                                         <Typography component="span" sx={{ fontWeight: 'bold' }}>Silver:</Typography>
-                                                        {" ho fissato una prospection"}
+                                                        {t(" ho fissato una prospection ")}
                                                     </Box>
                                                     } 
                                                 />
@@ -599,7 +602,7 @@ const ModificaKeypeopleGrafica = () => {
                                                     primary={
                                                     <Box>
                                                         <Typography component="span" sx={{ fontWeight: 'bold' }}>Bronze:</Typography>
-                                                        {" sono entrato in contatto"}
+                                                        {t(" sono entrato in contatto ")}
                                                     </Box>
                                                     } 
                                                 />
@@ -609,7 +612,7 @@ const ModificaKeypeopleGrafica = () => {
                                                     primary={
                                                     <Box>
                                                         <Typography component="span" sx={{ fontWeight: 'bold' }}>Wood:</Typography>
-                                                        {" ho effettuato un’azione senza esito"}
+                                                        {t(" ho effettuato un’azione senza esito ")}
                                                     </Box>
                                                     } 
                                                 />
@@ -619,7 +622,7 @@ const ModificaKeypeopleGrafica = () => {
                                                     primary={
                                                     <Box>
                                                         <Typography component="span" sx={{ fontWeight: 'bold' }}>Start:</Typography>
-                                                        {" non ho ancora effettuato azioni commerciali"}
+                                                        {t(" non ho ancora effettuato azioni commerciali ")}
                                                     </Box>
                                                     } 
                                                 />
@@ -699,10 +702,10 @@ return (
                     }}
                     >
                         <span style={{ marginRight: '0.5em'}}>{"<"}</span>
-                        Indietro
+                        {t('Indietro')}
                     </Button>
                 </Box>
-                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: 'black'}}>  Aggiorna <br /> Contatto </Typography>
+                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: 'black'}}>  {t('Aggiorna')} <br /> {t('Contatto')} </Typography>
                 <List sx={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
                             {menu.map((item, index) => (
                                 // <ListItem
@@ -762,7 +765,7 @@ return (
                 <Box sx={{ display: 'flex', width: '100%', height: '100%', flexDirection: 'column', pl: 5, pr: 5, overflow: 'auto'}}>
                 {renderFieldsGroups(groupedFields)}
                 </Box>
-                <Typography variant="h6" sx={{ mt: 2, color: '#666565', fontSize: '1em', ml: 16}}>* Campo Obbligatorio</Typography>
+                <Typography variant="h6" sx={{ mt: 2, color: '#666565', fontSize: '1em', ml: 16}}>{t('* Campo Obbligatorio')}</Typography>
 
 
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5, gap: 6 }}>
@@ -782,7 +785,7 @@ return (
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                 borderRadius: '10px',
                                 },
-                            }}>Indietro</Button>
+                            }}>{t('Indietro')}</Button>
                         )}
                         {currentPageIndex < groupedFields.length - 1 && (
                             <Button onClick={handleNextButtonClick}
@@ -802,7 +805,7 @@ return (
                                     transform: "scale(1.05)",
                                     boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                     borderRadius: '10px',
-                                },}}>Avanti</Button>
+                                },}}>{t('Avanti')}</Button>
                         )}
                         {currentPageIndex === groupedFields.length - 1 && (
                             <Button 
@@ -824,7 +827,7 @@ return (
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                 borderRadius: '10px',
                                 },
-                            }}>Salva</Button>
+                            }}>{t('Salva')}</Button>
                         )}
                 </Box>
             </Box>

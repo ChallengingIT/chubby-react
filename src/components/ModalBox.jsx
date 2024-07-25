@@ -13,6 +13,8 @@ import {
   FormHelperText
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { useTranslation } from "react-i18next"; 
+
 
 const ModalBox = ({
   fields,
@@ -25,6 +27,8 @@ const ModalBox = ({
 }) => {
   const [values, setValues] = useState(initialValues || {});
     const [errors, setErrors] = useState({});
+    const { t } = useTranslation(); 
+
 
 
   const handleChange = (fieldName) => (event) => {
@@ -280,7 +284,7 @@ const ModalBox = ({
                 },
               }}
             >
-              Salva
+              {t('Salva')}
             </Button>
           )}
         </Container>

@@ -10,6 +10,8 @@ import CustomDatePickerHoursAggiungi from '../../components/fields/CustomDatePic
 import CustomDatePickerModifica from '../../components/fields/CustomDatePickerModifica';
 import CustomNoteModifica from '../../components/fields/CustomNoteModifica';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { useTranslation }                                   from 'react-i18next';
+
 
 const ModificaIntervistaGrafica = () => {
     const navigate = useNavigate();
@@ -17,9 +19,11 @@ const ModificaIntervistaGrafica = () => {
     const location = useLocation();
     const rowData = location.state;
     const candidatoID = rowData.candidato.id;
+    const { t } = useTranslation();
+
 
     //stati della pagina
-    const [activeSection, setActiveSection] = useState('Informazioni');
+    const [activeSection, setActiveSection] = useState(t("Informazioni"));
     const [currentPageIndex, setCurrentPageIndex] = useState(0);
     const [alert, setAlert] = useState({ open: false, message: '' });
     const [errors, setErrors] = useState({});
@@ -122,19 +126,19 @@ const ModificaIntervistaGrafica = () => {
 
     const menu = [
         {
-            title: 'Informazioni',
+            title: t("Informazioni"),
             icon: <CircleOutlinedIcon />
         },
         {
-            title: 'Competenze',
+            title: t("Competenze"),
             icon: <CircleOutlinedIcon />
         },
         {
-            title: 'Info contrattuali',
+            title: t("Info Contrattuali"),
             icon: <CircleOutlinedIcon />
         },
         {
-            title: 'Azioni',
+            title: t("Azioni"),
             icon: <CircleOutlinedIcon />
         }
     ];
@@ -154,7 +158,7 @@ const ModificaIntervistaGrafica = () => {
             setActiveSection(section);
             setCurrentPageIndex(index);
         } else {
-            setAlert({ open: true, message: 'Compilare tutti i campi obbligatori presenti per poter cambiare sezione' });
+            setAlert({ open: true, message: t('Compilare tutti i campi obbligatori presenti per poter cambiare sezione') });
         }
     };
 
@@ -182,7 +186,7 @@ const ModificaIntervistaGrafica = () => {
 
         mandatoryFields.forEach(field => {
             if (!values[field]) {
-                errors[field] = 'Questo campo è obbligatorio';
+                errors[field] = t('Questo campo è obbligatorio');
                 allFieldsValid = false;
             }
         });
@@ -225,7 +229,7 @@ const ModificaIntervistaGrafica = () => {
                 setActiveSection(menu[currentIndex + 1].title);
                 setCurrentPageIndex(currentIndex + 1);
             } else {
-                setAlert({ open: true, message: 'Compilare tutti i field obbligatori presenti per poter avanzare' });
+                setAlert({ open: true, message: t('Compilare tutti i field obbligatori presenti per poter avanzare') });
             }
         }
     };
@@ -294,7 +298,7 @@ const ModificaIntervistaGrafica = () => {
                     headers: headers
                 });
                 if (response.data === "ERRORE") {
-                    setAlert({ open: true, message: "errore durante il salvataggio dell'intervista!" });
+                    setAlert({ open: true, message: t("errore durante il salvataggio dell'intervista!")});
                     console.error("L'intervista non è stata salvata.");
                     return;
                 }
@@ -322,41 +326,41 @@ const ModificaIntervistaGrafica = () => {
 
     const campiObbligatori = ["dataColloquio, coerenza, standing,energia,comunicazione,inglese,competenze,valutazione,descrizioneCandidatoUna,teamSiNo"];
     const fields = [
-        { type: "titleGroups", label: "Informazioni" },
-        { label: "Data Incontro*", name: "dataColloquio", type: "date" },
-        { label: "Intervistatore", name: "idOwner", type: "select", options: ownerOptions },
+        { type: "titleGroups", label: t("Informazioni") },
+        { label: t("Data Incontro*"), name: "dataColloquio", type: "date" },
+        { label: t("Intervistatore"), name: "idOwner", type: "select", options: ownerOptions },
         // { label: "Tipologia Incontro", name: "idStato", type: "text" },
-        { label: "Nome", name: "nome", type: "text" },
-        { label: "Cognome", name: "cognome", type: "text" },
-        { label: "Data di Nascita", name: "dataNascita", type: "date" },
+        { label: t("Nome"), name: "nome", type: "text" },
+        { label: t("Cognome"), name: "cognome", type: "text" },
+        { label: t("Data Di Nascita"), name: "dataNascita", type: "date" },
         { label: "Location", name: "location", type: "text" },
         { label: "Job Title", name: "tipologia", type: "text" },
-        { label: "Anni di Esperienza", name: "anniEsperienza", type: "text" },
-        { label: "Recapiti", name: "cellulare", type: "text" },
-        { label: "Descrizione Candidato", name: "note", type: "note", maxLength: 8000 },
+        { label: t("Anni Di Esperienza"), name: "anniEsperienza", type: "text" },
+        { label: t("Recapiti"), name: "cellulare", type: "text" },
+        { label: t("Descrizione Candidato"), name: "note", type: "note", maxLength: 8000 },
 
-        { type: "titleGroups", label: "Competenze" },
-        { label: "Coerenza Percorso", name: "coerenza", type: "select", options: valoriOptions },
-        { label: "Standing", name: "standing", type: "select", options: valoriOptions },
-        { label: "Energia", name: "energia", type: "select", options: valoriOptions },
-        { label: "Comunicazione", name: "comunicazione", type: "select", options: valoriOptions },
-        { label: "Livello di Inglese", name: "inglese", type: "select", options: valoriOptions },
-        { label: "Competenze vs ruolo", name: "competenze", type: "select", options: valoriOptions },
-        { label: "Valutazione", name: "valutazione", type: "select", options: valoriOptions },
-        { label: "One word", name: "descrizioneCandidatoUna", type: "text", maxLength: 45 },
-        { label: "Lo vorresti nel tuo team?", name: "teamSiNo", type: "select", options: siNoOptions },
+        { type: "titleGroups", label: t("Competenze") },
+        { label: t("Coerenza Percorso"), name: "coerenza", type: "select", options: valoriOptions },
+        { label: t("Standing"), name: "standing", type: "select", options: valoriOptions },
+        { label: t("Energia"), name: "energia", type: "select", options: valoriOptions },
+        { label: t("Comunicazione"), name: "comunicazione", type: "select", options: valoriOptions },
+        { label: t("Livello Di Inglese"), name: "inglese", type: "select", options: valoriOptions },
+        { label: t("Competenze vs Ruolo"), name: "competenze", type: "select", options: valoriOptions },
+        { label: t("Valutazione"), name: "valutazione", type: "select", options: valoriOptions },
+        { label: t("One word"), name: "descrizioneCandidatoUna", type: "text", maxLength: 45 },
+        { label: t("Lo vorresti nel tuo team?"), name: "teamSiNo", type: "select", options: siNoOptions },
 
-        { type: "titleGroups", label: "Info contrattuali" },
-        { label: "Disponibilità", name: "disponibilita", type: "text", maxLength: 45 },
-        { label: "RAL Attuale", name: "attuale", type: "text", maxLength: 90 },
-        { label: "RAL Desiderata", name: "desiderata", type: "text", maxLength: 90 },
-        { label: "Proposta economica", name: "proposta", type: "text", maxLength: 90 },
+        { type: "titleGroups", label: t("Info contrattuali") },
+        { label: t("Disponibilità"), name: "disponibilita", type: "text", maxLength: 45 },
+        { label: t("RAL Attuale"), name: "attuale", type: "text", maxLength: 90 },
+        { label: t("RAL Desiderata"), name: "desiderata", type: "text", maxLength: 90 },
+        { label: t("Proposta Economica"), name: "proposta", type: "text", maxLength: 90 },
 
-        { type: "titleGroups", label: "Azioni" },
-        { label: "Follow Up", name: "idTipo", type: "select", options: tipoIntervistaOptions },
-        { label: "Preavviso", name: "preavviso", type: "text", maxLength: 45 },
-        { label: "Next Deadline", name: "dataAggiornamento", type: "dateOra" },
-        { label: "Owner next Deadline", name: "idNextOwner", type: "select", options: ownerOptions },
+        { type: "titleGroups", label: t("Azioni") },
+        { label: t("Follow Up"), name: "idTipo", type: "select", options: tipoIntervistaOptions },
+        { label: t("Preavviso"), name: "preavviso", type: "text", maxLength: 45 },
+        { label: t("Next Deadline"), name: "dataAggiornamento", type: "dateOra" },
+        { label: t("Owner next Deadline"), name: "idNextOwner", type: "select", options: ownerOptions },
     ];
 
     const initialValues = {
@@ -612,10 +616,10 @@ const ModificaIntervistaGrafica = () => {
                             }}
                         >
                             <span style={{ marginRight: '0.5em' }}>{"<"}</span>
-                            Indietro
+                            {t('Indietro')}
                         </Button>
                     </Box>
-                    <Typography variant="h6" sx={{ display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: 'black' }}>  Aggiorna <br /> Intervista </Typography>
+                    <Typography variant="h6" sx={{ display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: 'black' }}>  {t('Aggiorna')} <br /> {t('Intervista')} </Typography>
                     <List sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
                         {menu.map((item, index) => (
                             <ListItem
@@ -672,7 +676,7 @@ const ModificaIntervistaGrafica = () => {
                                         boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                         borderRadius: '10px',
                                     },
-                                }}>Indietro</Button>
+                                }}>{t('Indietro')}</Button>
                         )}
                         {currentPageIndex < groupedFields.length - 1 && (
                             <Button onClick={handleNextButtonClick}
@@ -692,7 +696,7 @@ const ModificaIntervistaGrafica = () => {
                                         boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                         borderRadius: '10px',
                                     },
-                                }}>Avanti</Button>
+                                }}>{t('Avanti')}</Button>
                         )}
                         {currentPageIndex === groupedFields.length - 1 && (
                             <Button
@@ -714,7 +718,7 @@ const ModificaIntervistaGrafica = () => {
                                         boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                         borderRadius: '10px',
                                     },
-                                }}>Salva</Button>
+                                }}>{t('Salva')}</Button>
                         )}
                     </Box>
                 </Box>

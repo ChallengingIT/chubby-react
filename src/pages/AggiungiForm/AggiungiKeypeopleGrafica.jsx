@@ -10,6 +10,8 @@
     import ClearIcon                                        from '@mui/icons-material/Clear';
     import CheckIcon                                        from '@mui/icons-material/Check';
     import CustomEmailAFieldAggiungi                        from "../../components/fields/CustomEmailFieldAggiungi";
+    import { useTranslation }                               from 'react-i18next';
+
     import {
     Box,
     Typography,
@@ -31,9 +33,11 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
     const AggiungiKeypeopleGrafica = () => {
     const navigate = useNavigate();
     const theme = useUserTheme();
+    const { t } = useTranslation();
+
 
     //stati della pagina
-    const [ activeSection,                  setActiveSection                ] = useState("Anagrafica");
+    const [ activeSection,                  setActiveSection                ] = useState(t("Anagrafica"));
     const [ currentPageIndex,               setCurrentPageIndex             ] = useState(0);
     const [ alert,                          setAlert                        ] = useState({ open: false, message: "" });
     const [ errors,                         setErrors                       ] = useState({});
@@ -117,7 +121,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
 
     const menu = [
         {
-        title: "Anagrafica",
+        title: t("Anagrafica"),
         icon: <CircleOutlinedIcon />,
         },
     ];
@@ -149,7 +153,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
         let errors = {};
         mandatoryFields.forEach((field) => {
         if (!values[field]) {
-            errors[field] = "Questo campo è obbligatorio";
+            errors[field] = t("Questo campo è obbligatorio");
         }
         });
         return errors;
@@ -182,7 +186,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
             setAlert({
             open: true,
             message:
-                "Compilare tutti i campi obbligatori presenti per poter avanzare",
+                t("Compilare tutti i campi obbligatori presenti per poter avanzare"),
             });
         }
         }
@@ -232,14 +236,14 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
             }
             );
             if (response.data === "DUPLICATO") {
-            setAlert({ open: true, message: "contatto già esistente!" });
+            setAlert({ open: true, message: t("contatto già esistente!") });
             console.error("il contatto è già stata salvato.");
             return;
             }
             if (response.data === "ERRORE") {
             setAlert({
                 open: true,
-                message: "errore durante il salvataggio del contatto!",
+                message: t("errore durante il salvataggio del contatto!"),
             });
             console.error("Il contatto non è stata salvata.");
             return;
@@ -253,7 +257,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
         setAlert({
             open: true,
             message:
-            "Compilare tutti i campi obbligatori presenti prima di avanzare",
+            t("Compilare tutti i campi obbligatori presenti prima di avanzare"),
         });
         }
     };
@@ -316,25 +320,25 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
     ];
 
     const fields = [
-        { type: "titleGroups", label: "Anagrafica" },
-        { label: "Nome Contatto*",          name: "nome",               type: "text",               maxLength: 255          },
-        { label: "Ruolo*",                  name: "ruolo",              type: "text",               maxLength: 255          },
-        { label: "Azienda*",                name: "idAzienda",          type: "select",             options: aziendeOptions, },
-        { label: "Tipo",                    name: "tipo",               type: "select",             options: [
+        { type: "titleGroups", label: t("Anagrafica") },
+        { label: t("Nome Contatto*"),          name: "nome",               type: "text",               maxLength: 255          },
+        { label: t("Ruolo*"),                  name: "ruolo",              type: "text",               maxLength: 255          },
+        { label: t("Azienda*"),                name: "idAzienda",          type: "select",             options: aziendeOptions, },
+        { label: t("Tipo"),                    name: "tipo",               type: "select",             options: [
             { value: 1, label: "Keypeople" },
             { value: 2, label: "Hook" },
             { value: 3, label: "Link" },
         ],
         },
-        { label: "Owner*",                  name: "idOwner",            type: "select",             options: ownerOptions },
-        { label: "Stato*",                  name: "idStato",            type: "select",             options: statiOptions },
+        { label: t("Owner*"),                  name: "idOwner",            type: "select",             options: ownerOptions },
+        { label: t("Stato*"),                  name: "idStato",            type: "select",             options: statiOptions },
 
         { label: "Email*",                  name: "email",              type: "email",              maxLength: 45         },
-        { label: "Cellulare",               name: "cellulare",          type: "text",               maxLength: 20         },
+        { label: t("Cellulare"),               name: "cellulare",          type: "text",               maxLength: 20         },
 
-        { label: "Data di Creazione*",      name: "dataCreazione",      type: "date"                                      },
+        { label: t("Data di Creazione*"),      name: "dataCreazione",      type: "date"                                      },
         // { label: "Ultima attività",         name: "dataUltimaAttivita", type: "date"                                      },
-        { label: "Note",                    name: "note",               type: "note",               maxLength: 2000       },
+        { label: t("Note"),                    name: "note",               type: "note",               maxLength: 2000       },
     ];
 
     //funzione per suddividere fields nelle varie pagine in base a titleGroups
@@ -363,6 +367,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
     const renderFields = (field) => {
         const { type, ...otherProps } = field;
         // const errorMessage = errors[field.name];
+        
 
         switch (type) {
         case "text":
@@ -388,7 +393,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
                 onChange={handleChange}
                 maxLength={field.maxLength}
                 error={emailValidation === "error"}
-                helperText={emailValidation === "error" ? "Email già presente" : ""}
+                helperText={emailValidation === "error" ? t("Email già presente") : ""}
                 InputProps={{
                 endAdornment: emailValidation === "error" ? (
                     <ClearIcon color="error" />
@@ -470,7 +475,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
                                 Keypeople:
                             </Typography>
                             {
-                                " lavora in azienda target, ha budget da gestire e potere decisionale "
+                                t(" lavora in azienda target, ha budget da gestire e potere decisionale ")
                             }
                             </Box>
                         }
@@ -487,7 +492,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
                                 Hook:
                             </Typography>
                             {
-                                " lavora in azienda target, ma non ha budget e potere decisionale "
+                                t(" lavora in azienda target, ma non ha budget e potere decisionale ")
                             }
                             </Box>
                         }
@@ -504,7 +509,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
                                 Link:
                             </Typography>
                             {
-                                " persona che fa parte del nostro network e potrebbe avere contatti utili "
+                                t(" persona che fa parte del nostro network e potrebbe avere contatti utili ")
                             }
                             </Box>
                         }
@@ -558,7 +563,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
                             >
                                 Gold:
                             </Typography>
-                            {" ho ricevuto un’esigenza di business"}
+                            {t(" ho ricevuto un’esigenza di business ")}
                             </Box>
                         }
                         />
@@ -573,7 +578,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
                             >
                                 Silver:
                             </Typography>
-                            {" ho fissato una prospection"}
+                            {t(" ho fissato una prospection ")}
                             </Box>
                         }
                         />
@@ -588,7 +593,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
                             >
                                 Bronze:
                             </Typography>
-                            {" sono entrato in contatto"}
+                            {t(" sono entrato in contatto ")}
                             </Box>
                         }
                         />
@@ -603,7 +608,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
                             >
                                 Wood:
                             </Typography>
-                            {" ho effettuato un’azione senza esito"}
+                            {t(" ho effettuato un’azione senza esito ")}
                             </Box>
                         }
                         />
@@ -618,7 +623,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
                             >
                                 Start:
                             </Typography>
-                            {" non ho ancora effettuato azioni commerciali"}
+                            {t(" non ho ancora effettuato azioni commerciali ")}
                             </Box>
                         }
                         />
@@ -729,7 +734,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
                 }}
                 >
                 <span style={{ marginRight: "0.5em" }}>{"<"}</span>
-                Indietro
+                {t('Indietro')}
                 </Button>
             </Box>
             <Typography
@@ -746,7 +751,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
                 }}
             >
                 {" "}
-                Aggiungi <br /> Contatto{" "}
+                {t('Aggiungi')} <br /> {t('Contatto')}
             </Typography>
             <List
                 sx={{ display: "flex", flexDirection: "column", width: "100%" }}
@@ -833,7 +838,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
                 variant="h6"
                 sx={{ mt: 2, color: "#666565", fontSize: "1em", ml: 16 }}
             >
-                * Campo Obbligatorio
+                {t('* Campo Obbligatorio')}
             </Typography>
 
             <Box
@@ -864,8 +869,8 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
                     },
                     }}
                 >
-                    Indietro
-                </Button>
+                    {t('Indietro')}
+                    </Button>
                 )}
                 {currentPageIndex < groupedFields.length - 1 && (
                 <Button
@@ -888,8 +893,8 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
                     },
                     }}
                 >
-                    Avanti
-                </Button>
+                    {t('Avanti')}
+                    </Button>
                 )}
                 {currentPageIndex === groupedFields.length - 1 && (
                 <Button
@@ -913,8 +918,8 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
                     },
                     }}
                 >
-                    Salva
-                </Button>
+                    {t('Salva')}
+                    </Button>
                 )}
             </Box>
             </Box>

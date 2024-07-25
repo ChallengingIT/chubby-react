@@ -10,6 +10,8 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { useUserTheme } from "../TorchyThemeProvider";
+import { useTranslation } from 'react-i18next';
+
 
     function NuovaRicercaKeypeople({
     filtri,
@@ -21,6 +23,8 @@ import { useUserTheme } from "../TorchyThemeProvider";
     ownerOptions,
     }) {
     const theme = useUserTheme();
+    const { t } = useTranslation();
+
 
     const [isRotated, setIsRotated] = useState(false);
 
@@ -50,7 +54,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
         <Box
         sx={{
             width: '100%',
-            bgcolor: "white",
+            bgcolor: "#FEFCFD",
             // border: 'solid 2px #00B400',
             borderRadius: '20px',
             display: "flex",
@@ -68,7 +72,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
             <TextField
             id="search-bar"
             variant="filled"
-            label="Cerca Contatto"
+            label={t("Cerca Contatto")}
             value={filtri.nome || ""}
             onChange={handleInputChange("nome")}
             onKeyDown={(event) => {
@@ -117,7 +121,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
                         renderInput={(params) => (
                             <TextField
                                 {...params}
-                                label="Aziende"
+                                label={t("Aziende")}
                                 variant="filled"
                                 sx={{
                                     textAlign: "left",
@@ -160,7 +164,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
                     renderInput={(params) => (
                     <TextField
                         {...params}
-                        label="Stato"
+                        label={t("Stato")}
                         variant="filled"
                         sx={{
                         textAlign: "left",
@@ -204,7 +208,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
                     renderInput={(params) => (
                     <TextField
                         {...params}
-                        label="Owner"
+                        label={t("Owner")}
                         variant="filled"
                         sx={{
                         textAlign: "left",

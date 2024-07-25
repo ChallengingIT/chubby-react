@@ -14,8 +14,10 @@ import {
     Chip,
 } from '@mui/material';
 import CloseIcon from "@mui/icons-material/Close";
+import { useTranslation } from "react-i18next";
 
 const IntervisteModal = ({ open, handleClose, intervista, candidato }) => {
+    const { t } = useTranslation(); 
 
     const skillsDescriptions = candidato?.skills?.map(skill => skill.descrizione).join(', ') || '';
 
@@ -23,11 +25,11 @@ const IntervisteModal = ({ open, handleClose, intervista, candidato }) => {
     const getTeamSiNoLabel = (value) => {
         switch (value) {
             case 1:
-                return "SI";
+                return t("SI");
             case 2:
-                return "NO";
+                return t("NO");
             case 3:
-                return "KO";
+                return t("KO");
             default:
                 return "";
         }
@@ -37,7 +39,7 @@ const IntervisteModal = ({ open, handleClose, intervista, candidato }) => {
     const renderChip = (label, value) => {
         return (
             <Grid item xs={6}>
-                <Typography variant="body1"><strong>{label}:</strong></Typography>
+                <Typography variant="body1"><strong>{t(label)}:</strong></Typography>
                 {value && <Chip label={value} />}
             </Grid>
         );
@@ -46,7 +48,7 @@ const IntervisteModal = ({ open, handleClose, intervista, candidato }) => {
     return (
         <Dialog open={open} onClose={handleClose} PaperProps={{ sx: { borderRadius: '20px', display: 'flex', minWidth: '60vw', minHeight: '60vh', height: 'auto' } }}>
             <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                <DialogTitle variant='h5' sx={{ fontWeight: 'bold' }}>{"Dettagli Intervista"}</DialogTitle>
+                <DialogTitle variant='h5' sx={{ fontWeight: 'bold' }}>{t("Dettagli Intervista")}</DialogTitle>
                 <Button
                     onClick={handleClose}
                     variant="outlined"
@@ -69,14 +71,14 @@ const IntervisteModal = ({ open, handleClose, intervista, candidato }) => {
                     {/* Informazioni di Base */}
                     <Card sx={{ borderRadius: '15px', border: '1px solid #00B400' }}>
                         <CardContent>
-                            <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'flex-start' }}>Informazioni di Base</Typography>
+                            <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'flex-start' }}>{t("Informazioni Di Base")}</Typography>
                             <Divider sx={{ mb: 2 }} />
                             <Grid container spacing={2}>
                                 {renderChip("Nome", intervista?.candidato?.nome)}
                                 {renderChip("Cognome", intervista?.candidato?.cognome)}
                                 {renderChip("Data Colloquio", intervista?.dataColloquio)}
                                 {renderChip("Intervistatore", `${intervista?.nextOwner?.nome || ''} ${intervista?.nextOwner?.cognome || ''}`.trim())}
-                                {renderChip("Data di Nascita", candidato?.dataNascita)}
+                                {renderChip("Data Di Nascita", candidato?.dataNascita)}
                                 {renderChip("Cellulare", candidato?.cellulare)}
                                 {renderChip("Job Title", candidato?.tipologia?.descrizione)}
                                 {renderChip("Skills", skillsDescriptions)}
@@ -86,14 +88,14 @@ const IntervisteModal = ({ open, handleClose, intervista, candidato }) => {
                     {/* Competenze */}
                     <Card sx={{ borderRadius: '15px', border: '1px solid #00B400' }}>
                         <CardContent>
-                            <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'flex-start' }}>Competenze</Typography>
+                            <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'flex-start' }}>{t("Competenze")}</Typography>
                             <Divider sx={{ mb: 2 }} />
                             <Grid container spacing={2}>
                                 {renderChip("Coerenza Percorso", intervista?.coerenza)}
                                 {renderChip("Standing", intervista?.standing)}
                                 {renderChip("Energia", intervista?.energia)}
                                 {renderChip("Comunicazione", intervista?.comunicazione)}
-                                {renderChip("Livello di Inglese", intervista?.inglese)}
+                                {renderChip("Livello Di Inglese", intervista?.inglese)}
                                 {renderChip("Competenze vs Ruolo", intervista?.competenze)}
                                 {renderChip("Valutazione", intervista?.valutazione)}
                                 {renderChip("One Word", intervista?.descrizioneCandidatoUna)}
@@ -104,7 +106,7 @@ const IntervisteModal = ({ open, handleClose, intervista, candidato }) => {
                     {/* Informazioni Contrattuali */}
                     <Card sx={{ borderRadius: '15px', border: '1px solid #00B400' }}>
                         <CardContent>
-                            <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'flex-start' }}>Informazioni Contrattuali</Typography>
+                            <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'flex-start' }}>{t("Informazioni Contrattuali")}</Typography>
                             <Divider sx={{ mb: 2 }} />
                             <Grid container spacing={2}>
                                 {renderChip("Disponibilità", intervista?.disponibilita)}
@@ -117,7 +119,7 @@ const IntervisteModal = ({ open, handleClose, intervista, candidato }) => {
                     {/* Note */}
                     <Card sx={{ borderRadius: '15px', border: '1px solid #00B400' }}>
                         <CardContent>
-                            <Typography variant='h6' sx={{ fontWeight: 'bold', textAlign: 'flex-start' }}>Note</Typography>
+                            <Typography variant='h6' sx={{ fontWeight: 'bold', textAlign: 'flex-start' }}>{t("Note")}</Typography>
                             <Divider sx={{ mb: 2 }} />
                             <Typography variant='body1'>{candidato?.note}</Typography>
                         </CardContent>

@@ -9,10 +9,14 @@
     Typography
     } from '@mui/material';
     import CloseIcon from "@mui/icons-material/Close";
+    import { useTranslation } from "react-i18next"; 
+
 
     const NoCFModal = ({ open, handleClose, idCandidato, handleDownloadCF, nomeCandidato, cognomeCandidato }) => {
 
     const descrizione = null;
+    const { t } = useTranslation(); 
+
 
     const handleSubmit = () => {
         handleDownloadCF(idCandidato, descrizione, nomeCandidato, cognomeCandidato);
@@ -22,7 +26,7 @@
     return (
         <Dialog open={open} onClose={handleClose} PaperProps={{ sx: { borderRadius: '20px',  display: 'flex', minWidth: '40vw', minHeight: '20vh', height: 'auto' } }}>
         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-            <DialogTitle variant='h5' sx={{ fontWeight: 'bold'}}>{`Attenzione ` }</DialogTitle>
+            <DialogTitle variant='h5' sx={{ fontWeight: 'bold'}}>{t(`Attenzione `) }</DialogTitle>
             <Button
             onClick={handleClose}
             variant="outlined"
@@ -42,7 +46,7 @@
         </Box>
         <DialogContent>
             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <Typography variant="body1">{`Non è presente il CV di ${nomeCandidato} ${cognomeCandidato}, procedere alla creazione del CF senza le esperienze lavorative?`}</Typography>
+            <Typography variant="body1">{t(`Non è presente il CV di ${nomeCandidato} ${cognomeCandidato}, non si può procedere con la creazione del CF.`)}</Typography>
             </Box>
         </DialogContent>
         <DialogActions sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 2, mb: 1 }}>
@@ -58,7 +62,7 @@
                 transform: 'scale(1.02)'
                 }
             }}>
-            No
+            {t('No')}
             </Button>
             <Button onClick={handleSubmit}
             sx={{ 
@@ -72,7 +76,7 @@
                 transform: 'scale(1.02)'
                 }
             }}>
-            Si
+            {t('Si')}
             </Button>        
         </DialogActions>
         </Dialog>

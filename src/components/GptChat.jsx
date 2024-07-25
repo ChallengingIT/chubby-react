@@ -58,7 +58,7 @@ const GptChat = () => {
                     });
     
             let gptResponseMessages = [];
-            if (response.data === "KO") {
+            if (response.data === "KO" || response.data === "") {
                 gptResponseMessages = [{
                     message: "Mi dispiace ma non posso elaborare questa richiesta.",
                     sender: 'ChatGPT'

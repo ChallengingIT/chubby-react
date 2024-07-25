@@ -13,16 +13,19 @@ import CustomMultipleSelectModifica                                             
 import CustomNumberModifica from '../../components/fields/CustomNumberModifica';
 import { useUserTheme } from '../../components/TorchyThemeProvider';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { useTranslation }                   from 'react-i18next';
+
 
 
 const ModificaNeedGrafica = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const {id}                    = useParams();
     const theme = useUserTheme();
 
 
     //stati della pagina
-    const [ activeSection,      setActiveSection        ] = useState('Descrizione Need');
+    const [ activeSection,      setActiveSection        ] = useState(t('Descrizione Need'));
     const [ currentPageIndex,   setCurrentPageIndex     ] = useState(0);
     const [ alert,              setAlert                ] = useState({ open: false, message: ''});
     const [ errors,             setErrors               ] = useState({});
@@ -173,7 +176,7 @@ const ModificaNeedGrafica = () => {
 
     const menu = [
         {
-            title: 'Descrizione Need',
+            title: t('Descrizione Need'),
             icon: <CircleOutlinedIcon />
         },
     ];
@@ -193,7 +196,7 @@ const ModificaNeedGrafica = () => {
             setActiveSection(section);
             setCurrentPageIndex(index);
         } else {
-            setAlert({ open: true, message: 'Compilare tutti i campi obbligatori presenti per poter cambiare sezione'});
+            setAlert({ open: true, message: t('Compilare tutti i campi obbligatori presenti per poter cambiare sezione')});
         }
     };
 
@@ -220,7 +223,7 @@ const ModificaNeedGrafica = () => {
 
         mandatoryFields.forEach(field => {
             if (!values[field]) {
-                errors[field] = 'Questo campo è obbligatorio';
+                errors[field] = t('Questo campo è obbligatorio');
                 allFieldsValid = false;
 
             }
@@ -288,7 +291,7 @@ const ModificaNeedGrafica = () => {
                 setActiveSection(menu[currentIndex + 1].title);
                 setCurrentPageIndex(currentIndex + 1);
             } else {
-                setAlert({ open: true, message: 'Compilare tutti i campi obbligatori presenti per poter avanzare'});
+                setAlert({ open: true, message: t('Compilare tutti i campi obbligatori presenti per poter avanzare')});
             }
         }
     };
@@ -351,7 +354,7 @@ const ModificaNeedGrafica = () => {
 
                 const responseSaveNeed = await axios.post("http://89.46.196.60:8443/need/react/salva", transformedValues, { params: { skill1: skills }, headers: headers});
                 if (responseSaveNeed.data === "ERRORE") {
-                    setAlert({ open: true, message: "errore durante il salvataggio del need!" });
+                    setAlert({ open: true, message: t("errore durante il salvataggio del need!") });
                     console.error("Il need non è stata salvata.");
                     return;
                 }
@@ -371,38 +374,38 @@ const ModificaNeedGrafica = () => {
                 }
         } else {
             setErrors(errors);
-            setAlert({ open: true, message: "Compilare tutti i field obbligatori presenti prima di avanzare" });
+            setAlert({ open: true, message: t("Compilare tutti i field obbligatori presenti prima di avanzare") });
         }
     };
 
         const fieldObbligatori = [ "descrizione", "idKeyPeople", "priorita", "week", "pubblicazione", "screening", "idTipologia", "idStato", "idOwner", "location" ];
 
         const fields =[
-            { label: "Descrizione Need*",   name: "descrizione",                  type: "text", maxLength: 200                                                },
-            { label: "Contatto*",           name: "idKeyPeople",                  type: "select",               options: keyPeopleOptions     },
+            { label: t("Descrizione Need*"),   name: "descrizione",                  type: "text", maxLength: 200                                                },
+            { label: t("Contatto*"),           name: "idKeyPeople",                  type: "select",               options: keyPeopleOptions     },
             // { label: "Priorità*",           name: "priorita",                     type: "decimalNumber"                                       },
-            { label: "Priorità*",              name: "priorita",                          type: "select",               options: [
-                { value: 1,                   label: "Massima" },
-                { value: 2,                   label: "Alta" },
-                { value: 3,                   label: "Media" },
-                { value: 4,                   label: "Bassa" } 
+            { label: t("Priorità*"),              name: "priorita",                          type: "select",               options: [
+                { value: 1,                   label: t("Massima") },
+                { value: 2,                   label: t("Alta") },
+                { value: 3,                   label: t("Media") },
+                { value: 4,                   label: t("Bassa") } 
                 ] },
             { label: "Week*",               name: "week",                         type: "week"                                                },
-            { label: "Tipologia*",          name: "idTipologia",                  type: "select",               options: tipologiaOptions     },
-            { label: "Tipologia Azienda",   name: "idTipo",                         type: "select",               options: [
-            { value: 1,                   label: "Cliente" },
-            { value: 2,                   label: "Consulenza" },
-            { value: 3,                   label: "Prospect" }
+            { label: t("Tipologia*"),          name: "idTipologia",                  type: "select",               options: tipologiaOptions     },
+            { label: t("Tipologia Azienda"),   name: "idTipo",                         type: "select",               options: [
+            { value: 1,                   label: t("Cliente") },
+            { value: 2,                   label: t("Consulenza") },
+            { value: 3,                   label: t("Prospect") }
             ] },
-            { label: "Owner*",                    name: "idOwner",                     type: "select",                 options: ownerOptions         },
-            { label: "Stato*",                    name: "idStato",                     type: "select",                 options: statoOptions         },
+            { label: t("Owner*"),                    name: "idOwner",                     type: "select",                 options: ownerOptions         },
+            { label: t("Stato*"),                    name: "idStato",                     type: "select",                 options: statoOptions         },
             { label: "Headcount",                 name: "numeroRisorse",               type: "number"                                         },
             { label: "Location*",                 name: "location",                    type: "text", maxLength: 45                                                  },
             { label: "Skills",                    name: "idSkills",                    type: "multipleSelect",         options: skillsOptions        },
             { label: "Seniority",                 name: "anniEsperienza",              type: "select",                 options: seniorityOptions     },
-            { label: 'Pubblicazione Annuncio*',   name: 'pubblicazione',               type: 'select',                 options: pubblicazioneOptions },
-            { label: 'Screening*',                name: 'screening',                   type: 'select',                 options: screeningOptions     },
-            { label: "Note",                      name: "note",                        type: "note", maxLength:4000                                                  },
+            { label: t('Pubblicazione Annuncio*'),   name: 'pubblicazione',               type: 'select',                 options: pubblicazioneOptions },
+            { label: t('Screening*'),                name: 'screening',                   type: 'select',                 options: screeningOptions     },
+            { label: t("Note"),                      name: "note",                        type: "note", maxLength:4000                                                  },
             ];
 
 
@@ -673,10 +676,10 @@ return (
                     }}
                     >
                         <span style={{ marginRight: '0.5em'}}>{"<"}</span>
-                        Indietro
+                        {t('Indietro')}
                     </Button>
                 </Box>
-                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: theme.palette.aggiungiSidebar.title}}>  Aggiorna <br /> Need </Typography>
+                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: theme.palette.aggiungiSidebar.title}}>  {t('Aggiorna')} <br /> {t('Need')} </Typography>
                 <List sx={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
                             {menu.map((item, index) => (
                                 // <ListItem
@@ -734,7 +737,7 @@ return (
                 <Box sx={{ display: 'flex', width: '100%', height: '100%', flexDirection: 'column', pl: 5, pr: 5, overflow: 'auto'}}>
                 {renderFieldsGroups(groupedFields)}
                 </Box>   
-                <Typography variant="h6" sx={{ mt: 2, color: '#666565', fontSize: '1em', ml: 16}}>* Campo Obbligatorio</Typography>
+                <Typography variant="h6" sx={{ mt: 2, color: '#666565', fontSize: '1em', ml: 16}}>{t('* Campo Obbligatorio')}</Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5, gap: 6 }}>
                 {currentPageIndex > 0 && (
                         <Button onClick={handleBackButtonClick}
@@ -753,7 +756,9 @@ return (
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                 borderRadius: '10px',
                                 },
-                            }}>Indietro</Button>
+                            }}>
+                            {t('Indietro')}
+                        </Button>
                         )}
                         {currentPageIndex < groupedFields.length - 1 && (
                             <Button onClick={handleNextButtonClick}
@@ -773,7 +778,7 @@ return (
                                     transform: "scale(1.05)",
                                     boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                     borderRadius: '10px',
-                                },}}>Avanti</Button>
+                                },}}>{t('Avanti')}</Button>
                         )}
                         {currentPageIndex === groupedFields.length - 1 && (
                             <Button 
@@ -795,7 +800,7 @@ return (
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                 borderRadius: '10px',
                                 },
-                            }}>Salva</Button>
+                            }}>{t('Salva')}</Button>
                         )}
                 </Box>
             </Box>

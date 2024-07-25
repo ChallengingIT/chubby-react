@@ -9,15 +9,14 @@
     TextField,
     } from '@mui/material';
     import CloseIcon from "@mui/icons-material/Close";
+    import { useTranslation } from "react-i18next"; 
 
-    const CFModal = ({ open, handleClose, idCandidato, descrizione, handleDownloadCF, nomeCandidato, cognomeCandidato }) => {
-    const [values, setValues] = useState({ descrizione: '' });
 
-    useEffect(() => {
-        if (descrizione) {
-        setValues({ descrizione });
-        }
-    }, [descrizione]);
+    const CFModal = ({ open, handleClose, idCandidato, handleDownloadCF, nomeCandidato, cognomeCandidato }) => {
+    const [values, setValues] = useState('');
+    const { t } = useTranslation(); 
+
+
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -35,7 +34,7 @@
     return (
         <Dialog open={open} onClose={handleClose} PaperProps={{ sx: { borderRadius: '20px',  display: 'flex', minWidth: '60vw', minHeight: '60vh', height: 'auto' } }}>
         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-            <DialogTitle variant='h5' sx={{ fontWeight: 'bold'}}>{`Descrizione CF di ${nomeCandidato} ${cognomeCandidato} ` }</DialogTitle>
+            <DialogTitle variant='h5' sx={{ fontWeight: 'bold'}}>{t(`Descrizione CF di ${nomeCandidato} ${cognomeCandidato} `) }</DialogTitle>
             <Button
             onClick={handleClose}
             variant="outlined"
@@ -57,7 +56,7 @@
             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <TextField
                 name='descrizione'
-                label='Descrizione'
+                label={t('Descrizione')}
                 variant="filled"
                 fullWidth
                 inputProps={{
@@ -101,7 +100,7 @@
                 transform: 'scale(1.02)'
                 }
             }}>
-            Invia
+            {t('Invia')}
             </Button>
         </DialogActions>
         </Dialog>

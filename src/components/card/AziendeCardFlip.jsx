@@ -8,6 +8,7 @@ import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import JoinInnerIcon from "@mui/icons-material/JoinInner";
 import SettingsIcon from "@mui/icons-material/Settings";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useTranslation } from "react-i18next"; 
 import {
     Card,
     CardContent,
@@ -24,6 +25,7 @@ import { useUserTheme } from "../TorchyThemeProvider";
 
 const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
     const theme = useUserTheme();
+    const { t } = useTranslation(); 
     const [modalDelete, setModalDelete] = useState(false);
     const [isFlipped, setIsFlipped] = useState(false);
     const [mezzoFlip, setMezzoFlip] = useState(false);
@@ -134,17 +136,17 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
         if (ida >= 0 && ida <= 1) {
             return {
                 icon: <TrendingDownIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />,
-                text: "Basso",
+                text: t("Basso"),
             };
         } else if (ida > 1 && ida <= 2) {
             return {
                 icon: <TrendingFlatIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />,
-                text: "Medio",
+                text: t("Medio"),
             };
         } else if (ida > 2) {
             return {
                 icon: <TrendingUpIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />,
-                text: "Alto",
+                text: t("Alto"),
             };
         } else {
             return { icon: null, text: "" };
@@ -185,21 +187,21 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
 
     const menuData = [
         {
-            title: "Need Associati",
+            title: t("Need Associati"),
             icon: <JoinInnerIcon />,
             onClick: () => {
                 navigateToAssocia(valori.id);
             },
         },
         {
-            title: "Aggiorna Azienda",
+            title: t("Aggiorna Azienda"),
             icon: <SettingsIcon />,
             onClick: (event) => {
                 navigateToAggiorna(valori.id, event);
             },
         },
         {
-            title: "Elimina Azienda",
+            title: t("Elimina Azienda"),
             icon: <DeleteIcon />,
             onClick: (event) => {
                 handleOpenModalDelete(event);
@@ -417,7 +419,7 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
                     }}
                 >
                     <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Sei sicuro di voler eliminare l'azienda?
+                        {t('Sei sicuro di voler eliminare l\'azienda?')}
                     </Typography>
                     <Box
                         sx={{
@@ -440,7 +442,7 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
                                 },
                             }}
                         >
-                            Indietro
+                            {t('Indietro')}
                         </Button>
                         <Button
                             onClick={confirmDelete}
@@ -455,7 +457,7 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
                                 },
                             }}
                         >
-                            Conferma
+                            {t('Conferma')}
                         </Button>
                     </Box>
                 </Box>

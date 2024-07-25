@@ -9,6 +9,8 @@
     import CustomDatePickerHoursAggiungi                        from "../../components/fields/CustomDatePickerHoursAggiungi";
     import CustomDatePickerModifica                             from "../../components/fields/CustomDatePickerModifica";
     import CheckCircleIcon                                      from "@mui/icons-material/CheckCircle";
+    import { useTranslation }                                   from 'react-i18next';
+
     import {
     Box,
     Typography,
@@ -30,9 +32,11 @@
 
     const location = useLocation();
     const candidatoID = location.state?.candidatoID;
+    const { t } = useTranslation();
+
 
     //stati della pagina
-    const [ activeSection,                      setActiveSection            ] = useState("Informazioni");
+    const [ activeSection,                      setActiveSection            ] = useState(t("Informazioni"));
     const [ currentPageIndex,                   setCurrentPageIndex         ] = useState(0);
     const [ alert,                              setAlert                    ] = useState({ open: false, message: "" });
     const [ errors,                             setErrors                   ] = useState({});
@@ -152,19 +156,19 @@
 
     const menu = [
         {
-        title: "Informazioni",
+        title: t("Informazioni"),
         icon: <CircleOutlinedIcon />,
         },
         {
-        title: "Competenze",
+        title: t("Competenze"),
         icon: <CircleOutlinedIcon />,
         },
         {
-        title: "Info contrattuali",
+        title: t("Info Contrattuali"),
         icon: <CircleOutlinedIcon />,
         },
         {
-        title: "Azioni",
+        title: t("Azioni"),
         icon: <CircleOutlinedIcon />,
         },
     ];
@@ -186,7 +190,7 @@
         setAlert({
             open: true,
             message:
-            "Per cambiare sezione, completare tutti i campi obbligatori delle sezioni precedenti.",
+            t("Per cambiare sezione, completare tutti i campi obbligatori delle sezioni precedenti."),
         });
         }
     };
@@ -214,7 +218,7 @@
         let errors = {};
         mandatoryFields.forEach((field) => {
         if (!values[field]) {
-            errors[field] = "Questo campo è obbligatorio";
+            errors[field] = t("Questo campo è obbligatorio");
         }
         });
         return errors;
@@ -260,7 +264,7 @@
         setAlert({
             open: true,
             message:
-            "Compilare tutti i campi obbligatori presenti per poter avanzare",
+            t("Compilare tutti i campi obbligatori presenti per poter avanzare"),
         });
         }
     };
@@ -312,7 +316,7 @@
             if (response.data === "ERRORE") {
             setAlert({
                 open: true,
-                message: "errore durante il salvataggio dell'intervista!",
+                message: t("errore durante il salvataggio dell'intervista!"),
             });
             console.error("L'intervista non è stata salvata.");
             return;
@@ -351,44 +355,44 @@
         }
     };
 
-    const campiObbligatori = ["dataColloquio, coerenza, standing,energia,comunicazione,inglese,competenze,valutazione,descrizioneCandidatoUna,teamSiNo"];
+    const campiObbligatori = ["dataColloquio, coerenza, standing, energia, comunicazione, inglese, competenze, valutazione, descrizioneCandidatoUna, teamSiNo"];
 
     const fields = [
-        { type: "titleGroups", label: "Informazioni" },
-        { label: "Data Incontro*",              name: "dataColloquio",              type: "date"                                       },
-        { label: "Intervistatore",              name: "idOwner",                    type: "select",             options: ownerOptions, },
+        { type: "titleGroups", label: t("Informazioni") },
+        { label: t("Data Incontro*"),              name: "dataColloquio",              type: "date"                                       },
+        { label: t("Intervistatore"),              name: "idOwner",                    type: "select",             options: ownerOptions, },
         // { label: "Tipologia Incontro",          name: "stato",                      type: "text"                                       },
-        { label: "Nome",                        name: "nome",                       type: "text"                                       },
-        { label: "Cognome",                     name: "cognome",                    type: "text"                                       },
-        { label: "Data di Nascita",             name: "dataNascita",                type: "date"                                       },
-        { label: "Location",                    name: "location",                   type: "text"                                       },
-        { label: "Job Title",                   name: "tipologia",                  type: "text"                                       },
-        { label: "Anni di Esperienza",          name: "anniEsperienza",             type: "text"                                       },
-        { label: "Recapiti",                    name: "cellulare",                  type: "text"                                       },
-        { label: "Descrizione Candidato",       name: "note",                       type: "note",                maxLength: 8000,      },
+        { label: t("Nome"),                        name: "nome",                       type: "text"                                       },
+        { label: t("Cognome"),                     name: "cognome",                    type: "text"                                       },
+        { label: t("Data Di Nascita"),             name: "dataNascita",                type: "date"                                       },
+        { label: t("Location"),                    name: "location",                   type: "text"                                       },
+        { label: t("Job Title"),                   name: "tipologia",                  type: "text"                                       },
+        { label: t("Anni Di Esperienza"),          name: "anniEsperienza",             type: "text"                                       },
+        { label: t("Recapiti"),                    name: "cellulare",                  type: "text"                                       },
+        { label: t("Descrizione Candidato"),       name: "note",                       type: "note",                maxLength: 8000,      },
 
-        { type: "titleGroups", label: "Competenze" },
-        { label: "Coerenza Percorso",           name: "coerenza",                   type: "select",             options: valoriOptions  },
-        { label: "Standing",                    name: "standing",                   type: "select",             options: valoriOptions  },
-        { label: "Energia",                     name: "energia",                    type: "select",             options: valoriOptions  },
-        { label: "Comunicazione",               name: "comunicazione",              type: "select",             options: valoriOptions  },
-        { label: "Livello di Inglese",          name: "inglese",                    type: "select",             options: valoriOptions  },
-        { label: "Competenze vs ruolo",         name: "competenze",                 type: "select",             options: valoriOptions  },
-        { label: "Valutazione",                 name: "valutazione",                type: "select",             options: valoriOptions  },
-        { label: "One word",                    name: "descrizioneCandidatoUna",    type: "text",               maxLength: 45,          },
-        { label: "Lo vorresti nel tuo team?",   name: "teamSiNo",                   type: "select",             options: siNoOptions    },
+        { type: "titleGroups", label: t("Competenze") },
+        { label: t("Coerenza Percorso"),           name: "coerenza",                   type: "select",             options: valoriOptions  },
+        { label: t("Standing"),                    name: "standing",                   type: "select",             options: valoriOptions  },
+        { label: t("Energia"),                     name: "energia",                    type: "select",             options: valoriOptions  },
+        { label: t("Comunicazione"),               name: "comunicazione",              type: "select",             options: valoriOptions  },
+        { label: t("Livello Di Inglese"),          name: "inglese",                    type: "select",             options: valoriOptions  },
+        { label: t("Competenze vs ruolo"),         name: "competenze",                 type: "select",             options: valoriOptions  },
+        { label: t("Valutazione"),                 name: "valutazione",                type: "select",             options: valoriOptions  },
+        { label: t("One word"),                    name: "descrizioneCandidatoUna",    type: "text",               maxLength: 45,          },
+        { label: t("Lo vorresti nel tuo team?"),   name: "teamSiNo",                   type: "select",             options: siNoOptions    },
 
-        { type: "titleGroups", label: "Info contrattuali" },
-        { label: "Disponibilità",               name: "disponibilita",              type: "text",               maxLength: 45,          },
-        { label: "RAL Attuale",                 name: "attuale",                    type: "text",               maxLength: 90           },
-        { label: "RAL Desiderata",              name: "desiderata",                 type: "text",               maxLength: 90,          },
-        { label: "Proposta economica",          name: "proposta",                   type: "text",               maxLength: 90,          },
+        { type: "titleGroups", label: t("Info Contrattuali") },
+        { label: t("Disponibilità"),               name: "disponibilita",              type: "text",               maxLength: 45,          },
+        { label: t("RAL Attuale"),                 name: "attuale",                    type: "text",               maxLength: 90           },
+        { label: t("RAL Desiderata"),              name: "desiderata",                 type: "text",               maxLength: 90,          },
+        { label: t("Proposta Economica"),          name: "proposta",                   type: "text",               maxLength: 90,          },
 
-        { type: "titleGroups", label: "Azioni" },
-        { label: "Follow Up",                   name: "tipo",                       type: "select",             options: tipoIntervistaOptions, },
-        { label: "Preavviso",                   name: "preavviso",                  type: "text",               maxLength: 45                   },
-        { label: "Next Deadline",               name: "dataAggiornamento",          type: "dateOra"                                             },
-        { label: "Owner next Deadline",         name: "idNextOwner",                type: "select",             options: ownerOptions,          },
+        { type: "titleGroups", label: t("Azioni") },
+        { label: t("Follow Up"),                   name: "tipo",                       type: "select",             options: tipoIntervistaOptions, },
+        { label: t("Preavviso"),                   name: "preavviso",                  type: "text",               maxLength: 45                   },
+        { label: t("Next Deadline"),               name: "dataAggiornamento",          type: "dateOra"                                             },
+        { label: t("Owner next Deadline"),         name: "idNextOwner",                type: "select",             options: ownerOptions,          },
     ];
 
     const initialValues = {
@@ -678,8 +682,8 @@
                 }}
             >
                 {" "}
-                Aggiungi <br /> Intervista{" "}
-            </Typography>
+                {t("Aggiungi")} <br /> {t("Intervista")}
+                </Typography>
             <List
                 sx={{ display: "flex", flexDirection: "column", width: "100%" }}
             >
@@ -788,8 +792,8 @@
                 variant="h6"
                 sx={{ mt: 2, color: "#666565", fontSize: "1em", ml: 16 }}
             >
-                * Campo Obbligatorio
-            </Typography>
+                {t('* Campo Obbligatorio')}
+                </Typography>
             <Box
                 sx={{
                 display: "flex",
@@ -818,8 +822,8 @@
                     },
                     }}
                 >
-                    Indietro
-                </Button>
+                    {t('Indietro')}
+                    </Button>
                 )}
                 {currentPageIndex < groupedFields.length - 1 && (
                 <Button
@@ -842,8 +846,8 @@
                     },
                     }}
                 >
-                    Avanti
-                </Button>
+                    {t('Avanti')}
+                    </Button>
                 )}
                 {currentPageIndex === groupedFields.length - 1 && (
                 <Button
@@ -867,8 +871,8 @@
                     },
                     }}
                 >
-                    Salva
-                </Button>
+                    {t('Salva')}
+                    </Button>
                 )}
             </Box>
             </Box>

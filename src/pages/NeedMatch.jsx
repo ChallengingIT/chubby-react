@@ -14,9 +14,12 @@
     import SchemePage                                       from "../components/SchemePage.jsx";
     import NuovaRicercaNeedMatch                            from "../components/nuoveRicerche/NuovaRicercaNeedMatch.jsx";
     import ChecklistIcon                                    from '@mui/icons-material/Checklist';
-    import CheckListButton from "../components/button/CheckListButton.jsx";
+    import CheckListButton                                  from "../components/button/CheckListButton.jsx";
+    import { useTranslation }                               from "react-i18next"; 
+
 
     const NeedMatch = () => {
+    const { t } = useTranslation(); 
 
     const navigate      = useNavigate();
     const params        = useParams();
@@ -682,18 +685,18 @@
         };
 
     const fieldsAggiorna = [
-        { label: "Cliente", name: "cliente", type: "text", sortable: false, filterable: false, disableColumnMenu: true },
-        { label: "Need", name: "idNeed", type: "text", sortable: false, filterable: false, disableColumnMenu: true },
-        { label: "Candidato", name: "candidato", type: "text", sortable: false, filterable: false, disableColumnMenu: true },
+        { label: t("Cliente"), name: "cliente", type: "text", sortable: false, filterable: false, disableColumnMenu: true },
+        { label: t("Need"), name: "idNeed", type: "text", sortable: false, filterable: false, disableColumnMenu: true },
+        { label: t("Candidato"), name: "candidato", type: "text", sortable: false, filterable: false, disableColumnMenu: true },
         {
-        label: "Stato",
+        label: t("Stato"),
         name: "stato",
         type: "select",  sortable: false, filterable: false, disableColumnMenu: true,
         options: statoOptions || [],
         },
-        { label: "Data Aggiornamento", name: "dataModifica", type: "date", sortable: false, filterable: false, disableColumnMenu: true },
+        { label: t("Data Aggiornamento"), name: "dataModifica", type: "date", sortable: false, filterable: false, disableColumnMenu: true },
         {
-        label: "Owner",
+        label: t("Owner"),
         name: "idOwner",
         type: "select", sortable: false, filterable: false, disableColumnMenu: true,
         options: ownerOptions || [],
@@ -709,7 +712,7 @@
     const tabellaCandidati = [
         {
         field: "nome",
-        headerName: "Nome",
+        headerName: t("Nome"),
         flex: 1,
         sortable: false, filterable: false, disableColumnMenu: true,
         renderCell: (params) => (
@@ -723,7 +726,7 @@
         { field: "email", headerName: "E-Mail", flex: 1.4, sortable: false, filterable: false, disableColumnMenu: true },
         {
         field: "tipologia",
-        headerName: "Job Title",
+        headerName: t("Job Title"),
         flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
         renderCell: (params) => (
             <div style={{ textAlign: "start" }}>
@@ -733,7 +736,7 @@
             </div>
         ),
         },
-        { field: "rating", headerName: "Rating", flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
+        { field: "rating", headerName: t("Rating"), flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
             renderCell: (params) => (
                 <div style={{ textAlign: "start" }}>
                     {params.row.rating ? params.row.rating.toFixed(2) : ""}
@@ -742,7 +745,7 @@
          },
         {
         field: "stato",
-        headerName: "Stato",
+        headerName: t("Stato"),
         flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
         renderCell: (params) => (
             <div style={{ textAlign: "start" }}>
@@ -752,7 +755,7 @@
             </div>
         ),
         },
-        { field: "dataUltimoContatto", headerName: "Contatto", flex: 1, sortable: false, filterable: false, disableColumnMenu: true },
+        { field: "dataUltimoContatto", headerName: t("Contatto"), flex: 1, sortable: false, filterable: false, disableColumnMenu: true },
         {
         field: "azioni",
         headerName: "",
@@ -783,10 +786,10 @@
     ];
 
     const tabellaStorico = [
-        { field: "dataModifica", headerName: "Data", flex: 1, sortable: false, filterable: false, disableColumnMenu: true },
+        { field: "dataModifica", headerName: t("Data"), flex: 1, sortable: false, filterable: false, disableColumnMenu: true },
         {
         field: "tipo",
-        headerName: "Tipologia",
+        headerName: t("Tipologia"),
         flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
         renderCell: (params) => (
             <div style={{ textAlign: "start" }}>
@@ -798,7 +801,7 @@
         },
         {
         field: "candidato",
-        headerName: "Nome",
+        headerName: t("Nome"),
         flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
         renderCell: (params) => (
             <div style={{ textAlign: "left" }}>
@@ -812,7 +815,7 @@
         },
         {
         field: "tipologia",
-        headerName: "Job Title",
+        headerName: t("Job Title"),
         flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
         renderCell: (params) => (
             <div style={{ textAlign: "start" }}>
@@ -822,7 +825,7 @@
         },
         {
         field: "stato",
-        headerName: "Stato",
+        headerName: t("Stato"),
         flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
         renderCell: (params) => (
             <div style={{ textAlign: "start" }}>
@@ -832,7 +835,7 @@
         },
         {
         field: "owner",
-        headerName: "Owner",
+        headerName: t("Owner"),
         flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
         renderCell: (params) => (
             <div style={{ textAlign: "start" }}>
@@ -856,7 +859,7 @@
     const tabellaAssociati = [
         {
         field: "nome",
-        headerName: "Nome",
+        headerName: t("Nome"),
         flex: 1.3, sortable: false, filterable: false, disableColumnMenu: true,
         renderCell: (params) => (
             <div style={{ textAlign: "left" }}>
@@ -892,7 +895,7 @@
         { field: "email", headerName: "E-Mail", flex: 1.4, sortable: false, filterable: false, disableColumnMenu: true },
         {
         field: "tipologia",
-        headerName: "Job Title",
+        headerName: t("Job Title"),
         flex: 1.4, sortable: false, filterable: false, disableColumnMenu: true,
         renderCell: (params) => (
             <div style={{ textAlign: "start" }}>
@@ -904,7 +907,7 @@
         },
         {
             field: "rating",
-            headerName: "Rating",
+            headerName: t("Rating"),
             flex: 0.5, sortable: false, filterable: false, disableColumnMenu: true,
             renderCell: (params) => (
                 <div style={{ textAlign: "start" }}>
@@ -914,7 +917,7 @@
         },
         {
         field: "stato",
-        headerName: "Stato Candidato",
+        headerName: t("Stato Candidato"),
         flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
         renderCell: (params) => (
             <div style={{ textAlign: "start" }}>
@@ -924,7 +927,7 @@
             </div>
         ),
         },
-        { field: "dataUltimoContatto", headerName: "Contatto", flex: 0.8, sortable: false, filterable: false, disableColumnMenu: true },
+        { field: "dataUltimoContatto", headerName: t("Contatto"), flex: 0.8, sortable: false, filterable: false, disableColumnMenu: true },
         {
         field: "azioni",
         headerName: "",
@@ -1025,7 +1028,7 @@
                 initialValues={initialValuesAggiorna}
                 disableFields={disableFields}
                 onSubmit={handleSaveModal}
-                title="Modifica stato Associazioni"
+                title={t("Modifica Stato Associazioni")}
                 showBackButton={true}
                 onClose={handleCloseModal}
             />
@@ -1070,7 +1073,7 @@
             </Box>
         <Dialog open={openDialog} onClose={handleCloseDialog}>
             <DialogTitle id="form-dialog-title">
-                Modifica Azienda
+                {t('Modifica Azienda')}
             </DialogTitle>
             <DialogContent>
             </DialogContent>
