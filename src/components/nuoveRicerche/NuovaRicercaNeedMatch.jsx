@@ -4,6 +4,7 @@
     import SearchIcon from "@mui/icons-material/Search";
     import RestartAltIcon from "@mui/icons-material/RestartAlt";
     import { useUserTheme } from "../TorchyThemeProvider";
+    import { useTranslation } from 'react-i18next';
     import {
     Button,
     Box,
@@ -28,6 +29,7 @@
     onGoBack,
     }) {
     const theme = useUserTheme();
+    const { t } = useTranslation();
     const [openFiltri, setOpenFiltri] = useState(false);
     const [isRotated, setIsRotated] = useState(false);
     const [localFiltri, setLocalFiltri] = useState({ ...filtri });
@@ -70,7 +72,7 @@
             <TextField
             id="search-bar"
             variant="filled"
-            label="Nome"
+            label={t("Nome")}
             value={filtri.nome || ""}
             onChange={onFilterChange("nome")}
             onKeyDown={(event) => {
@@ -110,7 +112,7 @@
             <TextField
             id="search-location"
             variant="filled"
-            label="Cognome"
+            label={t("Cognome")}
             value={filtri.cognome || ""}
             onChange={onFilterChange("cognome")}
             onKeyDown={(event) => {
@@ -161,7 +163,7 @@
                     renderInput={(params) => (
                     <TextField
                         {...params}
-                        label="Tipologia"
+                        label={t("Tipologia")}
                         variant="filled"
                         sx={{
                         textAlign: "left",
@@ -208,7 +210,7 @@
                     renderInput={(params) => (
                     <TextField
                         {...params}
-                        label="Jobtitle"
+                        label={t("Jobtitle")}
                         variant="filled"
                         sx={{
                         textAlign: "left",
@@ -255,7 +257,7 @@
                     renderInput={(params) => (
                     <TextField
                         {...params}
-                        label="Seniority"
+                        label={t("Seniority")}
                         variant="filled"
                         sx={{
                         textAlign: "left",

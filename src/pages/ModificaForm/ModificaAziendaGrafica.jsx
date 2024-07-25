@@ -10,6 +10,7 @@ import CustomNoteModifica                                                       
 import CustomDatePickerModifica                                                                                 from '../../components/fields/CustomDatePickerModifica';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CustomMultipleSelectModificaAziende from '../../components/fields/CustomMultipleSelectModificaAziende';
+import { useTranslation }                   from 'react-i18next';
 
 
 const ModificaAziendaGrafica = () => {
@@ -17,9 +18,11 @@ const ModificaAziendaGrafica = () => {
     const location             = useLocation();
     const valori               = location.state;
     const id = valori.id;
+    const { t } = useTranslation();
+
 
     //stati della pagina
-    const [ activeSection,      setActiveSection        ] = useState('Profilo');
+    const [ activeSection,      setActiveSection        ] = useState(t("Profilo"));
     const [ currentPageIndex,   setCurrentPageIndex     ] = useState(0);
     const [ imagePreviewUrl,    setImagePreviewUrl      ] = useState(null);
     const [ fileIMG,            setFileIMG              ] = useState(null);
@@ -103,19 +106,19 @@ const ModificaAziendaGrafica = () => {
 
     const menu = [
         {
-            title: 'Profilo',
+            title: t("Profilo"),
             icon: <CircleOutlinedIcon />
         },
         {
-            title: 'IDA',
+            title: t("IDA"),
             icon: <CircleOutlinedIcon />
         },
         { 
-            title: 'Contratti',
+            title: t("Contratti"),
             icon: <CircleOutlinedIcon />
         },
         {
-            title: 'Documenti',
+            title: t("Documenti"),
             icon: <CircleOutlinedIcon />
         }
     ];
@@ -136,7 +139,7 @@ const ModificaAziendaGrafica = () => {
             setActiveSection(section);
             setCurrentPageIndex(index);
         } else {
-            setAlert({ open: true, message: 'Compilare tutti i campi obbligatori presenti per poter cambiare sezione'});
+            setAlert({ open: true, message: t('Compilare tutti i campi obbligatori presenti per poter cambiare sezione')});
         }
     };
 
@@ -175,7 +178,7 @@ const ModificaAziendaGrafica = () => {
     
         mandatoryFields.forEach(field => {
             if (!values[field]) {
-                errors[field] = 'Questo campo è obbligatorio';
+                errors[field] = t('Questo campo è obbligatorio');
                 allFieldsValid = false;
             }
         });
@@ -220,7 +223,7 @@ const ModificaAziendaGrafica = () => {
                 setActiveSection(menu[currentIndex + 1].title);
                 setCurrentPageIndex(currentIndex + 1);
             } else {
-                setAlert({ open: true, message: 'Compilare tutti i campi obbligatori presenti per poter avanzare'});
+                setAlert({ open: true, message: t('Compilare tutti i campi obbligatori presenti per poter avanzare')});
             }
         }
     };
@@ -384,12 +387,12 @@ const ModificaAziendaGrafica = () => {
                         headers: headers
                     });
                     if (response.data === "DUPLICATO") {
-                        setAlert({ open: true, message: "azienda già esistente!" });
+                        setAlert({ open: true, message: t("azienda già esistente!") });
                         console.error("L'azienda è già stata salvata.");
                         return; 
                     }
                     if (response.data === "ERRORE") {
-                        setAlert({ open: true, message: "errore durante il salvataggio dell'azienda!" });
+                        setAlert({ open: true, message: t("errore durante il salvataggio dell'azienda!") });
                         console.error("L'azienda non è stata salvata.");
                         return;
                     }
@@ -419,7 +422,7 @@ const ModificaAziendaGrafica = () => {
                 }
             } else {
                 setErrors(errors);
-                setAlert({ open: true, message: "Compilare tutti i campi obbligatori presenti prima di avanzare" });
+                setAlert({ open: true, message: t("Compilare tutti i campi obbligatori presenti prima di avanzare") });
             }
         };
         
@@ -430,52 +433,52 @@ const ModificaAziendaGrafica = () => {
         const campiObbligatori = [ "denominazione", "ragioneSociale", "idOwner", "citta", "tipologia", "status", "potenzialita", "semplicita" ];
 
         const fields =[
-            { type: "titleGroups",                label: "Profilo"            },
-            { label: 'Nome Azienda*',                   name: 'denominazione',            type:'text', maxLength: 90                              },
-            { label: 'Settore Mercato*',                name: 'settoreMercato',           type:'text', maxLength: 255                             },
-            { label: "Partita IVA",                     name: "pi",                       type: "text", maxLength: 45                             },
-            { label: "Codice Fiscale",                  name: "cf",                       type: "text", maxLength: 45                             },
-            { label: "Pec",                             name: "pec",                      type: "text", maxLength: 45                             },
-            { label: "Codice Destinatario",             name: "codiceDestinatario",       type: "text", maxLength: 45                             },
-            { label: "Sito Web",                        name: "sito",                     type: "text", maxLength: 90                             },
-            { label: "Sede Legale",                      name: "sedeLegale",               type: "text", maxLength: 45                            },
-            { label: "Sede Operativa",                   name: "sedeOperativa",            type: "text", maxLength: 45                            },
-            { label: "Città*",                           name: "citta",                    type: "text", maxLength: 45                            },
-            { label: "Paese",                            name: "paese",                    type: "text", maxLength: 255                           },
+            { type: "titleGroups",                label: t("Profilo")            },
+            { label: t('Nome Azienda*'),                   name: 'denominazione',            type:'text', maxLength: 90                              },
+            { label: t('Settore Mercato*'),                name: 'settoreMercato',           type:'text', maxLength: 255                             },
+            { label: t("Partita IVA"),                     name: "pi",                       type: "text", maxLength: 45                             },
+            { label: t("Codice Fiscale"),                  name: "cf",                       type: "text", maxLength: 45                             },
+            { label: t("Pec"),                             name: "pec",                      type: "text", maxLength: 45                             },
+            { label: t("Codice Destinatario"),             name: "codiceDestinatario",       type: "text", maxLength: 45                             },
+            { label: t("Sito Web"),                        name: "sito",                     type: "text", maxLength: 90                             },
+            { label: t("Sede Legale"),                      name: "sedeLegale",               type: "text", maxLength: 45                            },
+            { label: t("Sede Operativa"),                   name: "sedeOperativa",            type: "text", maxLength: 45                            },
+            { label: t("Città*"),                           name: "citta",                    type: "text", maxLength: 45                            },
+            { label: t("Paese"),                            name: "paese",                    type: "text", maxLength: 255                           },
 
 
-            { type: 'titleGroups',                label: "IDA"     },
-            { label: "Potenzialità*",                          name: "potenzialita",                  type: "select", options: [
-                { value: 1, label: "Basso" },
-                { value: 2, label: "Medio" },
-                { value: 3, label: "Alto" },
+            { type: 'titleGroups',                label: t("IDA")     },
+            { label: t("Potenzialità*"),                          name: "potenzialita",                  type: "select", options: [
+                { value: 1, label: t("Basso") },
+                { value: 2, label: t("Medio") },
+                { value: 3, label: t("Alto") },
             ]  },
-            { label: "Semplicità*",                            name: "semplicita",                    type: "select", options: [
-                { value: 1, label: "Basso" },
-                { value: 2, label: "Medio" },
-                { value: 3, label: "Alto" },
+            { label: t("Semplicità*"),                            name: "semplicita",                    type: "select", options: [
+                { value: 1, label: t("Basso") },
+                { value: 2, label: t("Medio") },
+                { value: 3, label: t("Alto") },
             ]  },
-            { label: "Complicità*",                                 name: "status",                        type: "select", options: [
-                { value: 1, label: "Basso" },
-                { value: 2, label: "Medio" },
-                { value: 3, label: "Alto" },
+            { label: t("Complicità*"),                                 name: "status",                        type: "select", options: [
+                { value: 1, label: t("Basso") },
+                { value: 2, label: t("Medio") },
+                { value: 3, label: t("Alto") },
             ]  },
 
 
-            { type: "titleGroups",                label: "Contratti"            },
-            { label: "Owner*",                                name: "idOwner",                       type: "select", options: ownerOptions    },
-            { label: "Tipologia*",                            name: "tipologia",                     type: "select", options: [
-                { value: "Cliente", label: "Cliente" },
-                { value: "Prospect", label: "Prospect" },
-                { value: "EXCLIENTE", label: "Ex Cliente" }
+            { type: "titleGroups",                label: t("Contratti")            },
+            { label: t("Owner*"),                                name: "idOwner",                       type: "select", options: ownerOptions    },
+            { label: t("Tipologia*"),                            name: "tipologia",                     type: "select", options: [
+                { value: "Cliente", label: t("Cliente") },
+                { value: "Prospect", label: t("Prospect") },
+                { value: "EXCLIENTE", label: t("Ex Cliente)") }
             ]  },
-            { label: 'Scadenza Contratto',              name: 'dataScadenzaContratto',    type: 'date'                                            },
-            { label: 'Tipo di servizio',                name: 'idTipiServizio',             type: 'multipleSelect', options: tipoServizioOptions         },
-            { label: 'Note',                            name: 'note',                     type: 'note', maxLength: 2000                           },
+            { label: t('Scadenza Contratto'),              name: 'dataScadenzaContratto',    type: 'date'                                            },
+            { label: t('Tipo di servizio'),                name: 'idTipiServizio',             type: 'multipleSelect', options: tipoServizioOptions         },
+            { label: t('Note'),                            name: 'note',                     type: 'note', maxLength: 2000                           },
 
 
-            { type: "titleGroups",   label: "Documenti"                            },
-            { label: 'Logo',         name: 'logo',  type: 'aggiungiImmagine'  },
+            { type: "titleGroups",   label: t("Documenti")                            },
+            { label: t('Logo'),         name: 'logo',  type: 'aggiungiImmagine'  },
         ];
 
 
@@ -725,10 +728,10 @@ return (
                     }}
                     >
                         <span style={{ marginRight: '0.5em'}}>{"<"}</span>
-                        Indietro
+                        {t('Indietro')}
                     </Button>
                 </Box>
-                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: 'black'}}>  Aggiorna <br /> Azienda </Typography>
+                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: 'black'}}>  {t('Aggiorna')} <br /> {t('Azienda')} </Typography>
                 <List sx={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
                             {menu.map((item, index) => (
                                 // <ListItem
@@ -788,7 +791,7 @@ return (
                 <Box sx={{ display: 'flex', width: '100%', height: '100%', flexDirection: 'column', pl: 5, pr: 5, overflow: 'auto'}}>
                 {renderFieldsGroups(groupedFields)}
                 </Box>
-                <Typography variant="h6" sx={{ mt: 2, color: '#666565', fontSize: '1em', ml: 16}}>* Campo Obbligatorio</Typography>
+                <Typography variant="h6" sx={{ mt: 2, color: '#666565', fontSize: '1em', ml: 16}}>{t('* Campo Obbligatorio')}</Typography>
 
 
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5, gap: 6 }}>
@@ -808,7 +811,7 @@ return (
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                 borderRadius: '10px',
                                 },
-                            }}>Indietro</Button>
+                            }}>{t('Indietro')}</Button>
                         )}
                         {currentPageIndex < groupedFields.length - 1 && (
                             <Button onClick={handleNextButtonClick}
@@ -828,7 +831,7 @@ return (
                                     transform: "scale(1.05)",
                                     boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                     borderRadius: '10px',
-                                },}}>Avanti</Button>
+                                },}}>{t('Avanti')}</Button>
                         )}
                         {currentPageIndex === groupedFields.length - 1 && (
                             <Button 
@@ -850,7 +853,7 @@ return (
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                 borderRadius: '10px',
                                 },
-                            }}>Salva</Button>
+                            }}>{t('Salva')}</Button>
                         )}
                 </Box>
             </Box>

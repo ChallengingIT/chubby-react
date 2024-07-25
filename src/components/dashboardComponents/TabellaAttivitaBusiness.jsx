@@ -3,8 +3,12 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Colla
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { format } from 'date-fns';
+import { useTranslation } from "react-i18next"; 
+
 
 const TabellaAttivitaBusiness = ({ data = [], aziendeOptions = [] }) => {
+    const { t } = useTranslation(); 
+
     const [activities, setActivities] = useState([]);
 
     useEffect(() => {
@@ -42,12 +46,12 @@ const TabellaAttivitaBusiness = ({ data = [], aziendeOptions = [] }) => {
             <Table sx={{ minWidth: 650 }} aria-label="collapsible table">
                 <TableHead>
                     <TableRow>
-                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold'}}>Data</TableCell>
-                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold'}}>Ora</TableCell>
-                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold'}}>Azione</TableCell>
-                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold'}}>Owner</TableCell>
-                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold'}}>Cliente</TableCell>
-                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold'}}>Contatto</TableCell>
+                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold'}}>{t('Data')}</TableCell>
+                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold'}}>{t('Ora')}</TableCell>
+                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold'}}>{t('Azione')}</TableCell>
+                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold'}}>{t('Owner')}</TableCell>
+                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold'}}>{t('Cliente')}</TableCell>
+                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold'}}>{t('Contatto')}</TableCell>
                         <TableCell style={cellStyle} />
                     </TableRow>
                 </TableHead>
@@ -79,7 +83,7 @@ const TabellaAttivitaBusiness = ({ data = [], aziendeOptions = [] }) => {
                                     <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
                                         <Collapse in={expandedId === item.idAzioneKeyPeople} timeout="auto" unmountOnExit>
                                             <Typography variant="body2" style={{ padding: '10px' }}>
-                                                <strong>Note:</strong> {item.note || 'Nessuna nota'}
+                                                <strong>{t('Note')}:</strong> {item.note || t('Nessuna nota')}
                                             </Typography>
                                         </Collapse>
                                     </TableCell>

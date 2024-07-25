@@ -19,6 +19,7 @@
     import EmailModal from "./EmailModal";
     import GroupAddIcon from '@mui/icons-material/GroupAdd'; //aggiungi owner
     import { useUserTheme } from "./TorchyThemeProvider";
+    import { useTranslation }                   from 'react-i18next';
     import {
     Box,
     Drawer,
@@ -39,6 +40,7 @@
 
     function Sidebar() {
     const theme = useUserTheme();
+    const { t } = useTranslation();
     const [activeLink, setActiveLink] = useState(null);
     const [isLogoutPopupOpen, setIsLogoutPopupOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null); // Nuovo stato per l'ancoraggio del Popover
@@ -225,7 +227,7 @@
         {!userHasRole("ROLE_BUSINESS") && (
             <ListItem button onClick={handleAggiungiAziendaClick}>
             <ListItemText sx={{ color: theme.palette.text.secondary }}>
-                Aggiungi azienda
+                {t('Aggiungi azienda')}
             </ListItemText>
             <ListItemIcon>
                 <BusinessCenterIcon sx={{ color: theme.palette.icon.main }} />
@@ -236,7 +238,7 @@
         {!userHasRole("ROLE_BUSINESS") && (
             <ListItem button onClick={handleAggiungiContattoClick}>
             <ListItemText sx={{ color: theme.palette.text.secondary }}>
-                Aggiungi contatto
+                {t('Aggiungi contatto')}
             </ListItemText>
             <ListItemIcon>
                 <PersonIcon sx={{ color: theme.palette.icon.main }} />
@@ -247,7 +249,7 @@
         {!userHasRole("ROLE_RECRUITER") && (
             <ListItem button onClick={handleAggiungiNeedClick}>
             <ListItemText sx={{ color: theme.palette.text.secondary }}>
-                Aggiungi need
+                {t('Aggiungi need')}
             </ListItemText>
             <ListItemIcon>
                 <ExploreIcon sx={{ color: theme.palette.icon.main }} />
@@ -258,7 +260,7 @@
         {!userHasRole("ROLE_BUSINESS") && (
             <ListItem button onClick={handleAggiungiCandidatoClick}>
             <ListItemText sx={{ color: theme.palette.text.secondary }}>
-                Aggiungi candidato
+                {t('Aggiungi candidato')}
             </ListItemText>
             <ListItemIcon>
                 <PersonSearchIcon sx={{ color: theme.palette.icon.main }} />
@@ -586,7 +588,7 @@
                 fontWeight: "bold",
             }}
             >
-            {"Conferma Logout"}
+            {t("Conferma Logout")}
             </DialogTitle>
             <DialogContent>
             <DialogContentText
@@ -597,17 +599,19 @@
                 textAlign: "center",
                 }}
             >
-                Sei sicuro di voler effettuare il logout?
+                {t('Sei sicuro di voler effettuare il logout?')}
             </DialogContentText>
             </DialogContent>
             <DialogActions>
             <Box
                 sx={{
+                width: '100%',
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
                 flexDirection: "row",
                 marginBottom: "1em",
+                gap: 5
                 }}
             >
                 <Button
@@ -618,8 +622,6 @@
                     width: '8em',
                     bgcolor: theme.palette.button.secondary,
                     color: theme.palette.textButton.secondary,
-                    marginRight: "5px",
-                    marginTop: "10px",
                     "&:hover": {
                     transform: "scale(1.05)",
                     bgcolor: theme.palette.button.secondary,
@@ -627,7 +629,7 @@
                     },
                 }}
                 >
-                Annulla
+                {t('Annulla')}
                 </Button>
                 <Button
                 onClick={handleLogout}
@@ -636,9 +638,6 @@
                     borderRadius: '10px',
                     width: '8em',
                     bgcolor: theme.palette.button.main,
-                    marginLeft: "5px",
-                    marginTop: "10px",
-                    marginRight: "50px",
                     color: theme.palette.textButton.main,
                     "&:hover": {
                     bgcolor: theme.palette.button.mainHover,
@@ -648,7 +647,7 @@
                 }}
                 autoFocus
                 >
-                Conferma
+                {t('Conferma')}
                 </Button>
             </Box>
             </DialogActions>

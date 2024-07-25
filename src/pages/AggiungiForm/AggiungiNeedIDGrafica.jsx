@@ -9,6 +9,8 @@
     import CustomDecimalNumberAggiungi                          from "../../components/fields/CustomDecimalNumberAggiungi";
     import CustomMultipleSelectAggiunta                         from "../../components/fields/CustomMultipleSelectAggiunta";
     import CustomWeekDateAggiungi                               from "../../components/fields/CustomWeekDateAggiungi";
+    import { useTranslation }                                   from 'react-i18next';
+
     import {
         Box,
         Typography,
@@ -33,10 +35,12 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
     const navigate = useNavigate();
     const location = useLocation();
     const idAzienda = id;
+    const { t } = useTranslation();
+
 
 
     //stati della pagina
-    const [ activeSection,                  setActiveSection                ] = useState("Descrizione Need");
+    const [ activeSection,                  setActiveSection                ] = useState(t('Descrizione Need'));
     const [ currentPageIndex,               setCurrentPageIndex             ] = useState(0);
     const [ alert,                          setAlert                        ] = useState({ open: false, message: "" });
     const [ errors,                         setErrors                       ] = useState({});
@@ -164,7 +168,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
 
     const menu = [
         {
-        title: "Descrizione Need",
+        title: t('Descrizione Need'),
         icon: <CircleOutlinedIcon />,
         },
     ];
@@ -200,7 +204,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
         let errors = {};
         mandatoryFields.forEach((field) => {
         if (!values[field]) {
-            errors[field] = "Questo campo è obbligatorio";
+            errors[field] = t('Questo campo è obbligatorio');
         }
         });
         return errors;
@@ -254,7 +258,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
             setAlert({
             open: true,
             message:
-                "Compilare tutti i field obbligatori presenti per poter avanzare",
+                t("Compilare tutti i field obbligatori presenti per poter avanzare"),
             });
         }
         }
@@ -301,7 +305,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
             { params: { skill1: skills }, headers: headers }
             );
             if (responseSaveNeed.data === "ERRORE") {
-                setAlert({ open: true, message: "errore durante il salvataggio del need!" });
+                setAlert({ open: true, message: t("errore durante il salvataggio del need!") });
                 console.error("Il need non è stata salvata.");
                 return;
             }
@@ -324,7 +328,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
         setAlert({
             open: true,
             message:
-            "Compilare tutti i field obbligatori presenti prima di avanzare",
+            t("Compilare tutti i field obbligatori presenti prima di avanzare"),
         });
         }
     };
@@ -343,31 +347,31 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
     ];
 
     const fields = [
-        { label: "Descrizione Need*",   name: "descrizione",                  type: "text", maxLength: 200                                                },
-            { label: "Contatto*",           name: "idKeyPeople",                  type: "select",               options: keypeopleOptions     },
+        { label: t("Descrizione Need*"),   name: "descrizione",                  type: "text", maxLength: 200                                                },
+            { label: t("Contatto*"),           name: "idKeyPeople",                  type: "select",               options: keypeopleOptions     },
             // { label: "Priorità*",           name: "priorita",                     type: "decimalNumber"                                       },
-            { label: "Priorità*",              name: "priorita",                          type: "select",               options: [
-                { value: 1,                   label: "Massima" },
-                { value: 2,                   label: "Alta" },
-                { value: 3,                   label: "Media" },
-                { value: 4,                   label: "Bassa" } 
+            { label: t("Priorità*"),              name: "priorita",                          type: "select",               options: [
+                { value: 1,                   label: t("Massima") },
+                { value: 2,                   label: t("Alta") },
+                { value: 3,                   label: t("Media") },
+                { value: 4,                   label: t("Bassa") } 
                 ] },
             { label: "Week*",               name: "week",                         type: "week"                                                },
-            { label: "Tipologia*",          name: "tipologia",                  type: "select",               options: tipologiaOptions     },
-            { label: "Tipologia Azienda",   name: "tipo",                         type: "select",               options: [
-            { value: 1,                   label: "Cliente" },
-            { value: 2,                   label: "Consulenza" },
-            { value: 3,                   label: "Prospect" }
+            { label: t("Tipologia*"),          name: "tipologia",                  type: "select",               options: tipologiaOptions     },
+            { label: t("Tipologia Azienda"),   name: "tipo",                         type: "select",               options: [
+            { value: 1,                   label: t("Cliente") },
+            { value: 2,                   label: t("Consulenza") },
+            { value: 3,                   label: t("Prospect") }
             ] },
-            { label: "Owner*",                    name: "idOwner",                     type: "select",                 options: ownerOptions         },
-            { label: "Stato*",                    name: "stato",                     type: "select",                 options: statoOptions         },
+            { label: t("Owner*"),                    name: "idOwner",                     type: "select",                 options: ownerOptions         },
+            { label: t("Stato*"),                    name: "stato",                     type: "select",                 options: statoOptions         },
             { label: "Headcount",                 name: "numeroRisorse",               type: "number"                                         },
             { label: "Location*",                 name: "location",                    type: "text", maxLength: 45                                                  },
             { label: "Skills",                    name: "idSkills",                    type: "multipleSelect",         options: skillsOptions        },
             { label: "Seniority",                 name: "anniEsperienza",              type: "select",                 options: seniorityOptions                        },
-            { label: 'Pubblicazione Annuncio*',   name: 'pubblicazione',               type: 'select',                 options: pubblicazioneOptions },
-            { label: 'Screening*',                name: 'screening',                   type: 'select',                 options: screeningOptions     },
-            { label: "Note",                      name: "note",                        type: "note", maxLength:4000                                                  },
+            { label: t('Pubblicazione Annuncio*'),   name: 'pubblicazione',               type: 'select',                 options: pubblicazioneOptions },
+            { label: t('Screening*'),                name: 'screening',                   type: 'select',                 options: screeningOptions     },
+            { label: t("Note"),                      name: "note",                        type: "note", maxLength:4000                                                  },
             ];
 
     //funzione per suddividere fields nelle varie pagine in base a titleGroups
@@ -677,7 +681,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
                 }}
             >
                 {" "}
-                Aggiungi <br /> Need{" "}
+                {t('Aggiungi')} <br /> {t('Need')}
             </Typography>
             <List
                 sx={{ display: "flex", flexDirection: "column", width: "100%" }}
@@ -764,7 +768,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
                 variant="h6"
                 sx={{ mt: 2, color: "#666565", fontSize: "1em", ml: 16 }}
             >
-                * Campo Obbligatorio
+                {t('* Campo Obbligatorio')}
             </Typography>
             <Box
                 sx={{
@@ -844,7 +848,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
                     },
                     }}
                 >
-                    Salva
+                    {t('Salva')}
                 </Button>
                 )}
             </Box>

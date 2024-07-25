@@ -11,6 +11,8 @@ import DeleteButton                           from '../components/button/DeleteB
 import EditButton                             from '../components/button/EditButton.jsx';
 import IntervisteModalButton                  from '../components/button/IntervisteModalButton.jsx';
 import IntervisteModal                        from '../components/modal/IntervisteModal.jsx';
+import { useTranslation }                   from 'react-i18next';
+
 import {
   Dialog,
   DialogTitle,
@@ -31,6 +33,8 @@ function IntervisteList() {
   const location                = useLocation();
   const { recruitingData = {} } = location.state || {};
   const candidatoID             = id;
+  const { t } = useTranslation();
+
 
   const [ originalInterviste,       setOriginalInterviste   ] = useState([]);
   const [ candidatoData,            setCandidatoData        ] = useState([]);
@@ -308,7 +312,7 @@ renderCell: (params) => (
                         }}
                         
                     >
-                        <DialogTitle id="alert-dialog-title">{"Conferma Eliminazione"}</DialogTitle>
+                        <DialogTitle id="alert-dialog-title">{t("Conferma Eliminazione")}</DialogTitle>
                         <DialogContent>
                         <DialogContentText id="alert-dialog-description">
                             Sei sicuro di voler eliminare questa intervista?

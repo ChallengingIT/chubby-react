@@ -5,6 +5,7 @@
     import { useNavigate } from "react-router-dom";
     import RestartAltIcon from "@mui/icons-material/RestartAlt";
     import { useUserTheme } from "../TorchyThemeProvider";
+    import { useTranslation } from 'react-i18next';
     import {
     Button,
     Box,
@@ -30,6 +31,7 @@
     }) {
     const navigate = useNavigate();
     const theme = useUserTheme();
+    const { t } = useTranslation();
 
     const [openFiltri, setOpenFiltri] = useState(false);
     const [isRotated, setIsRotated] = useState(false);
@@ -78,7 +80,7 @@
             <TextField
             id="search-bar"
             variant="filled"
-            label="Nome"
+            label={t("Nome")}
             value={filtri.nome || ""}
             onChange={onFilterChange("nome")}
             onKeyDown={(event) => {
@@ -118,7 +120,7 @@
             <TextField
             id="search-location"
             variant="filled"
-            label="Cognome"
+            label={t("Cognome")}
             value={filtri.cognome || ""}
             onChange={onFilterChange("cognome")}
             onKeyDown={(event) => {
@@ -170,7 +172,7 @@
                     renderInput={(params) => (
                     <TextField
                         {...params}
-                        label="Job Title"
+                        label={t("Job Title")}
                         variant="filled"
                         sx={{
                         textAlign: "left",
@@ -217,7 +219,7 @@
                     renderInput={(params) => (
                     <TextField
                         {...params}
-                        label="Stato"
+                        label={t("Stato")}
                         variant="filled"
                         sx={{
                         textAlign: "left",
@@ -263,7 +265,7 @@
                     renderInput={(params) => (
                     <TextField
                         {...params}
-                        label="Tipologia"
+                        label={t("Tipologia")}
                         variant="filled"
                         sx={{
                         textAlign: "left",

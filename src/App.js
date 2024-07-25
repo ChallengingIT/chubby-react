@@ -2,6 +2,7 @@ import './App.css';
 import { BrowserRouter, Routes, Route }                               from 'react-router-dom';
 import React                                                          from 'react';
 import PrivateRoute                                                   from './components/PrivateRoute.jsx';
+import { useTranslation } from 'react-i18next';
 
 
 import Aziende                                                         from './pages/Aziende.jsx';
@@ -59,6 +60,7 @@ import DashboardClienti from './components/componentiCliente/DashboardClienti.js
 
 
 const App = () => {
+  const { t } = useTranslation();
 
 
   return (

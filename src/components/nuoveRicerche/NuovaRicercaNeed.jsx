@@ -3,6 +3,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import axios from "axios";
 import { useUserTheme } from "../TorchyThemeProvider";
+import { useTranslation } from 'react-i18next';
 import {
     Box,
     FormControl,
@@ -24,6 +25,7 @@ function NuovaRicercaNeed({
     onContactChange,
 }) {
     const theme = useUserTheme();
+    const { t } = useTranslation();
     const [isRotated, setIsRotated] = useState(false);
     const [contactOptions, setContactOptions] = useState([]);
     const [selectedContact, setSelectedContact] = useState("");
@@ -102,7 +104,7 @@ function NuovaRicercaNeed({
                     <TextField
                         id="search-bar"
                         variant="filled"
-                        label="Cerca Need"
+                        label={t("Cerca Need")}
                         value={filtri.descrizione || ""}
                         onChange={handleInputChange("descrizione")}
                         onKeyDown={(event) => {
@@ -150,7 +152,7 @@ function NuovaRicercaNeed({
                         renderInput={(params) => (
                             <TextField
                                 {...params}
-                                label="Azienda"
+                                label={t("Azienda")}
                                 variant="filled"
                                 sx={{
                                     textAlign: "left",
@@ -193,7 +195,7 @@ function NuovaRicercaNeed({
                         renderInput={(params) => (
                             <TextField
                                 {...params}
-                                label="Tipologia"
+                                label={t("Tipologia")}
                                 variant="filled"
                                 sx={{
                                     textAlign: "left",
@@ -236,7 +238,7 @@ function NuovaRicercaNeed({
                         renderInput={(params) => (
                             <TextField
                                 {...params}
-                                label="Stato"
+                                label={t("Stato")}
                                 variant="filled"
                                 sx={{
                                     textAlign: "left",
@@ -279,7 +281,7 @@ function NuovaRicercaNeed({
                         renderInput={(params) => (
                             <TextField
                                 {...params}
-                                label="Owner"
+                                label={t("Owner")}
                                 variant="filled"
                                 sx={{
                                     textAlign: "left",

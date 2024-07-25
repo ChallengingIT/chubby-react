@@ -16,6 +16,8 @@ import CloseIcon                            from '@mui/icons-material/Close';
 import axios                                from 'axios';
 import InfoIcon                             from '@mui/icons-material/Info';
 import AddCircleIcon                        from '@mui/icons-material/AddCircle';
+import { useTranslation }                   from "react-i18next"; 
+
 
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Alert, Stack, Pagination, Popover, Slide } from '@mui/material';
 import { 
@@ -39,6 +41,9 @@ import {
 
 
 const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCard}) => {
+
+    const { t } = useTranslation(); 
+
 
 
     //stati per la paginazione
@@ -284,7 +289,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
             const responseUpdateStato = await axios.post(`http://localhost:8080/keypeople/react/salva/stato/${idKeypeople}?${params.toString()}`, {}, { headers: headers });
             setModalCambiaStato(false);
             onRefresh();
-            handleOpenSnackbar('Stato aggiornato con successo!', 'success');
+            handleOpenSnackbar(t('Stato aggiornato con successo!'), 'success');
             if (responseUpdateStato.data === "ERRORE") {
                 setAlert({ open: true, message: "errore durante il salvataggio dell'azienda!" });
                 console.error("L'azienda non è stata salvata.");
@@ -292,7 +297,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
             }
         } catch (error) {
             console.error("Errore durante l'aggiornamento dello stato: ", error);
-            handleOpenSnackbar('Errore durante l aggiornamento dello stato.', 'error');
+            handleOpenSnackbar(t('Errore durante l aggiornamento dello stato.'), 'error');
         }
     };
     
@@ -348,21 +353,21 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
 
     const menuData = [
         {
-            title: 'Azioni Commerciali',
+            title: t('Azioni Commerciali'),
             icon: <DoubleArrowIcon />,
             onClick: (event) => {
                 handleOpenModalStorico(event);
             }
         },
         {
-            title: 'Cambia Stato Contatto',
+            title: t('Cambia Stato Contatto'),
             icon: <ChangeCircleIcon />,
             onClick: (event) => {
                 handleOpenModalCambiaStato(valori.id, event);
             }
         },
         {
-            title: 'Need Correlati',
+            title: t('Need Correlati'),
             icon : <ExploreIcon />,
             onClick: (event) => {
                 handleOpenModalNeed(event);
@@ -376,14 +381,14 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
         //     }
         // },
         {
-            title: 'Aggiorna Contatto',
+            title: t('Aggiorna Contatto'),
             icon: <SettingsIcon />,
             onClick: (event) => {
                 navigateToAggiorna(valori.id, event);
             }
         },
         {
-            title: 'Elimina Contatto',
+            title: t('Elimina Contatto'),
             icon: <DeleteIcon />,
             onClick: (event) => {
                 handleOpenModalDelete(event);
@@ -406,15 +411,15 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                     tipologie: '',
                     note: ''
                 });
-                handleOpenSnackbar('Azione salvata con successo!', 'success');
+                handleOpenSnackbar(t('Azione salvata con successo!'), 'success');
                 await azioniKeypeople(valori.id);
             } else {
-                handleOpenSnackbar('Qualcosa è andato storto, riprova!', 'error');
+                handleOpenSnackbar(t('Qualcosa è andato storto, riprova!'), 'error');
             }
             // handleCloseModalAzioni();
         } catch (error) {
             console.error("Errore durante l'invio dei dati: ", error);
-            handleOpenSnackbar('Errore durante l invio dei dati.', 'error');
+            handleOpenSnackbar(t('Errore durante l invio dei dati.'), 'error');
         }
     };
     
@@ -583,7 +588,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                             }}
                             >
                             <Typography id="modal-modal-title" variant="h6" component="h2">
-                            Sei sicuro di voler eliminare l'azienda?
+                            {t('Sei sicuro di voler eliminare il contatto?')}
                             </Typography>
                             <Box 
                             sx={{
@@ -604,7 +609,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                                         transform: 'scale(1.01)'
                                     },
                                 }}>
-                                Indietro
+                                {t('Indietro')}
                             </Button>
                             <Button
                             onClick={confirmDelete}
@@ -618,7 +623,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                                     transform: 'scale(1.01)'
                                 },
                             }}>
-                                Conferma
+                                {t('Conferma')}
                             </Button>
                             </Box>
                             </Box>
@@ -698,7 +703,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                     }}>
                     <Box sx={{ display: 'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: 'white', borderRadius: '20px', overflow: 'hidden', border: 'solid 2.2px #00B400' }}>
                     <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', p: 3, }}>
-                        <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', mt: 0.5, mb: 0.5 }}>Storico delle azioni</Typography>
+                        <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', mt: 0.5, mb: 0.5 }}>{t('Storico Delle Azioni')}</Typography>
                         <IconButton sx={{
                         mr: 2,
                         backgroundColor: 'transparent',
@@ -720,9 +725,9 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                         <Table stickyHeader>
                         <TableHead>
                             <TableRow>
-                            <TableCell sx={{ fontWeight: 'bold', fontSize: 'large' }}>Data</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold', fontSize: 'large' }}>Tipologia</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold', fontSize: 'large' }}>Note</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', fontSize: 'large' }}>{t('Data')}</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', fontSize: 'large' }}>{t('Tipologia')}</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', fontSize: 'large' }}>{t('Note')}</TableCell>
                             <TableCell sx={{ fontWeight: 'bold', fontSize: 'large' }}></TableCell>
                             </TableRow>
                         </TableHead>
@@ -740,7 +745,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                     </TableContainer>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2, backgroundColor: 'white', borderTop: 'solid 1px #E0E0E0' }}>
                         <TextField
-                        label="Seleziona Data"
+                        label={t("Seleziona Data")}
                         type="datetime-local"
                         defaultValue={""}
                         variant="filled"
@@ -783,7 +788,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                             renderInput={(params) =>
                             <TextField
                                 {...params}
-                                label="Azione"
+                                label={t("Azione")}
                                 variant='filled'
                                 sx={{
                                 height: '4em',
@@ -810,7 +815,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                         />
                         {/* </FormControl> */}
                         <TextField
-                        label="Note"
+                        label={t("Note")}
                         variant="filled"
                         inputProps={{
                             maxLength: 4000
@@ -1041,7 +1046,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                 }}>
                     <Box sx={{ display:'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: 'white', borderRadius: '20px', border: 'solid 2.2px #00B400'}}>
                         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', p: 3, borderBottom: '2.5 solid #e0e0e0', borderTop: '2.5 solid #e0e0e0'}}>
-                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', mt: 0.5, mb: 0.5}}>Lista dei Need</Typography>
+                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', mt: 0.5, mb: 0.5}}>{t('Lista Dei Need')}</Typography>
                             <IconButton sx={{ 
                                 mr: 2, 
                                 backgroundColor: 'transparent', 
@@ -1066,8 +1071,8 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                             <TableHead>
                                 <TableRow>
                                     <TableCell sx={{ fontWeight: 'bold', fontSize: 'large'}}>#</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold', fontSize: 'large'}}>Descrizione</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold', fontSize: 'large'}}>Stato</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', fontSize: 'large'}}>{t("Descrizione")}</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', fontSize: 'large'}}>{t("Stato")}</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -1122,7 +1127,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                         }}
                     >
                         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
-                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', ml: 2, mt: 0.5, mb: 0.5}}>Cambia Stato del Contatto</Typography>
+                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', ml: 2, mt: 0.5, mb: 0.5}}>{t('Cambia Stato Del Contatto')}</Typography>
                             <IconButton sx={{ 
                                 mr: 2, 
                                 backgroundColor: 'transparent', 
@@ -1157,7 +1162,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                                 renderInput={(params) => 
                                     <TextField 
                                         {...params} 
-                                        label="Stato"
+                                        label={t("Stato")}
                                         variant="filled" 
                                         fullWidth
                                         sx={{
@@ -1205,7 +1210,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                                 },
                             }}
                             >
-                                Cambia
+                                {t("Cambia")}
                             </Button>
                             </Box>
                             </Modal>

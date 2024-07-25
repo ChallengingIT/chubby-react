@@ -8,8 +8,8 @@ import {
     Container,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { useNavigate } from "react-router-dom";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import { useTranslation } from 'react-i18next';
 import { useUserTheme } from "../TorchyThemeProvider";
 
 function NuovaRicercaAziende({
@@ -22,6 +22,7 @@ function NuovaRicercaAziende({
     idaOptions,
 }) {
     const theme = useUserTheme();
+    const { t } = useTranslation();
 
     const [isRotated, setIsRotated] = useState(false);
 
@@ -60,7 +61,6 @@ function NuovaRicercaAziende({
                 sx={{
                     width: '100%',
                     bgcolor: "#FEFCFD",
-                    // border: 'solid 2px #00B400',
                     borderRadius: '20px',
                     display: "flex",
                     flexDirection: "row",
@@ -75,7 +75,7 @@ function NuovaRicercaAziende({
                     <TextField
                         id="search-bar"
                         variant="filled"
-                        label="Cerca Azienda"
+                        label={t('Cerca Azienda')} 
                         value={filtri.denominazione || ""}
                         onChange={handleInputChange("denominazione")}
                         onKeyDown={(event) => {
@@ -90,8 +90,6 @@ function NuovaRicercaAziende({
                             border: 'solid 1px #00B400',
                             bgcolor: 'white',
                             boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
-
-                            // backgroundColor: "#EDEDED",
                             "& .MuiFilledInput-root": {
                                 backgroundColor: "transparent",
                             },
@@ -125,7 +123,7 @@ function NuovaRicercaAziende({
                         renderInput={(params) => (
                             <TextField
                                 {...params}
-                                label="Tipologia"
+                                label={t('Tipologia')} 
                                 variant="filled"
                                 sx={{
                                     textAlign: "left",
@@ -133,9 +131,6 @@ function NuovaRicercaAziende({
                                     border: 'solid 1px #00B400',
                                     bgcolor: 'white',
                                     boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
-
-
-                                    // backgroundColor: "#EDEDED",
                                     "& .MuiFilledInput-root": {
                                         backgroundColor: "transparent",
                                     },
@@ -170,7 +165,7 @@ function NuovaRicercaAziende({
                         renderInput={(params) => (
                             <TextField
                                 {...params}
-                                label="IDA"
+                                label={t('IDA')} 
                                 variant="filled"
                                 sx={{
                                     textAlign: "left",
@@ -178,9 +173,6 @@ function NuovaRicercaAziende({
                                     border: 'solid 1px #00B400',
                                     bgcolor: 'white',
                                     boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
-
-
-                                    // backgroundColor: "#EDEDED",
                                     "& .MuiFilledInput-root": {
                                         backgroundColor: "transparent",
                                     },
@@ -217,7 +209,7 @@ function NuovaRicercaAziende({
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
-                                    label="Owner"
+                                    label={t('Owner')} 
                                     variant="filled"
                                     sx={{
                                         textAlign: "left",
@@ -225,8 +217,6 @@ function NuovaRicercaAziende({
                                         border: 'solid 1px #00B400',
                                         bgcolor: 'white',
                                         boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
-
-                                        // backgroundColor: "#EDEDED",
                                         "& .MuiFilledInput-root": {
                                             backgroundColor: "transparent",
                                         },

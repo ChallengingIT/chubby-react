@@ -7,6 +7,8 @@ import ClipButton from "../components/button/ClipButton.jsx";
 import { Link } from "react-router-dom";
 import Tabella from "../components/Tabella.jsx";
 import CloseIcon from "@mui/icons-material/Close";
+import { useTranslation } from "react-i18next"; 
+
 
 import {
   Dialog,
@@ -30,6 +32,8 @@ import CFButton from "../components/button/CFButton.jsx";
 import CFModal from "../components/modal/CFModal.jsx";
 
 const Recruiting = () => {
+  const { t } = useTranslation(); 
+
 
   const [originalRecruiting, setOriginalRecruiting] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
@@ -446,8 +450,8 @@ const Recruiting = () => {
     }
   };
 
-  const handleDownloadCF = async (idCandidato, nomeCandidato, cognomeCandidato, file) => {
-    if (file != null) {
+  const handleDownloadCF = async (idCandidato, nomeCandidato, cognomeCandidato, file, dataNascita) => {
+    if (dataNascita != null && file != null) {
       try {
         setLoadingCF(true);
         const downloadUrl = `http://localhost:8080/files/download/cf/${idCandidato}`;
@@ -477,10 +481,18 @@ const Recruiting = () => {
         );
       }
     } else {
-      setSnackbarMessage(`Attenzione: non è presente il CV per il candidato ${nomeCandidato} ${cognomeCandidato}, non è possibile procedere alla creazione del CF.`);
+      let message = t(`Attenzione: non è possibile procedere alla creazione del CF per il candidato ${nomeCandidato} ${cognomeCandidato}.`);
+      if (file == null) {
+        message += t(` Il CV non è presente.`);
+      }
+      if (dataNascita == null) {
+        message += t(` La data di nascita non è presente.`);
+      }
+      setSnackbarMessage(message);
       setSnackbarOpen(true);
     }
   };
+  
   
   
 
@@ -495,7 +507,7 @@ const Recruiting = () => {
     },
     {
       field: "nome",
-      headerName: "Nome",
+      headerName: t("Nome"),
       flex: 1.3,
       sortable: false,
       filterable: false,
@@ -536,7 +548,7 @@ const Recruiting = () => {
     // },
     {
       field: "rating",
-      headerName: "Rating",
+      headerName: t("Rating"),
       sortable: false,
       filterable: false,
       disableColumnMenu: true,
@@ -550,7 +562,7 @@ const Recruiting = () => {
     }, //fino a 1.9 è rosso, da 2 a 3 giallo, sopra 3 è verde
     {
       field: "owner",
-      headerName: "Owner",
+      headerName: t("Owner"),
       flex: 0.6,
       sortable: false,
       filterable: false,
@@ -565,7 +577,7 @@ const Recruiting = () => {
     },
     {
       field: "stato",
-      headerName: "Stato",
+      headerName: t("Stato"),
       flex: 0.6,
       sortable: false,
       filterable: false,
@@ -580,14 +592,14 @@ const Recruiting = () => {
     },
     {
       field: "dataUltimoContatto",
-      headerName: "Contatto",
+      headerName: t("Contatto"),
       flex: 1,
       sortable: false,
       filterable: false,
       disableColumnMenu: true,
     },
     {
-      field: "azioni",
+      field: t("azioni"),
       headerName: "",
       flex: 1,
       sortable: false,
@@ -634,6 +646,7 @@ const Recruiting = () => {
                 params.row?.nome ? params.row?.nome : null,
                 params.row?.cognome ? params.row?.cognome : null,
                 params.row?.file ? params.row?.file : null,
+                params.row?.dataNascita ? params.row?.dataNascita : null
               )
             }
           />
@@ -679,7 +692,7 @@ const Recruiting = () => {
           <Tabella
             data={originalRecruiting}
             columns={columns}
-            title="Candidati"
+            title={t("Candidati")}
             getRowId={(row) => row.id}
             pagina={pagina}
             quantita={quantita}
@@ -737,11 +750,11 @@ const Recruiting = () => {
         }}
       >
         <DialogTitle id="alert-dialog-title">
-          {"Conferma Eliminazione"}
+          {t("Conferma Eliminazione")}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Sei sicuro di voler eliminare questo candidato?
+            {t('Sei sicuro di voler eliminare questo candidato?')}
           </DialogContentText>
         </DialogContent>
         <DialogActions sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, mb:2}}>
@@ -759,8 +772,8 @@ const Recruiting = () => {
               },
             }}
           >
-            Annulla
-          </Button>
+            {t('Annulla')}
+            </Button>
           <Button
             onClick={handleDelete}
             color="primary"
@@ -778,7 +791,7 @@ const Recruiting = () => {
               },
             }}
           >
-            Conferma
+            {t('Conferma')}
           </Button>
         </DialogActions>
       </Dialog>

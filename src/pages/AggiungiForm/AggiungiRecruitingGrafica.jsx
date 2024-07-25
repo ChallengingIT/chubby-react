@@ -11,13 +11,17 @@ import CustomDecimalNumberAggiungi                                              
 import CustomMultipleSelectAggiunta                                                                             from '../../components/fields/CustomMultipleSelectAggiunta';
 import CloudUploadIcon                                                                                          from "@mui/icons-material/CloudUpload";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { useTranslation }                   from 'react-i18next';
+
 
 
 const AggiungiRecruitingGrafica = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
+
 
     //stati della pagina
-    const [ activeSection,              setActiveSection            ] = useState('Profilo Candidato');      
+    const [ activeSection,              setActiveSection            ] = useState(t('Profilo Candidato'));      
     const [ currentPageIndex,           setCurrentPageIndex         ] = useState(0);
     const [ alert,                      setAlert                    ] = useState({ open: false, message: ''});
     const [ errors,                     setErrors                   ] = useState({});
@@ -164,19 +168,19 @@ const AggiungiRecruitingGrafica = () => {
 
     const menu = [
         {
-            title: 'Profilo Candidato',
+            title: t('Profilo Candidato'),
             icon: <CircleOutlinedIcon />
         },
         { 
-            title: 'Esperienza',
+            title: t('Esperienza'),
             icon: <CircleOutlinedIcon />
         },
         {
-            title: 'Posizione Lavorativa',
+            title: t('Posizione Lavorativa'),
             icon: <CircleOutlinedIcon />
         },
         {
-            title: 'Allegati',
+            title: t('Allegati'),
             icon: <CircleOutlinedIcon />
         }
     ];
@@ -194,7 +198,7 @@ const AggiungiRecruitingGrafica = () => {
                 setActiveSection(section);
                 setCurrentPageIndex(index);
             } else {
-                setAlert({ open: true, message: 'Per cambiare sezione, completare tutti i campi obbligatori delle sezioni precedenti.'});
+                setAlert({ open: true, message: t('Per cambiare sezione, completare tutti i campi obbligatori delle sezioni precedenti.')});
             }
         };
         
@@ -223,7 +227,7 @@ const AggiungiRecruitingGrafica = () => {
         let errors = {};
         mandatoryFields.forEach(field => {
             if (!values[field]) {
-                errors[field] = 'Questo campo è obbligatorio';
+                errors[field] = t('Questo campo è obbligatorio');
             }
         });
         return errors;
@@ -310,7 +314,7 @@ const AggiungiRecruitingGrafica = () => {
                 setCurrentPageIndex(currentIndex + 1);
             }
         } else {
-            setAlert({ open: true, message: 'Compilare tutti i campi obbligatori presenti per poter avanzare'});
+            setAlert({ open: true, message: t('Compilare tutti i campi obbligatori presenti per poter avanzare')});
         }
     };
 
@@ -355,12 +359,12 @@ const AggiungiRecruitingGrafica = () => {
                 headers: headers,
                 });
                 if (datiResponse.data === "DUPLICATO") {
-                    setAlert({ open: true, message: "email già esistente!" });
+                    setAlert({ open: true, message: t("email già esistente!") });
                     console.error("il candidato è già stato salvato.");
                     return; 
                 }
                 if (datiResponse.data === "ERRORE") {
-                    setAlert({ open: true, message: "errore durante il salvataggio del candidato!" });
+                    setAlert({ open: true, message: t("errore durante il salvataggio del candidato!") });
                     console.error("Il candidato non è stata salvata.");
                     return;
                 }
@@ -396,7 +400,7 @@ const AggiungiRecruitingGrafica = () => {
             }
         } else {
             setErrors(errors);
-            setAlert({ open: true, message: "Compilare tutti i field obbligatori presenti prima di avanzare" });
+            setAlert({ open: true, message: t("Compilare tutti i field obbligatori presenti prima di avanzare") });
         }
     };
 
@@ -432,43 +436,42 @@ const AggiungiRecruitingGrafica = () => {
         const fieldObbligatori = [ "nome", "cognome", "email", "anniEsperienzaRuolo", "tipologia", "dataUltimoContatto", "livelloScolastico", "funzioneAziendale" ];
 
         const fields =[
-            { type: "titleGroups",                label: "Profilo Candidato"            },
-            { label: "Nome*",                         name: "nome",                     type: "text", maxLength: 45                                                            },
-            { label: "Cognome*",                      name: "cognome",                  type: "text", maxLength: 45                                                           },
-            { label: "Data di Nascita",               name: "dataNascita",              type: "date"                                                            },
-            { label: "Email*",                        name: "email",                    type: "text", maxLength: 45                                                           },
-            { label: "Cellulare",                     name: "cellulare",                type: "text", maxLength: 20                                                           },
-            { label: "Residenza",                     name: "citta",                    type: "text", maxLength: 45                                                           },
+            { type: "titleGroups",                label: t("Profilo Candidato")            },
+            { label: t("Nome*"),                         name: "nome",                     type: "text", maxLength: 45                                                            },
+            { label: t("Cognome*"),                      name: "cognome",                  type: "text", maxLength: 45                                                           },
+            { label: t("Email*"),                        name: "email",                    type: "text", maxLength: 45                                                           },
+            { label: t("Cellulare"),                     name: "cellulare",                type: "text", maxLength: 20                                                           },
+            { label: t("Residenza"),                     name: "citta",                    type: "text", maxLength: 45                                                           },
             
     
     
-            { type: "titleGroups",                label: "Esperienza"            },
-            { label: "Anni di Esperienza",              name: "anniEsperienza",           type: "decimalNumber"                                                   },
-            { label: "Anni di Esperienza nel Ruolo*",   name: "anniEsperienzaRuolo",      type: "decimalNumber"                                                   },
-            { label: "Livello Scolastico*",             name: "livelloScolastico",        type: "select",               options: livelloScolasticoOptions         },
-            { label: "Facoltà",                         name: "facolta",                  type: "select",               options: facoltaOptions                   },
+            { type: "titleGroups",                label: t("Esperienza")            },
+            { label: t("Anni Di Esperienza"),              name: "anniEsperienza",           type: "decimalNumber"                                                   },
+            { label: t("Anni Di Esperienza Nel Ruolo*"),   name: "anniEsperienzaRuolo",      type: "decimalNumber"                                                   },
+            { label: t("Livello Scolastico*"),             name: "livelloScolastico",        type: "select",               options: livelloScolasticoOptions         },
+            { label: t("Facoltà"),                         name: "facolta",                  type: "select",               options: facoltaOptions                   },
     
-            { type: "titleGroups",                label: "Posizione Lavorativa"            },
-            { label: 'Tipo Ingaggio*',                 name: 'tipo',                     type: 'select',          options: tipoOptions                           },
-            { label: "Tipo Candidatura*",              name: "candidatura",              type: "select",          options: tipologiaOptions                       },
+            { type: "titleGroups",                label: t("Posizione Lavorativa")            },
+            { label: t('Tipo Ingaggio*'),                 name: 'tipo',                     type: 'select',          options: tipoOptions                           },
+            { label: t("Tipo Candidatura*"),              name: "candidatura",              type: "select",          options: tipologiaOptions                       },
             // { label: "Tipo Ricerca*",                  name: "ricerca",                  type: "select",          options: ricercaOptions                         },
-            { label: "Modalità di lavoro",             name: "modalita",                 type: "select",          options: [ 
-                { value: 1, label: "Full Remote" },
-                { value: 2, label: "Ibrido" },
-                { value: 3, label: "On Site"},
+            { label: t("Modalità Di Lavoro"),             name: "modalita",                 type: "select",          options: [ 
+                { value: 1, label: t("Full Remote") },
+                { value: 2, label: t("Ibrido") },
+                { value: 3, label: t("On Site")},
             ] },
-        { label: "Funzione Aziendale*",                name: "funzioneAziendale",        type: "select",               options: funzioniAziendaliOptions         },
-        { label: "Job Title*",                         name: "tipologia",                type: "select",               options: jobTitleOptions                  },
-        { label: "Data Inserimento*",                  name: "dataUltimoContatto",       type: "date"                                                            },
+        { label: t("Funzione Aziendale*"),                name: "funzioneAziendale",        type: "select",               options: funzioniAziendaliOptions         },
+        { label: t("Job Title*"),                         name: "tipologia",                type: "select",               options: jobTitleOptions                  },
+        { label: t("Data Inserimento*"),                  name: "dataUltimoContatto",       type: "date"                                                            },
         // { label: "Stato*",                             name: "stato",                    type: "select",               options: statoOptions                     },
-        { label: "Owner",                              name: "owner",                    type: "select",               options: ownerOptions                     },
+        { label: t("Owner"),                              name: "owner",                    type: "select",               options: ownerOptions                     },
         { label: "Skills",                             name: "skills",                    type: "multipleSelect",        options: skillsOptions                    },
-        { label: "RAL/Tariffa",                        name: "ral",                      type: "text", maxLength: 100                                                           },
-        { label: "Disponibilità",                      name: "disponibilita",            type: "text", maxLength: 45                                                            },
-        { label: "Note",                               name: "note",                     type: "note", maxLength: 8000                                                            },
+        { label: t("RAL/Tariffa"),                        name: "ral",                      type: "text", maxLength: 100                                                           },
+        { label: t("Disponibilità"),                      name: "disponibilita",            type: "text", maxLength: 45                                                            },
+        { label: t("Note"),                               name: "note",                     type: "note", maxLength: 8000                                                            },
     
     
-            { type: "titleGroups",                label: "Allegati"            },
+            { type: "titleGroups",                label: t("Allegati")            },
             { label: "Curriculim Vitae",                name: "cv",                       type: "modificaFileCV"                                                  },
             { label: "Consultant File",                 name: "cf",                       type: "modificaFileCF"                                                  }, 
         ];
@@ -633,7 +636,7 @@ const AggiungiRecruitingGrafica = () => {
                                         </Box>
                                 <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', margin: '10px 0'}}>
                                 <Typography variant="body2">
-                                {values.cv?.descrizione || 'Nessun file selezionato'}
+                                {values.cv?.descrizione || t('Nessun file selezionato')}
                                     </Typography>
                                     <Box sx={{ display: 'flex', gap: 2, mr: 0.5}}>
                                         <Button
@@ -771,10 +774,10 @@ const AggiungiRecruitingGrafica = () => {
                     }}
                     >
                         <span style={{ marginRight: '0.5em'}}>{"<"}</span>
-                        Indietro
+                        {t('Indietro')}
                     </Button>
                 </Box>
-                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: 'black'}}>  Aggiungi <br /> Candidato </Typography>
+                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: 'black'}}>  {t('Aggiungi')} <br /> {t('Candidato')} </Typography>
                 <List sx={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
                             {menu.map((item, index) => (
                                 // <ListItem
@@ -832,7 +835,7 @@ const AggiungiRecruitingGrafica = () => {
                 <Box sx={{ display: 'flex', width: '100%', height: '100%', flexDirection: 'column', pl: 5, pr: 5, overflow: 'auto'}}>
                 {renderFieldsGroups(groupedFields)}
                 </Box>   
-                <Typography variant="h6" sx={{ mt: 2, color: '#666565', fontSize: '1em', ml: 16}}>* Campo Obbligatorio</Typography>
+                <Typography variant="h6" sx={{ mt: 2, color: '#666565', fontSize: '1em', ml: 16}}>{t('* Campo Obbligatorio')}</Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5, gap: 6 }}>
                 {currentPageIndex > 0 && (
                         <Button onClick={handleBackButtonClick}
@@ -850,7 +853,7 @@ const AggiungiRecruitingGrafica = () => {
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                 borderRadius: '10px',
                                 },
-                            }}>Indietro</Button>
+                            }}>{t('Indietro')}</Button>
                         )}
                         {currentPageIndex < groupedFields.length - 1 && (
                             <Button onClick={handleNextButtonClick}
@@ -870,7 +873,7 @@ const AggiungiRecruitingGrafica = () => {
                                     transform: "scale(1.05)",
                                     boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                     borderRadius: '10px',
-                                },}}>Avanti</Button>
+                                },}}>{t('Avanti')}</Button>
                         )}
                         {currentPageIndex === groupedFields.length - 1 && (
                             <Button 
@@ -892,7 +895,7 @@ const AggiungiRecruitingGrafica = () => {
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                 borderRadius: '10px',
                                 },
-                            }}>Salva</Button>
+                            }}>{t('Salva')}</Button>
                         )}
                 </Box>
             </Box>

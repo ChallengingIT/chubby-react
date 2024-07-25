@@ -10,6 +10,7 @@
     import CustomMultipleSelectAziende          from "../../components/fields/CustomMultipleSelectAziende";
     import CheckCircleIcon                      from "@mui/icons-material/CheckCircle";
     import { useUserTheme }                     from "../../components/TorchyThemeProvider";
+    import { useTranslation }                   from 'react-i18next';
     import {
     Box,
     Typography,
@@ -27,10 +28,11 @@
 
     const AggiungiAziendaGrafica = () => {
     const theme = useUserTheme();
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     //stati della pagina
-    const [ activeSection,          setActiveSection            ] = useState("Profilo");
+    const [ activeSection,          setActiveSection            ] = useState(t("Profilo"));
     const [ currentPageIndex,       setCurrentPageIndex         ] = useState(0);
     const [ imagePreviewUrl,        setImagePreviewUrl          ] = useState(null);
     const [ fileIMG,                setFileIMG                  ] = useState(null);
@@ -45,19 +47,19 @@
 
     const menu = [
         {
-        title: "Profilo",
+        title: t("Profilo"),
         icon: <CircleOutlinedIcon />,
         },
         {
-        title: "IDA",
+        title: t("IDA"),
         icon: <CircleOutlinedIcon />,
         },
         {
-        title: "Contratti",
+        title: t("Contratti"),
         icon: <CircleOutlinedIcon />,
         },
         {
-        title: "Documenti",
+        title: t("Documenti"),
         icon: <CircleOutlinedIcon />,
         },
     ];
@@ -139,7 +141,7 @@
         setAlert({
             open: true,
             message:
-            "Per cambiare sezione, completare tutti i campi obbligatori delle sezioni precedenti.",
+            t("Per cambiare sezione, completare tutti i campi obbligatori delle sezioni precedenti."),
         });
         }
     };
@@ -167,7 +169,7 @@
         let errors = {};
         mandatoryFields.forEach((field) => {
         if (!values[field]) {
-            errors[field] = "Questo campo è obbligatorio";
+            errors[field] = t("Questo campo è obbligatorio");
         }
         });
         return errors;
@@ -215,7 +217,7 @@
         setAlert({
             open: true,
             message:
-            "Compilare tutti i campi obbligatori presenti per poter avanzare",
+            t("Compilare tutti i campi obbligatori presenti per poter avanzare"),
         });
         }
     };
@@ -291,14 +293,14 @@
             }
             );
             if (response.data === "DUPLICATO") {
-            setAlert({ open: true, message: "azienda già esistente!" });
+            setAlert({ open: true, message: t("azienda già esistente!") });
             console.error("L'azienda è già stata salvata.");
             return;
             }
             if (response.data === "ERRORE") {
             setAlert({
                 open: true,
-                message: "errore durante il salvataggio dell'azienda!",
+                message: t("errore durante il salvataggio dell'azienda!"),
             });
             console.error("L'azienda non è stata salvata.");
             return;
@@ -333,14 +335,14 @@
         setAlert({
             open: true,
             message:
-            "Compilare tutti i campi obbligatori presenti prima di avanzare",
+            t("Compilare tutti i campi obbligatori presenti prima di avanzare"),
         });
         }
     };
 
     const campiObbligatori = [
         "denominazione",
-        "ragioneSociale",
+        "settoreMercato",
         "idOwner",
         "citta",
         "tipologia",
@@ -350,54 +352,54 @@
     ];
 
     const fields = [
-        { type: "titleGroups", label: "Profilo" },
-        { label: "Nome Azienda*",                   name: "denominazione",              type: "text",           maxLength: 90,      },
-        { label: "Settore Mercato*",                name: "settoreMercato",             type: "text",           maxLength: 255,     },
-        { label: "Partita IVA",                     name: "pi",                         type: "text",           maxLength: 45       },
-        { label: "Codice Fiscale",                  name: "cf",                         type: "text",           maxLength: 45       },
-        { label: "Pec",                             name: "pec",                        type: "text",           maxLength: 45       },
-        { label: "Codice Destinatario",             name: "codiceDestinatario",         type: "text",           maxLength: 45,      },
-        { label: "Sito Web",                        name: "sito",                       type: "text",           maxLength: 90       },
-        { label: "Sede Legale",                     name: "sedeLegale",                 type: "text",           maxLength: 45       },
-        { label: "Sede Operativa",                  name: "sedeOperativa",              type: "text",           maxLength: 45,      },
-        { label: "Città*",                          name: "citta",                      type: "text",           maxLength: 45       },
-        { label: "Paese",                           name: "paese",                      type: "text",           maxLength: 255      },
+        { type: "titleGroups", label: t("Profilo") },
+        { label: t("Nome Azienda"),                   name: "denominazione",              type: "text",           maxLength: 90,      },
+        { label: t("Settore Mercato"),                name: "settoreMercato",             type: "text",           maxLength: 255,     },
+        { label: t("Partita IVA"),                     name: "pi",                         type: "text",           maxLength: 45       },
+        { label: t("Codice Fiscale"),                  name: "cf",                         type: "text",           maxLength: 45       },
+        { label: t("Pec"),                             name: "pec",                        type: "text",           maxLength: 45       },
+        { label: t("Codice Destinatario"),             name: "codiceDestinatario",         type: "text",           maxLength: 45,      },
+        { label: t("Sito Web"),                        name: "sito",                       type: "text",           maxLength: 90       },
+        { label: t("Sede Legale"),                     name: "sedeLegale",                 type: "text",           maxLength: 45       },
+        { label: t("Sede Operativa"),                  name: "sedeOperativa",              type: "text",           maxLength: 45,      },
+        { label: t("Città"),                          name: "citta",                      type: "text",           maxLength: 45       },
+        { label: t("Paese"),                           name: "paese",                      type: "text",           maxLength: 255      },
 
-        { type: "titleGroups", label: "IDA" },
-        { label: "Potenzialità*",                   name: "potenzialita",               type: "select",         options: [
-            { value: 1, label: "Basso" },
-            { value: 2, label: "Medio" },
-            { value: 3, label: "Alto" },
+        { type: "titleGroups", label: t("IDA") },
+        { label: t("Potenzialità"),                   name: "potenzialita",               type: "select",         options: [
+            { value: 1, label: t("Basso") },
+            { value: 2, label: t("Medio") },
+            { value: 3, label: t("Alto") },
         ],
         },
-        { label: "Semplicità*",                     name: "semplicita",                 type: "select",         options: [
-            { value: 1, label: "Basso" },
-            { value: 2, label: "Medio" },
-            { value: 3, label: "Alto" },
+        { label: t("Semplicità"),                     name: "semplicita",                 type: "select",         options: [
+            { value: 1, label: t("Basso") },
+            { value: 2, label: t("Medio") },
+            { value: 3, label: t("Alto") },
         ],
         },
-        { label: "Complicità*",                     name: "status",                     type: "select",         options: [
-            { value: 1, label: "Basso" },
-            { value: 2, label: "Medio" },
-            { value: 3, label: "Alto" },
+        { label: t("Complicità"),                     name: "status",                     type: "select",         options: [
+            { value: 1, label: t("Basso") },
+            { value: 2, label: t("Medio") },
+            { value: 3, label: t("Alto") },
         ],
         },
 
-        { type: "titleGroups", label: "Contratti" },
-        { label: "Owner*",                          name: "idOwner",                    type: "select",         options: ownerOptions },
-        { label: "Tipologia*",                      name: "tipologia",                  type: "select",         options: [
-            { value: "Cliente", label: "Cliente" },
-            { value: "Prospect", label: "Prospect" },
-            { value: "EXCLIENTE", label: "Ex Cliente" },
+        { type: "titleGroups", label: t("Contratti") },
+        { label: t("Owner"),                          name: "idOwner",                    type: "select",         options: ownerOptions },
+        { label: t("Tipologia"),                      name: "tipologia",                  type: "select",         options: [
+            { value: "Cliente", label: t("Cliente") },
+            { value: "Prospect", label: t("Prospect") },
+            { value: "EXCLIENTE", label: t("Ex Cliente") },
         ],
         },
-        { label: "Scadenza Contratto",              name: "dataScadenzaContratto",      type: "date",
+        { label: t("Scadenza Contratto"),              name: "dataScadenzaContratto",      type: "date",
         },
-        { label: "Tipo di servizio",                name: "tipiServizio",                    type: "multipleSelect",options: ricercaOptions,},
-        { label: "Note",                            name: "note",                       type: "note",          maxLength: 2000         },
+        { label: t("Tipo di servizio"),                name: "tipiServizio",                    type: "multipleSelect",options: ricercaOptions,},
+        { label: t("Note"),                            name: "note",                       type: "note",          maxLength: 2000         },
 
-        { type: "titleGroups", label: "Documenti" },
-        { label: "Logo",                            name: "logo",                       type: "aggiungiImmagine"                        },
+        { type: "titleGroups", label: t("Documenti") },
+        { label: t("Logo"),                            name: "logo",                       type: "aggiungiImmagine"                        },
     ];
 
     //funzione per suddividere fields nelle varie pagine in base a titleGroups
@@ -426,13 +428,15 @@
     const renderFields = (field) => {
         const { type, ...otherProps } = field;
         // const errorMessage = errors[field.name];
+        const isMandatory = campiObbligatori.includes(field.name);
+        const displayLabel = isMandatory ? `${field.label}*` : field.label;
 
         switch (type) {
         case "text":
             return (
             <CustomTextFieldAggiungi
                 name={field.name}
-                label={field.label}
+                label={displayLabel}
                 type={field.type}
                 maxLength={field.maxLength}
                 values={values}
@@ -444,7 +448,7 @@
             return (
             <CustomDatePickerAggiungi
                 name={field.name}
-                label={field.label}
+                label={displayLabel}
                 type={field.type}
                 values={values}
                 onChange={handleChange}
@@ -467,7 +471,7 @@
             return (
             <CustomAutocomplete
                 name={field.name}
-                label={field.label}
+                label={displayLabel}
                 options={field.options}
                 value={values[field.name] || null}
                 onChange={handleChange}
@@ -479,7 +483,7 @@
             return (
             <CustomMultipleSelectAziende
                 name={field.name}
-                label={field.label}
+                label={displayLabel}
                 options={field.options}
                 value={values[field.name] || null}
                 onChange={handleChangeMultipleSkill}
@@ -589,7 +593,7 @@
                 }}
                 >
                 <span style={{ marginRight: "0.5em" }}>{"<"}</span>
-                Indietro
+                {t('Indietro')}
                 </Button>
             </Box>
             <Typography
@@ -606,7 +610,7 @@
                 }}
             >
                 {" "}
-                Aggiungi <br /> Azienda{" "}
+                {t("Aggiungi")} <br /> {t("Azienda")}
             </Typography>
             <List
                 sx={{ display: "flex", flexDirection: "column", width: "100%" }}
@@ -724,7 +728,7 @@
                 variant="h6"
                 sx={{ mt: 2, color: "#666565", fontSize: "1em", ml: 16 }}
             >
-                * Campo Obbligatorio
+                {t('* Campo Obbligatorio')}
             </Typography>
 
             <Box
@@ -755,7 +759,7 @@
                         },
                     }}
                 >
-                    Indietro
+                    {t('Indietro')}
                 </Button>
                 )}
                 {currentPageIndex < groupedFields.length - 1 && (
@@ -779,7 +783,7 @@
                         },
                     }}
                 >
-                    Avanti
+                    {t('Avanti')}
                 </Button>
                 )}
                 {currentPageIndex === groupedFields.length - 1 && (
@@ -804,7 +808,7 @@
                         },
                     }}
                 >
-                    Salva
+                    {t('Salva')}
                 </Button>
                 )}
             </Box>

@@ -14,6 +14,7 @@ import TrendingDownIcon                             from '@mui/icons-material/Tr
 import TrendingFlatIcon                             from '@mui/icons-material/TrendingFlat';
 import TrendingUpIcon                               from '@mui/icons-material/TrendingUp';
 import CallMadeIcon                                 from '@mui/icons-material/CallMade'; //priorità massima
+import { useTranslation }                           from "react-i18next"; 
 
 import { 
     Card, 
@@ -41,6 +42,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
 
     const navigate = useNavigate();
     const theme = useUserTheme();
+    const { t } = useTranslation(); 
     const [ modalStato,        setModalStato      ] = useState(false);
     const [ modalDelete,       setModalDelete     ] = useState(false);
     const [ newStato,          setNewStato        ] = useState(valori.stato?.id); 
@@ -218,28 +220,28 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
 
     const menuData = [
         {
-            title: 'Aggiorna Need',
+            title: t('Aggiorna Need'),
             icon: <Edit />,
             onClick: (event) => {
                 navigateToAggiorna(valori.id, event);
             }
         },
         {
-            title: 'Match',
+            title: t('Match'),
             icon: <JoinInnerIcon />,
             onClick: (event) => {
                 navigateToAssocia(valori.id, event);
             }
         },
         {
-            title: 'Cambia Stato',
+            title: t('Cambia Stato'),
             icon: <ChangeCircleIcon />,
             onClick: (event) => {
                 handleOpenModalStato(valori.id, event);
             }
         },
         {
-            title: 'Elimina Need',
+            title: t('Elimina Need'),
             icon: <DeleteIcon />,
             onClick: (event) => {
                 handleOpenModalDelete(event);
@@ -420,7 +422,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
                             }}
                             >
                             <Typography id="modal-modal-title" variant="h6" component="h2">
-                            Sei sicuro di voler eliminare il need?
+                            {t('Sei sicuro di voler eliminare il need?')}
                             </Typography>
                             <Box 
                             sx={{
@@ -441,7 +443,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
                                         transform: 'scale(1.01)'
                                     },
                                 }}>
-                                Indietro
+                            {t('Indietro')}
                             </Button>
                             <Button
                             onClick={confirmDelete}
@@ -455,7 +457,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
                                     transform: 'scale(1.01)'
                                 },
                             }}>
-                                Conferma
+                            {t('Conferma')}
                             </Button>
                             </Box>
                             </Box>
@@ -490,7 +492,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
                         }}
                     >
                         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
-                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', ml: 2, mt: 0.5, mb: 0.5}}>Cambia Stato al Need</Typography>
+                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', ml: 2, mt: 0.5, mb: 0.5}}>{t('Cambia Stato Al Need')}</Typography>
                             <IconButton sx={{
                                     mr: 2, 
                                     backgroundColor: 'transparent', 
@@ -499,7 +501,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
                                         bgcolor: 'transparent'
                                     }
 
-                             }} onClick={() => setModalStato(false)}>
+                            }} onClick={() => setModalStato(false)}>
                                     <CloseIcon sx={{ 
                                     backgroundColor: 'transparent',
                                     '&:hover': {
@@ -507,7 +509,8 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
                                         backgroundColor: 'transparent',
 
                                     }
-                                    }}/>                            </IconButton>
+                                    }}/>   
+                                    </IconButton>
                         </Box>
                         
                         <FormControl fullWidth >
@@ -525,7 +528,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
                                 renderInput={(params) => 
                                     <TextField 
                                         {...params} 
-                                        label="Stato"
+                                        label={t("Stato")}
                                         variant="filled" 
                                         sx={{
                                             height: '4em',
@@ -567,7 +570,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
                                 },
                             }}
                             >
-                                Cambia
+                                {t('Cambia')}
                             </Button>
                             </Box>
                             </Modal>

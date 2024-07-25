@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { format } from 'date-fns';
+import { useTranslation } from "react-i18next"; 
+
 
 const TabellaAttivitaRecruiting = ({ data = [] }) => {
+
+    const { t } = useTranslation(); 
+
     const [activities, setActivities] = useState([]);
 
     useEffect(() => {
@@ -22,11 +27,11 @@ const TabellaAttivitaRecruiting = ({ data = [] }) => {
             <Table sx={{ minWidth: 650 }} aria-label="collapsible table">
                 <TableHead>
                     <TableRow>
-                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold' }}>Data</TableCell>
-                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold' }}>Ora</TableCell>
-                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold' }}>Azione</TableCell>
-                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold' }}>Owner</TableCell>
-                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold' }}>Candidato</TableCell>
+                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold' }}>{t('Data')}</TableCell>
+                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold' }}>{t('Ora')}</TableCell>
+                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold' }}>{t('Azione')}</TableCell>
+                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold' }}>{t('Owner')}</TableCell>
+                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold' }}>{t('Candidato')}</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

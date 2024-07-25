@@ -6,9 +6,11 @@ import TabellaAttivitaBusiness from './TabellaAttivitaBusiness';
 import TabellaAttivitaRecruiting from './TabellaAttivitaRecruiting.jsx';
 import axios from 'axios';
 import { useUserTheme } from '../TorchyThemeProvider.jsx';
+import { useTranslation } from "react-i18next";
 
 const BoxAttivitaWeek = ({ aziendeOptions }) => {
     const theme = useUserTheme();
+    const { t } = useTranslation();
 
     const [currentDate, setCurrentDate] = useState(new Date());
     const [weekDataBusiness, setWeekDataBusiness] = useState([]);
@@ -47,8 +49,8 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
 
     const getMonthName = (monthIndex) => {
         const monthNames = [
-            "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno",
-            "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"
+            t("Gennaio"), t("Febbraio"), t("Marzo"), t("Aprile"), t("Maggio"), t("Giugno"),
+            t("Luglio"), t("Agosto"), t("Settembre"), t("Ottobre"), t("Novembre"), t("Dicembre")
         ];
         return monthNames[monthIndex];
     };
@@ -119,7 +121,7 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                 <Box sx={{ display: 'flex', flexDirection: 'row', gap: 5 }}>
                     <Typography variant='h5' sx={{ mt: 1, mb: 1, ml: 2, fontWeight: 'bold', fontSize: '1.2em' }}>
-                        To Do List
+                        {t("To Do List")}
                     </Typography>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.4 }}>
                         <IconButton onClick={handlePreviousWeek} sx={{ color: '#00B400' }}>
@@ -148,7 +150,7 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
                                 transition: 'transform 0.2s',
                             }}
                         >
-                            Business
+                            {t("Business")}
                         </Button>
                     )}
                     <Button
@@ -163,7 +165,7 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
                             transition: 'transform 0.2s',
                         }}
                     >
-                        Recruiting
+                        {t("Recruiting")}
                     </Button>
                 </Box>
             </Box>
