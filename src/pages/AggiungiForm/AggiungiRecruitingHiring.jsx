@@ -317,7 +317,7 @@ const AggiungiRecruitingHiring = () => {
 
 
             { type: "titleGroups",                label: "Fatturazione"            },
-            { label: "Data fatturazione",       name: "dataFatturazione",      type: "date",          maxLength: 45                    },
+            { label: "Modalità fatturazione",   name: "dataFatturazione",      type: "date",          maxLength: 45                    },
             { label: "Termini di pagamento",    name: "idTerminePagamento", type: "select",    options: terminiOptions, },
         ];
 

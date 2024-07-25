@@ -308,7 +308,7 @@ const AggiungiStaffing = () => {
             { label: 'Ruolo',                           name: 'descrizione',              type:'text', maxLength: 90                              },
             { label: "Data inizio",                     name: "inizioAttivita",           type: "date", maxLength: 45                             },
             { label: "Data fine",                       name: "fineAttivita",             type: "date", maxLength: 45                             },
-            { label: "Durata staffing",                 name: "durata",                   type: "text", maxLength: 45                             },
+            { label: "Durata staffing(mesi)",           name: "durata",                   type: "text", maxLength: 45                             },
 
 
             { type: 'titleGroups',                label: "Economics"     },
@@ -318,7 +318,7 @@ const AggiungiStaffing = () => {
 
 
             { type: "titleGroups",                label: "Fatturazione"            },
-            { label: "Data fatturazione",                  name: "dataFatturazione",      type: "date",          maxLength: 45                    },
+            { label: "Modalità fatturazione",              name: "dataFatturazione",      type: "date",          maxLength: 45                    },
             { label: "Termini di pagamento",               name: "idTerminePagamento",    type: "select",        options: terminiOptions, },
         ];
 

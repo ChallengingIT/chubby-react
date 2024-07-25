@@ -2,7 +2,7 @@ import React          from "react";
 import AttachmentIcon from "@mui/icons-material/Attachment";
 import Button         from "@mui/material/Button";
 
-function ClipButton({ idFile, fileDescrizione, onClick }) {
+function ClipButton({ idFile, fileDescrizione, onClick, hasFile }) {
   const handleDownload = () => {
     if (onClick && idFile && fileDescrizione) {
       onClick();
@@ -15,7 +15,7 @@ function ClipButton({ idFile, fileDescrizione, onClick }) {
     <Button
       // variant="contained"
       size="medium"
-      startIcon={<AttachmentIcon />}
+      startIcon={<AttachmentIcon sx={{ color: hasFile ? "black" : "#808080" }} />}
       onClick={handleDownload}
       sx={{
         // marginRight: "10%",

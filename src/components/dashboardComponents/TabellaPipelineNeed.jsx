@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { DataGrid } from '@mui/x-data-grid';
-import { Box, Dialog, DialogTitle, DialogContent, IconButton, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
+import { Box, Dialog, DialogTitle, DialogContent, IconButton, Table, TableHead, TableRow, TableCell, TableBody, Chip } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CircularProgress from '@mui/material/CircularProgress';
 import CloseIcon from '@mui/icons-material/Close';
@@ -23,7 +23,7 @@ const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
         { header: "ITW", data: [{ title: "Pianificata", value: currentPipelineData.itwPianificate }, { title: "Fatte", value: currentPipelineData.itwFatte }] },
         { header: "CF", data: [{ title: "Disponibili", value: currentPipelineData.cfDisponibili }, { title: "Inviati", value: currentPipelineData.cfInviati }] },
         { header: "QM", data: [{ title: "OK", value: currentPipelineData.qmPianificate }, { title: "KO", value: currentPipelineData.qmFatte }] },
-        { header: "F/U", data: [{ title: "OK", value: currentPipelineData.followUpPositivi }, { title: "Pool", value: currentPipelineData.followUpPool }] }
+        { header: "Follow Up", data: [{ title: "OK", value: currentPipelineData.followUpPositivi }, { title: "Pool", value: currentPipelineData.followUpPool }] }
     ];
 
     const handleOpenDialog = (pipelineData) => {
@@ -202,7 +202,7 @@ const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
                                     {dialogData.map((column) => (
                                         <TableCell key={column.header} align="center">
                                             <div style={{ fontWeight: 500 }}>{column.data[index].title}</div>
-                                            <div>{column.data[index].value}</div>
+                                            <Chip label={column.data[index].value} />
                                         </TableCell>
                                     ))}
                                 </TableRow>

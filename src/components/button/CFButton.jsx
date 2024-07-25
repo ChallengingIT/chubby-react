@@ -1,7 +1,8 @@
-    import React          from "react";
-    import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';    import Button         from "@mui/material/Button";
+    import React from "react";
+    import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+    import Button from "@mui/material/Button";
 
-    function CFButton({ idFile, fileDescrizione, onClick }) {
+    function CFButton({ idFile, fileDescrizione, onClick, hasFile }) {
     const handleDownload = () => {
         if (onClick) {
         onClick();
@@ -12,14 +13,12 @@
 
     return (
         <Button
-        // variant="contained"
         size="medium"
-        startIcon={<InsertDriveFileIcon />}
+        startIcon={<InsertDriveFileIcon sx={{ color: hasFile ? "black" : "#808080" }} />}
         onClick={handleDownload}
         sx={{
             marginRight: "10%",
             backgroundColor: "transparent",
-            color: "black",
             borderRadius: "50%",
             minWidth: "2em",
             width: "2em",
@@ -34,7 +33,6 @@
             "&:hover": {
             backgroundColor: "transparent",
             transform: "scale(1.05)",
-            color: "black",
             cursor: "pointer",
             borderRadius: "50%",
             borderStyle: "none",

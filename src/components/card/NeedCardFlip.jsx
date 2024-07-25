@@ -14,6 +14,7 @@ import TrendingDownIcon                             from '@mui/icons-material/Tr
 import TrendingFlatIcon                             from '@mui/icons-material/TrendingFlat';
 import TrendingUpIcon                               from '@mui/icons-material/TrendingUp';
 import CallMadeIcon                                 from '@mui/icons-material/CallMade'; //priorità massima
+import AccountCircleIcon                            from '@mui/icons-material/AccountCircle'; //owner
 import { useTranslation }                           from "react-i18next"; 
 
 import { 
@@ -313,6 +314,11 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
                     <AutoModeIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
                     {valori.stato.descrizione}
+            </Typography>
+
+            <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
+                    <AccountCircleIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
+                    {valori?.owner?.nome} {valori?.owner?.cognome}
             </Typography>
                 </Box>
                 <Box sx={{ 

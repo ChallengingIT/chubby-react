@@ -620,24 +620,6 @@ const Recruiting = () => {
               setSelectedRal(params.row.ral);
             }}
           /> */}
-          <Link
-            to={`/recruiting/intervista/${params.row.id}`}
-            state={{ recruitingData: params.row }}
-          >
-            <PersonInfoButton />
-          </Link>
-          <ClipButton
-            idFile={params.row.file ? params.row.file.id : null}
-            fileDescrizione={
-              params.row.file ? params.row.file.descrizione : null
-            }
-            onClick={() =>
-              handleDownloadCV(
-                params.row.file ? params.row.file.id : null,
-                params.row.file ? params.row.file.descrizione : null
-              )
-            }
-          />
           <CFButton
             idCandidato={params.row?.id ? params.row?.id : null}
             onClick={() =>
@@ -647,6 +629,28 @@ const Recruiting = () => {
                 params.row?.cognome ? params.row?.cognome : null,
                 params.row?.file ? params.row?.file : null,
                 params.row?.dataNascita ? params.row?.dataNascita : null
+              )
+            }
+            hasFile={!!params.row?.file}
+          />
+          <Link
+            to={`/recruiting/intervista/${params.row.id}`}
+            state={{ recruitingData: params.row }}
+          >
+            <PersonInfoButton
+              hasFile={!!params.row?.file}
+            />
+          </Link>
+          <ClipButton
+            hasFile={!!params.row?.file}
+            idFile={params.row.file ? params.row.file.id : null}
+            fileDescrizione={
+              params.row.file ? params.row.file.descrizione : null
+            }
+            onClick={() =>
+              handleDownloadCV(
+                params.row.file ? params.row.file.id : null,
+                params.row.file ? params.row.file.descrizione : null
               )
             }
           />
