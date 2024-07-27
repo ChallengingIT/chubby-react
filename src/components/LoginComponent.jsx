@@ -112,12 +112,12 @@
             const userRole = response.roles[0];
 
             if (
-            userRole === "ROLE_ADMIN" ||
-            userRole === "ROLE_RECRUITER" ||
-            userRole === "ROLE_BM"
+            userRole === "ADMIN" ||
+            userRole === "RECRUITER" ||
+            userRole === "BM"
             ) {
             navigate("/dashboard");
-            } else if (userRole === "ROLE_USER" || userRole === "ROLE_BUSINESS") {
+            } else if (userRole === "USER" || userRole === "BUSINESS") {
             navigate("/homepage");
             }
         }

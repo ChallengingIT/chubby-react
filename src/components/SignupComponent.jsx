@@ -82,9 +82,9 @@
     // //             eventBus.dispatch("loginSuccess");
     // //             const userRole = response.roles[0];
 
-    // //             if (userRole === "ROLE_ADMIN" || userRole === "ROLE_RECRUITER" || userRole === "ROLE_BM") {
+    // //             if (userRole === "ADMIN" || userRole === "RECRUITER" || userRole === "BM") {
     // //                 navigate("/dashboard");
-    // //             } else if (userRole === "ROLE_USER") {
+    // //             } else if (userRole === "USER") {
     // //                 navigate("/userHompage");
     // //             }
     // //         }

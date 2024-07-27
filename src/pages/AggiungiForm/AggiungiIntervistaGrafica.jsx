@@ -205,7 +205,7 @@
         case 0:
             return ["dataColloquio"];
         case 1:
-            return [];
+            return [ "coerenza, standing, energia, comunicazione, inglese, competenze, valutazione, descrizioneCandidatoUna, teamSiNo"];
         case 2:
             return [];
         default:
@@ -372,25 +372,26 @@
         { label: t("Descrizione Candidato"),       name: "note",                       type: "note",                maxLength: 8000,      },
 
         { type: "titleGroups", label: t("Competenze") },
-        { label: t("Coerenza Percorso"),           name: "coerenza",                   type: "select",             options: valoriOptions  },
-        { label: t("Standing"),                    name: "standing",                   type: "select",             options: valoriOptions  },
-        { label: t("Energia"),                     name: "energia",                    type: "select",             options: valoriOptions  },
-        { label: t("Comunicazione"),               name: "comunicazione",              type: "select",             options: valoriOptions  },
-        { label: t("Livello Di Inglese"),          name: "inglese",                    type: "select",             options: valoriOptions  },
-        { label: t("Competenze vs ruolo"),         name: "competenze",                 type: "select",             options: valoriOptions  },
-        { label: t("Valutazione"),                 name: "valutazione",                type: "select",             options: valoriOptions  },
-        { label: t("One word"),                    name: "descrizioneCandidatoUna",    type: "text",               maxLength: 45,          },
-        { label: t("Lo vorresti nel tuo team?"),   name: "teamSiNo",                   type: "select",             options: siNoOptions    },
+        { label: t("Coerenza Percorso*"),           name: "coerenza",                   type: "select",             options: valoriOptions  },
+        { label: t("Standing*"),                    name: "standing",                   type: "select",             options: valoriOptions  },
+        { label: t("Energia*"),                     name: "energia",                    type: "select",             options: valoriOptions  },
+        { label: t("Comunicazione*"),               name: "comunicazione",              type: "select",             options: valoriOptions  },
+        { label: t("Livello Di Inglese*"),          name: "inglese",                    type: "select",             options: valoriOptions  },
+        { label: t("Competenze vs ruolo*"),         name: "competenze",                 type: "select",             options: valoriOptions  },
+        { label: t("Valutazione*"),                 name: "valutazione",                type: "select",             options: valoriOptions  },
+        { label: t("One word*"),                    name: "descrizioneCandidatoUna",    type: "text",               maxLength: 45,          },
+        { label: t("Lo vorresti nel tuo team?*"),   name: "teamSiNo",                   type: "select",             options: siNoOptions    },
 
         { type: "titleGroups", label: t("Info Contrattuali") },
         { label: t("Disponibilità"),               name: "disponibilita",              type: "text",               maxLength: 45,          },
         { label: t("RAL Attuale"),                 name: "attuale",                    type: "text",               maxLength: 90           },
         { label: t("RAL Desiderata"),              name: "desiderata",                 type: "text",               maxLength: 90,          },
         { label: t("Proposta Economica"),          name: "proposta",                   type: "text",               maxLength: 90,          },
+        { label: t("Preavviso"),                   name: "preavviso",                  type: "text",               maxLength: 45                   },
+
 
         { type: "titleGroups", label: t("Azioni") },
         { label: t("Follow Up"),                   name: "tipo",                       type: "select",             options: tipoIntervistaOptions, },
-        { label: t("Preavviso"),                   name: "preavviso",                  type: "text",               maxLength: 45                   },
         { label: t("Next Deadline"),               name: "dataAggiornamento",          type: "dateOra"                                             },
         { label: t("Owner next Deadline"),         name: "idNextOwner",                type: "select",             options: ownerOptions,          },
     ];

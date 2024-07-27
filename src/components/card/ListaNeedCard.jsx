@@ -226,7 +226,7 @@
         onClick: (event) => {
             handleOpenModalDelete(event);
         },
-        isVisible: userHasRole('ROLE_ADMIN' && 'ROLE_BUSINESS'),
+        isVisible: userHasRole('ADMIN' && 'BUSINESS'),
         },
     ];
 

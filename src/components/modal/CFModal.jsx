@@ -1,40 +1,31 @@
-    import React, { useState, useEffect } from 'react';
+    import React, { useState } from 'react';
     import {
     Dialog,
     DialogTitle,
-    DialogContent,
     DialogActions,
     Button,
     Box,
-    TextField,
+    IconButton,
+    Typography
     } from '@mui/material';
     import CloseIcon from "@mui/icons-material/Close";
     import { useTranslation } from "react-i18next"; 
-
+    import InnotekLogo from '../../images/innotek.svg';
+    import ChallengingLogo from '../../images/challengingLogoPiccolo.svg';
 
     const CFModal = ({ open, handleClose, idCandidato, handleDownloadCF, nomeCandidato, cognomeCandidato }) => {
-    const [values, setValues] = useState('');
     const { t } = useTranslation(); 
 
 
-
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setValues(prevValues => ({
-        ...prevValues,
-        [name]: value
-        }));
-    };
-
-    const handleSubmit = () => {
-        handleDownloadCF(idCandidato, values.descrizione, nomeCandidato, cognomeCandidato);
+    const handleSubmit = (tipo) => {
+        handleDownloadCF(idCandidato, nomeCandidato, cognomeCandidato, tipo);
         handleClose();
     };
 
     return (
-        <Dialog open={open} onClose={handleClose} PaperProps={{ sx: { borderRadius: '20px',  display: 'flex', minWidth: '60vw', minHeight: '60vh', height: 'auto' } }}>
+        <Dialog open={open} onClose={handleClose} PaperProps={{ sx: { borderRadius: '20px',  display: 'flex', minWidth: '60vw', height: 'auto' } }}>
         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-            <DialogTitle variant='h5' sx={{ fontWeight: 'bold'}}>{t(`Descrizione CF di ${nomeCandidato} ${cognomeCandidato} `) }</DialogTitle>
+            <DialogTitle variant='h5' sx={{ fontWeight: 'bold'}}>{t(`Creazione CF di ${nomeCandidato} ${cognomeCandidato} `) }</DialogTitle>
             <Button
             onClick={handleClose}
             variant="outlined"
@@ -52,56 +43,42 @@
             startIcon={<CloseIcon sx={{ backgroundColor: "transparent" }} />}
             />
         </Box>
-        <DialogContent>
-            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <TextField
-                name='descrizione'
-                label={t('Descrizione')}
-                variant="filled"
-                fullWidth
-                inputProps={{
-                maxLength: 4000,
-                }}
-                multiline
-                rows={15}
-                value={values.descrizione}
-                onChange={handleChange}
-                sx={{
-                width: "100%",
-                textAlign: "left",
-                borderRadius: "20px",
-                backgroundColor: "#EDEDED",
-                "& .MuiFilledInput-root": {
-                    backgroundColor: "transparent",
-                },
-                "& .MuiFilledInput-underline:after": {
-                    borderBottomColor: "transparent",
-                },
-                "& .MuiFilledInput-root::before": {
-                    borderBottom: "none",
-                },
-                "&:hover .MuiFilledInput-root::before": {
-                    borderBottom: "none",
-                },
-                }}
-            />
-            </Box>
-        </DialogContent>
-        <DialogActions sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, mb: 1 }}>
-            <Button onClick={handleSubmit}
-            sx={{ 
-                bgcolor: '#00B400', 
+        <DialogActions sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 2, mb: 1 }}>
+            <Typography variant='body1' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: 20}}>Vuoi creare il CF per Innotek o per Challenging?</Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 4 }}>
+            <IconButton onClick={() => handleSubmit(1)}
+                sx={{ 
+                bgcolor: '#191919', 
                 color: 'white', 
                 fontWeight: 'bold', 
                 minWidth: '10em',
                 borderRadius: '10px',
                 '&:hover': {
-                bgcolor: '#00B400',
-                transform: 'scale(1.02)'
+                    bgcolor: '#191919',
+                    transform: 'scale(1.02)'
                 }
-            }}>
-            {t('Invia')}
-            </Button>
+                }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <img src={InnotekLogo} alt="Innotek" style={{ width: '54px', height: '54px' }} />
+                </Box>
+            </IconButton>
+            <IconButton onClick={() => handleSubmit(2)}
+                sx={{ 
+                bgcolor: '#EDEDED', 
+                color: 'white', 
+                fontWeight: 'bold', 
+                minWidth: '10em',
+                borderRadius: '10px',
+                '&:hover': {
+                    bgcolor: '#EDEDED',
+                    transform: 'scale(1.02)'
+                }
+                }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <img src={ChallengingLogo} alt="Challenging" style={{ width: '54px', height: '54px' }} />
+                </Box>
+            </IconButton>
+            </Box>
         </DialogActions>
         </Dialog>
     );

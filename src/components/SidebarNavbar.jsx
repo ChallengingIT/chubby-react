@@ -130,9 +130,9 @@
 //         const rolesArray = userObj.roles;
 //         const rolesReadable = rolesArray.map((role, index) => {
 //             switch (role) {
-//             case "ROLE_ADMIN":
+//             case "ADMIN":
 //                 return <span key={index}>Admin</span>;
-//             case "ROLE_BM":
+//             case "BM":
 //                 return (
 //                 <React.Fragment key={index}>
 //                     Business
@@ -140,7 +140,7 @@
 //                     Manager
 //                 </React.Fragment>
 //                 );
-//                 case "ROLE_RECRUITER":
+//                 case "RECRUITER":
 //                     return (
 //                         <span key={index}>Recruiter</span>
 //                     );
@@ -186,7 +186,7 @@
 //             <PersonAddIcon sx={{ color: "#00B401" }} />
 //             </ListItemIcon>
 //         </ListItem>
-//         {!userHasRole("ROLE_RECRUITER") && ( 
+//         {!userHasRole("RECRUITER") && ( 
 //         <ListItem button onClick={handleAggiungiNeedClick}>
 //             <ListItemText primary="Aggiungi need" />
 //             <ListItemIcon>
@@ -217,12 +217,12 @@
 //         {
 //         title: "Business",
 //         icon: <BusinessCenterIcon />,
-//         isVisible: !userHasRole("ROLE_RECRUITER")
+//         isVisible: !userHasRole("RECRUITER")
 //         },
 //         {
 //         title: "Contacts",
 //         icon: <PersonIcon />,
-//         isVisible: !userHasRole("ROLE_RECRUITER")
+//         isVisible: !userHasRole("RECRUITER")
 //         },
 //         {
 //         title: "Need",
@@ -235,7 +235,7 @@
 //         {
 //         title: "Hiring",
 //         icon: <ChecklistRtlIcon />,
-//         isVisible: !userHasRole("ROLE_USER" && "ROLE_RECRUITER"),
+//         isVisible: !userHasRole("USER" && "RECRUITER"),
 //         },
 //     ];
 

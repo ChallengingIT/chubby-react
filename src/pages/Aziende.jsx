@@ -70,7 +70,7 @@ const Aziende = () => {
             pagina: 0,
             quantita: 10,
         };
-        if (!userHasRole("ROLE_ADMIN")) {
+        if (!userHasRole("ADMIN")) {
             const userString = sessionStorage.getItem("user");
             if (userString) {
                 const userObj = JSON.parse(userString);
@@ -78,7 +78,7 @@ const Aziende = () => {
             }
         }
 
-        const baseUrl = userHasRole("ROLE_ADMIN")
+        const baseUrl = userHasRole("ADMIN")
             ? "http://localhost:8080/aziende/react/mod"
             : "http://localhost:8080/aziende/react/mod/personal";
 
@@ -173,7 +173,7 @@ const Aziende = () => {
             quantita: quantita,
         };
 
-        if (!userHasRole("ROLE_ADMIN")) {
+        if (!userHasRole("ADMIN")) {
             const userString = sessionStorage.getItem("user");
             if (userString) {
                 const userObj = JSON.parse(userString);
@@ -181,7 +181,7 @@ const Aziende = () => {
             }
         }
 
-        const baseUrl = userHasRole("ROLE_ADMIN")
+        const baseUrl = userHasRole("ADMIN")
             ? (isSearchActive ? "http://localhost:8080/aziende/react/ricerca/mod" : "http://localhost:8080/aziende/react/mod")
             : (isSearchActive ? "http://localhost:8080/aziende/react/ricerca/mod/personal" : "http://localhost:8080/aziende/react/mod/personal");
 
@@ -235,7 +235,7 @@ const Aziende = () => {
             quantita: quantita,
         };
 
-        if (!userHasRole("ROLE_ADMIN")) {
+        if (!userHasRole("ADMIN")) {
             const userString = sessionStorage.getItem("user");
             if (userString) {
                 const userObj = JSON.parse(userString);
@@ -243,7 +243,7 @@ const Aziende = () => {
             }
         }
 
-        const baseUrl = userHasRole("ROLE_ADMIN")
+        const baseUrl = userHasRole("ADMIN")
             ? "http://localhost:8080/aziende/react/ricerca/mod"
             : "http://localhost:8080/aziende/react/ricerca/mod/personal";
 
@@ -323,7 +323,12 @@ const Aziende = () => {
                 `http://localhost:8080/aziende/react/elimina/${id}`,
                 { headers: headers }
             );
+            const isAnyFilterSet = Object.values(filtri).some((value) => value);
+            if (!isAnyFilterSet) {
             await fetchData();
+            } else {
+            await handleRicerche();
+            }
         } catch (error) {
             console.error("Errore durante la cancellazione: ", error);
         }

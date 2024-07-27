@@ -361,7 +361,7 @@ const ModificaNeedGrafica = () => {
                 const userString = sessionStorage.getItem("user");
                 if (userString) {
                     const userObj = JSON.parse(userString);
-                    if (userObj.roles.includes("ROLE_BUSINESS")) {
+                    if (userObj.roles.includes("BUSINESS")) {
                         navigate(`/need/${aziendaID}`);
                     } else {
                         navigate('/need');

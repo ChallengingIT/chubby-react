@@ -76,19 +76,19 @@ const TabellaHiring = ({ data, columns, getRowId }) => {
         </TableHead>
         <TableBody>
           {data.map((row) => {
-            const columnsToShow = columnsByServiceType[row.tipoServizio.descrizione] || [];
+            // const columnsToShow = columnsByServiceType[row.tipoServizio.descrizione] || [];
 
             return (
               <React.Fragment key={getRowId(row)}>
                 <TableRow>
                   <TableCell sx={{borderBottom: '1.5px solid #ccc7c7'}}>{row.denominazioneCliente}</TableCell>
-                  <TableCell sx={{borderBottom: '1.5px solid #ccc7c7'}}>{row.tipoServizio.descrizione}</TableCell>
+                  {/* <TableCell sx={{borderBottom: '1.5px solid #ccc7c7'}}>{row.tipoServizio.descrizione}</TableCell> */}
                   <TableCell sx={{borderBottom: '1.5px solid #ccc7c7'}}>
                     <IconButton onClick={() => handleExpandClick(getRowId(row))} sx={{ '&:hover': { bgcolor: 'transparent', transform: 'scale(1.1)'}}}>
                       {expanded === getRowId(row) ? <ExpandLess /> : <ExpandMore />}
                     </IconButton>
                     <IconButton
-                      onClick={() => handleAddClick(getRowId(row), row.tipoServizio.descrizione)}
+                      // onClick={() => handleAddClick(getRowId(row), row.tipoServizio.descrizione)}
                     >
                       <AddCircle sx={{ color: theme.palette.icon.main }} />
                     </IconButton>
@@ -110,9 +110,9 @@ const TabellaHiring = ({ data, columns, getRowId }) => {
                           <Table>
                             <TableHead>
                               <TableRow>
-                                {["Nome", "Cognome", "Ruolo"].concat(columnsToShow).map((colName) => (
+                                {/* {["Nome", "Cognome", "Ruolo"].concat(columnsToShow).map((colName) => (
                                   <TableCell sx={{ fontWeight: "bold", borderBottom: '1.5px solid #ccc7c7' }} key={colName}>{colName}</TableCell>
-                                ))}
+                                ))} */}
                                 <TableCell sx={{fontWeight: 'bold', borderBottom: '1.5px solid #ccc7c7'}}> Aggiorna </TableCell>
                               </TableRow>
                             </TableHead>
@@ -122,12 +122,12 @@ const TabellaHiring = ({ data, columns, getRowId }) => {
                                   <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.nomeCandidato}</TableCell>
                                   <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.cognomeCandidato}</TableCell>
                                   <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.descrizione}</TableCell>
-                                  {columnsToShow.includes("Inizio Attività") && <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.inizioAttivita}</TableCell>}
+                                  {/* {columnsToShow.includes("Inizio Attività") && <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.inizioAttivita}</TableCell>}
                                   {columnsToShow.includes("Fine Attività") && <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.fineAttivita}</TableCell>}
                                   {columnsToShow.includes("RAL") && <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.economics}</TableCell>}
                                   {columnsToShow.includes("Rate") && <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.economics}</TableCell>}
                                   {columnsToShow.includes("Canone") && <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.canoneMensile}</TableCell>}
-                                  {columnsToShow.includes("Importo Fatturato") && <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.fatturato}</TableCell>}
+                                  {columnsToShow.includes("Importo Fatturato") && <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7' }}>{candidato.fatturato}</TableCell>} */}
                                   <TableCell sx={{ borderBottom: '1.5px solid #ccc7c7'}}>
                                     <IconButton
                                       onClick={() => handleEditClick(getRowId(row), row.tipoServizio.descrizione, candidato.id)}

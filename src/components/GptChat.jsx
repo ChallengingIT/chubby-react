@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, TextField, Box, CircularProgress, Popover, List, ListItem, ListItemText, InputAdornment, IconButton } from '@mui/material';
+import { TextField, Box, Popover, List, ListItem, ListItemText, InputAdornment, IconButton } from '@mui/material';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 import axios from 'axios';
 import Logo from '../images/tochyChallenging.svg';
+import InfoIcon from '@mui/icons-material/Info';
 
 const GptChat = () => {
     const user = JSON.parse(sessionStorage.getItem("user"));
@@ -90,14 +91,11 @@ const GptChat = () => {
         if (e.key === 'Enter') {
             e.preventDefault();
             handleSend(); 
-        } else if (e.key === '/') {
-            setAnchorEl(e.currentTarget);
         }
     };
 
-    const handleKeywordClick = (keyword) => {
-        setNewMessage(prevMessage => prevMessage + keyword);
-        setAnchorEl(null);
+    const handleInfoIconClick = (event) => {
+        setAnchorEl(event.currentTarget);
     };
 
     const handleClosePopover = () => {
@@ -106,22 +104,21 @@ const GptChat = () => {
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', borderRadius: '20px', border: 'solid 2.5px #00B400', overflow: 'auto', width: '500px', height: '500px' }}>
-            <Box sx={{ bgcolor: '#EDEDED', borderRadius: '16px 16px 0px 0px', height: '15%' }}>
+            <Box sx={{ bgcolor: '#EDEDED', borderRadius: '16px 16px 0px 0px', height: '15%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 1 }}>
+                <Box />
                 <img
                     src={Logo}
                     alt='Logo'
                     style={{ 
-                        width: '100%',
-                        height: '200%',  
+                        height: '180px', 
                         objectFit: 'contain',
-                        marginLeft: 'auto',
-                        marginRight: 'auto',
-                        display: 'block',
-                        justifyContent: 'flex-start',
-                        marginTop: '-40px',
-                        marginBottom: '-50px',
                     }}
                 />
+                <IconButton onClick={handleInfoIconClick}>
+                    <InfoIcon 
+                    sx={{ color: '#808080', fontSize: 22}}
+                    />
+                </IconButton>
             </Box>
 
             <Box 
@@ -131,6 +128,12 @@ const GptChat = () => {
                     p: 2,
                     height: 'calc(100% - 150px)',
                     overflowY: 'scroll',
+                    /* disabilita la visione della scroll bar per tutti i browser basati su webkit*/
+                    '::-webkit-scrollbar': {
+                        display: 'none',
+                    },
+                    '-ms-overflow-style': 'none', /* Internet Explorer 10+ */
+                    'scrollbar-width': 'none', /* Firefox */
                 }}>
                 {messages.map((message, index) => (
                     <Box
@@ -160,7 +163,7 @@ const GptChat = () => {
                 <TextField
                     fullWidth
                     variant="filled"
-                    placeholder="Scrivi un messaggio o digita '/'.."
+                    placeholder="Scrivi un messaggio.."
                     multiline
                     maxRows={4}
                     value={newMessage}
@@ -169,7 +172,7 @@ const GptChat = () => {
                     InputProps={{
                         endAdornment: (
                             <InputAdornment position="end">
-                                <IconButton onClick={handleSend} sx={{ mb: 2}}>
+                                <IconButton onClick={handleSend}>
                                     {isLoading ? (
                                         <StopCircleIcon sx={{ color: '#00B400', fontSize: 32 }} />
                                     ) : (
@@ -182,6 +185,11 @@ const GptChat = () => {
                                 </IconButton>
                             </InputAdornment>
                         ),
+                        sx: {
+                            padding: '12px 14px',
+                            display: 'flex',
+                            alignItems: 'center'
+                        }
                     }}
                     sx={{
                         width: "110%",
@@ -211,34 +219,34 @@ const GptChat = () => {
                         },
                     }}
                 />
-                <Popover
-                    open={Boolean(anchorEl)}
-                    anchorEl={anchorEl}
-                    onClose={handleClosePopover}
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
-                >
-                    <List>
-                        {keywords.map((keyword, index) => (
-                            <ListItem button key={index} onClick={() => handleKeywordClick(keyword)}>
-                                <ListItemText primary={keyword} />
-                            </ListItem>
-                        ))}
-                    </List>
-                </Popover>
             </Box>
+
+            <Popover
+                open={Boolean(anchorEl)}
+                anchorEl={anchorEl}
+                onClose={handleClosePopover}
+                anchorOrigin={{
+                    vertical: 'center',
+                    horizontal: 'left',
+                }}
+                transformOrigin={{
+                    vertical: 'center',
+                    horizontal: 'right',
+                }}
+            >
+                <List>
+                    {keywords.map((keyword, index) => (
+                        <ListItem key={index}>
+                            <ListItemText primary={keyword} />
+                        </ListItem>
+                    ))}
+                </List>
+            </Popover>
         </Box>
     );
 };
 
 export default GptChat;
-
-
-
-
-
 
 
 

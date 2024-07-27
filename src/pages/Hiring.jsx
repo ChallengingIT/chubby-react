@@ -26,19 +26,22 @@ const Hiring = () => {
 
   //stati per il fetch
     const [ hiringData,                    setHiringData               ] = useState([]);
-    const [ terminiOptions,                setTerminiOptions           ] = useState([]);
-    const [ serviziOptions,                setServiziOptions           ] = useState([]);
-        const [ clienteOptions,             setClienteOptions             ] = useState([]);
+    const [ clienteOptions,                setClienteOptions           ] = useState([]);
 
 
+    const serviziOptions = [
+      { value: "Temporary",     label: "Temporary"    },
+      { value: "Head Hunting",  label: "Head Hunting" },
+      { value: "Staffing",      label: "Staffing"     },
+      { value: "Recruiting",    label: "Recruiting"   },
+  ];
 
+    
   //stati per la paginazione
   const [ pagina,                 setPagina       ] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const quantita = 10;
 
-
-  
 
 
   const userHasRole = (role) => {
@@ -61,18 +64,12 @@ const Hiring = () => {
     }, [filtri]);
 
 
-
-
-  
   const user = JSON.parse(sessionStorage.getItem('user'));
   const token = user?.token;
 
   const headers = {
     Authorization: `Bearer ${token}`
   };
-
-
-
 
    const fetchData = async () => {
 
@@ -86,8 +83,6 @@ const Hiring = () => {
       pagina: 0,
       quantita: 10
   };
-
-
 
     try {
         // const response          = await axios.get("http://localhost:8080/staffing/react/mod",          { headers: headers, params: filtriDaInviare });
@@ -104,21 +99,19 @@ const Hiring = () => {
             console.error("I dati degli stati ottenuti non sono nel formato Array:", responseCliente.data);
         }
 
+        // if (Array.isArray(responseTermini.data)) {
+        //     setTerminiOptions(responseTermini.data.map((termini, index) => ({ label: termini.descrizione, value: termini.id })));
+        // } else {
+        //     console.error("I dati ottenuti non sono nel formato Array:", responseTermini.data);
+        // } 
 
 
-        if (Array.isArray(responseTermini.data)) {
-            setTerminiOptions(responseTermini.data.map((termini, index) => ({ label: termini.descrizione, value: termini.id })));
-        } else {
-            console.error("I dati ottenuti non sono nel formato Array:", responseTermini.data);
-        } 
-
-
-        if (Array.isArray(responseServizi.data)) {
-            setServiziOptions(responseServizi.data.map((servizi, index) => ({ label: servizi.descrizione, value: servizi.id })));
+        // if (Array.isArray(responseServizi.data)) {
+        //     setServiziOptions(responseServizi.data.map((servizi, index) => ({ label: servizi.descrizione, value: servizi.id })));
     
-        } else {
-            console.error("I dati ottenuti non sono nel formato Array:", responseServizi.data);
-        } 
+        // } else {
+        //     console.error("I dati ottenuti non sono nel formato Array:", responseServizi.data);
+        // } 
 
 
         if (Array.isArray(responseHiring.data)) {
@@ -153,12 +146,6 @@ const Hiring = () => {
         }
     };
 
-
-
-    
-
-
-
     useEffect(() => {
       const filtriSalvati = sessionStorage.getItem('filtriRicercaHiring');
       if (filtriSalvati) {
@@ -176,8 +163,6 @@ const Hiring = () => {
       }
       // eslint-disable-next-line
   }, []);
-
-
 
 
 const handleRicerche = async () => {
@@ -219,8 +204,6 @@ const handleRicerche = async () => {
 };
 
 
-
-
   const handleFilterChange = (name) => (event) => {
     const newValue = event.target.value;
     setFiltri(currentFilters => {
@@ -260,18 +243,9 @@ const navigateToModificaHiring = (id) => {
 navigate(`/modificaHiring/${id}`);
 };
 
-
-
-
-
 const columns = [
   { field: "denominazioneCliente",              headerName: "Nome Azienda",            flex: 1.5 },
-  { field: "tipoServizio",                      headerName: "Tipo di servizio",        flex: 1.3, renderCell: (params) => {
-    const tipoServizio = params.value;
-    return `${tipoServizio.descrizione}`;
-  }
-  },
-  { field: "azioni",        headerName: "Azioni",          flex: 1.6, renderCell: (params) => (
+  { field: "azioni",                            headerName: "Azioni",                  flex: 1.6, renderCell: (params) => (
     <IconButton sx={{ bgcolor: 'transparent'}}>
       <EditButton onClick={() => {
         navigateToModificaHiring(params.row.id);

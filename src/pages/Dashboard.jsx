@@ -63,7 +63,7 @@ function Dashboard() {
             pagina: 0,
             quantita: 10,
         };
-        if (!userHasRole("ROLE_ADMIN")) {
+        if (!userHasRole("ADMIN")) {
             const userString = sessionStorage.getItem("user");
             if (userString) {
                 const userObj = JSON.parse(userString);
@@ -71,13 +71,13 @@ function Dashboard() {
             }
         }
 
-        const baseUrlPipeline = userHasRole("ROLE_ADMIN")
+        const baseUrlPipeline = userHasRole("ADMIN")
             ? "http://localhost:8080/dashboard/pipeline/admin"
             : "http://localhost:8080/dashboard/pipeline";
 
         try {
-            const responsePipeline = await axios.get(baseUrlPipeline, { headers, params: filtriDaInviare });
-            const responseAzienda = await axios.get("http://localhost:8080/aziende/react/select", { headers });
+            const responsePipeline = await axios.get(baseUrlPipeline, { headers: headers, params: filtriDaInviare });
+            const responseAzienda = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
 
             if (Array.isArray(responseAzienda.data)) {
                 setAziendaOptions(responseAzienda.data.map((azienda) => ({

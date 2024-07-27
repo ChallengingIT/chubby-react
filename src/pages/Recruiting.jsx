@@ -68,7 +68,6 @@ const Recruiting = () => {
   //stato per il dialog
   const [openDialogNome, setOpenDialogNome] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
-  const [noCFModal, setNoCFModal] = useState(false);
 
   // Stato per snackbar
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -81,6 +80,11 @@ const Recruiting = () => {
       return;
     }
     setSnackbarOpen(false);
+  };
+
+  const showSnackbar = (message) => {
+    setSnackbarMessage(message);
+    setSnackbarOpen(true);
   };
   
 
@@ -450,12 +454,33 @@ const Recruiting = () => {
     }
   };
 
-  const handleDownloadCF = async (idCandidato, nomeCandidato, cognomeCandidato, file, dataNascita) => {
+  const handleCheckedCF = (idCandidato, nomeCandidato, cognomeCandidato, file, dataNascita) => {
     if (dataNascita != null && file != null) {
+      setIdCandidato(idCandidato);
+      setNomeCandidato(nomeCandidato);
+      setCognomeCandidato(cognomeCandidato);
+      setDescrizioneModalOpen(true);
+    } else {
+      let message = t(`Attenzione: non è possibile procedere alla creazione del CF per il candidato ${nomeCandidato} ${cognomeCandidato}.`);
+      if (file == null) {
+        message += t(` Il CV non è presente.`);
+      }
+      else if (dataNascita == null) {
+        message += t(` La data di nascita non è presente.`);
+      }
+      else if ( file == null && dataNascita == null) {
+        message += t(' Il CV e la data di nascita non sono presenti.');
+      }
+      setSnackbarMessage(message);
+      setSnackbarOpen(true);
+    }
+  }
+
+  const handleDownloadCF = async (idCandidato, nomeCandidato, cognomeCandidato, tipo) => {
       try {
         setLoadingCF(true);
         const downloadUrl = `http://localhost:8080/files/download/cf/${idCandidato}`;
-        const params = new URLSearchParams();
+        const params = new URLSearchParams({ tipo });
   
         const responseDownloadCF = await axios({
           method: "GET",
@@ -480,17 +505,6 @@ const Recruiting = () => {
           error
         );
       }
-    } else {
-      let message = t(`Attenzione: non è possibile procedere alla creazione del CF per il candidato ${nomeCandidato} ${cognomeCandidato}.`);
-      if (file == null) {
-        message += t(` Il CV non è presente.`);
-      }
-      if (dataNascita == null) {
-        message += t(` La data di nascita non è presente.`);
-      }
-      setSnackbarMessage(message);
-      setSnackbarOpen(true);
-    }
   };
   
   
@@ -620,25 +634,13 @@ const Recruiting = () => {
               setSelectedRal(params.row.ral);
             }}
           /> */}
-          <CFButton
-            idCandidato={params.row?.id ? params.row?.id : null}
-            onClick={() =>
-              handleDownloadCF(
-                params.row?.id ? params.row?.id : null,
-                params.row?.nome ? params.row?.nome : null,
-                params.row?.cognome ? params.row?.cognome : null,
-                params.row?.file ? params.row?.file : null,
-                params.row?.dataNascita ? params.row?.dataNascita : null
-              )
-            }
-            hasFile={!!params.row?.file}
-          />
+          
           <Link
             to={`/recruiting/intervista/${params.row.id}`}
             state={{ recruitingData: params.row }}
           >
             <PersonInfoButton
-              hasFile={!!params.row?.file}
+              hasInterviste={!!params.row?.hasInterviste}
             />
           </Link>
           <ClipButton
@@ -653,8 +655,22 @@ const Recruiting = () => {
                 params.row.file ? params.row.file.descrizione : null
               )
             }
+            showSnackbar={showSnackbar}
           />
-          {userHasRole("ROLE_ADMIN") && (
+          <CFButton
+            idCandidato={params.row?.id ? params.row?.id : null}
+            onClick={() =>
+              handleCheckedCF(
+                params.row?.id ? params.row?.id : null,
+                params.row?.nome ? params.row?.nome : null,
+                params.row?.cognome ? params.row?.cognome : null,
+                params.row?.file ? params.row?.file : null,
+                params.row?.dataNascita ? params.row?.dataNascita : null
+              )
+            }
+            hasFile={!!params.row?.file && !!params.row?.dataNascita}
+          />
+          {userHasRole("ADMIN") && (
             <DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
           )}
         </Box>

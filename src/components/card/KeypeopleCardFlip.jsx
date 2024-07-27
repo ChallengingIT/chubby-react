@@ -393,7 +393,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
             onClick: (event) => {
                 handleOpenModalDelete(event);
             },
-            isVisible: userHasRole('ROLE_ADMIN'),
+            isVisible: userHasRole('ADMIN'),
         }
     ];
 

@@ -62,12 +62,12 @@ const AggiungiRecruitingGrafica = () => {
             // const responseJobTitle            = await axios.get(`http://localhost:8080/aziende/react/tipologia/${id}`   , { headers: headers });
             const responseTipologia           = await axios.get("http://localhost:8080/staffing/react/tipo/candidatura" , { headers: headers });
             const responseNeedSkills          = await axios.get("http://localhost:8080/staffing/react/skill"            , { headers: headers });
-            const ownerResponse               = await axios.get("http://localhost:8080/owner"             , { headers: headers });
+            const ownerResponse               = await axios.get("http://localhost:8080/owner"                           , { headers: headers });
             const facoltaResponse             = await axios.get("http://localhost:8080/staffing/react/facolta"          , { headers: headers });
             const livelloScolasticoResponse   = await axios.get("http://localhost:8080/staffing/react/livello"          , { headers: headers });
             const funzioniAziendaliResponse   = await axios.get("http://localhost:8080/staffing/react/funzioni"         , { headers: headers }); 
             const ricercaResponse             = await axios.get("http://localhost:8080/staffing/react/tipo/ricerca"     , { headers: headers });
-            const tipoResponse                = await axios.get("http://localhost:8080/staffing/react/tipo"            , { headers: headers });
+            const tipoResponse                = await axios.get("http://localhost:8080/staffing/react/tipo"             , { headers: headers });
 
 
             if (Array.isArray(tipoResponse.data)) {

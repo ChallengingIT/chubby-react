@@ -72,7 +72,7 @@ const Keypeople = () => {
             quantita: 10
         };
 
-        if (!userHasRole('ROLE_ADMIN')) {
+        if (!userHasRole('ADMIN')) {
             const userString = sessionStorage.getItem('user');
             if (userString) {
                 const userObj = JSON.parse(userString);
@@ -80,7 +80,7 @@ const Keypeople = () => {
             }
         }
 
-        const baseUrl = userHasRole('ROLE_ADMIN') ? "http://localhost:8080/keypeople/react/mod" : "http://localhost:8080/keypeople/react/mod/personal";
+        const baseUrl = userHasRole('ADMIN') ? "http://localhost:8080/keypeople/react/mod" : "http://localhost:8080/keypeople/react/mod/personal";
         try {
             const response = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
             const responseCliente = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
@@ -150,7 +150,7 @@ const Keypeople = () => {
             quantita: quantita,
         };
 
-        if (!userHasRole('ROLE_ADMIN')) {
+        if (!userHasRole('ADMIN')) {
             const userString = sessionStorage.getItem('user');
             if (userString) {
                 const userObj = JSON.parse(userString);
@@ -158,7 +158,7 @@ const Keypeople = () => {
             }
         }
 
-        const baseUrl = userHasRole('ROLE_ADMIN')
+        const baseUrl = userHasRole('ADMIN')
             ? (isSearchActive ? "http://localhost:8080/keypeople/react/ricerca/mod" : "http://localhost:8080/keypeople/react/mod")
             : (isSearchActive ? "http://localhost:8080/keypeople/react/ricerca/mod/personal" : "http://localhost:8080/keypeople/react/mod/personal");
 
@@ -209,7 +209,7 @@ const Keypeople = () => {
             quantita: quantita,
         };
 
-        if (!userHasRole('ROLE_ADMIN')) {
+        if (!userHasRole('ADMIN')) {
             const userString = sessionStorage.getItem('user');
             if (userString) {
                 const userObj = JSON.parse(userString);
@@ -217,7 +217,7 @@ const Keypeople = () => {
             }
         }
 
-        const baseUrl = userHasRole('ROLE_ADMIN')
+        const baseUrl = userHasRole('ADMIN')
             ? "http://localhost:8080/keypeople/react/ricerca/mod"
             : "http://localhost:8080/keypeople/react/ricerca/mod/personal";
 

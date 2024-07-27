@@ -108,12 +108,12 @@
         if (user && user.roles) {
             user.roles.forEach(role => {
                 switch (role) {
-                    case "ROLE_ADMIN":
-                    case "ROLE_RECRUITER":
-                    case "ROLE_BM":
+                    case "ADMIN":
+                    case "RECRUITER":
+                    case "BM":
                         selectedTheme = themes.default;
                         break;
-                    case "ROLE_BUSINESS":
+                    case "BUSINESS":
                         if (user.idAzienda) {
                             const aziendaIds = Array.isArray(user.idAzienda) ? user.idAzienda : [user.idAzienda];
                             aziendaIds.forEach(aziendaId => {

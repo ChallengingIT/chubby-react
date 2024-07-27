@@ -1,11 +1,13 @@
-import React          from "react";
+import React from "react";
 import AttachmentIcon from "@mui/icons-material/Attachment";
-import Button         from "@mui/material/Button";
+import Button from "@mui/material/Button";
 
-function ClipButton({ idFile, fileDescrizione, onClick, hasFile }) {
+function ClipButton({ idFile, fileDescrizione, onClick, hasFile, showSnackbar }) {
   const handleDownload = () => {
-    if (onClick && idFile && fileDescrizione) {
+    if (hasFile && onClick) {
       onClick();
+    } else if (!hasFile && showSnackbar) {
+      showSnackbar("Il CV non è presente.");
     } else {
       console.warn("La funzione di download non è definita");
     }
@@ -13,12 +15,10 @@ function ClipButton({ idFile, fileDescrizione, onClick, hasFile }) {
 
   return (
     <Button
-      // variant="contained"
       size="medium"
       startIcon={<AttachmentIcon sx={{ color: hasFile ? "black" : "#808080" }} />}
       onClick={handleDownload}
       sx={{
-        // marginRight: "10%",
         backgroundColor: "transparent",
         color: "black",
         borderRadius: "50%",

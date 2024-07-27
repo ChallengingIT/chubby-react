@@ -172,7 +172,7 @@ const ModificaIntervistaGrafica = () => {
             case 0:
                 return ["dataColloquio"];
             case 1:
-                return [];
+                return ["coerenza, standing, energia, comunicazione, inglese, competenze, valutazione, descrizioneCandidatoUna, teamSiNo"];
             case 2:
                 return [];
             default:
@@ -355,10 +355,11 @@ const ModificaIntervistaGrafica = () => {
         { label: t("RAL Attuale"), name: "attuale", type: "text", maxLength: 90 },
         { label: t("RAL Desiderata"), name: "desiderata", type: "text", maxLength: 90 },
         { label: t("Proposta Economica"), name: "proposta", type: "text", maxLength: 90 },
+        { label: t("Preavviso"), name: "preavviso", type: "text", maxLength: 45 },
+
 
         { type: "titleGroups", label: t("Azioni") },
         { label: t("Follow Up"), name: "idTipo", type: "select", options: tipoIntervistaOptions },
-        { label: t("Preavviso"), name: "preavviso", type: "text", maxLength: 45 },
         { label: t("Next Deadline"), name: "dataAggiornamento", type: "dateOra" },
         { label: t("Owner next Deadline"), name: "idNextOwner", type: "select", options: ownerOptions },
     ];
