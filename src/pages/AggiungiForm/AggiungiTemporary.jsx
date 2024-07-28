@@ -17,6 +17,7 @@ const AggiungiTemporary = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const idHiring = id;
+    const idTipoServizio = 3;
 
     //stati della pagina
     const [ activeSection,      setActiveSection        ] = useState('Descrizione');
@@ -283,7 +284,7 @@ const AggiungiTemporary = () => {
     
                     const response = await axios.post("http://localhost:8080/hiring/salva/scheda", values, {
                         headers: headers,
-                        params: { idHiring: idHiring }
+                        params: { idHiring: idHiring, idTipoServizio: idTipoServizio }
                     });
                     if (response.data === "DUPLICATO") {
                         setAlert({ open: true, message: "azienda già esistente!" });

@@ -4,6 +4,7 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8080/api/auth/";
 const API_LOGOUT = "http://localhost:8080/logout";
+const API_REGISTER_CANDIDATO = "http://localhost:8080/candidato/auth/signup"
 
 
 
@@ -44,6 +45,38 @@ class AuthService {
         throw error; // Propaga l'errore al chiamante
       });
   }
+
+  registerCandidato(username, password, nome, cognome, cellulare, residenza, email, file) {
+    const formData = new FormData();
+    formData.append("username", username);
+    formData.append("password", password);
+    formData.append("nome", nome);
+    formData.append("cognome", cognome);
+    formData.append("cellulare", cellulare);
+    formData.append("residenza", residenza);
+    formData.append("email", email);
+    formData.append("file", file);
+
+    return axios
+      .post(API_REGISTER_CANDIDATO, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      })
+      .then(response => {
+        if (response.data) {
+          sessionStorage.setItem("user", JSON.stringify(response.data));
+          return response.data;
+        } else {
+          throw new Error("Registration failed"); // Lancia un errore se la registrazione fallisce
+        }
+      })
+      .catch(error => {
+        throw error; // Propaga l'errore al chiamante
+      });
+  }
+
+
   logout() {
     
     const user = JSON.parse(sessionStorage.getItem("user"));

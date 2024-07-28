@@ -3,7 +3,7 @@ import { Box, Grid, Skeleton, Typography, Fab, Popover, IconButton } from '@mui/
 import RicercheHiring from '../components/ricerche/RicercheHiring'
 import { useNavigate } from 'react-router-dom';
 import EditButton from '../components/button/EditButton.jsx';
-import TabellaHiring from '../components/TabellaHiring.jsx';
+import TabellaHiring2 from '../components/TabellaHiring2.jsx';
 import SchemePage from '../components/SchemePage.jsx';
 import axios from 'axios';
 
@@ -245,7 +245,7 @@ navigate(`/modificaHiring/${id}`);
 
 const columns = [
   { field: "denominazioneCliente",              headerName: "Nome Azienda",            flex: 1.5 },
-  { field: "azioni",                            headerName: "Azioni",                  flex: 1.6, renderCell: (params) => (
+  { field: "azioni",                            headerName: "",                  flex: 1.6, renderCell: (params) => (
     <IconButton sx={{ bgcolor: 'transparent'}}>
       <EditButton onClick={() => {
         navigateToModificaHiring(params.row.id);
@@ -280,7 +280,7 @@ const columns = [
             ))}
             </>   
         ) : ( 
-          <TabellaHiring
+          <TabellaHiring2
           data={hiringData}
           columns={columns}
           getRowId={(row) => row.id}

@@ -16,6 +16,7 @@ const ModificaHeadHunting = () => {
     const navigate = useNavigate();
     const { idHiring } = useParams();
     const { idScheda } = useParams();
+    const idTipoServizio = 1;
 
 
 
@@ -274,7 +275,7 @@ const ModificaHeadHunting = () => {
     
                     const response = await axios.post("http://localhost:8080/hiring/salva/scheda", valuesWithId, {
                         headers: headers,
-                        params: { idHiring: idHiring }
+                        params: { idHiring: idHiring, idTipoServizio: idTipoServizio }
                     });
                     if (response.data === "DUPLICATO") {
                         setAlert({ open: true, message: "azienda già esistente!" });

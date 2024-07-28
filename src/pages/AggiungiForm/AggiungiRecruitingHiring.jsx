@@ -17,6 +17,7 @@ const AggiungiRecruitingHiring = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const idHiring = id;
+    const idTipoServizio = 2;
 
 
 
@@ -274,7 +275,7 @@ const AggiungiRecruitingHiring = () => {
     
                     const response = await axios.post("http://localhost:8080/hiring/salva/scheda", values, {
                         headers: headers,
-                        params: { idHiring: idHiring }
+                        params: { idHiring: idHiring, idTipoServizio: idTipoServizio }
                     });
                     if (response.data === "DUPLICATO") {
                         setAlert({ open: true, message: "azienda già esistente!" });

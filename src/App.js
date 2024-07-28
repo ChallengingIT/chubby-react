@@ -46,6 +46,7 @@ import { NotificationProvider }                                        from './c
 // import ForgotPasswordComponent from './prove/ForgotPasswordComponent.jsx';
 import LoginComponent from './components/LoginComponent.jsx';
 import DashboardClienti from './components/componentiCliente/DashboardClienti.jsx';
+import RegisterCandidato from './components/RegisterCandidato.jsx';
 
 
 
@@ -72,6 +73,7 @@ const App = () => {
       <Routes>
       <Route path='/' element={<LoginComponent /> } />
       <Route path="/login" element={<LoginComponent />} />
+      <Route path="/register" element={<RegisterCandidato />} />
       {/* <Route path="/signup" element={<NuovaSignUpComponent/>} />
       <Route path="/forgotPassword" element={<ForgotPasswordComponent/>} /> */}
 

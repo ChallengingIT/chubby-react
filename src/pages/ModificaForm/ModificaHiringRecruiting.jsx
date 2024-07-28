@@ -16,6 +16,7 @@ const ModificaHiringRecruiting = () => {
     const navigate = useNavigate();
     const { idHiring } = useParams();
     const { idScheda } = useParams();
+    const idTipoServizio = 2;
 
 
 
@@ -274,7 +275,7 @@ const ModificaHiringRecruiting = () => {
     
                     const response = await axios.post("http://localhost:8080/hiring/salva/scheda", valuesWithId, {
                         headers: headers,
-                        params: { idHiring: idHiring }
+                        params: { idHiring: idHiring, idTipoServizio: idTipoServizio }
                     });
                     if (response.data === "DUPLICATO") {
                         setAlert({ open: true, message: "azienda già esistente!" });
@@ -535,7 +536,7 @@ const ModificaHiringRecruiting = () => {
                         Indietro
                     </Button>
                 </Box>
-                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: theme.palette.aggiungiSidebar.title}}>  Modifica <br /> Head Hunting </Typography>
+                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: theme.palette.aggiungiSidebar.title}}>  Modifica <br /> Recruiting </Typography>
                 <List sx={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
                             {menu.map((item, index) => (
                                 <ListItem

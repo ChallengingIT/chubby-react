@@ -15,6 +15,7 @@ const ModificaStaffing = () => {
     const navigate = useNavigate();
     const { idHiring } = useParams();
     const { idScheda } = useParams();
+    const idTipoServizio = 4;
 
     //stati della pagina
     const [ activeSection,      setActiveSection        ] = useState('Descrizione');
@@ -274,7 +275,7 @@ const ModificaStaffing = () => {
     
                     const response = await axios.post("http://localhost:8080/hiring/salva/scheda", valuesWithId, {
                         headers: headers,
-                        params: { idHiring: idHiring }
+                        params: { idHiring: idHiring, idTipoServizio: idTipoServizio }
                     });
                     if (response.data === "DUPLICATO") {
                         setAlert({ open: true, message: "azienda già esistente!" });
