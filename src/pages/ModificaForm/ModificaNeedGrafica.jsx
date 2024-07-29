@@ -679,7 +679,7 @@ return (
                         {t('Indietro')}
                     </Button>
                 </Box>
-                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: theme.palette.aggiungiSidebar.title}}>  {t('Aggiorna')} <br /> {t('Need')} </Typography>
+                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: theme.palette.aggiungiSidebar.title}}>  {t('Modifica')} <br /> {t('Need')} </Typography>
                 <List sx={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
                             {menu.map((item, index) => (
                                 // <ListItem

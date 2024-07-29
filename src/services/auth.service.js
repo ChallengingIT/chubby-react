@@ -2,7 +2,8 @@ import axios from "axios";
 
 
 
-const API_URL = "http://localhost:8080/api/auth/";
+const API_LOGIN = "http://localhost:8080/api/auth/";
+const API_LOGIN_CANDIDATO = "http://localhost:8080/candidato/auth/";
 const API_LOGOUT = "http://localhost:8080/logout";
 const API_REGISTER_CANDIDATO = "http://localhost:8080/candidato/auth/signup"
 
@@ -29,7 +30,7 @@ class AuthService {
 
   login(username, password) {
     return axios
-      .post(API_URL + "signin", {
+      .post(API_LOGIN + "signin", {
         username,
         password
       })
@@ -46,29 +47,20 @@ class AuthService {
       });
   }
 
-  registerCandidato(username, password, nome, cognome, cellulare, residenza, email, file) {
-    const formData = new FormData();
-    formData.append("username", username);
-    formData.append("password", password);
-    formData.append("nome", nome);
-    formData.append("cognome", cognome);
-    formData.append("cellulare", cellulare);
-    formData.append("residenza", residenza);
-    formData.append("email", email);
-    formData.append("file", file);
 
+
+  loginCandidato(username, password) {
     return axios
-      .post(API_REGISTER_CANDIDATO, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data"
-        }
+      .post(API_LOGIN_CANDIDATO + "signin", {
+        username,
+        password
       })
       .then(response => {
         if (response.data) {
           sessionStorage.setItem("user", JSON.stringify(response.data));
           return response.data;
         } else {
-          throw new Error("Registration failed"); // Lancia un errore se la registrazione fallisce
+          throw new Error("Login failed"); // Lancia un errore se la login fallisce
         }
       })
       .catch(error => {
@@ -76,6 +68,50 @@ class AuthService {
       });
   }
 
+  async registerCandidato(username, password, nome, cognome, cellulare, residenza, email, file) {
+    try {
+  
+      // Invia i dati di registrazione come JSON
+      const registrationResponse = await axios.post(API_REGISTER_CANDIDATO, {username, password, nome, cognome, cellulare, residenza, email});
+  
+
+        const usernameResponse = registrationResponse.data;
+        console.log("risposta: ", registrationResponse.data);
+
+        try{
+          if(usernameResponse) {
+            const formData = new FormData();
+            formData.append("cv", file);
+            formData.append('username', usernameResponse);
+
+            const cvResponse = await axios.post('http://localhost:8080/candidato/auth/signup/cv', formData, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+          });
+          }
+          return registrationResponse;
+        } catch (error) {
+          if (error.response && error.response.status === 401) {
+            console.error("Non autorizzato: verifica i dettagli di autenticazione.");
+          } else {
+            console.error("Si è verificato un errore:", error.message);
+          }
+          throw error;
+        }
+      
+      
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        console.error("Non autorizzato: verifica i dettagli di autenticazione.");
+      } else {
+        console.error("Si è verificato un errore:", error.message);
+      }
+      throw error;
+    }
+  }
+  
+  
 
   logout() {
     
@@ -102,22 +138,22 @@ class AuthService {
 
   }
 
-  register( nome, cognome, username, password, role) {
-    return axios
-    .post(API_URL + "signup", {
-      nome,
-      cognome,
-      username,
-      password,
-      role
+  // register( nome, cognome, username, password, role) {
+  //   return axios
+  //   .post(API_URL + "signup", {
+  //     nome,
+  //     cognome,
+  //     username,
+  //     password,
+  //     role
 
-    })
-    .then(response => {
-      if (response.data) {
-      console.log("registrazione effettuata!");
-      }
-    });
-  }
+  //   })
+  //   .then(response => {
+  //     if (response.data) {
+  //     console.log("registrazione effettuata!");
+  //     }
+  //   });
+  // }
 
   getCurrentUser() {
     const user = JSON.parse(sessionStorage.getItem('user'));

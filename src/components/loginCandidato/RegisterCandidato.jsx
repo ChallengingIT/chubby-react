@@ -1,7 +1,7 @@
     import React, { useState, useEffect } from "react";
     import { useNavigate } from "react-router-dom";
-    import authService from "../services/auth.service";
-    import eventBus from "../common/EventBus";
+    import authService from "../../services/auth.service.js";
+    import eventBus from "../../common/EventBus.js";
     import {
     Box,
     Button,
@@ -17,9 +17,9 @@
     import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
     import CheckCircleIcon from "@mui/icons-material/CheckCircle";
     import CancelIcon from '@mui/icons-material/Cancel';
-    import { useAuth } from "../services/authContext";
-    import LoginScheme from '../prove/LoginScheme.jsx';
-    import CVRegisterModal from "./modal/CVRegisterModal.jsx";
+    import { useAuth } from "../../services/authContext.js";
+    import LoginScheme from '../../prove/LoginScheme.jsx';
+    import CVRegisterModal from "../modal/CVRegisterModal.jsx";
 
     const RegisterCandidato = () => {
     const theme = createTheme({
@@ -70,8 +70,7 @@
         email: false,
         nome: false,
         cognome: false,
-        cellulare: false,
-        residenza: false,
+
     });
     const [showPassword, setShowPassword] = useState(false);
     const [openModal, setOpenModal] = useState(false);
@@ -88,78 +87,50 @@
         }
     }, []);
 
-    const handleLogin = async (e) => {
-        if (e) {
-        e.preventDefault();
-        }
-
-        // Reset loginError state
-        setLoginError({
-        username: false,
-        password: false,
-        email: false,
-        nome: false,
-        cognome: false,
-        cellulare: false,
-        residenza: false,
-        });
-        setCvError(false);
-
-        // Check for empty fields
-        const errors = {};
-        if (!username) errors.username = true;
-        if (!password) errors.password = true;
-        if (!email) errors.email = true;
-        if (!nome) errors.nome = true;
-        if (!cognome) errors.cognome = true;
-        if (!cellulare) errors.cellulare = true;
-        if (!residenza) errors.residenza = true;
-
-        // Check if CV is uploaded
-        if (!cvFile) {
-        setCvError(true);
-        }
-
-        // If there are errors, update state and return
-        if (Object.keys(errors).length > 0 || !cvFile) {
-        setLoginError(errors);
-        return;
-        }
-
-        try {
-        const response = await authService.registerCandidato(username, password, nome, cognome, cellulare, residenza, email, cvFile);
-        if (response && response.token) {
-            sessionStorage.setItem("token", response.token);
-            sessionStorage.setItem("user", JSON.stringify(response));
-            login(response);
-            eventBus.dispatch("loginSuccess");
-            const userRole = response.roles[0];
-
-            if (
-            userRole === "ADMIN" ||
-            userRole === "RECRUITER" ||
-            userRole === "BM"
-            ) {
-            navigate("/dashboard");
-            } else if (userRole === "USER" || userRole === "BUSINESS") {
-            navigate("/homepage");
+        const handleRegister = async (e) => {
+            if (e) {
+            e.preventDefault();
             }
-        }
-        } catch (error) {
-        console.error("Errore durante il login:", error);
-        if (error.message.includes("username")) {
-            setLoginError((errors) => ({ ...errors, username: true }));
-        } else if (error.message.includes("password")) {
-            setLoginError((errors) => ({ ...errors, password: true }));
-        } else {
-            setLoginError({ username: true, password: true });
-        }
-        }
-    };
+        
+            setLoginError({
+            username: false,
+            password: false,
+            email: false,
+            nome: false,
+            cognome: false,
+            });
+            setCvError(false);
+        
+            const errors = {};
+            if (!username) errors.username = true;
+            if (!password) errors.password = true;
+            if (!email) errors.email = true;
+            if (!nome) errors.nome = true;
+            if (!cognome) errors.cognome = true;
+        
+            if (!cvFile) {
+            setCvError(true);
+            }
+        
+            if (Object.keys(errors).length > 0 || !cvFile) {
+            setLoginError(errors);
+            return;
+            }
+        
+            try {
+            const response = await authService.registerCandidato(username, password, nome, cognome, cellulare, residenza, email, cvFile);
+            if (response.data.message === "OK") {
+                navigate("/login/candidato");
+            }
+            } catch (error) {
+            console.error("Errore durante la registrazione del candidato:", error);
+            }
+        };
+
 
     const handleKeyDown = (e) => {
         if (e.keyCode === 13) {
-        handleLogin();
+        handleRegister();
         }
     };
 
@@ -208,7 +179,7 @@
             <Box sx={{ width: "100%", height: "100%", perspective: "1000px" }}>
             <Box
                 component="form"
-                onSubmit={handleLogin}
+                onSubmit={handleRegister}
                 noValidate
                 sx={{
                 position: "absolute",
@@ -255,7 +226,7 @@
                     value={username}
                     onKeyDown={handleKeyDown}
                     error={loginError.username}
-                    helperText={loginError.username ? "Username non valido" : ""}
+                    helperText={loginError.username ? "" : ""}
                     onChange={(e) => {
                     setUsername(e.target.value);
                     setLoginError((errors) => ({ ...errors, username: false }));
@@ -281,7 +252,7 @@
                     value={nome}
                     onKeyDown={handleKeyDown}
                     error={loginError.nome}
-                    helperText={loginError.nome ? "Nome non valido" : ""}
+                    helperText={loginError.nome ? "" : ""}
                     onChange={(e) => {
                     setNome(e.target.value);
                     setLoginError((errors) => ({ ...errors, nome: false }));
@@ -307,7 +278,7 @@
                     value={cognome}
                     onKeyDown={handleKeyDown}
                     error={loginError.cognome}
-                    helperText={loginError.cognome ? "Cognome non valido" : ""}
+                    helperText={loginError.cognome ? "" : ""}
                     onChange={(e) => {
                     setCognome(e.target.value);
                     setLoginError((errors) => ({ ...errors, cognome: false }));
@@ -351,7 +322,6 @@
                     }}
                 />
                 <TextField
-                    required
                     fullWidth
                     id="cellulare"
                     label="Cellulare"
@@ -359,7 +329,7 @@
                     value={cellulare}
                     onKeyDown={handleKeyDown}
                     error={loginError.cellulare}
-                    helperText={loginError.cellulare ? "Cellulare non valido" : ""}
+                    helperText={loginError.cellulare ? "" : ""}
                     onChange={(e) => {
                     setCellulare(e.target.value);
                     setLoginError((errors) => ({ ...errors, cellulare: false }));
@@ -377,7 +347,6 @@
                     }}
                 />
                 <TextField
-                    required
                     fullWidth
                     id="residenza"
                     label="Residenza"
@@ -385,7 +354,7 @@
                     value={residenza}
                     onKeyDown={handleKeyDown}
                     error={loginError.residenza}
-                    helperText={loginError.residenza ? "Residenza non valida" : ""}
+                    helperText={loginError.residenza ? "" : ""}
                     onChange={(e) => {
                     setResidenza(e.target.value);
                     setLoginError((errors) => ({ ...errors, residenza: false }));
@@ -414,7 +383,7 @@
                     onKeyDown={handleKeyDown}
                     error={loginError.password}
                     helperText={
-                    loginError.password ? "Password non valida." : ""
+                    loginError.password ? "" : ""
                     }
                     onChange={(e) => {
                     setPassword(e.target.value);
@@ -489,7 +458,7 @@
                     }}
                 />
                 <Button
-                    onClick={handleLogin}
+                    onClick={handleRegister}
                     sx={{
                     display: "flex",
                     justifyContent: "center",

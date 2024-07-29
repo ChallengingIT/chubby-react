@@ -28,7 +28,7 @@
             minWidth: "2em",
             width: "2em",
             height: "2em",
-            padding: "0",
+            padding: 0,
             "& .MuiButton-startIcon": {
                 margin: "0",
                 display: "flex",

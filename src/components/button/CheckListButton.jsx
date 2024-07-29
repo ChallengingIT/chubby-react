@@ -8,17 +8,27 @@ function CheckListButton({ onClick, id }) {
     <Button
       startIcon={<ChecklistIcon />}
       sx={{
-        color: "black",
-        minWidth: "2em",
-        height: "2em",
-        bgcolor: 'transparent',
-        p: 0,
-        m: 0,
-        "&:hover": {
-          color: "red",
-          cursor: "pointer",
-          bgcolor: 'transparent'
-        },
+        backgroundColor: "transparent",
+            color: "#00B400",
+            borderRadius: "50%",
+            minWidth: "2em",
+            width: "2em",
+            height: "2em",
+            padding: 0,
+            "& .MuiButton-startIcon": {
+                margin: "0",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+            },
+            "&:hover": {
+                backgroundColor: "transparent",
+                transform: "scale(1.05)",
+                color: "#00B400",
+                cursor: "pointer",
+                borderRadius: "50%",
+                borderStyle: "none",
+            },
       }}
       onClick={() => onClick(id)}
     />

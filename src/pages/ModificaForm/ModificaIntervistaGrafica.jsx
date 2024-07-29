@@ -172,7 +172,7 @@ const ModificaIntervistaGrafica = () => {
             case 0:
                 return ["dataColloquio"];
             case 1:
-                return ["coerenza, standing, energia, comunicazione, inglese, competenze, valutazione, descrizioneCandidatoUna, teamSiNo"];
+                return ["coerenza", "standing", "energia", "comunicazione", "inglese", "competenze", "valutazione", "descrizioneCandidatoUna", "teamSiNo"];
             case 2:
                 return [];
             default:
@@ -324,7 +324,7 @@ const ModificaIntervistaGrafica = () => {
         { value: 3, label: "KO" },
     ];
 
-    const campiObbligatori = ["dataColloquio, coerenza, standing,energia,comunicazione,inglese,competenze,valutazione,descrizioneCandidatoUna,teamSiNo"];
+    const campiObbligatori = ["dataColloquio", "coerenza", "standing" , "energia" , "comunicazione" , "inglese" , "competenze" , "valutazione" , "descrizioneCandidatoUna" , "teamSiNo"];
     const fields = [
         { type: "titleGroups", label: t("Informazioni") },
         { label: t("Data Incontro*"), name: "dataColloquio", type: "date" },
@@ -351,11 +351,11 @@ const ModificaIntervistaGrafica = () => {
         { label: t("Lo vorresti nel tuo team?"), name: "teamSiNo", type: "select", options: siNoOptions },
 
         { type: "titleGroups", label: t("Info contrattuali") },
-        { label: t("Disponibilità"), name: "disponibilita", type: "text", maxLength: 45 },
+        { label: t("Preavviso"), name: "preavviso", type: "text", maxLength: 45 },
+        { label: t("Disponibilità Effettiva"), name: "disponibilita", type: "text", maxLength: 45 },
         { label: t("RAL Attuale"), name: "attuale", type: "text", maxLength: 90 },
         { label: t("RAL Desiderata"), name: "desiderata", type: "text", maxLength: 90 },
-        { label: t("Proposta Economica"), name: "proposta", type: "text", maxLength: 90 },
-        { label: t("Preavviso"), name: "preavviso", type: "text", maxLength: 45 },
+        { label: t("Proposta Economica"), name: "proposta", type: "note", maxLength: 90 },
 
 
         { type: "titleGroups", label: t("Azioni") },

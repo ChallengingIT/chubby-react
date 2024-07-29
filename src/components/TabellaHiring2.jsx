@@ -43,6 +43,7 @@ const TabellaHiring2 = ({ data, columns, getRowId }) => {
   const [innerExpanded, setInnerExpanded] = useState({});
   const [opendDeleteDialog, setOpenDeleteDialog ] = useState(false);
   const [idScheda, setIdScheda] = useState([]);
+  const [idHiring, setIdHiring] = useState([]);
   const theme = useUserTheme();
   const navigate = useNavigate();
   const { t } = useTranslation(); 
@@ -86,23 +87,23 @@ const TabellaHiring2 = ({ data, columns, getRowId }) => {
     navigate(editUrl);
   };
 
-  const handleDeleteClick = (event, idScheda) => {
-    console.log("idSchedaprimo: ", idScheda);
+  const handleDeleteClick = (event, idScheda, idHiring) => {
+
     setOpenDeleteDialog(true);
     setIdScheda(idScheda);
+    setIdHiring(idHiring);
   };
 
   const handleCloseModalDelete = (event) => {
     setOpenDeleteDialog(false);
 };
 
-  const handleDeleteScheda = async(idScheda) => {
-    console.log("idScheda: ", idScheda);
+  const handleDeleteScheda = async(idScheda, idHiring) => {
     try {
-      const responseDelete = await axios.post("http://localhost:8080/hiring/elimina/scheda", {
+      const responseDelete = await axios.post(`http://localhost:8080/hiring/elimina/scheda/${idScheda}`, {
         headers: headers,
-        params: { idScheda: idScheda }
       })
+
     } catch(error) {
       console.error("Errore durante l'eliminazione della scheda candidato: ", error);
     }
@@ -151,17 +152,23 @@ const TabellaHiring2 = ({ data, columns, getRowId }) => {
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell colSpan={columns.length + 1} style={{ paddingBottom: 0, paddingTop: 0, borderBottom: '2px solid #ccc7c7' }}>
+                  <TableCell colSpan={columns.length + 1} style={{ paddingBottom: 0, paddingTop: 0, paddingLeft: 0, paddingRight: 0  }}>
                     <Collapse in={expanded === rowId} timeout="auto" unmountOnExit>
-                      <Box margin={1}>
+                      <Box margin={1} sx={{  borderRadius: '20px', border: '2px solid #00B400'}}>
                         {/* le 4 righe dei 4 servizi per ogni azienda */}
-                        <Table>
-                          <TableBody>
+                        <Table sx={{ borderBottom: 'none'}}>
+                          <TableBody >
                             {row.tipiServizio.map((service) => (
                               <React.Fragment key={service.id}>
-                                <TableRow>
-                                  <TableCell sx={{ width: '100%', fontWeight: 'bold'}}>{service.descrizione}</TableCell>
-                                  <TableCell >
+                                <TableRow sx={{ borderBottom: 'none'}}>
+                                  <TableCell sx={{ 
+                                    width: '100%', 
+                                    fontWeight: 'bold',
+                                    borderBottom: 'none'
+                                    }}>
+                                      {service.descrizione}
+                                      </TableCell>
+                                  <TableCell sx={{ borderBottom: 'none', p: 0.5 }}>
                                     <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2}}>
                                       <IconButton
                                         onClick={() => handleAddClick(getRowId(row), service.descrizione)}
@@ -175,7 +182,7 @@ const TabellaHiring2 = ({ data, columns, getRowId }) => {
                                   </TableCell>
                                 </TableRow>
                                 <TableRow>
-                                  <TableCell colSpan={2} style={{ paddingBottom: 0, paddingTop: 0 }}>
+                                  <TableCell colSpan={2} style={{ paddingBottom: 0, paddingTop: 0, paddingLeft: 0, paddingRight: 0, borderBottom: 'none' }}>
                                     <Collapse in={innerExpanded[rowId] === service.descrizione} timeout="auto" unmountOnExit>
                                       <Box margin={1}>
                                         <Table>
@@ -207,7 +214,7 @@ const TabellaHiring2 = ({ data, columns, getRowId }) => {
                                                   <EditIcon sx={{ color: theme.palette.icon.black, '&:hover': { color: 'black'} }} />
                                                 </IconButton>
                                                 <IconButton
-                                                    onClick={(event) => handleDeleteClick(event, scheda.id)}
+                                                    onClick={(event) => handleDeleteClick(event, scheda.id, rowId)}
                                                     sx={{ '&:hover': { bgcolor: 'transparent'}}}
                                                 >
                                                   <DeleteIcon sx={{ color: theme.palette.icon.black, '&:hover': { color: 'black'} }} />
@@ -287,7 +294,7 @@ const TabellaHiring2 = ({ data, columns, getRowId }) => {
                             {t('Indietro')}
                         </Button>
                         <Button
-                            onClick={() => handleDeleteScheda(idScheda)}
+                            onClick={() => handleDeleteScheda(idScheda, idHiring)}
                             sx={{
                                 backgroundColor: "#00B401",
                                 color: "white",

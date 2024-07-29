@@ -1,4 +1,4 @@
-// Dashboard.js
+// DashboardCandidato.js
 
 import React, { useEffect, useState } from "react";
 import {
@@ -10,15 +10,15 @@ import {
     Container,
     Link
 } from "@mui/material";
-import TabellaPipelineNeed from "../components/dashboardComponents/TabellaPipelineNeed";
+import TabellaPipelineNeed from "../components/dashboardCandidatoComponents/TabellaPipelineNeed";
 import axios from "axios";
 import { useNotification } from "../components/NotificationContext.js";
 import { useNavigate } from "react-router-dom";
-import BoxAttivitaWeek from "../components/dashboardComponents/BoxAttivitaWeek.jsx";
+import BoxAttivitaWeek from "../components/dashboardCandidatoComponents/BoxAttivitaWeek.jsx";
 import { useTranslation } from "react-i18next"; 
 
 
-function Dashboard() {
+function DashboardCandidato() {
     const { t } = useTranslation(); 
 
     const navigate = useNavigate();
@@ -72,8 +72,8 @@ function Dashboard() {
         }
 
         const baseUrlPipeline = userHasRole("ADMIN")
-            ? "http://localhost:8080/dashboard/pipeline/admin"
-            : "http://localhost:8080/dashboard/pipeline";
+            ? "http://localhost:8080/dashboardCandidato/pipeline/admin"
+            : "http://localhost:8080/dashboardCandidato/pipeline";
 
         try {
             const responsePipeline = await axios.get(baseUrlPipeline, { headers: headers, params: filtriDaInviare });
@@ -93,7 +93,7 @@ function Dashboard() {
                     id: pipeline.id,
                     descrizione: pipeline.descrizione || "N/A",
                     cliente: pipeline.cliente || { denominazione: "Cliente non disponibile", id: null },
-                    owner: pipeline.owner ? `${pipeline.owner?.descrizione}` : "Owner non disponibile",
+                    owner: pipeline.owner ? `${pipeline.owner?.nome} ${pipeline.owner?.cognome}` : "Owner non disponibile",
                     priorita: pipeline.priorita || "Priorità non disponibile",
                     stato: pipeline.stato ? pipeline.stato.descrizione : "Stato non disponibile",
                     pipelineData: pipeline.pipeline || "Dati non disponibili"
@@ -305,4 +305,4 @@ function Dashboard() {
     );
 }
 
-export default Dashboard;
+export default DashboardCandidato;

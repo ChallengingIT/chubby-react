@@ -224,7 +224,7 @@
 
     const additionalDrawerContent = (
         <List>
-        {!userHasRole("BUSINESS") && !userHasRole("RECRUITER") && (
+        {!userHasRole("BUSINESS") && !userHasRole("RECRUITER") && !userHasRole("CANDIDATO") && (
             <ListItem button onClick={handleAggiungiAziendaClick}>
             <ListItemText sx={{ color: theme.palette.text.secondary }}>
                 {t('Aggiungi azienda')}
@@ -235,7 +235,7 @@
             </ListItem>
         )}
 
-        {!userHasRole("BUSINESS") && !userHasRole("RECRUITER") && (
+        {!userHasRole("BUSINESS") && !userHasRole("RECRUITER") && !userHasRole("CANDIDATO") && (
             <ListItem button onClick={handleAggiungiContattoClick}>
             <ListItemText sx={{ color: theme.palette.text.secondary }}>
                 {t('Aggiungi contatto')}
@@ -246,7 +246,7 @@
             </ListItem>
         )}
 
-        {!userHasRole("RECRUITER") && (
+        {!userHasRole("RECRUITER") && !userHasRole("CANDIDATO") && (
             <ListItem button onClick={handleAggiungiNeedClick}>
             <ListItemText sx={{ color: theme.palette.text.secondary }}>
                 {t('Aggiungi need')}
@@ -257,7 +257,7 @@
             </ListItem>
         )}
 
-        {!userHasRole("BUSINESS") && (
+        {!userHasRole("BUSINESS") && !userHasRole("CANDIDATO") && (
             <ListItem button onClick={handleAggiungiCandidatoClick}>
             <ListItemText sx={{ color: theme.palette.text.secondary }}>
                 {t('Aggiungi candidato')}
@@ -268,17 +268,7 @@
             </ListItem>
         )}
         
-        {/* {!userHasRole("BUSINESS") && (
-        <ListItem button onClick={handleAppuntamentoClick}>
-            <ListItemText sx={{ color: theme.palette.text.secondary }}>
-            Appuntamento
-            </ListItemText>
-            <ListItemIcon>
-            <AddIcCallIcon sx={{ color: theme.palette.icon.main }} />
-            </ListItemIcon>
-        </ListItem>
-        )} */}
-        {userHasRole("BUSINESS") && (
+        {userHasRole("BUSINESS") && !userHasRole("CANDIDATO") &&(
             <ListItem button onClick={handleAggiungiOwner}>
             <ListItemText sx={{ color: theme.palette.text.secondary }}>
                 Aggiungi owner
@@ -288,14 +278,7 @@
             </ListItemIcon>
             </ListItem>
         )}
-        {/* <ListItem button onClick={handleEmailClick}>
-            <ListItemText sx={{ color: theme.palette.text.secondary }}>
-            Email
-            </ListItemText>
-            <ListItemIcon>
-            <EmailIcon sx={{ color: theme.palette.icon.main }} />
-            </ListItemIcon>
-        </ListItem> */}
+
         </List>
     );
 
@@ -344,13 +327,13 @@
         {
         title: "Business",
         icon: <BusinessCenterIcon />,
-        isVisible: !userHasRole("RECRUITER") && !userHasRole("BUSINESS"),
+        isVisible: !userHasRole("RECRUITER") && !userHasRole("BUSINESS") && !userHasRole("CANDIDATO"),
         onClick: () => navigate("/business"),
         },
         {
         title: "Contacts",
         icon: <PersonIcon />,
-        isVisible: !userHasRole("RECRUITER") && !userHasRole("BUSINESS"),
+        isVisible: !userHasRole("RECRUITER") && !userHasRole("BUSINESS") && !userHasRole("CANDIDATO"),
         onClick: () => navigate("/contacts"),
         },
         {
@@ -361,13 +344,13 @@
         {
         title: "Recruiting",
         icon: <PersonSearchIcon />,
-        isVisible: !userHasRole("BUSINESS"),
+        isVisible: !userHasRole("BUSINESS") && !userHasRole("CANDIDATO"),
         onClick: () => navigate("/recruiting"),
         },
         {
         title: "Hiring",
         icon: <ChecklistRtlIcon />,
-        isVisible: !userHasRole("USER") && !userHasRole("RECRUITER") && !userHasRole("BUSINESS"),
+        isVisible: !userHasRole("USER") && !userHasRole("RECRUITER") && !userHasRole("BUSINESS") && !userHasRole("CANDIDATO"),
         onClick: () => navigate("/hiring"),
         },
     ];
