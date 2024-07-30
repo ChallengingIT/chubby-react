@@ -74,14 +74,14 @@ const NeedCandidato = () => {
             quantita: 10
         };
 
-        const baseUrl = "http://localhost:8080/candidato/need/react/modificato";
+        const baseUrl = "http://89.46.196.60:8443/candidato/need/react/modificato";
 
         try {
             const responseNeed = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
-            const responseAzienda = await axios.get("http://localhost:8080/candidato/need/aziende", { headers: headers });
-            const responseOwner = await axios.get("http://localhost:8080/candidato/need/owner", { headers: headers });
-            const responseTipologia = await axios.get("http://localhost:8080/candidato/need/react/tipologia", { headers: headers });
-            const responseStato = await axios.get("http://localhost:8080/candidato/need/react/stato", { headers: headers });
+            const responseAzienda = await axios.get("http://89.46.196.60:8443/candidato/need/aziende", { headers: headers });
+            const responseOwner = await axios.get("http://89.46.196.60:8443/candidato/need/owner", { headers: headers });
+            const responseTipologia = await axios.get("http://89.46.196.60:8443/candidato/need/react/tipologia", { headers: headers });
+            const responseStato = await axios.get("http://89.46.196.60:8443/candidato/need/react/stato", { headers: headers });
 
             if (Array.isArray(responseOwner.data)) {
                 setOwnerOptions(responseOwner.data.map((owner) => ({ label: owner.descrizione, value: owner.id })));
@@ -130,7 +130,7 @@ const NeedCandidato = () => {
         const paginaSuccessiva = pagina + 1;
 
 
-const baseUrl =  "http://localhost:8080/candidato/need/react/ricerca/modificato"
+const baseUrl =  "http://89.46.196.60:8443/candidato/need/react/ricerca/modificato"
 
         const filtriDaInviare = {
             ...filtri,
@@ -178,14 +178,14 @@ const baseUrl =  "http://localhost:8080/candidato/need/react/ricerca/modificato"
         };
         console.log("filtriDaInviare: ", filtriDaInviare);
 
-        const baseUrl = "http://localhost:8080/candidato/need/react/ricerca/modificato" ;
+        const baseUrl = "http://89.46.196.60:8443/candidato/need/react/ricerca/modificato" ;
         setLoading(true);
         try {
             const response = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
-            const responseAzienda = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
-            const responseOwner = await axios.get("http://localhost:8080/owner", { headers: headers });
-            const responseTipologia = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
-            const responseStato = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
+            const responseAzienda = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers: headers });
+            const responseOwner = await axios.get("http://89.46.196.60:8443/owner", { headers: headers });
+            const responseTipologia = await axios.get("http://89.46.196.60:8443/need/react/tipologia", { headers: headers });
+            const responseStato = await axios.get("http://89.46.196.60:8443/need/react/stato", { headers: headers });
 
             if (Array.isArray(responseOwner.data)) {
                 setOwnerOptions(responseOwner.data.map((owner) => ({ label: owner.descrizione, value: owner.id })));
@@ -309,7 +309,7 @@ const baseUrl =  "http://localhost:8080/candidato/need/react/ricerca/modificato"
     //funzione per cancellare il need
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:8080/need/react/elimina/${id}`, { headers: headers });
+            await axios.delete(`http://89.46.196.60:8443/need/react/elimina/${id}`, { headers: headers });
             await fetchData();
         } catch (error) {
             console.error("Errore durante la cancellazione: ", error);

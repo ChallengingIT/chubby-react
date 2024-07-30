@@ -691,7 +691,7 @@ import IntervisteModal from "../components/modal/IntervisteModal.jsx";
 
         const handleModalIntervista = async(idCandidato) => {
             try{
-                const responseIntervista = await axios.get(`http://localhost:8080/intervista/ultima/${idCandidato}`, {
+                const responseIntervista = await axios.get(`http://89.46.196.60:8443/intervista/ultima/${idCandidato}`, {
                     headers: headers
                 });
                 setSelectedIntervista(responseIntervista.data);
