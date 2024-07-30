@@ -70,7 +70,7 @@ const Aziende = () => {
             pagina: 0,
             quantita: 10,
         };
-        if (!userHasRole("ROLE_ADMIN")) {
+        if (!userHasRole("ADMIN")) {
             const userString = sessionStorage.getItem("user");
             if (userString) {
                 const userObj = JSON.parse(userString);
@@ -78,9 +78,9 @@ const Aziende = () => {
             }
         }
 
-        const baseUrl = userHasRole("ROLE_ADMIN")
-            ? "http://89.46.196.60:8443/aziende/react/mod"
-            : "http://89.46.196.60:8443/aziende/react/mod/personal";
+        const baseUrl = userHasRole("ADMIN")
+            ? "http://localhost:8080/aziende/react/mod"
+            : "http://localhost:8080/aziende/react/mod/personal";
 
         try {
             const responseAziende = await axios.get(baseUrl, {
@@ -89,11 +89,11 @@ const Aziende = () => {
             });
 
             const responseOwner = await axios.get(
-                "http://89.46.196.60:8443/owner",
+                "http://localhost:8080/owner",
                 { headers: headers }
             );
             const provinceResponse = await axios.get(
-                "http://89.46.196.60:8443/aziende/react/province",
+                "http://localhost:8080/aziende/react/province",
                 { headers: headers }
             );
 
@@ -173,7 +173,7 @@ const Aziende = () => {
             quantita: quantita,
         };
 
-        if (!userHasRole("ROLE_ADMIN")) {
+        if (!userHasRole("ADMIN")) {
             const userString = sessionStorage.getItem("user");
             if (userString) {
                 const userObj = JSON.parse(userString);
@@ -181,9 +181,9 @@ const Aziende = () => {
             }
         }
 
-        const baseUrl = userHasRole("ROLE_ADMIN")
-            ? (isSearchActive ? "http://89.46.196.60:8443/aziende/react/ricerca/mod" : "http://89.46.196.60:8443/aziende/react/mod")
-            : (isSearchActive ? "http://89.46.196.60:8443/aziende/react/ricerca/mod/personal" : "http://89.46.196.60:8443/aziende/react/mod/personal");
+        const baseUrl = userHasRole("ADMIN")
+            ? (isSearchActive ? "http://localhost:8080/aziende/react/ricerca/mod" : "http://localhost:8080/aziende/react/mod")
+            : (isSearchActive ? "http://localhost:8080/aziende/react/ricerca/mod/personal" : "http://localhost:8080/aziende/react/mod/personal");
 
         try {
             const responsePaginazione = await axios.get(baseUrl, {
@@ -235,7 +235,7 @@ const Aziende = () => {
             quantita: quantita,
         };
 
-        if (!userHasRole("ROLE_ADMIN")) {
+        if (!userHasRole("ADMIN")) {
             const userString = sessionStorage.getItem("user");
             if (userString) {
                 const userObj = JSON.parse(userString);
@@ -243,9 +243,9 @@ const Aziende = () => {
             }
         }
 
-        const baseUrl = userHasRole("ROLE_ADMIN")
-            ? "http://89.46.196.60:8443/aziende/react/ricerca/mod"
-            : "http://89.46.196.60:8443/aziende/react/ricerca/mod/personal";
+        const baseUrl = userHasRole("ADMIN")
+            ? "http://localhost:8080/aziende/react/ricerca/mod"
+            : "http://localhost:8080/aziende/react/ricerca/mod/personal";
 
         setLoading(true);
         try {
@@ -254,7 +254,7 @@ const Aziende = () => {
                 params: filtriDaInviare,
             });
             const responseOwner = await axios.get(
-                "http://89.46.196.60:8443/owner",
+                "http://localhost:8080/owner",
                 { headers }
             );
 
@@ -320,10 +320,15 @@ const Aziende = () => {
     const handleDelete = async (id) => {
         try {
             await axios.delete(
-                `http://89.46.196.60:8443/aziende/react/elimina/${id}`,
+                `http://localhost:8080/aziende/react/elimina/${id}`,
                 { headers: headers }
             );
+            const isAnyFilterSet = Object.values(filtri).some((value) => value);
+            if (!isAnyFilterSet) {
             await fetchData();
+            } else {
+            await handleRicerche();
+            }
         } catch (error) {
             console.error("Errore durante la cancellazione: ", error);
         }

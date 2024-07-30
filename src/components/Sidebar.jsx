@@ -1,25 +1,19 @@
-    import React, { useState, useEffect } from "react";
-    import { useLocation, useNavigate } from "react-router-dom";
-    import LogoBianco from "../images/logoTorchyChallengingBianco.png";
-    import TorciaBianca from "../images/torciaBianca.svg";
-    import axios from "axios";
-    import DashboardIcon from "@mui/icons-material/Dashboard";
-    import PersonIcon from "@mui/icons-material/Person";
-    import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
-    import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-    import ExploreIcon from "@mui/icons-material/Explore";
-    import PersonSearchIcon from "@mui/icons-material/PersonSearch";
-    import ChecklistRtlIcon from "@mui/icons-material/ChecklistRtl";
-    // import PersonAddIcon from "@mui/icons-material/PersonAdd"; // aggiungi candidato
-    // import AddCircleIcon from "@mui/icons-material/AddCircle"; // aggiungi need
-    // import AddIcCallIcon from "@mui/icons-material/AddIcCall"; // aggiungi appuntamento
-    // import EmailIcon from "@mui/icons-material/Email"; // email
-    import SettingsIcon from '@mui/icons-material/Settings'; //impostazioni
-    import AppuntamentoModal from "./AppuntamentoModal";
-    import EmailModal from "./EmailModal";
-    import GroupAddIcon from '@mui/icons-material/GroupAdd'; //aggiungi owner
-    import { useUserTheme } from "./TorchyThemeProvider";
-    import { useTranslation }                   from 'react-i18next';
+    import React, { useState, useEffect }               from "react";
+    import { useLocation, useNavigate }                 from "react-router-dom";
+    import LogoBianco                                   from "../images/logoTorchyChallengingBianco.png";
+    import TorciaBianca                                 from "../images/torciaBianca.svg";
+    import axios                                        from "axios";
+    import DashboardIcon                                from "@mui/icons-material/Dashboard";
+    import PersonIcon                                   from "@mui/icons-material/Person";
+    import BusinessCenterIcon                           from "@mui/icons-material/BusinessCenter";
+    import ExitToAppIcon                                from "@mui/icons-material/ExitToApp";
+    import ExploreIcon                                  from "@mui/icons-material/Explore";
+    import PersonSearchIcon                             from "@mui/icons-material/PersonSearch";
+    import ChecklistRtlIcon                             from "@mui/icons-material/ChecklistRtl";
+    import SettingsIcon                                 from '@mui/icons-material/Settings'; //impostazioni
+    import GroupAddIcon                                 from '@mui/icons-material/GroupAdd'; //aggiungi owner
+    import { useUserTheme }                             from "./TorchyThemeProvider";
+    import { useTranslation }                           from 'react-i18next';
     import {
     Box,
     Drawer,
@@ -37,6 +31,13 @@
     Popover,
     Typography,
     } from "@mui/material";
+
+    // import PersonAddIcon from "@mui/icons-material/PersonAdd"; // aggiungi candidato
+    // import AddCircleIcon from "@mui/icons-material/AddCircle"; // aggiungi need
+    // import AddIcCallIcon from "@mui/icons-material/AddIcCall"; // aggiungi appuntamento
+    // import EmailIcon from "@mui/icons-material/Email"; // email
+    // import AppuntamentoModal                            from "./AppuntamentoModal";
+    // import EmailModal from "./EmailModal";
 
     function Sidebar() {
     const theme = useUserTheme();
@@ -99,7 +100,7 @@
         setActiveLink(location.pathname);
         const userString = sessionStorage.getItem("user");
         const userObj = userString ? JSON.parse(userString) : null;
-        if (userObj && userObj.roles.includes("ROLE_BUSINESS")) {
+        if (userObj && userObj.roles.includes("BUSINESS")) {
             setRoleBusiness(true);
         }
     }, [location.pathname]);
@@ -139,7 +140,7 @@
         const userString = sessionStorage.getItem("user");
         if (userString) {
         const userObj = JSON.parse(userString);
-        if (userObj.roles.includes("ROLE_BUSINESS")) {
+        if (userObj.roles.includes("BUSINESS")) {
             const idAzienda = userObj.idAzienda;
             navigate(`/need/aggiungi/${idAzienda}`);
         } else {
@@ -156,7 +157,7 @@
         const userString = sessionStorage.getItem("user");
         if (userString) {
         const userObj = JSON.parse(userString);
-        if (userObj.roles.includes("ROLE_BUSINESS")) {
+        if (userObj.roles.includes("BUSINESS")) {
             const idAzienda = userObj.idAzienda;
             navigate(`/need/${idAzienda}`);
         } else {
@@ -175,9 +176,9 @@
         const rolesArray = userObj.roles;
         const rolesReadable = rolesArray.map((role, index) => {
             switch (role) {
-            case "ROLE_ADMIN":
+            case "ADMIN":
                 return <span key={index}>Admin</span>;
-            case "ROLE_BM":
+            case "BM":
                 return (
                 <React.Fragment key={index}>
                     Business
@@ -185,9 +186,9 @@
                     Manager
                 </React.Fragment>
                 );
-            case "ROLE_RECRUITER":
+            case "RECRUITER":
                 return <span key={index}>Recruiter</span>;
-            case "ROLE_BUSINESS":
+            case "BUSINESS":
                 return <span key={index}></span>;
             default:
                 return <span key={index}>Utente</span>;
@@ -224,7 +225,7 @@
 
     const additionalDrawerContent = (
         <List>
-        {!userHasRole("ROLE_BUSINESS") && (
+        {!userHasRole("BUSINESS") && !userHasRole("RECRUITER") && !userHasRole("CANDIDATO") && (
             <ListItem button onClick={handleAggiungiAziendaClick}>
             <ListItemText sx={{ color: theme.palette.text.secondary }}>
                 {t('Aggiungi azienda')}
@@ -235,7 +236,7 @@
             </ListItem>
         )}
 
-        {!userHasRole("ROLE_BUSINESS") && (
+        {!userHasRole("BUSINESS") && !userHasRole("RECRUITER") && !userHasRole("CANDIDATO") && (
             <ListItem button onClick={handleAggiungiContattoClick}>
             <ListItemText sx={{ color: theme.palette.text.secondary }}>
                 {t('Aggiungi contatto')}
@@ -246,7 +247,7 @@
             </ListItem>
         )}
 
-        {!userHasRole("ROLE_RECRUITER") && (
+        {!userHasRole("RECRUITER") && !userHasRole("CANDIDATO") && (
             <ListItem button onClick={handleAggiungiNeedClick}>
             <ListItemText sx={{ color: theme.palette.text.secondary }}>
                 {t('Aggiungi need')}
@@ -257,7 +258,7 @@
             </ListItem>
         )}
 
-        {!userHasRole("ROLE_BUSINESS") && (
+        {!userHasRole("BUSINESS") && !userHasRole("CANDIDATO") && (
             <ListItem button onClick={handleAggiungiCandidatoClick}>
             <ListItemText sx={{ color: theme.palette.text.secondary }}>
                 {t('Aggiungi candidato')}
@@ -268,17 +269,7 @@
             </ListItem>
         )}
         
-        {/* {!userHasRole("ROLE_BUSINESS") && (
-        <ListItem button onClick={handleAppuntamentoClick}>
-            <ListItemText sx={{ color: theme.palette.text.secondary }}>
-            Appuntamento
-            </ListItemText>
-            <ListItemIcon>
-            <AddIcCallIcon sx={{ color: theme.palette.icon.main }} />
-            </ListItemIcon>
-        </ListItem>
-        )} */}
-        {userHasRole("ROLE_BUSINESS") && (
+        {userHasRole("BUSINESS") && !userHasRole("CANDIDATO") &&(
             <ListItem button onClick={handleAggiungiOwner}>
             <ListItemText sx={{ color: theme.palette.text.secondary }}>
                 Aggiungi owner
@@ -288,14 +279,7 @@
             </ListItemIcon>
             </ListItem>
         )}
-        {/* <ListItem button onClick={handleEmailClick}>
-            <ListItemText sx={{ color: theme.palette.text.secondary }}>
-            Email
-            </ListItemText>
-            <ListItemIcon>
-            <EmailIcon sx={{ color: theme.palette.icon.main }} />
-            </ListItemIcon>
-        </ListItem> */}
+
         </List>
     );
 
@@ -310,7 +294,7 @@
         const userString = sessionStorage.getItem("user");
         if (userString) {
         const userObj = JSON.parse(userString);
-        if (userObj.roles.includes("ROLE_BUSINESS")) {
+        if (userObj.roles.includes("BUSINESS")) {
             const idAziende = userObj.idAzienda;
             const parametroDaInviare = {
             idAzienda: idAziende
@@ -339,18 +323,19 @@
         {
             title: "Dashboard",
             icon: <DashboardIcon />,
+            isVisible: !userHasRole("CANDIDATO"),
             onClick: () => navigate(roleBusiness ? "/homepage" : "/dashboard"),
         },
         {
         title: "Business",
         icon: <BusinessCenterIcon />,
-        isVisible: !userHasRole("ROLE_RECRUITER") && !userHasRole("ROLE_BUSINESS"),
+        isVisible: !userHasRole("RECRUITER") && !userHasRole("BUSINESS") && !userHasRole("CANDIDATO"),
         onClick: () => navigate("/business"),
         },
         {
         title: "Contacts",
         icon: <PersonIcon />,
-        isVisible: !userHasRole("ROLE_RECRUITER") && !userHasRole("ROLE_BUSINESS"),
+        isVisible: !userHasRole("RECRUITER") && !userHasRole("BUSINESS") && !userHasRole("CANDIDATO"),
         onClick: () => navigate("/contacts"),
         },
         {
@@ -361,16 +346,18 @@
         {
         title: "Recruiting",
         icon: <PersonSearchIcon />,
-        isVisible: !userHasRole("ROLE_BUSINESS"),
+        isVisible: !userHasRole("BUSINESS") && !userHasRole("CANDIDATO"),
         onClick: () => navigate("/recruiting"),
         },
         {
         title: "Hiring",
         icon: <ChecklistRtlIcon />,
-        isVisible: !userHasRole("ROLE_USER") && !userHasRole("ROLE_RECRUITER") && !userHasRole("ROLE_BUSINESS"),
+        isVisible: !userHasRole("USER") && !userHasRole("RECRUITER") && !userHasRole("BUSINESS") && !userHasRole("CANDIDATO"),
         onClick: () => navigate("/hiring"),
         },
     ];
+
+    const isCandidato = userHasRole("CANDIDATO");
 
     return (
         <Box sx={{ display: "flex" }}>
@@ -408,8 +395,12 @@
                 style={{ width: "8vw", marginTop: "1em", marginBottom: "1em" }}
             />
             <IconButton
-                onClick={handleTorciaClick}
-                sx={{ padding: 0, "&:hover": { transform: "scale(1.1)" } }}
+            onClick={isCandidato ? null : handleTorciaClick}
+            disabled={isCandidato}
+            sx={{
+                padding: 0,
+                "&:hover": { transform: !isCandidato ? "scale(1.1)" : "none" },
+            }}
             >
                 <img
                 src={TorciaBianca}
@@ -575,7 +566,8 @@
             style: {
                 backgroundColor: "#FEFCFD",
                 color: theme.palette.primary.main,
-                borderRadius: '20px'
+                borderRadius: '20px',
+                minWidth: '30vw'
             },
             }}
         >
@@ -619,7 +611,7 @@
                 variant="contained"
                 sx={{
                     borderRadius: '10px',
-                    width: '8em',
+                    width: '10em',
                     bgcolor: theme.palette.button.secondary,
                     color: theme.palette.textButton.secondary,
                     "&:hover": {
@@ -636,7 +628,7 @@
                 variant="contained"
                 sx={{
                     borderRadius: '10px',
-                    width: '8em',
+                    width: '10em',
                     bgcolor: theme.palette.button.main,
                     color: theme.palette.textButton.main,
                     "&:hover": {

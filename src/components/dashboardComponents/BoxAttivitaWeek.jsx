@@ -82,7 +82,7 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
 
     useEffect(() => {
         const fetchWeekData = async (type) => {
-            const isAdmin = userHasRole("ROLE_ADMIN");
+            const isAdmin = userHasRole("ADMIN");
             const filtriDaInviare = {
                 interval: interval,
                 quantita: quantita || null,
@@ -113,8 +113,8 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
         fetchWeekData('recruiting');
     }, [interval]);
 
-    const isAdmin = userHasRole("ROLE_ADMIN");
-    const isBM = userHasRole("ROLE_BM");
+    const isAdmin = userHasRole("ADMIN");
+    const isBM = userHasRole("BM");
 
     return (
         <Box className="cardTabellaBusiness" id="cardTabellaBusiness" sx={{ width: '100%', height: '100%', position: 'relative', }}>

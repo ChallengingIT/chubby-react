@@ -14,6 +14,7 @@ import TrendingDownIcon                             from '@mui/icons-material/Tr
 import TrendingFlatIcon                             from '@mui/icons-material/TrendingFlat';
 import TrendingUpIcon                               from '@mui/icons-material/TrendingUp';
 import CallMadeIcon                                 from '@mui/icons-material/CallMade'; //priorità massima
+import AccountCircleIcon                            from '@mui/icons-material/AccountCircle'; //owner
 import { useTranslation }                           from "react-i18next"; 
 
 import { 
@@ -47,6 +48,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
     const [ modalDelete,       setModalDelete     ] = useState(false);
     const [ newStato,          setNewStato        ] = useState(valori.stato?.id); 
     const [ idNeed,            setIdNeed          ] = useState(null);
+    const [ nomeNeed,          setNomeNeed        ] = useState("");
     const [ values,            setValues          ] = useState({
         stato: ''
     });
@@ -109,7 +111,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
     }, [valori.stato?.id]);
     
     const toggleFlip = () => {
-        if ( modalStato) {
+        if (modalStato || userHasRole('CANDIDATO')) {
             return;
         }
         setIsFlipped(!isFlipped);
@@ -125,20 +127,23 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
         navigate(`/need/modifica/${valori.id}`, { state: { ...valori } });
     };
 
-    const handleOpenModalStato = (id, event) => {
+    const handleOpenModalStato = (id, nome, event) => {
         event.stopPropagation();
         setModalStato(true);
         setIdNeed(id);
+        setNomeNeed(nome);
         setValues(prevValues => ({
             ...prevValues,
-            stato: valori.stato?.id
+            stato: valori.stato?.id,
+            priorita: valori?.priorita
         }));
     };
     
 
     const handleUpdateStato = async () => {
-        const idStato = values.stato;  
-        const params = new URLSearchParams({ stato: idStato });
+        const idStato = values.stato; 
+        const priorita = values.priorita; 
+        const params = new URLSearchParams({ stato: idStato, priorita: priorita });
         try {
             const responseUpdateStato = await axios.post(`http://89.46.196.60:8443/need/react/salva/stato/${idNeed}?${params.toString()}`, {}, { headers: headers });
             setModalStato(false);
@@ -201,16 +206,23 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
         height: '100%',
     };
 
+    const prioritaOptions = [
+        { value: 1, label: '1' },
+        { value: 2, label: '2' },
+        { value: 3, label: '3' },
+        { value: 4, label: '4' }
+        ];
+
 
     const mediaPriorita = (priorita) => {
         if (priorita >= 0 && priorita <= 1) {
-            return { icon: <CallMadeIcon sx={{ color: theme.palette.icon.main, mr: 1}}/>, text: "Massima" };
+            return { icon: <CallMadeIcon sx={{ color: theme.palette.icon.main, mr: 1}}/>, text: "1" };
         } else if (priorita > 1 && priorita <= 2) {
-            return { icon: <TrendingUpIcon sx={{ color: theme.palette.icon.main, mr: 1}}/>, text: "Alta" };
+            return { icon: <TrendingUpIcon sx={{ color: theme.palette.icon.main, mr: 1}}/>, text: "2" };
         } else if (priorita > 2 && priorita <= 3) {
-            return { icon: <TrendingFlatIcon sx={{ color: theme.palette.icon.main, mr: 1}}/>, text: "Media" };
+            return { icon: <TrendingFlatIcon sx={{ color: theme.palette.icon.main, mr: 1}}/>, text: "3" };
         } else if (priorita > 3) {
-            return { icon: <TrendingDownIcon sx={{ color: theme.palette.icon.main, mr: 1}}/>, text: "Bassa" };
+            return { icon: <TrendingDownIcon sx={{ color: theme.palette.icon.main, mr: 1}}/>, text: "4" };
         } else {
             return { icon: null, text: "" }; 
         }
@@ -220,7 +232,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
 
     const menuData = [
         {
-            title: t('Aggiorna Need'),
+            title: t('Modifica Need'),
             icon: <Edit />,
             onClick: (event) => {
                 navigateToAggiorna(valori.id, event);
@@ -234,10 +246,10 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
             }
         },
         {
-            title: t('Cambia Stato'),
+            title: t('Cambia Stato e Priorità'),
             icon: <ChangeCircleIcon />,
             onClick: (event) => {
-                handleOpenModalStato(valori.id, event);
+                handleOpenModalStato(valori.id, valori.descrizione, event);
             }
         },
         {
@@ -246,7 +258,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
             onClick: (event) => {
                 handleOpenModalDelete(event);
             },
-            isVisible: userHasRole('ROLE_ADMIN'),
+            isVisible: userHasRole('ADMIN'),
         }
     ];
 
@@ -296,6 +308,13 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
                     {valori.location}
             </Typography>
 
+            <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
+                    <BusinessCenterIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
+                    {valori.tipologia && valori.tipologia.descrizione
+                    ? valori.tipologia.descrizione
+                    : "N/A"}
+                    </Typography>
+
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
                     {icon}
@@ -304,15 +323,13 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
 
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
-                    <BusinessCenterIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
-                    {valori.tipologia && valori.tipologia.descrizione
-                    ? valori.tipologia.descrizione
-                    : "N/A"}
-                    </Typography>
-
-            <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
                     <AutoModeIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
                     {valori.stato.descrizione}
+            </Typography>
+
+            <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
+                    <AccountCircleIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
+                    {valori?.owner?.descrizione}
             </Typography>
                 </Box>
                 <Box sx={{ 
@@ -492,7 +509,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
                         }}
                     >
                         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
-                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', ml: 2, mt: 0.5, mb: 0.5}}>{t('Cambia Stato Al Need')}</Typography>
+                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', ml: 2, mt: 0.5, mb: 0.5}}>{nomeNeed}</Typography>
                             <IconButton sx={{
                                     mr: 2, 
                                     backgroundColor: 'transparent', 
@@ -529,6 +546,48 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
                                     <TextField 
                                         {...params} 
                                         label={t("Stato")}
+                                        variant="filled" 
+                                        sx={{
+                                            height: '4em',
+                                            p: 1,
+                                            borderRadius: '20px', 
+                                            backgroundColor: '#EDEDED',
+                                            '& .MuiFilledInput-root': {
+                                                backgroundColor: 'transparent',
+                                            },
+                                            '& .MuiFilledInput-underline:after': {
+                                                borderBottomColor: 'transparent',
+                                            },
+                                            '& .MuiFilledInput-root::before': {
+                                                borderBottom: 'none', 
+                                            },
+                                            '&:hover .MuiFilledInput-root::before': {
+                                                borderBottom: 'none', 
+                                            },
+                                            '& .MuiFormLabel-root.Mui-focused': {
+                                                color: '#00B400',
+                                            }, 
+                                        }}  
+                                    />
+                            }
+                            />
+                            </FormControl>
+                            <FormControl fullWidth >
+                        <Autocomplete
+                                id="priorita-combo-box"
+                                options={prioritaOptions}
+                                getOptionLabel={(option) => option.label}
+                                value={prioritaOptions.find(option => option.value === values.priorita) || null}
+                                onChange={(event, newValue) => {
+                                    setValues(prevValues => ({
+                                        ...prevValues,
+                                        priorita: newValue ? newValue.value : null
+                                    }));
+                                }}
+                                renderInput={(params) => 
+                                    <TextField 
+                                        {...params} 
+                                        label={t("Priorità")}
                                         variant="filled" 
                                         sx={{
                                             height: '4em',

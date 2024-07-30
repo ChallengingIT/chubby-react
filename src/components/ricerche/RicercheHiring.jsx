@@ -52,7 +52,7 @@
         const userString = sessionStorage.getItem("user");
         if (userString) {
         const userObj = JSON.parse(userString);
-        return userObj.roles.includes("ROLE_ADMIN");
+        return userObj.roles.includes("ADMIN");
         }
         return false;
     };

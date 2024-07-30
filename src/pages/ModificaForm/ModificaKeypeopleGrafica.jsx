@@ -137,7 +137,7 @@ const ModificaKeypeopleGrafica = () => {
     const getMandatoryFields = (index) => {
         switch (index) {
             case 0:
-                return ["nome", "idAzienda", "idOwner", "email", "idStato", "ruolo", "dataCreazione"]; 
+                return ["nome", "idAzienda", "email", "idStato", "ruolo", "dataCreazione"]; 
             default:
                 return [];
         }
@@ -300,7 +300,7 @@ const ModificaKeypeopleGrafica = () => {
         const openTipo = Boolean(anchorElTipo);
 
 
-        const campiObbligatori = [ "nome", "idAzienda", "email", "idOwner", "idStato", "ruolo", "dataCreazione" ];
+        const campiObbligatori = [ "nome", "idAzienda", "email", "idStato", "ruolo", "dataCreazione" ];
 
         const fields =[
             { type: "titleGroups",                label: t("Anagrafica")            },
@@ -312,7 +312,6 @@ const ModificaKeypeopleGrafica = () => {
                 { value: 2, label: "Hook" },
                 { value: 3, label: 'Link'}
               ] },
-              { label: t("Owner*"),              name: "idOwner",              type: "select",      options: ownerOptions},
               { label: t("Stato*"),              name: "idStato",              type: "select",      options: statiOptions },
 
             { label: "Email*",                name: "email",                type: "email", maxLength: 45 },
@@ -330,7 +329,6 @@ const ModificaKeypeopleGrafica = () => {
             id:                 datiModifica.id                                                  ,
             nome:               datiModifica.nome                                                || null,
             idAzienda:          datiModifica.cliente && datiModifica.cliente.id                  || null,
-            idOwner:            datiModifica.owner   && datiModifica.owner.id                    || null,
             email:              datiModifica.email                                               || null,
             cellulare:          datiModifica.cellulare                                           || null,
             ruolo:              datiModifica.ruolo                                               || null,

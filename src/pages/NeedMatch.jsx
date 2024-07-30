@@ -16,6 +16,8 @@
     import ChecklistIcon                                    from '@mui/icons-material/Checklist';
     import CheckListButton                                  from "../components/button/CheckListButton.jsx";
     import { useTranslation }                               from "react-i18next"; 
+import IntervisteModalButton from "../components/button/IntervisteModalButton.jsx";
+import IntervisteModal from "../components/modal/IntervisteModal.jsx";
 
 
     const NeedMatch = () => {
@@ -36,6 +38,9 @@
     const [ statoOptions,           setStatoOptions                 ] = useState([]);
     const [ isModalOpen,            setIsModalOpen                  ] = useState(false);
     const [ initialValuesAggiorna,  setInitialValuesAggiorna        ] = useState([]);
+    const [ openModalIntervista,    setOpenModalIntervista          ] = useState(false);
+    const [ selectedIntervista,     setSelectedIntervista           ] = useState(null);
+
 
 
         //stati per il dialog
@@ -684,6 +689,20 @@
             }
         };
 
+        const handleModalIntervista = async(idCandidato) => {
+            try{
+                const responseIntervista = await axios.get(`http://localhost:8080/intervista/ultima/${idCandidato}`, {
+                    headers: headers
+                });
+                setSelectedIntervista(responseIntervista.data);
+                setOpenModalIntervista(true);
+            } catch (error) {
+                console.error("Errore durante il recupero dell'intervista: ", error);
+            }
+        };
+
+        console.log("intervistaData: ", selectedIntervista);
+
     const fieldsAggiorna = [
         { label: t("Cliente"), name: "cliente", type: "text", sortable: false, filterable: false, disableColumnMenu: true },
         { label: t("Need"), name: "idNeed", type: "text", sortable: false, filterable: false, disableColumnMenu: true },
@@ -723,7 +742,6 @@
             </div>
         ),
         },
-        { field: "email", headerName: "E-Mail", flex: 1.4, sortable: false, filterable: false, disableColumnMenu: true },
         {
         field: "tipologia",
         headerName: t("Job Title"),
@@ -736,6 +754,8 @@
             </div>
         ),
         },
+        { field: "email", headerName: "E-Mail", flex: 1.4, sortable: false, filterable: false, disableColumnMenu: true },
+
         { field: "rating", headerName: t("Rating"), flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
             renderCell: (params) => (
                 <div style={{ textAlign: "start" }}>
@@ -777,6 +797,18 @@
             >
                 Associa
             </Button> */}
+            <IntervisteModalButton
+            hasIntervista={!!params.row?.hasInterviste}
+            onClick={() => handleModalIntervista(params.row?.id)} />
+            <ClipButton 
+                hasFile={!!params.row?.file}
+                idFile={params.row.file ? params.row.file.id : null} 
+                fileDescrizione={params.row.file ? params.row.file.descrizione : null}
+                onClick={() => handleDownloadCV(
+                    params.row.file ? params.row.file.id : null,
+                    params.row.file ? params.row.file.descrizione : null
+                )}
+            />
             <IconButton onClick={() => handleAssocia(params.row)}>
                     <AddCircleIcon sx={{ color: '#00B400'}} />
             </IconButton>
@@ -949,7 +981,6 @@
                 startIcon={<ChecklistIcon sx={{ backgroundColor: "transparent" }} />}
             >
             </Button> */}
-            <CheckListButton onClick={() => handleOpenModal(params.row)} />
             <Link
                 to={`/recruiting/intervista/${params.row.id}`}
                 state = {{ recruitingData: params.row}}
@@ -957,6 +988,7 @@
                 <IntervistaButton /> 
             </Link>
             <ClipButton 
+                hasFile={!!params.row?.file}
                 idFile={params.row.file ? params.row.file.id : null} 
                 fileDescrizione={params.row.file ? params.row.file.descrizione : null}
                 onClick={() => handleDownloadCV(
@@ -964,6 +996,7 @@
                     params.row.file ? params.row.file.descrizione : null
                 )}
             />
+             <CheckListButton onClick={() => handleOpenModal(params.row)} />
             <CloseIconButton onClick={handleDeleteAssociati} id={params.row.id} />
             </Box>
         ),
@@ -1078,6 +1111,11 @@
             <DialogContent>
             </DialogContent>
         </Dialog>
+        <IntervisteModal
+            open={openModalIntervista}
+            handleClose={() => setOpenModalIntervista(false)}
+            intervista={selectedIntervista}
+        />
         </SchemePage>
     );
     };

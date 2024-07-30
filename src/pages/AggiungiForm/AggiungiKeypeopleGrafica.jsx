@@ -137,7 +137,6 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
             return [
             "nome",
             "idAzienda",
-            "idOwner",
             "email",
             "idStato",
             "ruolo",
@@ -313,7 +312,6 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
         "nome",
         "idAzienda",
         "email",
-        "idOwner",
         "idStato",
         "ruolo",
         "dataCreazione",
@@ -330,7 +328,6 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
             { value: 3, label: "Link" },
         ],
         },
-        { label: t("Owner*"),                  name: "idOwner",            type: "select",             options: ownerOptions },
         { label: t("Stato*"),                  name: "idStato",            type: "select",             options: statiOptions },
 
         { label: "Email*",                  name: "email",              type: "email",              maxLength: 45         },

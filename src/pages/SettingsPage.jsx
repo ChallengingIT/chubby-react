@@ -28,9 +28,15 @@
     const { t, i18n } = useTranslation();
 
     const languageOptions = [
-        { value: "it", label: t("Italiano"), flag: "🇮🇹" },
-        { value: "es", label: t("Spagnolo"), flag: "🇪🇸" },
-        { value: "en", label: t("Inglese"), flag: "🇬🇧" },
+        { value: "it",  label: t("Italiano"),   flag: "🇮🇹" },
+        { value: "es",  label: t("Spagnolo"),   flag: "🇪🇸" },
+        { value: "en",  label: t("Inglese"),    flag: "🇬🇧" },
+        { value: "de",  label: t("Tedesco"),    flag: "🇩🇪" },
+        { value: "fr",  label: t("Francese"),   flag: "🇫🇷" },
+        { value: "pt",  label: t("Portoghese"), flag: "🇵🇹" },
+        { value: "ru",  label: t("Russo"),      flag: "🇷🇺" },
+        { value: "ja",  label: t("Giapponese"), flag: "🇯🇵" },
+        { value: "cmn", label: t("Cinese"),     flag: "🇨🇳" },
     ];
 
     const [activeSection, setActiveSection] = useState("Cambia Password");

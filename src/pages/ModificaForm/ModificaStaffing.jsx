@@ -15,6 +15,7 @@ const ModificaStaffing = () => {
     const navigate = useNavigate();
     const { idHiring } = useParams();
     const { idScheda } = useParams();
+    const idTipoServizio = 4;
 
     //stati della pagina
     const [ activeSection,      setActiveSection        ] = useState('Descrizione');
@@ -274,7 +275,7 @@ const ModificaStaffing = () => {
     
                     const response = await axios.post("http://89.46.196.60:8443/hiring/salva/scheda", valuesWithId, {
                         headers: headers,
-                        params: { idHiring: idHiring }
+                        params: { idHiring: idHiring, idTipoServizio: idTipoServizio }
                     });
                     if (response.data === "DUPLICATO") {
                         setAlert({ open: true, message: "azienda già esistente!" });
@@ -308,7 +309,7 @@ const ModificaStaffing = () => {
             { label: 'Ruolo',                           name: 'descrizione',              type:'text', maxLength: 90                              },
             { label: "Data inizio",                     name: "inizioAttivita",           type: "date", maxLength: 45                             },
             { label: "Data fine",                       name: "fineAttivita",             type: "date", maxLength: 45                             },
-            { label: "Durata staffing",                 name: "durata",                   type: "text", maxLength: 45                             },
+            { label: "Durata staffing (mesi)",           name: "durata",                   type: "text", maxLength: 45                             },
 
 
             { type: 'titleGroups',                label: "Economics"     },
@@ -317,7 +318,7 @@ const ModificaStaffing = () => {
             { label: "Importo da fatturare",             name: "fatturato",                 type: "decimalNumber", maxLength: 45                    },
 
             { type: "titleGroups",                label: "Fatturazione"            },
-            { label: "Data fatturazione",                  name: "dataFatturazione",      type: "date",          maxLength: 45                    },
+            { label: "Modalità fatturazione",              name: "dataFatturazione",      type: "date",          maxLength: 45                    },
             { label: "Termini di pagamento",               name: "idTerminePagamento",    type: "select",        options: terminiOptions, },
         ];
 

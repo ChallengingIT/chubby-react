@@ -3,7 +3,7 @@ import PersonSearchIcon      from "@mui/icons-material/PersonSearch";
 import Button                from "@mui/material/Button";
 import { useNavigate, Link } from "react-router-dom";
 
-function PersonInfoButton({ onClick, to }) {
+function PersonInfoButton({ onClick, to, hasInterviste }) {
   const navigate = useNavigate();
 
   const handleEditAction = () => {
@@ -18,7 +18,7 @@ function PersonInfoButton({ onClick, to }) {
     <Button
       // variant="contained"
       size="medium"
-      startIcon={<PersonSearchIcon />}
+      startIcon={<PersonSearchIcon sx={{ color: hasInterviste ? "black" : "#808080" }} />}
       onClick={handleEditAction}
       sx={{
         // marginRight: "10%",

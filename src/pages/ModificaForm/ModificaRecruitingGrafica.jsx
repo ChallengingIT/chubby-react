@@ -255,7 +255,7 @@ const ModificaRecruitingGrafica = () => {
     const getMandatoryFields = (index) => {
         switch (index) {
             case 0:
-                return ["nome", "cognome", "email"]; 
+                return ["nome", "cognome", "dataNascita", "email"]; 
             case 1:
                 return [ "anniEsperienzaRuolo", "idLivelloScolastico"]; 
             case 2: 
@@ -560,13 +560,13 @@ const ModificaRecruitingGrafica = () => {
 
 
 
-        const campiObbligatori = [ "nome", "cognome", "email", "anniEsperienzaRuolo", "idTipologia", "dataUltimoContatto", "idCandidatura", "idLivelloScolastico", "idFunzioneAziendale" ];
+        const campiObbligatori = [ "nome", "cognome", "dataNascita", "email", "anniEsperienzaRuolo", "idTipologia", "dataUltimoContatto", "idCandidatura", "idLivelloScolastico", "idFunzioneAziendale" ];
 
         const fields =[
             { type: "titleGroups",                label: t("Profilo Candidato")            },
             { label: t("Nome*"),                         name: "nome",                     type: "text", maxLength: 45                                                            },
             { label: t("Cognome*"),                      name: "cognome",                  type: "text", maxLength: 45                                                            },
-            { label: t("Data Di Nascita"),               name: "dataNascita",              type: "date"                                                            },
+            { label: t("Data Di Nascita*"),               name: "dataNascita",              type: "date"                                                            },
             { label: t("Email*"),                        name: "email",                    type: "text", maxLength: 45                                                            },
             { label: t("Cellulare"),                     name: "cellulare",                type: "text", maxLength: 20                                                            },
             { label: t("Residenza"),                     name: "citta",                    type: "text", maxLength: 45                                                            },

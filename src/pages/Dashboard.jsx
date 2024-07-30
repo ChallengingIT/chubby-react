@@ -63,7 +63,7 @@ function Dashboard() {
             pagina: 0,
             quantita: 10,
         };
-        if (!userHasRole("ROLE_ADMIN")) {
+        if (!userHasRole("ADMIN")) {
             const userString = sessionStorage.getItem("user");
             if (userString) {
                 const userObj = JSON.parse(userString);
@@ -71,13 +71,13 @@ function Dashboard() {
             }
         }
 
-        const baseUrlPipeline = userHasRole("ROLE_ADMIN")
-            ? "http://89.46.196.60:8443/dashboard/pipeline/admin"
-            : "http://89.46.196.60:8443/dashboard/pipeline";
+        const baseUrlPipeline = userHasRole("ADMIN")
+            ? "http://localhost:8080/dashboard/pipeline/admin"
+            : "http://localhost:8080/dashboard/pipeline";
 
         try {
-            const responsePipeline = await axios.get(baseUrlPipeline, { headers, params: filtriDaInviare });
-            const responseAzienda = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers });
+            const responsePipeline = await axios.get(baseUrlPipeline, { headers: headers, params: filtriDaInviare });
+            const responseAzienda = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
 
             if (Array.isArray(responseAzienda.data)) {
                 setAziendaOptions(responseAzienda.data.map((azienda) => ({
@@ -93,7 +93,7 @@ function Dashboard() {
                     id: pipeline.id,
                     descrizione: pipeline.descrizione || "N/A",
                     cliente: pipeline.cliente || { denominazione: "Cliente non disponibile", id: null },
-                    owner: pipeline.owner ? `${pipeline.owner?.nome} ${pipeline.owner?.cognome}` : "Owner non disponibile",
+                    owner: pipeline.owner ? `${pipeline.owner?.descrizione}` : "Owner non disponibile",
                     priorita: pipeline.priorita || "Priorità non disponibile",
                     stato: pipeline.stato ? pipeline.stato.descrizione : "Stato non disponibile",
                     pipelineData: pipeline.pipeline || "Dati non disponibili"

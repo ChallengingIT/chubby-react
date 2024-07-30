@@ -69,19 +69,19 @@
 
 // const ruoliOptions = [
 //     {
-//         value: 'ROLE_ADMIN',
+//         value: 'ADMIN',
 //         label: 'Admin',
 //     },
 //     {
-//         value: 'ROLE_USER',
+//         value: 'USER',
 //         label: 'User',
 //     },
 //     {
-//         value: 'ROLE_BM',
+//         value: 'BM',
 //         label: 'Business Manager',
 //     },
 //     {
-//         value: 'ROLE_RECRUITER',
+//         value: 'RECRUITER',
 //         label: 'Recruiter',
 //     }
 // ];
@@ -173,9 +173,9 @@
 //             const userRole = response.roles[0];
 
 
-//             if (userRole === "ROLE_ADMIN" || userRole === "ROLE_RECRUITER" || userRole === "ROLE_BM") {
+//             if (userRole === "ADMIN" || userRole === "RECRUITER" || userRole === "BM") {
 //                 navigate("/dashboard");
-//             } else if (userRole === "ROLE_USER") {
+//             } else if (userRole === "USER") {
 //                 navigate("/userHompage");
 //             }
 //         }

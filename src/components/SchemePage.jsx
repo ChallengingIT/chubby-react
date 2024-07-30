@@ -44,7 +44,7 @@
     
 
     const open = Boolean(anchorEl);
-    const isBusinessUser = userHasRole('ROLE_BUSINESS');
+    const isBusinessUser = userHasRole('BUSINESS');
 
     return (
         <Container maxWidth="false"

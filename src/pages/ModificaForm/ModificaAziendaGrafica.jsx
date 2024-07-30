@@ -8,9 +8,9 @@ import CustomTextFieldModifica                                                  
 import CustomImgFieldModifica                                                                                   from '../../components/fields/CustomImgFieldModifica';
 import CustomNoteModifica                                                                                       from '../../components/fields/CustomNoteModifica';
 import CustomDatePickerModifica                                                                                 from '../../components/fields/CustomDatePickerModifica';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CustomMultipleSelectModificaAziende from '../../components/fields/CustomMultipleSelectModificaAziende';
-import { useTranslation }                   from 'react-i18next';
+import CheckCircleIcon                                                                                          from '@mui/icons-material/CheckCircle';
+import CustomMultipleSelectModificaAziende                                                                      from '../../components/fields/CustomMultipleSelectModificaAziende';
+import { useTranslation }                                                                                       from 'react-i18next';
 
 
 const ModificaAziendaGrafica = () => {
@@ -470,7 +470,7 @@ const ModificaAziendaGrafica = () => {
             { label: t("Tipologia*"),                            name: "tipologia",                     type: "select", options: [
                 { value: "Cliente", label: t("Cliente") },
                 { value: "Prospect", label: t("Prospect") },
-                { value: "EXCLIENTE", label: t("Ex Cliente)") }
+                { value: "EXCLIENTE", label: t("Ex Cliente") }
             ]  },
             { label: t('Scadenza Contratto'),              name: 'dataScadenzaContratto',    type: 'date'                                            },
             { label: t('Tipo di servizio'),                name: 'idTipiServizio',             type: 'multipleSelect', options: tipoServizioOptions         },

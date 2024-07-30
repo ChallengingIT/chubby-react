@@ -17,6 +17,7 @@ const AggiungiTemporary = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const idHiring = id;
+    const idTipoServizio = 3;
 
     //stati della pagina
     const [ activeSection,      setActiveSection        ] = useState('Descrizione');
@@ -283,7 +284,7 @@ const AggiungiTemporary = () => {
     
                     const response = await axios.post("http://89.46.196.60:8443/hiring/salva/scheda", values, {
                         headers: headers,
-                        params: { idHiring: idHiring }
+                        params: { idHiring: idHiring, idTipoServizio: idTipoServizio }
                     });
                     if (response.data === "DUPLICATO") {
                         setAlert({ open: true, message: "azienda già esistente!" });
@@ -329,7 +330,7 @@ const AggiungiTemporary = () => {
 
 
             { type: "titleGroups",                label: "Fatturazione"            },
-            { label: "Data fatturazione",                  name: "dataFatturazione",      type: "date",          maxLength: 45                    },
+            { label: "Modalità fatturazione",              name: "dataFatturazione",      type: "date",          maxLength: 45                    },
             { label: "Termini di pagamento",               name: "idTerminePagamento",    type: "select",    options: terminiOptions, },
         ];
 

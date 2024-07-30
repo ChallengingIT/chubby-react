@@ -68,7 +68,6 @@ const Recruiting = () => {
   //stato per il dialog
   const [openDialogNome, setOpenDialogNome] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
-  const [noCFModal, setNoCFModal] = useState(false);
 
   // Stato per snackbar
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -81,6 +80,11 @@ const Recruiting = () => {
       return;
     }
     setSnackbarOpen(false);
+  };
+
+  const showSnackbar = (message) => {
+    setSnackbarMessage(message);
+    setSnackbarOpen(true);
   };
   
 
@@ -117,19 +121,19 @@ const Recruiting = () => {
 
     try {
       const response = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/mod",
+        "http://localhost:8080/staffing/react/mod",
         { headers: headers, params: filtriDaInviare }
       );
       const responseTipologia = await axios.get(
-        "http://89.46.196.60:8443/aziende/react/tipologia",
+        "http://localhost:8080/aziende/react/tipologia",
         { headers }
       );
       const responseTipo = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/tipo",
+        "http://localhost:8080/staffing/react/tipo",
         { headers }
       );
       const responseStato = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/stato/candidato",
+        "http://localhost:8080/staffing/react/stato/candidato",
         { headers }
       );
 
@@ -224,8 +228,8 @@ const Recruiting = () => {
       (value) => value !== null && value !== ""
     );
     const url = filtriAttivi
-      ? "http://89.46.196.60:8443/staffing/react/mod/ricerca"
-      : "http://89.46.196.60:8443/staffing/react/mod";
+      ? "http://localhost:8080/staffing/react/mod/ricerca"
+      : "http://localhost:8080/staffing/react/mod";
 
     const filtriDaInviare = {
       nome: filtri.nome || null,
@@ -282,7 +286,7 @@ const Recruiting = () => {
   const handleDelete = async () => {
     try {
       const responseDelete = await axios.delete(
-        `http://89.46.196.60:8443/staffing/elimina/${deleteId}`,
+        `http://localhost:8080/staffing/elimina/${deleteId}`,
         { headers: headers }
       );
       setOpenDialog(false);
@@ -318,19 +322,19 @@ const Recruiting = () => {
 
     try {
       const response = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/mod/ricerca",
+        "http://localhost:8080/staffing/react/mod/ricerca",
         { headers: headers, params: filtriDaInviare }
       );
       const responseTipologia = await axios.get(
-        "http://89.46.196.60:8443/aziende/react/tipologia",
+        "http://localhost:8080/aziende/react/tipologia",
         { headers }
       );
       const responseTipo = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/tipo",
+        "http://localhost:8080/staffing/react/tipo",
         { headers }
       );
       const responseStato = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/stato/candidato",
+        "http://localhost:8080/staffing/react/stato/candidato",
         { headers }
       );
 
@@ -425,7 +429,7 @@ const Recruiting = () => {
   };
 
   const handleDownloadCV = async (idFile, fileDescrizione) => {
-    const url = `http://89.46.196.60:8443/files/react/download/file/${idFile}`;
+    const url = `http://localhost:8080/files/react/download/file/${idFile}`;
     try {
       const responseDownloadCV = await axios({
         method: "GET",
@@ -450,12 +454,33 @@ const Recruiting = () => {
     }
   };
 
-  const handleDownloadCF = async (idCandidato, nomeCandidato, cognomeCandidato, file, dataNascita) => {
+  const handleCheckedCF = (idCandidato, nomeCandidato, cognomeCandidato, file, dataNascita) => {
     if (dataNascita != null && file != null) {
+      setIdCandidato(idCandidato);
+      setNomeCandidato(nomeCandidato);
+      setCognomeCandidato(cognomeCandidato);
+      setDescrizioneModalOpen(true);
+    } else {
+      let message = t(`Attenzione: non è possibile procedere alla creazione del CF per il candidato ${nomeCandidato} ${cognomeCandidato}.`);
+      if (file == null) {
+        message += t(` Il CV non è presente.`);
+      }
+      else if (dataNascita == null) {
+        message += t(` La data di nascita non è presente.`);
+      }
+      else if ( file == null && dataNascita == null) {
+        message += t(' Il CV e la data di nascita non sono presenti.');
+      }
+      setSnackbarMessage(message);
+      setSnackbarOpen(true);
+    }
+  }
+
+  const handleDownloadCF = async (idCandidato, nomeCandidato, cognomeCandidato, tipo) => {
       try {
         setLoadingCF(true);
-        const downloadUrl = `http://89.46.196.60:8443/files/download/cf/${idCandidato}`;
-        const params = new URLSearchParams();
+        const downloadUrl = `http://localhost:8080/files/download/cf/${idCandidato}`;
+        const params = new URLSearchParams({ tipo });
   
         const responseDownloadCF = await axios({
           method: "GET",
@@ -480,17 +505,6 @@ const Recruiting = () => {
           error
         );
       }
-    } else {
-      let message = t(`Attenzione: non è possibile procedere alla creazione del CF per il candidato ${nomeCandidato} ${cognomeCandidato}.`);
-      if (file == null) {
-        message += t(` Il CV non è presente.`);
-      }
-      if (dataNascita == null) {
-        message += t(` La data di nascita non è presente.`);
-      }
-      setSnackbarMessage(message);
-      setSnackbarOpen(true);
-    }
   };
   
   
@@ -620,13 +634,17 @@ const Recruiting = () => {
               setSelectedRal(params.row.ral);
             }}
           /> */}
+          
           <Link
             to={`/recruiting/intervista/${params.row.id}`}
             state={{ recruitingData: params.row }}
           >
-            <PersonInfoButton />
+            <PersonInfoButton
+              hasInterviste={!!params.row?.hasInterviste}
+            />
           </Link>
           <ClipButton
+            hasFile={!!params.row?.file}
             idFile={params.row.file ? params.row.file.id : null}
             fileDescrizione={
               params.row.file ? params.row.file.descrizione : null
@@ -637,11 +655,12 @@ const Recruiting = () => {
                 params.row.file ? params.row.file.descrizione : null
               )
             }
+            showSnackbar={showSnackbar}
           />
           <CFButton
             idCandidato={params.row?.id ? params.row?.id : null}
             onClick={() =>
-              handleDownloadCF(
+              handleCheckedCF(
                 params.row?.id ? params.row?.id : null,
                 params.row?.nome ? params.row?.nome : null,
                 params.row?.cognome ? params.row?.cognome : null,
@@ -649,8 +668,9 @@ const Recruiting = () => {
                 params.row?.dataNascita ? params.row?.dataNascita : null
               )
             }
+            hasFile={!!params.row?.file && !!params.row?.dataNascita}
           />
-          {userHasRole("ROLE_ADMIN") && (
+          {userHasRole("ADMIN") && (
             <DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
           )}
         </Box>

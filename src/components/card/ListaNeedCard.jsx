@@ -191,13 +191,13 @@
 
     const mediaPriorita = (priorita) => {
         if (priorita >= 0 && priorita <= 1) {
-        return { icon: <CallMadeIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />, text: t('Massima') };
+        return { icon: <CallMadeIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />, text: t('1') };
         } else if (priorita > 1 && priorita <= 2) {
-        return { icon: <TrendingUpIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />, text: t('Alta') };
+        return { icon: <TrendingUpIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />, text: t('2') };
         } else if (priorita > 2 && priorita <= 3) {
-        return { icon: <TrendingFlatIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />, text: t('Media') };
+        return { icon: <TrendingFlatIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />, text: t('3') };
         } else if (priorita > 3) {
-        return { icon: <TrendingDownIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />, text: t('Bassa') };
+        return { icon: <TrendingDownIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />, text: t('4') };
         } else {
         return { icon: null, text: '' };
         }
@@ -226,7 +226,7 @@
         onClick: (event) => {
             handleOpenModalDelete(event);
         },
-        isVisible: userHasRole('ROLE_ADMIN' && 'ROLE_BUSINESS'),
+        isVisible: userHasRole('ADMIN' && 'BUSINESS'),
         },
     ];
 

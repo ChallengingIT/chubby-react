@@ -45,7 +45,7 @@
         return userObj.roles.includes(roleToCheck);
     };
 
-    const isRecruiter = userHasRole("ROLE_RECRUITER");
+    const isRecruiter = userHasRole("RECRUITER");
 
     const [openFiltri, setOpenFiltri] = useState(false);
     const [isRotated, setIsRotated] = useState(false);
