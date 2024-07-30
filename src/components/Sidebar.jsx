@@ -1,25 +1,19 @@
-    import React, { useState, useEffect } from "react";
-    import { useLocation, useNavigate } from "react-router-dom";
-    import LogoBianco from "../images/logoTorchyChallengingBianco.png";
-    import TorciaBianca from "../images/torciaBianca.svg";
-    import axios from "axios";
-    import DashboardIcon from "@mui/icons-material/Dashboard";
-    import PersonIcon from "@mui/icons-material/Person";
-    import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
-    import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-    import ExploreIcon from "@mui/icons-material/Explore";
-    import PersonSearchIcon from "@mui/icons-material/PersonSearch";
-    import ChecklistRtlIcon from "@mui/icons-material/ChecklistRtl";
-    // import PersonAddIcon from "@mui/icons-material/PersonAdd"; // aggiungi candidato
-    // import AddCircleIcon from "@mui/icons-material/AddCircle"; // aggiungi need
-    // import AddIcCallIcon from "@mui/icons-material/AddIcCall"; // aggiungi appuntamento
-    // import EmailIcon from "@mui/icons-material/Email"; // email
-    import SettingsIcon from '@mui/icons-material/Settings'; //impostazioni
-    import AppuntamentoModal from "./AppuntamentoModal";
-    import EmailModal from "./EmailModal";
-    import GroupAddIcon from '@mui/icons-material/GroupAdd'; //aggiungi owner
-    import { useUserTheme } from "./TorchyThemeProvider";
-    import { useTranslation }                   from 'react-i18next';
+    import React, { useState, useEffect }               from "react";
+    import { useLocation, useNavigate }                 from "react-router-dom";
+    import LogoBianco                                   from "../images/logoTorchyChallengingBianco.png";
+    import TorciaBianca                                 from "../images/torciaBianca.svg";
+    import axios                                        from "axios";
+    import DashboardIcon                                from "@mui/icons-material/Dashboard";
+    import PersonIcon                                   from "@mui/icons-material/Person";
+    import BusinessCenterIcon                           from "@mui/icons-material/BusinessCenter";
+    import ExitToAppIcon                                from "@mui/icons-material/ExitToApp";
+    import ExploreIcon                                  from "@mui/icons-material/Explore";
+    import PersonSearchIcon                             from "@mui/icons-material/PersonSearch";
+    import ChecklistRtlIcon                             from "@mui/icons-material/ChecklistRtl";
+    import SettingsIcon                                 from '@mui/icons-material/Settings'; //impostazioni
+    import GroupAddIcon                                 from '@mui/icons-material/GroupAdd'; //aggiungi owner
+    import { useUserTheme }                             from "./TorchyThemeProvider";
+    import { useTranslation }                           from 'react-i18next';
     import {
     Box,
     Drawer,
@@ -37,6 +31,13 @@
     Popover,
     Typography,
     } from "@mui/material";
+
+    // import PersonAddIcon from "@mui/icons-material/PersonAdd"; // aggiungi candidato
+    // import AddCircleIcon from "@mui/icons-material/AddCircle"; // aggiungi need
+    // import AddIcCallIcon from "@mui/icons-material/AddIcCall"; // aggiungi appuntamento
+    // import EmailIcon from "@mui/icons-material/Email"; // email
+    // import AppuntamentoModal                            from "./AppuntamentoModal";
+    // import EmailModal from "./EmailModal";
 
     function Sidebar() {
     const theme = useUserTheme();
@@ -322,6 +323,7 @@
         {
             title: "Dashboard",
             icon: <DashboardIcon />,
+            isVisible: !userHasRole("CANDIDATO"),
             onClick: () => navigate(roleBusiness ? "/homepage" : "/dashboard"),
         },
         {
@@ -354,6 +356,8 @@
         onClick: () => navigate("/hiring"),
         },
     ];
+
+    const isCandidato = userHasRole("CANDIDATO");
 
     return (
         <Box sx={{ display: "flex" }}>
@@ -391,8 +395,12 @@
                 style={{ width: "8vw", marginTop: "1em", marginBottom: "1em" }}
             />
             <IconButton
-                onClick={handleTorciaClick}
-                sx={{ padding: 0, "&:hover": { transform: "scale(1.1)" } }}
+            onClick={isCandidato ? null : handleTorciaClick}
+            disabled={isCandidato}
+            sx={{
+                padding: 0,
+                "&:hover": { transform: !isCandidato ? "scale(1.1)" : "none" },
+            }}
             >
                 <img
                 src={TorciaBianca}

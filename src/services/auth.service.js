@@ -89,6 +89,7 @@ class AuthService {
                 "Content-Type": "multipart/form-data",
               },
           });
+          return cvResponse.data;
           }
           return registrationResponse;
         } catch (error) {

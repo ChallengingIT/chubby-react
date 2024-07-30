@@ -3,11 +3,11 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 
-function IntervisteModalButton({ onClick, to, recruitingData }) {
+function IntervisteModalButton({ hasIntervista, onClick, to, recruitingData }) {
   const navigate = useNavigate();
 
   const handleEditAction = () => {
-    if (onClick) {
+    if (hasIntervista && onClick) {
       onClick();
     } else if (to) {
       navigate(to);
@@ -18,7 +18,7 @@ function IntervisteModalButton({ onClick, to, recruitingData }) {
     <Button 
       // variant="contained" 
       size="medium" 
-      startIcon={<VisibilityIcon />} 
+      startIcon={<VisibilityIcon sx={{ color: hasIntervista ? "black" : '#808080'}} />} 
       onClick={handleEditAction}
       sx={{
         marginRight: '10%',

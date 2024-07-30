@@ -111,7 +111,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
     }, [valori.stato?.id]);
     
     const toggleFlip = () => {
-        if ( modalStato) {
+        if (modalStato || userHasRole('CANDIDATO')) {
             return;
         }
         setIsFlipped(!isFlipped);

@@ -119,6 +119,8 @@
             navigate("/dashboard");
             } else if (userRole === "USER" || userRole === "BUSINESS") {
             navigate("/homepage");
+            } else if (userRole === "CANDIDATO") {
+                navigate("/need/candidato");
             }
         }
         } catch (error) {

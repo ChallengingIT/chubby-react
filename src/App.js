@@ -48,6 +48,7 @@ import LoginComponent from './components/LoginComponent.jsx';
 import DashboardClienti from './components/componentiCliente/DashboardClienti.jsx';
 import RegisterCandidato from './components/loginCandidato/RegisterCandidato.jsx';
 import LoginCandidato from './components/loginCandidato/LoginCandidato.jsx';
+import NeedCandidato from './components/loginCandidato/NeedCandidato.jsx';
 
 
 
@@ -133,6 +134,11 @@ const App = () => {
                 <Route path="/need" element={
                     <PrivateRoute roles={['ADMIN', 'BM', 'RECRUITER']}>
                       <Need />
+                    </PrivateRoute>
+                  } />
+                  <Route path="/need/candidato" element={
+                    <PrivateRoute roles={['CANDIDATO']}>
+                      <NeedCandidato />
                     </PrivateRoute>
                   } />
                 <Route path="/need/aggiungi" element={

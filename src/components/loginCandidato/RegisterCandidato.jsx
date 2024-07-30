@@ -119,8 +119,8 @@
         
             try {
             const response = await authService.registerCandidato(username, password, nome, cognome, cellulare, residenza, email, cvFile);
-            if (response.data.message === "OK") {
-                navigate("/login/candidato");
+            if (response === "OK") {
+                navigate("/login");
             }
             } catch (error) {
             console.error("Errore durante la registrazione del candidato:", error);

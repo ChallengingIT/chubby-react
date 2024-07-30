@@ -689,10 +689,19 @@ import IntervisteModal from "../components/modal/IntervisteModal.jsx";
             }
         };
 
-        const handleModalIntervista = (intervista) => {
-            setSelectedIntervista(intervista);
-            setOpenModalIntervista(true);
-          };
+        const handleModalIntervista = async(idCandidato) => {
+            try{
+                const responseIntervista = await axios.get(`http://localhost:8080/intervista/ultima/${idCandidato}`, {
+                    headers: headers
+                });
+                setSelectedIntervista(responseIntervista.data);
+                setOpenModalIntervista(true);
+            } catch (error) {
+                console.error("Errore durante il recupero dell'intervista: ", error);
+            }
+        };
+
+        console.log("intervistaData: ", selectedIntervista);
 
     const fieldsAggiorna = [
         { label: t("Cliente"), name: "cliente", type: "text", sortable: false, filterable: false, disableColumnMenu: true },
@@ -788,7 +797,9 @@ import IntervisteModal from "../components/modal/IntervisteModal.jsx";
             >
                 Associa
             </Button> */}
-            <IntervisteModalButton onClick={() => handleModalIntervista(params.row)} />
+            <IntervisteModalButton
+            hasIntervista={!!params.row?.hasInterviste}
+            onClick={() => handleModalIntervista(params.row?.id)} />
             <ClipButton 
                 hasFile={!!params.row?.file}
                 idFile={params.row.file ? params.row.file.id : null} 
