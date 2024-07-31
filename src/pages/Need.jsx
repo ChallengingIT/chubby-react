@@ -152,6 +152,7 @@ const baseUrl = userHasRole('ADMIN')
             pagina: paginaSuccessiva,
             quantita: quantita
         };
+
         try {
             const responsePaginazione = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
             if (isSearchActive) {
@@ -191,8 +192,8 @@ const baseUrl = userHasRole('ADMIN')
             pagina: 0,
             quantita: quantita
         };
-
-
+        console.log("filtri inviati: ", filtriDaInviare);
+    
         if (!userHasRole('ADMIN')) {
             const userString = sessionStorage.getItem('user');
             if (userString) {
@@ -200,7 +201,7 @@ const baseUrl = userHasRole('ADMIN')
                 filtriDaInviare.username = userObj.username;
             }
         }
-
+    
         const baseUrl = userHasRole('ADMIN') ? "http://localhost:8080/need/react/ricerca/modificato" : "http://localhost:8080/need/react/ricerca/modificato/personal";
         setLoading(true);
         try {
@@ -209,33 +210,33 @@ const baseUrl = userHasRole('ADMIN')
             const responseOwner = await axios.get("http://localhost:8080/owner", { headers: headers });
             const responseTipologia = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
             const responseStato = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
-
+    
             if (Array.isArray(responseOwner.data)) {
                 setOwnerOptions(responseOwner.data.map((owner) => ({ label: owner.descrizione, value: owner.id })));
             } else {
                 console.error("I dati ottenuti non sono nel formato Array; ", responseOwner.data);
             }
-
+    
             if (Array.isArray(responseAzienda.data)) {
                 setAziendaOptions(responseAzienda.data.map((azienda) => ({ label: azienda.denominazione, value: azienda.id })));
             } else {
                 console.error("I dati ottenuti non sono nel formato Array:", responseAzienda.data);
             }
-
+    
             if (Array.isArray(responseTipologia.data)) {
                 setTipologiaOptions(responseTipologia.data.map((tipologia) => ({ label: tipologia.descrizione, value: tipologia.id })));
             } else {
                 console.error("I dati ottenuti non sono nel formato Array; ", responseTipologia.data);
             }
-
+    
             if (Array.isArray(responseStato.data)) {
                 setStatoOptions(responseStato.data.map((stato) => ({ label: stato.descrizione, value: stato.id })));
             } else {
                 console.error("I dati ottenuti non sono nel formato Array; ", responseStato.data);
             }
-
+    
             const { record, needs } = response.data;
-
+    
             if (needs && Array.isArray(needs)) {
                 setFilteredNeed(needs);
                 setRecordTot(record);
@@ -251,6 +252,13 @@ const baseUrl = userHasRole('ADMIN')
             setLoading(false);
         }
     };
+    
+    const handleSearchClick = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        handleRicerche(filtri);
+    };
+    
 
     // const handleFilterChange = (name) => (event) => {
     //     const newValue = event.target.value;
@@ -360,7 +368,7 @@ const baseUrl = userHasRole('ADMIN')
                     filtri={filtri}
                     onFilterChange={handleFilterChange}
                     onReset={handleReset}
-                    onSearch={handleRicerche}
+                    onSearch={handleSearchClick}
                     tipologiaOptions={tipologiaOptions}
                     statoOptions={statoOptions}
                     ownerOptions={ownerOptions}
