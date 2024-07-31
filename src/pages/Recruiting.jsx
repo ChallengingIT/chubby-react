@@ -477,35 +477,38 @@ const Recruiting = () => {
   }
 
   const handleDownloadCF = async (idCandidato, nomeCandidato, cognomeCandidato, tipo) => {
-      try {
-        setLoadingCF(true);
-        const downloadUrl = `http://localhost:8080/files/download/cf/${idCandidato}`;
-        const params = new URLSearchParams({ tipo });
+    try {
+      setLoadingCF(true);
+      const downloadUrl = `http://localhost:8080/files/download/cf/${idCandidato}`;
+      const params = new URLSearchParams({ tipo });
   
-        const responseDownloadCF = await axios({
-          method: "GET",
-          url: `${downloadUrl}?${params.toString()}`,
-          responseType: "blob",
-          headers: headers,
-        });
+      const responseDownloadCF = await axios({
+        method: "GET",
+        url: `${downloadUrl}?${params.toString()}`,
+        responseType: "blob",
+        headers: headers,
+      });
   
-        const fileURL = window.URL.createObjectURL(
-          new Blob([responseDownloadCF.data], { type: "application/pdf" })
-        );
-        const link = document.createElement("a");
-        link.href = fileURL;
-        link.setAttribute("download", `CF_${nomeCandidato}_${cognomeCandidato}.pdf`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        setLoadingCF(false);
-      } catch (error) {
-        console.error(
-          "Si è verificato un errore durante il download del CF: ",
-          error
-        );
+      const fileURL = window.URL.createObjectURL(
+        new Blob([responseDownloadCF.data], { type: "application/pdf" })
+      );
+      const link = document.createElement("a");
+      link.href = fileURL;
+      link.setAttribute("download", `CF_${nomeCandidato}_${cognomeCandidato}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setLoadingCF(false);
+    } catch (error) {
+      setLoadingCF(false);
+      if (error.response && error.response.status === 401) {
+        showSnackbar("Errore nel download del CF");
+      } else {
+        console.error("Si è verificato un errore durante il download del CF: ", error);
       }
+    }
   };
+  
   
   
   
