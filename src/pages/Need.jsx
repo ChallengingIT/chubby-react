@@ -80,14 +80,14 @@ const Need = () => {
             }
         }
 
-        const baseUrl = userHasRole('ADMIN') ? "http://89.46.196.60:8443/need/react/modificato" : "http://89.46.196.60:8443/need/react/modificato/personal";
+        const baseUrl = userHasRole('ADMIN') ? "http://localhost:8080/need/react/modificato" : "http://localhost:8080/need/react/modificato/personal";
 
         try {
             const responseNeed = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
-            const responseAzienda = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers: headers });
-            const responseOwner = await axios.get("http://89.46.196.60:8443/owner", { headers: headers });
-            const responseTipologia = await axios.get("http://89.46.196.60:8443/need/react/tipologia", { headers: headers });
-            const responseStato = await axios.get("http://89.46.196.60:8443/need/react/stato", { headers: headers });
+            const responseAzienda = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
+            const responseOwner = await axios.get("http://localhost:8080/owner", { headers: headers });
+            const responseTipologia = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
+            const responseStato = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
 
             if (Array.isArray(responseOwner.data)) {
                 setOwnerOptions(responseOwner.data.map((owner) => ({ label: owner.descrizione, value: owner.id })));
@@ -144,14 +144,15 @@ const Need = () => {
         }
 
 const baseUrl = userHasRole('ADMIN') 
-        ? (isSearchActive ? "http://89.46.196.60:8443/need/react/ricerca/modificato" : "http://89.46.196.60:8443/need/react/modificato")
-        : (isSearchActive ? "http://89.46.196.60:8443/need/react/ricerca/modificato/personal" : "http://89.46.196.60:8443/need/react/modificato/personal");
+        ? (isSearchActive ? "http://localhost:8080/need/react/ricerca/modificato" : "http://localhost:8080/need/react/modificato")
+        : (isSearchActive ? "http://localhost:8080/need/react/ricerca/modificato/personal" : "http://localhost:8080/need/react/modificato/personal");
 
         const filtriDaInviare = {
             ...filtri,
             pagina: paginaSuccessiva,
             quantita: quantita
         };
+
         try {
             const responsePaginazione = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
             if (isSearchActive) {
@@ -191,8 +192,8 @@ const baseUrl = userHasRole('ADMIN')
             pagina: 0,
             quantita: quantita
         };
-
-
+        console.log("filtri inviati: ", filtriDaInviare);
+    
         if (!userHasRole('ADMIN')) {
             const userString = sessionStorage.getItem('user');
             if (userString) {
@@ -200,42 +201,42 @@ const baseUrl = userHasRole('ADMIN')
                 filtriDaInviare.username = userObj.username;
             }
         }
-
-        const baseUrl = userHasRole('ADMIN') ? "http://89.46.196.60:8443/need/react/ricerca/modificato" : "http://89.46.196.60:8443/need/react/ricerca/modificato/personal";
+    
+        const baseUrl = userHasRole('ADMIN') ? "http://localhost:8080/need/react/ricerca/modificato" : "http://localhost:8080/need/react/ricerca/modificato/personal";
         setLoading(true);
         try {
             const response = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
-            const responseAzienda = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers: headers });
-            const responseOwner = await axios.get("http://89.46.196.60:8443/owner", { headers: headers });
-            const responseTipologia = await axios.get("http://89.46.196.60:8443/need/react/tipologia", { headers: headers });
-            const responseStato = await axios.get("http://89.46.196.60:8443/need/react/stato", { headers: headers });
-
+            const responseAzienda = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
+            const responseOwner = await axios.get("http://localhost:8080/owner", { headers: headers });
+            const responseTipologia = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
+            const responseStato = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
+    
             if (Array.isArray(responseOwner.data)) {
                 setOwnerOptions(responseOwner.data.map((owner) => ({ label: owner.descrizione, value: owner.id })));
             } else {
                 console.error("I dati ottenuti non sono nel formato Array; ", responseOwner.data);
             }
-
+    
             if (Array.isArray(responseAzienda.data)) {
                 setAziendaOptions(responseAzienda.data.map((azienda) => ({ label: azienda.denominazione, value: azienda.id })));
             } else {
                 console.error("I dati ottenuti non sono nel formato Array:", responseAzienda.data);
             }
-
+    
             if (Array.isArray(responseTipologia.data)) {
                 setTipologiaOptions(responseTipologia.data.map((tipologia) => ({ label: tipologia.descrizione, value: tipologia.id })));
             } else {
                 console.error("I dati ottenuti non sono nel formato Array; ", responseTipologia.data);
             }
-
+    
             if (Array.isArray(responseStato.data)) {
                 setStatoOptions(responseStato.data.map((stato) => ({ label: stato.descrizione, value: stato.id })));
             } else {
                 console.error("I dati ottenuti non sono nel formato Array; ", responseStato.data);
             }
-
+    
             const { record, needs } = response.data;
-
+    
             if (needs && Array.isArray(needs)) {
                 setFilteredNeed(needs);
                 setRecordTot(record);
@@ -251,6 +252,13 @@ const baseUrl = userHasRole('ADMIN')
             setLoading(false);
         }
     };
+    
+    const handleSearchClick = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        handleRicerche(filtri);
+    };
+    
 
     // const handleFilterChange = (name) => (event) => {
     //     const newValue = event.target.value;
@@ -332,7 +340,7 @@ const baseUrl = userHasRole('ADMIN')
     //funzione per cancellare il need
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://89.46.196.60:8443/need/react/elimina/${id}`, { headers: headers });
+            await axios.delete(`http://localhost:8080/need/react/elimina/${id}`, { headers: headers });
             await fetchData();
         } catch (error) {
             console.error("Errore durante la cancellazione: ", error);
@@ -360,7 +368,7 @@ const baseUrl = userHasRole('ADMIN')
                     filtri={filtri}
                     onFilterChange={handleFilterChange}
                     onReset={handleReset}
-                    onSearch={handleRicerche}
+                    onSearch={handleSearchClick}
                     tipologiaOptions={tipologiaOptions}
                     statoOptions={statoOptions}
                     ownerOptions={ownerOptions}
