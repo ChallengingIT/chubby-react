@@ -216,7 +216,9 @@ renderCell: (params) => (
    //dataAggiornamento e follow up si chiama intervista.tipo.descrizione
   { field: "azioni",         headerName: "",          flex: 1, renderCell: (params) => (
     <div>
-  <IntervisteModalButton onClick={() => handleModal(params.row)} />
+  <IntervisteModalButton 
+  hasIntervista={true}
+  onClick={() => handleModal(params.row)} />
     <Link
   to={`/intervista/modifica/${params.row.id}`}
   state={params.row}
