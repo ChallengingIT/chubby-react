@@ -81,13 +81,13 @@ const ListaNeedCardV2 = ({ valori, statoOptions, onDelete, onRefresh, isFirstCar
 
     const mediaPriorita = (priorita) => {
         if (priorita >= 0 && priorita <= 1) {
-            return { icon: <CallMadeIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />, text: "Massima" };
+            return { icon: <CallMadeIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />, text: "1" };
         } else if (priorita > 1 && priorita <= 2) {
-            return { icon: <TrendingUpIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />, text: "Alta" };
+            return { icon: <TrendingUpIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />, text: "2" };
         } else if (priorita > 2 && priorita <= 3) {
-            return { icon: <TrendingFlatIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />, text: "Media" };
+            return { icon: <TrendingFlatIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />, text: "3" };
         } else if (priorita > 3) {
-            return { icon: <TrendingDownIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />, text: "Bassa" };
+            return { icon: <TrendingDownIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />, text: "4" };
         } else {
             return { icon: null, text: "" };
         }

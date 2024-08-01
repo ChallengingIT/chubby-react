@@ -23,7 +23,7 @@
     };
 
     return (
-        <Dialog open={open} onClose={handleClose} PaperProps={{ sx: { borderRadius: '20px',  display: 'flex', minWidth: '60vw', height: 'auto' } }}>
+        <Dialog open={open} onClose={handleClose} PaperProps={{ sx: { borderRadius: '20px',  display: 'flex', minWidth: '60vw', height: 'auto', border: '1px solid #00B400 ' } }}>
         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
             <DialogTitle variant='h5' sx={{ fontWeight: 'bold'}}>{t(`Creazione CF di ${nomeCandidato} ${cognomeCandidato} `) }</DialogTitle>
             <Button

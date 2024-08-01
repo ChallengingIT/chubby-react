@@ -130,7 +130,7 @@ const NeedCandidato = () => {
         const paginaSuccessiva = pagina + 1;
 
 
-const baseUrl =  "http://localhost:8080/candidato/need/react/ricerca/modificato"
+const baseUrl =  "http://localhost:8080/candidato/need/react/modificato"
 
         const filtriDaInviare = {
             ...filtri,
@@ -182,10 +182,10 @@ const baseUrl =  "http://localhost:8080/candidato/need/react/ricerca/modificato"
         setLoading(true);
         try {
             const response = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
-            const responseAzienda = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
-            const responseOwner = await axios.get("http://localhost:8080/owner", { headers: headers });
-            const responseTipologia = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
-            const responseStato = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
+            const responseAzienda = await axios.get("http://localhost:8080/candidato/need/aziende", { headers: headers });
+            const responseOwner = await axios.get("http://localhost:8080/candidato/need/owner", { headers: headers });
+            const responseTipologia = await axios.get("http://localhost:8080/candidato/need/react/tipologia", { headers: headers });
+            const responseStato = await axios.get("http://localhost:8080/candidato/need/react/stato", { headers: headers });
 
             if (Array.isArray(responseOwner.data)) {
                 setOwnerOptions(responseOwner.data.map((owner) => ({ label: owner.descrizione, value: owner.id })));
@@ -227,6 +227,13 @@ const baseUrl =  "http://localhost:8080/candidato/need/react/ricerca/modificato"
         } finally {
             setLoading(false);
         }
+    };
+
+
+    const handleSearchClick = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        handleRicerche(filtri);
     };
 
     // const handleFilterChange = (name) => (event) => {
@@ -337,7 +344,7 @@ const baseUrl =  "http://localhost:8080/candidato/need/react/ricerca/modificato"
                     filtri={filtri}
                     onFilterChange={handleFilterChange}
                     onReset={handleReset}
-                    onSearch={handleRicerche}
+                    onSearch={handleSearchClick}
                     tipologiaOptions={tipologiaOptions}
                     statoOptions={statoOptions}
                     ownerOptions={ownerOptions}

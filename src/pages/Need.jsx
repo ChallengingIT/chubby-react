@@ -152,6 +152,8 @@ const baseUrl = userHasRole('ADMIN')
             pagina: paginaSuccessiva,
             quantita: quantita
         };
+        console.log("filtri: ", filtriDaInviare);
+
 
         try {
             const responsePaginazione = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });

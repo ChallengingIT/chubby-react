@@ -385,10 +385,10 @@ const ModificaNeedGrafica = () => {
             { label: t("Contatto*"),           name: "idKeyPeople",                  type: "select",               options: keyPeopleOptions     },
             // { label: "Priorità*",           name: "priorita",                     type: "decimalNumber"                                       },
             { label: t("Priorità*"),              name: "priorita",                          type: "select",               options: [
-                { value: 1,                   label: t("Massima") },
-                { value: 2,                   label: t("Alta") },
-                { value: 3,                   label: t("Media") },
-                { value: 4,                   label: t("Bassa") } 
+                { value: 1,                   label: t("1") },
+                { value: 2,                   label: t("2") },
+                { value: 3,                   label: t("3") },
+                { value: 4,                   label: t("4") } 
                 ] },
             { label: "Week*",               name: "week",                         type: "week"                                                },
             { label: t("Tipologia*"),          name: "idTipologia",                  type: "select",               options: tipologiaOptions     },
