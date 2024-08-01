@@ -152,7 +152,6 @@ const baseUrl = userHasRole('ADMIN')
             pagina: paginaSuccessiva,
             quantita: quantita
         };
-        console.log("filtri: ", filtriDaInviare);
 
 
         try {

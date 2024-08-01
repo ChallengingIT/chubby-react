@@ -156,18 +156,26 @@
     const handleNeedClick = () => {
         const userString = sessionStorage.getItem("user");
         if (userString) {
-        const userObj = JSON.parse(userString);
-        if (userObj.roles.includes("BUSINESS")) {
+            const userObj = JSON.parse(userString);
             const idAzienda = userObj.idAzienda;
-            navigate(`/need/${idAzienda}`);
+    
+            switch (true) {
+                case userObj.roles.includes("BUSINESS"):
+                    navigate(`/need/${idAzienda}`);
+                    break;
+                case userObj.roles.includes("CANDIDATO"):
+                    navigate("/need/candidato");
+                    break;
+                default:
+                    navigate("/need");
+                    break;
+            }
         } else {
             navigate("/need");
         }
-        } else {
-        navigate("/need");
-        }
         handleAdditionalDrawerClose();
     };
+    
 
     const ruolo = () => {
         const userString = sessionStorage.getItem("user");
@@ -341,6 +349,7 @@
         {
         title: "Need",
         icon: <ExploreIcon />,
+        isVisible: true,
         onClick: handleNeedClick,
         },
         {

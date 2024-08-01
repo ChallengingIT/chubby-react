@@ -130,13 +130,14 @@ const NeedCandidato = () => {
         const paginaSuccessiva = pagina + 1;
 
 
-const baseUrl =  "http://localhost:8080/candidato/need/react/modificato"
+const baseUrl =  (isSearchActive ?  "http://localhost:8080/candidato/need/react/ricerca/modificato" : "http://localhost:8080/candidato/need/react/modificato");
 
         const filtriDaInviare = {
             ...filtri,
             pagina: paginaSuccessiva,
             quantita: quantita
         };
+
         try {
             const responsePaginazione = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
             if (isSearchActive) {
