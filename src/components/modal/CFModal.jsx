@@ -59,7 +59,7 @@
                 }
                 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <img src={InnotekLogo} alt="Innotek" style={{ width: '54px', height: '54px' }} />
+                <img src={InnotekLogo} alt="Innotek" style={{ width: '4em', height: '54px' }} />
                 </Box>
             </IconButton>
             <IconButton onClick={() => handleSubmit(2)}
@@ -75,7 +75,7 @@
                 }
                 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <img src={ChallengingLogo} alt="Challenging" style={{ width: '54px', height: '54px' }} />
+                <img src={ChallengingLogo} alt="Challenging" style={{ width: '4em', height: '54px' }} />
                 </Box>
             </IconButton>
             </Box>
