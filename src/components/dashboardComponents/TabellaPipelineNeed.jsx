@@ -10,7 +10,7 @@ const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
     const theme = useUserTheme();
     const [dialogOpen, setDialogOpen] = useState(false);
     const [currentPipelineData, setCurrentPipelineData] = useState({});
-    const [rowHeight, setRowHeight] = useState(40); // altezza predefinita
+    const [rowHeight, setRowHeight] = useState(35); // altezza predefinita
     const [filteredData, setFilteredData] = useState(data);
 
     useEffect(() => {
@@ -83,22 +83,22 @@ const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
         setFilteredData(filteredRows);
     };
 
-    useEffect(() => {
-        const calculateRowHeight = () => {
-            if (dataGridRef.current) {
-                const availableHeight = dataGridRef.current.clientHeight;
-                const calculatedRowHeight = Math.floor(availableHeight / data.length);
-                setRowHeight(calculatedRowHeight);
-            }
-        };
+    // useEffect(() => {
+    //     const calculateRowHeight = () => {
+    //         if (dataGridRef.current) {
+    //             const availableHeight = dataGridRef.current.clientHeight;
+    //             const calculatedRowHeight = Math.floor(availableHeight / data.length);
+    //             setRowHeight(calculatedRowHeight);
+    //         }
+    //     };
 
-        calculateRowHeight();
-        window.addEventListener('resize', calculateRowHeight);
+    //     calculateRowHeight();
+    //     window.addEventListener('resize', calculateRowHeight);
 
-        return () => {
-            window.removeEventListener('resize', calculateRowHeight);
-        };
-    }, [dataGridRef, data.length]);
+    //     return () => {
+    //         window.removeEventListener('resize', calculateRowHeight);
+    //     };
+    // }, [dataGridRef, data.length]);
 
     return (
         <Box ref={dataGridRef} sx={{ height: '100%', width: '100%' }}>
