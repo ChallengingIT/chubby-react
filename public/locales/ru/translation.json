@@ -12,7 +12,7 @@
   "Aggiungi azienda": "Добавить компанию",
   "Aggiungi candidato": "Добавить кандидата",
   "Aggiungi contatto": "добавить контакт",
-  "Aggiungi need": "Добавить необходимость",
+  "Aggiungi need": "Добавить потребность",
   "Cerca Azienda": "Поиск компании",
   "Tipologia": "Типология",
   "Need Associati": "Нужны партнеры",
@@ -28,7 +28,7 @@
   "Cerca Need": "Поиск потребности",
   "Aggiona Need": "Необходимость обновления",
   "Cambia Stato": "Изменить состояние",
-  "Elimina Need": "Удалить необходимость",
+  "Elimina Need": "Удалить потребность",
   "Nome": "Имя",
   "Cognome": "Фамилия",
   "Data Colloquio": "Дата собеседования",
@@ -274,5 +274,12 @@
   "Owner next Deadline": "Владелец следующий срок",
   "Follow Up": "Следовать за",
   "Logout": "Выйти",
-  "Sei sicuro di voler eliminare la scheda candidato?": "Вы хотите устранить кандидатскую схему?"
+  "Sei sicuro di voler eliminare la scheda candidato?": "Вы уверены, что хотите удалить карточку кандидата?",
+  "Modifica Need": "Изменить потребность",
+  "Cambia Stato e Priorità": "Изменение статуса и приоритета",
+  "Creazione CF di": "создание CF",
+  "Modifica": "Редактировать",
+  "Disponibilità Effettiva": "Фактическая доступность",
+  "Data Di Nascita*": "Дата рождения*",
+  "Arabo": "арабский"
 }

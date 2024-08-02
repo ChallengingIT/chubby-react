@@ -170,7 +170,7 @@
     "Stato*": "Estado*",
     "Email già presente": "Correo electrónico ya presente",
     " lavora in azienda target, ha budget da gestire e potere decisionale ": " Trabaja en la empresa objetivo, tiene presupuesto para gestionar y poder de decisión. ",
-    " lavora in azienda target, ma non ha budget e potere decisionale ": " Trabaja en la empresa objetivo, pero no tiene presupuesto ni poder de decisión. ",
+    " lavora in azienda target, ma non ha budget e potere decisionale ": " Trabaja en la empresa objetivo, pero no tiene presupuesto ni poder de toma de decisiones. ",
     " persona che fa parte del nostro network e potrebbe avere contatti utili ": " persona que forma parte de nuestra red y puede tener contactos útiles ",
     " ho ricevuto un’esigenza di business ": " Recibí una solicitud comercial ",
     " ho fissato una prospection ": " establecí una prospección ",
@@ -274,5 +274,12 @@
     "Owner next Deadline": "Propietario próxima fecha límite",
     "Follow Up": "Hacer un seguimiento",
     "Logout": "Cerrar sesión",
-    "Sei sicuro di voler eliminare la scheda candidato?": "¿Sei seguro di querer eliminare la scheda candidato?"
-}
+    "Sei sicuro di voler eliminare la scheda candidato?": "¿Está seguro de que desea eliminar la tarjeta de candidato?",
+    "Modifica Need": "Editar necesidad",
+    "Cambia Stato e Priorità": "Cambiar estado y prioridad",
+    "Creazione CF di": "creación de CF de",
+    "Modifica": "Editar",
+    "Disponibilità Effettiva": "Disponibilidad real",
+    "Data Di Nascita*": "Fecha de nacimiento*",
+    "Arabo": "Arábica"
+  }

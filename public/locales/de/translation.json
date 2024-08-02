@@ -16,7 +16,7 @@
   "Cerca Azienda": "Firma suchen",
   "Tipologia": "Typologie",
   "Need Associati": "Brauchen Sie Mitarbeiter",
-  "Aggiorna Azienda": "Unternehmen aktualisieren",
+  "Aggiorna Azienda": "Firma aktualisieren",
   "Elimina Azienda": "Firma löschen",
   "Cerca Contatto": "Kontakt suchen",
   "Aziende": "Firmen",
@@ -274,5 +274,12 @@
   "Owner next Deadline": "Eigentümer nächste Frist",
   "Follow Up": "Nachverfolgen",
   "Logout": "Ausloggen",
-  "Sei sicuro di voler eliminare la scheda candidato?": "Sind Sie sich sicher, dass Sie den Kandidatenplan eliminieren möchten?"
+  "Sei sicuro di voler eliminare la scheda candidato?": "Sind Sie sicher, dass Sie die Kandidatenkarte löschen möchten?",
+  "Modifica Need": "Bedarf bearbeiten",
+  "Cambia Stato e Priorità": "Status und Priorität ändern",
+  "Creazione CF di": "CF-Erstellung von",
+  "Modifica": "Bearbeiten",
+  "Disponibilità Effettiva": "Tatsächliche Verfügbarkeit",
+  "Data Di Nascita*": "Geburtsdatum*",
+  "Arabo": "Arabisch"
 }

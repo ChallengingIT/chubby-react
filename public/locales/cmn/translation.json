@@ -49,7 +49,7 @@
   "Potenzialità": "潜在的",
   "Semplicità": "简单",
   "Complicità": "同谋",
-  "Scadenza Contratto": "合约到期",
+  "Scadenza Contratto": "合同到期",
   "Tipo Servizio": "服务类型",
   "Tipo di servizio": "服务类型",
   "Storico Delle Azioni": "行动史",
@@ -226,7 +226,7 @@
   "Dashboard": "仪表板",
   "To Do List": "待办事项清单",
   "Business": "商业",
-  "Recruiting": "人才招聘",
+  "Recruiting": "招聘",
   "Hiring": "招聘",
   "IDA": "国际开发协会",
   "Sei sicuro di voler eliminare l'azienda? Sei sicuro di voler eliminare l'azienda?": "您确定要删除该公司吗？",
@@ -274,5 +274,12 @@
   "Owner next Deadline": "业主下一个截止日期",
   "Follow Up": "跟进",
   "Logout": "登出",
-  "Sei sicuro di voler eliminare la scheda candidato?": "是否可以取消候选计划？"
+  "Sei sicuro di voler eliminare la scheda candidato?": "您确定要删除候选人卡吗？",
+  "Modifica Need": "编辑需要",
+  "Cambia Stato e Priorità": "更改状态和优先级",
+  "Creazione CF di": "CF 的创建",
+  "Modifica": "编辑",
+  "Disponibilità Effettiva": "实际供应情况",
+  "Data Di Nascita*": "出生日期*",
+  "Arabo": "阿拉伯"
 }
