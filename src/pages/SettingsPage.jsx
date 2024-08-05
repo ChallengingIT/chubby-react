@@ -37,6 +37,7 @@
         { value: "ru",  label: t("Russo"),      flag: "🇷🇺" },
         { value: "ja",  label: t("Giapponese"), flag: "🇯🇵" },
         { value: "cmn", label: t("Cinese"),     flag: "🇨🇳" },
+        { value: "ar",  label: t("Arabo"),      flag: "🇸🇦" },
     ];
 
     const [activeSection, setActiveSection] = useState("Cambia Password");

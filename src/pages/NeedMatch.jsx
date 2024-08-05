@@ -701,7 +701,6 @@ import IntervisteModal from "../components/modal/IntervisteModal.jsx";
             }
         };
 
-        console.log("intervistaData: ", selectedIntervista);
 
     const fieldsAggiorna = [
         { label: t("Cliente"), name: "cliente", type: "text", sortable: false, filterable: false, disableColumnMenu: true },

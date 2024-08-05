@@ -62,7 +62,7 @@
   "Cellulare": "携帯電話",
   "Data Di Creazione": "作成日",
   "Aggiorna Need": "アップデートの必要性",
-  "Descrizione Del Need": "ニーズの説明",
+  "Descrizione Del Need": "必要性の説明",
   "Anagrafica": "個人データ",
   "Tipologia Azienda": "会社の種類",
   "Pubblicazione Annuncio": "お知らせの発行",
@@ -171,7 +171,7 @@
   "Email già presente": "電子メールはすでに存在します",
   " lavora in azienda target, ha budget da gestire e potere decisionale ": " 対象会社に勤務しており、管理する予算と意思決定権を持っている ",
   " lavora in azienda target, ma non ha budget e potere decisionale ": " 対象会社に勤務しているが、予算も意思決定権も持たない ",
-  " persona che fa parte del nostro network e potrebbe avere contatti utili ": " 当社のネットワークに参加しており、有益な連絡先を持っている可能性のある人 ",
+  " persona che fa parte del nostro network e potrebbe avere contatti utili ": " 当社のネットワークに参加しており、有用な連絡先を持っている可能性のある人 ",
   " ho ricevuto un’esigenza di business ": " お仕事のご依頼をいただきました ",
   " ho fissato una prospection ": " 見通しを立てました ",
   " sono entrato in contatto ": " 連絡しました ",
@@ -274,5 +274,12 @@
   "Owner next Deadline": "オーナーの次の締め切り",
   "Follow Up": "フォローアップ",
   "Logout": "ログアウト",
-  "Sei sicuro di voler eliminare la scheda candidato?": "可能性はありますか?"
+  "Sei sicuro di voler eliminare la scheda candidato?": "候補者カードを削除してもよろしいですか?",
+  "Modifica Need": "編集の必要性",
+  "Cambia Stato e Priorità": "ステータスと優先度の変更",
+  "Creazione CF di": "CF作成",
+  "Modifica": "編集",
+  "Disponibilità Effettiva": "実際の可用性",
+  "Data Di Nascita*": "生年月日*",
+  "Arabo": "アラビア語"
 }

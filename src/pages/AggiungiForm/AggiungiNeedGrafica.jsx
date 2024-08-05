@@ -305,10 +305,10 @@ const AggiungiNeedGrafica = () => {
             { label: t('Contatto*'),                  name: "idKeyPeople",                  type: "select",               options: keypeopleOptions        },
             { label: t("Descrizione Need*"),          name: "descrizione",                  type: "text",                 maxLength: 200                   },
             { label: t("Priorità*"),                  name: "priorita",                     type: "select",               options: [
-                { value: 1,                   label: t("Massima") },
-                { value: 2,                   label: t("Alta") },
-                { value: 3,                   label: t("Media") },
-                { value: 4,                   label: t("Bassa") } 
+                { value: 1,                   label: "1" },
+                { value: 2,                   label: "2" },
+                { value: 3,                   label: "3" },
+                { value: 4,                   label: "4" } 
                 ] },
             { label: "Week*",                      name: "week",                         type: "week"                                                   },
             { label: t("Tipologia*"),                 name: "tipologia",                    type: "select",               options: tipologiaOptions        },

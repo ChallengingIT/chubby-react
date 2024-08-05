@@ -153,6 +153,7 @@ const baseUrl = userHasRole('ADMIN')
             quantita: quantita
         };
 
+
         try {
             const responsePaginazione = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
             if (isSearchActive) {

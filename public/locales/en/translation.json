@@ -274,5 +274,12 @@
     "Owner next Deadline": "Owner next Deadline",
     "Follow Up": "Follow up",
     "Logout": "Logout",
-    "Sei sicuro di voler eliminare la scheda candidato?": "Are you sure you want to delete the candidate card?"
-}
+    "Sei sicuro di voler eliminare la scheda candidato?": "Are you sure you want to delete the candidate card?",
+    "Modifica Need": "Edit Need",
+    "Cambia Stato e Priorità": "Change Status and Priority",
+    "Creazione CF di": "CF creation of",
+    "Modifica": "Edit",
+    "Disponibilità Effettiva": "Actual Availability",
+    "Data Di Nascita*": "Date of birth*",
+    "Arabo": "Arabic"
+  }

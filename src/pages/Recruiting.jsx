@@ -121,19 +121,19 @@ const Recruiting = () => {
 
     try {
       const response = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/mod",
+        "http://localhost:8080/staffing/react/mod",
         { headers: headers, params: filtriDaInviare }
       );
       const responseTipologia = await axios.get(
-        "http://89.46.196.60:8443/aziende/react/tipologia",
+        "http://localhost:8080/aziende/react/tipologia",
         { headers }
       );
       const responseTipo = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/tipo",
+        "http://localhost:8080/staffing/react/tipo",
         { headers }
       );
       const responseStato = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/stato/candidato",
+        "http://localhost:8080/staffing/react/stato/candidato",
         { headers }
       );
 
@@ -228,8 +228,8 @@ const Recruiting = () => {
       (value) => value !== null && value !== ""
     );
     const url = filtriAttivi
-      ? "http://89.46.196.60:8443/staffing/react/mod/ricerca"
-      : "http://89.46.196.60:8443/staffing/react/mod";
+      ? "http://localhost:8080/staffing/react/mod/ricerca"
+      : "http://localhost:8080/staffing/react/mod";
 
     const filtriDaInviare = {
       nome: filtri.nome || null,
@@ -286,7 +286,7 @@ const Recruiting = () => {
   const handleDelete = async () => {
     try {
       const responseDelete = await axios.delete(
-        `http://89.46.196.60:8443/staffing/elimina/${deleteId}`,
+        `http://localhost:8080/staffing/elimina/${deleteId}`,
         { headers: headers }
       );
       setOpenDialog(false);
@@ -322,19 +322,19 @@ const Recruiting = () => {
 
     try {
       const response = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/mod/ricerca",
+        "http://localhost:8080/staffing/react/mod/ricerca",
         { headers: headers, params: filtriDaInviare }
       );
       const responseTipologia = await axios.get(
-        "http://89.46.196.60:8443/aziende/react/tipologia",
+        "http://localhost:8080/aziende/react/tipologia",
         { headers }
       );
       const responseTipo = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/tipo",
+        "http://localhost:8080/staffing/react/tipo",
         { headers }
       );
       const responseStato = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/stato/candidato",
+        "http://localhost:8080/staffing/react/stato/candidato",
         { headers }
       );
 
@@ -429,7 +429,7 @@ const Recruiting = () => {
   };
 
   const handleDownloadCV = async (idFile, fileDescrizione) => {
-    const url = `http://89.46.196.60:8443/files/react/download/file/${idFile}`;
+    const url = `http://localhost:8080/files/react/download/file/${idFile}`;
     try {
       const responseDownloadCV = await axios({
         method: "GET",
@@ -477,35 +477,38 @@ const Recruiting = () => {
   }
 
   const handleDownloadCF = async (idCandidato, nomeCandidato, cognomeCandidato, tipo) => {
-      try {
-        setLoadingCF(true);
-        const downloadUrl = `http://89.46.196.60:8443/files/download/cf/${idCandidato}`;
-        const params = new URLSearchParams({ tipo });
+    try {
+      setLoadingCF(true);
+      const downloadUrl = `http://localhost:8080/files/download/cf/${idCandidato}`;
+      const params = new URLSearchParams({ tipo });
   
-        const responseDownloadCF = await axios({
-          method: "GET",
-          url: `${downloadUrl}?${params.toString()}`,
-          responseType: "blob",
-          headers: headers,
-        });
+      const responseDownloadCF = await axios({
+        method: "GET",
+        url: `${downloadUrl}?${params.toString()}`,
+        responseType: "blob",
+        headers: headers,
+      });
   
-        const fileURL = window.URL.createObjectURL(
-          new Blob([responseDownloadCF.data], { type: "application/pdf" })
-        );
-        const link = document.createElement("a");
-        link.href = fileURL;
-        link.setAttribute("download", `CF_${nomeCandidato}_${cognomeCandidato}.pdf`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        setLoadingCF(false);
-      } catch (error) {
-        console.error(
-          "Si è verificato un errore durante il download del CF: ",
-          error
-        );
+      const fileURL = window.URL.createObjectURL(
+        new Blob([responseDownloadCF.data], { type: "application/pdf" })
+      );
+      const link = document.createElement("a");
+      link.href = fileURL;
+      link.setAttribute("download", `CF_${nomeCandidato}_${cognomeCandidato}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setLoadingCF(false);
+    } catch (error) {
+      setLoadingCF(false);
+      if (error.response && error.response.status === 401) {
+        showSnackbar("Errore nel download del CF");
+      } else {
+        console.error("Si è verificato un errore durante il download del CF: ", error);
       }
+    }
   };
+  
   
   
   
