@@ -353,8 +353,8 @@
 
     const fields = [
         { type: "titleGroups", label: t("Profilo") },
-        { label: t("Nome Azienda"),                   name: "denominazione",              type: "text",           maxLength: 90,      },
-        { label: t("Settore Mercato"),                name: "settoreMercato",             type: "text",           maxLength: 255,     },
+        { label: t("Nome Azienda"),                   name: "denominazione",              type: "text",            maxLength: 90,      },
+        { label: t("Settore Mercato"),                name: "settoreMercato",             type: "text",            maxLength: 255,     },
         { label: t("Partita IVA"),                     name: "pi",                         type: "text",           maxLength: 45       },
         { label: t("Codice Fiscale"),                  name: "cf",                         type: "text",           maxLength: 45       },
         { label: t("Pec"),                             name: "pec",                        type: "text",           maxLength: 45       },
@@ -362,7 +362,7 @@
         { label: t("Sito Web"),                        name: "sito",                       type: "text",           maxLength: 90       },
         { label: t("Sede Legale"),                     name: "sedeLegale",                 type: "text",           maxLength: 45       },
         { label: t("Sede Operativa"),                  name: "sedeOperativa",              type: "text",           maxLength: 45,      },
-        { label: t("Città"),                          name: "citta",                      type: "text",           maxLength: 45       },
+        { label: t("Città"),                          name: "citta",                      type: "text",            maxLength: 45       },
         { label: t("Paese"),                           name: "paese",                      type: "text",           maxLength: 255      },
 
         { type: "titleGroups", label: t("IDA") },
@@ -395,7 +395,7 @@
         },
         { label: t("Scadenza Contratto"),              name: "dataScadenzaContratto",      type: "date",
         },
-        { label: t("Tipo di servizio"),                name: "tipiServizio",                    type: "multipleSelect",options: ricercaOptions,},
+        { label: t("Tipo di servizio"),                name: "tipiServizio",               type: "multipleSelect",options: ricercaOptions,},
         { label: t("Note"),                            name: "note",                       type: "note",          maxLength: 2000         },
 
         { type: "titleGroups", label: t("Documenti") },

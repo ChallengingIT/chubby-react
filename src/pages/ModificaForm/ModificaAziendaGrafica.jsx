@@ -321,10 +321,15 @@ const ModificaAziendaGrafica = () => {
         if (key in newValues) {
             const newKey = mapping[key];
             if (key === 'idTipiServizio' && Array.isArray(newValues[key])) {
-                newValues[newKey] = newValues[key].join(',');
+                if (newValues[key].length === 0) {
+                    newValues[newKey] = null; 
+                } else {
+                    newValues[newKey] = newValues[key].join(',');
+                }
             } else {
                 newValues[newKey] = newValues[key];
             }
+            
             delete newValues[key];
         }
     });
@@ -505,7 +510,7 @@ const ModificaAziendaGrafica = () => {
             semplicita:                   datiModifica.semplicita                      || null,
             potenzialita:                 datiModifica.potenzialita                    || null, 
             idOwner:                     (datiModifica.owner && datiModifica.owner.id) || null,
-            idTipiServizio:               datiModifica.tipiServizio ? datiModifica.tipiServizio.map((tipoServizio) => tipoServizio.id) :            [] || null,
+            idTipiServizio:               datiModifica?.tipiServizio ? datiModifica?.tipiServizio.map((tipoServizio) => tipoServizio?.id) :            [] || null,
             note:                         datiModifica.note                            || null,
             logo:                         datiModifica.logo                            || null,
         };

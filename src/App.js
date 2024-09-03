@@ -41,14 +41,15 @@ import ModificaHeadHunting                                             from './p
 import ModificaHiringRecruiting                                        from './pages/ModificaForm/ModificaHiringRecruiting.jsx';
 import AggiungiOwner                                                   from './pages/AggiungiForm/AggiungiOwner.jsx';
 import { NotificationProvider }                                        from './components/NotificationContext.js';
+import LoginComponent                                                  from './components/LoginComponent.jsx';
+import DashboardClienti                                                from './components/componentiCliente/DashboardClienti.jsx';
+import RegisterCandidato                                               from './components/loginCandidato/RegisterCandidato.jsx';
+import LoginCandidato                                                  from './components/loginCandidato/LoginCandidato.jsx';
+import NeedCandidato                                                   from './components/loginCandidato/NeedCandidato.jsx';
 // import NuovaSignUpComponent from './prove/NuovaSignUpComponent.jsx';
 // import NuovaLogin from './prove/NuovaLogin.jsx';
 // import ForgotPasswordComponent from './prove/ForgotPasswordComponent.jsx';
-import LoginComponent from './components/LoginComponent.jsx';
-import DashboardClienti from './components/componentiCliente/DashboardClienti.jsx';
-import RegisterCandidato from './components/loginCandidato/RegisterCandidato.jsx';
-import LoginCandidato from './components/loginCandidato/LoginCandidato.jsx';
-import NeedCandidato from './components/loginCandidato/NeedCandidato.jsx';
+
 
 
 
@@ -196,7 +197,6 @@ const App = () => {
                       <Hiring />
                     </PrivateRoute>
                   } />
-                                  
                   <Route path="hiring/aggiungi/recruiting/:id" element={
                     <PrivateRoute roles={['ADMIN', 'BM']}>
                       <AggiungiRecruitingHiring />
@@ -208,8 +208,6 @@ const App = () => {
                       <AggiungiHeadHunting />
                     </PrivateRoute>
                   } />
-                  
-
                   <Route path="hiring/aggiungi/temporary/:id" element={
                     <PrivateRoute roles={['ADMIN', 'BM']}>
                       <AggiungiTemporary />

@@ -1,15 +1,15 @@
 import React, { useState, useEffect }                                                                 from 'react';
-import { useNavigate, useParams }                                                                                from 'react-router-dom';
+import { useNavigate, useParams }                                                                     from 'react-router-dom';
 import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Grid, Snackbar, Slide, Dialog, DialogTitle, IconButton, DialogContent, DialogActions, TextField, Autocomplete, Skeleton, Container, FormControl } from '@mui/material';
 import CircleOutlinedIcon                                                                             from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
 import axios                                                                                          from 'axios';
 import CustomAutocomplete                                                                             from '../../components/fields/CustomAutocomplete';
 import CustomTextFieldAggiungi                                                                        from '../../components/fields/CustomTextFieldAggiungi';
 import CustomDatePickerAggiungi                                                                       from '../../components/fields/CustomDatePickerAggiungi';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { useUserTheme } from '../../components/TorchyThemeProvider';
-import CustomDecimalNumberAggiungi from '../../components/fields/CustomDecimalNumberAggiungi';
-import CloseIcon                            from '@mui/icons-material/Close';
+import CheckCircleIcon                                                                                from '@mui/icons-material/CheckCircle';
+import { useUserTheme }                                                                               from '../../components/TorchyThemeProvider';
+import CustomDecimalNumberAggiungi                                                                    from '../../components/fields/CustomDecimalNumberAggiungi';
+import CloseIcon                                                                                      from '@mui/icons-material/Close';
 
 
 const AggiungiHeadHunting = () => {
@@ -32,18 +32,12 @@ const AggiungiHeadHunting = () => {
     //stati per i valori
     const [ terminiOptions,       setTerminiOptions       ] = useState([]);
     const [ values,               setValues               ] = useState({});
-    const [candidatiData, setCandidatiData] = useState([]);
+    const [ candidatiData,        setCandidatiData        ] = useState([]);
 
 
-    const [openDialog, setOpenDialog] = useState(true);
-    const [candidatoSelezionato, setCandidatoSelezionato] = useState(null);
-    const [isCandidatoSelezionato, setIsCandidatoSelezionato] = useState(false);
-
-
-
-
-
-
+    const [openDialog,             setOpenDialog             ] = useState(true);
+    const [candidatoSelezionato,   setCandidatoSelezionato   ] = useState(null);
+    const [isCandidatoSelezionato, setIsCandidatoSelezionato ] = useState(false);
 
     const menu = [
         {
@@ -184,10 +178,10 @@ const AggiungiHeadHunting = () => {
 
 
     const handleNextButtonClick = () => {
-        const currentIndex = menu.findIndex(item => item.title.toLowerCase() === activeSection.toLowerCase());
-        const mandatoryFields = getMandatoryFields(currentIndex);
-        const errors = validateFields(values, mandatoryFields);
-        const hasErrors = Object.keys(errors).length > 0;
+        const currentIndex              = menu.findIndex(item => item.title.toLowerCase() === activeSection.toLowerCase());
+        const mandatoryFields           = getMandatoryFields(currentIndex);
+        const errors                    = validateFields(values, mandatoryFields);
+        const hasErrors                 = Object.keys(errors).length > 0;
     
         if (!hasErrors) {
             let newSectionCompleted = [...sectionCompleted];
@@ -304,22 +298,22 @@ const AggiungiHeadHunting = () => {
 
         const fields =[
             { type: "titleGroups",                label: "Descrizione"            },
-            { label: 'Nome',                            name: 'nome',                     type:'text', maxLength: 90                              },
-            { label: 'Cognome',                         name: 'cognome',                  type:'text', maxLength: 90                              },
-            { label: 'Ruolo',                           name: 'descrizione',              type:'text', maxLength: 90                              },
-            { label: "Data inizio",                     name: "inizioAttivita",           type: "date", maxLength: 45                             },
+            { label: 'Nome',                            name: 'nome',                     type:'text',  maxLength: 90                              },
+            { label: 'Cognome',                         name: 'cognome',                  type:'text',  maxLength: 90                              },
+            { label: 'Ruolo',                           name: 'descrizione',              type:'text',  maxLength: 90                              },
+            { label: "Data inizio",                     name: "inizioAttivita",           type: "date", maxLength: 45                              },
 
 
             { type: 'titleGroups',                label: "Economics"     },
-            { label: "Ral",                          name: "economics",    type: "decimalNumber", maxLength: 45                    },
-            { label: "Fee%",                         name: "fee",          type: "decimalNumber", maxLength: 45                    },
-            { label: "Importo da fatturare",         name: "importo",      type: "decimalNumber", maxLength: 45                    }, //il risultato lo calcolo e stampo direttamente io non appena inseriscono i valori
+            { label: "Ral",                          name: "economics",                    type: "decimalNumber", maxLength: 45                    },
+            { label: "Fee%",                         name: "fee",                          type: "decimalNumber", maxLength: 45                    },
+            { label: "Importo da fatturare",         name: "importo",                      type: "decimalNumber", maxLength: 45                    }, //il risultato lo calcolo e stampo direttamente io non appena inseriscono i valori
 
 
 
             { type: "titleGroups",                label: "Fatturazione"            },
-            { label: "Modalità fatturazione",   name: "dataFatturazione",   type: "date",          maxLength: 45                    },
-            { label: "Termini di pagamento",    name: "idTerminePagamento", type: "select",    options: terminiOptions, },
+            { label: "Modalità fatturazione",       name: "dataFatturazione",              type: "date",          maxLength: 45                     },
+            { label: "Termini di pagamento",        name: "idTerminePagamento",            type: "select",    options: terminiOptions,              },
         ];
 
         //funzione per suddividere fields nelle varie pagine in base a titleGroups
@@ -618,7 +612,7 @@ const confirmSelection = () => {
                 </Box>
             </Box>
         </Box>
-         <Dialog open={openDialog} onClose={handleClose} sx={{ "& .MuiDialog-paper": { width: "70%", maxWidth: "none" } }}>
+        <Dialog open={openDialog} onClose={handleClose} sx={{ "& .MuiDialog-paper": { width: "70%", maxWidth: "none" } }}>
                 <DialogTitle sx={{ fontWeight: 'bold'}}>
                     Scegli un candidato
                     <IconButton aria-label="close" onClick={handleClose} sx={{ position: 'absolute', right: 8, top: 8 }}>
@@ -626,7 +620,7 @@ const confirmSelection = () => {
                     </IconButton>
                 </DialogTitle>
                 <DialogContent>
-                     <FormControl fullWidth sx={{ mb: 2 }}>
+                    <FormControl fullWidth sx={{ mb: 2 }}>
                 <Autocomplete
                     id="candidato-combo-box"
                     options={candidatiData}
