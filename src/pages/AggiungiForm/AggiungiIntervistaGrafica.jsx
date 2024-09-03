@@ -592,7 +592,7 @@
                 );
                 } else {
                 return (
-                    <Grid item xs={12} sm={6} key={index}>
+                    <Grid item xs={12} sm={12} md={12} lg={6} key={index}>
                     {renderFields(field)}
                     </Grid>
                 );
@@ -633,7 +633,7 @@
         >
             <Box
             sx={{
-                width: "280px",
+                width: { xs: '70px', sm: '150px', md: '220px', lg: '280px' },
                 height: "98%",
                 background: "#00B400",
                 p: 2,
@@ -741,7 +741,7 @@
                 background: "#FEFCFD",
                 display: "flex",
                 flexDirection: "column",
-                ml: "280px",
+                ml: { xs: '70px', sm: '150px', md: '220px', lg: '280px' },
             }}
             >
             <Box
@@ -782,8 +782,8 @@
                 width: "100%",
                 height: "100%",
                 flexDirection: "column",
-                pl: 5,
-                pr: 5,
+                pl: { xs: 1, sm: 2, md: 3, lg: 5 },
+                pr: { xs: 1, sm: 2, md: 3, lg: 5 },
                 overflow: "auto",
                 }}
             >
@@ -795,21 +795,14 @@
             >
                 {t('* Campo Obbligatorio')}
                 </Typography>
-            <Box
-                sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                mt: 5,
-                gap: 6,
-                }}
-            >
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5, gap: 2, flexDirection: { xs: 'column', sm: 'column', md: 'row', lg: 'row' } }}>
+
                 {currentPageIndex > 0 && (
                 <Button
                     onClick={handleBackButtonClick}
                     sx={{
                     mb: 4,
-                    width: "250px",
+                    width: { xs: '5%', sm: '10%', md: '15%', lg: '15%'}, 
                     backgroundColor: "black",
                     color: "white",
                     fontWeight: "bold",
@@ -831,7 +824,7 @@
                     onClick={handleNextButtonClick}
                     sx={{
                     mb: 4,
-                    width: "250px",
+                    width: { xs: '5%', sm: '10%', md: '15%', lg: '15%'}, 
                     backgroundColor: "black",
                     color: "white",
                     fontWeight: "bold",
@@ -856,7 +849,7 @@
                     type="submit"
                     sx={{
                     mb: 4,
-                    width: "250px",
+                    width: { xs: '5%', sm: '10%', md: '15%', lg: '15%'}, 
                     backgroundColor: "#00B400",
                     color: "#EDEDED",
                     fontWeight: "bold",

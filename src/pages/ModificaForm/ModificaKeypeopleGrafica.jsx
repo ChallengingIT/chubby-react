@@ -665,7 +665,7 @@ const ModificaKeypeopleGrafica = () => {
                                 );
                             } else {
                                 return (
-                                    <Grid item xs={12} sm={6} key={index}> 
+                                    <Grid item xs={12} sm={12} md={12} lg={6} key={index}>
                                         {renderFields(field)}
                                     </Grid>
                                 );
@@ -681,8 +681,17 @@ const ModificaKeypeopleGrafica = () => {
 return (
     <Container maxWidth="false" sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
         <Box sx={{ display: 'flex', height: '98%', width: '100vw', flexDirection: 'row', ml: '12.5em', mt: '0.5em', mb: '0.5em', mr: '0.8em', borderRadius: '20px', overflow: 'hidden' }}>
-        <Box sx={{ width: '280px', height: '98%', background: '#00B400', p:2, overflow: 'hidden', position: 'fixed', borderRadius: '20px 0px 0px 20px' }}>
-                <Box sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%'}}>
+        <Box
+            sx={{
+                width: { xs: '70px', sm: '150px', md: '220px', lg: '280px' },
+                height: "98%",
+                background: '#00B400',
+                p: 2,
+                overflow: "hidden",
+                position: "fixed",
+                borderRadius: "20px 0px 0px 20px",
+            }}
+            >                <Box sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%'}}>
                     <Button
                     onClick={handleGoBack}
                     sx={{
@@ -751,7 +760,16 @@ return (
                             ))}
                         </List>
             </Box>
-            <Box sx={{ flexGrow: 1, height: '100%', background: '#FEFCFD',  display: 'flex', flexDirection: 'column', ml: '280px' }}>
+            <Box
+            sx={{
+                flexGrow: 1,
+                height: "100%",
+                background: "#FEFCFD",
+                display: "flex",
+                flexDirection: "column",
+                ml: { xs: '70px', sm: '150px', md: '220px', lg: '280px' },
+            }}
+            >
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, mb: 3}}>
                 <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} TransitionComponent={TransitionDown}>
                 <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
@@ -760,18 +778,28 @@ return (
             </Snackbar>
             <Typography variant="h4" component="h1" sx={{ mt:1, fontWeight: 'bold', fontSize: '1.8'}}>{datiModifica.nome}</Typography>
                 </Box>
-                <Box sx={{ display: 'flex', width: '100%', height: '100%', flexDirection: 'column', pl: 5, pr: 5, overflow: 'auto'}}>
-                {renderFieldsGroups(groupedFields)}
+                <Box
+                sx={{
+                display: "flex",
+                width: "100%",
+                height: "100%",
+                flexDirection: "column",
+                pl: { xs: 1, sm: 2, md: 3, lg: 5 },
+                pr: { xs: 1, sm: 2, md: 3, lg: 5 },
+                overflow: "auto",
+                }}
+            >    
+                    {renderFieldsGroups(groupedFields)}
                 </Box>
                 <Typography variant="h6" sx={{ mt: 2, color: '#666565', fontSize: '1em', ml: 16}}>{t('* Campo Obbligatorio')}</Typography>
 
 
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5, gap: 6 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5, gap: 2, flexDirection: { xs: 'column', sm: 'column', md: 'row', lg: 'row' } }}>
                 {currentPageIndex > 0 && (
                         <Button onClick={handleBackButtonClick}
                             sx={{
                             mb: 4,
-                            width: '250px',
+                            width: { xs: '5%', sm: '10%', md: '15%', lg: '15%'}, 
                             backgroundColor: "black",
                             color: "white",
                             fontWeight:"bold",
@@ -789,7 +817,7 @@ return (
                             <Button onClick={handleNextButtonClick}
                                 sx={{ 
                                 mb: 4,
-                                width: '250px',
+                                width: { xs: '5%', sm: '10%', md: '15%', lg: '15%'}, 
                                 backgroundColor: "black",
                                 color: "white",
                                 fontWeight:"bold",
@@ -811,7 +839,7 @@ return (
                             type="submit"
                             sx={{
                                 mb: 4,
-                                width: '250px',
+                                width: { xs: '5%', sm: '10%', md: '15%', lg: '15%'}, 
                                 backgroundColor: "#00B400",
                                 color: "#EDEDED",
                                 fontWeight:"bold",
