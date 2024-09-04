@@ -31,6 +31,7 @@
     Popover,
     Typography,
     } from "@mui/material";
+    import { useMediaQuery } from "@mui/material";
 
     // import PersonAddIcon from "@mui/icons-material/PersonAdd"; // aggiungi candidato
     // import AddCircleIcon from "@mui/icons-material/AddCircle"; // aggiungi need
@@ -41,6 +42,7 @@
 
     function Sidebar() {
     const theme = useUserTheme();
+    const isSmallScreen = useMediaQuery('(max-width: 800px)');
     const { t } = useTranslation();
     const [activeLink, setActiveLink] = useState(null);
     const [isLogoutPopupOpen, setIsLogoutPopupOpen] = useState(false);
@@ -375,6 +377,7 @@
             sx={{
             flexShrink: 0,
             "& .MuiDrawer-paper": {
+                width: isSmallScreen ? "60px" : "180px",
                 ml: 1,
                 mt: 1,
                 mb: 1,
@@ -386,6 +389,7 @@
                 padding: "1em",
                 display: "flex",
                 flexDirection: "column",
+                transition: "width 0.3s ease",
             },
             }}
         >
@@ -396,12 +400,13 @@
                 justifyContent: "center",
                 // padding: "1em",
                 flexDirection: "column",
+                transition: "padding 0.3s ease",
             }}
             >
             <img
                 src={LogoBianco}
                 alt="Logo"
-                style={{ width: "8vw", marginTop: "1em", marginBottom: "1em" }}
+                style={{ width: "8vw", marginTop: "1em", marginBottom: "1em",  transition: "width 0.3s ease" }}
             />
             <IconButton
             onClick={isCandidato ? null : handleTorciaClick}
@@ -409,12 +414,13 @@
             sx={{
                 padding: 0,
                 "&:hover": { transform: !isCandidato ? "scale(1.1)" : "none" },
+                transition: "transform 0.3s ease"
             }}
             >
                 <img
                 src={TorciaBianca}
                 alt="Torcia"
-                style={{ width: "3.5vw", marginBottom: '1em' }}
+                style={{ width: "3.5vw", marginBottom: '1em', transition: "transform 0.3s ease" }}
                 />
             </IconButton>
             </Box>
@@ -428,6 +434,10 @@
                     onClick={item.onClick}
                     sx={{
                     gap: 0,
+                    padding: isSmallScreen ? "8px 0" : "10px 0",
+                    display:'flex',
+                    justifyContent: "center",
+                    transition: "padding 0.3s ease, background-color 0.3s ease",
                     "&:hover, &.Mui-selected": {
                         backgroundColor: theme.palette.primary.main,
                         cursor: "pointer",
@@ -446,9 +456,12 @@
                         activeLink === `/${item.title.toLowerCase()}`
                             ? "white"
                             : theme.palette.primary.main,
-                        minWidth: "2.2em",
+                            minWidth: isSmallScreen ? "auto" : "2.2em",
+                            // display: "flex",
+                            justifyContent: "center",
                     },
                     "& .MuiListItemText-primary": {
+                        display: isSmallScreen ? "none" : "block",
                         color:
                         activeLink === `/${item.title.toLowerCase()}`
                             ? "white"
@@ -457,7 +470,9 @@
                     }}
                 >
                     <ListItemIcon>{item.icon}</ListItemIcon>
+                    {!isSmallScreen && (
                     <ListItemText primary={item.title} />
+                    )}
                 </ListItem>
                 ))}
             </List>
@@ -486,16 +501,22 @@
                 />
                 )}
                 <Box sx={{ display: 'flex', gap: 1, justifyContent: 'space-between', alignItems: 'center' }}>
+                {!isSmallScreen && (
                 <Typography variant="h6" sx={{ color: "#EDEDED", fontSize: "0.9em" }}> {nome()} {cognome()}</Typography>
+                )}
                 </Box>
+                {!isSmallScreen && (
                 <Typography variant="h6" sx={{ color: "#EDEDED", fontSize: "1em" }}>
                 {ruolo()}
                 </Typography>
+                )}
             </Box>
             <ListItem
                 selected={activeLink === "/settings"}
                 onClick={handleSettingsClick}
                 sx={{
+                    padding: isSmallScreen ? "8px 0" : "10px 0",
+                    justifyContent: "center",
                 "&:hover, &.Mui-selected": {
                     backgroundColor: theme.palette.primary.main,
                     cursor: "pointer",
@@ -507,9 +528,11 @@
                 borderRadius: "10px",
                 "& .MuiListItemIcon-root": {
                     color: theme.palette.primary.main,
-                    minWidth: "2.2em",
+                    minWidth: isSmallScreen ? "auto" : "2.2em",
+                    justifyContent: "center",
                 },
                 "& .MuiListItemText-primary": {
+                    display: isSmallScreen ? "none" : "block",
                     color: "white",
                 },
                 }}
@@ -524,6 +547,8 @@
                 selected={activeLink === "/logout"}
                 onClick={handleLogoutClick}
                 sx={{
+                    padding: isSmallScreen ? "8px 0" : "10px 0",
+                    justifyContent: "center",
                 "&:hover, &.Mui-selected": {
                     backgroundColor: theme.palette.primary.main,
                     cursor: "pointer",
@@ -535,9 +560,11 @@
                 borderRadius: "10px",
                 "& .MuiListItemIcon-root": {
                     color: theme.palette.primary.main,
-                    minWidth: "2.2em",
+                    minWidth: isSmallScreen ? "auto" : "2.2em",
+                    justifyContent: "center",
                 },
                 "& .MuiListItemText-primary": {
+                    display: isSmallScreen ? "none" : "block",
                     color: "white",
                 },
                 }}

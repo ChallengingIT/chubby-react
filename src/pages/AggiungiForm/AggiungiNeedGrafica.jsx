@@ -12,11 +12,17 @@ import CustomMultipleSelectAggiunta                                             
 import CustomWeekDateAggiungi                                                                                   from '../../components/fields/CustomWeekDateAggiungi';
 import CustomNumberAggiunta from '../../components/fields/CustomNumberAggiunta';
 import { useTranslation }                   from 'react-i18next';
+import { useMediaQuery }                    from '@mui/material';
+import { useUserTheme }                     from "../../components/TorchyThemeProvider";
 
 
 const AggiungiNeedGrafica = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const theme = useUserTheme();
+    const isSmallScreen = useMediaQuery('(max-width: 800px)');
+
+
 
 
     //stati della pagina
@@ -539,7 +545,7 @@ const AggiungiNeedGrafica = () => {
 
 return (
     <Container maxWidth="false" sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
-        <Box sx={{ display: 'flex', height: '98%', width: '100vw', flexDirection: 'row', ml: '12.5em', mt: '0.5em', mb: '0.5em', mr: '0.8em', borderRadius: '20px', overflow: 'hidden' }}>
+        <Box sx={{ display: 'flex', height: '98%', width: '100vw', flexDirection: 'row', marginLeft: isSmallScreen ? "3.5em" : "12.8em", mt: '0.5em', mb: '0.5em', mr: '0.8em', borderRadius: '20px', overflow: 'hidden',transition: 'margin-left 0.3s ease', }}>
         <Box
             sx={{
                 width: { xs: '70px', sm: '150px', md: '220px', lg: '280px' },
@@ -549,6 +555,7 @@ return (
                 overflow: "hidden",
                 position: "fixed",
                 borderRadius: "20px 0px 0px 20px",
+                transition: 'width 0.3s ease',
             }}
             >                <Box sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%'}}>
                     <Button
@@ -571,7 +578,7 @@ return (
                         {t('Indietro')}
                     </Button>
                 </Box>
-                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: 'black'}}>  {t('Aggiungi')} <br /> {t('Need')} </Typography>
+                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: { xs: "1.2em", sm: "1.5em", md: "1.8em" }, color: 'black'}}>  {t('Aggiungi')} <br /> {t('Need')} </Typography>
                 <List sx={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
                             {menu.map((item) => (
                                 <ListItem
@@ -588,10 +595,10 @@ return (
                                     }
                                 }}
                                 >
-                                    <ListItemIcon>
+                                    <ListItemIcon sx={{ color: theme.palette.aggiungiSidebar.text, mr: { xs: 0.01, sm: 0.01, md: 1.5, lg: 2 }, display: { xs: 'none', sm: 'none', md: 'block' }, }}>
                                         {item.icon}
                                     </ListItemIcon>
-                                    <ListItemText primary={item.title} />
+                                    <ListItemText primary={item.title}  sx={{ color: theme.palette.aggiungiSidebar.text, fontSize: { xs: "0.7em", sm: "0.8em", md: "1em" }, ml: { xs: 0.01, sm: 0.01, md: 1.5, lg: 2 } }} />
                                 </ListItem>
                             ))}
                         </List>
@@ -618,7 +625,7 @@ return (
             >                {renderFieldsGroups(groupedFields)}
                 </Box>   
                 <Typography variant="h6" sx={{ mt: 2, color: '#666565', fontSize: '1em', ml: 16}}>{t('* Campo Obbligatorio')}</Typography>
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5, gap: 2, flexDirection: { xs: 'column', sm: 'column', md: 'row', lg: 'row' } }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5, gap: 2, flexDirection: { xs: 'row', sm: 'row', md: 'row', lg: 'row' } }}>
                 {currentPageIndex > 0 && (
                         <Button onClick={handleBackButtonClick}
                             sx={{
@@ -629,6 +636,7 @@ return (
                             fontWeight:"bold",
                             boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                             borderRadius: '10px',
+                            fontSize: { xs: "0.5em", sm: "0.7em", md: "0.9em" },
                             "&:hover": {
                                 backgroundColor: "black",
                                 transform: "scale(1.05)",
@@ -647,7 +655,7 @@ return (
                                 fontWeight:"bold",
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                 borderRadius: '10px',
-                                
+                                fontSize: { xs: "0.5em", sm: "0.7em", md: "0.9em" },
                                 
                                 "&:hover": {
                                     backgroundColor: "black",
@@ -669,7 +677,7 @@ return (
                                 fontWeight:"bold",
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                 borderRadius: '10px',
-                                
+                                fontSize: { xs: "0.5em", sm: "0.7em", md: "0.9em" },
                                 "&:hover": {
                                     backgroundColor: "#019301",
                                 color: "#EDEDED",

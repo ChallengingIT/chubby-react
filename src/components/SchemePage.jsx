@@ -1,14 +1,16 @@
-    import React, { useState } from "react";
-    import { Box, Container, Fab, Popover } from "@mui/material";
+    import React, { useState }                              from "react";
+    import { Box, Container, Fab, Popover }                 from "@mui/material";
     import AddIcon                                          from '@mui/icons-material/Add'; //bottone per chatgpt
     import GptChat                                          from '../components/GptChat';
-    import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
+    import QuestionAnswerIcon                               from '@mui/icons-material/QuestionAnswer';
+    import { useMediaQuery }                                from '@mui/material';
 
     const SchemePage = ({ children }) => {
          //stato di AddIcon
     const [anchorEl, setAnchorEl] = useState(null);
     const [isRotated, setIsRotated] = useState(false);
     const [showChat, setShowChat] = useState(false);
+    const isSmallScreen = useMediaQuery('(max-width: 800px)');
 
     const handleClick = (event) => {
 
@@ -104,7 +106,7 @@
             flexGrow: 1,
             flexDirection: 'column',
             p: 3,
-            marginLeft: "12.8em",
+            marginLeft: isSmallScreen ? "3.5em" : "12.8em",
             // marginTop: "0.5em",
             marginBottom: "0.8em",
             marginRight: "0.8em",
@@ -112,6 +114,7 @@
             borderRadius: "20px",
             minHeight: "97vh",
             mt: 1.5,
+            transition: 'margin-left 0.3s ease',
             }}
         >
             {children}

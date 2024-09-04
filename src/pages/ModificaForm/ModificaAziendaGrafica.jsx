@@ -12,15 +12,18 @@ import CheckCircleIcon                                                          
 import CustomMultipleSelectModificaAziende                                                                      from '../../components/fields/CustomMultipleSelectModificaAziende';
 import { useTranslation }                                                                                       from 'react-i18next';
 import { useUserTheme }                                                                                         from "../../components/TorchyThemeProvider";
+import { useMediaQuery }                                                                                        from '@mui/material';
 
 
 const ModificaAziendaGrafica = () => {
-    const theme = useUserTheme();
-    const navigate = useNavigate();
+    const theme                = useUserTheme();
+    const navigate             = useNavigate();
     const location             = useLocation();
     const valori               = location.state;
-    const id = valori.id;
-    const { t } = useTranslation();
+    const id                   = valori.id;
+    const { t }                = useTranslation();
+    const isSmallScreen        = useMediaQuery('(max-width: 800px)');
+
 
 
     //stati della pagina
@@ -729,12 +732,13 @@ return (
                 height: "98%",
                 width: "100vw",
                 flexDirection: "row",
-                ml: "12.5em",
+                marginLeft: isSmallScreen ? "3.5em" : "12.8em",
                 mt: "0.5em",
                 mb: "0.5em",
                 mr: "0.8em",
                 borderRadius: "20px",
                 overflow: "hidden",
+                transition: 'margin-left 0.3s ease',
             }}
         >
             <Box
@@ -746,6 +750,7 @@ return (
                 overflow: "hidden",
                 position: "fixed",
                 borderRadius: "20px 0px 0px 20px",
+                transition: 'width 0.3s ease',
             }}
             >                
             <Box sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%'}}>
@@ -769,7 +774,7 @@ return (
                         {t('Indietro')}
                     </Button>
                 </Box>
-                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: 'black'}}>  {t('Aggiorna')} <br /> {t('Azienda')} </Typography>
+                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: { xs: "1.2em", sm: "1.5em", md: "1.8em" }, transition: 'fontSize 0.3s ease', color: 'black'}}>  {t('Aggiorna')} <br /> {t('Azienda')} </Typography>
                 <List sx={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
                             {menu.map((item, index) => (
                                 // <ListItem
@@ -807,12 +812,12 @@ return (
                                     }
                                 }}
                             >
-                                <ListItemIcon>
-                                <ListItemIcon>
+                                <ListItemIcon
+                                    sx={{ color: theme.palette.aggiungiSidebar.text, mr: { xs: 0.01, sm: 0.01, md: 1.5, lg: 2 }, display: { xs: 'none', sm: 'none', md: 'block' }, }}
+                                >
                                         {sectionCompleted[index] ? <CheckCircleIcon /> : item.icon} 
                                     </ListItemIcon> 
-                                </ListItemIcon>
-                                <ListItemText primary={item.title} />
+                                <ListItemText primary={item.title} sx={{ color: theme.palette.aggiungiSidebar.text, fontSize: { xs: "0.7em", sm: "0.8em", md: "1em" }, ml: { xs: 0.01, sm: 0.01, md: 1.5, lg: 2 } }} />
                             </ListItem>
                             ))}
                         </List>
@@ -842,7 +847,7 @@ return (
                 <Typography variant="h6" sx={{ mt: 2, color: '#666565', fontSize: '1em', ml: 16}}>{t('* Campo Obbligatorio')}</Typography>
 
 
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5, gap: 2, flexDirection: { xs: 'column', sm: 'column', md: 'row', lg: 'row' } }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5, gap: 2, flexDirection: { xs: 'row', sm: 'row', md: 'row', lg: 'row' } }}>
     {currentPageIndex > 0 && (
         <Button onClick={handleBackButtonClick}
             sx={{
@@ -853,6 +858,7 @@ return (
                 fontWeight:"bold",
                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                 borderRadius: '10px',
+                fontSize: { xs: "0.5em", sm: "0.7em", md: "0.9em" },
                 "&:hover": {
                     backgroundColor: "black",
                     transform: "scale(1.05)",
@@ -871,6 +877,7 @@ return (
                 fontWeight:"bold",
                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                 borderRadius: '10px',
+                fontSize: { xs: "0.5em", sm: "0.7em", md: "0.9em" },
                 "&:hover": {
                     backgroundColor: "black",
                     color: "white",
@@ -892,6 +899,7 @@ return (
                 fontWeight:"bold",
                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                 borderRadius: '10px',
+                fontSize: { xs: "0.5em", sm: "0.7em", md: "0.9em" },
                 "&:hover": {
                     backgroundColor: "#019301",
                     color: "#EDEDED",
