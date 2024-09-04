@@ -377,7 +377,7 @@
             sx={{
             flexShrink: 0,
             "& .MuiDrawer-paper": {
-                width: isSmallScreen ? "60px" : "180px",
+                width: isSmallScreen ? "70px" : "180px",
                 ml: 1,
                 mt: 1,
                 mb: 1,
@@ -434,7 +434,7 @@
                     onClick={item.onClick}
                     sx={{
                     gap: 0,
-                    padding: isSmallScreen ? "8px 0" : "10px 0",
+                    padding: isSmallScreen ? "8px 0" : "10px 10px",
                     display:'flex',
                     justifyContent: "center",
                     transition: "padding 0.3s ease, background-color 0.3s ease",
@@ -515,7 +515,8 @@
                 selected={activeLink === "/settings"}
                 onClick={handleSettingsClick}
                 sx={{
-                    padding: isSmallScreen ? "8px 0" : "10px 0",
+                    padding: isSmallScreen ? "8px 6px" : "10px 10px",
+                    transition: "padding 0.3s ease, background-color 0.3s ease",
                     justifyContent: "center",
                 "&:hover, &.Mui-selected": {
                     backgroundColor: theme.palette.primary.main,
@@ -538,17 +539,19 @@
                 }}
             >
                 <ListItemIcon>
-                <SettingsIcon />
+                <SettingsIcon/>
                 </ListItemIcon>
                 <ListItemText primary="Settings" />
             </ListItem>
-           
             <ListItem
                 selected={activeLink === "/logout"}
                 onClick={handleLogoutClick}
                 sx={{
-                    padding: isSmallScreen ? "8px 0" : "10px 0",
+                    gap: 0,
+                    padding: isSmallScreen ? "8px 6px" : "10px 10px",
+                    display:'flex',
                     justifyContent: "center",
+                    transition: "padding 0.3s ease, background-color 0.3s ease",
                 "&:hover, &.Mui-selected": {
                     backgroundColor: theme.palette.primary.main,
                     cursor: "pointer",
