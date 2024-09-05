@@ -30,6 +30,7 @@
     DialogContentText,
     Popover,
     Typography,
+    Tooltip
     } from "@mui/material";
     import { useMediaQuery } from "@mui/material";
 
@@ -335,36 +336,42 @@
             icon: <DashboardIcon />,
             isVisible: !userHasRole("CANDIDATO"),
             onClick: () => navigate(roleBusiness ? "/homepage" : "/dashboard"),
+            tooltip: t("Dashboard")
         },
         {
         title: "Business",
         icon: <BusinessCenterIcon />,
         isVisible: !userHasRole("RECRUITER") && !userHasRole("BUSINESS") && !userHasRole("CANDIDATO"),
         onClick: () => navigate("/business"),
+        tooltip: t("Business")
         },
         {
         title: "Contacts",
         icon: <PersonIcon />,
         isVisible: !userHasRole("RECRUITER") && !userHasRole("BUSINESS") && !userHasRole("CANDIDATO"),
         onClick: () => navigate("/contacts"),
+        tooltip: t("Contacts")
         },
         {
         title: "Need",
         icon: <ExploreIcon />,
         isVisible: true,
         onClick: handleNeedClick,
+        tooltip: t("Need")
         },
         {
         title: "Recruiting",
         icon: <PersonSearchIcon />,
         isVisible: !userHasRole("BUSINESS") && !userHasRole("CANDIDATO"),
         onClick: () => navigate("/recruiting"),
+        tooltip: t("Recruiting")
         },
         {
         title: "Hiring",
         icon: <ChecklistRtlIcon />,
         isVisible: !userHasRole("USER") && !userHasRole("RECRUITER") && !userHasRole("BUSINESS") && !userHasRole("CANDIDATO"),
         onClick: () => navigate("/hiring"),
+        tooltip: t("Hiring")
         },
     ];
 
@@ -428,6 +435,7 @@
             {sidebarData
                 .filter((item) => item.isVisible !== false)
                 .map((item, index) => (
+                <Tooltip title={item.tooltip} placement="bottom" key={index} disableHoverListener={!isSmallScreen}>
                 <ListItem
                     key={item.title}
                     selected={activeLink === `/${item.title.toLowerCase()}`}
@@ -474,6 +482,7 @@
                     <ListItemText primary={item.title} />
                     )}
                 </ListItem>
+                </Tooltip>
                 ))}
             </List>
             <List sx={{ marginTop: "auto" }}>
@@ -511,6 +520,7 @@
                 </Typography>
                 )}
             </Box>
+            <Tooltip title={t('Settings')} placement="bottom" disableHoverListener={!isSmallScreen}>
             <ListItem
                 selected={activeLink === "/settings"}
                 onClick={handleSettingsClick}
@@ -543,6 +553,8 @@
                 </ListItemIcon>
                 <ListItemText primary="Settings" />
             </ListItem>
+            </Tooltip>
+            <Tooltip title={t('Logout')} placement="bottom" disableHoverListener={!isSmallScreen}>
             <ListItem
                 selected={activeLink === "/logout"}
                 onClick={handleLogoutClick}
@@ -577,6 +589,7 @@
                 </ListItemIcon>
                 <ListItemText primary="Logout" />
             </ListItem>
+            </Tooltip>
             </List>
         </Drawer>
 
