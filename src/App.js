@@ -1,8 +1,8 @@
 import './App.css';
 import { BrowserRouter, Routes, Route }                               from 'react-router-dom';
-import React                                                          from 'react';
+import React, { useEffect }                                                          from 'react';
 import PrivateRoute                                                   from './components/PrivateRoute.jsx';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 
 
 import Aziende                                                         from './pages/Aziende.jsx';
@@ -46,6 +46,8 @@ import DashboardClienti                                                from './c
 import RegisterCandidato                                               from './components/loginCandidato/RegisterCandidato.jsx';
 import LoginCandidato                                                  from './components/loginCandidato/LoginCandidato.jsx';
 import NeedCandidato                                                   from './components/loginCandidato/NeedCandidato.jsx';
+import AuthService                                                     from './services/auth.service';
+
 // import NuovaSignUpComponent from './prove/NuovaSignUpComponent.jsx';
 // import NuovaLogin from './prove/NuovaLogin.jsx';
 // import ForgotPasswordComponent from './prove/ForgotPasswordComponent.jsx';
@@ -64,7 +66,31 @@ import NeedCandidato                                                   from './c
 
 
 const App = () => {
-  const { t } = useTranslation();
+
+
+  const checkTokenExpiration = () => {
+    const tokenExpiration = sessionStorage.getItem('tokenExpiration');
+    
+    if (tokenExpiration) {
+      const tokenExpirationMs = tokenExpiration * 1000;
+      // Imposto un margine di sicurezza di 5 minuti 
+      const marginTime = 5 * 60 * 1000;
+      
+      if (Date.now() >= (tokenExpirationMs - marginTime)) {
+        AuthService.logout();
+      } else {
+      }
+    }
+  };
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      checkTokenExpiration();
+    }, 60000); 
+  
+    return () => clearInterval(interval);
+  }, []);
+  
 
 
   return (

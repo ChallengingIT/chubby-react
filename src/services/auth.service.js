@@ -4,28 +4,11 @@ import axios from "axios";
 
 const API_LOGIN = "http://localhost:8080/api/auth/";
 const API_LOGIN_CANDIDATO = "http://localhost:8080/candidato/auth/";
-const API_LOGOUT = "http://localhost:8080/logout";
 const API_REGISTER_CANDIDATO = "http://localhost:8080/candidato/auth/signup"
 
 
 
 class AuthService {
-  // login(username, password) {
-  //   return axios
-  //     .post(API_URL + "signin", {
-  //       username,
-  //       password
-  //     })
-  //     .then(response => {
-  //       if (response.data) {
-  //         sessionStorage.setItem("user", JSON.stringify(response.data));
-  //       } else {
-  //         console.log("login fallito!");
-  //       }
-
-  //       return response.data;
-  //     });
-  // }
 
 
   login(username, password) {
@@ -36,16 +19,31 @@ class AuthService {
       })
       .then(response => {
         if (response.data) {
+          const token = response.data.token;
+          const decodedToken = JSON.parse(atob(token.split('.')[1])); // Decodifica del token JWT
+          const expirationTime = decodedToken.exp
+  
           sessionStorage.setItem("user", JSON.stringify(response.data));
-          return response.data;
+          sessionStorage.setItem("tokenExpiration", expirationTime); // Salvo la data di scadenza del token
+            return response.data;
         } else {
-          throw new Error("Login failed"); // Lancia un errore se la login fallisce
+          throw new Error("Login failed"); 
         }
       })
       .catch(error => {
         throw error; // Propaga l'errore al chiamante
       });
   }
+
+//controllo della scadenza del token
+  checkTokenExpiration() {
+    const tokenExpiration = sessionStorage.getItem('tokenExpiration');
+    
+    if (tokenExpiration && Date.now() >= tokenExpiration) {
+      this.logout();
+    }
+  }
+  
 
 
 
@@ -112,49 +110,12 @@ class AuthService {
     }
   }
   
-  
 
   logout() {
-    
-    const user = JSON.parse(sessionStorage.getItem("user"));
-    const token = user?.token;
-
-    const config = {
-      headers: {
-          Authorization: `Bearer ${token}`
-      }
-  };
-    
-    return axios
-    .post(API_LOGOUT, {}, config)
-    .then(response => {
-      if (response.data) {
-        sessionStorage.removeItem("user");
-        
-        
-      }
-      return response.data;
-    })
-    
-
+    sessionStorage.clear();
+    window.location.href = '/login';
   }
-
-  // register( nome, cognome, username, password, role) {
-  //   return axios
-  //   .post(API_URL + "signup", {
-  //     nome,
-  //     cognome,
-  //     username,
-  //     password,
-  //     role
-
-  //   })
-  //   .then(response => {
-  //     if (response.data) {
-  //     console.log("registrazione effettuata!");
-  //     }
-  //   });
-  // }
+  
 
   getCurrentUser() {
     const user = JSON.parse(sessionStorage.getItem('user'));
