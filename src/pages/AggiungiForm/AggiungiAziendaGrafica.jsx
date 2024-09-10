@@ -11,6 +11,8 @@
     import CheckCircleIcon                      from "@mui/icons-material/CheckCircle";
     import { useUserTheme }                     from "../../components/TorchyThemeProvider";
     import { useTranslation }                   from 'react-i18next';
+    import { useMediaQuery }                    from '@mui/material';
+
     import {
     Box,
     Typography,
@@ -30,6 +32,8 @@
     const theme = useUserTheme();
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const isSmallScreen = useMediaQuery('(max-width: 800px)');
+
 
     //stati della pagina
     const [ activeSection,          setActiveSection            ] = useState(t("Profilo"));
@@ -353,8 +357,8 @@
 
     const fields = [
         { type: "titleGroups", label: t("Profilo") },
-        { label: t("Nome Azienda"),                   name: "denominazione",              type: "text",           maxLength: 90,      },
-        { label: t("Settore Mercato"),                name: "settoreMercato",             type: "text",           maxLength: 255,     },
+        { label: t("Nome Azienda"),                   name: "denominazione",              type: "text",            maxLength: 90,      },
+        { label: t("Settore Mercato"),                name: "settoreMercato",             type: "text",            maxLength: 255,     },
         { label: t("Partita IVA"),                     name: "pi",                         type: "text",           maxLength: 45       },
         { label: t("Codice Fiscale"),                  name: "cf",                         type: "text",           maxLength: 45       },
         { label: t("Pec"),                             name: "pec",                        type: "text",           maxLength: 45       },
@@ -362,7 +366,7 @@
         { label: t("Sito Web"),                        name: "sito",                       type: "text",           maxLength: 90       },
         { label: t("Sede Legale"),                     name: "sedeLegale",                 type: "text",           maxLength: 45       },
         { label: t("Sede Operativa"),                  name: "sedeOperativa",              type: "text",           maxLength: 45,      },
-        { label: t("Città"),                          name: "citta",                      type: "text",           maxLength: 45       },
+        { label: t("Città"),                          name: "citta",                      type: "text",            maxLength: 45       },
         { label: t("Paese"),                           name: "paese",                      type: "text",           maxLength: 255      },
 
         { type: "titleGroups", label: t("IDA") },
@@ -395,7 +399,7 @@
         },
         { label: t("Scadenza Contratto"),              name: "dataScadenzaContratto",      type: "date",
         },
-        { label: t("Tipo di servizio"),                name: "tipiServizio",                    type: "multipleSelect",options: ricercaOptions,},
+        { label: t("Tipo di servizio"),                name: "tipiServizio",               type: "multipleSelect",options: ricercaOptions,},
         { label: t("Note"),                            name: "note",                       type: "note",          maxLength: 2000         },
 
         { type: "titleGroups", label: t("Documenti") },
@@ -509,24 +513,25 @@
         return (
         <Box sx={{ ml: 15, mr: 15 }}>
             <Grid container spacing={2}>
-            {groupedFields[currentPageIndex].map((field, index) => {
-                if (field.type === "titleGroups") {
-                return <Grid item xs={12} key={index}></Grid>;
-                } else if (field.type === "note") {
-                return (
-                    <Grid item xs={12} key={index}>
-                    {renderFields(field)}
-                    </Grid>
-                );
-                } else {
-                return (
-                    <Grid item xs={12} sm={6} key={index}>
-                    {renderFields(field)}
-                    </Grid>
-                );
-                }
-            })}
+                {groupedFields[currentPageIndex].map((field, index) => {
+                    if (field.type === "titleGroups") {
+                        return <Grid item xs={12} key={index}></Grid>;
+                    } else if (field.type === "note") {
+                        return (
+                            <Grid item xs={12} key={index}>
+                                {renderFields(field)}
+                            </Grid>
+                        );
+                    } else {
+                        return (
+                            <Grid item xs={12} sm={12} md={12} lg={6} key={index}>
+                                {renderFields(field)}
+                            </Grid>
+                        );
+                    }
+                })}
             </Grid>
+
         </Box>
         );
     };
@@ -549,23 +554,25 @@
                 height: "98%",
                 width: "100vw",
                 flexDirection: "row",
-                ml: "12.5em",
+                marginLeft: isSmallScreen ? "3.5em" : "12.8em",
                 mt: "0.5em",
                 mb: "0.5em",
                 mr: "0.8em",
                 borderRadius: "20px",
                 overflow: "hidden",
+                transition: 'margin-left 0.3s ease',
             }}
         >
             <Box
             sx={{
-                width: "280px",
+                width: { xs: '70px', sm: '150px', md: '220px', lg: '280px' },
                 height: "98%",
                 background: theme.palette.aggiungiSidebar.bg,
                 p: 2,
                 overflow: "hidden",
                 position: "fixed",
                 borderRadius: "20px 0px 0px 20px",
+                transition: 'width 0.3s ease',
             }}
             >
             <Box
@@ -605,7 +612,8 @@
                 mt: 4,
                 ml: 3,
                 mb: 8,
-                fontSize: "1.8em",
+                fontSize: { xs: "1.2em", sm: "1.5em", md: "1.8em" },
+                transition: 'fontSize 0.3s ease',
                 color: theme.palette.aggiungiSidebar.title,
                 }}
             >
@@ -657,13 +665,13 @@
                     }}
                 >
                     <ListItemIcon
-                    sx={{ color: theme.palette.aggiungiSidebar.text }}
+                    sx={{ color: theme.palette.aggiungiSidebar.text, mr: { xs: 0.01, sm: 0.01, md: 1.5, lg: 2 }, display: { xs: 'none', sm: 'none', md: 'block' }, }}
                     >
                     {sectionCompleted[index] ? <CheckCircleIcon /> : item.icon}
                     </ListItemIcon>
                     <ListItemText
                     primary={item.title}
-                    sx={{ color: theme.palette.aggiungiSidebar.text }}
+                    sx={{ color: theme.palette.aggiungiSidebar.text, fontSize: { xs: "0.7em", sm: "0.8em", md: "1em" }, ml: { xs: 0.01, sm: 0.01, md: 1.5, lg: 2 } }}
                     />
                 </ListItem>
                 ))}
@@ -676,7 +684,8 @@
                 background: "#FEFCFD",
                 display: "flex",
                 flexDirection: "column",
-                ml: "280px",
+                ml: { xs: '70px', sm: '150px', md: '220px', lg: '280px' },
+                
             }}
             >
             <Box
@@ -717,8 +726,8 @@
                 width: "100%",
                 height: "100%",
                 flexDirection: "column",
-                pl: 5,
-                pr: 5,
+                pl: { xs: 1, sm: 2, md: 3, lg: 5 },
+                pr: { xs: 1, sm: 2, md: 3, lg: 5 },
                 overflow: "auto",
                 }}
             >
@@ -731,87 +740,69 @@
                 {t('* Campo Obbligatorio')}
             </Typography>
 
-            <Box
-                sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    mt: 5,
-                    gap: 6,
-                }}
-            >
-                {currentPageIndex > 0 && (
-                <Button
-                    onClick={handleBackButtonClick}
-                    sx={{
-                        mb: 4,
-                        width: "250px",
-                        backgroundColor: theme.palette.button.black,
-                        color: theme.palette.textButton.white,
-                        fontWeight: "bold",
-                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
-                        borderRadius: "10px",
-                        "&:hover": {
-                            backgroundColor: theme.palette.button.black,
-                            transform: "scale(1.05)",
-                            boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
-                            borderRadius: "10px",
-                        },
-                    }}
-                >
-                    {t('Indietro')}
-                </Button>
-                )}
-                {currentPageIndex < groupedFields.length - 1 && (
-                <Button
-                    onClick={handleNextButtonClick}
-                    sx={{
-                        mb: 4,
-                        width: "250px",
-                        backgroundColor: theme.palette.button.black,
-                        color: theme.palette.textButton.white,
-                        fontWeight: "bold",
-                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
-                        borderRadius: "10px",
-
-                        "&:hover": {
-                            backgroundColor: theme.palette.button.black,
-                            color: theme.palette.textButton.white,
-                            transform: "scale(1.05)",
-                            boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
-                            borderRadius: "10px",
-                        },
-                    }}
-                >
-                    {t('Avanti')}
-                </Button>
-                )}
-                {currentPageIndex === groupedFields.length - 1 && (
-                <Button
-                    onClick={() => handleSubmit(values)}
-                    type="submit"
-                    sx={{
-                        mb: 4,
-                        width: "250px",
-                        backgroundColor: theme.palette.button.main,
-                        color: theme.palette.textButton.white,
-                        fontWeight: "bold",
-                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
-                        borderRadius: "10px",
-
-                        "&:hover": {
-                            backgroundColor: theme.palette.button.mainHover,
-                            color: theme.palette.textButton.white,
-                            transform: "scale(1.05)",
-                            boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
-                            borderRadius: "10px",
-                        },
-                    }}
-                >
-                    {t('Salva')}
-                </Button>
-                )}
-            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5, gap: 2, flexDirection: { xs: 'row', sm: 'row', md: 'row', lg: 'row' } }}>
+    {currentPageIndex > 0 && (
+        <Button onClick={handleBackButtonClick}
+            sx={{
+                mb: 2,
+                width: { xs: '5%', sm: '10%', md: '15%', lg: '15%'}, 
+                backgroundColor: "black",
+                color: "white",
+                fontWeight:"bold",
+                boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
+                borderRadius: '10px',
+                fontSize: { xs: "0.5em", sm: "0.7em", md: "0.9em" },
+                "&:hover": {
+                    backgroundColor: "black",
+                    transform: "scale(1.05)",
+                    boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
+                    borderRadius: '10px',
+                },
+            }}>{t('Indietro')}</Button>
+    )}
+    {currentPageIndex < groupedFields.length - 1 && (
+        <Button onClick={handleNextButtonClick}
+            sx={{
+                mb: 2,
+                width: { xs: '5%', sm: '10%', md: '15%', lg: '15%'}, 
+                backgroundColor: "black",
+                color: "white",
+                fontWeight:"bold",
+                boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
+                borderRadius: '10px',
+                fontSize: { xs: "0.5em", sm: "0.7em", md: "0.9em" },
+                "&:hover": {
+                    backgroundColor: "black",
+                    color: "white",
+                    transform: "scale(1.05)",
+                    boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
+                    borderRadius: '10px',
+                },
+            }}>{t('Avanti')}</Button>
+    )}
+    {currentPageIndex === groupedFields.length - 1 && (
+        <Button 
+            onClick={() => handleSubmit(values)}
+            type="submit"
+            sx={{
+                mb: 2,
+                width: { xs: '5%', sm: '10%', md: '15%', lg: '15%'}, 
+                backgroundColor: "#00B400",
+                color: "#EDEDED",
+                fontWeight:"bold",
+                boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
+                borderRadius: '10px',
+                fontSize: { xs: "0.5em", sm: "0.7em", md: "0.9em" },
+                "&:hover": {
+                    backgroundColor: "#019301",
+                    color: "#EDEDED",
+                    transform: "scale(1.05)",
+                    boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
+                    borderRadius: '10px',
+                },
+            }}>{t('Salva')}</Button>
+    )}
+</Box>
             </Box>
         </Box>
         </Container>

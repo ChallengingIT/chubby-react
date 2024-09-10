@@ -10,18 +10,21 @@ import CustomNoteModifica                                                       
 import CustomDatePickerModifica                                                                                 from '../../components/fields/CustomDatePickerModifica';
 import CustomDecimalNumberModifica                                                                              from '../../components/fields/CustomDecimalNumberModifica';
 import CustomMultipleSelectModifica                                                                             from '../../components/fields/CustomMultipleSelectModifica';
-import CustomNumberModifica from '../../components/fields/CustomNumberModifica';
-import { useUserTheme } from '../../components/TorchyThemeProvider';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { useTranslation }                   from 'react-i18next';
+import CustomNumberModifica                                                                                     from '../../components/fields/CustomNumberModifica';
+import { useUserTheme }                                                                                         from '../../components/TorchyThemeProvider';
+import CheckCircleIcon                                                                                          from '@mui/icons-material/CheckCircle';
+import { useTranslation }                                                                                       from 'react-i18next';
+import { useMediaQuery }                                                                                        from '@mui/material';
 
 
 
 const ModificaNeedGrafica = () => {
-    const navigate = useNavigate();
-    const { t } = useTranslation();
-    const {id}                    = useParams();
-    const theme = useUserTheme();
+    const navigate      = useNavigate();
+    const { t }         = useTranslation();
+    const {id}          = useParams();
+    const theme         = useUserTheme();
+    const isSmallScreen = useMediaQuery('(max-width: 800px)');
+
 
 
     //stati della pagina
@@ -643,7 +646,7 @@ const ModificaNeedGrafica = () => {
                                 );
                             } else {
                                 return (
-                                    <Grid item xs={12} sm={6} key={index}> 
+                                    <Grid item xs={12} sm={12} md={12} lg={6} key={index}>
                                         {renderFields(field)}
                                     </Grid>
                                 );
@@ -656,9 +659,20 @@ const ModificaNeedGrafica = () => {
 
 return (
     <Container maxWidth="false" sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
-        <Box sx={{ display: 'flex', height: '98%', width: '100vw', flexDirection: 'row', ml: '12.5em', mt: '0.5em', mb: '0.5em', mr: '0.8em', borderRadius: '20px', overflow: 'hidden' }}>
-        <Box sx={{ width: '280px', height: '98%', background: theme.palette.aggiungiSidebar.bg, p:2, overflow: 'hidden', position: 'fixed', borderRadius: '20px 0px 0px 20px' }}>
-                <Box sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%'}}>
+        <Box sx={{ display: 'flex', height: '98%', width: '100vw', flexDirection: 'row', marginLeft: isSmallScreen ? "3.5em" : "12.8em", mt: '0.5em', mb: '0.5em', mr: '0.8em', borderRadius: '20px', overflow: 'hidden', transition: 'margin-left 0.3s ease' }}>
+        <Box
+            sx={{
+                width: { xs: '70px', sm: '150px', md: '220px', lg: '280px' },
+                height: "98%",
+                background: theme.palette.aggiungiSidebar.bg,
+                p: 2,
+                overflow: "hidden",
+                position: "fixed",
+                borderRadius: "20px 0px 0px 20px",
+                transition: 'width 0.3s ease',
+            }}
+            >   
+            <Box sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%'}}>
                     <Button
                     onClick={handleGoBack}
                     sx={{
@@ -679,7 +693,7 @@ return (
                         {t('Indietro')}
                     </Button>
                 </Box>
-                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: theme.palette.aggiungiSidebar.title}}>  {t('Modifica')} <br /> {t('Need')} </Typography>
+                <Typography variant="h6" sx={{display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: { xs: "1.2em", sm: "1.5em", md: "1.8em" }, transition: 'fontSize 0.3s ease', color: theme.palette.aggiungiSidebar.title}}>  {t('Modifica')} <br /> {t('Need')} </Typography>
                 <List sx={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
                             {menu.map((item, index) => (
                                 // <ListItem
@@ -717,16 +731,25 @@ return (
                                     }
                                 }}
                             >
-                                <ListItemIcon sx={{ color: theme.palette.aggiungiSidebar.text }}>
+                                <ListItemIcon sx={{ color: theme.palette.aggiungiSidebar.text, mr: { xs: 0.01, sm: 0.01, md: 1.5, lg: 2 }, display: { xs: 'none', sm: 'none', md: 'block' }, }}>
                                         {sectionCompleted[index] ? <CheckCircleIcon /> : item.icon} 
                                 </ListItemIcon>
-                                <ListItemText primary={item.title} sx={{ color: theme.palette.aggiungiSidebar.text }} />
+                                <ListItemText primary={item.title} sx={{ color: theme.palette.aggiungiSidebar.text, fontSize: { xs: "0.7em", sm: "0.8em", md: "1em" }, ml: { xs: 0.01, sm: 0.01, md: 1.5, lg: 2 } }} />
                             </ListItem>
                             ))}
                         </List>
             </Box>
-            <Box sx={{ flexGrow: 1, height: '100%', background: '#FEFCFD',  display: 'flex', flexDirection: 'column', ml: '280px'}}>
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, mb: 3}}>
+            <Box
+            sx={{
+                flexGrow: 1,
+                height: "100%",
+                background: "#FEFCFD",
+                display: "flex",
+                flexDirection: "column",
+                ml: { xs: '70px', sm: '150px', md: '220px', lg: '280px' },
+            }}
+            >
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, mb: 3}}>
                 <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} TransitionComponent={TransitionDown}>
                 <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
                     {alert.message}
@@ -734,21 +757,32 @@ return (
             </Snackbar>
             <Typography variant="h4" component="h1" sx={{ mt:1, fontWeight: 'bold', fontSize: '1.8'}}>{datiModifica.descrizione}</Typography>
                 </Box>
-                <Box sx={{ display: 'flex', width: '100%', height: '100%', flexDirection: 'column', pl: 5, pr: 5, overflow: 'auto'}}>
+                <Box
+                sx={{
+                display: "flex",
+                width: "100%",
+                height: "100%",
+                flexDirection: "column",
+                pl: { xs: 1, sm: 2, md: 3, lg: 5 },
+                pr: { xs: 1, sm: 2, md: 3, lg: 5 },
+                overflow: "auto",
+                }}
+            >        
                 {renderFieldsGroups(groupedFields)}
                 </Box>   
                 <Typography variant="h6" sx={{ mt: 2, color: '#666565', fontSize: '1em', ml: 16}}>{t('* Campo Obbligatorio')}</Typography>
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5, gap: 6 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5, gap: 2, flexDirection: { xs: 'row', sm: 'row', md: 'row', lg: 'row' } }}>
                 {currentPageIndex > 0 && (
                         <Button onClick={handleBackButtonClick}
                             sx={{
                             mb: 4,
-                            width: '250px',
+                            width: { xs: '5%', sm: '10%', md: '15%', lg: '15%'}, 
                             backgroundColor: theme.palette.button.main,
                             color: theme.palette.textButton.white,
                             fontWeight:"bold",
                             boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                             borderRadius: '10px',
+                            fontSize: { xs: "0.5em", sm: "0.7em", md: "0.9em" },
                             "&:hover": {
                                 backgroundColor: theme.palette.button.main,
                                 color: theme.palette.textButton.white,
@@ -764,14 +798,13 @@ return (
                             <Button onClick={handleNextButtonClick}
                                 sx={{
                                 mb: 4, 
-                                width: '250px',
+                                width: { xs: '5%', sm: '10%', md: '15%', lg: '15%'}, 
                                 backgroundColor: theme.palette.button.main,
                                 color: theme.palette.textButton.white,
                                 fontWeight:"bold",
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                 borderRadius: '10px',
-                                
-                                
+                                fontSize: { xs: "0.5em", sm: "0.7em", md: "0.9em" },
                                 "&:hover": {
                                     backgroundColor: theme.palette.button.main,
                                     color: theme.palette.textButton.white,
@@ -786,13 +819,13 @@ return (
                             type="submit"
                             sx={{
                                 mb: 4,
-                                width: '250px',
+                                width: { xs: '5%', sm: '10%', md: '15%', lg: '15%'}, 
                                 backgroundColor: theme.palette.button.main,
                                 color: theme.palette.textButton.white,
                                 fontWeight:"bold",
                                 boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                 borderRadius: '10px',
-                                
+                                fontSize: { xs: "0.5em", sm: "0.7em", md: "0.9em" },
                                 "&:hover": {
                                     backgroundColor: theme.palette.button.mainHover,
                                     color: theme.palette.textButton.white,

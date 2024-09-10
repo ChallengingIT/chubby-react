@@ -30,7 +30,9 @@
     DialogContentText,
     Popover,
     Typography,
+    Tooltip
     } from "@mui/material";
+    import { useMediaQuery } from "@mui/material";
 
     // import PersonAddIcon from "@mui/icons-material/PersonAdd"; // aggiungi candidato
     // import AddCircleIcon from "@mui/icons-material/AddCircle"; // aggiungi need
@@ -41,6 +43,7 @@
 
     function Sidebar() {
     const theme = useUserTheme();
+    const isSmallScreen = useMediaQuery('(max-width: 800px)');
     const { t } = useTranslation();
     const [activeLink, setActiveLink] = useState(null);
     const [isLogoutPopupOpen, setIsLogoutPopupOpen] = useState(false);
@@ -333,36 +336,42 @@
             icon: <DashboardIcon />,
             isVisible: !userHasRole("CANDIDATO"),
             onClick: () => navigate(roleBusiness ? "/homepage" : "/dashboard"),
+            tooltip: t("Dashboard")
         },
         {
         title: "Business",
         icon: <BusinessCenterIcon />,
         isVisible: !userHasRole("RECRUITER") && !userHasRole("BUSINESS") && !userHasRole("CANDIDATO"),
         onClick: () => navigate("/business"),
+        tooltip: t("Business")
         },
         {
         title: "Contacts",
         icon: <PersonIcon />,
         isVisible: !userHasRole("RECRUITER") && !userHasRole("BUSINESS") && !userHasRole("CANDIDATO"),
         onClick: () => navigate("/contacts"),
+        tooltip: t("Contacts")
         },
         {
         title: "Need",
         icon: <ExploreIcon />,
         isVisible: true,
         onClick: handleNeedClick,
+        tooltip: t("Need")
         },
         {
         title: "Recruiting",
         icon: <PersonSearchIcon />,
         isVisible: !userHasRole("BUSINESS") && !userHasRole("CANDIDATO"),
         onClick: () => navigate("/recruiting"),
+        tooltip: t("Recruiting")
         },
         {
         title: "Hiring",
         icon: <ChecklistRtlIcon />,
         isVisible: !userHasRole("USER") && !userHasRole("RECRUITER") && !userHasRole("BUSINESS") && !userHasRole("CANDIDATO"),
         onClick: () => navigate("/hiring"),
+        tooltip: t("Hiring")
         },
     ];
 
@@ -375,6 +384,7 @@
             sx={{
             flexShrink: 0,
             "& .MuiDrawer-paper": {
+                width: isSmallScreen ? "70px" : "180px",
                 ml: 1,
                 mt: 1,
                 mb: 1,
@@ -386,6 +396,7 @@
                 padding: "1em",
                 display: "flex",
                 flexDirection: "column",
+                transition: "width 0.3s ease",
             },
             }}
         >
@@ -396,12 +407,13 @@
                 justifyContent: "center",
                 // padding: "1em",
                 flexDirection: "column",
+                transition: "padding 0.3s ease",
             }}
             >
             <img
                 src={LogoBianco}
                 alt="Logo"
-                style={{ width: "8vw", marginTop: "1em", marginBottom: "1em" }}
+                style={{ width: "8vw", marginTop: "1em", marginBottom: "1em",  transition: "width 0.3s ease" }}
             />
             <IconButton
             onClick={isCandidato ? null : handleTorciaClick}
@@ -409,12 +421,13 @@
             sx={{
                 padding: 0,
                 "&:hover": { transform: !isCandidato ? "scale(1.1)" : "none" },
+                transition: "transform 0.3s ease"
             }}
             >
                 <img
                 src={TorciaBianca}
                 alt="Torcia"
-                style={{ width: "3.5vw", marginBottom: '1em' }}
+                style={{ width: "3.5vw", marginBottom: '1em', transition: "transform 0.3s ease" }}
                 />
             </IconButton>
             </Box>
@@ -422,12 +435,17 @@
             {sidebarData
                 .filter((item) => item.isVisible !== false)
                 .map((item, index) => (
+                <Tooltip title={item.tooltip} placement="bottom" key={index} disableHoverListener={!isSmallScreen}>
                 <ListItem
                     key={item.title}
                     selected={activeLink === `/${item.title.toLowerCase()}`}
                     onClick={item.onClick}
                     sx={{
                     gap: 0,
+                    padding: isSmallScreen ? "8px 0" : "10px 10px",
+                    display:'flex',
+                    justifyContent: "center",
+                    transition: "padding 0.3s ease, background-color 0.3s ease",
                     "&:hover, &.Mui-selected": {
                         backgroundColor: theme.palette.primary.main,
                         cursor: "pointer",
@@ -446,9 +464,12 @@
                         activeLink === `/${item.title.toLowerCase()}`
                             ? "white"
                             : theme.palette.primary.main,
-                        minWidth: "2.2em",
+                            minWidth: isSmallScreen ? "auto" : "2.2em",
+                            // display: "flex",
+                            justifyContent: "center",
                     },
                     "& .MuiListItemText-primary": {
+                        display: isSmallScreen ? "none" : "block",
                         color:
                         activeLink === `/${item.title.toLowerCase()}`
                             ? "white"
@@ -457,8 +478,11 @@
                     }}
                 >
                     <ListItemIcon>{item.icon}</ListItemIcon>
+                    {!isSmallScreen && (
                     <ListItemText primary={item.title} />
+                    )}
                 </ListItem>
+                </Tooltip>
                 ))}
             </List>
             <List sx={{ marginTop: "auto" }}>
@@ -486,16 +510,24 @@
                 />
                 )}
                 <Box sx={{ display: 'flex', gap: 1, justifyContent: 'space-between', alignItems: 'center' }}>
+                {!isSmallScreen && (
                 <Typography variant="h6" sx={{ color: "#EDEDED", fontSize: "0.9em" }}> {nome()} {cognome()}</Typography>
+                )}
                 </Box>
+                {!isSmallScreen && (
                 <Typography variant="h6" sx={{ color: "#EDEDED", fontSize: "1em" }}>
                 {ruolo()}
                 </Typography>
+                )}
             </Box>
+            <Tooltip title={t('Settings')} placement="bottom" disableHoverListener={!isSmallScreen}>
             <ListItem
                 selected={activeLink === "/settings"}
                 onClick={handleSettingsClick}
                 sx={{
+                    padding: isSmallScreen ? "8px 6px" : "10px 10px",
+                    transition: "padding 0.3s ease, background-color 0.3s ease",
+                    justifyContent: "center",
                 "&:hover, &.Mui-selected": {
                     backgroundColor: theme.palette.primary.main,
                     cursor: "pointer",
@@ -507,23 +539,31 @@
                 borderRadius: "10px",
                 "& .MuiListItemIcon-root": {
                     color: theme.palette.primary.main,
-                    minWidth: "2.2em",
+                    minWidth: isSmallScreen ? "auto" : "2.2em",
+                    justifyContent: "center",
                 },
                 "& .MuiListItemText-primary": {
+                    display: isSmallScreen ? "none" : "block",
                     color: "white",
                 },
                 }}
             >
                 <ListItemIcon>
-                <SettingsIcon />
+                <SettingsIcon/>
                 </ListItemIcon>
                 <ListItemText primary="Settings" />
             </ListItem>
-           
+            </Tooltip>
+            <Tooltip title={t('Logout')} placement="bottom" disableHoverListener={!isSmallScreen}>
             <ListItem
                 selected={activeLink === "/logout"}
                 onClick={handleLogoutClick}
                 sx={{
+                    gap: 0,
+                    padding: isSmallScreen ? "8px 6px" : "10px 10px",
+                    display:'flex',
+                    justifyContent: "center",
+                    transition: "padding 0.3s ease, background-color 0.3s ease",
                 "&:hover, &.Mui-selected": {
                     backgroundColor: theme.palette.primary.main,
                     cursor: "pointer",
@@ -535,9 +575,11 @@
                 borderRadius: "10px",
                 "& .MuiListItemIcon-root": {
                     color: theme.palette.primary.main,
-                    minWidth: "2.2em",
+                    minWidth: isSmallScreen ? "auto" : "2.2em",
+                    justifyContent: "center",
                 },
                 "& .MuiListItemText-primary": {
+                    display: isSmallScreen ? "none" : "block",
                     color: "white",
                 },
                 }}
@@ -547,6 +589,7 @@
                 </ListItemIcon>
                 <ListItemText primary="Logout" />
             </ListItem>
+            </Tooltip>
             </List>
         </Drawer>
 

@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useState, useEffect }                                                                                             from 'react';
+import { useNavigate, useLocation }                                                                                               from 'react-router-dom';
 import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Skeleton, Snackbar, Grid, Slide, Container } from '@mui/material';
-import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
-import axios from 'axios';
-import CustomAutocomplete from '../../components/fields/CustomAutocomplete';
-import CustomDecimalNumberAggiungi from '../../components/fields/CustomDecimalNumberAggiungi';
-import CustomTextFieldModifica from '../../components/fields/CustomTextFieldModifica';
-import CustomDatePickerHoursAggiungi from '../../components/fields/CustomDatePickerHoursAggiungi';
-import CustomDatePickerModifica from '../../components/fields/CustomDatePickerModifica';
-import CustomNoteModifica from '../../components/fields/CustomNoteModifica';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { useTranslation }                                   from 'react-i18next';
+import CircleOutlinedIcon                                                                                                         from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
+import axios                                                                                                                      from 'axios';
+import CustomAutocomplete                                                                                                         from '../../components/fields/CustomAutocomplete';
+import CustomDecimalNumberAggiungi                                                                                                from '../../components/fields/CustomDecimalNumberAggiungi';
+import CustomTextFieldModifica                                                                                                    from '../../components/fields/CustomTextFieldModifica';
+import CustomDatePickerHoursAggiungi                                                                                              from '../../components/fields/CustomDatePickerHoursAggiungi';
+import CustomDatePickerModifica                                                                                                   from '../../components/fields/CustomDatePickerModifica';
+import CustomNoteModifica                                                                                                         from '../../components/fields/CustomNoteModifica';
+import CheckCircleIcon                                                                                                            from '@mui/icons-material/CheckCircle';
+import { useTranslation }                                                                                                         from 'react-i18next';
+import { useMediaQuery }                                                                                                          from '@mui/material';
+import { useUserTheme }                                                                                                           from "../../components/TorchyThemeProvider";
 
 
 const ModificaIntervistaGrafica = () => {
@@ -20,6 +22,10 @@ const ModificaIntervistaGrafica = () => {
     const rowData = location.state;
     const candidatoID = rowData.candidato.id;
     const { t } = useTranslation();
+    const isSmallScreen = useMediaQuery('(max-width: 800px)');
+    const theme = useUserTheme();
+
+
 
 
     //stati della pagina
@@ -172,7 +178,7 @@ const ModificaIntervistaGrafica = () => {
             case 0:
                 return ["dataColloquio"];
             case 1:
-                return ["coerenza", "standing", "energia", "comunicazione", "inglese", "competenze", "valutazione", "descrizioneCandidatoUna", "teamSiNo"];
+                return [ "coerenza", "standing", "energia", "comunicazione", "inglese", "competenze", "valutazione", "descrizioneCandidatoUna", "teamSiNo"];
             case 2:
                 return [];
             default:
@@ -324,7 +330,7 @@ const ModificaIntervistaGrafica = () => {
         { value: 3, label: "KO" },
     ];
 
-    const campiObbligatori = ["dataColloquio", "coerenza", "standing" , "energia" , "comunicazione" , "inglese" , "competenze" , "valutazione" , "descrizioneCandidatoUna" , "teamSiNo"];
+    const campiObbligatori = ["dataColloquio", "coerenza", "standing", "energia", "comunicazione", "inglese", "competenze", "valutazione", "descrizioneCandidatoUna", "teamSiNo"];
     const fields = [
         { type: "titleGroups", label: t("Informazioni") },
         { label: t("Data Incontro*"), name: "dataColloquio", type: "date" },
@@ -340,15 +346,15 @@ const ModificaIntervistaGrafica = () => {
         { label: t("Descrizione Candidato"), name: "note", type: "note", maxLength: 8000 },
 
         { type: "titleGroups", label: t("Competenze") },
-        { label: t("Coerenza Percorso"), name: "coerenza", type: "select", options: valoriOptions },
-        { label: t("Standing"), name: "standing", type: "select", options: valoriOptions },
-        { label: t("Energia"), name: "energia", type: "select", options: valoriOptions },
-        { label: t("Comunicazione"), name: "comunicazione", type: "select", options: valoriOptions },
-        { label: t("Livello Di Inglese"), name: "inglese", type: "select", options: valoriOptions },
-        { label: t("Competenze vs Ruolo"), name: "competenze", type: "select", options: valoriOptions },
-        { label: t("Valutazione"), name: "valutazione", type: "select", options: valoriOptions },
-        { label: t("One word"), name: "descrizioneCandidatoUna", type: "text", maxLength: 45 },
-        { label: t("Lo vorresti nel tuo team?"), name: "teamSiNo", type: "select", options: siNoOptions },
+        { label: t("Coerenza Percorso*"),           name: "coerenza",                   type: "select",             options: valoriOptions  },
+        { label: t("Standing*"),                    name: "standing",                   type: "select",             options: valoriOptions  },
+        { label: t("Energia*"),                     name: "energia",                    type: "select",             options: valoriOptions  },
+        { label: t("Comunicazione*"),               name: "comunicazione",              type: "select",             options: valoriOptions  },
+        { label: t("Livello Di Inglese*"),          name: "inglese",                    type: "select",             options: valoriOptions  },
+        { label: t("Competenze vs ruolo*"),         name: "competenze",                 type: "select",             options: valoriOptions  },
+        { label: t("Valutazione*"),                 name: "valutazione",                type: "select",             options: valoriOptions  },
+        { label: t("One word*"),                    name: "descrizioneCandidatoUna",    type: "text",               maxLength: 45,          },
+        { label: t("Lo vorresti nel tuo team?*"),   name: "teamSiNo",                   type: "select",             options: siNoOptions    },
 
         { type: "titleGroups", label: t("Info contrattuali") },
         { label: t("Preavviso"), name: "preavviso", type: "text", maxLength: 45 },
@@ -584,7 +590,7 @@ const ModificaIntervistaGrafica = () => {
                             );
                         } else {
                             return (
-                                <Grid item xs={12} sm={6} key={index}>
+                                <Grid item xs={12} sm={12} md={12} lg={6} key={index}>
                                     {renderFields(field)}
                                 </Grid>
                             );
@@ -597,9 +603,20 @@ const ModificaIntervistaGrafica = () => {
 
     return (
         <Container maxWidth="false" sx={{ display: 'flex', backgroundColor: '#EEEDEE', height: '100vh', width: '100vw', flexDirection: 'row' }}>
-            <Box sx={{ display: 'flex', height: '98%', width: '100vw', flexDirection: 'row', ml: '12.5em', mt: '0.5em', mb: '0.5em', mr: '0.8em', borderRadius: '20px', overflow: 'hidden' }}>
-                <Box sx={{ width: '280px', height: '98%', background: '#00B400', p: 2, overflow: 'hidden', position: 'fixed', borderRadius: '20px 0px 0px 20px' }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%' }}>
+            <Box sx={{ display: 'flex', height: '98%', width: '100vw', flexDirection: 'row', marginLeft: isSmallScreen ? "3.5em" : "12.8em", mt: '0.5em', mb: '0.5em', mr: '0.8em', borderRadius: '20px', overflow: 'hidden', transition: 'margin-left 0.3s ease', }}>
+            <Box
+            sx={{
+                width: { xs: '70px', sm: '150px', md: '220px', lg: '280px' },
+                height: "98%",
+                background: '#00B400',
+                p: 2,
+                overflow: "hidden",
+                position: "fixed",
+                borderRadius: "20px 0px 0px 20px",
+                transition: 'width 0.3s ease',
+            }}
+            >                    
+            <Box sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%' }}>
                         <Button
                             onClick={handleGoBack}
                             sx={{
@@ -620,7 +637,7 @@ const ModificaIntervistaGrafica = () => {
                             {t('Indietro')}
                         </Button>
                     </Box>
-                    <Typography variant="h6" sx={{ display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: '1.8em', color: 'black' }}>  {t('Aggiorna')} <br /> {t('Intervista')} </Typography>
+                    <Typography variant="h6" sx={{ display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: { xs: "1.2em", sm: "1.5em", md: "1.8em" }, transition: 'fontSize 0.3s ease', color: 'black' }}>  {t('Aggiorna')} <br /> {t('Intervista')} </Typography>
                     <List sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
                         {menu.map((item, index) => (
                             <ListItem
@@ -639,16 +656,30 @@ const ModificaIntervistaGrafica = () => {
                                     }
                                 }}
                             >
-                                <ListItemIcon>
+                                <ListItemIcon
+                                sx={{ color: theme.palette.aggiungiSidebar.text, mr: { xs: 0.01, sm: 0.01, md: 1.5, lg: 2 }, display: { xs: 'none', sm: 'none', md: 'block' }, }}
+                                >
                                     {sectionCompleted[index] ? <CheckCircleIcon /> : item.icon}
                                 </ListItemIcon>
-                                <ListItemText primary={item.title} />
+                                <ListItemText 
+                                    primary={item.title}
+                                    sx={{ color: theme.palette.aggiungiSidebar.text, fontSize: { xs: "0.7em", sm: "0.8em", md: "1em" }, ml: { xs: 0.01, sm: 0.01, md: 1.5, lg: 2 } }}
+                                />
                             </ListItem>
                         ))}
                     </List>
                 </Box>
-                <Box sx={{ flexGrow: 1, height: '100%', background: '#FEFCFD', display: 'flex', flexDirection: 'column', ml: '280px' }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, mb: 3 }}>
+                <Box
+            sx={{
+                flexGrow: 1,
+                height: "100%",
+                background: "#FEFCFD",
+                display: "flex",
+                flexDirection: "column",
+                ml: { xs: '70px', sm: '150px', md: '220px', lg: '280px' },
+            }}
+            >               
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, mb: 3 }}>
                         <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} TransitionComponent={TransitionDown}>
                             <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
                                 {alert.message}
@@ -656,21 +687,32 @@ const ModificaIntervistaGrafica = () => {
                         </Snackbar>
                         <Typography variant="h4" component="h1" sx={{ mt: 1, fontWeight: 'bold', fontSize: '1.8' }}>{activeSection}</Typography>
                     </Box>
-                    <Box sx={{ display: 'flex', width: '100%', height: '100%', flexDirection: 'column', pl: 5, pr: 5, overflow: 'auto' }}>
-                        {renderFieldsGroups(groupedFields)}
+                    <Box
+                        sx={{
+                        display: "flex",
+                        width: "100%",
+                        height: "100%",
+                        flexDirection: "column",
+                        pl: { xs: 1, sm: 2, md: 3, lg: 5 },
+                        pr: { xs: 1, sm: 2, md: 3, lg: 5 },
+                        overflow: "auto",
+                        }}
+                    >    
+                    {renderFieldsGroups(groupedFields)}
                     </Box>
                     <Typography variant="h6" sx={{ mt: 2, color: '#666565', fontSize: '1em', ml: 16 }}>* Campo Obbligatorio</Typography>
-                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5, gap: 6 }}>
-                        {currentPageIndex > 0 && (
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5, gap: 2, flexDirection: { xs: 'row', sm: 'row', md: 'row', lg: 'row' } }}>
+                    {currentPageIndex > 0 && (
                             <Button onClick={handleBackButtonClick}
                                 sx={{
                                     mb: 4,
-                                    width: '250px',
+                                    width: { xs: '5%', sm: '10%', md: '15%', lg: '15%'}, 
                                     backgroundColor: "black",
                                     color: "white",
                                     fontWeight: "bold",
                                     boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                     borderRadius: '10px',
+                                    fontSize: { xs: "0.5em", sm: "0.7em", md: "0.9em" },
                                     "&:hover": {
                                         backgroundColor: "black",
                                         transform: "scale(1.05)",
@@ -683,13 +725,13 @@ const ModificaIntervistaGrafica = () => {
                             <Button onClick={handleNextButtonClick}
                                 sx={{
                                     mb: 4,
-                                    width: '250px',
+                                    width: { xs: '5%', sm: '10%', md: '15%', lg: '15%'}, 
                                     backgroundColor: "black",
                                     color: "white",
                                     fontWeight: "bold",
                                     boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                     borderRadius: '10px',
-
+                                    fontSize: { xs: "0.5em", sm: "0.7em", md: "0.9em" },
                                     "&:hover": {
                                         backgroundColor: "black",
                                         color: "white",
@@ -705,13 +747,13 @@ const ModificaIntervistaGrafica = () => {
                                 type="submit"
                                 sx={{
                                     mb: 4,
-                                    width: '250px',
+                                    width: { xs: '5%', sm: '10%', md: '15%', lg: '15%'}, 
                                     backgroundColor: "#00B400",
                                     color: "#EDEDED",
                                     fontWeight: "bold",
                                     boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                     borderRadius: '10px',
-
+                                    fontSize: { xs: "0.5em", sm: "0.7em", md: "0.9em" },
                                     "&:hover": {
                                         backgroundColor: "#019301",
                                         color: "#EDEDED",

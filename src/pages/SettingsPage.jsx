@@ -21,11 +21,15 @@
     import Autocomplete from "@mui/material/Autocomplete";
     import CustomTextFieldAggiungi from "../components/fields/CustomTextFieldAggiungi";
     import { useUserTheme } from "../components/TorchyThemeProvider";
+    import { useMediaQuery }                    from '@mui/material';
+
 
     const SettingsPage = () => {
     const theme = useUserTheme();
     const navigate = useNavigate();
     const { t, i18n } = useTranslation();
+    const isSmallScreen = useMediaQuery('(max-width: 800px)');
+
 
     const languageOptions = [
         { value: "it",  label: t("Italiano"),   flag: "🇮🇹" },
@@ -367,11 +371,13 @@
             <Button
                 onClick={() => handleSaveSection(currentPageIndex)}
                 sx={{
+                width: { xs: '5%', sm: '10%', md: '15%', lg: '15%'}, 
                 backgroundColor: theme.palette.button.main,
                 color: "white",
                 fontWeight: "bold",
                 borderRadius: "10px",
                 boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
+                fontSize: { xs: "0.5em", sm: "0.7em", md: "0.9em" },
                 "&:hover": {
                     backgroundColor: theme.palette.button.main,
                     transform: "scale(1.01)",
@@ -404,23 +410,25 @@
             height: "98%",
             width: "100vw",
             flexDirection: "row",
-            ml: "12.5em",
+            marginLeft: isSmallScreen ? "3.5em" : "12.8em",
             mt: "0.5em",
             mb: "0.5em",
             mr: "0.8em",
             borderRadius: "20px",
             overflow: "hidden",
+            transition: 'margin-left 0.3s ease',
             }}
         >
             <Box
             sx={{
-                width: "280px",
+                width: { xs: '70px', sm: '150px', md: '220px', lg: '280px' },
                 height: "98%",
                 background: theme.palette.aggiungiSidebar.bg,
                 p: 2,
                 overflow: "hidden",
                 position: "fixed",
                 borderRadius: "20px 0px 0px 20px",
+                transition: 'width 0.3s ease',
             }}
             >
             <Box
@@ -459,8 +467,8 @@
                 mt: 4,
                 ml: 3,
                 mb: 8,
-                fontSize: "1.8em",
-                color: theme.palette.aggiungiSidebar.title,
+                fontSize: { xs: "1.2em", sm: "1.5em", md: "1.8em" },
+                transition: 'fontSize 0.3s ease',                color: theme.palette.aggiungiSidebar.title,
                 }}
             >
                 {t("Settings")}
@@ -487,12 +495,12 @@
                     },
                     }}
                 >
-                    <ListItemIcon sx={{ color: theme.palette.aggiungiSidebar.text }}>
+                    <ListItemIcon sx={{ color: theme.palette.aggiungiSidebar.text, mr: { xs: 0.01, sm: 0.01, md: 1.5, lg: 2 }, display: { xs: 'none', sm: 'none', md: 'block' }, }}>
                     {item.icon}
                     </ListItemIcon>
                     <ListItemText
                     primary={item.title}
-                    sx={{ color: theme.palette.aggiungiSidebar.text }}
+                    sx={{ color: theme.palette.aggiungiSidebar.text, fontSize: { xs: "0.7em", sm: "0.8em", md: "1em" }, ml: { xs: 0.01, sm: 0.01, md: 1.5, lg: 2 } }}
                     />
                 </ListItem>
                 ))}
@@ -505,7 +513,7 @@
                 background: "#FEFCFD",
                 display: "flex",
                 flexDirection: "column",
-                ml: "280px",
+                ml: { xs: '70px', sm: '150px', md: '220px', lg: '280px' },
             }}
             >
             <Box
@@ -546,8 +554,8 @@
                 width: "100%",
                 height: "100%",
                 flexDirection: "column",
-                pl: 5,
-                pr: 5,
+                pl: { xs: 1, sm: 2, md: 3, lg: 5 },
+                pr: { xs: 1, sm: 2, md: 3, lg: 5 },
                 overflow: "auto",
                 }}
             >
@@ -568,7 +576,9 @@
                 mt: 5,
                 gap: 6,
                 }}
-            ></Box>
+            >
+
+            </Box>
             </Box>
         </Box>
         </Container>

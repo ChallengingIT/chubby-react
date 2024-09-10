@@ -10,16 +10,20 @@ import {
     Container,
     Link
 } from "@mui/material";
-import TabellaPipelineNeed from "../components/dashboardComponents/TabellaPipelineNeed";
-import axios from "axios";
-import { useNotification } from "../components/NotificationContext.js";
-import { useNavigate } from "react-router-dom";
-import BoxAttivitaWeek from "../components/dashboardComponents/BoxAttivitaWeek.jsx";
-import { useTranslation } from "react-i18next"; 
+import TabellaPipelineNeed          from "../components/dashboardComponents/TabellaPipelineNeed";
+import axios                        from "axios";
+import { useNotification }          from "../components/NotificationContext.js";
+import { useNavigate }              from "react-router-dom";
+import BoxAttivitaWeek              from "../components/dashboardComponents/BoxAttivitaWeek.jsx";
+import { useTranslation }           from "react-i18next"; 
+import { useMediaQuery }            from '@mui/material';
+
 
 
 function Dashboard() {
     const { t } = useTranslation(); 
+    const isSmallScreen = useMediaQuery('(max-width: 800px)');
+
 
     const navigate = useNavigate();
     const { showNotification } = useNotification();
@@ -207,21 +211,22 @@ function Dashboard() {
             }}
         >
             <Container
-                maxWidth="xl"
-                sx={{
-                    display: "flex",
-                    flexGrow: 1,
-                    flexDirection: "column",
-                    p: 3,
-                    marginLeft: "12.8em",
-                    marginBottom: "0.8em",
-                    marginRight: "0.8em",
-                    backgroundColor: "#FEFCFD",
-                    borderRadius: "20px",
-                    minHeight: "97vh",
-                    maxHeight: "97vh",
-                    mt: 1.5,
-                }}
+        maxWidth="xl"
+            sx={{
+            display: "flex",
+            flexGrow: 1,
+            flexDirection: 'column',
+            p: 3,
+            marginLeft: isSmallScreen ? "3.5em" : "12.8em",
+            // marginTop: "0.5em",
+            marginBottom: "0.8em",
+            marginRight: "0.8em",
+            backgroundColor: "#FEFCFD",
+            borderRadius: "20px",
+            minHeight: "97vh",
+            mt: 1.5,
+            transition: 'margin-left 0.3s ease',
+            }}
             >
                 <Grid container spacing={2}>
                     <Grid item xs={12}>

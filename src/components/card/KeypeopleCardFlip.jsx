@@ -6,7 +6,6 @@ import LocalPhoneIcon                       from '@mui/icons-material/LocalPhone
 import BusinessIcon                         from '@mui/icons-material/Business'; //azienda
 import SettingsIcon                         from '@mui/icons-material/Settings';
 import DeleteIcon                           from '@mui/icons-material/Delete';
-import AutoStoriesIcon                      from '@mui/icons-material/AutoStories';
 import ExploreIcon                          from '@mui/icons-material/Explore'; //need
 import DoubleArrowIcon                      from '@mui/icons-material/DoubleArrow'; //azioni
 import ChangeCircleIcon                     from '@mui/icons-material/ChangeCircle'; //cambia stato
@@ -51,7 +50,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
     const [righePerPagina,                       ] = useState(10);
 
     const [ modalStorico,        setModalStorico      ] = useState(false);
-    const [ modalAzioni,         setModalAzioni       ] = useState(false);
+    const [ modalAzioni,                              ] = useState(false);
     const [ modalDelete,         setModalDelete       ] = useState(false);
     const [ modalNeed,           setModalNeed         ] = useState(false);
     const [ modalCambiaStato,    setModalCambiaStato  ] = useState(false);
@@ -689,7 +688,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                 </Modal> */}
 
 
-            { /* MODAL PER LO STORICO */ }
+            { /* MODAL PER LE AZIONI COMMERCIALI */ }
                 <Modal
                     open={modalStorico}
                     onClose={() => setModalStorico(false)}
@@ -747,7 +746,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                         <TextField
                         label={t("Seleziona Data")}
                         type="datetime-local"
-                        defaultValue={""}
+                        value={values.data || ""}
                         variant="filled"
                         sx={{
                             height: '4em',
@@ -817,6 +816,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                         <TextField
                         label={t("Note")}
                         variant="filled"
+                        value={values.note || ""}
                         inputProps={{
                             maxLength: 4000
                         }}
