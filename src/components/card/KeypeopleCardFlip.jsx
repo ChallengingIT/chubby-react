@@ -16,6 +16,7 @@ import axios                                from 'axios';
 import InfoIcon                             from '@mui/icons-material/Info';
 import AddCircleIcon                        from '@mui/icons-material/AddCircle';
 import { useTranslation }                   from "react-i18next"; 
+import { motion }                           from "framer-motion"; 
 
 
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Alert, Stack, Pagination, Popover, Slide } from '@mui/material';
@@ -170,6 +171,11 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
         }));
     };
 
+     //animazione fade delle card
+    const fadeInVariants = {
+        hidden: { opacity: 0, y: 50 }, // L'elemento parte invisibile e spostato
+        visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }, // Fade-in con durata
+    };
 
      //funzione per la chiusura dell'alert
      const handleCloseAlert = (reason) => {
@@ -436,6 +442,12 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
     }
 
     return (
+        <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeInVariants}
+    >
         <Card
             raised 
             sx={cardContainerStyle}
@@ -1295,6 +1307,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                 </Alert>
             </Snackbar>
     </Card>
+    </motion.div>
     );
 };
 

@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
-import PersonInfoButton from "../components/button/PersonInfoButton.jsx";
-import DeleteButton from "../components/button/DeleteButton.jsx";
-import ClipButton from "../components/button/ClipButton.jsx";
-import { Link } from "react-router-dom";
-import Tabella from "../components/Tabella.jsx";
-import CloseIcon from "@mui/icons-material/Close";
-import { useTranslation } from "react-i18next"; 
-
-
+import React, { useEffect, useState }       from "react";
+import axios                                from "axios";
+import PersonInfoButton                     from "../components/button/PersonInfoButton.jsx";
+import DeleteButton                         from "../components/button/DeleteButton.jsx";
+import ClipButton                           from "../components/button/ClipButton.jsx";
+import { Link }                             from "react-router-dom";
+import Tabella                              from "../components/Tabella.jsx";
+import CloseIcon                            from "@mui/icons-material/Close";
+import { useTranslation }                   from "react-i18next"; 
+import { motion }                           from "framer-motion";
+import SchemePage                           from "../components/SchemePage.jsx";
+import NuovaRicercaRecruiting               from "../components/nuoveRicerche/NuovaRicercaRecruiting.jsx";
+import CFButton                             from "../components/button/CFButton.jsx";
+import CFModal                              from "../components/modal/CFModal.jsx";
 import {
   Dialog,
   DialogTitle,
@@ -26,10 +28,7 @@ import {
   Slide,
   CircularProgress
 } from "@mui/material";
-import SchemePage from "../components/SchemePage.jsx";
-import NuovaRicercaRecruiting from "../components/nuoveRicerche/NuovaRicercaRecruiting.jsx";
-import CFButton from "../components/button/CFButton.jsx";
-import CFModal from "../components/modal/CFModal.jsx";
+
 
 const Recruiting = () => {
   const { t } = useTranslation(); 
@@ -74,6 +73,12 @@ const Recruiting = () => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [descrizioneModalOpen, setDescrizioneModalOpen] = useState(false);
 
+
+  // Varianti di animazione per far apparire la tabella
+  const fadeInVariants = {
+    hidden: { opacity: 0, y: 50 }, // Parte dal basso
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }, // Appare al centro
+  };
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -696,6 +701,11 @@ const Recruiting = () => {
         statoOptions={statoOptions}
         tipoOptions={tipoOptions}
       />
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={fadeInVariants}
+      >
       <Box sx={{ mr: 0.2 }}>
         {loading ? (
           <>
@@ -724,6 +734,7 @@ const Recruiting = () => {
           />
         )}
       </Box>
+      </motion.div>
       {/* {notePopup && (
         <Dialog
             open={notePopup}

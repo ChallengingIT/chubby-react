@@ -5,6 +5,7 @@
     import RestartAltIcon from "@mui/icons-material/RestartAlt";
     import { useUserTheme } from "../TorchyThemeProvider";
     import { useTranslation } from 'react-i18next';
+    import { motion } from "framer-motion";
     import {
     Button,
     Box,
@@ -46,10 +47,21 @@
         setTimeout(() => setIsRotated(false), 500);
     };
 
+    // Varianti di animazione per far spuntare il box
+    const boxVariants = {
+        hidden: { opacity: 0, y: 50 }, // Parte dal basso con opacità 0
+        visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }, // Appare al centro
+    };
+
     // const handleOpenFiltri = () => setOpenFiltri(true);
     // const handleCloseFiltri = () => setOpenFiltri(false);
 
     return (
+        <motion.div
+        initial="hidden" 
+        animate="visible" 
+        variants={boxVariants} 
+    >
         <Box sx={{ maxWidth: '100%', display: 'flex', justifyContent: 'space-around', p: 0, m: 0}}>
 
         <Box
@@ -330,6 +342,8 @@
                 </IconButton>
         </Box>
         </Box>
+        </motion.div>
+
     );
     }
     export default NuovaRicercaNeedMatch;

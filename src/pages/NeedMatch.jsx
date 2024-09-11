@@ -2,22 +2,21 @@
     import { Link, useParams }                              from "react-router-dom";
     import { useNavigate }                                  from "react-router-dom";
     import axios                                            from "axios";
-    import { Modal, Box, Button, Typography, Dialog, DialogContent, DialogTitle, IconButton }               from "@mui/material";
+    import { Modal, Box, Typography, Dialog, DialogContent, DialogTitle, IconButton }               from "@mui/material";
     import { useLocation }                                  from "react-router-dom";
     import Tabella                                          from "../components/Tabella.jsx";
     import ModalBox                                         from "../components/ModalBox.jsx";
-    import RicercheNeedMatch                                from "../components/ricerche/RicercheNeedMatch.jsx";
     import CloseIconButton                                  from "../components/button/CloseIconButton.jsx";
     import IntervistaButton                                 from "../components/button/IntervistaButton.jsx";
     import ClipButton                                       from "../components/button/ClipButton.jsx";
     import AddCircleIcon                                    from '@mui/icons-material/AddCircle';
     import SchemePage                                       from "../components/SchemePage.jsx";
     import NuovaRicercaNeedMatch                            from "../components/nuoveRicerche/NuovaRicercaNeedMatch.jsx";
-    import ChecklistIcon                                    from '@mui/icons-material/Checklist';
     import CheckListButton                                  from "../components/button/CheckListButton.jsx";
     import { useTranslation }                               from "react-i18next"; 
-import IntervisteModalButton from "../components/button/IntervisteModalButton.jsx";
-import IntervisteModal from "../components/modal/IntervisteModal.jsx";
+    import IntervisteModalButton                            from "../components/button/IntervisteModalButton.jsx";
+    import IntervisteModal                                  from "../components/modal/IntervisteModal.jsx";
+    import { motion }                                       from "framer-motion";
 
 
     const NeedMatch = () => {
@@ -101,6 +100,12 @@ import IntervisteModal from "../components/modal/IntervisteModal.jsx";
 
     const navigateToCercaCandidato = (params) => {
         navigate("/recruiting", { state: { params } });
+    };
+
+    // Varianti di animazione per far apparire la tabella
+    const fadeInVariants = {
+        hidden: { opacity: 0, y: 50 }, // Parte dal basso
+        visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }, // Appare al centro
     };
 
 
@@ -1004,7 +1009,7 @@ import IntervisteModal from "../components/modal/IntervisteModal.jsx";
 
     return (
         <SchemePage>
-
+        <motion.div initial="hidden" animate="visible" variants={fadeInVariants}>
             <Box
             sx={{
                 position: "sticky",
@@ -1023,6 +1028,8 @@ import IntervisteModal from "../components/modal/IntervisteModal.jsx";
                 onGoBack={handleGoBack}
             />
             </Box>
+            </motion.div>
+            <motion.div initial="hidden" animate="visible" variants={fadeInVariants}>
             <Box
             sx={{
                 display: "flex",
@@ -1043,6 +1050,8 @@ import IntervisteModal from "../components/modal/IntervisteModal.jsx";
                 {descrizione} {nomeAzienda}
             </Typography>
             </Box>
+            </motion.div>
+            <motion.div initial="hidden" animate="visible" variants={fadeInVariants}>
             <Modal
             open={isModalOpen}
             onClose={handleCloseModal}
@@ -1115,6 +1124,7 @@ import IntervisteModal from "../components/modal/IntervisteModal.jsx";
             handleClose={() => setOpenModalIntervista(false)}
             intervista={selectedIntervista}
         />
+        </motion.div>
         </SchemePage>
     );
     };

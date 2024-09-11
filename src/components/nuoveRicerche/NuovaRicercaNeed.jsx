@@ -4,6 +4,7 @@ import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import axios from "axios";
 import { useUserTheme } from "../TorchyThemeProvider";
 import { useTranslation } from 'react-i18next';
+import { motion } from "framer-motion";
 import {
     Box,
     FormControl,
@@ -82,7 +83,18 @@ function NuovaRicercaNeed({
         });
     };
 
+     // Varianti di animazione per far spuntare il box
+    const boxVariants = {
+        hidden: { opacity: 0, y: 50 }, // Parte dal basso con opacità 0
+        visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }, // Appare al centro
+    };
+
     return (
+        <motion.div
+                initial="hidden" 
+                animate="visible" 
+                variants={boxVariants} 
+            >
         <Container maxWidth='false' sx={{ maxWidth: '75vw', display: 'flex', justifyContent: 'space-around'}}>
             <Box
                 sx={{
@@ -355,6 +367,7 @@ function NuovaRicercaNeed({
                 </IconButton>
             </Box>
         </Container>
+        </motion.div>
     );
 }
 

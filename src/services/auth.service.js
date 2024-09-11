@@ -4,11 +4,28 @@ import axios from "axios";
 
 const API_LOGIN = "http://localhost:8080/api/auth/";
 const API_LOGIN_CANDIDATO = "http://localhost:8080/candidato/auth/";
+const API_LOGOUT = "http://localhost:8080/logout";
 const API_REGISTER_CANDIDATO = "http://localhost:8080/candidato/auth/signup"
 
 
 
 class AuthService {
+  // login(username, password) {
+  //   return axios
+  //     .post(API_URL + "signin", {
+  //       username,
+  //       password
+  //     })
+  //     .then(response => {
+  //       if (response.data) {
+  //         sessionStorage.setItem("user", JSON.stringify(response.data));
+  //       } else {
+  //         console.log("login fallito!");
+  //       }
+
+  //       return response.data;
+  //     });
+  // }
 
 
   login(username, password) {
@@ -34,16 +51,6 @@ class AuthService {
         throw error; // Propaga l'errore al chiamante
       });
   }
-
-//controllo della scadenza del token
-  checkTokenExpiration() {
-    const tokenExpiration = sessionStorage.getItem('tokenExpiration');
-    
-    if (tokenExpiration && Date.now() >= tokenExpiration) {
-      this.logout();
-    }
-  }
-  
 
 
 
@@ -110,12 +117,49 @@ class AuthService {
     }
   }
   
+  
 
   logout() {
-    sessionStorage.clear();
-    window.location.href = '/login';
+    
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    const token = user?.token;
+
+    const config = {
+      headers: {
+          Authorization: `Bearer ${token}`
+      }
+  };
+    
+    return axios
+    .post(API_LOGOUT, {}, config)
+    .then(response => {
+      if (response.data) {
+        sessionStorage.removeItem("user");
+        
+        
+      }
+      return response.data;
+    })
+    
+
   }
-  
+
+  // register( nome, cognome, username, password, role) {
+  //   return axios
+  //   .post(API_URL + "signup", {
+  //     nome,
+  //     cognome,
+  //     username,
+  //     password,
+  //     role
+
+  //   })
+  //   .then(response => {
+  //     if (response.data) {
+  //     console.log("registrazione effettuata!");
+  //     }
+  //   });
+  // }
 
   getCurrentUser() {
     const user = JSON.parse(sessionStorage.getItem('user'));

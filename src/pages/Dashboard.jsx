@@ -17,6 +17,7 @@ import { useNavigate }              from "react-router-dom";
 import BoxAttivitaWeek              from "../components/dashboardComponents/BoxAttivitaWeek.jsx";
 import { useTranslation }           from "react-i18next"; 
 import { useMediaQuery }            from '@mui/material';
+import { motion }                   from "framer-motion";
 
 
 
@@ -59,6 +60,12 @@ function Dashboard() {
         }
         const userObj = JSON.parse(userString);
         return userObj.roles.includes(roleToCheck);
+    };
+
+    // Varianti di animazione per far apparire la tabella
+    const fadeInVariants = {
+        hidden: { opacity: 0, y: 50 }, // Parte dal basso
+        visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }, // Appare al centro
     };
 
     const fetchData = async () => {
@@ -201,6 +208,11 @@ function Dashboard() {
     const getRowId = (row) => row.id;
 
     return (
+        <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={fadeInVariants}
+        >
         <Container
             maxWidth="false"
             sx={{
@@ -307,6 +319,7 @@ function Dashboard() {
                 </Grid>
             </Container>
         </Container>
+        </motion.div>
     );
 }
 

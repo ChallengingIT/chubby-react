@@ -11,6 +11,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { useTranslation } from 'react-i18next';
 import { useUserTheme } from "../TorchyThemeProvider";
+import { motion } from "framer-motion";
 
 function NuovaRicercaAziende({
     filtri,
@@ -55,7 +56,18 @@ function NuovaRicercaAziende({
         return false;
     };
 
+    // Varianti di animazione per far spuntare il box
+    const boxVariants = {
+        hidden: { opacity: 0, y: 50 }, // Parte dal basso con opacità 0
+        visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }, // Appare al centro
+    };
+
     return (
+        <motion.div
+                initial="hidden" 
+                animate="visible" 
+                variants={boxVariants} 
+            >
         <Container maxWidth='false' sx={{ maxWidth: '75vw', maxHeight: '20vh', display: 'flex', justifyContent: 'space-around'}}>
             <Box
                 sx={{
@@ -284,6 +296,8 @@ function NuovaRicercaAziende({
                 </IconButton>
             </Box>
         </Container>
+        </motion.div>
+
     );
 }
 
