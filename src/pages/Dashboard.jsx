@@ -167,7 +167,7 @@ function Dashboard() {
         },
         {
             field: "descrizione",
-            headerName: t("Descrizione"),
+            headerName: t("Descrizione esigenza"),
             flex: 1,
             sortable: true,
             filterable: true,
@@ -272,7 +272,7 @@ function Dashboard() {
                                         fontSize: '1.2em'
                                     }}
                                 >
-                                    Pipeline Need
+                                    Pipeline
                                 </Typography>
                                 <Box sx={{ flexGrow: 1, height: "90%", width: "100%" }}>
                                     <TabellaPipelineNeed

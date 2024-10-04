@@ -754,7 +754,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                         </TableBody>
                         </Table>
                     </TableContainer>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2, backgroundColor: 'white', borderTop: 'solid 1px #E0E0E0' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', p: 2, backgroundColor: 'white', borderTop: 'solid 1px #E0E0E0' }}>
                         <TextField
                         label={t("Seleziona Data")}
                         type="datetime-local"
@@ -825,43 +825,52 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                             />}
                         />
                         {/* </FormControl> */}
-                        <TextField
-                        label={t("Note")}
-                        variant="filled"
-                        value={values.note || ""}
-                        inputProps={{
-                            maxLength: 4000
-                        }}
-                        rows={4}
-                        sx={{
-                            height: '4em',
-                            p: 1,
-                            borderRadius: '20px',
-                            backgroundColor: '#EDEDED',
-                            '& .MuiFilledInput-root': {
-                            backgroundColor: 'transparent',
-                            },
-                            '& .MuiFilledInput-underline:after': {
-                            borderBottomColor: 'transparent',
-                            },
-                            '& .MuiFilledInput-root::before': {
-                            borderBottom: 'none',
-                            },
-                            '&:hover .MuiFilledInput-root::before': {
-                            borderBottom: 'none',
-                            },
-                            '& .MuiFormLabel-root.Mui-focused': {
-                            color: '#00B400',
-                            },
-                        }}
-                        onChange={(event) => handleValueChange('note', event.target.value)}
-                        />
-                        <IconButton
+                        </Box>
+                        
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', pr: 2, pl: 2 }}>
+            <TextField
+                label={t("Note")}
+                variant="filled"
+                value={values.note || ""}
+                multiline
+                rows={4}  // Aggiunta di più righe per l'input delle note
+                inputProps={{
+                    maxLength: 4000
+                }}
+                sx={{
+                    width: '100%',  // Occupare tutta la larghezza
+                    p: 1,
+                    borderRadius: '20px',
+                    backgroundColor: '#EDEDED',
+                    '& .MuiFilledInput-root': {
+                        backgroundColor: 'transparent',
+                    },
+                    '& .MuiFilledInput-underline:after': {
+                        borderBottomColor: 'transparent',
+                    },
+                    '& .MuiFilledInput-root::before': {
+                        borderBottom: 'none',
+                    },
+                    '&:hover .MuiFilledInput-root::before': {
+                        borderBottom: 'none',
+                    },
+                    '& .MuiFormLabel-root.Mui-focused': {
+                        color: '#00B400',
+                    },
+                }}
+                onChange={(event) => handleValueChange('note', event.target.value)}
+            />
+        </Box>
+        <Box sx={{ display: 'flex', justifyContent: 'center', minWidth: '10em', alignItems: 'center', p: 3 }}>
+
+                        <Button
                         onClick={() => handleAzioniSubmit(valori.id)}
+                        sx={{ display: 'flex', justifyContent: 'space-between', gap: 2, alignItems: 'center', bgcolor: '#00B400', color: 'white', p: 1, borderRadius: '10px',}}
                         >
-                        <AddCircleIcon sx={{ color: '#00B400'}} />
-                        </IconButton>
-                    </Box>
+                        <AddCircleIcon sx={{ color: 'white'}} />
+                        AGGIUNGI
+                        </Button>
+                        </Box>
                     </Box>
                 </Modal>
 
