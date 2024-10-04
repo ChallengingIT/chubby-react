@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import FactoryIcon from "@mui/icons-material/Factory";
-import PlaceIcon from "@mui/icons-material/Place";
-import TrendingDownIcon from "@mui/icons-material/TrendingDown";
-import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
-import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import JoinInnerIcon from "@mui/icons-material/JoinInner";
-import SettingsIcon from "@mui/icons-material/Settings";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { useTranslation } from "react-i18next"; 
+import { useNavigate }                from "react-router-dom";
+import FactoryIcon                    from "@mui/icons-material/Factory";
+import PlaceIcon                      from "@mui/icons-material/Place";
+import TrendingDownIcon               from "@mui/icons-material/TrendingDown";
+import TrendingFlatIcon               from "@mui/icons-material/TrendingFlat";
+import TrendingUpIcon                 from "@mui/icons-material/TrendingUp";
+import JoinInnerIcon                  from "@mui/icons-material/JoinInner";
+import SettingsIcon                   from "@mui/icons-material/Settings";
+import DeleteIcon                     from "@mui/icons-material/Delete";
+import { useTranslation }             from "react-i18next"; 
+import { motion }                     from "framer-motion"; 
+
 import {
     Card,
     CardContent,
@@ -132,6 +134,13 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
         height: "100%",
     };
 
+    //animazione fade delle card
+    const fadeInVariants = {
+        hidden: { opacity: 0, y: 50 }, // L'elemento parte invisibile e spostato
+        visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }, // Fade-in con durata
+    };
+
+
     const mediaIda = (ida) => {
         if (ida >= 0 && ida <= 1) {
             return {
@@ -211,6 +220,12 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
     ];
 
     return (
+        <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeInVariants}
+        >
         <Card raised sx={cardContainerStyle} onClick={toggleFlip}>
             <div style={cardStyle}>
                 <div style={cardFrontStyle}>
@@ -463,6 +478,8 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
                 </Box>
             </Modal>
         </Card>
+        </motion.div>
+
     );
 };
 

@@ -121,7 +121,7 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                 <Box sx={{ display: 'flex', flexDirection: 'row', gap: 5 }}>
                     <Typography variant='h5' sx={{ mt: 1, mb: 1, ml: 2, fontWeight: 'bold', fontSize: '1.2em' }}>
-                        {t("To Do List")}
+                        {t("Actions")}
                     </Typography>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.4 }}>
                         <IconButton onClick={handlePreviousWeek} sx={{ color: '#00B400' }}>

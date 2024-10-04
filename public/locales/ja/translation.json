@@ -281,5 +281,11 @@
   "Modifica": "編集",
   "Disponibilità Effettiva": "実際の可用性",
   "Data Di Nascita*": "生年月日*",
-  "Arabo": "アラビア語"
+  "Arabo": "アラビア語",
+  "Descrizione esigenza": "必要性の説明",
+  "Filtra per owner": "所有者でフィルタリングする",
+  "Filtra per azione": " アクションによるフィルター",
+  "Filtra per cliente": "顧客ごとにフィルタリングする",
+  "Filtra per contatto": "連絡先でフィルタリングする",
+  "Actions": "アクション"
 }

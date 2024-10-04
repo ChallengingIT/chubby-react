@@ -238,56 +238,56 @@
         <List>
         {!userHasRole("BUSINESS") && !userHasRole("RECRUITER") && !userHasRole("CANDIDATO") && (
             <ListItem button onClick={handleAggiungiAziendaClick}>
+                <ListItemIcon>
+                <BusinessCenterIcon sx={{ color: theme.palette.icon.main }} />
+            </ListItemIcon>
             <ListItemText sx={{ color: theme.palette.text.secondary }}>
                 {t('Aggiungi azienda')}
             </ListItemText>
-            <ListItemIcon>
-                <BusinessCenterIcon sx={{ color: theme.palette.icon.main }} />
-            </ListItemIcon>
             </ListItem>
         )}
 
         {!userHasRole("BUSINESS") && !userHasRole("RECRUITER") && !userHasRole("CANDIDATO") && (
             <ListItem button onClick={handleAggiungiContattoClick}>
-            <ListItemText sx={{ color: theme.palette.text.secondary }}>
-                {t('Aggiungi contatto')}
-            </ListItemText>
             <ListItemIcon>
                 <PersonIcon sx={{ color: theme.palette.icon.main }} />
             </ListItemIcon>
+            <ListItemText sx={{ color: theme.palette.text.secondary }}>
+                {t('Aggiungi contatto')}
+            </ListItemText>
             </ListItem>
         )}
 
         {!userHasRole("RECRUITER") && !userHasRole("CANDIDATO") && (
             <ListItem button onClick={handleAggiungiNeedClick}>
-            <ListItemText sx={{ color: theme.palette.text.secondary }}>
-                {t('Aggiungi need')}
-            </ListItemText>
             <ListItemIcon>
                 <ExploreIcon sx={{ color: theme.palette.icon.main }} />
             </ListItemIcon>
+            <ListItemText sx={{ color: theme.palette.text.secondary }}>
+                {t('Aggiungi need')}
+            </ListItemText>
             </ListItem>
         )}
 
         {!userHasRole("BUSINESS") && !userHasRole("CANDIDATO") && (
             <ListItem button onClick={handleAggiungiCandidatoClick}>
-            <ListItemText sx={{ color: theme.palette.text.secondary }}>
-                {t('Aggiungi candidato')}
-            </ListItemText>
             <ListItemIcon>
                 <PersonSearchIcon sx={{ color: theme.palette.icon.main }} />
             </ListItemIcon>
+            <ListItemText sx={{ color: theme.palette.text.secondary }}>
+                {t('Aggiungi candidato')}
+            </ListItemText>
             </ListItem>
         )}
         
         {userHasRole("BUSINESS") && !userHasRole("CANDIDATO") &&(
             <ListItem button onClick={handleAggiungiOwner}>
-            <ListItemText sx={{ color: theme.palette.text.secondary }}>
-                Aggiungi owner
-            </ListItemText>
             <ListItemIcon>
                 <GroupAddIcon sx={{ color: theme.palette.icon.main }} />
             </ListItemIcon>
+            <ListItemText sx={{ color: theme.palette.text.secondary }}>
+                Aggiungi owner
+            </ListItemText>
             </ListItem>
         )}
 

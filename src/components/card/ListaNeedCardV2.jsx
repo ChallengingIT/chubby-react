@@ -24,6 +24,8 @@ import {
 } from '@mui/material';
 import { useUserTheme } from '../TorchyThemeProvider';
 import DialogNeed from '../componentiCliente/DialogNeed';
+import { motion }                     from "framer-motion"; 
+
 
 const ListaNeedCardV2 = ({ valori, statoOptions, onDelete, onRefresh, isFirstCard }) => {
 
@@ -32,6 +34,13 @@ const ListaNeedCardV2 = ({ valori, statoOptions, onDelete, onRefresh, isFirstCar
     const [idNeed, setIdNeed] = useState(null);
     const [alert, setAlert] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
+
+
+     //animazione fade delle card
+    const fadeInVariants = {
+        hidden: { opacity: 0, y: 50 }, // L'elemento parte invisibile e spostato
+        visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }, // Fade-in con durata
+    };
 
 
     // funzione per la chiusura dell'alert
@@ -96,6 +105,12 @@ const ListaNeedCardV2 = ({ valori, statoOptions, onDelete, onRefresh, isFirstCar
     const { icon, text } = mediaPriorita(valori.priorita);
 
     return (
+        <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeInVariants}
+    >
         <Card
             raised
             sx={cardContainerStyle}
@@ -198,6 +213,7 @@ const ListaNeedCardV2 = ({ valori, statoOptions, onDelete, onRefresh, isFirstCar
                 </DialogContent>
             </Dialog>
         </Card>
+        </motion.div>
     );
 };
 

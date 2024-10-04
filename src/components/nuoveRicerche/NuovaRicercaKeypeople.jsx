@@ -11,6 +11,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { useUserTheme } from "../TorchyThemeProvider";
 import { useTranslation } from 'react-i18next';
+import { motion } from "framer-motion";
+
 
 
     function NuovaRicercaKeypeople({
@@ -47,8 +49,18 @@ import { useTranslation } from 'react-i18next';
             [name]: newValue?.value || null,
         });
     };
+     // Varianti di animazione per far spuntare il box
+    const boxVariants = {
+        hidden: { opacity: 0, y: 50 }, // Parte dal basso con opacità 0
+        visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }, // Appare al centro
+    };
 
     return (
+        <motion.div
+        initial="hidden" 
+        animate="visible" 
+        variants={boxVariants} 
+    >
         <Container maxWidth='false' sx={{ maxWidth: '75vw', display: 'flex', justifyContent: 'space-around'}}>
 
         <Box
@@ -283,6 +295,8 @@ import { useTranslation } from 'react-i18next';
  
         </Box>
         </Container>
+        </motion.div>
+
     );
     }
 

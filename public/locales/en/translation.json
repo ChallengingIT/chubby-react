@@ -281,5 +281,12 @@
     "Modifica": "Edit",
     "Disponibilità Effettiva": "Actual Availability",
     "Data Di Nascita*": "Date of birth*",
-    "Arabo": "Arabic"
+    "Arabo": "Arabic",
+    "Actions": "Actions",
+    "Descrizione esigenza": "Description of need",
+    "Filtra per owner": "Filter by owner",
+    "Filtra per azione": " Filter by action",
+    "Filtra per cliente": "Filter by customer",
+    "Filtra per contatto": "Filter by contact"
+
   }

@@ -281,5 +281,11 @@
   "Modifica": "Bearbeiten",
   "Disponibilità Effettiva": "Tatsächliche Verfügbarkeit",
   "Data Di Nascita*": "Geburtsdatum*",
-  "Arabo": "Arabisch"
+  "Arabo": "Arabisch",
+  "Descrizione esigenza": "Beschreibung des Bedarfs",
+  "Filtra per owner": "Nach Eigentümer filtern",
+  "Filtra per azione": " Nach Aktion filtern",
+  "Filtra per cliente": "Nach Kunde filtern",
+  "Filtra per contatto": "Nach Kontakt filtern",
+  "Actions": "Aktionen"
 }

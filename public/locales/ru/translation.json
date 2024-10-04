@@ -281,5 +281,11 @@
   "Modifica": "Редактировать",
   "Disponibilità Effettiva": "Фактическая доступность",
   "Data Di Nascita*": "Дата рождения*",
-  "Arabo": "арабский"
+  "Arabo": "арабский",
+  "Descrizione esigenza": "Описание потребности",
+  "Filtra per owner": "Фильтровать по владельцу",
+  "Filtra per azione": " Фильтровать по действию",
+  "Filtra per cliente": "Фильтровать по клиенту",
+  "Filtra per contatto": "Фильтровать по контакту",
+  "Actions": "Действия"
 }

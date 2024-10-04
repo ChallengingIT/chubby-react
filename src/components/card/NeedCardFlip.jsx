@@ -16,6 +16,7 @@ import TrendingUpIcon                               from '@mui/icons-material/Tr
 import CallMadeIcon                                 from '@mui/icons-material/CallMade'; //priorità massima
 import AccountCircleIcon                            from '@mui/icons-material/AccountCircle'; //owner
 import { useTranslation }                           from "react-i18next"; 
+import { motion }                                   from "framer-motion"; 
 
 import { 
     Card, 
@@ -72,6 +73,12 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
             }, 500); // Attendere mezzo secondo prima di iniziare l'animazione
         }
     }, [isFirstCard, hasAnimated]);
+
+     //animazione fade delle card
+    const fadeInVariants = {
+        hidden: { opacity: 0, y: 50 }, // L'elemento parte invisibile e spostato
+        visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }, // Fade-in con durata
+    };
 
      //funzione per la chiusura dell'alert
     const handleCloseAlert = (reason) => {
@@ -264,6 +271,12 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
 
 
     return (
+        <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeInVariants}
+    >
         <Card
             raised 
             sx={cardContainerStyle}
@@ -640,6 +653,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
                 </Alert>
             </Snackbar>
     </Card>
+    </motion.div>
     );
 };
 

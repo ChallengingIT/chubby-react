@@ -281,5 +281,11 @@
     "Modifica": "يحرر",
     "Disponibilità Effettiva": "التوفر الفعلي",
     "Data Di Nascita*": "تاريخ الميلاد*",
-    "Arabo": "عربي"
+    "Arabo": "عربي",
+    "Descrizione esigenza": "وصف الحاجة",
+    "Filtra per owner": "تصفية حسب المالك",
+    "Filtra per azione": " تصفية حسب العمل",
+    "Filtra per cliente": "التصفية حسب العميل",
+    "Filtra per contatto": "تصفية حسب جهة الاتصال",
+    "Actions": "الإجراءات"
   }

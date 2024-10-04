@@ -281,5 +281,11 @@
   "Modifica": "Modifier",
   "Disponibilità Effettiva": "Disponibilité réelle",
   "Data Di Nascita*": "Date de naissance*",
-  "Arabo": "arabe"
+  "Arabo": "arabe",
+  "Descrizione esigenza": "Description du besoin",
+  "Filtra per owner": "Filtrer par propriétaire",
+  "Filtra per azione": " Filtrer par action",
+  "Filtra per cliente": "Filtrer par client",
+  "Filtra per contatto": "Filtrer par contact",
+  "Actions": "Actes"
 }
