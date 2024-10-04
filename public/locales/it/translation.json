@@ -280,5 +280,11 @@
     "Creazione CF di": "Creazione CF di",
     "Modifica": "Modifica",
     "Disponibilità Effettiva": "Disponibilità Effettiva",
-    "Data Di Nascita*": "Data Di Nascita*"
+    "Data Di Nascita*": "Data Di Nascita*",
+    "Actions": "Actions",
+    "Descrizione esigenza": "Descrizione esigenza",
+    "Filtra per owner": "Filtra per owner",
+    "Filtra per azione": " Filtra per azione",
+    "Filtra per cliente": "Filtra per cliente",
+    "Filtra per contatto": "Filtra per contatto"
 }

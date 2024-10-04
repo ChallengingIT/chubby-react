@@ -281,5 +281,11 @@
   "Modifica": "编辑",
   "Disponibilità Effettiva": "实际供应情况",
   "Data Di Nascita*": "出生日期*",
-  "Arabo": "阿拉伯"
+  "Arabo": "阿拉伯",
+  "Descrizione esigenza": "需求描述",
+  "Filtra per owner": "按所有者过滤",
+  "Filtra per azione": " 按操作过滤",
+  "Filtra per cliente": "按客户筛选",
+  "Filtra per contatto": "按联系人过滤",
+  "Actions": "行动"
 }
