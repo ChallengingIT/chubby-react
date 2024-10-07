@@ -419,7 +419,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                 handleOpenSnackbar(t('Azione salvata con successo!'), 'success');
                 await azioniKeypeople(valori.id);
             } else {
-                handleOpenSnackbar(t('Qualcosa è andato storto, riprova!'), 'error');
+                handleOpenSnackbar(t("Compila tutti i campi prima di aggiungere l'azione"), 'error');
             }
             // handleCloseModalAzioni();
         } catch (error) {

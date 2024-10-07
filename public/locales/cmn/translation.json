@@ -287,5 +287,6 @@
   "Filtra per azione": " 按操作过滤",
   "Filtra per cliente": "按客户筛选",
   "Filtra per contatto": "按联系人过滤",
-  "Actions": "行动"
+  "Actions": "行动",
+  "Compila tutti i campi prima di aggiungere l'azione": "添加操作之前填写所有字段"
 }

@@ -287,5 +287,7 @@
   "Filtra per azione": " Filtrer par action",
   "Filtra per cliente": "Filtrer par client",
   "Filtra per contatto": "Filtrer par contact",
-  "Actions": "Actes"
+  "Actions": "Actes",
+  "Compila tutti i campi prima di aggiungere l'azione": "Remplissez tous les champs avant d'ajouter l'action"
+}
 }
