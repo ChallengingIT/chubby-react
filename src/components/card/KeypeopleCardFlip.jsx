@@ -865,7 +865,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
 
                         <Button
                         onClick={() => handleAzioniSubmit(valori.id)}
-                        sx={{ display: 'flex', justifyContent: 'space-between', gap: 2, alignItems: 'center', bgcolor: '#00B400', color: 'white', p: 1, borderRadius: '10px',}}
+                        sx={{ display: 'flex', justifyContent: 'space-between', gap: 2, alignItems: 'center', bgcolor: '#00B400', color: 'white', p: 1, pl: 1, pr: 2, borderRadius: '10px',}}
                         >
                         <AddCircleIcon sx={{ color: 'white'}} />
                         AGGIUNGI
