@@ -12,6 +12,8 @@
     import ChecklistRtlIcon                             from "@mui/icons-material/ChecklistRtl";
     import SettingsIcon                                 from '@mui/icons-material/Settings'; //impostazioni
     import GroupAddIcon                                 from '@mui/icons-material/GroupAdd'; //aggiungi owner
+    import ExpandMoreIcon                               from "@mui/icons-material/ExpandMore";
+    import ExpandLessIcon                               from "@mui/icons-material/ExpandLess";
     import { useUserTheme }                             from "./TorchyThemeProvider";
     import { useTranslation }                           from 'react-i18next';
     import {
@@ -30,7 +32,8 @@
     DialogContentText,
     Popover,
     Typography,
-    Tooltip
+    Tooltip,
+    Avatar,
     } from "@mui/material";
     import { useMediaQuery } from "@mui/material";
 
@@ -45,13 +48,18 @@
     const theme = useUserTheme();
     const isSmallScreen = useMediaQuery('(max-width: 800px)');
     const { t } = useTranslation();
-    const [activeLink, setActiveLink] = useState(null);
-    const [isLogoutPopupOpen, setIsLogoutPopupOpen] = useState(false);
-    const [anchorEl, setAnchorEl] = useState(null); // Nuovo stato per l'ancoraggio del Popover
-    // const [appuntamentoModal, setAppuntamentoModal] = useState(false);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+
+    const [activeLink,              setActiveLink           ] = useState(null);
+    const [isLogoutPopupOpen,       setIsLogoutPopupOpen    ] = useState(false);
+    const [anchorEl,                setAnchorEl             ] = useState(null); // Nuovo stato per l'ancoraggio del Popover
+    const [accountPopoverAnchor,    setAccountPopoverAnchor ] = useState(null); // Stato per popover "Logout" e "Settings"
+    const [companyLogo,             setCompanyLogo          ] = useState(""); // Stato per il logo aziendale
+    const [ roleBusiness,           setRoleBusiness         ] = useState(false); // Stato per il ruolo aziendale
+        // const [appuntamentoModal, setAppuntamentoModal] = useState(false);
     // const [emailModal, setEmailModal] = useState(false);
-    const [companyLogo, setCompanyLogo] = useState(""); // Stato per il logo aziendale
-    const [ roleBusiness, setRoleBusiness ] = useState(false); // Stato per il ruolo aziendale
 
     const userHasRole = (roleToCheck) => {
         const userString = sessionStorage.getItem("user");
@@ -62,8 +70,7 @@
         return userObj.roles.includes(roleToCheck);
         };
 
-    const navigate = useNavigate();
-    const location = useLocation();
+
 
     const handleSettingsClick = () => {
         navigate("/settings");
@@ -137,6 +144,18 @@
         const handleAggiungiOwner = () => {
         navigate("/owner/aggiungi");
         handleAdditionalDrawerClose();
+    };
+
+    const handleAccordionClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleAccountPopoverOpen = (event) => {
+        setAccountPopoverAnchor(event.currentTarget);
+    };
+
+    const handleAccountPopoverClose = () => {
+        setAccountPopoverAnchor(null);
     };
 
     const handleAggiungiNeedClick = () => {
@@ -415,6 +434,14 @@
                 alt="Logo"
                 style={{ width: "8vw", marginTop: "1em", marginBottom: "1em",  transition: "width 0.3s ease" }}
             />
+            <Tooltip 
+            title="Aggiungi"
+            placement="top" 
+            arrow 
+            sx={{
+                "& .MuiTooltip-tooltip": { marginBottom: "4px" }, 
+            }}
+            >
             <IconButton
             onClick={isCandidato ? null : handleTorciaClick}
             disabled={isCandidato}
@@ -430,6 +457,7 @@
                 style={{ width: "3.5vw", marginBottom: '1em', transition: "transform 0.3s ease" }}
                 />
             </IconButton>
+            </Tooltip>
             </Box>
             <List>
             {sidebarData
@@ -509,7 +537,7 @@
                     }}
                 />
                 )}
-                <Box sx={{ display: 'flex', gap: 1, justifyContent: 'space-between', alignItems: 'center' }}>
+                {/* <Box sx={{ display: 'flex', gap: 1, justifyContent: 'space-between', alignItems: 'center' }}>
                 {!isSmallScreen && (
                 <Typography variant="h6" sx={{ color: "#EDEDED", fontSize: "0.9em" }}> {nome()} {cognome()}</Typography>
                 )}
@@ -518,9 +546,9 @@
                 <Typography variant="h6" sx={{ color: "#EDEDED", fontSize: "1em" }}>
                 {ruolo()}
                 </Typography>
-                )}
+                )} */}
             </Box>
-            <Tooltip title={t('Settings')} placement="bottom" disableHoverListener={!isSmallScreen}>
+            {/* <Tooltip title={t('Settings')} placement="bottom" disableHoverListener={!isSmallScreen}>
             <ListItem
                 selected={activeLink === "/settings"}
                 onClick={handleSettingsClick}
@@ -553,8 +581,8 @@
                 </ListItemIcon>
                 <ListItemText primary="Settings" />
             </ListItem>
-            </Tooltip>
-            <Tooltip title={t('Logout')} placement="bottom" disableHoverListener={!isSmallScreen}>
+            </Tooltip> */}
+            {/* <Tooltip title={t('Logout')} placement="bottom" disableHoverListener={!isSmallScreen}>
             <ListItem
                 selected={activeLink === "/logout"}
                 onClick={handleLogoutClick}
@@ -589,9 +617,81 @@
                 </ListItemIcon>
                 <ListItemText primary="Logout" />
             </ListItem>
-            </Tooltip>
+            </Tooltip> */}
+
+        <Box
+        onClick={handleAccountPopoverOpen}
+            sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 1,
+            cursor: "pointer",
+            }}
+        >
+            <Avatar sx={{ bgcolor: theme.palette.primary.main, width: 36, height: 36 }}>
+                {nome().charAt(0).toUpperCase()}{cognome().charAt(0).toUpperCase()}
+            </Avatar>
+            {isSmallScreen ? null : (
+            <Box
+            sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: 'space-between',
+            gap: 0.5,
+            width: '100%'
+            }}
+            >
+                <Typography sx={{ display: 'flex', marginTop: "0.5em",textAlign: 'center',  color: 'white', fontSize: '12px', width: '80px' }}>
+                    {nome()} {cognome()}
+                </Typography>
+                <Typography
+                    sx={{ display: 'flex', textAlign: "center", marginBottom: "1em", color: 'white', fontSize: '12px', width: '80px' }}
+                >
+                    {ruolo()}
+                </Typography>
+                </Box>
+                )}
+                {isSmallScreen ? null : accountPopoverAnchor ? (
+                    <ExpandLessIcon sx={{ color: "white" }} />
+                ) : (
+                    <ExpandMoreIcon sx={{ color: "white" }} />
+                )}
+                </Box>
             </List>
         </Drawer>
+
+
+        <Popover
+            open={Boolean(accountPopoverAnchor)}
+            anchorEl={accountPopoverAnchor}
+            onClose={handleAccountPopoverClose}
+            anchorOrigin={{
+                vertical: "center",
+                horizontal: "right",
+            }}
+            transformOrigin={{
+                vertical: "center",
+                horizontal: "left",
+            }}
+            >
+            <List sx={{ p: 1}}>
+                <ListItem button onClick={handleSettingsClick}>
+                <ListItemIcon>
+                    <SettingsIcon sx={{ color: '#00B400'}}/>
+                </ListItemIcon>
+                <ListItemText primary="Settings" />
+                </ListItem>
+                <ListItem button onClick={handleLogoutClick}>
+                <ListItemIcon>
+                    <ExitToAppIcon sx={{ color: '#00B400'}}/>
+                </ListItemIcon>
+                <ListItemText primary="Logout" />
+                </ListItem>
+            </List>
+        </Popover>
+
 
         <Popover
             open={Boolean(anchorEl)}
@@ -626,7 +726,7 @@
             <DialogTitle
             id="alert-dialog-title"
             sx={{
-                color: theme.palette.icon.main,
+                color: 'black',
                 fontSize: "24px",
                 textAlign: "center",
                 fontWeight: "bold",
@@ -664,12 +764,12 @@
                 sx={{
                     borderRadius: '10px',
                     width: '10em',
-                    bgcolor: theme.palette.button.secondary,
-                    color: theme.palette.textButton.secondary,
+                    bgcolor: "#bfbfbf",
+                    color: "white",
                     "&:hover": {
                     transform: "scale(1.05)",
-                    bgcolor: theme.palette.button.secondary,
-                    color: theme.palette.textButton.secondary,
+                    bgcolor: "#8e8e8e",
+                    color: "white",
                     },
                 }}
                 >
@@ -681,11 +781,11 @@
                 sx={{
                     borderRadius: '10px',
                     width: '10em',
-                    bgcolor: theme.palette.button.main,
-                    color: theme.palette.textButton.main,
+                    bgcolor: "#ea333f",
+                    color: "white",
                     "&:hover": {
-                    bgcolor: theme.palette.button.mainHover,
-                    color: theme.palette.textButton.main,
+                    bgcolor:  "#db000e",
+                    color: "white",
                     transform: "scale(1.05)",
                     },
                 }}

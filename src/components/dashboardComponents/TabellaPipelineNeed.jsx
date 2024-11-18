@@ -163,7 +163,7 @@ const TabellaPipelineNeed = ({ data, columns, getRowId }) => {
                         maxWidth: 'none',
                         height: 'auto',
                         borderRadius: '20px',
-                        border: '2.5px solid',
+                        border: '1px solid',
                         borderColor: theme.palette.border.main
                     }
                 }}>
