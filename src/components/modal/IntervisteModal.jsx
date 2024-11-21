@@ -121,9 +121,12 @@ const IntervisteModal = ({ open, handleClose, intervista, candidato }) => {
                         <CardContent>
                             <Typography variant='h6' sx={{ fontWeight: 'bold', textAlign: 'flex-start' }}>{t("Note")}</Typography>
                             <Divider sx={{ mb: 2 }} />
-                            <Typography variant='body1'>{candidato?.note}</Typography>
+                            {candidato?.note && candidato.note.split('\n').map((line, index) => (
+                                <Typography key={index} variant='body1'>{line}</Typography>
+                            ))}
                         </CardContent>
                     </Card>
+
                 </Box>
             </DialogContent>
             <DialogActions sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, mb: 1 }}>
