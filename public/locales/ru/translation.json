@@ -287,5 +287,6 @@
   "Filtra per azione": " Фильтровать по действию",
   "Filtra per cliente": "Фильтровать по клиенту",
   "Filtra per contatto": "Фильтровать по контакту",
-  "Actions": "Действия"
+  "Actions": "Действия",
+  "Compila tutti i campi prima di aggiungere l'azione": "Заполните все поля перед добавлением действия"
 }

@@ -419,7 +419,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                 handleOpenSnackbar(t('Azione salvata con successo!'), 'success');
                 await azioniKeypeople(valori.id);
             } else {
-                handleOpenSnackbar(t('Qualcosa è andato storto, riprova!'), 'error');
+                handleOpenSnackbar(t("Compila tutti i campi prima di aggiungere l'azione"), 'error');
             }
             // handleCloseModalAzioni();
         } catch (error) {
@@ -577,68 +577,89 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                 onClose={handleCloseModalDelete}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
-                
                 onClick={(event) => event.stopPropagation()}
                 sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
                 }}
+            >
+                <Box
+                    sx={{
+                        backgroundColor: "white",
+                        p: 4,
+                        borderRadius: 4,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        flexDirection: "column",
+                        gap: 2,
+                        width: "40vw",
+                        position: "relative",
+                    }}
                 >
+                    <IconButton
+                        onClick={handleCloseModalDelete}
+                        sx={{
+                            position: "absolute",
+                            top: 8,
+                            right: 8,
+                            color: "#8e8e8e",
+                            bgcolor: 'transparent',
+                            "&:hover": {
+                                color: "#db000e",
+                                bgcolor: 'transparent',
+                            },
+                        }}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        {t('Sei sicuro di voler eliminare il contatto?')}
+                    </Typography>
                     <Box
+                        sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "center",
+                            gap: 3,
+                        }}
+                    >
+                        <Button
+                            onClick={handleCloseModalDelete}
                             sx={{
-                            backgroundColor: 'white',
-                            p: 4,
-                            borderRadius: '20px',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            flexDirection: 'column',
-                            gap: 2,
-                            width: '40vw',
+                                width: '10em',
+                                backgroundColor: "#bfbfbf",
+                                color: "white",
+                                borderRadius: "10px",
+                                "&:hover": {
+                                    backgroundColor: "#8e8e8e",
+                                    color: "white",
+                                    transform: "scale(1.01)",
+                                },
                             }}
-                            >
-                            <Typography id="modal-modal-title" variant="h6" component="h2">
-                            {t('Sei sicuro di voler eliminare il contatto?')}
-                            </Typography>
-                            <Box 
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                justifyContent: 'center',
-                                gap: 3
-                            }}>
-                                <Button
-                                onClick={handleCloseModalDelete}
-                                sx={{
-                                    backgroundColor: 'black',
-                                    color: 'white',
-                                    borderRadius: '10px',
-                                    '&:hover': {
-                                        backgroundColor: 'black',
-                                        color: 'white',
-                                        transform: 'scale(1.01)'
-                                    },
-                                }}>
-                                {t('Indietro')}
-                            </Button>
-                            <Button
+                        >
+                            {t('Indietro')}
+                        </Button>
+                        <Button
                             onClick={confirmDelete}
                             sx={{
-                                backgroundColor: '#00B401',
-                                color: 'white',
-                                borderRadius: '10px',
-                                '&:hover': {
-                                    backgroundColor: "#019301",
-                                    color: 'white',
-                                    transform: 'scale(1.01)'
+                                width: '10em',
+                                backgroundColor: "#ea333f",
+                                color: "white",
+                                borderRadius: "10px",
+                                "&:hover": {
+                                    backgroundColor: "#db000e",
+                                    color: "white",
+                                    transform: "scale(1.01)",
                                 },
-                            }}>
-                                {t('Conferma')}
-                            </Button>
-                            </Box>
-                            </Box>
-                </Modal>
+                            }}
+                        >
+                            {t('Conferma')}
+                        </Button>
+                    </Box>
+                </Box>
+            </Modal>
 
 
 
@@ -865,7 +886,21 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
 
                         <Button
                         onClick={() => handleAzioniSubmit(valori.id)}
-                        sx={{ display: 'flex', justifyContent: 'space-between', gap: 2, alignItems: 'center', bgcolor: '#00B400', color: 'white', p: 1, borderRadius: '10px',}}
+                        sx={{ 
+                            display: 'flex', 
+                            justifyContent: 'space-between', 
+                            gap: 2, 
+                            alignItems: 'center', 
+                            bgcolor: '#00B400', color: 'white', p: 1, 
+                            pl: 1, 
+                            pr: 2, 
+                            borderRadius: '10px',
+                            boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.1)",
+                            '&:hover': {
+                                bgcolor: '#00B400',
+                                transform: 'scale(1.02)'
+                            }
+                        }}
                         >
                         <AddCircleIcon sx={{ color: 'white'}} />
                         AGGIUNGI

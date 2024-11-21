@@ -287,5 +287,6 @@
   "Filtra per azione": " アクションによるフィルター",
   "Filtra per cliente": "顧客ごとにフィルタリングする",
   "Filtra per contatto": "連絡先でフィルタリングする",
-  "Actions": "アクション"
+  "Actions": "アクション",
+  "Compila tutti i campi prima di aggiungere l'azione": "アクションを追加する前にすべてのフィールドに入力してください"
 }

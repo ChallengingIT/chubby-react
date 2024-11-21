@@ -8,7 +8,7 @@
 
     const goHome = () => {
         sessionStorage.clear();
-        navigate("/"); // Modifica questo percorso se vuoi reindirizzare a una pagina diversa
+        navigate("/"); 
     };
 
     return (

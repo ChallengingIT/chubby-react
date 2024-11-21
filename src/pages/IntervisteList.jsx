@@ -12,6 +12,8 @@ import EditButton                             from '../components/button/EditBut
 import IntervisteModalButton                  from '../components/button/IntervisteModalButton.jsx';
 import IntervisteModal                        from '../components/modal/IntervisteModal.jsx';
 import { useTranslation }                   from 'react-i18next';
+import CloseIcon                            from "@mui/icons-material/Close";
+
 
 import {
   Dialog,
@@ -21,7 +23,8 @@ import {
   DialogActions,
   Button,
   Box,
-  Typography
+  Typography,
+  IconButton
 } from '@mui/material';
 import SchemePage from '../components/SchemePage.jsx';
 
@@ -309,13 +312,31 @@ renderCell: (params) => (
                         aria-describedby="alert-dialog-description"
                         PaperProps={{
                           sx: {
-                            borderRadius: '20px',
+                            borderRadius: "20px",
+                            width: "30vw", 
+                            position: "relative", 
                           },
                         }}
                         
                     >
                         <DialogTitle id="alert-dialog-title">{t("Conferma Eliminazione")}</DialogTitle>
                         <DialogContent>
+                        <IconButton
+                        onClick={() => setOpenDialog(false)}
+                        sx={{
+                            position: "absolute",
+                            top: 8,
+                            right: 8,
+                            color: "#8e8e8e",
+                            bgcolor: 'transparent',
+                            "&:hover": {
+                                color: "#db000e",
+                                bgcolor: 'transparent',
+                            },
+                        }}
+                    >
+                        <CloseIcon />
+                      </IconButton>
                         <DialogContentText id="alert-dialog-description">
                             Sei sicuro di voler eliminare questa intervista?
                         </DialogContentText>
@@ -324,10 +345,10 @@ renderCell: (params) => (
                         <Button onClick={() => setOpenDialog(false)} color="primary" sx={{
                                     width: '8em',
                                     borderRadius: '10px',
-                                    backgroundColor: "black",
+                                    backgroundColor: "#bfbfbf",
                                     color: "white",
                                     "&:hover": {
-                                    backgroundColor: "black",
+                                      backgroundColor: "#8e8e8e",
                                     transform: "scale(1.05)",
                                     },
                                 }}>
@@ -337,10 +358,10 @@ renderCell: (params) => (
                                     sx={{
                                     width: '8em',
                                     borderRadius: '10px',
-                                    backgroundColor: "#00B401",
+                                    backgroundColor: "#ea333f",
                                     color: "white",
                                     "&:hover": {
-                                    backgroundColor: "#019301",
+                                      backgroundColor: "#db000e",
                                         color: "white",
                                         transform: "scale(1.05)",
                                     },

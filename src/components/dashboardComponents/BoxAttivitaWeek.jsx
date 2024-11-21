@@ -135,34 +135,67 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
                         </IconButton>
                     </Box>
                 </Box>
-                <Box>
-                    {(isAdmin || isBM) && (
-                        <Button
-                            variant="contained"
-                            onClick={() => setCurrentData('business')}
-                            sx={{
-                                mr: 2,
-                                bgcolor: currentData === 'business' ? '#00B400' : '#191919',
-                                borderRadius: '10px',
-                                color: 'white',
-                                fontWeight: 'bold',
-                                transform: currentData === 'business' ? 'scale(1.2)' : 'scale(1)',
-                                transition: 'transform 0.2s',
-                            }}
-                        >
-                            {t("Business")}
-                        </Button>
+                <Box
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        bgcolor: "#f0f0f0",
+                        borderRadius: "20px",
+                        padding: "4px",
+                        width: "fit-content",
+                        position: "relative",
+                        gap: 2,
+                        
+                    }}
+                >
+                    <Box
+                    sx={{
+                        position: "absolute",
+                        top: "4px",
+                        bottom: "4px",
+                        left: currentData === "business" ? "4px" : "50%",
+                        width: "50%",
+                        borderRadius: "16px",
+                        backgroundColor: "#00B400",
+                        transition: "all 0.3s ease",
+                        
+                    }}
+                />
+                {(isAdmin || isBM) && (
+                    <Button
+                        onClick={() => setCurrentData("business")}
+                        sx={{
+                            flex: 1,
+                            borderRadius: "20px",
+                            backgroundColor: currentData === "business" ? "#00B400" : "transparent",
+                            color: currentData === "business" ? "white" : "black",
+                            fontWeight: currentData === "business" ? "bold" : "normal",
+                            textTransform: "none",
+                            padding: "8px 16px",
+                            "&:hover": {
+                                // backgroundColor: currentData === "business" ? "#009e00" : "#e0e0e0",
+                                bgcolor: 'transparent'
+                            },
+                        }}
+                    >
+                        {t("Business")}
+                    </Button>
                     )}
                     <Button
-                        variant="contained"
-                        onClick={() => setCurrentData('recruiting')}
+                        onClick={() => setCurrentData("recruiting")}
                         sx={{
-                            bgcolor: currentData === 'recruiting' ? '#00B400' : '#191919',
-                            borderRadius: '10px',
-                            color: 'white',
-                            fontWeight: 'bold',
-                            transform: currentData === 'recruiting' ? 'scale(1.2)' : 'scale(1)',
-                            transition: 'transform 0.2s',
+                            flex: 1,
+                            borderRadius: "20px",
+                            backgroundColor: currentData === "recruiting" ? "#00B400" : "transparent",
+                            color: currentData === "recruiting" ? "white" : "black",
+                            fontWeight: currentData === "recruiting" ? "bold" : "normal",
+                            textTransform: "none",
+                            padding: "8px 16px",
+                            "&:hover": {
+                                // backgroundColor: currentData === "recruiting" ? "#009e00" : "#e0e0e0",
+                                bgcolor: 'transparent'
+                            },
                         }}
                     >
                         {t("Recruiting")}

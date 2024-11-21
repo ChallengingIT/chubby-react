@@ -456,7 +456,7 @@ import ListaNeedCardV2 from '../components/card/ListaNeedCardV2.jsx';
             ) : (
                 originalListaNeed.map((need, index) => (
                 <Grid item xs={12} md={6} key={index}>
-                    <ListaNeedCard
+                    <ListaNeedCardV2
                     valori={need}
                     statoOptions={statoOptions}
                     onDelete={() => handleDelete(need.id)}

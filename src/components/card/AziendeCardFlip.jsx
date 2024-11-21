@@ -10,6 +10,7 @@ import SettingsIcon                   from "@mui/icons-material/Settings";
 import DeleteIcon                     from "@mui/icons-material/Delete";
 import { useTranslation }             from "react-i18next"; 
 import { motion }                     from "framer-motion"; 
+import CloseIcon                      from "@mui/icons-material/Close"
 
 import {
     Card,
@@ -22,6 +23,7 @@ import {
     ListItem,
     ListItemIcon,
     ListItemText,
+    IconButton,
 } from "@mui/material";
 import { useUserTheme } from "../TorchyThemeProvider";
 
@@ -424,15 +426,32 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
                     sx={{
                         backgroundColor: "white",
                         p: 4,
-                        borderRadius: 2,
+                        borderRadius: 4,
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
                         flexDirection: "column",
                         gap: 2,
                         width: "40vw",
+                        position: "relative",
                     }}
                 >
+                    <IconButton
+                        onClick={handleCloseModalDelete}
+                        sx={{
+                            position: "absolute",
+                            top: 8,
+                            right: 8,
+                            color: "#8e8e8e",
+                            bgcolor: 'transparent',
+                            "&:hover": {
+                                color: "#db000e",
+                                bgcolor: 'transparent',
+                            },
+                        }}
+                    >
+                        <CloseIcon />
+                    </IconButton>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                         {t('Sei sicuro di voler eliminare l\'azienda?')}
                     </Typography>
@@ -447,11 +466,12 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
                         <Button
                             onClick={handleCloseModalDelete}
                             sx={{
-                                backgroundColor: "black",
+                                width: '10em',
+                                backgroundColor: "#bfbfbf",
                                 color: "white",
-                                borderRadius: "5px",
+                                borderRadius: "10px",
                                 "&:hover": {
-                                    backgroundColor: "black",
+                                    backgroundColor: "#8e8e8e",
                                     color: "white",
                                     transform: "scale(1.01)",
                                 },
@@ -462,11 +482,12 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
                         <Button
                             onClick={confirmDelete}
                             sx={{
-                                backgroundColor: "#00B401",
+                                width: '10em',
+                                backgroundColor: "#ea333f",
                                 color: "white",
-                                borderRadius: "5px",
+                                borderRadius: "10px",
                                 "&:hover": {
-                                    backgroundColor: "#019301",
+                                    backgroundColor: "#db000e",
                                     color: "white",
                                     transform: "scale(1.01)",
                                 },
