@@ -18,6 +18,7 @@ import BoxAttivitaWeek              from "../components/dashboardComponents/BoxA
 import { useTranslation }           from "react-i18next"; 
 import { useMediaQuery }            from '@mui/material';
 import { motion }                   from "framer-motion";
+import CustomTableCell2             from '../components/CustomTableCell2.jsx';
 
 
 
@@ -32,6 +33,8 @@ function Dashboard() {
     const [originalPipeline, setOriginalPipeline] = useState([]);
     const [aziendeOptions, setAziendaOptions] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [currentPipelineData, setCurrentPipelineData] = useState({});
 
     const [filtri, setFiltri] = useState(() => {
         const filtriSalvati = sessionStorage.getItem("filtriRicercaPipeline");
@@ -92,22 +95,22 @@ function Dashboard() {
 
             if (Array.isArray(responseAzienda.data)) {
                 setAziendaOptions(responseAzienda.data.map((azienda) => ({
-                    label: azienda.denominazione,
-                    value: azienda.id,
+                    label: azienda?.denominazione,
+                    value: azienda?.id,
                 })));
             } else {
                 console.error("I dati ottenuti dalla chiamata delle aziende non sono nel formato Array:", responseAzienda.data);
             }
 
-            if (Array.isArray(responsePipeline.data)) {
+            if (Array.isArray(responsePipeline?.data)) {
                 const pipelineConId = responsePipeline.data.map((pipeline) => ({
-                    id: pipeline.id,
-                    descrizione: pipeline.descrizione || "N/A",
-                    cliente: pipeline.cliente || { denominazione: "Cliente non disponibile", id: null },
-                    owner: pipeline.owner ? `${pipeline.owner?.descrizione}` : "Owner non disponibile",
-                    priorita: pipeline.priorita || "Priorità non disponibile",
-                    stato: pipeline.stato ? pipeline.stato.descrizione : "Stato non disponibile",
-                    pipelineData: pipeline.pipeline || "Dati non disponibili"
+                    id: pipeline?.id,
+                    descrizione: pipeline?.descrizione || "N/A",
+                    cliente: pipeline?.cliente || { denominazione: "Cliente non disponibile", id: null },
+                    owner: pipeline?.owner ? `${pipeline?.owner?.descrizione}` : "Owner non disponibile",
+                    priorita: pipeline?.priorita || "Priorità non disponibile",
+                    stato: pipeline?.stato ? pipeline?.stato?.descrizione : "Stato non disponibile",
+                    pipelineData: pipeline?.pipeline || "Dati non disponibili"
                 }));
                 setOriginalPipeline(pipelineConId);
             } else {
@@ -147,63 +150,112 @@ function Dashboard() {
         navigate('/need', { state: { descrizione, clienteId } });
     };
 
+    const handleOpenDialog = (pipelineData) => {
+        setDialogOpen(true);
+        setCurrentPipelineData(pipelineData);
+    };
+    
+    const handleCloseDialog = () => {
+        setDialogOpen(false);
+    };
+
+    // const columns = [
+    //     {
+    //         field: "owner",
+    //         headerName: t("Owner"),
+    //         flex: 0.6,
+    //         sortable: true,
+    //         filterable: true,
+    //     },
+    //     {
+    //         field: "cliente",
+    //         headerName: t("Cliente"),
+    //         flex: 1,
+    //         sortable: true,
+    //         filterable: true,
+    //         renderCell: (params) => {
+    //             return params.value ? params.value.denominazione : "Cliente non disponibile";
+    //         }
+    //     },
+    //     {
+    //         field: "descrizione",
+    //         headerName: t("Descrizione esigenza"),
+    //         flex: 1,
+    //         sortable: true,
+    //         filterable: true,
+    //         renderCell: (params) => {
+    //             const descrizione = params.value || "Descrizione non disponibile";
+    //             const clienteId = params.row.cliente?.id || null;
+    //             return (
+    //                 <Link
+    //                     component="button"
+    //                     onClick={() => handleDescrizioneClick(descrizione, clienteId)}
+    //                     sx={{
+    //                         textDecoration: "none",
+    //                         color: "black",
+    //                         borderBottom: "solid 1px black",
+    //                     }}
+    //                 >
+    //                     {descrizione}
+    //                 </Link>
+    //             );
+    //         },
+    //     },
+    //     {
+    //         field: "priorita",
+    //         headerName: t("Priorità"),
+    //         flex: 0.4,
+    //         sortable: true,
+    //         filterable: true,
+    //     },
+    //     {
+    //         field: "stato",
+    //         headerName: t("Stato"),
+    //         flex: 0.4,
+    //         sortable: true,
+    //         filterable: true,
+    //     },
+    // ];
+
+
     const columns = [
         {
             field: "owner",
-            headerName: t("Owner"),
-            flex: 0.6,
-            sortable: true,
-            filterable: true,
+            headerName: "Owner",
         },
         {
             field: "cliente",
-            headerName: t("Cliente"),
-            flex: 1,
-            sortable: true,
-            filterable: true,
-            renderCell: (params) => {
-                return params.value ? params.value.denominazione : "Cliente non disponibile";
-            }
+            headerName: "Cliente",
+            render: (row) => row.cliente.denominazione || "Cliente non disponibile", // Accesso alla proprietà
         },
         {
             field: "descrizione",
-            headerName: t("Descrizione esigenza"),
-            flex: 1,
-            sortable: true,
-            filterable: true,
-            renderCell: (params) => {
-                const descrizione = params.value || "Descrizione non disponibile";
-                const clienteId = params.row.cliente?.id || null;
-                return (
-                    <Link
-                        component="button"
-                        onClick={() => handleDescrizioneClick(descrizione, clienteId)}
-                        sx={{
-                            textDecoration: "none",
-                            color: "black",
-                            borderBottom: "solid 1px black",
-                        }}
-                    >
-                        {descrizione}
-                    </Link>
-                );
-            },
+            headerName: "Descrizione esigenza",
+            render: (row) => (
+                <Link
+                    component="button"
+                    onClick={() => handleDescrizioneClick(row.descrizione, row.cliente?.id || null)}
+                    sx={{
+                        textDecoration: "none",
+                        color: "black",
+                        borderBottom: "solid 1px black",
+                    }}
+                >
+                    {row.descrizione}
+                </Link>
+            ),
         },
         {
             field: "priorita",
-            headerName: t("Priorità"),
-            flex: 0.4,
-            sortable: true,
-            filterable: true,
+            headerName: "Priorità",
         },
         {
             field: "stato",
-            headerName: t("Stato"),
-            flex: 0.4,
-            sortable: true,
-            filterable: true,
+            headerName: "Stato",
         },
     ];
+    
+    
 
     const getRowId = (row) => row.id;
 
@@ -242,47 +294,12 @@ function Dashboard() {
             >
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <Card
-                            sx={{
-                                borderRadius: "20px",
-                                maxWidth: "100%",
-                                height: "50vh",
-                                border: "2px solid #00B401",
-                                display: "flex",
-                                flexDirection: "column",
-                                overflow: "hidden",
-                                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-                            }}
-                        >
-                            <CardContent
-                                sx={{
-                                    flexGrow: 1,
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    height: "100%",
-                                    width: "100%",
-                                }}
-                            >
-                                <Typography
-                                    variant="h5"
-                                    sx={{
-                                        display: "flex",
-                                        justifyContent: "flex-start",
-                                        fontWeight: "bold",
-                                        fontSize: '1.2em'
-                                    }}
-                                >
-                                    Pipeline
-                                </Typography>
-                                <Box sx={{ flexGrow: 1, height: "90%", width: "100%" }}>
-                                    <TabellaPipelineNeed
-                                        data={originalPipeline}
-                                        columns={columns}
-                                        getRowId={getRowId}
-                                    />
-                                </Box>
-                            </CardContent>
-                        </Card>
+                        <CustomTableCell2
+                            columns={columns}
+                            rows={originalPipeline}
+                            title={t("Pipeline")}
+                            onIconClick={(row) => handleOpenDialog(row.pipelineData)}
+                        />
                     </Grid>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
@@ -297,7 +314,7 @@ function Dashboard() {
                                     display: "flex",
                                     flexDirection: "column",
                                     overflow: "hidden",
-                                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
+                                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
                                 }}
                             >
                                 <CardContent
