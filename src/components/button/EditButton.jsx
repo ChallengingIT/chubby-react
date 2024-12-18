@@ -8,7 +8,7 @@ function EditButton({ onClick, to, rowData }) {
 
   const handleEditAction = () => {
     if (onClick) {
-      onClick(rowData.id); 
+      onClick(rowData?.id); 
     } else if (to) {
       navigate(to);
     } else {

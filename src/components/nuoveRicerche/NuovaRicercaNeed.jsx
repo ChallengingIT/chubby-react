@@ -4,6 +4,7 @@ import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import axios from "axios";
 import { useUserTheme } from "../TorchyThemeProvider";
 import { useTranslation } from 'react-i18next';
+import CustomMultipleAutocomplete from "../fields/CustomMultipleAutocomplete";
 import { motion } from "framer-motion";
 import {
     Box,
@@ -23,6 +24,7 @@ function NuovaRicercaNeed({
     statoOptions,
     aziendaOptions,
     ownerOptions,
+    skillsOptions,
     onContactChange,
 }) {
     const theme = useUserTheme();
@@ -31,37 +33,28 @@ function NuovaRicercaNeed({
     const [contactOptions, setContactOptions] = useState([]);
     const [selectedContact, setSelectedContact] = useState("");
 
-    const handleAziendaChange = async (event, newValue) => {
+    
+
+    // Funzione per gestire il cambiamento del filtro azienda
+    const handleAziendaChange = (event, newValue) => {
+        const aziendaId = newValue?.value || null;
         onFilterChange({
             ...filtri,
-            azienda: newValue?.value || null,
+            azienda: aziendaId, // Assicurati di passare l'ID corretto
         });
-        const aziendaId = newValue?.value;
+
         if (aziendaId) {
-            try {
-                const response = await axios.get(
-                    `http://89.46.196.60:8443/keypeople/react/azienda/${aziendaId}`
-                );
-                setContactOptions(
-                    response.data.map((keyPeople) => ({
-                        label: keyPeople.nome,
-                        value: keyPeople.id,
-                    }))
-                );
-            } catch (error) {
-                console.error("Errore durante il recupero dei contatti: ", error);
-                setContactOptions([]);
-            }
-        } else {
-            setContactOptions([]);
+            // Log per verificare l'ID selezionato
+            console.log("Azienda selezionata ID:", aziendaId);
+            // Esegui eventuali operazioni aggiuntive, come il caricamento di dati correlati
         }
     };
 
-    const handleContactChange = (event, newValue) => {
-        setSelectedContact(newValue?.value || "");
-        const contactId = newValue?.value || null;
-        onContactChange(contactId);
-    };
+    // const handleContactChange = (event, newValue) => {
+    //     setSelectedContact(newValue?.value || "");
+    //     const contactId = newValue?.value || null;
+    //     onContactChange(contactId);
+    // };
 
     const handleClickReset = () => {
         onReset();
@@ -69,18 +62,12 @@ function NuovaRicercaNeed({
         setTimeout(() => setIsRotated(false), 500);
     };
 
-    const handleInputChange = (name) => (event) => {
-        onFilterChange({
-            ...filtri,
-            [name]: event.target.value,
-        });
-    };
 
-    const handleAutocompleteChange = (name) => (event, newValue) => {
-        onFilterChange({
-            ...filtri,
-            [name]: newValue?.value || null,
-        });
+    const handleSearchClick = (event) => {
+        if (event) {
+            event.preventDefault();
+        }
+        onSearch();
     };
 
      // Varianti di animazione per far spuntare il box
@@ -118,9 +105,9 @@ function NuovaRicercaNeed({
                         variant="filled"
                         label={t("Cerca Need")}
                         value={filtri.descrizione || ""}
-                        onChange={handleInputChange("descrizione")}
+                        onChange={onFilterChange("descrizione")}
                         onKeyDown={(event) => {
-                            if (event.key === "Enter") {
+                            if (event && event.key === "Enter") {
                                 event.preventDefault();
                                 onSearch();
                             }
@@ -150,7 +137,7 @@ function NuovaRicercaNeed({
                     />
                 </FormControl>
 
-                <FormControl fullWidth sx={{ mb: 0.2 }}>
+                {/* <FormControl fullWidth sx={{ mb: 0.2 }}>
                     <Autocomplete
                         id="azienda-combo-box"
                         options={aziendaOptions}
@@ -160,7 +147,54 @@ function NuovaRicercaNeed({
                                 (option) => option.value === filtri.azienda
                             ) || null
                         }
-                        onChange={handleAziendaChange}
+                        onChange={handleAziendaChange} // Usa la funzione specifica per gestire il cambiamento
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                label={t("Azienda")}
+                                variant="filled"
+                                sx={{
+                                    textAlign: "left",
+                                    borderRadius: "20px",
+                                    border: 'solid 1px #00B400',
+                                    bgcolor: 'white',
+                                    boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
+                                    "& .MuiFilledInput-root": {
+                                        backgroundColor: "transparent",
+                                    },
+                                    "& .MuiFilledInput-underline:after": {
+                                        borderBottomColor: "transparent",
+                                    },
+                                    "& .MuiFilledInput-root::before": {
+                                        borderBottom: "none",
+                                    },
+                                    "&:hover .MuiFilledInput-root::before": {
+                                        borderBottom: "none",
+                                    },
+                                    "& .MuiFormLabel-root.Mui-focused": {
+                                        color: theme.palette.border.main,
+                                    },
+                                }}
+                            />
+                        )}
+                    />
+                </FormControl> */}
+
+                <FormControl fullWidth sx={{ mb: 0.2 }}>
+                    <Autocomplete
+                        id="azienda-combo-box"
+                        options={aziendaOptions}
+                        getOptionLabel={(option) => option.label}
+                        value={
+                            aziendaOptions.find(
+                                (option) => option.value === filtri.cliente
+                            ) || null
+                        }
+                        onChange={(event, newValue) => {
+                            onFilterChange("cliente")({
+                                target: { value: newValue?.value || null },
+                            });
+                            }}
                         renderInput={(params) => (
                             <TextField
                                 {...params}
@@ -193,6 +227,7 @@ function NuovaRicercaNeed({
                     />
                 </FormControl>
 
+
                 <FormControl fullWidth sx={{ mb: 0.2 }}>
                     <Autocomplete
                         id="tipologia-combo-box"
@@ -203,7 +238,11 @@ function NuovaRicercaNeed({
                                 (option) => option.value === filtri.tipologia
                             ) || null
                         }
-                        onChange={handleAutocompleteChange("tipologia")}
+                        onChange={(event, newValue) => {
+                            onFilterChange("tipologia")({
+                                target: { value: newValue?.value || null },
+                            });
+                            }}
                         renderInput={(params) => (
                             <TextField
                                 {...params}
@@ -246,7 +285,11 @@ function NuovaRicercaNeed({
                                 (option) => option.value === filtri.stato
                             ) || null
                         }
-                        onChange={handleAutocompleteChange("stato")}
+                        onChange={(event, newValue) => {
+                            onFilterChange("stato")({
+                                target: { value: newValue?.value || null },
+                            });
+                            }}
                         renderInput={(params) => (
                             <TextField
                                 {...params}
@@ -289,7 +332,11 @@ function NuovaRicercaNeed({
                                 (option) => option.value === filtri.owner
                             ) || null
                         }
-                        onChange={handleAutocompleteChange("owner")}
+                        onChange={(event, newValue) => {
+                            onFilterChange("owner")({
+                                target: { value: newValue?.value || null },
+                            });
+                            }}
                         renderInput={(params) => (
                             <TextField
                                 {...params}
@@ -321,6 +368,104 @@ function NuovaRicercaNeed({
                         )}
                     />
                 </FormControl>
+
+                <FormControl fullWidth sx={{ mb: 0.2 }}>
+                    <TextField
+                        id="search-bar"
+                        variant="filled"
+                        label={t("Location")}
+                        value={filtri.location || ""}
+                        onChange={onFilterChange("location")}
+                        onKeyDown={(event) => {
+                            if (event.key === "Enter") {
+                                handleSearchClick(event);
+                            }
+                        }}
+                        sx={{
+                            textAlign: "start",
+                            borderRadius: "20px",
+                            border: 'solid 1px #00B400',
+                            bgcolor: 'white',
+                            boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
+                            "& .MuiFilledInput-root": {
+                                backgroundColor: "transparent",
+                            },
+                            "& .MuiFilledInput-underline:after": {
+                                borderBottomColor: "transparent",
+                            },
+                            "& .MuiFilledInput-root::before": {
+                                borderBottom: "none",
+                            },
+                            "&:hover .MuiFilledInput-root::before": {
+                                borderBottom: "none",
+                            },
+                            "& .MuiFormLabel-root.Mui-focused": {
+                                color: theme.palette.border.main,
+                            },
+                        }}
+                    />
+                </FormControl>
+
+
+                <FormControl fullWidth sx={{ mb: 0.2 }}>
+                <CustomMultipleAutocomplete
+                    name="skills"
+                    label={t("Skills")}
+                    skillsOptions={skillsOptions}
+                    onChange={(newValue) => {
+                    onFilterChange("skills")({
+                        target: { value: newValue.skills || [] },
+                    });
+                    }}
+                />
+                </FormControl>
+
+
+                {/* <FormControl fullWidth sx={{ mb: 0.2 }}>
+                <Autocomplete
+                    id="skills-combo-box"
+                    options={skillsOptions}
+                    getOptionLabel={(option) => option.label}
+                    value={
+                        skillsOptions.find((option) => option.value === filtri.skills) ||
+                    null
+                    }
+                    onChange={(event, newValue) => {
+                        onFilterChange("skills")({
+                            target: { value: newValue?.value || null },
+                        });
+                        }}
+                    renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        label={t("Skills")}
+                        variant="filled"
+                        sx={{
+                        textAlign: "left",
+                        borderRadius: "20px",
+                        border: 'solid 1px #00B400',
+                        bgcolor: 'white',
+                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
+                        "& .MuiFilledInput-root": {
+                            backgroundColor: "transparent",
+                        },
+                        "& .MuiFilledInput-underline:after": {
+                            borderBottomColor: "transparent",
+                        },
+                        "& .MuiFilledInput-root::before": {
+                            borderBottom: "none",
+                        },
+                        "&:hover .MuiFilledInput-root::before": {
+                            borderBottom: "none",
+                        },
+                        "& .MuiFormLabel-root.Mui-focused": {
+                            color: theme.palette.border.main,
+                        },
+                        }}
+                    />
+                    )}
+                />
+                </FormControl> */}
 
                 <IconButton
                     onClick={onSearch}

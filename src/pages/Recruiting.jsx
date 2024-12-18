@@ -12,6 +12,8 @@ import SchemePage                           from "../components/SchemePage.jsx";
 import NuovaRicercaRecruiting               from "../components/nuoveRicerche/NuovaRicercaRecruiting.jsx";
 import CFButton                             from "../components/button/CFButton.jsx";
 import CFModal                              from "../components/modal/CFModal.jsx";
+import InfoIcon                             from '@mui/icons-material/Info';
+
 import {
   Dialog,
   DialogTitle,
@@ -26,8 +28,13 @@ import {
   Snackbar,
   Alert,
   Slide,
-  CircularProgress
+  CircularProgress,
+  FormControl,
+  Autocomplete,
+  TextField
 } from "@mui/material";
+import EditButton from "../components/button/EditButton.jsx";
+import { Modal, Typography } from "antd";
 
 
 const Recruiting = () => {
@@ -46,6 +53,17 @@ const Recruiting = () => {
   const [idCandidato, setIdCandidato] = useState([]);
   const [nomeCandidato, setNomeCandidato] = useState([]);
   const [cognomeCandidato, setCognomeCandidato ] = useState([]);
+  const [modalCambiaStato,    setModalCambiaStato  ] = useState(false);
+  const [ anchorElStato,       setAnchorElStato     ] = useState(null);
+  const [ snackbarType,        setSnackbarType        ] = useState('success'); 
+  const [ alert,               setAlert             ] = useState(false);
+  const [values,               setValues            ] = useState({});
+  const [skillsOptions,      setSkillsOptions        ] = useState([]);
+
+
+
+
+
   const [filtri, setFiltri] = useState(() => {
     const filtriSalvati = sessionStorage.getItem("filtriRicercaRecruiting");
     return filtriSalvati
@@ -56,6 +74,8 @@ const Recruiting = () => {
           tipologia: null,
           stato: null,
           tipo: null,
+          location: null,
+          skills: null
         };
   });
 
@@ -120,25 +140,27 @@ const Recruiting = () => {
       tipologia: null,
       tipo: null,
       stato: null,
+      skills: null,
+      location: null,
       pagina: 0,
       quantita: 10,
     };
 
     try {
       const response = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/mod",
+        "http://localhost:8080/staffing/react/mod",
         { headers: headers, params: filtriDaInviare }
       );
       const responseTipologia = await axios.get(
-        "http://89.46.196.60:8443/aziende/react/tipologia",
+        "http://localhost:8080/aziende/react/tipologia",
         { headers }
       );
       const responseTipo = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/tipo",
+        "http://localhost:8080/staffing/react/tipo",
         { headers }
       );
       const responseStato = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/stato/candidato",
+        "http://localhost:8080/staffing/react/stato/candidato",
         { headers }
       );
 
@@ -233,8 +255,8 @@ const Recruiting = () => {
       (value) => value !== null && value !== ""
     );
     const url = filtriAttivi
-      ? "http://89.46.196.60:8443/staffing/react/mod/ricerca"
-      : "http://89.46.196.60:8443/staffing/react/mod";
+      ? "http://localhost:8080/staffing/react/mod/ricerca"
+      : "http://localhost:8080/staffing/react/mod";
 
     const filtriDaInviare = {
       nome: filtri.nome || null,
@@ -243,6 +265,8 @@ const Recruiting = () => {
       tipologia: filtri.tipologia || null,
       tipo: filtri.tipo || null,
       stato: filtri.stato || null,
+      skills: filtri.skills || null,
+      location: filtri.location || null,
       pagina: newPage,
       quantita: 10,
     };
@@ -291,7 +315,7 @@ const Recruiting = () => {
   const handleDelete = async () => {
     try {
       const responseDelete = await axios.delete(
-        `http://89.46.196.60:8443/staffing/elimina/${deleteId}`,
+        `http://localhost:8080/staffing/elimina/${deleteId}`,
         { headers: headers }
       );
       setOpenDialog(false);
@@ -300,6 +324,26 @@ const Recruiting = () => {
       console.error("Errore durante la cancellazione: ", error);
     }
   };
+
+
+  useEffect(() => {
+    const fetchSkills = async () => {
+        try {
+            const responseNeedSkills = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
+            if (Array.isArray(responseNeedSkills.data)) {
+                setSkillsOptions(responseNeedSkills.data.map((skill) => ({
+                    label: skill.descrizione,
+                    value: skill.id,
+                })));
+            } else {
+                console.error("Response Need Skills non è un array:", responseNeedSkills.data);
+            }
+        } catch (error) {
+            console.error("Errore durante il recupero delle skill:", error);
+        }
+    };
+    fetchSkills();
+}, []);
 
 
   useEffect(() => {
@@ -319,6 +363,8 @@ const Recruiting = () => {
       tipologia: filtri.tipologia || null,
       tipo: filtri.tipo || null,
       stato: filtri.stato || null,
+      skills: filtri.skills ? filtri.skills.join(",") : null,
+      location: filtri.location || null,
       pagina: pagina,
       quantita: 10,
     };
@@ -327,21 +373,23 @@ const Recruiting = () => {
 
     try {
       const response = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/mod/ricerca",
+        "http://localhost:8080/staffing/react/mod/ricerca",
         { headers: headers, params: filtriDaInviare }
       );
       const responseTipologia = await axios.get(
-        "http://89.46.196.60:8443/aziende/react/tipologia",
-        { headers }
+        "http://localhost:8080/aziende/react/tipologia",
+        { headers: headers }
       );
       const responseTipo = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/tipo",
-        { headers }
+        "http://localhost:8080/staffing/react/tipo",
+        { headers: headers }
       );
       const responseStato = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/stato/candidato",
-        { headers }
+        "http://localhost:8080/staffing/react/stato/candidato",
+        { headers: headers }
       );
+
+
 
       if (Array.isArray(responseStato.data)) {
         setStatoOptions(
@@ -412,8 +460,14 @@ const Recruiting = () => {
 
   const handleFilterChange = (name) => (event) => {
     const newValue = event.target.value;
+    console.log("newValue: ", newValue);
+    
     setFiltri((currentFilters) => {
+      console.log("currentFilter: ", currentFilters);
+      
       const newFilters = { ...currentFilters, [name]: newValue };
+      console.log("newFilters: ", newFilters);
+      
       setPagina(0);
       return newFilters;
     });
@@ -426,6 +480,9 @@ const Recruiting = () => {
       tipo: null,
       tipologia: null,
       stato: null,
+      location: "",
+      skills: null,
+
     });
     sessionStorage.removeItem("RicercheRecruiting");
     setPagina(0);
@@ -434,7 +491,7 @@ const Recruiting = () => {
   };
 
   const handleDownloadCV = async (idFile, fileDescrizione) => {
-    const url = `http://89.46.196.60:8443/files/react/download/file/${idFile}`;
+    const url = `http://localhost:8080/files/react/download/file/${idFile}`;
     try {
       const responseDownloadCV = await axios({
         method: "GET",
@@ -484,7 +541,7 @@ const Recruiting = () => {
   const handleDownloadCF = async (idCandidato, nomeCandidato, cognomeCandidato, tipo) => {
     try {
       setLoadingCF(true);
-      const downloadUrl = `http://89.46.196.60:8443/files/download/cf/${idCandidato}`;
+      const downloadUrl = `http://localhost:8080/files/download/cf/${idCandidato}`;
       const params = new URLSearchParams({ tipo });
   
       const responseDownloadCF = await axios({
@@ -513,6 +570,67 @@ const Recruiting = () => {
       }
     }
   };
+
+  const handleOpenStatoModal = (id, stato, event) => {
+    if (event && typeof event.stopPropagation === "function") {
+      event.stopPropagation();
+    } else {
+      console.warn("L'evento non è valido o non è stato passato correttamente.");
+    }
+  
+    setModalCambiaStato(true);
+    setIdCandidato(id);
+    setValues((prevValues) => ({
+      ...prevValues,
+      stato,
+    }));
+  };
+  
+
+
+
+const openStato = Boolean(anchorElStato);
+
+
+    //funzioni per gestire lo snackbar
+    const handleOpenSnackbar = (message, type) => {
+      setSnackbarMessage(message);
+      setSnackbarType(type);
+      setSnackbarOpen(true);
+  };
+  
+  const handleCloseSnackbar = (event, reason) => {
+      if (reason === 'clickaway') {
+          return;
+      }
+      setSnackbarOpen(false);
+  };
+
+
+
+    //funzione per il cambio stato
+    const handleUpdateStato = async () => {
+      const idStato = values.stato;  
+      const params = new URLSearchParams({ stato: idStato });
+      try {
+          const responseUpdateStato = await axios.post
+          // (`http://localhost:8080/keypeople/react/salva/stato/${idKeypeople}?${params.toString()}`, {}, { headers: headers });
+          (`http://localhost:8080/staffing/react/salva/stato/${idCandidato}?${params.toString()}`, {}, { headers: headers});
+          setModalCambiaStato(false);
+          fetchData();
+          handleOpenSnackbar(t('Stato aggiornato con successo!'), 'success');
+          if (responseUpdateStato.data === "ERRORE") {
+              setAlert({ open: true, message: "errore durante il salvataggio dell'azienda!" });
+              console.error("L'azienda non è stata salvata.");
+              return;
+          }
+      } catch (error) {
+          console.error("Errore durante l'aggiornamento dello stato: ", error);
+          handleOpenSnackbar(t('Errore durante l aggiornamento dello stato.'), 'error');
+      }
+  };
+
+
   
   
   
@@ -678,6 +796,10 @@ const Recruiting = () => {
             }
             hasFile={!!params.row?.file && !!params.row?.dataNascita}
           />
+          <EditButton 
+              onClick={(event) => handleOpenStatoModal(params?.row?.id, params?.row?.stato, event)}
+              rowData={params.row}
+            />
           {userHasRole("ADMIN") && (
             <DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
           )}
@@ -700,6 +822,7 @@ const Recruiting = () => {
         tipologiaOptions={tipologiaOptions}
         statoOptions={statoOptions}
         tipoOptions={tipoOptions}
+        skillsOptions={skillsOptions}
       />
       <motion.div
         initial="hidden"
@@ -981,7 +1104,7 @@ const Recruiting = () => {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         TransitionComponent={TransitionLeft}
       >
-        <Alert variant='filled' onClose={handleSnackbarClose} severity="error" sx={{ width: "100%" }}>
+        <Alert variant='filled' onClose={handleSnackbarClose} severity={snackbarType} sx={{ width: "100%" }}>
           {snackbarMessage}
         </Alert>
       </Snackbar>
@@ -1010,6 +1133,104 @@ const Recruiting = () => {
           />
         </>
       )}
+                      { /* MODAL PER IL CAMBIO STATO */ }
+                      <Dialog
+                        open={modalCambiaStato}
+                        onClose={() => setModalCambiaStato(false)}
+                        aria-labelledby="dialog-title"
+                        aria-describedby="dialog-description"
+                        fullWidth
+                        maxWidth="sm"
+                        sx={{
+                          '& .MuiPaper-root': {
+                              borderRadius: '20px', 
+                          },
+                      }}
+                    >
+                        <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', px: 3 }}>
+                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em' }}>
+                                {t('Cambia Stato Del Contatto')}
+                            </Typography>
+                            <IconButton
+                                onClick={() => setModalCambiaStato(false)}
+                                sx={{
+                                    backgroundColor: 'transparent',
+                                    '&:hover': {
+                                        backgroundColor: 'transparent',
+                                        color: 'red',
+                                    },
+                                }}
+                            >
+                                <CloseIcon />
+                            </IconButton>
+                        </DialogTitle>
+
+                        <DialogContent sx={{ px: 4, py: 2 }}>
+                            <FormControl fullWidth sx={{ width: '100%', mb: 3 }}>
+                                <Autocomplete
+                                    id="stato-combo-box"
+                                    options={statoOptions}
+                                    getOptionLabel={(option) => option.label}
+                                    value={statoOptions.find(option => option.value === values.stato) || null}
+                                    onChange={(event, newValue) => {
+                                        setValues(prevValues => ({
+                                            ...prevValues,
+                                            stato: newValue ? newValue.value : null,
+                                        }));
+                                    }}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            label={t("Stato")}
+                                            variant="filled"
+                                            fullWidth
+                                            sx={{
+                                                height: '4em',
+                                                p: 1,
+                                                borderRadius: '20px',
+                                                backgroundColor: '#EDEDED',
+                                                '& .MuiFilledInput-root': {
+                                                    backgroundColor: 'transparent',
+                                                },
+                                                '& .MuiFilledInput-underline:after': {
+                                                    borderBottomColor: 'transparent',
+                                                },
+                                                '& .MuiFilledInput-root::before': {
+                                                    borderBottom: 'none',
+                                                },
+                                                '&:hover .MuiFilledInput-root::before': {
+                                                    borderBottom: 'none',
+                                                },
+                                                '& .MuiFormLabel-root.Mui-focused': {
+                                                    color: '#00B400',
+                                                },
+                                            }}
+                                        />
+                                    )}
+                                />
+                            </FormControl>
+                        </DialogContent>
+
+                        <DialogActions sx={{ justifyContent: 'center', pb: 3 }}>
+                            <Button
+                                onClick={handleUpdateStato}
+                                sx={{
+                                    width: '60%',
+                                    backgroundColor: '#00B400',
+                                    color: 'white',
+                                    borderRadius: '10px',
+                                    fontWeight: 'bold',
+                                    '&:hover': {
+                                        backgroundColor: '#019301',
+                                        transform: 'scale(1.02)',
+                                    },
+                                }}
+                            >
+                                {t("Cambia")}
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+
     </SchemePage>
   );
 };

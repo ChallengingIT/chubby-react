@@ -9,18 +9,13 @@
     import { motion } from "framer-motion";
 
     import {
-    Button,
     Box,
-    Grid,
     FormControl,
     IconButton,
-    Drawer,
-    Typography,
     TextField,
-    InputAdornment,
     Autocomplete,
-    Container
     } from "@mui/material";
+import CustomMultipleAutocomplete from "../fields/CustomMultipleAutocomplete";
 
     function NuovaRicercaRecruiting({
     filtri,
@@ -30,32 +25,25 @@
     tipologiaOptions,
     statoOptions,
     tipoOptions,
+    skillsOptions,
     }) {
     const navigate = useNavigate();
     const theme = useUserTheme();
     const { t } = useTranslation();
 
+    
+
     const [openFiltri, setOpenFiltri] = useState(false);
     const [isRotated, setIsRotated] = useState(false);
     const [localFiltri, setLocalFiltri] = useState({ ...filtri });
+
+    
 
     const handleClickReset = () => {
         onReset();
         setLocalFiltri({ ...filtri });
         setIsRotated(true);
         setTimeout(() => setIsRotated(false), 500);
-    };
-
-    const handleClickSearch = () => {
-        onFilterChange(localFiltri);
-        onSearch();
-    };
-
-    const handleOpenFiltri = () => setOpenFiltri(true);
-    const handleCloseFiltri = () => setOpenFiltri(false);
-
-    const navigateToAggiungi = () => {
-        navigate("/recruiting/aggiungi");
     };
 
         // Varianti di animazione per far spuntare il box
@@ -306,6 +294,113 @@
                     )}
                 />
                 </FormControl>
+
+                <FormControl fullWidth sx={{ mb: 0.2}}>
+                <TextField
+                id="search-bar"
+                variant="filled"
+                label={t("Location")}
+                value={filtri.citta || ""}
+                onChange={onFilterChange("citta")}
+                onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                    event.preventDefault();
+                    onSearch();
+                    }
+                }}
+                sx={{
+                            textAlign: "start",
+                            borderRadius: "20px",
+                            border: 'solid 1px #00B400',
+                            bgcolor: 'white',
+                            boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
+                            "& .MuiFilledInput-root": {
+                                backgroundColor: "transparent",
+                            },
+                            "& .MuiFilledInput-underline:after": {
+                                borderBottomColor: "transparent",
+                            },
+                            "& .MuiFilledInput-root::before": {
+                                borderBottom: "none",
+                            },
+                            "&:hover .MuiFilledInput-root::before": {
+                                borderBottom: "none",
+                            },
+                            "& .MuiFormLabel-root.Mui-focused": {
+                                color: theme.palette.border.main,
+                            },
+                            }}
+                />
+                </FormControl>
+{/* 
+                <FormControl fullWidth sx={{ mb: 0.2 }}>
+  <Autocomplete
+    multiple
+    id="skills-combo-box"
+    options={skillsOptions}
+    getOptionLabel={(option) => option.label}
+    value={
+      filtri.skills
+        ? skillsOptions.filter((option) => filtri.skills.includes(option.value))
+        : []
+    }
+    onChange={(event, newValue) => {
+      const selectedValues = newValue.map((option) => option.value);
+      onFilterChange("skills")({
+        target: { value: selectedValues },
+      });
+    }}
+    renderInput={(params) => (
+      <TextField
+        {...params}
+        label={t("Skills")}
+        variant="filled"
+        sx={{
+          textAlign: "left",
+          borderRadius: "20px",
+          border: "solid 1px #00B400",
+          bgcolor: "white",
+          boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
+          "& .MuiFilledInput-root": {
+            backgroundColor: "transparent",
+          },
+          "& .MuiFilledInput-underline:after": {
+            borderBottomColor: "transparent",
+          },
+          "& .MuiFilledInput-root::before": {
+            borderBottom: "none",
+          },
+          "&:hover .MuiFilledInput-root::before": {
+            borderBottom: "none",
+          },
+          "& .MuiFormLabel-root.Mui-focused": {
+            color: theme.palette.border.main,
+          },
+        }}
+      />
+    )}
+  />
+</FormControl> */}
+
+
+                <FormControl fullWidth sx={{ mb: 0.2 }}>
+                <CustomMultipleAutocomplete
+                    name="skills"
+                    label={t("Skills")}
+                    skillsOptions={skillsOptions}
+                    onChange={(newValue) => {
+                    onFilterChange("skills")({
+                        target: { value: newValue.skills || [] },
+                    });
+                    }}
+                />
+                </FormControl>
+
+
+
+
+
+
                 <IconButton
                     onClick={onSearch}
                     disableRipple={true}

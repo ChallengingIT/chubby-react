@@ -24,14 +24,21 @@ const Need = () => {
     const [ownerOptions, setOwnerOptions] = useState([]);
     const [statoOptions, setStatoOptions] = useState([]);
     const [aziendaOptions, setAziendaOptions] = useState([]);
+    const [skillsOptions,      setSkillsOptions        ] = useState([]);
+
+    
+
     const [filtri, setFiltri] = useState(() => {
         const filtriSalvati = sessionStorage.getItem('filtriRicercaNeed');
         return filtriSalvati ? JSON.parse(filtriSalvati) : {
             descrizione: null,
+            cliente: null,
             tipologia: null,
             stato: null,
             owner: null,
-            keypeople: null
+            keypeople: null,
+            skills: null,
+            location: null
         };
     });
 
@@ -64,6 +71,27 @@ const Need = () => {
         return userObj.roles.includes(roleToCheck);
     };
 
+
+    useEffect(() => {
+        const fetchSkills = async () => {
+            try {
+                const responseNeedSkills = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
+                if (Array.isArray(responseNeedSkills.data)) {
+                    setSkillsOptions(responseNeedSkills.data.map((skill) => ({
+                        label: skill.descrizione,
+                        value: skill.id,
+                    })));
+                } else {
+                    console.error("Response Need Skills non è un array:", responseNeedSkills.data);
+                }
+            } catch (error) {
+                console.error("Errore durante il recupero delle skill:", error);
+            }
+        };
+        fetchSkills();
+    }, []);
+    
+
     //caricamento dati al montaggio
     const fetchData = async (reset = false) => {
         setLoading(true);
@@ -88,6 +116,7 @@ const Need = () => {
             const responseOwner = await axios.get("http://89.46.196.60:8443/owner", { headers: headers });
             const responseTipologia = await axios.get("http://89.46.196.60:8443/need/react/tipologia", { headers: headers });
             const responseStato = await axios.get("http://89.46.196.60:8443/need/react/stato", { headers: headers });
+
 
             if (Array.isArray(responseOwner.data)) {
                 setOwnerOptions(responseOwner.data.map((owner) => ({ label: owner.descrizione, value: owner.id })));
@@ -148,8 +177,15 @@ const baseUrl = userHasRole('ADMIN')
         : (isSearchActive ? "http://89.46.196.60:8443/need/react/ricerca/modificato/personal" : "http://89.46.196.60:8443/need/react/modificato/personal");
 
         const filtriDaInviare = {
-            ...filtri,
-            pagina: paginaSuccessiva,
+            descrizione: filtri.descrizione || null,
+            cliente: filtri.cliente || null,
+            tipologia: filtri.tipologia || null,
+            stato: filtri.stato || null,
+            owner: filtri.owner || null,
+            keypeople: filtri.keypeople || null,
+            skills: filtri.skills || null,
+            location: filtri.location || null,
+            pagina: 0,
             quantita: quantita
         };
 
@@ -183,17 +219,25 @@ const baseUrl = userHasRole('ADMIN')
     };
 
     //funzione di ricerca
-    const handleRicerche = async (filters) => {
-        const filtriDaInviare = filters ? {
-            ...filters,
-            pagina: 0,
-            quantita: quantita
-        } : {
-            ...filtri,
+    const handleRicerche = async () => {
+
+        const isAnyFilterSet = Object.values(filtri).some((value) => value);
+        if (!isAnyFilterSet) {
+        return;
+        }
+
+        const filtriDaInviare = {
+            descrizione: filtri.descrizione || null,
+            cliente: filtri.cliente || null,
+            tipologia: filtri.tipologia || null,
+            stato: filtri.stato || null,
+            owner: filtri.owner || null,
+            keypeople: filtri.keypeople || null,
+            skills: filtri.skills || null,
+            location: filtri.location || null,
             pagina: 0,
             quantita: quantita
         };
-        console.log("filtri inviati: ", filtriDaInviare);
     
         if (!userHasRole('ADMIN')) {
             const userString = sessionStorage.getItem('user');
@@ -254,10 +298,19 @@ const baseUrl = userHasRole('ADMIN')
         }
     };
     
-    const handleSearchClick = (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        handleRicerche(filtri);
+    // const handleSearchClick = (event) => {
+    //     event.preventDefault();
+    //     event.stopPropagation();
+    //     handleRicerche(filtri);
+    // };
+
+    const handleFilterChange = (name) => (event) => {
+        const newValue = event.target.value;
+        setFiltri((currentFilters) => {
+            const newFilters = { ...currentFilters, [name]: newValue };
+            setPagina(0);
+            return newFilters;
+        });
     };
     
 
@@ -283,9 +336,9 @@ const baseUrl = userHasRole('ADMIN')
 
 
 
-    const handleFilterChange = (newFilters) => {
-        setFiltri(newFilters);
-    };
+    // const handleFilterChange = (newFilters) => {
+    //     setFiltri(newFilters);
+    // };
 
 
     useEffect(() => {
@@ -325,6 +378,7 @@ const baseUrl = userHasRole('ADMIN')
     const handleReset = async () => {
         setFiltri({
             descrizione: '',
+            cliente: null,
             stato: null,
             tipologia: null,
             owner: null,
@@ -369,11 +423,12 @@ const baseUrl = userHasRole('ADMIN')
                     filtri={filtri}
                     onFilterChange={handleFilterChange}
                     onReset={handleReset}
-                    onSearch={handleSearchClick}
+                    onSearch={handleRicerche}
                     tipologiaOptions={tipologiaOptions}
                     statoOptions={statoOptions}
                     ownerOptions={ownerOptions}
                     aziendaOptions={aziendaOptions}
+                    skillsOptions={skillsOptions}
                     onContactChange={handleContactChange}
                 />
             </Box>

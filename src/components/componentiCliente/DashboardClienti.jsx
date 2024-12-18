@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import TabellaPipelineNeed from "../dashboardComponents/TabellaPipelineNeed.jsx";
+import TabellaPipelineNeed2 from "../dashboardComponents/TabellaPipelineNeed2.jsx";
 import BoxAttivitaWeek from "../dashboardComponents/BoxAttivitaWeek.jsx";
 import { useUserTheme } from "../TorchyThemeProvider.jsx";
 
@@ -256,7 +256,7 @@ function DashboardClienti() {
                                     Pipeline Need
                                 </Typography>
                                 <Box sx={{ flexGrow: 1, height: "90%", width: "100%" }}>
-                                    <TabellaPipelineNeed
+                                    <TabellaPipelineNeed2
                                         data={originalPipeline}
                                         columns={columns}
                                         getRowId={getRowId}
