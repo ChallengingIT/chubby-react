@@ -173,7 +173,14 @@ const ModificaNeedGrafica = () => {
             { label: "Middle", value: 3 },
             { label: "Senior", value: 4 },
             ...(values.anniEsperienza > 4 ? [{ label: "Senior", value: values.anniEsperienza }] : [])
-          ];
+        ];
+
+
+
+        const aziendaInterna = [
+            { value: "CHALLENGING", label: "Challenging" },
+            { value: "INNOTEK",     label:"Innotek"   }
+            ];
 
 
 
@@ -381,10 +388,11 @@ const ModificaNeedGrafica = () => {
         }
     };
 
-        const fieldObbligatori = [ "descrizione", "idKeyPeople", "priorita", "week", "pubblicazione", "screening", "idTipologia", "idStato", "idOwner", "location" ];
+        const fieldObbligatori = [ "descrizione", "idKeyPeople", "priorita", "week", "pubblicazione", "screening", "idTipologia", "idStato", "idOwner", "location", "idOwnerRecruiter" ];
 
         const fields =[
-            { label: t("Descrizione Need*"),   name: "descrizione",                  type: "text", maxLength: 200                                                },
+            { label: t("Azienda*"),                   name: "idAziendaInterna",             type: "select",               options: aziendaInterna          },
+            { label: t("Cliente*"),                   name: "idAzienda",                    type: "select",               options: aziendeOptions          },            { label: t("Descrizione Need*"),   name: "descrizione",                  type: "text", maxLength: 200                                                },
             { label: t("Contatto*"),           name: "idKeyPeople",                  type: "select",               options: keyPeopleOptions     },
             // { label: "Priorità*",           name: "priorita",                     type: "decimalNumber"                                       },
             { label: t("Priorità*"),              name: "priorita",                          type: "select",               options: [
@@ -400,15 +408,16 @@ const ModificaNeedGrafica = () => {
             { value: 2,                   label: t("Consulenza") },
             { value: 3,                   label: t("Prospect") }
             ] },
-            { label: t("Owner*"),                    name: "idOwner",                     type: "select",                 options: ownerOptions         },
-            { label: t("Stato*"),                    name: "idStato",                     type: "select",                 options: statoOptions         },
-            { label: "Headcount",                 name: "numeroRisorse",               type: "number"                                         },
-            { label: "Location*",                 name: "location",                    type: "text", maxLength: 45                                                  },
-            { label: "Skills",                    name: "idSkills",                    type: "multipleSelect",         options: skillsOptions        },
-            { label: "Seniority",                 name: "anniEsperienza",              type: "select",                 options: seniorityOptions     },
-            { label: t('Pubblicazione Annuncio*'),   name: 'pubblicazione',               type: 'select',                 options: pubblicazioneOptions },
-            { label: t('Screening*'),                name: 'screening',                   type: 'select',                 options: screeningOptions     },
-            { label: t("Note"),                      name: "note",                        type: "note", maxLength:4000                                                  },
+            { label: t("Owner Business*"),            name: "idOwner",                     type: "select",                 options: ownerOptions         },
+            { label: t("Owner Recruiter*"),           name: "idOwnerRecruiter",            type: "select",                 options: ownerOptions         },
+            { label: t("Stato*"),                     name: "idStato",                     type: "select",                 options: statoOptions         },
+            { label: "Headcount",                     name: "numeroRisorse",               type: "number"                                                },
+            { label: "Location*",                     name: "location",                    type: "text", maxLength: 45                                                  },
+            { label: "Skills",                        name: "idSkills",                    type: "multipleSelect",         options: skillsOptions        },
+            { label: "Seniority",                     name: "anniEsperienza",              type: "select",                 options: seniorityOptions     },
+            { label: t('Pubblicazione Annuncio*'),    name: 'pubblicazione',               type: 'select',                 options: pubblicazioneOptions },
+            { label: t('Screening*'),                 name: 'screening',                   type: 'select',                 options: screeningOptions     },
+            { label: t("Note"),                       name: "note",                        type: "note", maxLength:4000                                                  },
             ];
 
 

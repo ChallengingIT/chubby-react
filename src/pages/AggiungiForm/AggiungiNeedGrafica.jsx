@@ -125,6 +125,11 @@ const AggiungiNeedGrafica = () => {
         { value: 1, label: 'To Do' },
         { value: 2, label: 'Done'  }
         ];
+
+        const aziendaInterna = [
+            { value: "CHALLENGING", label: "Challenging" },
+            { value: "INNOTEK",     label:"Innotek"   }
+            ];
     
         const screeningOptions = [
         { value: 1, label: 'To Do' },
@@ -304,10 +309,11 @@ const AggiungiNeedGrafica = () => {
         }
     };
 
-        const fieldObbligatori = [ "idAzienda", "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location", "idKeyPeople" ];
+        const fieldObbligatori = [ "idAzienda", "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location", "idKeyPeople", "idOwnerRecruiter" ];
 
             const fields =[
-            { label: t("Azienda*"),                   name: "idAzienda",                    type: "select",               options: aziendeOptions          },
+            { label: t("Azienda*"),                   name: "idAziendaInterna",             type: "select",               options: aziendaInterna          },
+            { label: t("Cliente*"),                   name: "idAzienda",                    type: "select",               options: aziendeOptions          },
             { label: t('Contatto*'),                  name: "idKeyPeople",                  type: "select",               options: keypeopleOptions        },
             { label: t("Descrizione Need*"),          name: "descrizione",                  type: "text",                 maxLength: 200                   },
             { label: t("Priorità*"),                  name: "priorita",                     type: "select",               options: [
@@ -316,14 +322,15 @@ const AggiungiNeedGrafica = () => {
                 { value: 3,                   label: "3" },
                 { value: 4,                   label: "4" } 
                 ] },
-            { label: "Week*",                      name: "week",                         type: "week"                                                   },
+            { label: "Week*",                         name: "week",                         type: "week"                                                   },
             { label: t("Tipologia*"),                 name: "tipologia",                    type: "select",               options: tipologiaOptions        },
             { label: t("Tipologia Azienda"),          name: "tipo",                         type: "select",               options: [
             { value: 1,                   label: t("Cliente") },
             { value: 2,                   label: t("Consulenza") },
             { value: 3,                   label: t("Prospect") }
             ] },
-            { label: t("Owner*"),                     name: "idOwner",                      type: "select",                 options: ownerOptions          },
+            { label: t("Owner Business*"),            name: "idOwner",                      type: "select",                 options: ownerOptions          },
+            { label: t("Owner Recruiter*"),           name: "idOwnerRecruiter",             type: "select",                 options: ownerOptions          },
             { label: t("Stato*"),                     name: "stato",                        type: "select",                 options: statoOptions          },
             { label: "Headcount",                  name: "numeroRisorse",                type: "number"                                                 },
             { label: "Location*",                  name: "location",                     type: "text",                   maxLength: 45                  },

@@ -82,7 +82,7 @@ function NuovaRicercaNeed({
                 animate="visible" 
                 variants={boxVariants} 
             >
-        <Container maxWidth='false' sx={{ maxWidth: '75vw', display: 'flex', justifyContent: 'space-around'}}>
+        {/* <Container maxWidth='xl' sx={{ maxWidth: '75vw', display: 'flex', justifyContent: 'space-around'}}> */}
             <Box
                 sx={{
                     width: '100%',
@@ -95,7 +95,7 @@ function NuovaRicercaNeed({
                     alignItems: "center",
                     justifyContent: "space-between",
                     marginBottom: "1rem",
-                    p: 1.2,
+                    // p: 1.2,
                     gap: 3
                 }}
             >
@@ -511,7 +511,7 @@ function NuovaRicercaNeed({
                     />
                 </IconButton>
             </Box>
-        </Container>
+        {/* </Container> */}
         </motion.div>
     );
 }

@@ -2,15 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import {
-    Box,
     Grid,
     Card,
     CardContent,
-    Typography,
     Container,
     Link
 } from "@mui/material";
-import TabellaPipelineNeed          from "../components/dashboardComponents/TabellaPipelineNeed";
 import axios                        from "axios";
 import { useNotification }          from "../components/NotificationContext.js";
 import { useNavigate }              from "react-router-dom";
@@ -147,7 +144,7 @@ function Dashboard() {
     };
 
     const handleDescrizioneClick = (descrizione, clienteId) => {
-        navigate('/need', { state: { descrizione, clienteId } });
+        navigate('/need', { state: { descrizione, clienteId, fromDashboard: true } });
     };
 
     const handleOpenDialog = (pipelineData) => {
@@ -155,82 +152,29 @@ function Dashboard() {
         setCurrentPipelineData(pipelineData);
     };
     
-    const handleCloseDialog = () => {
-        setDialogOpen(false);
-    };
-
-    // const columns = [
-    //     {
-    //         field: "owner",
-    //         headerName: t("Owner"),
-    //         flex: 0.6,
-    //         sortable: true,
-    //         filterable: true,
-    //     },
-    //     {
-    //         field: "cliente",
-    //         headerName: t("Cliente"),
-    //         flex: 1,
-    //         sortable: true,
-    //         filterable: true,
-    //         renderCell: (params) => {
-    //             return params.value ? params.value.denominazione : "Cliente non disponibile";
-    //         }
-    //     },
-    //     {
-    //         field: "descrizione",
-    //         headerName: t("Descrizione esigenza"),
-    //         flex: 1,
-    //         sortable: true,
-    //         filterable: true,
-    //         renderCell: (params) => {
-    //             const descrizione = params.value || "Descrizione non disponibile";
-    //             const clienteId = params.row.cliente?.id || null;
-    //             return (
-    //                 <Link
-    //                     component="button"
-    //                     onClick={() => handleDescrizioneClick(descrizione, clienteId)}
-    //                     sx={{
-    //                         textDecoration: "none",
-    //                         color: "black",
-    //                         borderBottom: "solid 1px black",
-    //                     }}
-    //                 >
-    //                     {descrizione}
-    //                 </Link>
-    //             );
-    //         },
-    //     },
-    //     {
-    //         field: "priorita",
-    //         headerName: t("Priorità"),
-    //         flex: 0.4,
-    //         sortable: true,
-    //         filterable: true,
-    //     },
-    //     {
-    //         field: "stato",
-    //         headerName: t("Stato"),
-    //         flex: 0.4,
-    //         sortable: true,
-    //         filterable: true,
-    //     },
-    // ];
 
 
     const columns = [
         {
-            field: "owner",
-            headerName: "Owner",
+            field: 'azienda',
+            headerName: "Azienda"
         },
         {
             field: "cliente",
             headerName: "Cliente",
-            render: (row) => row.cliente.denominazione || "Cliente non disponibile", // Accesso alla proprietà
+            render: (row) => row.cliente.denominazione || "Cliente non disponibile", 
+        },
+        {
+            field: "owner",
+            headerName: "Owner Business",
+        },
+        {
+            field: "owner",
+            headerName: "Owner Recruiter",
         },
         {
             field: "descrizione",
-            headerName: "Descrizione esigenza",
+            headerName: "Need",
             render: (row) => (
                 <Link
                     component="button"

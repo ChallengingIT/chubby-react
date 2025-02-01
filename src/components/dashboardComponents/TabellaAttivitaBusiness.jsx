@@ -108,7 +108,9 @@ const TabellaAttivitaBusiness = ({ data = [], aziendeOptions = [] }) => {
                 <TableHead>
                     <TableRow>
                         <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold'}}>{t('Data')}</TableCell>
-                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold'}}>{t('Ora')}</TableCell>
+                        {/* <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold'}}>{t('Ora')}</TableCell> */}
+                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold' }}>{t('Job Title')}</TableCell>
+                        
 
                         {/* Colonna Owner */}
                         <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold' }}>
@@ -200,13 +202,14 @@ const TabellaAttivitaBusiness = ({ data = [], aziendeOptions = [] }) => {
                 <TableBody>
                     {filteredActivities.map((item, index) => {
                         const formattedDate = format(new Date(item.data), 'dd-MM-yyyy');
-                        const formattedTime = format(new Date(item.data), 'HH:mm');
+                        // const formattedTime = format(new Date(item.data), 'HH:mm');
 
                         return (
                             <React.Fragment key={item.idAzioneKeyPeople || index}>
                                 <TableRow>
                                     <TableCell style={cellStyle}>{formattedDate}</TableCell>
-                                    <TableCell style={cellStyle}>{formattedTime}</TableCell>
+                                    {/* <TableCell style={cellStyle}>{formattedTime}</TableCell> */}
+                                    <TableCell style={cellStyle}>{item.ruolo}</TableCell>
                                     <TableCell style={cellStyle}>{item.siglaOwner}</TableCell>
                                     <TableCell style={cellStyle}>{item.azione}</TableCell>
                                     <TableCell style={cellStyle}>{getAziendaLabel(item.idCliente)}</TableCell>

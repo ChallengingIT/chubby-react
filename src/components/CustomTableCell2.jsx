@@ -13,6 +13,7 @@ import {
     IconButton,
     Typography,
     Link,
+    Tooltip,
 } from "@mui/material";
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
@@ -105,9 +106,11 @@ const CustomTableCell2 = ({ columns, rows, onIconClick, title }) => {
                                 ))}
                                 {/* Colonna delle icone */}
                                 <TableCell align="center" sx={{ borderBottom: "1px solid #e0e0e0", padding: "0.5px 0.5px", }}>
+                                <Tooltip title="Modifica">
                                     <IconButton onClick={() => onIconClick(row)}>
                                         <MoreHorizIcon />
                                     </IconButton>
+                                    </Tooltip>
                                 </TableCell>
                             </TableRow>
                         ))}

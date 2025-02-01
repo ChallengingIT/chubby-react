@@ -2,7 +2,7 @@
     import { Link, useParams }                              from "react-router-dom";
     import { useNavigate }                                  from "react-router-dom";
     import axios                                            from "axios";
-    import { Modal, Box, Typography, Dialog, DialogContent, DialogTitle, IconButton }               from "@mui/material";
+    import { Modal, Box, Typography, Dialog, DialogContent, DialogTitle, IconButton, Tooltip }               from "@mui/material";
     import { useLocation }                                  from "react-router-dom";
     import Tabella                                          from "../components/Tabella.jsx";
     import ModalBox                                         from "../components/ModalBox.jsx";
@@ -801,9 +801,17 @@
             >
                 Associa
             </Button> */}
+            <Tooltip title="Visualizza intervista">
+            <span> 
             <IntervisteModalButton
             hasIntervista={!!params.row?.hasInterviste}
-            onClick={() => handleModalIntervista(params.row?.id)} />
+            onClick={() => handleModalIntervista(params.row?.id)} 
+            />
+            </span>
+            </Tooltip>
+
+            <Tooltip title="visualizza CV">
+            <span> 
             <ClipButton 
                 hasFile={!!params.row?.file}
                 idFile={params.row.file ? params.row.file.id : null} 
@@ -813,9 +821,14 @@
                     params.row.file ? params.row.file.descrizione : null
                 )}
             />
+            </span>
+            </Tooltip>
+
+            <Tooltip title="Associa">
             <IconButton onClick={() => handleAssocia(params.row)}>
                     <AddCircleIcon sx={{ color: '#00B400'}} />
             </IconButton>
+            </Tooltip>
             </div>
         ),
         },

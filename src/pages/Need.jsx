@@ -178,7 +178,7 @@ const baseUrl = userHasRole('ADMIN')
 
         const filtriDaInviare = {
             descrizione: filtri.descrizione || null,
-            cliente: filtri.cliente || null,
+            azienda: filtri.cliente || null,
             tipologia: filtri.tipologia || null,
             stato: filtri.stato || null,
             owner: filtri.owner || null,
@@ -228,7 +228,7 @@ const baseUrl = userHasRole('ADMIN')
 
         const filtriDaInviare = {
             descrizione: filtri.descrizione || null,
-            cliente: filtri.cliente || null,
+            azienda: filtri.cliente || null,
             tipologia: filtri.tipologia || null,
             stato: filtri.stato || null,
             owner: filtri.owner || null,
@@ -341,38 +341,81 @@ const baseUrl = userHasRole('ADMIN')
     // };
 
 
-    useEffect(() => {
-        if (location.state?.descrizione || location.state?.clienteId) {
-            const newFiltri = {
-                ...filtri,
-                descrizione: location.state.descrizione || filtri.descrizione,
-                azienda: location.state.clienteId || filtri.azienda
-            };
-            setFiltri(newFiltri);
-            handleRicerche(newFiltri);
-        } else {
-            const filtriSalvati = sessionStorage.getItem('filtriRicercaNeed');
-            if (filtriSalvati) {
-                const filtriParsed = JSON.parse(filtriSalvati);
-                setFiltri(filtriParsed);
+    // useEffect(() => {
+    //     if (location.state?.descrizione || location.state?.clienteId) {
+    //         const newFiltri = {
+    //             ...filtri,
+    //             descrizione: location.state.descrizione || filtri.descrizione,
+    //             azienda: location.state.clienteId || filtri.azienda
+    //         };
+    //         setFiltri(newFiltri);
+    //         handleRicerche(newFiltri);
+    //     } else {
+    //         const filtriSalvati = sessionStorage.getItem('filtriRicercaNeed');
+    //         if (filtriSalvati) {
+    //             const filtriParsed = JSON.parse(filtriSalvati);
+    //             setFiltri(filtriParsed);
 
-                const isAnyFilterSet = Object.values(filtriParsed).some(value => value);
-                if (isAnyFilterSet) {
-                    handleRicerche(filtriParsed);
-                } else {
-                    fetchData();
-                }
+    //             const isAnyFilterSet = Object.values(filtriParsed).some(value => value);
+    //             if (isAnyFilterSet) {
+    //                 handleRicerche(filtriParsed);
+    //             } else {
+    //                 fetchData();
+    //             }
+    //         } else {
+    //             fetchData();
+    //         }
+    //     }
+    //     // eslint-disable-next-line
+    // }, [location.state]);
+
+    useEffect(() => {
+        const fetchDataBasedOnState = async () => {
+            if (location.state?.fromDashboard) {
+                console.log("Navigazione dalla Dashboard:", location.state);
+                const newFiltri = {
+                    ...filtri,
+                    descrizione: location.state.descrizione || filtri.descrizione,
+                    cliente: location.state.clienteId || filtri.cliente,
+                };
+                setFiltri(newFiltri);
+                await handleRicerche(newFiltri);
             } else {
-                fetchData();
+                console.log("Navigazione diretta o senza stato precedente");
+                const filtriSalvati = sessionStorage.getItem('filtriRicercaNeed');
+                if (filtriSalvati) {
+                    const filtriParsed = JSON.parse(filtriSalvati);
+                    setFiltri(filtriParsed);
+    
+                    const isAnyFilterSet = Object.values(filtriParsed).some((value) => value);
+                    if (isAnyFilterSet) {
+                        await handleRicerche(filtriParsed);
+                    } else {
+                        await fetchData();
+                    }
+                } else {
+                    await fetchData();
+                }
             }
-        }
+        };
+    
+        fetchDataBasedOnState();
         // eslint-disable-next-line
     }, [location.state]);
+
+    useEffect(() => {
+        if (!location.state) {
+            console.warn("Stato assente, caricamento dati standard.");
+            fetchData();
+        }
+    }, [location.state]);
+    
+    
 
 
     useEffect(() => {
         sessionStorage.setItem('filtriRicercaNeed', JSON.stringify(filtri));
-    }, [filtri]);
+    }, [filtri, location.state]);
 
     //funzione di reset dei campi di ricerca
     const handleReset = async () => {
@@ -389,6 +432,7 @@ const baseUrl = userHasRole('ADMIN')
         setFilteredNeed([]);
         setOriginalNeed([]);
         setHasMore(true);
+        sessionStorage.removeItem('filtriRicercaNeed');
         await fetchData(true);
     };
 

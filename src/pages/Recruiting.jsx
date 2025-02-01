@@ -31,7 +31,8 @@ import {
   CircularProgress,
   FormControl,
   Autocomplete,
-  TextField
+  TextField,
+  Tooltip
 } from "@mui/material";
 import EditButton from "../components/button/EditButton.jsx";
 import { Modal, Typography } from "antd";
@@ -640,7 +641,7 @@ const openStato = Boolean(anchorElStato);
     {
       field: "id",
       headerName: "ID",
-      width: 70,
+      width: 20,
       sortable: false,
       filterable: false,
       disableColumnMenu: true,
@@ -687,6 +688,21 @@ const openStato = Boolean(anchorElStato);
     //   ),
     // },
     {
+      field: "tipologia",
+      headerName: t("Job Title"),
+      flex: 1,
+      sortable: false,
+      filterable: false,
+      disableColumnMenu: true,
+      renderCell: (params) => (
+        <div style={{ textAlign: "start" }}>
+          {params.row.tipologia && params.row.tipologia.descrizione
+            ? params.row.tipologia.descrizione
+            : "N/A"}
+        </div>
+      ),
+    },
+    {
       field: "rating",
       headerName: t("Rating"),
       sortable: false,
@@ -731,6 +747,22 @@ const openStato = Boolean(anchorElStato);
       ),
     },
     {
+      field: "citta",
+      headerName: t("Location"),
+      flex: 0.8,
+      sortable: false,
+      filterable: false,
+      disableColumnMenu: true,
+    },
+    {
+      field: "skills",
+      headerName: t("Skills"),
+      flex: 1,
+      sortable: false,
+      filterable: false,
+      disableColumnMenu: true,
+    },
+    {
       field: "dataUltimoContatto",
       headerName: t("Contatto"),
       flex: 1,
@@ -741,7 +773,7 @@ const openStato = Boolean(anchorElStato);
     {
       field: t("azioni"),
       headerName: "",
-      flex: 1,
+      flex: 1.2,
       sortable: false,
       filterable: false,
       disableColumnMenu: true,
@@ -762,13 +794,19 @@ const openStato = Boolean(anchorElStato);
           /> */}
           
           <Link
-            to={`/recruiting/intervista/${params.row.id}`}
-            state={{ recruitingData: params.row }}
+              to={`/recruiting/intervista/${params.row.id}`}
+              state={{ recruitingData: params.row }}
+              style={{ textDecoration: "none" }} 
           >
-            <PersonInfoButton
-              hasInterviste={!!params.row?.hasInterviste}
-            />
+              <Tooltip title="Intervista">
+                  <span> 
+                      <PersonInfoButton hasInterviste={!!params.row?.hasInterviste} />
+                  </span>
+              </Tooltip>
           </Link>
+
+          <Tooltip title="Download CV">
+          <span> 
           <ClipButton
             hasFile={!!params.row?.file}
             idFile={params.row.file ? params.row.file.id : null}
@@ -783,6 +821,11 @@ const openStato = Boolean(anchorElStato);
             }
             showSnackbar={showSnackbar}
           />
+          </span>
+          </Tooltip>
+
+          <Tooltip title="Crea CF">
+          <span> 
           <CFButton
             idCandidato={params.row?.id ? params.row?.id : null}
             onClick={() =>
@@ -796,10 +839,17 @@ const openStato = Boolean(anchorElStato);
             }
             hasFile={!!params.row?.file && !!params.row?.dataNascita}
           />
+          </span>
+          </Tooltip>
+
+          <Tooltip title="Modifica stato">
+          <span> 
           <EditButton 
               onClick={(event) => handleOpenStatoModal(params?.row?.id, params?.row?.stato, event)}
               rowData={params.row}
             />
+          </span>
+          </Tooltip>
           {userHasRole("ADMIN") && (
             <DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
           )}
