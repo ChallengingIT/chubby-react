@@ -414,7 +414,7 @@ function NuovaRicercaNeed({
                     skillsOptions={skillsOptions}
                     onChange={(newValue) => {
                     onFilterChange("skills")({
-                        target: { value: newValue.skills || [] },
+                        target: { value: newValue.skills || null },
                     });
                     }}
                 />

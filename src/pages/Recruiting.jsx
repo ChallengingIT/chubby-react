@@ -687,6 +687,14 @@ const openStato = Boolean(anchorElStato);
     //     </div>
     //   ),
     // },
+    // {
+    //   field: "skills",
+    //   headerName: t("Skills"),
+    //   flex: 1,
+    //   sortable: false,
+    //   filterable: false,
+    //   disableColumnMenu: true,
+    // },
     {
       field: "tipologia",
       headerName: t("Job Title"),
@@ -746,26 +754,20 @@ const openStato = Boolean(anchorElStato);
         </div>
       ),
     },
-    {
-      field: "citta",
-      headerName: t("Location"),
-      flex: 0.8,
-      sortable: false,
-      filterable: false,
-      disableColumnMenu: true,
-    },
-    {
-      field: "skills",
-      headerName: t("Skills"),
-      flex: 1,
-      sortable: false,
-      filterable: false,
-      disableColumnMenu: true,
-    },
+
+
     {
       field: "dataUltimoContatto",
       headerName: t("Contatto"),
       flex: 1,
+      sortable: false,
+      filterable: false,
+      disableColumnMenu: true,
+    },
+    {
+      field: "citta",
+      headerName: t("Location"),
+      flex: 0.8,
       sortable: false,
       filterable: false,
       disableColumnMenu: true,

@@ -165,7 +165,7 @@ const TabellaAttivitaRecruiting = ({ data = [] }) => {
                             <TableRow key={item.idIntervista || index}>
                                 <TableCell style={cellStyle}>{formattedDate}</TableCell>
                                 {/* <TableCell style={cellStyle}>{formattedTime}</TableCell> */}
-                                <TableCell style={cellStyle}>{item.ruolo}</TableCell>
+                                <TableCell style={cellStyle}>{item.jobTitleCandidato}</TableCell>
                                 <TableCell style={cellStyle}>{item.azione}</TableCell>
                                 <TableCell style={cellStyle}>{item.siglaOwner}</TableCell>
                                 <TableCell style={cellStyle}>{item.nomeCandidato} {item.cognomeCandidato}</TableCell>

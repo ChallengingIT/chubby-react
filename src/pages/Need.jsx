@@ -160,6 +160,9 @@ const Need = () => {
         }
     };
 
+
+    
+
     //caricamento dati con paginazione
     const fetchMoreData = async () => {
         const paginaSuccessiva = pagina + 1;
@@ -183,7 +186,7 @@ const baseUrl = userHasRole('ADMIN')
             stato: filtri.stato || null,
             owner: filtri.owner || null,
             keypeople: filtri.keypeople || null,
-            skills: filtri.skills || null,
+            // skills: filtri.skills || null,
             location: filtri.location || null,
             pagina: 0,
             quantita: quantita
@@ -218,6 +221,9 @@ const baseUrl = userHasRole('ADMIN')
         setPagina((prevPagina) => prevPagina + 1);
     };
 
+    console.log("skills: ", filtri.skills);
+    
+
     //funzione di ricerca
     const handleRicerche = async () => {
 
@@ -238,6 +244,9 @@ const baseUrl = userHasRole('ADMIN')
             pagina: 0,
             quantita: quantita
         };
+
+        console.log("filtri da inviare: ", filtriDaInviare);
+        
     
         if (!userHasRole('ADMIN')) {
             const userString = sessionStorage.getItem('user');

@@ -287,11 +287,6 @@ const ModificaIntervistaGrafica = () => {
 
                 const transformedValues = replaceKeysInValues(values, fieldMapping);
 
-                // Rimuovi i secondi dalla dataAggiornamento se presente
-                if (transformedValues.dataAggiornamento) {
-                    const date = new Date(transformedValues.dataAggiornamento);
-                    transformedValues.dataAggiornamento = date.toISOString().slice(0, 16); // Prendi solo la data con ore e minuti
-                }
 
                 const note = values.note;
                 const modifica = 1;
@@ -403,6 +398,9 @@ const ModificaIntervistaGrafica = () => {
         dataAggiornamento: rowData.dataAggiornamento || null,
         idNextOwner: rowData.nextOwner?.id || null
     };
+
+    
+    
 
     const disableFields = {
         nome: true,
@@ -529,19 +527,22 @@ const ModificaIntervistaGrafica = () => {
                         />
                     );
 
-                case 'date':
-                    const dateDisabled = disableFields[field.name];
-                    return (
-                        <CustomDatePickerModifica
-                            name={field.name}
-                            label={field.label}
-                            type={field.type}
-                            values={values}
-                            onChange={handleChange}
-                            initialValues={initialValues}
-                            disabled={!!dateDisabled}
-                        />
-                    );
+
+
+
+            case "date":
+            const dateDisabled = disableFields[field.name];
+            return (
+                <CustomDatePickerModifica
+                name={field.name}
+                label={field.label}
+                type={field.type}
+                values={values}
+                onChange={handleChange}
+                initialValues={initialValues}
+                disabled={!!dateDisabled}
+                />
+            );
 
                 case 'dateOra':
                     return (
