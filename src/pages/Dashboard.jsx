@@ -107,7 +107,8 @@ function Dashboard() {
                     owner: pipeline?.owner ? `${pipeline?.owner?.descrizione}` : "Owner non disponibile",
                     priorita: pipeline?.priorita || "Priorità non disponibile",
                     stato: pipeline?.stato ? pipeline?.stato?.descrizione : "Stato non disponibile",
-                    pipelineData: pipeline?.pipeline || "Dati non disponibili"
+                    pipelineData: pipeline?.pipeline || "Dati non disponibili",
+                    aziendaInterna: pipeline?.aziendaInterna || "Azienda non disponibile"
                 }));
                 setOriginalPipeline(pipelineConId);
             } else {
@@ -147,10 +148,9 @@ function Dashboard() {
         navigate('/need', { state: { descrizione, clienteId, fromDashboard: true } });
     };
 
-    const handleOpenDialog = (pipelineData) => {
-        setDialogOpen(true);
-        setCurrentPipelineData(pipelineData);
-    };
+    const handleRefresh = () => {
+        fetchData();
+    }
     
 
 
@@ -158,7 +158,7 @@ function Dashboard() {
         {
             field: 'azienda',
             headerName: "Azienda",
-            render: (row) => row.aziendaInterna || "Cliente non disponibile", 
+            render: (row) => row.aziendaInterna || "Azienda non disponibile", 
         },
         {
             field: "cliente",
@@ -243,7 +243,7 @@ function Dashboard() {
                             columns={columns}
                             rows={originalPipeline}
                             title={t("Pipeline")}
-                            onIconClick={(row) => handleOpenDialog(row.pipelineData)}
+                            onRefresh={handleRefresh}
                         />
                     </Grid>
                     <Grid container spacing={2}>

@@ -899,7 +899,11 @@
         renderCell: (params) => (
             <div>
             {/* <CloseIcon onClick={handleDeleteStorico} id={params.row.associazioni && params.row.associazioni.candidato?.id} /> */}
+            <Tooltip title="Elimina da storico">
+            <span> 
             <CloseIconButton onClick={handleDeleteStorico} id={params.row.id} />
+            </span>
+            </Tooltip>
             </div>
         ),
         },
@@ -998,12 +1002,18 @@
                 startIcon={<ChecklistIcon sx={{ backgroundColor: "transparent" }} />}
             >
             </Button> */}
+            <Tooltip title="vai ad intervista">
+                <span>
             <Link
                 to={`/recruiting/intervista/${params.row.id}`}
                 state = {{ recruitingData: params.row}}
                 >
                 <IntervistaButton /> 
             </Link>
+            </span>
+                </Tooltip>
+            <Tooltip title="visualizza CV">
+            <span> 
             <ClipButton 
                 hasFile={!!params.row?.file}
                 idFile={params.row.file ? params.row.file.id : null} 
@@ -1013,8 +1023,18 @@
                     params.row.file ? params.row.file.descrizione : null
                 )}
             />
+            </span>
+            </Tooltip>
+            <Tooltip title="modifica associazione">
+                <span>
              <CheckListButton onClick={() => handleOpenModal(params.row)} />
+             </span>
+            </Tooltip>
+             <Tooltip title="Elimina da associati">
+             <span> 
             <CloseIconButton onClick={handleDeleteAssociati} id={params.row.id} />
+            </span>
+            </Tooltip>
             </Box>
         ),
         },

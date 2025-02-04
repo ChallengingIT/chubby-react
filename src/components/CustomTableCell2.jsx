@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Table,
     TableBody,
@@ -12,14 +12,63 @@ import {
     Box,
     IconButton,
     Typography,
-    Link,
     Tooltip,
+    Modal,
+    FormControl,
+    Autocomplete,
+    Snackbar,
+    Alert,
+    Slide
 } from "@mui/material";
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import CloseIcon from '@mui/icons-material/Close';
+import axios from "axios";
 
-const CustomTableCell2 = ({ columns, rows, onIconClick, title }) => {
+
+const CustomTableCell2 = ({ columns, rows, onRefresh, title }) => {
     const [filtersEnabled, setFiltersEnabled] = useState(false);
     const [filters, setFilters] = useState({});
+    const [modalStato, setModalStato] = useState(false);
+    const [selectedPipeline, setSelectedPipeline] = useState(null);
+    const [values, setValues] = useState({ stato: null, priorita: null });
+    const [alert,     setAlert    ] = useState(false);
+    const [statoOptions, setStatoOptions] = useState([]);
+    
+    
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    const token = user?.token;
+
+    const headers = {
+        Authorization: `Bearer ${token}`
+    };
+
+
+
+const fetchStati = async () => {
+    try {
+        const responseStato = await axios.get("http://localhost:8080/need/react/stato", { headers });
+
+        if (Array.isArray(responseStato.data)) {
+            const filteredStati = responseStato.data
+                .filter(stato => [1, 6, 7].includes(stato.id))
+                .map(stato => ({ label: stato.descrizione, value: stato.id }));
+
+            setStatoOptions(filteredStati);
+        } else {
+            console.error("I dati ottenuti dalla chiamata degli stati non sono nel formato Array: ", responseStato.data);
+        }
+    } catch (error) {
+        console.error("Errore durante il recupero degli stati: ", error);
+    }
+};
+
+
+
+
+
+useEffect(() => {
+fetchStati();
+},[])
 
     // Funzione per resettare i filtri
     const resetFilters = () => {
@@ -34,11 +83,10 @@ const CustomTableCell2 = ({ columns, rows, onIconClick, title }) => {
         }));
     };
 
-    // Modifica il pulsante per abilitare/disabilitare i filtri
     const toggleFilters = () => {
         setFiltersEnabled((prev) => {
             if (prev) {
-                resetFilters(); // Resetta i filtri quando vengono disabilitati
+                resetFilters(); 
             }
             return !prev;
         });
@@ -60,6 +108,73 @@ const CustomTableCell2 = ({ columns, rows, onIconClick, title }) => {
             return !normalizedFilterValue || normalizedCellValue.includes(normalizedFilterValue);
         });
     });
+
+    const handleOpenModal = (row) => {
+        console.log("Dati riga selezionata:", row); 
+        setSelectedPipeline(row);
+        setValues({
+            stato: row.stato || null,
+            priorita: row.priorita || null
+        });
+        setModalStato(true);
+    };
+    
+    
+    
+
+    const handleUpdateStato = async () => {
+        if (!selectedPipeline) {
+            console.error("Errore: Nessuna riga selezionata");
+            return;
+        }
+    
+        const idStato = values.stato; 
+        const priorita = values.priorita; 
+        const params = new URLSearchParams({ stato: idStato, priorita: priorita });
+        const idNeed = selectedPipeline.id;
+    
+        try {
+            const responseUpdateStato = await axios.post(
+                `http://localhost:8080/need/react/salva/stato/${idNeed}?${params.toString()}`, 
+                {}, 
+                { headers: headers }
+            );
+    
+            if (responseUpdateStato.data === "ERRORE") {
+                setAlert({ open: true, message: "Errore durante il salvataggio dell'azienda!" });
+                console.error("L'azienda non è stata salvata.");
+                return;
+            }
+    
+            console.log("Update successo!");
+            setModalStato(false);
+            onRefresh(); 
+        } catch (error) {
+            console.error("Errore durante l'aggiornamento dello stato: ", error);
+        }
+    };
+    
+
+    const prioritaOptions = [
+        { value: 1, label: '1' },
+        { value: 2, label: '2' },
+        { value: 3, label: '3' },
+        { value: 4, label: '4' }
+        ];
+
+             //funzione per la chiusura dell'alert
+    const handleCloseAlert = (reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setAlert({...alert, open: false});
+    };
+
+        function TransitionDown(props) {
+            return <Slide {...props} direction="down" />;
+        }
+    
+    
 
     return (
         <Box sx={{borderRadius: '20px', }}>
@@ -107,10 +222,11 @@ const CustomTableCell2 = ({ columns, rows, onIconClick, title }) => {
                                 {/* Colonna delle icone */}
                                 <TableCell align="center" sx={{ borderBottom: "1px solid #e0e0e0", padding: "0.5px 0.5px", }}>
                                 <Tooltip title="Modifica">
-                                    <IconButton onClick={() => onIconClick(row)}>
+                                    <IconButton onClick={(event) => handleOpenModal(row)}>
                                         <MoreHorizIcon />
                                     </IconButton>
                                     </Tooltip>
+                                    
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -124,6 +240,168 @@ const CustomTableCell2 = ({ columns, rows, onIconClick, title }) => {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <Modal
+    open={modalStato}
+    onClose={() => setModalStato(false)}
+    aria-labelledby="modal-modal-title"
+    aria-describedby="modal-modal-description"
+    sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    }}
+>
+    <Box
+        sx={{
+            backgroundColor: 'white',
+            p: 4,
+            borderRadius: '20px',
+            display: 'flex',
+            position: 'relative', 
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+            gap: 2,
+            width: '40vw',
+            height: 'auto',
+        }}
+    >
+        {/* Header con Titolo e Pulsante di chiusura */}
+        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
+            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', ml: 2, mt: 0.5, mb: 0.5 }}>
+                {selectedPipeline?.descrizione || "Dettagli Pipeline"}
+            </Typography>
+            <IconButton 
+                sx={{
+                    mr: 2, 
+                    backgroundColor: 'transparent', 
+                    border: 'none',
+                    '&:hover': {
+                        bgcolor: 'transparent'
+                    }
+                }} 
+                onClick={() => setModalStato(false)}
+            >
+                <CloseIcon 
+                    sx={{ 
+                        backgroundColor: 'transparent',
+                        '&:hover': {
+                            color: 'red',
+                            backgroundColor: 'transparent',
+                        }
+                    }} 
+                />   
+            </IconButton>
+        </Box>
+        
+        {/* Selezione Stato */}
+        <FormControl fullWidth>
+            <Autocomplete
+                id="stato-combo-box"
+                options={statoOptions}
+                getOptionLabel={(option) => option.label}
+                value={statoOptions.find(option => option.value === values.stato) || null}
+                onChange={(event, newValue) => {
+                    setValues(prevValues => ({
+                        ...prevValues,
+                        stato: newValue ? newValue.value : null
+                    }));
+                }}
+                renderInput={(params) => 
+                    <TextField 
+                        {...params} 
+                        label="Stato"
+                        variant="filled" 
+                        sx={{
+                            height: '4em',
+                            p: 1,
+                            borderRadius: '20px', 
+                            backgroundColor: '#EDEDED',
+                            '& .MuiFilledInput-root': {
+                                backgroundColor: 'transparent',
+                            },
+                            '& .MuiFilledInput-underline:after': {
+                                borderBottomColor: 'transparent',
+                            },
+                            '& .MuiFormLabel-root.Mui-focused': {
+                                color: '#00B400',
+                            }, 
+                        }}  
+                    />
+                }
+            />
+        </FormControl>
+
+        {/* Selezione Priorità */}
+        <FormControl fullWidth>
+            <Autocomplete
+                id="priorita-combo-box"
+                options={prioritaOptions}
+                getOptionLabel={(option) => option.label}
+                value={prioritaOptions.find(option => option.value === values.priorita) || null}
+                onChange={(event, newValue) => {
+                    setValues(prevValues => ({
+                        ...prevValues,
+                        priorita: newValue ? newValue.value : null
+                    }));
+                }}
+                renderInput={(params) => 
+                    <TextField 
+                        {...params} 
+                        label="Priorità"
+                        variant="filled" 
+                        sx={{
+                            height: '4em',
+                            p: 1,
+                            borderRadius: '20px', 
+                            backgroundColor: '#EDEDED',
+                            '& .MuiFilledInput-root': {
+                                backgroundColor: 'transparent',
+                            },
+                            '& .MuiFilledInput-underline:after': {
+                                borderBottomColor: 'transparent',
+                            },
+                            '& .MuiFormLabel-root.Mui-focused': {
+                                color: '#00B400',
+                            }, 
+                        }}  
+                    />
+                }
+            />
+        </FormControl>
+
+        {/* Pulsante Cambia */}
+        <Button
+            onClick={handleUpdateStato}
+            sx={{
+                mt: 2,
+                width: '60%',
+                backgroundColor: '#00B400',
+                color: 'white',
+                borderRadius: '10px',
+                fontWeight: 'bold',
+                '&:hover': {
+                    backgroundColor: '#019301',
+                    transform: 'scale(1.02)',
+                },
+            }}
+        >
+            Cambia
+        </Button>
+    </Box>
+</Modal>
+
+
+
+            <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} TransitionComponent={TransitionDown}>
+                <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
+                    {alert.message}
+                </Alert>
+            </Snackbar>
+
+
+
+
         </Box>
     );
 };

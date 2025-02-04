@@ -82,7 +82,8 @@ const Recruiting = () => {
 
 
   //stati per la paginazione
-  const [pagina, setPagina] = useState(0);
+  const [pagina, setPagina] = useState(""); //da vedere meglio il fatto del ritornare alla pagina che si era lasciata
+  
   const quantita = 10;
 
   //stato per il dialog
@@ -143,7 +144,7 @@ const Recruiting = () => {
       stato: null,
       skills: null,
       location: null,
-      pagina: 0,
+      pagina: pagina,
       quantita: 10,
     };
 
@@ -231,24 +232,53 @@ const Recruiting = () => {
     }
   };
 
+  useEffect(() => {
+    fetchData();
+  }, [pagina]); 
+  
+
+
+  // useEffect(() => {
+  //   const filtriSalvati = sessionStorage.getItem("filtriRicercaRecruiting");
+  //   if (filtriSalvati) {
+  //     const filtriParsed = JSON.parse(filtriSalvati);
+  //     setFiltri(filtriParsed);
+
+  //     const isAnyFilterSet = Object.values(filtriParsed).some((value) => value);
+  //     if (isAnyFilterSet) {
+  //       handleRicerche();
+  //     } else {
+  //       fetchData();
+  //     }
+  //   } else {
+  //     fetchData();
+  //   }
+  //   // eslint-disable-next-line
+  // }, []);
+
 
   useEffect(() => {
     const filtriSalvati = sessionStorage.getItem("filtriRicercaRecruiting");
+    const paginaSalvata = sessionStorage.getItem("paginaRecruiting");
+    const paginaDaUsare = paginaSalvata ? parseInt(paginaSalvata, 10) : 0; // Recupera la pagina giusta
+  
+    setPagina(paginaDaUsare); // Aggiorna lo stato di pagina con il valore giusto
+  
     if (filtriSalvati) {
       const filtriParsed = JSON.parse(filtriSalvati);
       setFiltri(filtriParsed);
-
+  
       const isAnyFilterSet = Object.values(filtriParsed).some((value) => value);
       if (isAnyFilterSet) {
         handleRicerche();
       } else {
-        fetchData();
+        fetchData(paginaDaUsare);  // Usa il valore corretto di pagina
       }
     } else {
-      fetchData();
+      fetchData(paginaDaUsare);  // Usa il valore corretto di pagina
     }
-    // eslint-disable-next-line
   }, []);
+  
 
   //funzione per la paginazione
   const fetchMoreData = async (newPage) => {
@@ -266,7 +296,7 @@ const Recruiting = () => {
       tipologia: filtri.tipologia || null,
       tipo: filtri.tipo || null,
       stato: filtri.stato || null,
-      skills: filtri.skills || null,
+      skills: filtri.skills ? JSON.stringify(filtri.skills) : null,  
       location: filtri.location || null,
       pagina: newPage,
       quantita: 10,
@@ -302,10 +332,16 @@ const Recruiting = () => {
   };
 
   //funzione per il cambio pagina
+  // const handlePageChange = (newPage) => {
+  //   setPagina(newPage);
+  //   fetchMoreData(newPage);
+  // };
+
   const handlePageChange = (newPage) => {
     setPagina(newPage);
-    fetchMoreData(newPage);
+    sessionStorage.setItem("paginaRecruiting", newPage);
   };
+  
 
   const openDeleteDialog = (id) => {
     setDeleteId(id);
@@ -351,6 +387,12 @@ const Recruiting = () => {
     sessionStorage.setItem("filtriRicercaRecruiting", JSON.stringify(filtri));
   }, [filtri]);
 
+  // useEffect(() => {
+  //   return () => {
+  //     sessionStorage.removeItem("paginaRecruiting");
+  //   };
+  // }, []);
+  
   const handleRicerche = async () => {
     const isAnyFilterSet = Object.values(filtri).some((value) => value);
     if (!isAnyFilterSet) {
@@ -365,7 +407,7 @@ const Recruiting = () => {
       tipo: filtri.tipo || null,
       stato: filtri.stato || null,
       skills: filtri.skills ? filtri.skills.join(",") : null,
-      location: filtri.location || null,
+      location: filtri.citta || null,
       pagina: pagina,
       quantita: 10,
     };
@@ -461,13 +503,10 @@ const Recruiting = () => {
 
   const handleFilterChange = (name) => (event) => {
     const newValue = event.target.value;
-    console.log("newValue: ", newValue);
     
     setFiltri((currentFilters) => {
-      console.log("currentFilter: ", currentFilters);
       
       const newFilters = { ...currentFilters, [name]: newValue };
-      console.log("newFilters: ", newFilters);
       
       setPagina(0);
       return newFilters;

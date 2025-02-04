@@ -186,7 +186,7 @@ const baseUrl = userHasRole('ADMIN')
             stato: filtri.stato || null,
             owner: filtri.owner || null,
             keypeople: filtri.keypeople || null,
-            // skills: filtri.skills || null,
+            // skills: filtri.skills ? JSON.stringify(filtri.skills) : null,  
             location: filtri.location || null,
             pagina: 0,
             quantita: quantita
@@ -239,7 +239,7 @@ const baseUrl = userHasRole('ADMIN')
             stato: filtri.stato || null,
             owner: filtri.owner || null,
             keypeople: filtri.keypeople || null,
-            skills: filtri.skills || null,
+            // skills: filtri.skills ? JSON.stringify(filtri.skills) : null,  
             location: filtri.location || null,
             pagina: 0,
             quantita: quantita
@@ -418,6 +418,25 @@ const baseUrl = userHasRole('ADMIN')
             fetchData();
         }
     }, [location.state]);
+
+    useEffect(() => {
+        if (location.state?.fromDashboard) {
+            console.log("Navigazione dalla Dashboard:", location.state);
+            const newFiltri = {
+                ...filtri,
+                descrizione: location.state.descrizione || filtri.descrizione,
+                cliente: location.state.clienteId || filtri.cliente,
+            };
+            setFiltri(newFiltri);  
+        }
+    }, [location.state]);  
+    
+    useEffect(() => {
+        if (filtri.descrizione || filtri.cliente) {
+            handleRicerche();  
+        }
+    }, [filtri]); 
+    
     
     
 
