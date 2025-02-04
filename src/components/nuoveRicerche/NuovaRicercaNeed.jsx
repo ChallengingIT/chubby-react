@@ -45,7 +45,6 @@ function NuovaRicercaNeed({
 
         if (aziendaId) {
             // Log per verificare l'ID selezionato
-            console.log("Azienda selezionata ID:", aziendaId);
             // Esegui eventuali operazioni aggiuntive, come il caricamento di dati correlati
         }
     };
@@ -82,7 +81,7 @@ function NuovaRicercaNeed({
                 animate="visible" 
                 variants={boxVariants} 
             >
-        <Container maxWidth='false' sx={{ maxWidth: '75vw', display: 'flex', justifyContent: 'space-around'}}>
+        {/* <Container maxWidth='xl' sx={{ maxWidth: '75vw', display: 'flex', justifyContent: 'space-around'}}> */}
             <Box
                 sx={{
                     width: '100%',
@@ -95,7 +94,7 @@ function NuovaRicercaNeed({
                     alignItems: "center",
                     justifyContent: "space-between",
                     marginBottom: "1rem",
-                    p: 1.2,
+                    // p: 1.2,
                     gap: 3
                 }}
             >
@@ -414,7 +413,7 @@ function NuovaRicercaNeed({
                     skillsOptions={skillsOptions}
                     onChange={(newValue) => {
                     onFilterChange("skills")({
-                        target: { value: newValue.skills || [] },
+                        target: { value: newValue.skills || null },
                     });
                     }}
                 />
@@ -511,7 +510,7 @@ function NuovaRicercaNeed({
                     />
                 </IconButton>
             </Box>
-        </Container>
+        {/* </Container> */}
         </motion.div>
     );
 }

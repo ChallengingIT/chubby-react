@@ -2,15 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import {
-    Box,
     Grid,
     Card,
     CardContent,
-    Typography,
     Container,
     Link
 } from "@mui/material";
-import TabellaPipelineNeed          from "../components/dashboardComponents/TabellaPipelineNeed";
 import axios                        from "axios";
 import { useNotification }          from "../components/NotificationContext.js";
 import { useNavigate }              from "react-router-dom";
@@ -107,10 +104,13 @@ function Dashboard() {
                     id: pipeline?.id,
                     descrizione: pipeline?.descrizione || "N/A",
                     cliente: pipeline?.cliente || { denominazione: "Cliente non disponibile", id: null },
-                    owner: pipeline?.owner ? `${pipeline?.owner?.descrizione}` : "Owner non disponibile",
+                    ownerBusiness: pipeline?.ownerBusiness ? `${pipeline?.ownerBusiness?.descrizione}` : "Owner non disponibile",
+                    ownerRecruiter: pipeline?.ownerRecruiter ? `${pipeline?.ownerRecruiter?.descrizione}` : "Owner non disponibile",
+
                     priorita: pipeline?.priorita || "Priorità non disponibile",
                     stato: pipeline?.stato ? pipeline?.stato?.descrizione : "Stato non disponibile",
-                    pipelineData: pipeline?.pipeline || "Dati non disponibili"
+                    pipelineData: pipeline?.pipeline || "Dati non disponibili",
+                    aziendaInterna: pipeline?.aziendaInterna || "Azienda non disponibile"
                 }));
                 setOriginalPipeline(pipelineConId);
             } else {
@@ -147,90 +147,41 @@ function Dashboard() {
     };
 
     const handleDescrizioneClick = (descrizione, clienteId) => {
-        navigate('/need', { state: { descrizione, clienteId } });
+        navigate('/need', { state: { descrizione, clienteId, fromDashboard: true } });
     };
 
-    const handleOpenDialog = (pipelineData) => {
-        setDialogOpen(true);
-        setCurrentPipelineData(pipelineData);
-    };
+    const handleRefresh = () => {
+        fetchData();
+    }
     
-    const handleCloseDialog = () => {
-        setDialogOpen(false);
-    };
-
-    // const columns = [
-    //     {
-    //         field: "owner",
-    //         headerName: t("Owner"),
-    //         flex: 0.6,
-    //         sortable: true,
-    //         filterable: true,
-    //     },
-    //     {
-    //         field: "cliente",
-    //         headerName: t("Cliente"),
-    //         flex: 1,
-    //         sortable: true,
-    //         filterable: true,
-    //         renderCell: (params) => {
-    //             return params.value ? params.value.denominazione : "Cliente non disponibile";
-    //         }
-    //     },
-    //     {
-    //         field: "descrizione",
-    //         headerName: t("Descrizione esigenza"),
-    //         flex: 1,
-    //         sortable: true,
-    //         filterable: true,
-    //         renderCell: (params) => {
-    //             const descrizione = params.value || "Descrizione non disponibile";
-    //             const clienteId = params.row.cliente?.id || null;
-    //             return (
-    //                 <Link
-    //                     component="button"
-    //                     onClick={() => handleDescrizioneClick(descrizione, clienteId)}
-    //                     sx={{
-    //                         textDecoration: "none",
-    //                         color: "black",
-    //                         borderBottom: "solid 1px black",
-    //                     }}
-    //                 >
-    //                     {descrizione}
-    //                 </Link>
-    //             );
-    //         },
-    //     },
-    //     {
-    //         field: "priorita",
-    //         headerName: t("Priorità"),
-    //         flex: 0.4,
-    //         sortable: true,
-    //         filterable: true,
-    //     },
-    //     {
-    //         field: "stato",
-    //         headerName: t("Stato"),
-    //         flex: 0.4,
-    //         sortable: true,
-    //         filterable: true,
-    //     },
-    // ];
 
 
     const columns = [
         {
-            field: "owner",
-            headerName: "Owner",
+            field: 'azienda',
+            headerName: "Azienda",
+            render: (row) => row.aziendaInterna || "Azienda non disponibile", 
         },
         {
             field: "cliente",
             headerName: "Cliente",
-            render: (row) => row.cliente.denominazione || "Cliente non disponibile", // Accesso alla proprietà
+            render: (row) => row.cliente?.denominazione || "Cliente non disponibile", 
+        },
+        {
+            field: "owner",
+            headerName: "Owner Business",
+            render: (row) => row.ownerBusiness || "Owner non disponibile", 
+
+        },
+        {
+            field: "owner",
+            headerName: "Owner Recruiter",
+            render: (row) => row.ownerRecruiter || "Owner non disponibile", 
+
         },
         {
             field: "descrizione",
-            headerName: "Descrizione esigenza",
+            headerName: "Need",
             render: (row) => (
                 <Link
                     component="button"
@@ -298,7 +249,7 @@ function Dashboard() {
                             columns={columns}
                             rows={originalPipeline}
                             title={t("Pipeline")}
-                            onIconClick={(row) => handleOpenDialog(row.pipelineData)}
+                            onRefresh={handleRefresh}
                         />
                     </Grid>
                     <Grid container spacing={2}>

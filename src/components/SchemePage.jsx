@@ -105,7 +105,7 @@
             display: "flex",
             flexGrow: 1,
             flexDirection: 'column',
-            p: 3,
+            pt: 3,
             marginLeft: isSmallScreen ? "3.5em" : "12.8em",
             // marginTop: "0.5em",
             marginBottom: "0.8em",

@@ -342,7 +342,11 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
                     <AccountCircleIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
-                    {valori?.owner?.descrizione}
+                    Owner Business: {valori?.ownerBusiness?.descrizione}
+            </Typography>
+            <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
+                    <AccountCircleIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
+                    Owner Recruiter: {valori?.ownerRecruiter?.descrizione}
             </Typography>
                 </Box>
                 <Box sx={{ 

@@ -89,7 +89,8 @@ const TabellaAttivitaRecruiting = ({ data = [] }) => {
                 <TableHead>
                     <TableRow>
                         <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold' }}>{t('Data')}</TableCell>
-                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold' }}>{t('Ora')}</TableCell>
+                        {/* <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold' }}>{t('Ora')}</TableCell> */}
+                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold' }}>{t('Job Title')}</TableCell>
 
                         {/* Colonna Azione */}
                         <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold' }}>
@@ -158,12 +159,13 @@ const TabellaAttivitaRecruiting = ({ data = [] }) => {
                 <TableBody>
                     {filteredActivities.map((item, index) => {
                         const formattedDate = format(new Date(item.data), 'dd-MM-yyyy');
-                        const formattedTime = format(new Date(item.data), 'HH:mm');
+                        // const formattedTime = format(new Date(item.data), 'HH:mm');
 
                         return (
                             <TableRow key={item.idIntervista || index}>
                                 <TableCell style={cellStyle}>{formattedDate}</TableCell>
-                                <TableCell style={cellStyle}>{formattedTime}</TableCell>
+                                {/* <TableCell style={cellStyle}>{formattedTime}</TableCell> */}
+                                <TableCell style={cellStyle}>{item.jobTitleCandidato}</TableCell>
                                 <TableCell style={cellStyle}>{item.azione}</TableCell>
                                 <TableCell style={cellStyle}>{item.siglaOwner}</TableCell>
                                 <TableCell style={cellStyle}>{item.nomeCandidato} {item.cognomeCandidato}</TableCell>

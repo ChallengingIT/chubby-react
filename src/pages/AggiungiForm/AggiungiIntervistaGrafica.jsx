@@ -396,7 +396,7 @@
 
         { type: "titleGroups", label: t("Azioni") },
         { label: t("Follow Up"),                   name: "tipo",                       type: "select",             options: tipoIntervistaOptions, },
-        { label: t("Next Deadline"),               name: "dataAggiornamento",          type: "dateOra"                                             },
+        { label: t("Next Deadline"),               name: "dataAggiornamento",          type: "date"                                                },
         { label: t("Owner next Deadline"),         name: "idNextOwner",                type: "select",             options: ownerOptions,          },
     ];
 

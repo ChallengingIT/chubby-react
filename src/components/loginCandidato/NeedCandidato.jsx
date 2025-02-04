@@ -177,7 +177,6 @@ const baseUrl =  (isSearchActive ?  "http://89.46.196.60:8443/candidato/need/rea
             pagina: 0,
             quantita: quantita
         };
-        console.log("filtriDaInviare: ", filtriDaInviare);
 
         const baseUrl = "http://89.46.196.60:8443/candidato/need/react/ricerca/modificato" ;
         setLoading(true);
