@@ -177,7 +177,6 @@ const baseUrl =  (isSearchActive ?  "http://localhost:8080/candidato/need/react/
             pagina: 0,
             quantita: quantita
         };
-        console.log("filtriDaInviare: ", filtriDaInviare);
 
         const baseUrl = "http://localhost:8080/candidato/need/react/ricerca/modificato" ;
         setLoading(true);

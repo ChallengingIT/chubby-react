@@ -81,7 +81,6 @@ class AuthService {
   
 
         const usernameResponse = registrationResponse.data;
-        console.log("risposta: ", registrationResponse.data);
 
         try{
           if(usernameResponse) {

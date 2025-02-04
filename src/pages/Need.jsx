@@ -221,7 +221,6 @@ const baseUrl = userHasRole('ADMIN')
         setPagina((prevPagina) => prevPagina + 1);
     };
 
-    console.log("skills: ", filtri.skills);
     
 
     //funzione di ricerca
@@ -245,7 +244,6 @@ const baseUrl = userHasRole('ADMIN')
             quantita: quantita
         };
 
-        console.log("filtri da inviare: ", filtriDaInviare);
         
     
         if (!userHasRole('ADMIN')) {
@@ -381,7 +379,6 @@ const baseUrl = userHasRole('ADMIN')
     useEffect(() => {
         const fetchDataBasedOnState = async () => {
             if (location.state?.fromDashboard) {
-                console.log("Navigazione dalla Dashboard:", location.state);
                 const newFiltri = {
                     ...filtri,
                     descrizione: location.state.descrizione || filtri.descrizione,
@@ -390,7 +387,6 @@ const baseUrl = userHasRole('ADMIN')
                 setFiltri(newFiltri);
                 await handleRicerche(newFiltri);
             } else {
-                console.log("Navigazione diretta o senza stato precedente");
                 const filtriSalvati = sessionStorage.getItem('filtriRicercaNeed');
                 if (filtriSalvati) {
                     const filtriParsed = JSON.parse(filtriSalvati);
@@ -421,7 +417,6 @@ const baseUrl = userHasRole('ADMIN')
 
     useEffect(() => {
         if (location.state?.fromDashboard) {
-            console.log("Navigazione dalla Dashboard:", location.state);
             const newFiltri = {
                 ...filtri,
                 descrizione: location.state.descrizione || filtri.descrizione,

@@ -45,7 +45,6 @@ function NuovaRicercaNeed({
 
         if (aziendaId) {
             // Log per verificare l'ID selezionato
-            console.log("Azienda selezionata ID:", aziendaId);
             // Esegui eventuali operazioni aggiuntive, come il caricamento di dati correlati
         }
     };

@@ -104,7 +104,9 @@ function Dashboard() {
                     id: pipeline?.id,
                     descrizione: pipeline?.descrizione || "N/A",
                     cliente: pipeline?.cliente || { denominazione: "Cliente non disponibile", id: null },
-                    owner: pipeline?.owner ? `${pipeline?.owner?.descrizione}` : "Owner non disponibile",
+                    ownerBusiness: pipeline?.ownerBusiness ? `${pipeline?.ownerBusiness?.descrizione}` : "Owner non disponibile",
+                    ownerRecruiter: pipeline?.ownerRecruiter ? `${pipeline?.ownerRecruiter?.descrizione}` : "Owner non disponibile",
+
                     priorita: pipeline?.priorita || "Priorità non disponibile",
                     stato: pipeline?.stato ? pipeline?.stato?.descrizione : "Stato non disponibile",
                     pipelineData: pipeline?.pipeline || "Dati non disponibili",
@@ -163,15 +165,19 @@ function Dashboard() {
         {
             field: "cliente",
             headerName: "Cliente",
-            render: (row) => row.cliente.denominazione || "Cliente non disponibile", 
+            render: (row) => row.cliente?.denominazione || "Cliente non disponibile", 
         },
         {
             field: "owner",
             headerName: "Owner Business",
+            render: (row) => row.ownerBusiness || "Owner non disponibile", 
+
         },
         {
             field: "owner",
             headerName: "Owner Recruiter",
+            render: (row) => row.ownerRecruiter || "Owner non disponibile", 
+
         },
         {
             field: "descrizione",

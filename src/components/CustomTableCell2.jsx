@@ -110,7 +110,6 @@ fetchStati();
     });
 
     const handleOpenModal = (row) => {
-        console.log("Dati riga selezionata:", row); 
         setSelectedPipeline(row);
         setValues({
             stato: row.stato || null,

@@ -148,14 +148,12 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
                 }
             );
 
-            if (typeof response.data === "number") { // Assumendo che l'ID sia un numero
+            if (typeof response.data === "number") { 
                 setAlert({
                     open: true,
                     message: `Salvato con successo!`,
                     severity: "success"
                 });
-                console.log("Il salvataggio è andato a buon fine");
-                // Opzionalmente, reindirizza l'utente o aggiorna la pagina
             } else if (response.data === "DUPLICATO") {
                 setAlert({ open: true, message: "Contatto già esistente!" });
                 console.error("Il contatto è già stato salvato.");

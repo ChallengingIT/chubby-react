@@ -422,22 +422,24 @@ const ModificaNeedGrafica = () => {
 
 
         const initialValues = {
-            id:                         datiModifica.id                                                 ,
-            descrizione:                datiModifica.descrizione                                        || null,
-            idKeyPeople:                (datiModifica.keyPeople && datiModifica.keyPeople.id)           || null,
-            priorita:                   datiModifica.priorita                                           || null,
-            week:                       datiModifica.week                                               || null,
-            idTipologia:               (datiModifica.tipologia && datiModifica.tipologia.id)            || null,
-            idTipo:                       datiModifica.tipo                                               || null,
-            idOwner:                   (datiModifica.owner && datiModifica.owner.id)                    || null,
-            idStato:                   (datiModifica.stato && datiModifica.stato.id)                    || null,
-            numeroRisorse:              datiModifica.numeroRisorse                                      || null,
-            location:                   datiModifica.location                                           || null,
-            idSkills:                   datiModifica.skills ? datiModifica.skills.map((skills) => skills.id) :   [],
-            anniEsperienza:             datiModifica.anniEsperienza                                     || null,
-            pubblicazione:              datiModifica.pubblicazione                                      || null,
-            screening:                  datiModifica.screening                                          || null,
-            note:                       datiModifica.note                                               || null,        
+            id:                         datiModifica?.id                                                 ,
+            descrizione:                datiModifica?.descrizione                                        || null,
+            idKeyPeople:                (datiModifica?.keyPeople && datiModifica?.keyPeople?.id)           || null,
+            priorita:                   datiModifica?.priorita                                           || null,
+            week:                       datiModifica?.week                                               || null,
+            idTipologia:               (datiModifica?.tipologia && datiModifica?.tipologia?.id)            || null,
+            idTipo:                       datiModifica?.tipo                                               || null,
+            idOwner:                   (datiModifica?.ownerBusiness && datiModifica?.ownerBusiness?.id)                    || null,
+            idOwnerRecruiter:          (datiModifica?.ownerRecruiter && datiModifica?.ownerRecruiter?.id)                    || null,
+
+            idStato:                   (datiModifica?.stato && datiModifica?.stato?.id)                    || null,
+            numeroRisorse:              datiModifica?.numeroRisorse                                      || null,
+            location:                   datiModifica?.location                                           || null,
+            idSkills:                   datiModifica?.skills ? datiModifica.skills.map((skills) => skills?.id) :   [],
+            anniEsperienza:             datiModifica?.anniEsperienza                                     || null,
+            pubblicazione:              datiModifica?.pubblicazione                                      || null,
+            screening:                  datiModifica?.screening                                          || null,
+            note:                       datiModifica?.note                                               || null,        
             };
 
 
