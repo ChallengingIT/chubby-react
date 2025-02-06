@@ -150,19 +150,19 @@ const Recruiting = () => {
 
     try {
       const response = await axios.get(
-        "http://localhost:8080/staffing/react/mod",
+        "http://89.46.196.60:8443/staffing/react/mod",
         { headers: headers, params: filtriDaInviare }
       );
       const responseTipologia = await axios.get(
-        "http://localhost:8080/aziende/react/tipologia",
+        "http://89.46.196.60:8443/aziende/react/tipologia",
         { headers }
       );
       const responseTipo = await axios.get(
-        "http://localhost:8080/staffing/react/tipo",
+        "http://89.46.196.60:8443/staffing/react/tipo",
         { headers }
       );
       const responseStato = await axios.get(
-        "http://localhost:8080/staffing/react/stato/candidato",
+        "http://89.46.196.60:8443/staffing/react/stato/candidato",
         { headers }
       );
 
@@ -287,8 +287,8 @@ const Recruiting = () => {
     );
   
     const url = filtriAttivi
-      ? "http://localhost:8080/staffing/react/mod/ricerca"
-      : "http://localhost:8080/staffing/react/mod";
+      ? "http://89.46.196.60:8443/staffing/react/mod/ricerca"
+      : "http://89.46.196.60:8443/staffing/react/mod";
   
     const filtriDaInviare = {
       nome: currentFilters.nome || null,
@@ -349,7 +349,7 @@ const Recruiting = () => {
   const handleDelete = async () => {
     try {
       const responseDelete = await axios.delete(
-        `http://localhost:8080/staffing/elimina/${deleteId}`,
+        `http://89.46.196.60:8443/staffing/elimina/${deleteId}`,
         { headers: headers }
       );
       setOpenDialog(false);
@@ -363,7 +363,7 @@ const Recruiting = () => {
   useEffect(() => {
     const fetchSkills = async () => {
         try {
-            const responseNeedSkills = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
+            const responseNeedSkills = await axios.get("http://89.46.196.60:8443/staffing/react/skill", { headers: headers });
             if (Array.isArray(responseNeedSkills.data)) {
                 setSkillsOptions(responseNeedSkills.data.map((skill) => ({
                     label: skill.descrizione,
@@ -413,19 +413,19 @@ const Recruiting = () => {
 
     try {
       const response = await axios.get(
-        "http://localhost:8080/staffing/react/mod/ricerca",
+        "http://89.46.196.60:8443/staffing/react/mod/ricerca",
         { headers: headers, params: filtriDaInviare }
       );
       const responseTipologia = await axios.get(
-        "http://localhost:8080/aziende/react/tipologia",
+        "http://89.46.196.60:8443/aziende/react/tipologia",
         { headers: headers }
       );
       const responseTipo = await axios.get(
-        "http://localhost:8080/staffing/react/tipo",
+        "http://89.46.196.60:8443/staffing/react/tipo",
         { headers: headers }
       );
       const responseStato = await axios.get(
-        "http://localhost:8080/staffing/react/stato/candidato",
+        "http://89.46.196.60:8443/staffing/react/stato/candidato",
         { headers: headers }
       );
 
@@ -528,7 +528,7 @@ const Recruiting = () => {
   };
 
   const handleDownloadCV = async (idFile, fileDescrizione) => {
-    const url = `http://localhost:8080/files/react/download/file/${idFile}`;
+    const url = `http://89.46.196.60:8443/files/react/download/file/${idFile}`;
     try {
       const responseDownloadCV = await axios({
         method: "GET",
@@ -578,7 +578,7 @@ const Recruiting = () => {
   const handleDownloadCF = async (idCandidato, nomeCandidato, cognomeCandidato, tipo) => {
     try {
       setLoadingCF(true);
-      const downloadUrl = `http://localhost:8080/files/download/cf/${idCandidato}`;
+      const downloadUrl = `http://89.46.196.60:8443/files/download/cf/${idCandidato}`;
       const params = new URLSearchParams({ tipo });
   
       const responseDownloadCF = await axios({
@@ -651,8 +651,8 @@ const openStato = Boolean(anchorElStato);
       const params = new URLSearchParams({ stato: idStato });
       try {
           const responseUpdateStato = await axios.post
-          // (`http://localhost:8080/keypeople/react/salva/stato/${idKeypeople}?${params.toString()}`, {}, { headers: headers });
-          (`http://localhost:8080/staffing/react/salva/stato/${idCandidato}?${params.toString()}`, {}, { headers: headers});
+          // (`http://89.46.196.60:8443/keypeople/react/salva/stato/${idKeypeople}?${params.toString()}`, {}, { headers: headers });
+          (`http://89.46.196.60:8443/staffing/react/salva/stato/${idCandidato}?${params.toString()}`, {}, { headers: headers});
           setModalCambiaStato(false);
           fetchData();
           handleOpenSnackbar(t('Stato aggiornato con successo!'), 'success');
