@@ -35,7 +35,7 @@ import {
   Tooltip
 } from "@mui/material";
 import EditButton from "../components/button/EditButton.jsx";
-import { Modal, Typography } from "antd";
+import { Typography } from "antd";
 
 
 const Recruiting = () => {
@@ -281,55 +281,51 @@ const Recruiting = () => {
   
 
   //funzione per la paginazione
-  const fetchMoreData = async (newPage) => {
-    const filtriAttivi = Object.values(filtri).some(
+  const fetchMoreData = async (newPage, currentFilters) => {
+    const filtriAttivi = Object.values(currentFilters).some(
       (value) => value !== null && value !== ""
     );
+  
     const url = filtriAttivi
       ? "http://localhost:8080/staffing/react/mod/ricerca"
       : "http://localhost:8080/staffing/react/mod";
-
+  
     const filtriDaInviare = {
-      nome: filtri.nome || null,
-      cognome: filtri.cognome || null,
+      nome: currentFilters.nome || null,
+      cognome: currentFilters.cognome || null,
       email: null,
-      tipologia: filtri.tipologia || null,
-      tipo: filtri.tipo || null,
-      stato: filtri.stato || null,
-      skills: filtri.skills ? JSON.stringify(filtri.skills) : null,  
-      location: filtri.location || null,
+      tipologia: currentFilters.tipologia || null,
+      tipo: currentFilters.tipo || null,
+      stato: currentFilters.stato || null,
+      skills: currentFilters.skills ? JSON.stringify(currentFilters.skills) : null,  
+      location: currentFilters.location || null,
       pagina: newPage,
       quantita: 10,
     };
-
+  
     try {
       const response = await axios.get(url, {
         headers: headers,
         params: filtriDaInviare,
       });
       const { record, candidati } = response.data;
-
+  
       if (candidati && Array.isArray(candidati)) {
         setOriginalRecruiting(candidati);
-
+  
         if (typeof record === "number") {
           setRigheTot(record);
         } else {
-          console.error(
-            "Il numero di record ottenuto non è un numero: ",
-            record
-          );
+          console.error("Il numero di record ottenuto non è un numero: ", record);
         }
       } else {
-        console.error(
-          "I dati ottenuti non contengono 'candidati' come array: ",
-          response.data
-        );
+        console.error("I dati ottenuti non contengono 'candidati' come array: ", response.data);
       }
     } catch (error) {
       console.error("Errore durante il recupero dei dati: ", error);
     }
   };
+  
 
   //funzione per il cambio pagina
   // const handlePageChange = (newPage) => {
@@ -340,6 +336,7 @@ const Recruiting = () => {
   const handlePageChange = (newPage) => {
     setPagina(newPage);
     sessionStorage.setItem("paginaRecruiting", newPage);
+    fetchMoreData(newPage, filtri);
   };
   
 
