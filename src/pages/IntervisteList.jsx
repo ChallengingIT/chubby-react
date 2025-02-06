@@ -24,7 +24,8 @@ import {
   Button,
   Box,
   Typography,
-  IconButton
+  IconButton,
+  Tooltip
 } from '@mui/material';
 import SchemePage from '../components/SchemePage.jsx';
 
@@ -219,15 +220,25 @@ renderCell: (params) => (
    //dataAggiornamento e follow up si chiama intervista.tipo.descrizione
   { field: "azioni",         headerName: "",          flex: 1, renderCell: (params) => (
     <div>
+  <Tooltip title="Visualizza intervista">
+  <span> 
   <IntervisteModalButton 
   hasIntervista={true}
-  onClick={() => handleModal(params.row)} />
+  onClick={() => handleModal(params.row)} 
+  />
+  </span>
+  </Tooltip>
+
+  <Tooltip title="Modifica intervista">
+  <span> 
     <Link
   to={`/intervista/modifica/${params.row.id}`}
   state={params.row}
   >
   <EditButton />
   </Link>
+  </span>
+  </Tooltip>
   <DeleteButton onClick={() => openDeleteDialog(params.row.id)} />
       </div>
     ), },

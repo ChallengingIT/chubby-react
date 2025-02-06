@@ -810,7 +810,7 @@
             </span>
             </Tooltip>
 
-            <Tooltip title="visualizza CV">
+            <Tooltip title="Visualizza CV">
             <span> 
             <ClipButton 
                 hasFile={!!params.row?.file}
@@ -1002,7 +1002,7 @@
                 startIcon={<ChecklistIcon sx={{ backgroundColor: "transparent" }} />}
             >
             </Button> */}
-            <Tooltip title="vai ad intervista">
+            <Tooltip title="Vai ad intervista">
                 <span>
             <Link
                 to={`/recruiting/intervista/${params.row.id}`}
@@ -1012,7 +1012,7 @@
             </Link>
             </span>
                 </Tooltip>
-            <Tooltip title="visualizza CV">
+            <Tooltip title="Visualizza CV">
             <span> 
             <ClipButton 
                 hasFile={!!params.row?.file}
@@ -1025,7 +1025,7 @@
             />
             </span>
             </Tooltip>
-            <Tooltip title="modifica associazione">
+            <Tooltip title="Modifica associazione">
                 <span>
              <CheckListButton onClick={() => handleOpenModal(params.row)} />
              </span>

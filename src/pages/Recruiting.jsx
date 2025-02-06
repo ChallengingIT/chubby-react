@@ -35,7 +35,7 @@ import {
   Tooltip
 } from "@mui/material";
 import EditButton from "../components/button/EditButton.jsx";
-import { Modal, Typography } from "antd";
+import { Typography } from "antd";
 
 
 const Recruiting = () => {
@@ -150,19 +150,19 @@ const Recruiting = () => {
 
     try {
       const response = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/mod",
+        "http://localhost:8080/staffing/react/mod",
         { headers: headers, params: filtriDaInviare }
       );
       const responseTipologia = await axios.get(
-        "http://89.46.196.60:8443/aziende/react/tipologia",
+        "http://localhost:8080/aziende/react/tipologia",
         { headers }
       );
       const responseTipo = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/tipo",
+        "http://localhost:8080/staffing/react/tipo",
         { headers }
       );
       const responseStato = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/stato/candidato",
+        "http://localhost:8080/staffing/react/stato/candidato",
         { headers }
       );
 
@@ -281,55 +281,51 @@ const Recruiting = () => {
   
 
   //funzione per la paginazione
-  const fetchMoreData = async (newPage) => {
-    const filtriAttivi = Object.values(filtri).some(
+  const fetchMoreData = async (newPage, currentFilters) => {
+    const filtriAttivi = Object.values(currentFilters).some(
       (value) => value !== null && value !== ""
     );
+  
     const url = filtriAttivi
-      ? "http://89.46.196.60:8443/staffing/react/mod/ricerca"
-      : "http://89.46.196.60:8443/staffing/react/mod";
-
+      ? "http://localhost:8080/staffing/react/mod/ricerca"
+      : "http://localhost:8080/staffing/react/mod";
+  
     const filtriDaInviare = {
-      nome: filtri.nome || null,
-      cognome: filtri.cognome || null,
+      nome: currentFilters.nome || null,
+      cognome: currentFilters.cognome || null,
       email: null,
-      tipologia: filtri.tipologia || null,
-      tipo: filtri.tipo || null,
-      stato: filtri.stato || null,
-      skills: filtri.skills ? JSON.stringify(filtri.skills) : null,  
-      location: filtri.location || null,
+      tipologia: currentFilters.tipologia || null,
+      tipo: currentFilters.tipo || null,
+      stato: currentFilters.stato || null,
+      skills: currentFilters.skills ? JSON.stringify(currentFilters.skills) : null,  
+      location: currentFilters.location || null,
       pagina: newPage,
       quantita: 10,
     };
-
+  
     try {
       const response = await axios.get(url, {
         headers: headers,
         params: filtriDaInviare,
       });
       const { record, candidati } = response.data;
-
+  
       if (candidati && Array.isArray(candidati)) {
         setOriginalRecruiting(candidati);
-
+  
         if (typeof record === "number") {
           setRigheTot(record);
         } else {
-          console.error(
-            "Il numero di record ottenuto non è un numero: ",
-            record
-          );
+          console.error("Il numero di record ottenuto non è un numero: ", record);
         }
       } else {
-        console.error(
-          "I dati ottenuti non contengono 'candidati' come array: ",
-          response.data
-        );
+        console.error("I dati ottenuti non contengono 'candidati' come array: ", response.data);
       }
     } catch (error) {
       console.error("Errore durante il recupero dei dati: ", error);
     }
   };
+  
 
   //funzione per il cambio pagina
   // const handlePageChange = (newPage) => {
@@ -340,6 +336,7 @@ const Recruiting = () => {
   const handlePageChange = (newPage) => {
     setPagina(newPage);
     sessionStorage.setItem("paginaRecruiting", newPage);
+    fetchMoreData(newPage, filtri);
   };
   
 
@@ -352,7 +349,7 @@ const Recruiting = () => {
   const handleDelete = async () => {
     try {
       const responseDelete = await axios.delete(
-        `http://89.46.196.60:8443/staffing/elimina/${deleteId}`,
+        `http://localhost:8080/staffing/elimina/${deleteId}`,
         { headers: headers }
       );
       setOpenDialog(false);
@@ -366,7 +363,7 @@ const Recruiting = () => {
   useEffect(() => {
     const fetchSkills = async () => {
         try {
-            const responseNeedSkills = await axios.get("http://89.46.196.60:8443/staffing/react/skill", { headers: headers });
+            const responseNeedSkills = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
             if (Array.isArray(responseNeedSkills.data)) {
                 setSkillsOptions(responseNeedSkills.data.map((skill) => ({
                     label: skill.descrizione,
@@ -416,19 +413,19 @@ const Recruiting = () => {
 
     try {
       const response = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/mod/ricerca",
+        "http://localhost:8080/staffing/react/mod/ricerca",
         { headers: headers, params: filtriDaInviare }
       );
       const responseTipologia = await axios.get(
-        "http://89.46.196.60:8443/aziende/react/tipologia",
+        "http://localhost:8080/aziende/react/tipologia",
         { headers: headers }
       );
       const responseTipo = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/tipo",
+        "http://localhost:8080/staffing/react/tipo",
         { headers: headers }
       );
       const responseStato = await axios.get(
-        "http://89.46.196.60:8443/staffing/react/stato/candidato",
+        "http://localhost:8080/staffing/react/stato/candidato",
         { headers: headers }
       );
 
@@ -531,7 +528,7 @@ const Recruiting = () => {
   };
 
   const handleDownloadCV = async (idFile, fileDescrizione) => {
-    const url = `http://89.46.196.60:8443/files/react/download/file/${idFile}`;
+    const url = `http://localhost:8080/files/react/download/file/${idFile}`;
     try {
       const responseDownloadCV = await axios({
         method: "GET",
@@ -581,7 +578,7 @@ const Recruiting = () => {
   const handleDownloadCF = async (idCandidato, nomeCandidato, cognomeCandidato, tipo) => {
     try {
       setLoadingCF(true);
-      const downloadUrl = `http://89.46.196.60:8443/files/download/cf/${idCandidato}`;
+      const downloadUrl = `http://localhost:8080/files/download/cf/${idCandidato}`;
       const params = new URLSearchParams({ tipo });
   
       const responseDownloadCF = await axios({
@@ -654,8 +651,8 @@ const openStato = Boolean(anchorElStato);
       const params = new URLSearchParams({ stato: idStato });
       try {
           const responseUpdateStato = await axios.post
-          // (`http://89.46.196.60:8443/keypeople/react/salva/stato/${idKeypeople}?${params.toString()}`, {}, { headers: headers });
-          (`http://89.46.196.60:8443/staffing/react/salva/stato/${idCandidato}?${params.toString()}`, {}, { headers: headers});
+          // (`http://localhost:8080/keypeople/react/salva/stato/${idKeypeople}?${params.toString()}`, {}, { headers: headers });
+          (`http://localhost:8080/staffing/react/salva/stato/${idCandidato}?${params.toString()}`, {}, { headers: headers});
           setModalCambiaStato(false);
           fetchData();
           handleOpenSnackbar(t('Stato aggiornato con successo!'), 'success');
