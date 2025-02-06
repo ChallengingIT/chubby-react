@@ -28,19 +28,35 @@ const Need = () => {
 
     
 
-    const [filtri, setFiltri] = useState(() => {
-        const filtriSalvati = sessionStorage.getItem('filtriRicercaNeed');
-        return filtriSalvati ? JSON.parse(filtriSalvati) : {
-            descrizione: null,
-            cliente: null,
-            tipologia: null,
-            stato: null,
-            owner: null,
-            keypeople: null,
-            skills: null,
-            location: null
-        };
-    });
+    const getInitialFilters = () => {
+        if (location.state?.fromDashboard) {
+            return {
+                descrizione: location.state.descrizione || null,
+                cliente: location.state.clienteId || null,
+                tipologia: null,
+                stato: null,
+                owner: null,
+                keypeople: null,
+                skills: null,
+                location: null
+            };
+        } else {
+            const filtriSalvati = sessionStorage.getItem('filtriRicercaNeed');
+            return filtriSalvati ? JSON.parse(filtriSalvati) : {
+                descrizione: null,
+                cliente: null,
+                tipologia: null,
+                stato: null,
+                owner: null,
+                keypeople: null,
+                skills: null,
+                location: null
+            };
+        }
+    };
+
+    const [filtri, setFiltri] = useState(getInitialFilters);
+    
 
     const quantita = 10;
 
@@ -232,14 +248,14 @@ const baseUrl = userHasRole('ADMIN')
         }
 
         const filtriDaInviare = {
-            descrizione: filtri.descrizione || null,
-            azienda: filtri.cliente || null,
-            tipologia: filtri.tipologia || null,
-            stato: filtri.stato || null,
-            owner: filtri.owner || null,
-            keypeople: filtri.keypeople || null,
+            descrizione:        filtri.descrizione          || null,
+            azienda:            filtri.cliente          || null,
+            tipologia:          filtri.tipologia || null,
+            stato:              filtri.stato || null,
+            owner:              filtri.owner || null,
+            keypeople:          filtri.keypeople || null,
             // skills: filtri.skills ? JSON.stringify(filtri.skills) : null,  
-            location: filtri.location || null,
+            location:           filtri.location || null,
             pagina: 0,
             quantita: quantita
         };
@@ -305,11 +321,7 @@ const baseUrl = userHasRole('ADMIN')
         }
     };
     
-    // const handleSearchClick = (event) => {
-    //     event.preventDefault();
-    //     event.stopPropagation();
-    //     handleRicerche(filtri);
-    // };
+
 
     const handleFilterChange = (name) => (event) => {
         const newValue = event.target.value;
@@ -321,79 +333,20 @@ const baseUrl = userHasRole('ADMIN')
     };
     
 
-    // const handleFilterChange = (name) => (event) => {
-    //     const newValue = event.target.value;
-    //     setFiltri(currentFilters => {
-    //         const newFilters = { ...currentFilters, [name]: newValue };
-
-    //         // Controllo se tutti i filtri sono vuoti
-    //         const areFiltersEmpty = Object.values(newFilters).every(value => value === null);
-    //         if (areFiltersEmpty) {
-    //             fetchData();
-    //         } else {
-    //             setPagina(0);
-    //             setFilteredNeed([]);
-    //             setHasMore(true);
-    //             handleRicerche();
-    //         }
-
-    //         return newFilters;
-    //     });
-    // };
-
-
-
-    // const handleFilterChange = (newFilters) => {
-    //     setFiltri(newFilters);
-    // };
-
-
-    // useEffect(() => {
-    //     if (location.state?.descrizione || location.state?.clienteId) {
-    //         const newFiltri = {
-    //             ...filtri,
-    //             descrizione: location.state.descrizione || filtri.descrizione,
-    //             azienda: location.state.clienteId || filtri.azienda
-    //         };
-    //         setFiltri(newFiltri);
-    //         handleRicerche(newFiltri);
-    //     } else {
-    //         const filtriSalvati = sessionStorage.getItem('filtriRicercaNeed');
-    //         if (filtriSalvati) {
-    //             const filtriParsed = JSON.parse(filtriSalvati);
-    //             setFiltri(filtriParsed);
-
-    //             const isAnyFilterSet = Object.values(filtriParsed).some(value => value);
-    //             if (isAnyFilterSet) {
-    //                 handleRicerche(filtriParsed);
-    //             } else {
-    //                 fetchData();
-    //             }
-    //         } else {
-    //             fetchData();
-    //         }
-    //     }
-    //     // eslint-disable-next-line
-    // }, [location.state]);
 
     useEffect(() => {
         const fetchDataBasedOnState = async () => {
             if (location.state?.fromDashboard) {
-                const newFiltri = {
-                    ...filtri,
-                    descrizione: location.state.descrizione || filtri.descrizione,
-                    cliente: location.state.clienteId || filtri.cliente,
-                };
-                setFiltri(newFiltri);
-                await handleRicerche(newFiltri);
+                sessionStorage.setItem('filtriRicercaNeed', JSON.stringify(filtri));
+                await handleRicerche(filtri);
             } else {
                 const filtriSalvati = sessionStorage.getItem('filtriRicercaNeed');
                 if (filtriSalvati) {
                     const filtriParsed = JSON.parse(filtriSalvati);
-                    setFiltri(filtriParsed);
-    
                     const isAnyFilterSet = Object.values(filtriParsed).some((value) => value);
+                    
                     if (isAnyFilterSet) {
+                        setFiltri(filtriParsed);
                         await handleRicerche(filtriParsed);
                     } else {
                         await fetchData();
@@ -406,7 +359,8 @@ const baseUrl = userHasRole('ADMIN')
     
         fetchDataBasedOnState();
         // eslint-disable-next-line
-    }, [location.state]);
+    }, []);
+    
 
     useEffect(() => {
         if (!location.state) {
@@ -415,25 +369,6 @@ const baseUrl = userHasRole('ADMIN')
         }
     }, [location.state]);
 
-    useEffect(() => {
-        if (location.state?.fromDashboard) {
-            const newFiltri = {
-                ...filtri,
-                descrizione: location.state.descrizione || filtri.descrizione,
-                cliente: location.state.clienteId || filtri.cliente,
-            };
-            setFiltri(newFiltri);  
-        }
-    }, [location.state]);  
-    
-    useEffect(() => {
-        if (filtri.descrizione || filtri.cliente) {
-            handleRicerche();  
-        }
-    }, [filtri]); 
-    
-    
-    
 
 
     useEffect(() => {

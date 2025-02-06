@@ -50,10 +50,6 @@ const ModificaNeedGrafica = () => {
 
 
 
-
-
-
-
     const user = JSON.parse(sessionStorage.getItem("user"));
     const token = user?.token;
 
@@ -420,9 +416,10 @@ const ModificaNeedGrafica = () => {
             { label: t("Note"),                       name: "note",                        type: "note", maxLength:4000                                                  },
             ];
 
-
         const initialValues = {
-            id:                         datiModifica?.id                                                 ,
+            id:                         datiModifica?.id                                                || null,
+            idAzienda:                  datiModifica?.cliente?.id                                                 ,
+            idAziendaInterna:           datiModifica?.aziendaInterna                                    || null,
             descrizione:                datiModifica?.descrizione                                        || null,
             idKeyPeople:                (datiModifica?.keyPeople && datiModifica?.keyPeople?.id)           || null,
             priorita:                   datiModifica?.priorita                                           || null,
@@ -441,6 +438,8 @@ const ModificaNeedGrafica = () => {
             screening:                  datiModifica?.screening                                          || null,
             note:                       datiModifica?.note                                               || null,        
             };
+        
+            
 
 
         //funzione per caricare i dati nei campi solo dopo aver terminato la chiamata
@@ -464,6 +463,8 @@ const ModificaNeedGrafica = () => {
                 setLoading(false);
             }
         }, [values]); 
+
+    
 
 
 
