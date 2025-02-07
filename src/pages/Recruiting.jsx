@@ -674,14 +674,7 @@ const openStato = Boolean(anchorElStato);
   
 
   const columns = [
-    {
-      field: "id",
-      headerName: "ID",
-      width: 20,
-      sortable: false,
-      filterable: false,
-      disableColumnMenu: true,
-    },
+
     {
       field: "nome",
       headerName: t("Nome"),

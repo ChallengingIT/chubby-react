@@ -837,6 +837,30 @@
     const tabellaStorico = [
         { field: "dataModifica", headerName: t("Data"), flex: 1, sortable: false, filterable: false, disableColumnMenu: true },
         {
+            field: "candidato",
+            headerName: t("Nome"),
+            flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
+            renderCell: (params) => (
+                <div style={{ textAlign: "left" }}>
+                <div onClick={() => navigateToCercaCandidato(params.row)}>
+                    {params.row.candidato
+                    ? `${params.row.candidato.nome} ${params.row.candidato.cognome}`
+                    : ""}
+                </div>
+                </div>
+            ),
+            },
+            {
+                field: "tipologia",
+                headerName: t("Job Title"),
+                flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
+                renderCell: (params) => (
+                    <div style={{ textAlign: "start" }}>
+                    {params.row.candidato && params.row.candidato.tipologia.descrizione}
+                    </div>
+                ),
+                },
+        {
         field: "tipo",
         headerName: t("Tipologia"),
         flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
@@ -845,30 +869,6 @@
             {params.row.candidato && params.row.candidato.tipo
                 ? params.row.candidato.tipo.descrizione
                 : "N/A"}
-            </div>
-        ),
-        },
-        {
-        field: "candidato",
-        headerName: t("Nome"),
-        flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
-        renderCell: (params) => (
-            <div style={{ textAlign: "left" }}>
-            <div onClick={() => navigateToCercaCandidato(params.row)}>
-                {params.row.candidato
-                ? `${params.row.candidato.nome} ${params.row.candidato.cognome}`
-                : ""}
-            </div>
-            </div>
-        ),
-        },
-        {
-        field: "tipologia",
-        headerName: t("Job Title"),
-        flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
-        renderCell: (params) => (
-            <div style={{ textAlign: "start" }}>
-            {params.row.candidato && params.row.candidato.tipologia.descrizione}
             </div>
         ),
         },
@@ -945,7 +945,6 @@
         //     </div>
         // ),
         },
-        { field: "email", headerName: "E-Mail", flex: 1.4, sortable: false, filterable: false, disableColumnMenu: true },
         {
         field: "tipologia",
         headerName: t("Job Title"),
