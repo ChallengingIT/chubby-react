@@ -853,13 +853,23 @@
             {
                 field: "tipologia",
                 headerName: t("Job Title"),
-                flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
+                flex: 1.5, sortable: false, filterable: false, disableColumnMenu: true,
                 renderCell: (params) => (
                     <div style={{ textAlign: "start" }}>
                     {params.row.candidato && params.row.candidato.tipologia.descrizione}
                     </div>
                 ),
                 },
+                {
+                    field: "rating",
+                    headerName: t("Rating"),
+                    flex: 0.7, sortable: false, filterable: false, disableColumnMenu: true,
+                    renderCell: (params) => (
+                        <div style={{ textAlign: "start" }}>
+                        {params.row?.candidato && params.row?.candidato?.rating}
+                        </div>
+                    ),
+                    },
         {
         field: "tipo",
         headerName: t("Tipologia"),
@@ -885,7 +895,7 @@
         {
         field: "owner",
         headerName: t("Owner"),
-        flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
+        flex: 0.5, sortable: false, filterable: false, disableColumnMenu: true,
         renderCell: (params) => (
             <div style={{ textAlign: "start" }}>
             {params.row.owner && params.row.owner.descrizione}

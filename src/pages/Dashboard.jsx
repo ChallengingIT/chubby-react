@@ -41,7 +41,8 @@ function Dashboard() {
                 descrizione: null,
                 azienda: null,
                 stato: null,
-                owner: null,
+                ownerBusiness: null,
+                ownerRecruiter: null,
                 priorita: null,
             };
     });
@@ -168,13 +169,13 @@ function Dashboard() {
             render: (row) => row.cliente?.denominazione || "Cliente non disponibile", 
         },
         {
-            field: "owner",
+            field: "ownerBusiness",
             headerName: "Owner Business",
             render: (row) => row.ownerBusiness || "Owner non disponibile", 
 
         },
         {
-            field: "owner",
+            field: "ownerRecruiter",
             headerName: "Owner Recruiter",
             render: (row) => row.ownerRecruiter || "Owner non disponibile", 
 

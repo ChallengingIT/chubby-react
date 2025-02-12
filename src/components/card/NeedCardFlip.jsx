@@ -14,7 +14,8 @@ import TrendingDownIcon                             from '@mui/icons-material/Tr
 import TrendingFlatIcon                             from '@mui/icons-material/TrendingFlat';
 import TrendingUpIcon                               from '@mui/icons-material/TrendingUp';
 import CallMadeIcon                                 from '@mui/icons-material/CallMade'; //priorità massima
-import AccountCircleIcon                            from '@mui/icons-material/AccountCircle'; //owner
+import AccountCircleIcon                            from '@mui/icons-material/AccountCircle'; //owner business
+import AccountCircleOutlinedIcon                    from '@mui/icons-material/AccountCircleOutlined'; //owner recruiter
 import { useTranslation }                           from "react-i18next"; 
 import { motion }                                   from "framer-motion"; 
 
@@ -345,7 +346,7 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
                     Owner Business: {valori?.ownerBusiness?.descrizione}
             </Typography>
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
-                    <AccountCircleIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
+                    <AccountCircleOutlinedIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
                     Owner Recruiter: {valori?.ownerRecruiter?.descrizione}
             </Typography>
                 </Box>
