@@ -20,12 +20,15 @@ const TabellaAttivitaRecruiting = ({ data = [] }) => {
     const [editableColumns, setEditableColumns] = useState({
         azione: false,
         owner: false,
-        candidato: false
+        candidato: false,
+        need: false
     });
 
     const azioneInputRef = useRef(null);
     const ownerInputRef = useRef(null);
     const candidatoInputRef = useRef(null);
+    const needInputRef = useRef(null);
+
 
     useEffect(() => {
         const initializedData = data.map(item => ({
@@ -154,6 +157,32 @@ const TabellaAttivitaRecruiting = ({ data = [] }) => {
                                 <span onClick={() => handleColumnClick('candidato')} style={{ cursor: 'pointer' }}>{t('Candidato')}</span>
                             )}
                         </TableCell>
+
+                         {/* Colonna Need */}
+                        <TableCell style={cellStyle} sx={{ color: '#808080', fontWeight: 'bold' }}>
+                            {editableColumns.need ? (
+                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <TextField
+                                        variant="standard"
+                                        value={filters.need}
+                                        onChange={(e) => handleFilterChange('need', e.target.value)}
+                                        placeholder={t('Filtra per need')}
+                                        fullWidth
+                                        inputRef={needInputRef}
+                                    />
+                                    <IconButton onClick={() => handleColumnClose('need')}>
+                                        <CloseIcon />
+                                    </IconButton>
+                                </div>
+                            ) : (
+                                <span onClick={() => handleColumnClick('need')} style={{ cursor: 'pointer' }}>{t('Need')}</span>
+                            )}
+                        </TableCell>
+
+
+
+
+
                     </TableRow>
                 </TableHead>
                 <TableBody>

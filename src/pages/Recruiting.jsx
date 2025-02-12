@@ -60,6 +60,8 @@ const Recruiting = () => {
   const [ alert,               setAlert             ] = useState(false);
   const [values,               setValues            ] = useState({});
   const [skillsOptions,      setSkillsOptions        ] = useState([]);
+  const [hasFetched, setHasFetched] = useState(false);
+
 
 
 
@@ -82,7 +84,12 @@ const Recruiting = () => {
 
 
   //stati per la paginazione
-  const [pagina, setPagina] = useState(""); //da vedere meglio il fatto del ritornare alla pagina che si era lasciata
+  // const [pagina, setPagina] = useState(""); //da vedere meglio il fatto del ritornare alla pagina che si era lasciata
+  const [pagina, setPagina] = useState(() => {
+    const paginaSalvata = sessionStorage.getItem("paginaRecruiting");
+    return paginaSalvata ? parseInt(paginaSalvata, 10) : 0; 
+});
+
   
   const quantita = 10;
 
@@ -132,7 +139,7 @@ const Recruiting = () => {
     Authorization: `Bearer ${token}`,
   };
 
-  const fetchData = async () => {
+  const fetchData = async (paginaCorrente = pagina) => {
     setLoading(true);
 
     const filtriDaInviare = {
@@ -144,7 +151,7 @@ const Recruiting = () => {
       stato: null,
       skills: null,
       location: null,
-      pagina: pagina,
+      pagina: paginaCorrente,
       quantita: 10,
     };
 
@@ -232,9 +239,7 @@ const Recruiting = () => {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, [pagina]); 
+
   
 
 
@@ -256,29 +261,31 @@ const Recruiting = () => {
   //   // eslint-disable-next-line
   // }, []);
 
-
   useEffect(() => {
+    if (hasFetched) return; 
+
     const filtriSalvati = sessionStorage.getItem("filtriRicercaRecruiting");
     const paginaSalvata = sessionStorage.getItem("paginaRecruiting");
-    const paginaDaUsare = paginaSalvata ? parseInt(paginaSalvata, 10) : 0; // Recupera la pagina giusta
-  
-    setPagina(paginaDaUsare); // Aggiorna lo stato di pagina con il valore giusto
-  
+    const paginaDaUsare = paginaSalvata ? parseInt(paginaSalvata, 10) : 0;
+
+    setPagina(paginaDaUsare);
+
     if (filtriSalvati) {
-      const filtriParsed = JSON.parse(filtriSalvati);
-      setFiltri(filtriParsed);
-  
-      const isAnyFilterSet = Object.values(filtriParsed).some((value) => value);
-      if (isAnyFilterSet) {
-        handleRicerche();
-      } else {
-        fetchData(paginaDaUsare);  // Usa il valore corretto di pagina
-      }
+        const filtriParsed = JSON.parse(filtriSalvati);
+        setFiltri(filtriParsed);
+        
+        if (Object.values(filtriParsed).some(value => value)) {
+            handleRicerche(filtriParsed, paginaDaUsare);
+        } else {
+            fetchData(paginaDaUsare);
+        }
     } else {
-      fetchData(paginaDaUsare);  // Usa il valore corretto di pagina
+        fetchData(paginaDaUsare);
     }
-  }, []);
-  
+
+    setHasFetched(true); 
+}, [hasFetched]);
+
 
   //funzione per la paginazione
   const fetchMoreData = async (newPage, currentFilters) => {
@@ -336,8 +343,15 @@ const Recruiting = () => {
   const handlePageChange = (newPage) => {
     setPagina(newPage);
     sessionStorage.setItem("paginaRecruiting", newPage);
-    fetchMoreData(newPage, filtri);
-  };
+
+    if (Object.values(filtri).some(value => value)) {
+        handleRicerche(filtri, newPage);
+    } else {
+        fetchData(newPage);
+    }
+};
+
+
   
 
   const openDeleteDialog = (id) => {
@@ -497,35 +511,35 @@ const Recruiting = () => {
     }
     // }
   };
-
   const handleFilterChange = (name) => (event) => {
     const newValue = event.target.value;
     
     setFiltri((currentFilters) => {
-      
-      const newFilters = { ...currentFilters, [name]: newValue };
-      
-      setPagina(0);
-      return newFilters;
+        const newFilters = { ...currentFilters, [name]: newValue };
+        sessionStorage.setItem("filtriRicercaRecruiting", JSON.stringify(newFilters));
+        return newFilters;
     });
-  };
+};
 
-  const handleReset = () => {
-    setFiltri({
+
+const handleReset = () => {
+  setFiltri({
       nome: "",
       cognome: "",
       tipo: null,
       tipologia: null,
       stato: null,
       location: "",
-      skills: null,
+      skills: null
+  });
 
-    });
-    sessionStorage.removeItem("RicercheRecruiting");
-    setPagina(0);
+  sessionStorage.removeItem("filtriRicercaRecruiting");
+  sessionStorage.removeItem("paginaRecruiting");
+  setPagina(0);
 
-    fetchData();
-  };
+  fetchData(0);
+};
+
 
   const handleDownloadCV = async (idFile, fileDescrizione) => {
     const url = `http://localhost:8080/files/react/download/file/${idFile}`;

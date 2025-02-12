@@ -870,18 +870,7 @@
                         </div>
                     ),
                     },
-        {
-        field: "tipo",
-        headerName: t("Tipologia"),
-        flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
-        renderCell: (params) => (
-            <div style={{ textAlign: "start" }}>
-            {params.row.candidato && params.row.candidato.tipo
-                ? params.row.candidato.tipo.descrizione
-                : "N/A"}
-            </div>
-        ),
-        },
+
         {
         field: "stato",
         headerName: t("Stato"),
@@ -892,6 +881,18 @@
             </div>
         ),
         },
+        {
+            field: "tipo",
+            headerName: t("Tipologia"),
+            flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
+            renderCell: (params) => (
+                <div style={{ textAlign: "start" }}>
+                {params.row.candidato && params.row.candidato.tipo
+                    ? params.row.candidato.tipo.descrizione
+                    : "N/A"}
+                </div>
+            ),
+            },
         {
         field: "owner",
         headerName: t("Owner"),

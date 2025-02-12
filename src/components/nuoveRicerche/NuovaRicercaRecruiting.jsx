@@ -16,6 +16,7 @@
     Autocomplete,
     } from "@mui/material";
 import CustomMultipleAutocomplete from "../fields/CustomMultipleAutocomplete";
+import FilterMultipleAutocomplete from "../fields/FilterMultipleAutocomplete";
 
     function NuovaRicercaRecruiting({
     filtri,
@@ -39,12 +40,29 @@ import CustomMultipleAutocomplete from "../fields/CustomMultipleAutocomplete";
 
     
 
+    // const handleClickReset = () => {
+    //     onReset();
+    //     setLocalFiltri({ ...filtri });
+    //     setIsRotated(true);
+    //     setTimeout(() => setIsRotated(false), 500);
+    // };
+
     const handleClickReset = () => {
-        onReset();
-        setLocalFiltri({ ...filtri });
+        onReset(); 
+        setLocalFiltri({
+            nome: "",
+            cognome: "",
+            tipo: null,
+            tipologia: null,
+            stato: null,
+            location: "",
+            skills: [],  
+        });
+    
         setIsRotated(true);
         setTimeout(() => setIsRotated(false), 500);
     };
+    
 
         // Varianti di animazione per far spuntare il box
         const boxVariants = {
@@ -383,18 +401,20 @@ import CustomMultipleAutocomplete from "../fields/CustomMultipleAutocomplete";
 </FormControl> */}
 
 
-                <FormControl fullWidth sx={{ mb: 0.2 }}>
-                <CustomMultipleAutocomplete
-                    name="skills"
-                    label={t("Skills")}
-                    skillsOptions={skillsOptions}
-                    onChange={(newValue) => {
-                    onFilterChange("skills")({
-                        target: { value: newValue.skills || [] },
-                    });
-                    }}
-                />
-                </FormControl>
+<FormControl fullWidth sx={{ mb: 0.2 }}>
+    <FilterMultipleAutocomplete
+        name="skills"
+        label={t("Skills")}
+        skillsOptions={skillsOptions}
+        value={filtri.skills || []} 
+        onChange={(newValue) => {
+            onFilterChange("skills")({
+                target: { value: newValue.skills || [] },
+            });
+        }}
+    />
+</FormControl>
+
 
 
 
