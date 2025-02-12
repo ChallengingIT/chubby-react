@@ -19,6 +19,7 @@ const theme = useUserTheme();
 
 const [selectedSkills, setSelectedSkills] = useState([]);
 
+
 const handleChangeSkills = (event) => {
     const value = event.target.value;
     setSelectedSkills(value);
@@ -43,6 +44,7 @@ return (
         value={selectedSkills}
         variant="outlined"
         onChange={handleChangeSkills}
+        MenuProps={{ disableAutoFocusItem: true }}
         sx={{
         m: 0,
         width: "100%",

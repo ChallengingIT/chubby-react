@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import axios from "axios";
 import { useUserTheme } from "../TorchyThemeProvider";
 import { useTranslation } from 'react-i18next';
-import CustomMultipleAutocomplete from "../fields/CustomMultipleAutocomplete";
 import { motion } from "framer-motion";
 import {
     Box,
@@ -14,6 +12,7 @@ import {
     Autocomplete,
     Container
 } from "@mui/material";
+import FilterMultipleAutocomplete from "../fields/FilterMultipleAutocomplete";
 
 function NuovaRicercaNeed({
     filtri,
@@ -405,19 +404,21 @@ function NuovaRicercaNeed({
                     />
                 </FormControl>
 
-
                 <FormControl fullWidth sx={{ mb: 0.2 }}>
-                <CustomMultipleAutocomplete
-                    name="skills"
-                    label={t("Skills")}
-                    skillsOptions={skillsOptions}
-                    onChange={(newValue) => {
-                    onFilterChange("skills")({
-                        target: { value: newValue.skills || null },
-                    });
-                    }}
-                />
-                </FormControl>
+    <FilterMultipleAutocomplete
+        name="skills"
+        label={t("Skills")}
+        skillsOptions={skillsOptions}
+        value={filtri.skills || []} 
+        onChange={(newValue) => {
+            onFilterChange("skills")({
+                target: { value: newValue.skills || [] },
+            });
+        }}
+    />
+</FormControl>
+
+
 
 
                 {/* <FormControl fullWidth sx={{ mb: 0.2 }}>

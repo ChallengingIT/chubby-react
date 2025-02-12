@@ -837,41 +837,40 @@
     const tabellaStorico = [
         { field: "dataModifica", headerName: t("Data"), flex: 1, sortable: false, filterable: false, disableColumnMenu: true },
         {
-        field: "tipo",
-        headerName: t("Tipologia"),
-        flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
-        renderCell: (params) => (
-            <div style={{ textAlign: "start" }}>
-            {params.row.candidato && params.row.candidato.tipo
-                ? params.row.candidato.tipo.descrizione
-                : "N/A"}
-            </div>
-        ),
-        },
-        {
-        field: "candidato",
-        headerName: t("Nome"),
-        flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
-        renderCell: (params) => (
-            <div style={{ textAlign: "left" }}>
-            <div onClick={() => navigateToCercaCandidato(params.row)}>
-                {params.row.candidato
-                ? `${params.row.candidato.nome} ${params.row.candidato.cognome}`
-                : ""}
-            </div>
-            </div>
-        ),
-        },
-        {
-        field: "tipologia",
-        headerName: t("Job Title"),
-        flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
-        renderCell: (params) => (
-            <div style={{ textAlign: "start" }}>
-            {params.row.candidato && params.row.candidato.tipologia.descrizione}
-            </div>
-        ),
-        },
+            field: "candidato",
+            headerName: t("Nome"),
+            flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
+            renderCell: (params) => (
+                <div style={{ textAlign: "left" }}>
+                <div onClick={() => navigateToCercaCandidato(params.row)}>
+                    {params.row.candidato
+                    ? `${params.row.candidato.nome} ${params.row.candidato.cognome}`
+                    : ""}
+                </div>
+                </div>
+            ),
+            },
+            {
+                field: "tipologia",
+                headerName: t("Job Title"),
+                flex: 1.5, sortable: false, filterable: false, disableColumnMenu: true,
+                renderCell: (params) => (
+                    <div style={{ textAlign: "start" }}>
+                    {params.row.candidato && params.row.candidato.tipologia.descrizione}
+                    </div>
+                ),
+                },
+                {
+                    field: "rating",
+                    headerName: t("Rating"),
+                    flex: 0.7, sortable: false, filterable: false, disableColumnMenu: true,
+                    renderCell: (params) => (
+                        <div style={{ textAlign: "start" }}>
+                        {params.row?.candidato && params.row?.candidato?.rating}
+                        </div>
+                    ),
+                    },
+
         {
         field: "stato",
         headerName: t("Stato"),
@@ -883,9 +882,21 @@
         ),
         },
         {
+            field: "tipo",
+            headerName: t("Tipologia"),
+            flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
+            renderCell: (params) => (
+                <div style={{ textAlign: "start" }}>
+                {params.row.candidato && params.row.candidato.tipo
+                    ? params.row.candidato.tipo.descrizione
+                    : "N/A"}
+                </div>
+            ),
+            },
+        {
         field: "owner",
         headerName: t("Owner"),
-        flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
+        flex: 0.5, sortable: false, filterable: false, disableColumnMenu: true,
         renderCell: (params) => (
             <div style={{ textAlign: "start" }}>
             {params.row.owner && params.row.owner.descrizione}
@@ -945,7 +956,6 @@
         //     </div>
         // ),
         },
-        { field: "email", headerName: "E-Mail", flex: 1.4, sortable: false, filterable: false, disableColumnMenu: true },
         {
         field: "tipologia",
         headerName: t("Job Title"),

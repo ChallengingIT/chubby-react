@@ -49,7 +49,7 @@
     const isBusinessUser = userHasRole('BUSINESS');
 
     return (
-        <Container maxWidth="false"
+        <Container maxWidth="xl"
         sx={{
             display: "flex",
             backgroundColor: "#EEEDEE",
@@ -57,7 +57,7 @@
             width: "100vw",
         }}
         >
-        {!isBusinessUser && (
+        {/* {!isBusinessUser && (
             <Fab 
             aria-label="add"
             size="small" 
@@ -77,7 +77,7 @@
                         transition: 'transform 0.3s ease',
                     }} />
                 </Fab>
-                )}
+                )} */}
                 <Popover
                 open={Boolean(anchorEl) && showChat}
                 anchorEl={anchorEl}
@@ -106,10 +106,10 @@
             flexGrow: 1,
             flexDirection: 'column',
             pt: 3,
-            marginLeft: isSmallScreen ? "3.5em" : "12.8em",
+            marginLeft: isSmallScreen ? "3.5em" : "11em",
             // marginTop: "0.5em",
+            marginRight: "-0.8em",
             marginBottom: "0.8em",
-            marginRight: "0.8em",
             backgroundColor: "#FEFCFD",
             borderRadius: "20px",
             minHeight: "97vh",
