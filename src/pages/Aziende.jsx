@@ -15,6 +15,8 @@ const Aziende = () => {
     const [originalAziende, setOriginalAziende] = useState([]);
     const [filteredAziende, setFilteredAziende] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [clienteOptions, setClienteOptions] = useState([]);
+    
 
     //stati ricerche
     const [ownerOptions, setOwnerOptions] = useState([]);
@@ -34,7 +36,7 @@ const Aziende = () => {
             return filtriParsed;
         }
         return {
-            denominazione: null,
+            azienda: null,
             tipologia: null,
             stato: null,
             owner: null,
@@ -63,7 +65,7 @@ const Aziende = () => {
     const fetchData = async (reset = false) => {
         setLoading(true);
         const filtriDaInviare = {
-            ragione: filtri.denominazione || null,
+            azienda: filtri.azienda || null,
             tipologia: filtri.tipologia || null,
             owner: filtri.owner || null,
             stato: filtri.stato || null,
@@ -87,6 +89,16 @@ const Aziende = () => {
                 headers: headers,
                 params: filtriDaInviare,
             });
+
+            const responseCliente = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
+
+
+            if (Array.isArray(responseCliente.data)) {
+                setClienteOptions(responseCliente.data.map((cliente) => ({ label: cliente.denominazione, value: cliente.id })));
+            } else {
+                console.error("I dati degli stati ottenuti non sono nel formato Array:", responseCliente.data);
+            }
+
 
             const responseOwner = await axios.get(
                 "http://localhost:8080/owner",
@@ -258,6 +270,15 @@ const Aziende = () => {
                 { headers }
             );
 
+            const responseCliente = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
+
+            if (Array.isArray(responseCliente.data)) {
+                setClienteOptions(responseCliente.data.map((cliente) => ({ label: cliente.denominazione, value: cliente.id })));
+            } else {
+                console.error("I dati dei clienti in ricerca ottenuti non sono nel formato Array:", responseCliente.data);
+            }
+
+
             if (Array.isArray(responseOwner.data)) {
                 setOwnerOptions(
                     responseOwner.data.map((owner) => ({
@@ -303,7 +324,7 @@ const Aziende = () => {
 
     const handleReset = async () => {
         setFiltri({
-            denominazione: "",
+            azienda: "",
             stato: null,
             owner: null,
             tipologia: null,
@@ -374,6 +395,8 @@ const Aziende = () => {
                     statoOptions={statoOptions}
                     ownerOptions={ownerOptions}
                     idaOptions={idaOptions}
+                    aziendaOptions={clienteOptions}
+
                 />
             </Box>
             <InfiniteScroll
