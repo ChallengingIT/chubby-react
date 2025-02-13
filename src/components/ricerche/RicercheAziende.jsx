@@ -25,6 +25,7 @@
     tipologiaOptions,
     ownerOptions,
     idaOptions,
+    aziendaOptions
     }) {
     const navigate = useNavigate();
 
@@ -96,50 +97,50 @@
             + Aggiungi Azienda
         </Button>
 
-        <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
+    <FormControl fullWidth sx={{ mb: 2 }}>
+        <Autocomplete
+            id="azienda-combo-box"
+            options={aziendaOptions}
+            getOptionLabel={(option) => option.label}
+                          value={
+            aziendaOptions.find(
+                (option) => option.value === filtri.azienda
+            ) || null
+            }
+            onChange={(event, newValue) => {
+            onFilterChange("azienda")({
+                target: { value: newValue?.value || null },
+            });
+            }}
+            renderInput={(params) => (
             <TextField
-            id="search-bar"
-            variant="outlined"
-            placeholder="Cerca Azienda"
-            size="small"
-            value={filtri.denominazione || ""}
-            onChange={onFilterChange("denominazione")}
-            onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                event.preventDefault();
-                onSearch();
-                }
-            }}
-            InputProps={{
-                startAdornment: (
-                <InputAdornment position="start">
-                    <SearchIcon
-                    sx={{
-                        color: theme.palette.icon.main,
-                    }}
-                    />
-                </InputAdornment>
-                ),
-            }}
-            sx={{
-                width: "25em",
-                mb: 0.5,
-                "& .MuiOutlinedInput-root": {
-                borderRadius: "0px",
-                "& fieldset": {
-                    borderColor: theme.palette.border.main,
-                    borderRadius: "4px 0 0 4px",
+                {...params}
+                label="Azienda"
+                variant="filled"
+                sx={{
+                textAlign: "left",
+                borderRadius: "20px",
+                backgroundColor: "#EDEDED",
+                "& .MuiFilledInput-root": {
+                    backgroundColor: "transparent",
                 },
-                "&:hover fieldset": {
-                    borderColor: theme.palette.border.mainHover,
+                "& .MuiFilledInput-underline:after": {
+                    borderBottomColor: "transparent",
                 },
-                "&.Mui-focused fieldset": {
-                    borderColor: theme.palette.border.mainHover,
+                "& .MuiFilledInput-root::before": {
+                    borderBottom: "none",
                 },
+                "&:hover .MuiFilledInput-root::before": {
+                    borderBottom: "none",
                 },
-            }}
+                "& .MuiFormLabel-root.Mui-focused": {
+                    color: theme.palette.border.main,
+                },
+                }}
             />
-        </Box>
+            )}
+        />
+        </FormControl>
         <Button
             variant="contained"
             onClick={handleOpenFiltri}

@@ -21,6 +21,7 @@ function NuovaRicercaAziende({
     tipologiaOptions,
     ownerOptions,
     idaOptions,
+    aziendaOptions
 }) {
     const theme = useUserTheme();
     const { t } = useTranslation();
@@ -84,40 +85,45 @@ function NuovaRicercaAziende({
                 }}
             >
                 <FormControl fullWidth sx={{ mb: 0.2 }}>
-                    <TextField
-                        id="search-bar"
-                        variant="filled"
-                        label={t('Cerca Azienda')} 
-                        value={filtri.denominazione || ""}
-                        onChange={handleInputChange("denominazione")}
-                        onKeyDown={(event) => {
-                            if (event.key === "Enter") {
-                                event.preventDefault();
-                                onSearch();
-                            }
-                        }}
-                        sx={{
-                            textAlign: "left",
-                            borderRadius: "20px",
-                            border: 'solid 1px #00B400',
-                            bgcolor: 'white',
-                            boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
-                            "& .MuiFilledInput-root": {
-                                backgroundColor: "transparent",
-                            },
-                            "& .MuiFilledInput-underline:after": {
-                                borderBottomColor: "transparent",
-                            },
-                            "& .MuiFilledInput-root::before": {
-                                borderBottom: "none",
-                            },
-                            "&:hover .MuiFilledInput-root::before": {
-                                borderBottom: "none",
-                            },
-                            "& .MuiFormLabel-root.Mui-focused": {
-                                color: theme.palette.border.main,
-                            },
-                        }}
+                    <Autocomplete
+                        id="aziende-combo-box"
+                        options={aziendaOptions}
+                        getOptionLabel={(option) => option.label}
+                        value={
+                            aziendaOptions.find(
+                                (option) => option.value === filtri.azienda
+                            ) || null
+                        }
+                        onChange={handleAutocompleteChange("azienda")}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                label={t("Aziende")}
+                                variant="filled"
+                                sx={{
+                                    textAlign: "left",
+                                    borderRadius: "20px",
+                                    border: 'solid 1px #00B400',
+                                    bgcolor: 'white',
+                                    boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
+                                    "& .MuiFilledInput-root": {
+                                        backgroundColor: "transparent",
+                                    },
+                                    "& .MuiFilledInput-underline:after": {
+                                        borderBottomColor: "transparent",
+                                    },
+                                    "& .MuiFilledInput-root::before": {
+                                        borderBottom: "none",
+                                    },
+                                    "&:hover .MuiFilledInput-root::before": {
+                                        borderBottom: "none",
+                                    },
+                                    "& .MuiFormLabel-root.Mui-focused": {
+                                        color: theme.palette.border.main,
+                                    },
+                                }}
+                            />
+                        )}
                     />
                 </FormControl>
             
