@@ -63,7 +63,7 @@
   },
   "proxy": "http://89.46.196.60:8443",
   "scripts": {
-    "start": "react-scripts start",
+    "start": "set PORT=80 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
