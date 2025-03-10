@@ -19,7 +19,7 @@ import { useTranslation }                   from "react-i18next";
 import { motion }                           from "framer-motion"; 
 
 
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Alert, Stack, Pagination, Popover, Slide } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Alert, Stack, Pagination, Popover, Slide, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { 
     Card, 
     CardContent, 
@@ -722,38 +722,42 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
 
 
             { /* MODAL PER LE AZIONI COMMERCIALI */ }
-                <Modal
-                    open={modalStorico}
-                    onClose={() => setModalStorico(false)}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                    sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    minHeight: '80vh'
-                    }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: 'white', borderRadius: '20px', overflow: 'hidden', border: 'solid 2.2px #00B400' }}>
-                    <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', p: 3, }}>
-                        <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', mt: 0.5, mb: 0.5 }}>{t('Storico Delle Azioni')}</Typography>
-                        <IconButton sx={{
-                        mr: 2,
-                        backgroundColor: 'transparent',
-                        border: 'none',
-                        '&:hover': {
-                            backgroundColor: 'transparent'
-                        }
-                        }} onClick={() => setModalStorico(false)}>
-                        <CloseIcon sx={{
-                            backgroundColor: 'transparent',
-                            '&:hover': {
-                            color: 'red',
-                            backgroundColor: 'transparent',
-                            }
-                        }} />
-                        </IconButton>
-                    </Box>
-                    <TableContainer component={Paper} sx={{ maxHeight: '300px', overflow: 'auto' }}>
+
+<Dialog
+    open={modalStorico}
+    onClose={() => setModalStorico(false)}
+    fullWidth
+    maxWidth="md"
+    sx={{ 
+        '& .MuiDialog-paper': { 
+            maxHeight: '80vh', 
+            overflowY: 'auto', 
+            borderRadius: '20px', 
+            border: 'solid 2.2px #00B400',
+        '&::-webkit-scrollbar': { 
+            display: 'none'
+         }, // Nascondere la scrollbar su Chrome, Safari, Opera
+        scrollbarWidth: 'none', // Nascondere la scrollbar su Firefox
+        msOverflowStyle: 'none' // Nascondere la scrollbar su IE e Edge
+    } }}
+>
+    <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography sx={{ fontWeight: '600', fontSize: '1.5em' }}>{t('Storico Delle Azioni')}</Typography>
+        <IconButton onClick={() => setModalStorico(false)}>
+            <CloseIcon sx={{ '&:hover': { color: 'red' } }} />
+        </IconButton>
+    </DialogTitle>
+    <DialogContent dividers>
+    <TableContainer component={Paper} 
+    sx={{ 
+        maxHeight: '300px', 
+        overflow: 'auto',
+        '&::-webkit-scrollbar': { 
+            display: 'none' 
+        },
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none'
+    }}>
                         <Table stickyHeader>
                         <TableHead>
                             <TableRow>
@@ -775,7 +779,7 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                         </TableBody>
                         </Table>
                     </TableContainer>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', p: 2, backgroundColor: 'white', borderTop: 'solid 1px #E0E0E0' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', p: 2, backgroundColor: 'white', borderTop: 'solid 1px #E0E0E0' }}>
                         <TextField
                         label={t("Seleziona Data")}
                         type="datetime-local"
@@ -882,32 +886,25 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                 onChange={(event) => handleValueChange('note', event.target.value)}
             />
         </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'center', minWidth: '10em', alignItems: 'center', p: 3 }}>
-
-                        <Button
-                        onClick={() => handleAzioniSubmit(valori.id)}
-                        sx={{ 
-                            display: 'flex', 
-                            justifyContent: 'space-between', 
-                            gap: 2, 
-                            alignItems: 'center', 
-                            bgcolor: '#00B400', color: 'white', p: 1, 
-                            pl: 1, 
-                            pr: 2, 
-                            borderRadius: '10px',
-                            boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.1)",
-                            '&:hover': {
-                                bgcolor: '#00B400',
-                                transform: 'scale(1.02)'
-                            }
-                        }}
-                        >
-                        <AddCircleIcon sx={{ color: 'white'}} />
-                        AGGIUNGI
-                        </Button>
-                        </Box>
-                    </Box>
-                </Modal>
+    </DialogContent>
+    <DialogActions sx={{ justifyContent: 'center', paddingBottom: '16px' }}>
+        <Button
+            onClick={() => handleAzioniSubmit(valori.id)}
+            sx={{
+                display: 'flex',
+                alignItems: 'center',
+                bgcolor: '#00B400',
+                color: 'white',
+                p: 1,
+                borderRadius: '10px',
+                '&:hover': { bgcolor: '#00B400', transform: 'scale(1.02)' }
+            }}
+        >
+            <AddCircleIcon sx={{ color: 'white', mr: 1 }} />
+            {t('AGGIUNGI')}
+        </Button>
+    </DialogActions>
+</Dialog>
 
                 { /* MODAL DELLE AZIONI */ }
                 {/* <Modal
