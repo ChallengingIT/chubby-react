@@ -159,7 +159,7 @@ function Dashboard() {
 
     const columns = [
         {
-            field: 'azienda',
+            field: 'aziendaInterna',
             headerName: "Azienda",
             render: (row) => row.aziendaInterna || "Azienda non disponibile", 
         },
