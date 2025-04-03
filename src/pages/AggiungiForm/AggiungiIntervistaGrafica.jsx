@@ -406,7 +406,7 @@
         cognome:                     candidato.cognome                               || null,
         dataNascita:                 candidato.dataNascita                           || null,
         location:                    candidato.citta                                 || null,
-        // tipologia:                   candidato.tipologia?.descrizione                || null,
+        tipologia:                   candidato.tipologia?.descrizione                || null,
         anniEsperienza:              candidato.anniEsperienza                        || null,
         cellulare:                   candidato.cellulare                             || null,
         idOwner:                     interviste.owner?.id                            || null,
