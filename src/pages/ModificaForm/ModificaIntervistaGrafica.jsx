@@ -372,7 +372,7 @@ const ModificaIntervistaGrafica = () => {
         cognome: candidatoData.cognome || null,
         dataNascita: candidatoData.dataNascita || null,
         location: candidatoData.citta || null,
-        // tipologia: candidatoData.tipologia?.descrizione || null,
+        tipologia: candidatoData.tipologia?.descrizione || null,
         anniEsperienza: candidatoData.anniEsperienza || null,
         dataColloquio: rowData.dataColloquio || null,
         cellulare: candidatoData.cellulare || null,
