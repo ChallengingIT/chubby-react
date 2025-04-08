@@ -301,9 +301,8 @@
             if (!campiObbligatori.includes(key) && !values[key]) {
                 values[key] = null;
             }
-            });
+            });            
 
-            const note = values.note;
             const modifica = 0;
             const response = await axios.post(
             "http://89.46.196.60:8443/intervista/react/salva",
@@ -311,7 +310,6 @@
             {
                 params: {
                 idCandidato: candidatoID,
-                note: note,
                 modifica: modifica,
                 },
                 headers: headers,

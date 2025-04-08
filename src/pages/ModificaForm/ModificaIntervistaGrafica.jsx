@@ -286,14 +286,11 @@ const ModificaIntervistaGrafica = () => {
                 });
 
                 const transformedValues = replaceKeysInValues(values, fieldMapping);
-
-
-                const note = values.note;
+                
                 const modifica = 1;
                 const response = await axios.post("http://89.46.196.60:8443/intervista/react/salva", transformedValues, {
                     params: {
                         idCandidato: candidatoID,
-                        note: note,
                         modifica: modifica
                     },
                     headers: headers
