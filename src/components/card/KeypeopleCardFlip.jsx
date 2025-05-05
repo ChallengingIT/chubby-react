@@ -475,22 +475,22 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
                 width: '100%' 
                 }}
             >
-                {valori.nome} {valori.cognome}
+                {valori?.nome} {valori?.cognome}
             </Typography>
 
             <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
                 <BusinessIcon sx={{ color: '#00B401', mr: 1 }} />
-                {valori.cliente.denominazione}
+                {valori?.cliente?.denominazione}
             </Typography>
 
             <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
                 <BusinessCenterIcon sx={{ color: '#00B401', mr: 1 }} />
-                {valori.ruolo}
+                {valori?.ruolo}
             </Typography>
 
             <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
                 <PermContactCalendarIcon sx={{ color: '#00B401', mr: 1 }} />
-                {tipoConverter(valori.tipo)}
+                {tipoConverter(valori?.tipo)}
             </Typography>
 
             <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
@@ -500,12 +500,12 @@ const KeypeopleCardFlip = ({valori, statiOptions, onDelete, onRefresh, isFirstCa
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1 }}>
                     <EmailIcon sx={{ color: '#00B401', mr: 1 }} />
-                    {valori.email}
+                    {valori?.email}
             </Typography>
 
             <Typography variant='body2' color='text.secondary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1}}>
                 <LocalPhoneIcon sx={{ color: '#00B401', mr: 1}} />
-                {valori.cellulare}
+                {valori?.cellulare}
             </Typography>
                 </Box>
                 <Box sx={{ 

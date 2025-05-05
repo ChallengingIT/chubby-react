@@ -4,20 +4,34 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import NeedCardFlip from '../components/card/NeedCardFlip';
 import SchemePage from '../components/SchemePage.jsx';
 import { useLocation } from 'react-router-dom';
+import Tabella from '../components/Tabella';
+
 import {
     Box,
     CircularProgress,
     Grid,
     Skeleton,
+    Tabs,
+    Tab
 } from '@mui/material';
 import NuovaRicercaNeed from '../components/nuoveRicerche/NuovaRicercaNeed.jsx';
+import { useTranslation }                   from "react-i18next"; 
+
 
 const Need = () => {
+
+    const { t } = useTranslation(); 
+    
     const location = useLocation();
     const [originalNeed, setOriginalNeed] = useState([]);
     const [filteredNeed, setFilteredNeed] = useState([]);
     const [loading, setLoading] = useState(false);
     const [recordTot, setRecordTot] = useState(0);
+    const [viewMode, setViewMode] = useState('cards');
+    const [selectedNeed, setSelectedNeed] = useState(null);
+    const [righeTot, setRigheTot] = useState(0);
+    
+    
 
     //stati per le ricerche
     const [tipologiaOptions, setTipologiaOptions] = useState([]);
@@ -414,8 +428,122 @@ const baseUrl = userHasRole('ADMIN')
         setFiltri(prev => ({ ...prev, keypeople: contattoId }));
     };
 
+
+    const handlePageChange = (newPage) => {
+        setPagina(newPage);
+        sessionStorage.setItem("paginaRecruiting", newPage);
+    
+        if (Object.values(filtri).some(value => value)) {
+            handleRicerche(filtri, newPage);
+        } else {
+            fetchData(newPage);
+        }
+    };
+
+
+    const columns = [
+        {
+            field: "descrizione",
+            headerName: "Descrizione",
+            flex: 1.3,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+        },
+        {
+            field: "progressivo",
+            headerName: t("#Numero"),
+            flex: 1,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            },
+        {
+            field: "location",
+            headerName: t("Location"),
+            flex: 1,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+        },
+        {
+            field: "tipologia",
+            headerName: t("Tipologia"),
+            flex: 0.6,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            renderCell: (params) => (
+            <div style={{ textAlign: "start" }}>
+                {params.row?.tipologia && params.row?.tipologia?.descrizione
+                ? params.row?.tipologia?.descrizione
+                : "N/A"}
+            </div>
+            ),
+        },
+        {
+            field: "priorita",
+            headerName: t("Priorità"),
+            flex: 0.6,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+        },
+        {
+            field: "stato",
+            headerName: t("Stato"),
+            flex: 0.6,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            renderCell: (params) => (
+            <div style={{ textAlign: "start" }}>
+                {params.row?.stato && params.row?.stato?.descrizione
+                ? params.row?.stato?.descrizione
+                : "N/A"}
+            </div>
+            ),
+        },
+        {
+            field: "ownerBusiness",
+            headerName: t("Owner business"),
+            flex: 0.6,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            renderCell: (params) => (
+            <div style={{ textAlign: "start" }}>
+                {params.row?.ownerBusiness && params.row?.ownerBusiness?.descrizione
+                ? params.row?.ownerBusiness?.descrizione
+                : "N/A"}
+            </div>
+            ),
+        },
+        {
+            field: "ownerRecruiter",
+            headerName: t("Owner recruiter"),
+            flex: 0.6,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            renderCell: (params) => (
+            <div style={{ textAlign: "start" }}>
+                {params.row?.ownerRecruiter && params.row?.ownerRecruiter?.descrizione
+                ? params.row?.ownerRecruiter?.descrizione
+                : "N/A"}
+            </div>
+            ),
+        },
+    ];
+
     return (
         <SchemePage>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
+            <Tabs value={viewMode} onChange={(e, newValue) => setViewMode(newValue)}>
+                <Tab label="Card" value="cards" />
+                <Tab label="Tabella" value="table" />
+            </Tabs>
+            </Box>
             <Box sx={{
                 position: 'sticky',
                 top: 0,
@@ -444,6 +572,7 @@ const baseUrl = userHasRole('ADMIN')
                     </Box>
                 }
             >
+                {viewMode === 'cards' ? (
                 <Grid container spacing={2} sx={{ mt: 1, mb: 4 }}>
                     {loading ? (
                         <>
@@ -472,6 +601,34 @@ const baseUrl = userHasRole('ADMIN')
                         ))
                     )}
                 </Grid>
+                ) : viewMode === 'table' ? (
+                    <Tabella
+                        data={isSearchActive ? filteredNeed : originalNeed}
+                        columns={columns}
+                            title={t("Need")}
+                            getRowId={(row) => row.id}
+                            pagina={pagina}
+                            quantita={quantita}
+                            righeTot={righeTot}
+                            onPageChange={handlePageChange}
+                            onRowClick={(row) => {
+                                setSelectedNeed(row);
+                                setViewMode("cardSingola");
+                            }}
+                        />
+                    ): viewMode === 'cardSingola' && selectedNeed ? (
+                        <Box sx={{ mt: 2, width: '50%'}}>
+                            <NeedCardFlip
+                                valori={selectedNeed?.row}
+                                statoOptions={statoOptions}
+                                onDelete={() => handleDelete(selectedNeed.id)}
+                                onRefresh={handleRefresh}
+                                isFirstCard={true}
+                            />
+                            <Box sx={{ mt: 2 }}>
+                            </Box>
+                            </Box>
+                        ) : null}
             </InfiniteScroll>
         </SchemePage>
     );
