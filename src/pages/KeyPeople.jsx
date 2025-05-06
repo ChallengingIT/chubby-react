@@ -71,14 +71,14 @@ const Keypeople = () => {
         return userObj.roles.includes(roleToCheck);
     };
 
-    const fetchData = async (reset = false) => {
+    const fetchData = async (reset = false, paginaParam = 0) => {
         setLoading(true);
         const filtriDaInviare = {
             nome: filtri.nome || null,
             azienda: filtri.azienda || null,
             owner: filtri.owner || null,
             stato: filtri.stato || null,
-            pagina: 0,
+            pagina: paginaParam,
             quantita: 10
         };
 
@@ -115,10 +115,11 @@ const Keypeople = () => {
                 console.error("I dati degli stati ottenuti non sono nel formato Array:", responseCliente.data);
             }
 
-            if (Array.isArray(response.data)) {
-                const keypeopleConId = response.data.map((keypeople) => ({ ...keypeople }));
+            if (Array.isArray(response.data?.keyPeoples)) {
+                const keypeopleConId = response.data?.keyPeoples.map((keypeople) => ({ ...keypeople }));
                 setOriginalKeypeople(keypeopleConId);
                 setHasMore(keypeopleConId.length >= quantita);
+                setRigheTot(response.data?.record || 0);
                 if (reset) {
                     setFilteredKeypeople([]);
                     setIsSearchActive(false);
@@ -151,12 +152,12 @@ const Keypeople = () => {
         // eslint-disable-next-line
     }, []);
 
-    const fetchMoreData = async () => {
+    const fetchMoreData = async ( paginaParam = 0) => {
         const paginaSuccessiva = pagina + 1;
 
         const filtriDaInviare = {
             ...filtri,
-            pagina: paginaSuccessiva,
+            pagina: paginaParam || paginaSuccessiva,
             quantita: quantita,
         };
 
@@ -189,8 +190,8 @@ const Keypeople = () => {
                     console.error("I dati ottenuti non sono nel formato Array:", responsePaginazione.data);
                 }
             } else {
-                if (Array.isArray(responsePaginazione.data)) {
-                    const keypeopleConId = responsePaginazione.data.map((keypeople) => ({ ...keypeople }));
+                if (Array.isArray(responsePaginazione.data?.keyPeoples)) {
+                    const keypeopleConId = responsePaginazione.data?.keyPeoples.map((keypeople) => ({ ...keypeople }));
                     setOriginalKeypeople((prev) => [...prev, ...keypeopleConId]);
                     setHasMore(keypeopleConId.length >= quantita);
                 } else {
@@ -261,6 +262,7 @@ const Keypeople = () => {
             if (keyPeoples && Array.isArray(keyPeoples)) {
                 setFilteredKeypeople(keyPeoples);
                 setRecordTot(record);
+                setRigheTot(record);
                 setHasMore(keyPeoples.length < record);
                 setIsSearchActive(true);
                 setPagina(0);
@@ -314,14 +316,26 @@ const Keypeople = () => {
     };
 
 
+    // const handlePageChange = (newPage) => {
+    //     setPagina(newPage);
+    //     sessionStorage.setItem("paginaRecruiting", newPage);
+    
+    //     if (Object.values(filtri).some(value => value)) {
+    //         handleRicerche(filtri, newPage);
+    //     } else {
+    //         fetchData(newPage);
+    //     }
+    // };
+
+
     const handlePageChange = (newPage) => {
         setPagina(newPage);
-        sessionStorage.setItem("paginaRecruiting", newPage);
+        sessionStorage.setItem("paginaKeypeople", newPage);
     
         if (Object.values(filtri).some(value => value)) {
             handleRicerche(filtri, newPage);
         } else {
-            fetchData(newPage);
+            fetchData(false, newPage);       
         }
     };
 
@@ -334,6 +348,7 @@ const Keypeople = () => {
         };
         return tipoMap[tipoId] || ""; 
     };
+    
 
 
     const columns = [
@@ -424,6 +439,15 @@ const Keypeople = () => {
         }
     ];
 
+
+        useEffect(() => {
+            setPagina(0);
+            setOriginalKeypeople([]);
+            setFilteredKeypeople([]);
+            setHasMore(true);
+            fetchData(true, 0);
+        }, [viewMode]);
+
     return (
         <SchemePage>
             <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
@@ -448,18 +472,18 @@ const Keypeople = () => {
                     onRicerche={handleRicerche}
                 />
             </Box>
+            {viewMode === 'cards' ? (
+                <InfiniteScroll
+                    dataLength={isSearchActive ? filteredKeypeople.length : originalKeypeople.length}
+                    next={fetchMoreData}
+                    hasMore={hasMore}
+                    loader={
+                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '1em', overflow: 'hidden' }}>
+                            <CircularProgress sx={{ color: '#00B400' }} />
+                        </Box>
+                    }
+                >
 
-            <InfiniteScroll
-                dataLength={isSearchActive ? filteredKeypeople.length : originalKeypeople.length}
-                next={fetchMoreData}
-                hasMore={hasMore}
-                loader={
-                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '1em', overflow: 'hidden' }}>
-                        <CircularProgress sx={{ color: '#00B400' }} />
-                    </Box>
-                }
-            >
-                {viewMode === 'cards' ? (
                 <Grid container spacing={2} sx={{ mt: 1, mb: 4 }}>
                     {loading ? (
                         <>
@@ -483,26 +507,29 @@ const Keypeople = () => {
                                     onDelete={() => handleDelete(keypeople.id)}
                                     onRefresh={handleRefresh}
                                     isFirstCard={index === 0}
-                                />
+                                    />
                             </Grid>
                         ))
                     )}
                 </Grid>
+                </InfiniteScroll>
                 ) : viewMode === 'table' ? (
+                <Box sx={{ height: '50vh'}}>
                 <Tabella
                 data={isSearchActive ? filteredKeypeople : originalKeypeople}
                 columns={columns}
-                    title={t("Keypeople")}
-                    getRowId={(row) => row.id}
-                    pagina={pagina}
-                    quantita={quantita}
-                    righeTot={righeTot}
-                    onPageChange={handlePageChange}
-                    onRowClick={(row) => {
-                        setSelectedKeypeople(row);
-                        setViewMode("cardSingola");
-                    }}
+                title={t("Keypeople")}
+                getRowId={(row) => row.id}
+                pagina={pagina}
+                quantita={quantita}
+                righeTot={righeTot}
+                onPageChange={handlePageChange}
+                onRowClick={(row) => {
+                    setSelectedKeypeople(row);
+                    setViewMode("cardSingola");
+                }}
                 />
+                </Box>
             ): viewMode === 'cardSingola' && selectedKeypeople ? (
                 <Box sx={{ mt: 2, width: '50%'}}>
                     <KeypeopleCardFlip
@@ -511,14 +538,14 @@ const Keypeople = () => {
                         onDelete={() => handleDelete(selectedKeypeople.id)}
                         onRefresh={handleRefresh}
                         isFirstCard={true}
-                    />
+                        />
                     <Box sx={{ mt: 2 }}>
                     </Box>
                     </Box>
                 ) : null}
-            </InfiniteScroll>
         </SchemePage>
     );
+
 };
 
 export default Keypeople;
