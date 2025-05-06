@@ -77,14 +77,14 @@ const Aziende = () => {
         return userObj.roles.includes(roleToCheck);
     };
 
-    const fetchData = async (reset = false) => {
+    const fetchData = async (reset = false, paginaParam = 0) => {
         setLoading(true);
         const filtriDaInviare = {
             azienda: filtri.azienda || null,
             tipologia: filtri.tipologia || null,
             owner: filtri.owner || null,
             stato: filtri.stato || null,
-            pagina: 0,
+            pagina: paginaParam,
             quantita: 10,
         };
         if (!userHasRole("ADMIN")) {
@@ -150,12 +150,13 @@ const Aziende = () => {
                 );
             }
 
-            if (Array.isArray(responseAziende.data)) {
-                const aziendeConId = responseAziende.data.map((aziende) => ({
+            if (Array.isArray(responseAziende.data?.clienti)) {
+                const aziendeConId = responseAziende.data?.clienti.map((aziende) => ({
                     ...aziende,
                 }));
                 setOriginalAziende(aziendeConId);
                 setHasMore(aziendeConId.length >= quantita);
+                setRigheTot(responseAziende.data?.record || 0);
                 if (reset) {
                     setFilteredAziende([]);
                     setIsSearchActive(false);
@@ -191,12 +192,12 @@ const Aziende = () => {
         // eslint-disable-next-line
     }, []);
 
-    const fetchMoreData = async () => {
+    const fetchMoreData = async ( paginaParam = 0) => {
         const paginaSuccessiva = pagina + 1;
 
         const filtriDaInviare = {
             ...filtri,
-            pagina: paginaSuccessiva,
+            pagina: paginaParam || paginaSuccessiva,
             quantita: quantita,
         };
 
@@ -231,8 +232,8 @@ const Aziende = () => {
                     console.error("I dati ottenuti non sono nel formato Array:", responsePaginazione.data);
                 }
             } else {
-                if (Array.isArray(responsePaginazione.data)) {
-                    const aziendeConId = responsePaginazione.data.map((aziende) => ({
+                if (Array.isArray(responsePaginazione.data?.clienti)) {
+                    const aziendeConId = responsePaginazione.data?.clienti.map((aziende) => ({
                         ...aziende,
                     }));
                     setOriginalAziende((prev) => [...prev, ...aziendeConId]);
@@ -316,6 +317,7 @@ const Aziende = () => {
                 setHasMore(clienti.length < record);
                 setIsSearchActive(true);
                 setPagina(0);
+                setRigheTot(record);
             } else {
                 console.error(
                     "I dati ottenuti non contengono 'aziende' come array: ",
@@ -451,16 +453,27 @@ const Aziende = () => {
     ];
 
 
+
     const handlePageChange = (newPage) => {
         setPagina(newPage);
-        sessionStorage.setItem("paginaRecruiting", newPage);
+        sessionStorage.setItem("paginaAziende", newPage);
     
         if (Object.values(filtri).some(value => value)) {
             handleRicerche(filtri, newPage);
         } else {
-            fetchData(newPage);
+            fetchData(false, newPage);       
         }
     };
+
+        useEffect(() => {
+            setPagina(0);
+            setOriginalAziende([]);
+            setFilteredAziende([]);
+            setHasMore(true);
+            fetchData(true, 0);
+        }, [viewMode]);
+        
+        
 
 
     return (
@@ -491,25 +504,25 @@ const Aziende = () => {
 
                 />
             </Box>
+            {viewMode === 'cards' ? (
             <InfiniteScroll
                 dataLength={isSearchActive ? filteredAziende.length : originalAziende.length}
                 next={fetchMoreData}
                 hasMore={hasMore}
                 loader={
                     <Box
-                        sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            marginTop: "1em",
-                            overflow: "hidden",
-                        }}
+                    sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginTop: "1em",
+                        overflow: "hidden",
+                    }}
                     >
                         <CircularProgress sx={{ color: "#00B400" }} />
                     </Box>
                 }
-            >
-                {viewMode === 'cards' ? (
+                >
                 <Grid container spacing={2} sx={{ mt: 1, mb: 4 }}>
                     {loading ? (
                         <>
@@ -541,7 +554,9 @@ const Aziende = () => {
                         ))
                     )}
                 </Grid>
+                    </InfiniteScroll>
                 ) : viewMode === 'table' ? (
+                    <Box sx={{ height: '50vh'}}>
                     <Tabella
                         data={isSearchActive ? filteredAziende : originalAziende}
                         columns={columns}
@@ -556,6 +571,7 @@ const Aziende = () => {
                                 setViewMode("cardSingola");
                             }}
                         />
+                        </Box>
                     ) : viewMode === 'cardSingola' && selectedAziende ? (
                         <Box sx={{ mt: 2, width: '50%'}}>
                             <AziendeCardFlip
@@ -568,7 +584,6 @@ const Aziende = () => {
                             </Box>
                             </Box>
                         ) : null}
-            </InfiniteScroll>
         </SchemePage>
     );
 };

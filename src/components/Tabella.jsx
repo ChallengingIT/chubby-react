@@ -13,7 +13,7 @@ const Tabella = ({
     quantita,
     onPageChange,
     righeTot,
-    onRowClick
+    onRowClick,
 }) => {
 
     const theme = useUserTheme();

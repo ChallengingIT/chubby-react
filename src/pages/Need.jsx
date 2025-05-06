@@ -123,11 +123,11 @@ const Need = () => {
     
 
     //caricamento dati al montaggio
-    const fetchData = async (reset = false) => {
+    const fetchData = async (reset = false, paginaParam = 0) => {
         setLoading(true);
 
         const filtriDaInviare = {
-            pagina: 0,
+            pagina: paginaParam,
             quantita: 10
         };
         if (!userHasRole('ADMIN')) {
@@ -172,10 +172,11 @@ const Need = () => {
                 console.error("I dati ottenuti dalla chiamata degli stati non sono nel formato Array; ", responseStato.data);
             }
 
-            if (Array.isArray(responseNeed.data)) {
-                const needConId = responseNeed.data.map((need) => ({ ...need }));
+            if (Array.isArray(responseNeed.data?.needs)) {
+                const needConId = responseNeed.data?.needs.map((need) => ({ ...need }));
                 setOriginalNeed(needConId);
                 setHasMore(needConId.length >= quantita);
+                setRigheTot(responseNeed.data?.record || 0);
                 if (reset) {
                     setFilteredNeed([]);
                     setIsSearchActive(false);
@@ -194,7 +195,7 @@ const Need = () => {
     
 
     //caricamento dati con paginazione
-    const fetchMoreData = async () => {
+    const fetchMoreData = async ( paginaParam = 0) => {
         const paginaSuccessiva = pagina + 1;
 
         if (!userHasRole('ADMIN')) {
@@ -218,7 +219,7 @@ const baseUrl = userHasRole('ADMIN')
             keypeople: filtri.keypeople || null,
             // skills: filtri.skills ? JSON.stringify(filtri.skills) : null,  
             location: filtri.location || null,
-            pagina: 0,
+            pagina: paginaParam || paginaSuccessiva,
             quantita: quantita
         };
 
@@ -235,8 +236,8 @@ const baseUrl = userHasRole('ADMIN')
                     console.error("I dati ottenuti non sono nel formato Array: ", responsePaginazione.data);
                 }
             } else {
-                if (Array.isArray(responsePaginazione.data)) {
-                    const needConId = responsePaginazione.data.map((need) => ({ ...need }));
+                if (Array.isArray(responsePaginazione.data?.needs)) {
+                    const needConId = responsePaginazione.data?.needs.map((need) => ({ ...need }));
                     setOriginalNeed((prev) => [...prev, ...needConId]);
                     setHasMore(needConId.length >= quantita);
                 } else {
@@ -322,6 +323,7 @@ const baseUrl = userHasRole('ADMIN')
             if (needs && Array.isArray(needs)) {
                 setFilteredNeed(needs);
                 setRecordTot(record);
+                setRigheTot(record);
                 setHasMore(needs.length < record);
                 setIsSearchActive(true);
                 setPagina(0);
@@ -429,16 +431,28 @@ const baseUrl = userHasRole('ADMIN')
     };
 
 
+    // const handlePageChange = (newPage) => {
+    //     setPagina(newPage);
+    //     sessionStorage.setItem("paginaRecruiting", newPage);
+    
+    //     if (Object.values(filtri).some(value => value)) {
+    //         handleRicerche(filtri, newPage);
+    //     } else {
+    //         fetchData(newPage);
+    //     }
+    // };
+
     const handlePageChange = (newPage) => {
         setPagina(newPage);
-        sessionStorage.setItem("paginaRecruiting", newPage);
+        sessionStorage.setItem("paginaNeed", newPage);
     
         if (Object.values(filtri).some(value => value)) {
             handleRicerche(filtri, newPage);
         } else {
-            fetchData(newPage);
+            fetchData(false, newPage);       
         }
     };
+    
 
 
     const columns = [
@@ -536,6 +550,17 @@ const baseUrl = userHasRole('ADMIN')
         },
     ];
 
+
+    useEffect(() => {
+        setPagina(0);
+        setOriginalNeed([]);
+        setFilteredNeed([]);
+        setHasMore(true);
+        fetchData(true, 0);
+    }, [viewMode]);
+    
+    
+
     return (
         <SchemePage>
             <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
@@ -562,74 +587,74 @@ const baseUrl = userHasRole('ADMIN')
                     onContactChange={handleContactChange}
                 />
             </Box>
-            <InfiniteScroll
-                dataLength={isSearchActive ? filteredNeed.length : originalNeed.length}
-                next={fetchMoreData}
-                hasMore={hasMore}
-                loader={
-                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '1em', overflow: 'hidden' }}>
-                        <CircularProgress sx={{ color: '#00B400' }} />
-                    </Box>
-                }
-            >
-                {viewMode === 'cards' ? (
-                <Grid container spacing={2} sx={{ mt: 1, mb: 4 }}>
-                    {loading ? (
-                        <>
-                            {Array.from(new Array(quantita)).map((_, index) => (
-                                <Grid item xs={12} md={6} key={index}>
-                                    <Box sx={{ marginRight: 2, marginBottom: 2 }}>
-                                        <Skeleton variant="rectangular" width="100%" height={118} />
-                                        <Skeleton variant="text" />
-                                        <Skeleton variant="text" />
-                                        <Skeleton variant="text" width="60%" />
-                                    </Box>
-                                </Grid>
-                            ))}
-                        </>
-                    ) : (
-                        (isSearchActive ? filteredNeed : originalNeed).map((need, index) => (
-                            <Grid item xs={12} md={6} key={index}>
-                                <NeedCardFlip
-                                    valori={need}
-                                    statoOptions={statoOptions}
-                                    onDelete={() => handleDelete(need.id)}
-                                    onRefresh={handleRefresh}
-                                    isFirstCard={index === 0}
-                                />
-                            </Grid>
-                        ))
-                    )}
-                </Grid>
-                ) : viewMode === 'table' ? (
-                    <Tabella
-                        data={isSearchActive ? filteredNeed : originalNeed}
-                        columns={columns}
-                            title={t("Need")}
-                            getRowId={(row) => row.id}
-                            pagina={pagina}
-                            quantita={quantita}
-                            righeTot={righeTot}
-                            onPageChange={handlePageChange}
-                            onRowClick={(row) => {
-                                setSelectedNeed(row);
-                                setViewMode("cardSingola");
-                            }}
+            {viewMode === 'cards' ? (
+    <InfiniteScroll
+        dataLength={isSearchActive ? filteredNeed.length : originalNeed.length}
+        next={fetchMoreData}
+        hasMore={hasMore}
+        loader={
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '1em', overflow: 'hidden' }}>
+                <CircularProgress sx={{ color: '#00B400' }} />
+            </Box>
+        }
+    >
+        <Grid container spacing={2} sx={{ mt: 1, mb: 4 }}>
+            {loading ? (
+                Array.from(new Array(quantita)).map((_, index) => (
+                    <Grid item xs={12} md={6} key={index}>
+                        <Box sx={{ marginRight: 2, marginBottom: 2 }}>
+                            <Skeleton variant="rectangular" width="100%" height={118} />
+                            <Skeleton variant="text" />
+                            <Skeleton variant="text" />
+                            <Skeleton variant="text" width="60%" />
+                        </Box>
+                    </Grid>
+                ))
+            ) : (
+                (isSearchActive ? filteredNeed : originalNeed).map((need, index) => (
+                    <Grid item xs={12} md={6} key={index}>
+                        <NeedCardFlip
+                            valori={need}
+                            statoOptions={statoOptions}
+                            onDelete={() => handleDelete(need.id)}
+                            onRefresh={handleRefresh}
+                            isFirstCard={index === 0}
                         />
-                    ): viewMode === 'cardSingola' && selectedNeed ? (
-                        <Box sx={{ mt: 2, width: '50%'}}>
-                            <NeedCardFlip
-                                valori={selectedNeed?.row}
-                                statoOptions={statoOptions}
-                                onDelete={() => handleDelete(selectedNeed.id)}
-                                onRefresh={handleRefresh}
-                                isFirstCard={true}
-                            />
-                            <Box sx={{ mt: 2 }}>
-                            </Box>
-                            </Box>
-                        ) : null}
-            </InfiniteScroll>
+                    </Grid>
+                ))
+            )}
+        </Grid>
+    </InfiniteScroll>
+) : viewMode === 'table' ? (
+    <Box sx={{ height: '50vh'}}>
+    <Tabella
+        data={isSearchActive ? filteredNeed : originalNeed}
+        columns={columns}
+        title={t("Need")}
+        getRowId={(row) => row.id}
+        pagina={pagina}
+        quantita={quantita}
+        righeTot={righeTot}
+        loading={loading}
+        onPageChange={handlePageChange}
+        onRowClick={(row) => {
+            setSelectedNeed(row);
+            setViewMode("cardSingola");
+        }}
+    />
+    </Box>
+) : viewMode === 'cardSingola' && selectedNeed ? (
+    <Box sx={{ mt: 2, width: '50%' }}>
+        <NeedCardFlip
+            valori={selectedNeed?.row}
+            statoOptions={statoOptions}
+            onDelete={() => handleDelete(selectedNeed.id)}
+            onRefresh={handleRefresh}
+            isFirstCard={true}
+        />
+    </Box>
+) : null}
+
         </SchemePage>
     );
 };
