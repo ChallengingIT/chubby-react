@@ -3,19 +3,32 @@ import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 import AziendeCardFlip from "../components/card/AziendeCardFlip";
 import SchemePage from '../components/SchemePage.jsx';
+import Tabella from '../components/Tabella';
+
 import {
     Box,
     CircularProgress,
     Grid,
     Skeleton,
+    Tab,
+    Tabs
 } from "@mui/material";
 import NuovaRicercaAziende from "../components/nuoveRicerche/NuovaRicercaAziende.jsx";
+import { useTranslation }                   from "react-i18next"; 
+
 
 const Aziende = () => {
+    const { t } = useTranslation(); 
+
+
     const [originalAziende, setOriginalAziende] = useState([]);
     const [filteredAziende, setFilteredAziende] = useState([]);
     const [loading, setLoading] = useState(false);
     const [clienteOptions, setClienteOptions] = useState([]);
+    const [selectedAziende, setSelectedAziende] = useState(null);
+    const [viewMode, setViewMode] = useState('cards');
+    
+    
     
 
     //stati ricerche
@@ -28,6 +41,8 @@ const Aziende = () => {
     const quantita = 10;
     const [isSearchActive, setIsSearchActive] = useState(false);
     const [recordTot, setRecordTot] = useState(0);
+    const [righeTot, setRigheTot] = useState(0);
+    
 
     const [filtri, setFiltri] = useState(() => {
         const filtriSalvati = sessionStorage.getItem("filtriRicercaAziende");
@@ -377,8 +392,85 @@ const Aziende = () => {
         { label: "Alto", value: "alto" },
     ];
 
+
+    const idaConverter = (value) => {
+        if (value <= 1) return "Basso";
+        if (value > 1 && value <= 2) return "Medio";
+        if (value > 2) return "Alto";
+        return "N/A";
+    };
+    
+
+
+    const columns = [
+        {
+            field: "denominazione",
+            headerName: "Azienda",
+            flex: 1.3,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+        },
+        {
+            field: "citta",
+            headerName: t("Città"),
+            flex: 1,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            },
+        {
+            field: "sedeOperativa",
+            headerName: t("Sede operativa"),
+            flex: 1,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+        },
+        {
+            field: "settoreMercato",
+            headerName: t("Settore di merca"),
+            flex: 0.6,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+        },
+        {
+            field: "ida",
+            headerName: t("IDA"),
+            flex: 0.6,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            renderCell: (params) => (
+                <div style={{ textAlign: "start" }}>
+                    {idaConverter(params.row?.ida)}
+                </div>
+            ),
+        }
+    ];
+
+
+    const handlePageChange = (newPage) => {
+        setPagina(newPage);
+        sessionStorage.setItem("paginaRecruiting", newPage);
+    
+        if (Object.values(filtri).some(value => value)) {
+            handleRicerche(filtri, newPage);
+        } else {
+            fetchData(newPage);
+        }
+    };
+
+
     return (
         <SchemePage>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
+            <Tabs value={viewMode} onChange={(e, newValue) => setViewMode(newValue)}>
+                <Tab label="Card" value="cards" />
+                <Tab label="Tabella" value="table" />
+            </Tabs>
+            </Box>
             <Box
                 sx={{
                     position: "sticky",
@@ -417,6 +509,7 @@ const Aziende = () => {
                     </Box>
                 }
             >
+                {viewMode === 'cards' ? (
                 <Grid container spacing={2} sx={{ mt: 1, mb: 4 }}>
                     {loading ? (
                         <>
@@ -448,6 +541,33 @@ const Aziende = () => {
                         ))
                     )}
                 </Grid>
+                ) : viewMode === 'table' ? (
+                    <Tabella
+                        data={isSearchActive ? filteredAziende : originalAziende}
+                        columns={columns}
+                            title={t("Aziende")}
+                            getRowId={(row) => row.id}
+                            pagina={pagina}
+                            quantita={quantita}
+                            righeTot={righeTot}
+                            onPageChange={handlePageChange}
+                            onRowClick={(row) => {
+                                setSelectedAziende(row);
+                                setViewMode("cardSingola");
+                            }}
+                        />
+                    ) : viewMode === 'cardSingola' && selectedAziende ? (
+                        <Box sx={{ mt: 2, width: '50%'}}>
+                            <AziendeCardFlip
+                                valori={selectedAziende?.row}
+                                onDelete={() => handleDelete(selectedAziende.id)}
+                                onRefresh={handleRefresh}
+                                isFirstCard={true}
+                            />
+                            <Box sx={{ mt: 2 }}>
+                            </Box>
+                            </Box>
+                        ) : null}
             </InfiniteScroll>
         </SchemePage>
     );

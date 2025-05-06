@@ -1,27 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import KeypeopleCardFlip from '../components/card/KeypeopleCardFlip';
+import Tabella from '../components/Tabella';
 import {
     Box,
     CircularProgress,
     Grid,
     Skeleton,
+    Tabs,
+    Tab
 } from '@mui/material';
 import SchemePage from '../components/SchemePage';
 import NuovaRicercaKeypeople from '../components/nuoveRicerche/NuovaRicercaKeypeople';
+import { useTranslation }                   from "react-i18next"; 
+
 
 const Keypeople = () => {
+
+    const { t } = useTranslation(); 
+    
+    
     const [originalKeypeople, setOriginalKeypeople] = useState([]);
     const [filteredKeypeople, setFilteredKeypeople] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [viewMode, setViewMode] = useState('cards');
+    const [selectedKeypeople, setSelectedKeypeople] = useState(null);
 
     //stati ricerche
     const [clienteOptions, setClienteOptions] = useState([]);
     const [ownerOptions, setOwnerOptions] = useState([]);
     const [statiOptions, setStatiOptions] = useState([]);
     const [recordTot, setRecordTot] = useState(0);
+
+    //stati per la tabella
+      const [righeTot, setRigheTot] = useState(0);
+    
 
     const [filtri, setFiltri] = useState(() => {
         const filtriSalvati = sessionStorage.getItem('filtriRicercaKeypeople');
@@ -39,10 +53,6 @@ const Keypeople = () => {
     const quantita = 10;
     const [isSearchActive, setIsSearchActive] = useState(false);
 
-    const getValueLabel = (value) => {
-        const option = ownerOptions.find((option) => option.value === value);
-        return option ? option.label : null;
-    };
 
     const user = JSON.parse(sessionStorage.getItem('user'));
     const token = user?.token;
@@ -265,27 +275,6 @@ const Keypeople = () => {
     };
 
 
-    // const handleFilterChange = (name) => (event) => {
-    //     const newValue = event.target.value;
-    //     setFiltri(currentFilters => {
-    //         const newFilters = { ...currentFilters, [name]: newValue };
-
-    //         // Controllo se tutti i filtri sono vuoti
-    //         const areFiltersEmpty = Object.values(newFilters).every(value => value === null);
-    //         if (areFiltersEmpty) {
-    //             fetchData();
-    //         } else {
-    //             setPagina(0);
-    //             setFilteredKeypeople([]);
-    //             setHasMore(true);
-    //             // handleRicerche();
-    //         }
-
-    //         return newFilters;
-    //     });
-    // };
-
-
         const handleFilterChange = (newFilters) => {
         setFiltri(newFilters);
     };
@@ -324,8 +313,125 @@ const Keypeople = () => {
         await fetchData();
     };
 
+
+    const handlePageChange = (newPage) => {
+        setPagina(newPage);
+        sessionStorage.setItem("paginaRecruiting", newPage);
+    
+        if (Object.values(filtri).some(value => value)) {
+            handleRicerche(filtri, newPage);
+        } else {
+            fetchData(newPage);
+        }
+    };
+
+
+    const tipoConverter = (tipoId) => {
+        const tipoMap = {
+            1: "Keypeople",
+            2: "Hook",
+            3: "Link"
+        };
+        return tipoMap[tipoId] || ""; 
+    };
+
+
+    const columns = [
+        {
+            field: "nome",
+            headerName: "Nome Cognome",
+            flex: 1.3,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            renderCell: (params) => (
+                <div style={{ textAlign: "start" }}>
+                    {params.row?.nome }
+                </div>
+                ),
+        },
+        {
+            field: "cliente",
+            headerName: t("Azienda"),
+            flex: 1,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            renderCell: (params) => (
+                <div style={{ textAlign: "start" }}>
+                    {params.row?.cliente && params.row?.cliente?.denominazione
+                    ? params.row?.cliente?.denominazione
+                    : "N/A"}
+                </div>
+            ),
+            },
+        {
+            field: "tipologia",
+            headerName: t("Job Title"),
+            flex: 1,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            renderCell: (params) => (
+            <div style={{ textAlign: "start" }}>
+                {params.row?.ruolo}
+            </div>
+            ),
+        },
+        {
+            field: "tipo",
+            headerName: t("Tipo"),
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            flex: 0.6,
+            renderCell: (params) => (
+            <div style={{ textAlign: "start" }}>
+                {tipoConverter(params.row?.tipo)}
+            </div>
+        ),
+        }, 
+        {
+            field: "stato",
+            headerName: t("Stato"),
+            flex: 0.6,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            renderCell: (params) => (
+            <div style={{ textAlign: "start" }}>
+                {params.row?.stato && params.row?.stato?.descrizione
+                ? params.row?.stato?.descrizione
+                : "N/A"}
+            </div>
+            ),
+        },
+        {
+            field: "email",
+            headerName: t("Email"),
+            flex: 0.6,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+        },
+        {
+            field: "cellulare",
+            headerName: t("Telefono"),
+            flex: 1,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+        }
+    ];
+
     return (
         <SchemePage>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
+            <Tabs value={viewMode} onChange={(e, newValue) => setViewMode(newValue)}>
+                <Tab label="Card" value="cards" />
+                <Tab label="Tabella" value="table" />
+            </Tabs>
+            </Box>
             <Box sx={{
                 position: 'sticky',
                 top: 0,
@@ -342,6 +448,7 @@ const Keypeople = () => {
                     onRicerche={handleRicerche}
                 />
             </Box>
+
             <InfiniteScroll
                 dataLength={isSearchActive ? filteredKeypeople.length : originalKeypeople.length}
                 next={fetchMoreData}
@@ -352,6 +459,7 @@ const Keypeople = () => {
                     </Box>
                 }
             >
+                {viewMode === 'cards' ? (
                 <Grid container spacing={2} sx={{ mt: 1, mb: 4 }}>
                     {loading ? (
                         <>
@@ -380,6 +488,34 @@ const Keypeople = () => {
                         ))
                     )}
                 </Grid>
+                ) : viewMode === 'table' ? (
+                <Tabella
+                data={isSearchActive ? filteredKeypeople : originalKeypeople}
+                columns={columns}
+                    title={t("Keypeople")}
+                    getRowId={(row) => row.id}
+                    pagina={pagina}
+                    quantita={quantita}
+                    righeTot={righeTot}
+                    onPageChange={handlePageChange}
+                    onRowClick={(row) => {
+                        setSelectedKeypeople(row);
+                        setViewMode("cardSingola");
+                    }}
+                />
+            ): viewMode === 'cardSingola' && selectedKeypeople ? (
+                <Box sx={{ mt: 2, width: '50%'}}>
+                    <KeypeopleCardFlip
+                        valori={selectedKeypeople?.row}
+                        statiOptions={statiOptions}
+                        onDelete={() => handleDelete(selectedKeypeople.id)}
+                        onRefresh={handleRefresh}
+                        isFirstCard={true}
+                    />
+                    <Box sx={{ mt: 2 }}>
+                    </Box>
+                    </Box>
+                ) : null}
             </InfiniteScroll>
         </SchemePage>
     );
