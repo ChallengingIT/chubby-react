@@ -255,13 +255,12 @@ const baseUrl = userHasRole('ADMIN')
     
 
     //funzione di ricerca
-    const handleRicerche = async () => {
+    const handleRicerche = async (filtriParam,  paginaParam = 0) => {
 
         const isAnyFilterSet = Object.values(filtri).some((value) => value);
         if (!isAnyFilterSet) {
         return;
         }
-
         const filtriDaInviare = {
             descrizione:        filtri.descrizione          || null,
             azienda:            filtri.cliente          || null,
@@ -271,7 +270,7 @@ const baseUrl = userHasRole('ADMIN')
             keypeople:          filtri.keypeople || null,
             // skills: filtri.skills ? JSON.stringify(filtri.skills) : null,  
             location:           filtri.location || null,
-            pagina: 0,
+            pagina: paginaParam,
             quantita: quantita
         };
 
@@ -326,7 +325,7 @@ const baseUrl = userHasRole('ADMIN')
                 setRigheTot(record);
                 setHasMore(needs.length < record);
                 setIsSearchActive(true);
-                setPagina(0);
+                setPagina(paginaParam);
             } else {
                 console.error("I dati ottenuti non contengono 'needs' come array: ", response.data);
             }
@@ -626,7 +625,7 @@ const baseUrl = userHasRole('ADMIN')
         </Grid>
     </InfiniteScroll>
 ) : viewMode === 'table' ? (
-    <Box sx={{ height: '50vh'}}>
+    <Box sx={{ height: '50vh', position: 'relative'}}>
     <Tabella
         data={isSearchActive ? filteredNeed : originalNeed}
         columns={columns}
@@ -642,6 +641,24 @@ const baseUrl = userHasRole('ADMIN')
             setViewMode("cardSingola");
         }}
     />
+    {loading && (
+        <Box
+            sx={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                bgcolor: 'rgba(255, 255, 255, 0.5)',
+                zIndex: 10,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
+        >
+            <CircularProgress sx={{ color: '#00B400' }} />
+        </Box>
+    )}
     </Box>
 ) : viewMode === 'cardSingola' && selectedNeed ? (
     <Box sx={{ mt: 2, width: '50%' }}>

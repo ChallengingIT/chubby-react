@@ -250,7 +250,7 @@ const Aziende = () => {
         setPagina((prevPagina) => prevPagina + 1);
     };
 
-    const handleRicerche = async () => {
+    const handleRicerche = async (filtriParam, paginaParam = 0) => {
         const isAnyFilterSet = Object.values(filtri).some((value) => value);
         if (!isAnyFilterSet) {
             setIsSearchActive(false);
@@ -259,7 +259,7 @@ const Aziende = () => {
 
         const filtriDaInviare = {
             ...filtri,
-            pagina: 0,
+            pagina: paginaParam,
             quantita: quantita,
         };
 
@@ -316,7 +316,7 @@ const Aziende = () => {
                 setRecordTot(record);
                 setHasMore(clienti.length < record);
                 setIsSearchActive(true);
-                setPagina(0);
+                setPagina(paginaParam);
                 setRigheTot(record);
             } else {
                 console.error(
@@ -556,7 +556,7 @@ const Aziende = () => {
                 </Grid>
                     </InfiniteScroll>
                 ) : viewMode === 'table' ? (
-                    <Box sx={{ height: '50vh'}}>
+                    <Box sx={{ height: '50vh', position: 'relative'}}>
                     <Tabella
                         data={isSearchActive ? filteredAziende : originalAziende}
                         columns={columns}
@@ -571,6 +571,24 @@ const Aziende = () => {
                                 setViewMode("cardSingola");
                             }}
                         />
+                        {loading && (
+                                <Box
+                                    sx={{
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        width: '100%',
+                                        height: '100%',
+                                        bgcolor: 'rgba(255, 255, 255, 0.5)',
+                                        zIndex: 10,
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    <CircularProgress sx={{ color: '#00B400' }} />
+                                </Box>
+                            )}
                         </Box>
                     ) : viewMode === 'cardSingola' && selectedAziende ? (
                         <Box sx={{ mt: 2, width: '50%'}}>
