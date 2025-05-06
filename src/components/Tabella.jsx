@@ -13,6 +13,7 @@ const Tabella = ({
     quantita,
     onPageChange,
     righeTot,
+    onRowClick
 }) => {
 
     const theme = useUserTheme();
@@ -94,6 +95,7 @@ const Tabella = ({
                 pageSizeOptions={[10]}
                 rowCount={righeTot}
                 autoHeight
+                onRowClick={(params) => onRowClick && onRowClick(params)}
                 paginationModel={{ page: pagina, pageSize: quantita }}
                 onPaginationModelChange={({ page }) => {
                     onPageChange(page);
