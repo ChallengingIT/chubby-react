@@ -60,7 +60,7 @@ const Tabella = ({
             ref={dataGridRef}
             sx={{
                 backgroundColor: "white",
-                boxShadow: "5px 5px 5px rgba(0, 0, 0, 0.2)",
+                // boxShadow: "5px 5px 5px rgba(0, 0, 0, 0.2)",
                 borderRadius: "20px",
                 height: "100%",
                 display: "flex",
