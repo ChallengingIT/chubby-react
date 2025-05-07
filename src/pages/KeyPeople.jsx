@@ -514,7 +514,7 @@ const Keypeople = () => {
                 </Grid>
                 </InfiniteScroll>
                 ) : viewMode === 'table' ? (
-                <Box sx={{ height: '50vh', position: 'relative'}}>
+                <Box sx={{ height: '80vh', position: 'relative'}}>
                 <Tabella
                 data={isSearchActive ? filteredKeypeople : originalKeypeople}
                 columns={columns}
