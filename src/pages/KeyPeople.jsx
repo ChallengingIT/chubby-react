@@ -207,7 +207,7 @@ const Keypeople = () => {
     };
 
     //funzione per la ricerca
-    const handleRicerche = async () => {
+    const handleRicerche = async (filtriParam, paginaParam = 0) => {
         const isAnyFilterSet = Object.values(filtri).some(value => value);
         if (!isAnyFilterSet) {
             setIsSearchActive(false);
@@ -216,7 +216,7 @@ const Keypeople = () => {
 
         const filtriDaInviare = {
             ...filtri,
-            pagina: 0,
+            pagina: paginaParam,
             quantita: quantita,
         };
 
@@ -265,7 +265,7 @@ const Keypeople = () => {
                 setRigheTot(record);
                 setHasMore(keyPeoples.length < record);
                 setIsSearchActive(true);
-                setPagina(0);
+                setPagina(paginaParam);
             } else {
                 console.error("I dati ottenuti non contengono 'keyPeoples' come array:", response.data);
             }
@@ -514,7 +514,7 @@ const Keypeople = () => {
                 </Grid>
                 </InfiniteScroll>
                 ) : viewMode === 'table' ? (
-                <Box sx={{ height: '50vh'}}>
+                <Box sx={{ height: '50vh', position: 'relative'}}>
                 <Tabella
                 data={isSearchActive ? filteredKeypeople : originalKeypeople}
                 columns={columns}
@@ -529,6 +529,24 @@ const Keypeople = () => {
                     setViewMode("cardSingola");
                 }}
                 />
+                {loading && (
+                        <Box
+                            sx={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                width: '100%',
+                                height: '100%',
+                                bgcolor: 'rgba(255, 255, 255, 0.5)',
+                                zIndex: 10,
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <CircularProgress sx={{ color: '#00B400' }} />
+                        </Box>
+                )}
                 </Box>
             ): viewMode === 'cardSingola' && selectedKeypeople ? (
                 <Box sx={{ mt: 2, width: '50%'}}>
