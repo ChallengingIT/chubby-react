@@ -377,12 +377,49 @@ const baseUrl = userHasRole('ADMIN')
     }, []);
     
 
-    useEffect(() => {
-        if (!location.state) {
-            console.warn("Stato assente, caricamento dati standard.");
-            fetchData();
-        }
-    }, [location.state]);
+
+// useEffect(() => {
+//     if (location.state?.fromDashboard) {
+//         const nuoviFiltri = {
+//             descrizione: location.state.descrizione || null,
+//             cliente: location.state.clienteId || null,
+//             tipologia: null,
+//             stato: null,
+//             owner: null,
+//             keypeople: null,
+//             skills: null,
+//             location: null
+//         };
+//         setFiltri(nuoviFiltri);
+//         sessionStorage.setItem('filtriRicercaNeed', JSON.stringify(nuoviFiltri));
+        
+//         handleRicerche(nuoviFiltri); 
+//     } else {
+//         const filtriSalvati = sessionStorage.getItem('filtriRicercaNeed');
+
+//         if (filtriSalvati) {
+//             const filtriParsed = JSON.parse(filtriSalvati);
+//             const isAnyFilterSet = Object.values(filtriParsed).some((value) => value);
+
+//             if (isAnyFilterSet) {
+//                 setFiltri(filtriParsed);
+//                 handleRicerche(filtriParsed);
+//             } else {
+//                 fetchData(true, 0);
+//             }
+//         } else {
+//             fetchData(true, 0);
+//         }
+//     }
+// }, []);
+
+
+    // useEffect(() => {
+    //     if (!location.state) {
+    //         console.warn("Stato assente, caricamento dati standard.");
+    //         fetchData();
+    //     }
+    // }, [location.state]);
 
 
 
@@ -550,13 +587,14 @@ const baseUrl = userHasRole('ADMIN')
     ];
 
 
-    useEffect(() => {
-        setPagina(0);
-        setOriginalNeed([]);
-        setFilteredNeed([]);
-        setHasMore(true);
-        fetchData(true, 0);
-    }, [viewMode]);
+    // useEffect(() => {
+    //     setPagina(0);
+    //     setOriginalNeed([]);
+    //     setFilteredNeed([]);
+    //     setHasMore(true);
+    //     fetchData(true, 0);
+    // }, [viewMode]);
+    
     
     
 
