@@ -556,7 +556,7 @@ const Aziende = () => {
                 </Grid>
                     </InfiniteScroll>
                 ) : viewMode === 'table' ? (
-                    <Box sx={{ height: '50vh', position: 'relative'}}>
+                    <Box sx={{ height: '80vh', position: 'relative'}}>
                     <Tabella
                         data={isSearchActive ? filteredAziende : originalAziende}
                         columns={columns}
