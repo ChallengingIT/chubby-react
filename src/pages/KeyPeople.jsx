@@ -1,19 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import KeypeopleCardFlip from '../components/card/KeypeopleCardFlip';
-import Tabella from '../components/Tabella';
+import React, { useState, useEffect }       from 'react';
+import axios                                from 'axios';
+import InfiniteScroll                       from 'react-infinite-scroll-component';
+import KeypeopleCardFlip                    from '../components/card/KeypeopleCardFlip';
+import Tabella                              from '../components/Tabella';
+import SchemePage                           from '../components/SchemePage';
+import NuovaRicercaKeypeople                from '../components/nuoveRicerche/NuovaRicercaKeypeople';
+import { useTranslation }                   from "react-i18next"; 
+import InfoOutlinedIcon                     from "@mui/icons-material/InfoOutlined";
+import CircleIcon                           from '@mui/icons-material/Circle';
 import {
     Box,
     CircularProgress,
     Grid,
     Skeleton,
     Tabs,
-    Tab
+    Tab,
+    Tooltip,
+    IconButton,
+    Dialog, 
+    DialogTitle, 
+    DialogContent
 } from '@mui/material';
-import SchemePage from '../components/SchemePage';
-import NuovaRicercaKeypeople from '../components/nuoveRicerche/NuovaRicercaKeypeople';
-import { useTranslation }                   from "react-i18next"; 
+
 
 
 const Keypeople = () => {
@@ -24,7 +32,7 @@ const Keypeople = () => {
     const [originalKeypeople, setOriginalKeypeople] = useState([]);
     const [filteredKeypeople, setFilteredKeypeople] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [viewMode, setViewMode] = useState('cards');
+    const [viewMode, setViewMode] = useState('table');
     const [selectedKeypeople, setSelectedKeypeople] = useState(null);
 
     //stati ricerche
@@ -34,7 +42,7 @@ const Keypeople = () => {
     const [recordTot, setRecordTot] = useState(0);
 
     //stati per la tabella
-      const [righeTot, setRigheTot] = useState(0);
+    const [righeTot, setRigheTot] = useState(0);
     
 
     const [filtri, setFiltri] = useState(() => {
@@ -52,6 +60,12 @@ const Keypeople = () => {
     const [hasMore, setHasMore] = useState(false);
     const quantita = 10;
     const [isSearchActive, setIsSearchActive] = useState(false);
+
+    //stati per la modale dell'icona info
+    const [openModalStato, setOpenModalStato] = useState(false);
+    const handleOpenModalStato = () => setOpenModalStato(true);
+    const handleCloseModalStato = () => setOpenModalStato(false);
+
 
 
     const user = JSON.parse(sessionStorage.getItem('user'));
@@ -339,7 +353,6 @@ const Keypeople = () => {
         }
     };
 
-
     const tipoConverter = (tipoId) => {
         const tipoMap = {
             1: "Keypeople",
@@ -348,23 +361,46 @@ const Keypeople = () => {
         };
         return tipoMap[tipoId] || ""; 
     };
+
+    const tipoOptions = [
+        { label: "Keypeople", value: 1 },
+        { label: "Hook", value: 2 },
+        { label: "Link", value: 3 }
+    ];
+
     
 
 
     const columns = [
         {
-            field: "nome",
-            headerName: "Nome Cognome",
-            flex: 1.3,
+            field: "tipologia",
+            headerName: t("Tipo Azienda"),
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
+            flex: 0.6,
             renderCell: (params) => (
-                <div style={{ textAlign: "start" }}>
-                    {params.row?.nome }
-                </div>
-                ),
-        },
+            <div style={{ textAlign: "start" }}>
+            {params.row?.cliente?.tipologia &&
+                params.row.cliente.tipologia.charAt(0).toUpperCase() +
+                params.row.cliente.tipologia.slice(1).toLowerCase()
+            }
+            </div>
+        ),
+        }, 
+        {
+            field: "settore",
+            headerName: t("Settore Azienda"),
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            flex: 1,
+            renderCell: (params) => (
+            <div style={{ textAlign: "start" }}>
+                {params.row?.cliente?.settoreMercato}
+            </div>
+        ),
+        }, 
         {
             field: "cliente",
             headerName: t("Azienda"),
@@ -379,9 +415,28 @@ const Keypeople = () => {
                     : "N/A"}
                 </div>
             ),
-            },
+        },
         {
-            field: "tipologia",
+            field: "nome",
+            headerName: "Nome Cognome",
+            flex: 1.3,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            renderCell: (params) => (
+                <span
+                style={{ textDecoration: "underline", color: "black", cursor: "pointer" }}
+                onClick={() => {
+                    setSelectedKeypeople({ row: params.row });
+                    setViewMode("cardSingola");
+                }}
+                >
+                {params.value}
+                </span>
+                ),
+        },
+        {
+            field: "ruolo",
             headerName: t("Job Title"),
             flex: 1,
             sortable: false,
@@ -413,30 +468,33 @@ const Keypeople = () => {
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
-            renderCell: (params) => (
-            <div style={{ textAlign: "start" }}>
-                {params.row?.stato && params.row?.stato?.descrizione
-                ? params.row?.stato?.descrizione
-                : "N/A"}
-            </div>
+            renderHeader: () => (
+            <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                {t("Stato")}
+                <Tooltip title={t("Visualizza significato stati")}>
+                <IconButton size="small" onClick={handleOpenModalStato}>
+                    <InfoOutlinedIcon fontSize="small" />
+                </IconButton>
+                </Tooltip>
+            </Box>
             ),
+            renderCell: (params) => {
+                const stato = params.row?.stato?.descrizione?.toLowerCase();
+                const colorMap = {
+                    gold: "#FFD700",
+                    silver: "#C0C0C0",
+                    bronze: "#b08d57",
+                    wood: "#5b3a29",
+                    start: "black",
+                };
+                const color = colorMap[stato] || "#ccc"; 
+                return (
+                    <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
+                    <CircleIcon sx={{ color, fontSize: "1rem" }} />
+                    </Box>
+                );
+            },
         },
-        {
-            field: "email",
-            headerName: t("Email"),
-            flex: 0.6,
-            sortable: false,
-            filterable: false,
-            disableColumnMenu: true,
-        },
-        {
-            field: "cellulare",
-            headerName: t("Telefono"),
-            flex: 1,
-            sortable: false,
-            filterable: false,
-            disableColumnMenu: true,
-        }
     ];
 
 
@@ -452,8 +510,8 @@ const Keypeople = () => {
         <SchemePage>
             <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
             <Tabs value={viewMode} onChange={(e, newValue) => setViewMode(newValue)}>
-                <Tab label="Card" value="cards" />
                 <Tab label="Tabella" value="table" />
+                <Tab label="Card" value="cards" />
             </Tabs>
             </Box>
             <Box sx={{
@@ -469,6 +527,7 @@ const Keypeople = () => {
                     aziendaOptions={clienteOptions}
                     statiOptions={statiOptions}
                     ownerOptions={ownerOptions}
+                    tipoOptions={tipoOptions}
                     onRicerche={handleRicerche}
                 />
             </Box>
@@ -518,16 +577,16 @@ const Keypeople = () => {
                 <Tabella
                 data={isSearchActive ? filteredKeypeople : originalKeypeople}
                 columns={columns}
-                title={t("Keypeople")}
+                title={t("Contatti")}
                 getRowId={(row) => row.id}
                 pagina={pagina}
                 quantita={quantita}
                 righeTot={righeTot}
                 onPageChange={handlePageChange}
-                onRowClick={(row) => {
-                    setSelectedKeypeople(row);
-                    setViewMode("cardSingola");
-                }}
+                // onRowClick={(row) => {
+                //     setSelectedKeypeople(row);
+                //     setViewMode("cardSingola");
+                // }}
                 />
                 {loading && (
                         <Box
@@ -561,7 +620,31 @@ const Keypeople = () => {
                     </Box>
                     </Box>
                 ) : null}
-        </SchemePage>
+                <Dialog open={openModalStato} onClose={handleCloseModalStato}>
+                    <DialogTitle>Leggenda degli stati</DialogTitle>
+                    <DialogContent>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <CircleIcon sx={{ color: '#FFD700'}}/> <span> Gold: ho ricevuto un’esigenza di business</span>
+                        </Box>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <CircleIcon sx={{ color: '#C0C0C0'}}/> <span>Silver: ho fissato una prospection</span>
+                        </Box>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <CircleIcon sx={{ color: '#b08d57'}} /> <span>Bronze: sono entrato in contatto</span>
+                        </Box>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <CircleIcon sx={{ color: '#5b3a29'}} /> <span>Wood: ho effettuato un’azione senza esito</span>
+                        </Box>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <CircleIcon sx={{ color: 'black'}} /> <span>Start: non ho ancora effettuato azioni commerciali</span>
+                        </Box>
+                        </Box>
+                    </DialogContent>
+                </Dialog>
+
+
+        </SchemePage>        
     );
 
 };

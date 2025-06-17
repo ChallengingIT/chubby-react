@@ -23,6 +23,7 @@ import { motion } from "framer-motion";
     aziendaOptions,
     statiOptions,
     ownerOptions,
+    tipoOptions
     }) {
     const theme = useUserTheme();
     const { t } = useTranslation();
@@ -55,6 +56,15 @@ import { motion } from "framer-motion";
         visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }, // Appare al centro
     };
 
+    const isAdminRole = () => {
+        const userString = sessionStorage.getItem("user");
+        if (userString) {
+            const userObj = JSON.parse(userString);
+            return userObj.roles.includes("ADMIN");
+        }
+        return false;
+    };
+
     return (
         <motion.div
         initial="hidden" 
@@ -79,12 +89,55 @@ import { motion } from "framer-motion";
         }}
         >
 
+                            <FormControl fullWidth sx={{ mb: 0.2 }}>
+                    <Autocomplete
+                        id="aziende-combo-box"
+                        options={aziendaOptions}
+                        getOptionLabel={(option) => option.label}
+                        value={
+                            aziendaOptions.find(
+                                (option) => option.value === filtri.azienda
+                            ) || null
+                        }
+                        onChange={handleAutocompleteChange("azienda")}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                label={t("Azienda")}
+                                variant="filled"
+                                sx={{
+                                    textAlign: "left",
+                                    borderRadius: "20px",
+                                    border: 'solid 1px #00B400',
+                                    bgcolor: 'white',
+                                    boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
+                                    "& .MuiFilledInput-root": {
+                                        backgroundColor: "transparent",
+                                    },
+                                    "& .MuiFilledInput-underline:after": {
+                                        borderBottomColor: "transparent",
+                                    },
+                                    "& .MuiFilledInput-root::before": {
+                                        borderBottom: "none",
+                                    },
+                                    "&:hover .MuiFilledInput-root::before": {
+                                        borderBottom: "none",
+                                    },
+                                    "& .MuiFormLabel-root.Mui-focused": {
+                                        color: theme.palette.border.main,
+                                    },
+                                }}
+                            />
+                        )}
+                    />
+                </FormControl>
+
             <FormControl fullWidth sx={{ mb: 0.2 }}>
 
             <TextField
             id="search-bar"
             variant="filled"
-            label={t("Cerca Contatto")}
+            label={t("Contatto")}
             value={filtri.nome || ""}
             onChange={handleInputChange("nome")}
             onKeyDown={(event) => {
@@ -119,48 +172,51 @@ import { motion } from "framer-motion";
             />
             </FormControl>
 
-                <FormControl fullWidth sx={{ mb: 0.2 }}>
-                    <Autocomplete
-                        id="aziende-combo-box"
-                        options={aziendaOptions}
-                        getOptionLabel={(option) => option.label}
-                        value={
-                            aziendaOptions.find(
-                                (option) => option.value === filtri.azienda
-                            ) || null
-                        }
-                        onChange={handleAutocompleteChange("azienda")}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                label={t("Aziende")}
-                                variant="filled"
-                                sx={{
-                                    textAlign: "left",
-                                    borderRadius: "20px",
-                                    border: 'solid 1px #00B400',
-                                    bgcolor: 'white',
-                                    boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
-                                    "& .MuiFilledInput-root": {
-                                        backgroundColor: "transparent",
-                                    },
-                                    "& .MuiFilledInput-underline:after": {
-                                        borderBottomColor: "transparent",
-                                    },
-                                    "& .MuiFilledInput-root::before": {
-                                        borderBottom: "none",
-                                    },
-                                    "&:hover .MuiFilledInput-root::before": {
-                                        borderBottom: "none",
-                                    },
-                                    "& .MuiFormLabel-root.Mui-focused": {
-                                        color: theme.palette.border.main,
-                                    },
-                                }}
-                            />
-                        )}
+
+            <FormControl fullWidth sx={{ mb: 0.2 }}>
+                <Autocomplete
+                    id="tipo-combo-box"
+                    options={tipoOptions}
+                    getOptionLabel={(option) => option.label}
+                    value={
+                    tipoOptions.find(
+                        (option) => option.value === filtri.tipo
+                    ) || null
+                    }
+                    onChange={handleAutocompleteChange("tipo")}
+                    renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        label={t("Tipo")}
+                        variant="filled"
+                        sx={{
+                        textAlign: "left",
+                        borderRadius: "20px",
+                        border: 'solid 1px #00B400',
+                        bgcolor: 'white',
+                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
+                        "& .MuiFilledInput-root": {
+                            backgroundColor: "transparent",
+                        },
+                        "& .MuiFilledInput-underline:after": {
+                            borderBottomColor: "transparent",
+                        },
+                        "& .MuiFilledInput-root::before": {
+                            borderBottom: "none",
+                        },
+                        "&:hover .MuiFilledInput-root::before": {
+                            borderBottom: "none",
+                        },
+                        "& .MuiFormLabel-root.Mui-focused": {
+                            color: theme.palette.border.main,
+                        },
+                        }}
                     />
+                    )}
+                />
                 </FormControl>
+
+
 
                 <FormControl fullWidth sx={{ mb: 0.2 }}>
                 <Autocomplete
@@ -205,6 +261,7 @@ import { motion } from "framer-motion";
                 />
                 </FormControl>
 
+                {isAdminRole() && (
                 <FormControl fullWidth sx={{ mb: 0.2 }}>
                 <Autocomplete
                     id="owner-combo-box"
@@ -248,6 +305,7 @@ import { motion } from "framer-motion";
                     )}
                 />
                 </FormControl>
+                )}
 
                 <IconButton
                     onClick={onSearch}
