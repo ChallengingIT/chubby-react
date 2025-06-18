@@ -26,7 +26,7 @@ const Aziende = () => {
     const [loading, setLoading] = useState(false);
     const [clienteOptions, setClienteOptions] = useState([]);
     const [selectedAziende, setSelectedAziende] = useState(null);
-    const [viewMode, setViewMode] = useState('cards');
+    const [viewMode, setViewMode] = useState('table');
     
     
     
@@ -377,9 +377,11 @@ const Aziende = () => {
     };
 
     const tipologiaOptions = [
-        { label: "Cliente", value: "CLIENTE" },
-        { label: "Prospect", value: "PROSPECT" },
-        { label: "Ex cliente", value: "EXCLIENTE" },
+        { label: "Cliente",         value: "CLIENTE"    },
+        { label: "Prospect",        value: "PROSPECT"   },
+        { label: "Ex cliente",      value: "EXCLIENTE"  },
+        { label: "Fornitore",       value: "FORNITORE"  },
+        { label: "Partner",         value: "PARTNER"    },
     ];
 
     const statoOptions = [
@@ -405,6 +407,7 @@ const Aziende = () => {
 
 
     const columns = [
+
         {
             field: "denominazione",
             headerName: "Azienda",
@@ -412,6 +415,17 @@ const Aziende = () => {
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
+            renderCell: (params) => (
+                <span
+                style={{ textDecoration: "underline", color: "black", cursor: "pointer" }}
+                onClick={() => {
+                    setSelectedAziende({ row: params.row });
+                    setViewMode("cardSingola");
+                }}
+                >
+                {params.value}
+                </span>
+            ),
         },
         {
             field: "citta",
@@ -480,8 +494,8 @@ const Aziende = () => {
         <SchemePage>
             <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
             <Tabs value={viewMode} onChange={(e, newValue) => setViewMode(newValue)}>
-                <Tab label="Card" value="cards" />
                 <Tab label="Tabella" value="table" />
+                <Tab label="Card" value="cards" />
             </Tabs>
             </Box>
             <Box
@@ -566,10 +580,10 @@ const Aziende = () => {
                             quantita={quantita}
                             righeTot={righeTot}
                             onPageChange={handlePageChange}
-                            onRowClick={(row) => {
-                                setSelectedAziende(row);
-                                setViewMode("cardSingola");
-                            }}
+                            // onRowClick={(row) => {
+                            //     setSelectedAziende(row);
+                            //     setViewMode("cardSingola");
+                            // }}
                         />
                         {loading && (
                                 <Box
