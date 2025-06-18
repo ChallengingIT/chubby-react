@@ -395,6 +395,8 @@
             { value: "Cliente", label: t("Cliente") },
             { value: "Prospect", label: t("Prospect") },
             { value: "EXCLIENTE", label: t("Ex Cliente") },
+            { label: "Fornitore",       value: "FORNITORE"  },
+            { label: "Partner",         value: "PARTNER"    },
         ],
         },
         { label: t("Scadenza Contratto"),              name: "dataScadenzaContratto",      type: "date",
