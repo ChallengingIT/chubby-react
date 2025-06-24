@@ -175,7 +175,20 @@ fetchStati();
     return (
         <Box sx={{borderRadius: '20px', }}>
             {/* Tabella */}
-            <TableContainer component={Paper} sx={{ maxHeight: 370, minHeight: 370, borderRadius: "20px", border: '2px solid #00B400', boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)", '&::-webkit-scrollbar': { display: 'none', }, scrollbarWidth: 'none', msOverflowStyle: 'none', }}>
+            <TableContainer
+                component={Paper}
+                sx={{
+                    maxHeight: filteredRows.length > 10 ? 370 : 'auto',
+                    overflowY: filteredRows.length > 10 ? 'auto' : 'visible',
+                    borderRadius: "20px",
+                    border: '2px solid #00B400',
+                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+                    '&::-webkit-scrollbar': { display: 'none' },
+                    scrollbarWidth: 'none',
+                    msOverflowStyle: 'none',
+                }}
+                >
+
                 {/* Titolo */}
                 {title && (
                     <Box sx={{ display: 'flex', bgcolor: '#FFFFF', width: '100%', height: '100%', justifyContent: 'flex-start', justifyItems: 'center'}}>
