@@ -663,7 +663,7 @@ const baseUrl = userHasRole('ADMIN')
         </Grid>
     </InfiniteScroll>
 ) : viewMode === 'table' ? (
-    <Box sx={{ height: '80vh', position: 'relative'}}>
+    <Box sx={{position: 'relative'}}>
     <Tabella
         data={isSearchActive ? filteredNeed : originalNeed}
         columns={columns}

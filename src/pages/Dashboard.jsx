@@ -161,7 +161,7 @@ function Dashboard() {
     const columns = [
         {
             field: 'aziendaInterna',
-            headerName: "Azienda",
+            headerName: "Società Owner",
             render: (row) => row?.aziendaInterna || "Azienda non disponibile", 
         },
         {
@@ -259,7 +259,8 @@ function Dashboard() {
                             onRefresh={handleRefresh}
                         />
                     </Grid>
-                    <Grid container spacing={2}>
+                    {/* ACTIONS TABLE HIDDEN */}
+                    {/* <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <Card
                                 sx={{
@@ -290,7 +291,7 @@ function Dashboard() {
                                 </CardContent>
                             </Card>
                         </Grid>
-                    </Grid>
+                    </Grid> */}
                 </Grid>
             </Container>
         </Container>

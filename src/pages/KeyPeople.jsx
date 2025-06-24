@@ -378,6 +378,8 @@ const Keypeople = () => {
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
+            headerAlign: "center",
+            align: "center",      
             flex: 0.6,
             renderCell: (params) => (
             <div style={{ textAlign: "start" }}>
@@ -391,6 +393,8 @@ const Keypeople = () => {
         {
             field: "settore",
             headerName: t("Settore Azienda"),
+            headerAlign: "center",
+            align: "center", 
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -408,6 +412,8 @@ const Keypeople = () => {
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
+            headerAlign: "center",
+            align: "center", 
             renderCell: (params) => (
                 <div style={{ textAlign: "start" }}>
                     {params.row?.cliente && params.row?.cliente?.denominazione
@@ -423,6 +429,8 @@ const Keypeople = () => {
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
+            headerAlign: "center",
+            align: "center", 
             renderCell: (params) => (
                 <span
                 style={{ textDecoration: "underline", color: "black", cursor: "pointer" }}
@@ -442,6 +450,8 @@ const Keypeople = () => {
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
+            headerAlign: "center",
+            align: "center", 
             renderCell: (params) => (
             <div style={{ textAlign: "start" }}>
                 {params.row?.ruolo}
@@ -451,6 +461,8 @@ const Keypeople = () => {
         {
             field: "tipo",
             headerName: t("Tipo"),
+            headerAlign: "center",
+            align: "center", 
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -464,6 +476,8 @@ const Keypeople = () => {
         {
             field: "stato",
             headerName: t("Stato"),
+            headerAlign: "center",
+            align: "center", 
             flex: 0.6,
             sortable: false,
             filterable: false,
@@ -508,7 +522,7 @@ const Keypeople = () => {
 
     return (
         <SchemePage>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2}}>
             <Tabs value={viewMode} onChange={(e, newValue) => setViewMode(newValue)}>
                 <Tab label="Tabella" value="table" />
                 <Tab label="Card" value="cards" />
@@ -573,7 +587,7 @@ const Keypeople = () => {
                 </Grid>
                 </InfiniteScroll>
                 ) : viewMode === 'table' ? (
-                <Box sx={{ height: '80vh', position: 'relative'}}>
+                <Box sx={{position: 'relative'}}>
                 <Tabella
                 data={isSearchActive ? filteredKeypeople : originalKeypeople}
                 columns={columns}

@@ -294,7 +294,7 @@ const Recruiting = () => {
     );
   
     const url = filtriAttivi
-      ? "http://localhost:8080/staffing/react/mod/ricerca"
+      ? "http://localhost:8080/staffing/react/filtri/ricerca"
       : "http://localhost:8080/staffing/react/mod";
   
     const filtriDaInviare = {

@@ -49,7 +49,7 @@
     const isBusinessUser = userHasRole('BUSINESS');
 
     return (
-        <Container maxWidth="xl"
+        <Container maxWidth="false"
         sx={{
             display: "flex",
             backgroundColor: "#EEEDEE",
@@ -104,15 +104,17 @@
             sx={{
             display: "flex",
             flexGrow: 1,
+            height: '20%',
             flexDirection: 'column',
             pt: 3,
+            pb: 2,
             marginLeft: isSmallScreen ? "3.5em" : "11em",
             // marginTop: "0.5em",
             marginRight: "-0.8em",
             marginBottom: "0.8em",
             backgroundColor: "#FEFCFD",
             borderRadius: "20px",
-            minHeight: "97vh",
+            minHeight: "100vh",
             mt: 1.5,
             transition: 'margin-left 0.3s ease',
             }}

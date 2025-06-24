@@ -24,9 +24,8 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from "axios";
 
-
 const CustomTableCell2 = ({ columns, rows, onRefresh, title }) => {
-    const [filtersEnabled, setFiltersEnabled] = useState(false);
+    const [filtersEnabled, setFiltersEnabled] = useState(true);
     const [filters, setFilters] = useState({});
     const [modalStato, setModalStato] = useState(false);
     const [selectedPipeline, setSelectedPipeline] = useState(null);
@@ -173,8 +172,6 @@ fetchStati();
             return <Slide {...props} direction="down" />;
         }
     
-    
-
     return (
         <Box sx={{borderRadius: '20px', }}>
             {/* Tabella */}
@@ -194,18 +191,19 @@ fetchStati();
                             {columns.map((column, index) => (
                                 <TableCell key={index} align="left" sx={{ fontWeight: "bold", backgroundColor: "#FFFFF", color: "#808080", borderBottom: "2px solid #ccc", fontSize: '14px', textAlign: 'left', padding: "6px 14px", }}>
                                     {filtersEnabled ? (
-                                        <TextField variant="standard" size="small" placeholder={`Filtra ${column.headerName}`} value={filters[column.field] || ""} onChange={(e) => handleFilterChange(column.field, e.target.value)} fullWidth />
+                                        <TextField variant="standard" size="small" placeholder={`${column.headerName}`} value={filters[column.field] || ""} onChange={(e) => handleFilterChange(column.field, e.target.value)} fullWidth />
                                     ) : (
                                         column.headerName
                                     )}
                                 </TableCell>
                             ))}
                             {/* Colonna per le icone */}
-                            <TableCell align="center" sx={{ fontWeight: "bold", backgroundColor: "#FFFFF", color: "#808080", borderBottom: "2px solid #ccc", fontSize: '14px', padding: "6px 14px", }}>
+                            {/* HIDDEN BUTTON FILTRI */}
+                            {/* <TableCell align="center" sx={{ fontWeight: "bold", backgroundColor: "#FFFFF", color: "#808080", borderBottom: "2px solid #ccc", fontSize: '14px', padding: "6px 14px", }}>
                                 <Button variant="contained" size="small" onClick={toggleFilters} sx={{ bgcolor: '#00b400', p: '4px 18px', color: 'white', fontWeight: 'bold', borderRadius: '20px'}}>
                                     {filtersEnabled ? "Filtri" : "Filtri"}
                                 </Button>
-                            </TableCell>
+                            </TableCell> */}
                         </TableRow>
                     </TableHead>
 
@@ -214,7 +212,7 @@ fetchStati();
                         {filteredRows.map((row, rowIndex) => (
                             <TableRow key={rowIndex} hover sx={{ "&:nth-of-type(odd)": { backgroundColor: "#f9f9f9", }, "&:nth-of-type(even)": { backgroundColor: "#fff", }, "&:hover": { backgroundColor: "#f1f1f1", }, height: "36px", }}>
                                 {columns.map((column, colIndex) => (
-                                    <TableCell key={colIndex} align={column.align || "left"} sx={{ borderBottom: "1px solid #e0e0e0", color: "black", fontSize: "14px", padding: "6px 14px", }}>
+                                    <TableCell key={colIndex} align={column.align || "center"} sx={{ borderBottom: "1px solid #e0e0e0", color: "black", fontSize: "14px", padding: "6px 14px", }}>
                                         {column.render ? column.render(row) : row[column.field]}
                                     </TableCell>
                                 ))}
