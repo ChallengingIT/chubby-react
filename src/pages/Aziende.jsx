@@ -4,6 +4,9 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import AziendeCardFlip from "../components/card/AziendeCardFlip";
 import SchemePage from '../components/SchemePage.jsx';
 import Tabella from '../components/Tabella';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 import {
     Box,
@@ -398,20 +401,19 @@ const Aziende = () => {
 
 
     const idaConverter = (value) => {
-        if (value <= 1) return "Basso";
-        if (value > 1 && value <= 2) return "Medio";
-        if (value > 2) return "Alto";
+        if (value <= 1) return <ArrowDownwardIcon sx={{ color: "grey"}}/>;
+        if (value > 1 && value <= 2) return <ArrowForwardIcon sx={{ color: "#00B400" }}/>;
+        if (value > 2) return <ArrowUpwardIcon sx={{ color: "orange" }}/>;
         return "N/A";
     };
     
 
 
     const columns = [
-
         {
-            field: "denominazione",
-            headerName: "Azienda",
-            flex: 1.3,
+            field: "tipologia",
+            headerName: "Tipologia",
+            flex: 1.0,
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -428,25 +430,44 @@ const Aziende = () => {
             ),
         },
         {
-            field: "citta",
-            headerName: t("Città"),
-            flex: 1,
-            sortable: false,
-            filterable: false,
-            disableColumnMenu: true,
-            },
-        {
-            field: "sedeOperativa",
-            headerName: t("Sede operativa"),
-            flex: 1,
+            field: "settoreMercato",
+            headerName: t("Settore"),
+            flex: 0.6,
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
         },
         {
-            field: "settoreMercato",
-            headerName: t("Settore di merca"),
-            flex: 0.6,
+            field: "denominazione",
+            headerName: "Nome",
+            flex: 1.3,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            renderCell: (params) => (
+                <span
+                style={{ textDecoration: "underline", color: "black", cursor: "pointer" }}
+                onClick={() => {
+                    setSelectedAziende({ row: params.row });
+                    setViewMode("cardSingola");
+                }}
+                >
+                {params.value}
+                </span>
+            ),
+        },
+        // {
+        //     field: "citta",
+        //     headerName: t("Città"),
+        //     flex: 1,
+        //     sortable: false,
+        //     filterable: false,
+        //     disableColumnMenu: true,
+        //     },
+        {
+            field: "sedeOperativa",
+            headerName: t("Sede operativa"),
+            flex: 1,
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -570,7 +591,7 @@ const Aziende = () => {
                 </Grid>
                     </InfiniteScroll>
                 ) : viewMode === 'table' ? (
-                    <Box sx={{ height: '80vh', position: 'relative'}}>
+                    <Box sx={{position: 'relative'}}>
                     <Tabella
                         data={isSearchActive ? filteredAziende : originalAziende}
                         columns={columns}

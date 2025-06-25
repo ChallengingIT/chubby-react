@@ -385,13 +385,15 @@
         onClick: () => navigate("/recruiting"),
         tooltip: t("Recruiting")
         },
-        {
-        title: "Hiring",
-        icon: <ChecklistRtlIcon />,
-        isVisible: !userHasRole("USER") && !userHasRole("RECRUITER") && !userHasRole("BUSINESS") && !userHasRole("CANDIDATO"),
-        onClick: () => navigate("/hiring"),
-        tooltip: t("Hiring")
-        },
+        
+        // Hidden
+        // {
+        // title: "Hiring",
+        // icon: <ChecklistRtlIcon />,
+        // isVisible: !userHasRole("USER") && !userHasRole("RECRUITER") && !userHasRole("BUSINESS") && !userHasRole("CANDIDATO"),
+        // onClick: () => navigate("/hiring"),
+        // tooltip: t("Hiring")
+        // },
     ];
 
     const isCandidato = userHasRole("CANDIDATO");
