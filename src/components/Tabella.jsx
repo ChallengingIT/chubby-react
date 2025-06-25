@@ -80,7 +80,7 @@ const Tabella = ({
                         color: "black",
                         mt: 2,
                         mb: 1,
-                        ml: 3,
+                        ml: 2,
                         fontWeight: "bold",
                     }}
                 >
