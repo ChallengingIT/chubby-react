@@ -401,7 +401,7 @@ const Aziende = () => {
 
 
     const idaConverter = (value) => {
-        if (value <= 1) return <ArrowDownwardIcon sx={{ color: "grey"}}/>;
+        if (value <= 1) return <ArrowDownwardIcon sx={{ color: "black"}}/>;
         if (value > 1 && value <= 2) return <ArrowForwardIcon sx={{ color: "#00B400" }}/>;
         if (value > 2) return <ArrowUpwardIcon sx={{ color: "orange" }}/>;
         return "N/A";
