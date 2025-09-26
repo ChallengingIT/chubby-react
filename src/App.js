@@ -10,7 +10,7 @@ import Need                                                            from './p
 import Recruiting                                                      from './pages/Recruiting.jsx';
 import Layout                                                          from './components/Layout.jsx';
 import IntervisteList                                                  from './pages/IntervisteList.jsx';
-import Keypeople                                                       from './pages/Keypeople.jsx';
+import KeyPeople                                                       from './pages/KeyPeople.jsx';  
 import Hiring                                                          from './pages/Hiring.jsx';
 import NeedMatch                                                       from './pages/NeedMatch.jsx';
 import AziendeListaNeedCard                                            from './pages/AziendeListaNeedCard.jsx';
@@ -145,7 +145,7 @@ const App = () => {
                   } />
                 <Route path="/contacts"element={
                     <PrivateRoute roles={['ADMIN', 'BM']}>
-                      <Keypeople />
+                      <KeyPeople />
                     </PrivateRoute>
                   } />
                 <Route path="/contacts/aggiungi"element={

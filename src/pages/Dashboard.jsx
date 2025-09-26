@@ -162,33 +162,39 @@ function Dashboard() {
         {
             field: 'aziendaInterna',
             headerName: "Società Owner",
+            align: 'center',
             render: (row) => row?.aziendaInterna || "Azienda non disponibile", 
         },
         {
             field: "cliente",
-            headerName: "Cliente",
+            headerName: "Azienda Cliente",
+            align: 'center',
             render: (row) => row.cliente?.denominazione || "Cliente non disponibile", 
         },
         {
             field: "tipologia",
             headerName: "Tipologia",
+            align: 'center',
             render: (row) => row?.tipologia || "Tipologia non disponibile", 
         },
         {
             field: "ownerBusiness",
-            headerName: "Owner Business",
+            headerName: "Business Owner",
+            align: 'center',
             render: (row) => row?.ownerBusiness || "Owner non disponibile", 
 
         },
         {
             field: "ownerRecruiter",
-            headerName: "Owner Recruiter",
+            headerName: "Owner Operativo",
+            align: 'center',
             render: (row) => row?.ownerRecruiter || "Owner non disponibile", 
 
         },
         {
             field: "descrizione",
             headerName: "Need",
+            align: 'center',
             render: (row) => (
                 <Link
                     component="button"
@@ -205,10 +211,12 @@ function Dashboard() {
         },
         {
             field: "priorita",
+            align: 'center',
             headerName: "Priorità",
         },
         {
             field: "stato",
+            align: 'center',
             headerName: "Stato",
         },
     ];

@@ -176,7 +176,7 @@ const ModificaNeedGrafica = () => {
         const aziendaInterna = [
             { value: "CHALLENGING", label: "Challenging" },
             { value: "INNOTEK",     label:"Innotek"   }
-            ];
+        ];
 
 
 

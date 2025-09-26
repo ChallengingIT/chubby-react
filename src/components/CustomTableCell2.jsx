@@ -23,6 +23,8 @@ import {
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from "axios";
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 const CustomTableCell2 = ({ columns, rows, onRefresh, title }) => {
     const [filtersEnabled, setFiltersEnabled] = useState(true);
@@ -32,6 +34,8 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title }) => {
     const [values, setValues] = useState({ stato: null, priorita: null });
     const [alert,     setAlert    ] = useState(false);
     const [statoOptions, setStatoOptions] = useState([]);
+    const [orderBy, setOrderBy] = useState('');
+    const [orderDirection, setOrderDirection] = useState('asc');
     
     
     const user = JSON.parse(sessionStorage.getItem('user'));
@@ -42,24 +46,23 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title }) => {
     };
 
 
+    const fetchStati = async () => {
+        try {
+            const responseStato = await axios.get("http://localhost:8080/need/react/stato", { headers });
 
-const fetchStati = async () => {
-    try {
-        const responseStato = await axios.get("http://localhost:8080/need/react/stato", { headers });
+            if (Array.isArray(responseStato.data)) {
+                const filteredStati = responseStato.data
+                    .filter(stato => [1, 6, 7].includes(stato.id))
+                    .map(stato => ({ label: stato.descrizione, value: stato.id }));
 
-        if (Array.isArray(responseStato.data)) {
-            const filteredStati = responseStato.data
-                .filter(stato => [1, 6, 7].includes(stato.id))
-                .map(stato => ({ label: stato.descrizione, value: stato.id }));
-
-            setStatoOptions(filteredStati);
-        } else {
-            console.error("I dati ottenuti dalla chiamata degli stati non sono nel formato Array: ", responseStato.data);
+                setStatoOptions(filteredStati);
+            } else {
+                console.error("I dati ottenuti dalla chiamata degli stati non sono nel formato Array: ", responseStato.data);
+            }
+        } catch (error) {
+            console.error("Errore durante il recupero degli stati: ", error);
         }
-    } catch (error) {
-        console.error("Errore durante il recupero degli stati: ", error);
-    }
-};
+    };
 
 
 
@@ -91,6 +94,7 @@ fetchStati();
         });
     };
 
+
     const filteredRows = rows.filter((row) => {
         return columns.every((column) => {
             const cellValue = column.field.includes('.') 
@@ -108,6 +112,37 @@ fetchStati();
         });
     });
 
+    const handleSort = (col) => {
+        if (orderBy === col) {
+            setOrderDirection(orderDirection === 'asc' ? 'desc' : 'asc');
+        } else {
+            setOrderBy(col);
+            setOrderDirection('asc');
+        }
+    };
+
+    const sortExtractors = {
+        aziendaInterna: row => row.aziendaInterna?.toLowerCase() || "",
+        cliente: row => row.cliente?.denominazione?.toLowerCase() || "",
+        tipologia: row => row.tipologia?.toLowerCase() || "",
+        ownerBusiness: row => row.ownerBusiness?.toLowerCase() || "",
+        ownerRecruiter: row => row.ownerRecruiter?.toLowerCase() || "",
+        descrizione: row => row.descrizione?.toLowerCase() || "",
+        priorita: row => parseInt(row.priorita) || 0,
+        stato: row => row.stato?.toLowerCase?.() || String(row.stato || ""),
+    };
+
+    const sortedRows = [...filteredRows].sort((a, b) => {
+        if (!orderBy || !sortExtractors[orderBy]) return 0;
+
+        const aValue = sortExtractors[orderBy](a);
+        const bValue = sortExtractors[orderBy](b);
+
+        if (aValue < bValue) return orderDirection === "asc" ? -1 : 1;
+        if (aValue > bValue) return orderDirection === "asc" ? 1 : -1;
+        return 0;
+    });
+
     const handleOpenModal = (row) => {
         setSelectedPipeline(row);
         setValues({
@@ -116,8 +151,6 @@ fetchStati();
         });
         setModalStato(true);
     };
-    
-    
     
 
     const handleUpdateStato = async () => {
@@ -181,7 +214,7 @@ fetchStati();
                     maxHeight: filteredRows.length > 10 ? 370 : 'auto',
                     overflowY: filteredRows.length > 10 ? 'auto' : 'visible',
                     borderRadius: "20px",
-                    border: '2px solid #00B400',
+                    border: filteredRows.length > 0 ? '2px solid #00B400' : '1px dashed #ccc',
                     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
                     '&::-webkit-scrollbar': { display: 'none' },
                     scrollbarWidth: 'none',
@@ -202,27 +235,51 @@ fetchStati();
                     <TableHead>
                         <TableRow>
                             {columns.map((column, index) => (
-                                <TableCell key={index} align="left" sx={{ fontWeight: "bold", backgroundColor: "#FFFFF", color: "#808080", borderBottom: "2px solid #ccc", fontSize: '14px', textAlign: 'left', padding: "6px 14px", }}>
-                                    {filtersEnabled ? (
-                                        <TextField variant="standard" size="small" placeholder={`${column.headerName}`} value={filters[column.field] || ""} onChange={(e) => handleFilterChange(column.field, e.target.value)} fullWidth />
-                                    ) : (
-                                        column.headerName
+                                <TableCell
+                                    key={index}
+                                    align={column.align || "left"}
+                                    sx={{
+                                        fontWeight: "bold",
+                                        backgroundColor: "#FFFFF",
+                                        color: "#808080",
+                                        borderBottom: "2px solid #ccc",
+                                        fontSize: '14px',
+                                        textAlign: column.align || "left",
+                                        padding: "6px 14px",
+                                    }}
+                                >
+                                    {filtersEnabled && (
+                                        <Box display="flex" alignItems="center" gap={0}>
+                                            <TextField
+                                                variant="standard"
+                                                size="small"
+                                                placeholder={column.headerName}
+                                                value={filters[column.field] || ""}
+                                                onChange={(e) => handleFilterChange(column.field, e.target.value)}
+                                                fullWidth
+                                                inputProps={{ style: { textAlign: column.align || "left" } }}
+                                            />
+                                            <IconButton onClick={() => handleSort(column.field)} size="small">
+                                                {orderBy === column.field ? (
+                                                    orderDirection === "asc" ? (
+                                                        <ArrowDropUpIcon fontSize="small" />
+                                                    ) : (
+                                                        <ArrowDropDownIcon fontSize="small" />
+                                                    )
+                                                ) : (
+                                                    <ArrowDropDownIcon fontSize="small" sx={{ color: "gray" }} />
+                                                )}
+                                            </IconButton>
+                                        </Box>
                                     )}
                                 </TableCell>
                             ))}
-                            {/* Colonna per le icone */}
-                            {/* HIDDEN BUTTON FILTRI */}
-                            {/* <TableCell align="center" sx={{ fontWeight: "bold", backgroundColor: "#FFFFF", color: "#808080", borderBottom: "2px solid #ccc", fontSize: '14px', padding: "6px 14px", }}>
-                                <Button variant="contained" size="small" onClick={toggleFilters} sx={{ bgcolor: '#00b400', p: '4px 18px', color: 'white', fontWeight: 'bold', borderRadius: '20px'}}>
-                                    {filtersEnabled ? "Filtri" : "Filtri"}
-                                </Button>
-                            </TableCell> */}
                         </TableRow>
                     </TableHead>
 
                     {/* Body */}
                     <TableBody>
-                        {filteredRows.map((row, rowIndex) => (
+                        {sortedRows.map((row, rowIndex) => (
                             <TableRow key={rowIndex} hover sx={{ "&:nth-of-type(odd)": { backgroundColor: "#f9f9f9", }, "&:nth-of-type(even)": { backgroundColor: "#fff", }, "&:hover": { backgroundColor: "#f1f1f1", }, height: "36px", }}>
                                 {columns.map((column, colIndex) => (
                                     <TableCell key={colIndex} align={column.align || "center"} sx={{ borderBottom: "1px solid #e0e0e0", color: "black", fontSize: "14px", padding: "6px 14px", }}>
