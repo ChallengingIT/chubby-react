@@ -24,7 +24,7 @@ import {
 
 
 
-const Keypeople = () => {
+const KeyPeople = () => {
 
     const { t } = useTranslation(); 
     
@@ -663,4 +663,4 @@ const Keypeople = () => {
 
 };
 
-export default Keypeople;
+export default KeyPeople;
