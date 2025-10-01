@@ -8,19 +8,19 @@ import {
     Container,
     Link
 } from "@mui/material";
-import axios                        from "axios";
-import { useNotification }          from "../components/NotificationContext.js";
-import { useNavigate }              from "react-router-dom";
-import BoxAttivitaWeek              from "../components/dashboardComponents/BoxAttivitaWeek.jsx";
-import { useTranslation }           from "react-i18next"; 
-import { useMediaQuery }            from '@mui/material';
-import { motion }                   from "framer-motion";
-import CustomTableCell2             from '../components/CustomTableCell2.jsx';
+import axios from "axios";
+import { useNotification } from "../components/NotificationContext.js";
+import { useNavigate } from "react-router-dom";
+import BoxAttivitaWeek from "../components/dashboardComponents/BoxAttivitaWeek.jsx";
+import { useTranslation } from "react-i18next";
+import { useMediaQuery } from '@mui/material';
+import { motion } from "framer-motion";
+import CustomTableCell2 from '../components/CustomTableCell2.jsx';
 
 
 
 function Dashboard() {
-    const { t } = useTranslation(); 
+    const { t } = useTranslation();
     const isSmallScreen = useMediaQuery('(max-width: 800px)');
 
 
@@ -155,7 +155,7 @@ function Dashboard() {
     const handleRefresh = () => {
         fetchData();
     }
-    
+
 
 
     const columns = [
@@ -163,32 +163,32 @@ function Dashboard() {
             field: 'aziendaInterna',
             headerName: "Società Owner",
             align: 'center',
-            render: (row) => row?.aziendaInterna || "Azienda non disponibile", 
+            render: (row) => row?.aziendaInterna || "Azienda non disponibile",
         },
         {
             field: "cliente",
             headerName: "Azienda Cliente",
             align: 'center',
-            render: (row) => row.cliente?.denominazione || "Cliente non disponibile", 
+            render: (row) => row.cliente?.denominazione || "Cliente non disponibile",
         },
         {
             field: "tipologia",
             headerName: "Tipologia",
             align: 'center',
-            render: (row) => row?.tipologia || "Tipologia non disponibile", 
+            render: (row) => row?.tipologia || "Tipologia non disponibile",
         },
         {
             field: "ownerBusiness",
             headerName: "Business Owner",
             align: 'center',
-            render: (row) => row?.ownerBusiness || "Owner non disponibile", 
+            render: (row) => row?.ownerBusiness || "Owner non disponibile",
 
         },
         {
             field: "ownerRecruiter",
             headerName: "Owner Operativo",
             align: 'center',
-            render: (row) => row?.ownerRecruiter || "Owner non disponibile", 
+            render: (row) => row?.ownerRecruiter || "Owner non disponibile",
 
         },
         {
@@ -220,89 +220,97 @@ function Dashboard() {
             headerName: "Stato",
         },
     ];
-    
-    
+
+
 
     const getRowId = (row) => row.id;
 
     return (
         <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={fadeInVariants}
-        >
-        <Container
-            maxWidth="false"
-            sx={{
-                display: "flex",
-                backgroundColor: "#EEEDEE",
-                height: "auto",
-                width: "auto",
-            }}
+            initial="hidden"
+            animate="visible"
+            variants={fadeInVariants}
         >
             <Container
-        maxWidth="xl"
-            sx={{
-            display: "flex",
-            flexGrow: 1,
-            flexDirection: 'column',
-            p: 3,
-            marginLeft: isSmallScreen ? "3.5em" : "12.8em",
-            // marginTop: "0.5em",
-            marginBottom: "0.8em",
-            marginRight: "0.8em",
-            backgroundColor: "#FEFCFD",
-            borderRadius: "20px",
-            minHeight: "97vh",
-            mt: 1.5,
-            transition: 'margin-left 0.3s ease',
-            }}
+                maxWidth="false"
+                sx={{
+                    display: "flex",
+                    backgroundColor: "#EEEDEE",
+                    height: "auto",
+                    width: "auto",
+                }}
             >
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <CustomTableCell2
-                            columns={columns}
-                            rows={originalPipeline}
-                            title={t("Pipeline")}
-                            onRefresh={handleRefresh}
-                        />
-                    </Grid>
-                    {/* ACTIONS TABLE HIDDEN */}
-                    {/* <Grid container spacing={2}>
+                <Container
+                    maxWidth="xl"
+                    sx={{
+                        display: "flex",
+                        flexGrow: 1,
+                        flexDirection: 'column',
+                        p: 3,
+                        marginLeft: isSmallScreen ? "3.5em" : "11em",
+                        // marginTop: "0.5em",
+                        marginBottom: "0.8em",
+                        marginRight: "0.8em",
+                        backgroundColor: "#FEFCFD",
+                        borderRadius: "20px",
+                        minHeight: "97vh",
+                        mt: 1.5,
+                        transition: 'margin-left 0.3s ease',
+                    }}
+                >
+                    <Grid container spacing={2}>
                         <Grid item xs={12}>
-                            <Card
+                            <CustomTableCell2
+                                columns={columns}
+                                rows={originalPipeline}
+                                title={t("Pipeline")}
+                                onRefresh={handleRefresh}
                                 sx={{
-                                    mt: 2,
-                                    ml: 2,
-                                    borderRadius: "20px",
-                                    maxWidth: "100%",
-                                    height: "40vh",
-                                    border: "2px solid #00B401",
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    overflow: "hidden",
-                                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+                                    maxHeight: "50vh",   // limite massimo metà schermo
+                                    overflow: "auto",    // scroll se supera
+                                    height: "auto",      // si adatta finché non arriva al max 
                                 }}
-                            >
-                                <CardContent
+                            />
+                        </Grid>
+                        {/* ACTIONS TABLE */}
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <Card
                                     sx={{
-                                        flexGrow: 1,
+                                        mt: 2,
+                                        ml: 2,
+                                        borderRadius: "20px",
+                                        maxWidth: "100%",
+                                        maxHeight: "45vh", // limite massimo metà schermata
+                                        border: "2px solid #00B401",
                                         display: "flex",
                                         flexDirection: "column",
-                                        height: "100%",
-                                        width: "100%",
+                                        overflow: "auto",
+                                        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+                                        flexShrink: 0,
+                                        alignSelf: "flex-start",
                                     }}
                                 >
-                                    <BoxAttivitaWeek
-                                        aziendeOptions={aziendeOptions}
-                                    />
-                                </CardContent>
-                            </Card>
+                                    <CardContent
+                                        sx={{
+                                            padding: 1,
+                                            flexGrow: 1,
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            height: "100%",
+                                            width: "100%",
+                                        }}
+                                    >
+                                        <BoxAttivitaWeek
+                                            aziendeOptions={aziendeOptions}
+                                        />
+                                    </CardContent>
+                                </Card>
+                            </Grid>
                         </Grid>
-                    </Grid> */}
-                </Grid>
+                    </Grid>
+                </Container>
             </Container>
-        </Container>
         </motion.div>
     );
 }
