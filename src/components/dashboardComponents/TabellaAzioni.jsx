@@ -192,7 +192,7 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
                         initialState={{
                             pagination: { paginationModel: { pageSize: 4, page: 0 } },
                         }}
-                        pageSizeOptions={[4, 10, 15]}
+                        pageSizeOptions={[4, 8, 12]}
                         disableSelectionOnClick
                         disableColumnMenu
                         sx={{ border: "none" }}

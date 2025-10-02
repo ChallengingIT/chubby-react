@@ -1,36 +1,36 @@
-    import React, { useState, useEffect }                       from "react";
-    import { useNavigate, useLocation, useParams }              from "react-router-dom";
-    import axios                                                from "axios";
-    import CircleOutlinedIcon                                   from "@mui/icons-material/CircleOutlined"; //cerchio vuoto
-    import CustomAutocomplete                                   from "../../components/fields/CustomAutocomplete";
-    import CustomTextFieldAggiungi                              from "../../components/fields/CustomTextFieldAggiungi";
-    import CustomNoteAggiungi                                   from "../../components/fields/CustomNoteAggiungi";
-    import CustomDatePickerAggiungi                             from "../../components/fields/CustomDatePickerAggiungi";
-    import CustomDecimalNumberAggiungi                          from "../../components/fields/CustomDecimalNumberAggiungi";
-    import CustomMultipleSelectAggiunta                         from "../../components/fields/CustomMultipleSelectAggiunta";
-    import CustomWeekDateAggiungi                               from "../../components/fields/CustomWeekDateAggiungi";
-    import { useTranslation }                                   from 'react-i18next';
-    import { useMediaQuery }                                    from '@mui/material';
-    import { useUserTheme }                                     from "../../components/TorchyThemeProvider";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
+import axios from "axios";
+import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined"; //cerchio vuoto
+import CustomAutocomplete from "../../components/fields/CustomAutocomplete";
+import CustomTextFieldAggiungi from "../../components/fields/CustomTextFieldAggiungi";
+import CustomNoteAggiungi from "../../components/fields/CustomNoteAggiungi";
+import CustomDatePickerAggiungi from "../../components/fields/CustomDatePickerAggiungi";
+import CustomDecimalNumberAggiungi from "../../components/fields/CustomDecimalNumberAggiungi";
+import CustomMultipleSelectAggiunta from "../../components/fields/CustomMultipleSelectAggiunta";
+import CustomWeekDateAggiungi from "../../components/fields/CustomWeekDateAggiungi";
+import { useTranslation } from 'react-i18next';
+import { useMediaQuery } from '@mui/material';
+import { useUserTheme } from "../../components/TorchyThemeProvider";
 
-    import {
-        Box,
-        Typography,
-        Button,
-        List,
-        ListItem,
-        ListItemIcon,
-        ListItemText,
-        Alert,
-        Skeleton,
-        Snackbar,
-        Grid,
-        Slide,
-        Container
-        } from "@mui/material";
+import {
+    Box,
+    Typography,
+    Button,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Alert,
+    Skeleton,
+    Snackbar,
+    Grid,
+    Slide,
+    Container
+} from "@mui/material";
 import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
 
-    const AggiungiNeedIDGragica = () => {
+const AggiungiNeedIDGrafica = () => {
     const theme = useUserTheme();
     const { id } = useParams();
     const navigate = useNavigate();
@@ -43,18 +43,18 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
 
 
     //stati della pagina
-    const [ activeSection,                  setActiveSection                ] = useState(t('Descrizione Need'));
-    const [ currentPageIndex,               setCurrentPageIndex             ] = useState(0);
-    const [ alert,                          setAlert                        ] = useState({ open: false, message: "" });
-    const [ errors,                         setErrors                       ] = useState({});
-    const [ loading,                        setLoading                      ] = useState(true);
+    const [activeSection, setActiveSection] = useState(t('Descrizione Need'));
+    const [currentPageIndex, setCurrentPageIndex] = useState(0);
+    const [alert, setAlert] = useState({ open: false, message: "" });
+    const [errors, setErrors] = useState({});
+    const [loading, setLoading] = useState(true);
 
-    const [ aziendeOptions,                 setAziendeOptions               ] = useState([]);
-    const [ skillsOptions,                  setSkillsOptions                ] = useState([]);
-    const [ ownerOptions,                   setOwnerOptions                 ] = useState([]);
-    const [ tipologiaOptions,               setTipologiaOptions             ] = useState([]);
-    const [ statoOptions,                   setStatoOptions                 ] = useState([]);
-    const [ keypeopleOptions,               setKeypeopleOptions             ] = useState([]);
+    const [aziendeOptions, setAziendeOptions] = useState([]);
+    const [skillsOptions, setSkillsOptions] = useState([]);
+    const [ownerOptions, setOwnerOptions] = useState([]);
+    const [tipologiaOptions, setTipologiaOptions] = useState([]);
+    const [statoOptions, setStatoOptions] = useState([]);
+    const [keypeopleOptions, setKeypeopleOptions] = useState([]);
 
 
     const [values, setValues] = useState({ idAzienda });
@@ -70,86 +70,86 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
 
     useEffect(() => {
         const fetchNeedOptions = async () => {
-        try {
-            const responseAziende = await axios.get(
-            `http://89.46.196.60:8443/aziende/react/${id}`,
-            { headers: headers }
-            );
-            const responseSkill = await axios.get(
-            "http://89.46.196.60:8443/staffing/react/skill",
-            { headers: headers }
-            );
-            const ownerResponse = await axios.get(
-            "http://89.46.196.60:8443/owner",
-            { headers: headers }
-            );
-            const tipologiaResponse = await axios.get(
-            "http://89.46.196.60:8443/need/react/tipologia",
-            { headers: headers }
-            );
-            const statoResponse = await axios.get(
-            "http://89.46.196.60:8443/need/react/stato",
-            { headers: headers }
-            );
-            const responseKeypeople = await axios.get(
-                `http://89.46.196.60:8443/keypeople/react/azienda/${idAzienda}`,
-                { headers: headers }
-            );
-            const keypeopleOptions = responseKeypeople.data.map((keypeople) => ({
-                value: keypeople.id,
-                label: keypeople.nome,
-            }));
-            setKeypeopleOptions(keypeopleOptions);
+            try {
+                const responseAziende = await axios.get(
+                    `http://localhost:8080/aziende/react/${id}`,
+                    { headers: headers }
+                );
+                const responseSkill = await axios.get(
+                    "http://localhost:8080/staffing/react/skill",
+                    { headers: headers }
+                );
+                const ownerResponse = await axios.get(
+                    "http://localhost:8080/owner",
+                    { headers: headers }
+                );
+                const tipologiaResponse = await axios.get(
+                    "http://localhost:8080/need/react/tipologia",
+                    { headers: headers }
+                );
+                const statoResponse = await axios.get(
+                    "http://localhost:8080/need/react/stato",
+                    { headers: headers }
+                );
+                const responseKeypeople = await axios.get(
+                    `http://localhost:8080/keypeople/react/azienda/${idAzienda}`,
+                    { headers: headers }
+                );
+                const keypeopleOptions = responseKeypeople.data.map((keypeople) => ({
+                    value: keypeople.id,
+                    label: keypeople.nome,
+                }));
+                setKeypeopleOptions(keypeopleOptions);
 
-            if (Array.isArray(statoResponse.data)) {
-            const statoOptions = statoResponse.data.map((stato) => ({
-                label: stato.descrizione,
-                value: stato.id,
-            }));
-            setStatoOptions(statoOptions);
-            }
+                if (Array.isArray(statoResponse.data)) {
+                    const statoOptions = statoResponse.data.map((stato) => ({
+                        label: stato.descrizione,
+                        value: stato.id,
+                    }));
+                    setStatoOptions(statoOptions);
+                }
 
-            if (Array.isArray(tipologiaResponse.data)) {
-            const tipologiaOptions = tipologiaResponse.data.map((tipologia) => ({
-                label: tipologia.descrizione,
-                value: tipologia.id,
-            }));
-            setTipologiaOptions(tipologiaOptions);
-            }
+                if (Array.isArray(tipologiaResponse.data)) {
+                    const tipologiaOptions = tipologiaResponse.data.map((tipologia) => ({
+                        label: tipologia.descrizione,
+                        value: tipologia.id,
+                    }));
+                    setTipologiaOptions(tipologiaOptions);
+                }
 
-            if (Array.isArray(ownerResponse.data)) {
-            const ownerOptions = ownerResponse.data.map((owner) => ({
-                label: owner.descrizione,
-                value: owner.id,
-            }));
-            setOwnerOptions(ownerOptions);
-            }
+                if (Array.isArray(ownerResponse.data)) {
+                    const ownerOptions = ownerResponse.data.map((owner) => ({
+                        label: owner.descrizione,
+                        value: owner.id,
+                    }));
+                    setOwnerOptions(ownerOptions);
+                }
 
-            if (Array.isArray(responseSkill.data)) {
-            const skillsOptions = responseSkill.data.map((skill) => ({
-                value: skill.id,
-                label: skill.descrizione,
-            }));
-            setSkillsOptions(skillsOptions);
-            }
+                if (Array.isArray(responseSkill.data)) {
+                    const skillsOptions = responseSkill.data.map((skill) => ({
+                        value: skill.id,
+                        label: skill.descrizione,
+                    }));
+                    setSkillsOptions(skillsOptions);
+                }
 
-            if (Array.isArray(responseAziende.data)) {
-            const ownerOptions = responseAziende.data.map((aziende) => ({
-                label: aziende.denominazione,
-                value: aziende.id,
-            }));
-            setAziendeOptions(ownerOptions);
+                if (Array.isArray(responseAziende.data)) {
+                    const ownerOptions = responseAziende.data.map((aziende) => ({
+                        label: aziende.denominazione,
+                        value: aziende.id,
+                    }));
+                    setAziendeOptions(ownerOptions);
+                }
+            } catch (error) {
+                console.error("Errore durante il recupero delle aziende:", error);
             }
-        } catch (error) {
-            console.error("Errore durante il recupero delle aziende:", error);
-        }
-        setLoading(false);
+            setLoading(false);
         };
 
         fetchNeedOptions();
     }, []);
 
-    
+
 
     const pubblicazioneOptions = [
         { value: 1, label: "To Do" },
@@ -163,16 +163,16 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
     ];
 
     const seniorityOptions = [
-        { label: "Neo", value: 1},
-        { label: "Junior", value: 2},
+        { label: "Neo", value: 1 },
+        { label: "Junior", value: 2 },
         { label: "Middle", value: 3 },
         { label: "Senior", value: 4 },
     ];
 
     const menu = [
         {
-        title: t('Descrizione Need'),
-        icon: <CircleOutlinedIcon />,
+            title: t('Descrizione Need'),
+            icon: <CircleOutlinedIcon />,
         },
     ];
 
@@ -183,22 +183,22 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
     //funzione per fieldre quali field sono obbligatori nel form corrente
     const getMandatoryFields = (index) => {
         switch (index) {
-        case 0:
-            return [
-                "descrizione",
-                "idKeyPeople",
-                "priorita",
-                "week",
-                "tipologia",
-                "idOwner",
-                "stato",
-                "location",
-                "pubblicazione",
-                "screening",
-            ];
+            case 0:
+                return [
+                    "descrizione",
+                    "idKeyPeople",
+                    "priorita",
+                    "week",
+                    "tipologia",
+                    "idOwner",
+                    "stato",
+                    "location",
+                    "pubblicazione",
+                    "screening",
+                ];
 
-        default:
-            return [];
+            default:
+                return [];
         }
     };
 
@@ -206,9 +206,9 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
     const validateFields = (values, mandatoryFields) => {
         let errors = {};
         mandatoryFields.forEach((field) => {
-        if (!values[field]) {
-            errors[field] = t('Questo campo è obbligatorio');
-        }
+            if (!values[field]) {
+                errors[field] = t('Questo campo è obbligatorio');
+            }
         });
         return errors;
     };
@@ -216,8 +216,8 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
     // Funzione per il cambio stato degli input
     const handleChange = (fieldValue) => {
         setValues((prevValues) => ({
-        ...prevValues,
-        ...fieldValue,
+            ...prevValues,
+            ...fieldValue,
         }));
     };
 
@@ -227,8 +227,8 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
         const newValues = fieldValue[fieldName];
 
         setValues((prevValues) => ({
-        ...prevValues,
-        [fieldName]: [...newValues],
+            ...prevValues,
+            [fieldName]: [...newValues],
         }));
     };
 
@@ -237,45 +237,45 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
     //funzioni per cambiare pagina del form
     const handleBackButtonClick = () => {
         const currentIndex = menu.findIndex(
-        (item) => item.title.toLowerCase() === activeSection.toLowerCase()
+            (item) => item.title.toLowerCase() === activeSection.toLowerCase()
         );
         if (currentIndex > 0) {
-        setActiveSection(menu[currentIndex - 1].title);
-        setCurrentPageIndex(currentIndex - 1);
+            setActiveSection(menu[currentIndex - 1].title);
+            setCurrentPageIndex(currentIndex - 1);
         }
     };
 
     const handleNextButtonClick = () => {
         const currentIndex = menu.findIndex(
-        (item) => item.title.toLowerCase() === activeSection.toLowerCase()
+            (item) => item.title.toLowerCase() === activeSection.toLowerCase()
         );
         if (currentIndex < menu.length - 1) {
-        const mandatoryFields = getMandatoryFields(currentIndex);
-        const errors = validateFields(values, mandatoryFields);
-        const hasErrors = Object.keys(errors).length > 0;
+            const mandatoryFields = getMandatoryFields(currentIndex);
+            const errors = validateFields(values, mandatoryFields);
+            const hasErrors = Object.keys(errors).length > 0;
 
-        if (!hasErrors) {
-            setActiveSection(menu[currentIndex + 1].title);
-            setCurrentPageIndex(currentIndex + 1);
-        } else {
-            setAlert({
-            open: true,
-            message:
-                t("Compilare tutti i field obbligatori presenti per poter avanzare"),
-            });
-        }
+            if (!hasErrors) {
+                setActiveSection(menu[currentIndex + 1].title);
+                setCurrentPageIndex(currentIndex + 1);
+            } else {
+                setAlert({
+                    open: true,
+                    message:
+                        t("Compilare tutti i field obbligatori presenti per poter avanzare"),
+                });
+            }
         }
     };
 
     //funzione per la chiusura dell'alert
     const handleCloseAlert = (reason) => {
         if (reason === "clickaway") {
-        return;
+            return;
         }
         setAlert({ ...alert, open: false });
     };
 
-     //funzione per la transizione dell'alert
+    //funzione per la transizione dell'alert
     function TransitionDown(props) {
         return <Slide {...props} direction="down" />;
     }
@@ -299,13 +299,14 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
             });
 
             const skills = values.idSkills ? values.idSkills.join(",") : "";
+            const username = user?.username || null;
 
             delete values.idSkills;
 
             const responseSaveNeed = await axios.post(
-            "http://89.46.196.60:8443/need/react/salva",
+            "http://localhost:8080/need/react/salva",
             { ...values, idAzienda: parseInt(values.idAzienda, 10) }, 
-            { params: { skill1: skills }, headers: headers }
+            { params: { skill1: skills, username: username }, headers: headers }
             );
             if (responseSaveNeed.data === "ERRORE") {
                 setAlert({ open: true, message: t("errore durante il salvataggio del need!") });
@@ -350,49 +351,53 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
     ];
 
     const fields = [
-        { label: t("Descrizione Need*"),   name: "descrizione",                  type: "text", maxLength: 200                                                },
-            { label: t("Contatto*"),           name: "idKeyPeople",                  type: "select",               options: keypeopleOptions     },
-            // { label: "Priorità*",           name: "priorita",                     type: "decimalNumber"                                       },
-            { label: t("Priorità*"),              name: "priorita",                          type: "select",               options: [
-                { value: 1,                   label: "1" },
-                { value: 2,                   label: "2" },
-                { value: 3,                   label: "3" },
-                { value: 4,                   label: "4" } 
-                ] },
-            { label: "Week*",               name: "week",                         type: "week"                                                },
-            { label: t("Tipologia*"),          name: "tipologia",                  type: "select",               options: tipologiaOptions     },
-            { label: t("Tipologia Azienda"),   name: "tipo",                         type: "select",               options: [
-            { value: 1,                   label: t("Cliente") },
-            { value: 2,                   label: t("Consulenza") },
-            { value: 3,                   label: t("Prospect") }
-            ] },
-            { label: t("Owner*"),                    name: "idOwner",                     type: "select",                 options: ownerOptions         },
-            { label: t("Stato*"),                    name: "stato",                     type: "select",                 options: statoOptions         },
-            { label: "Headcount",                 name: "numeroRisorse",               type: "number"                                         },
-            { label: "Location*",                 name: "location",                    type: "text", maxLength: 45                                                  },
-            { label: "Skills",                    name: "idSkills",                    type: "multipleSelect",         options: skillsOptions        },
-            { label: "Seniority",                 name: "anniEsperienza",              type: "select",                 options: seniorityOptions                        },
-            { label: t('Pubblicazione Annuncio*'),   name: 'pubblicazione',               type: 'select',                 options: pubblicazioneOptions },
-            { label: t('Screening*'),                name: 'screening',                   type: 'select',                 options: screeningOptions     },
-            { label: t("Note"),                      name: "note",                        type: "note", maxLength:4000                                                  },
-            ];
+        { label: t("Descrizione Need*"), name: "descrizione", type: "text", maxLength: 200 },
+        { label: t("Contatto*"), name: "idKeyPeople", type: "select", options: keypeopleOptions },
+        // { label: "Priorità*",           name: "priorita",                     type: "decimalNumber"                                       },
+        {
+            label: t("Priorità*"), name: "priorita", type: "select", options: [
+                { value: 1, label: "1" },
+                { value: 2, label: "2" },
+                { value: 3, label: "3" },
+                { value: 4, label: "4" }
+            ]
+        },
+        { label: "Week*", name: "week", type: "week" },
+        { label: t("Tipologia*"), name: "tipologia", type: "select", options: tipologiaOptions },
+        {
+            label: t("Tipologia Azienda"), name: "tipo", type: "select", options: [
+                { value: 1, label: t("Cliente") },
+                { value: 2, label: t("Consulenza") },
+                { value: 3, label: t("Prospect") }
+            ]
+        },
+        { label: t("Owner*"), name: "idOwner", type: "select", options: ownerOptions },
+        { label: t("Stato*"), name: "stato", type: "select", options: statoOptions },
+        { label: "Headcount", name: "numeroRisorse", type: "number" },
+        { label: "Location*", name: "location", type: "text", maxLength: 45 },
+        { label: "Skills", name: "idSkills", type: "multipleSelect", options: skillsOptions },
+        { label: "Seniority", name: "anniEsperienza", type: "select", options: seniorityOptions },
+        { label: t('Pubblicazione Annuncio*'), name: 'pubblicazione', type: 'select', options: pubblicazioneOptions },
+        { label: t('Screening*'), name: 'screening', type: 'select', options: screeningOptions },
+        { label: t("Note"), name: "note", type: "note", maxLength: 4000 },
+    ];
 
     //funzione per suddividere fields nelle varie pagine in base a titleGroups
     const groupFields = (fields) => {
         const groupedFields = [];
         let currentGroup = [];
         fields.forEach((field) => {
-        if (field.type === "titleGroups") {
-            if (currentGroup.length > 0) {
-            groupedFields.push([...currentGroup]);
+            if (field.type === "titleGroups") {
+                if (currentGroup.length > 0) {
+                    groupedFields.push([...currentGroup]);
+                }
+                currentGroup = [field];
+            } else {
+                currentGroup.push(field);
             }
-            currentGroup = [field];
-        } else {
-            currentGroup.push(field);
-        }
         });
         if (currentGroup.length > 0) {
-        groupedFields.push([...currentGroup]);
+            groupedFields.push([...currentGroup]);
         }
         return groupedFields;
     };
@@ -401,463 +406,463 @@ import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
 
     const renderFieldSkeleton = (type) => {
         switch (type) {
-        case "text":
-            return <Skeleton variant="text" sx={{ fontSize: "3rem" }} />;
+            case "text":
+                return <Skeleton variant="text" sx={{ fontSize: "3rem" }} />;
 
-        case "date":
-            return <Skeleton variant="text" sx={{ fontSize: "3rem" }} />;
+            case "date":
+                return <Skeleton variant="text" sx={{ fontSize: "3rem" }} />;
 
-        case "decimalNumber":
-            return <Skeleton variant="text" sx={{ fontSize: "3rem" }} />;
+            case "decimalNumber":
+                return <Skeleton variant="text" sx={{ fontSize: "3rem" }} />;
 
-        case "select":
-        case "multipleSelect":
-            return <Skeleton variant="text" sx={{ fontSize: "3rem" }} />;
+            case "select":
+            case "multipleSelect":
+                return <Skeleton variant="text" sx={{ fontSize: "3rem" }} />;
 
-        case "note":
-            return <Skeleton variant="text" width={710} height={120} />;
-        default:
-            return <Skeleton variant="text" sx={{ fontSize: "3rem" }} />;
+            case "note":
+                return <Skeleton variant="text" width={710} height={120} />;
+            default:
+                return <Skeleton variant="text" sx={{ fontSize: "3rem" }} />;
         }
     };
 
     //funzione per richiamare i vari field
     const renderFields = (field) => {
         if (loading) {
-        return renderFieldSkeleton(field.type);
+            return renderFieldSkeleton(field.type);
         } else {
-        const { type, ...otherProps } = field;
-        // const errorMessage = errors[field.name];
+            const { type, ...otherProps } = field;
+            // const errorMessage = errors[field.name];
 
-        switch (type) {
-            // case "text":
-            // if (field.name === "denominazione") {
-            //     return (
-            //     <CustomTextFieldModifica
-            //         name={field.name}
-            //         label={field.label}
-            //         type={field.type}
-            //         values={values}
-            //         onChange={handleChange}
-            //         initialValues={initialValues}
-            //         disabled={disabledFields.includes(field.name)}
-            //         maxLength={field.maxLength}
-            //     />
-            //     );
-            // } else {
-            //     return (
-            //     <CustomTextFieldAggiungi
-            //         name={field.name}
-            //         label={field.label}
-            //         type={field.type}
-            //         values={values}
-            //         onChange={handleChange}
-            //         maxLength={field.maxLength}
+            switch (type) {
+                // case "text":
+                // if (field.name === "denominazione") {
+                //     return (
+                //     <CustomTextFieldModifica
+                //         name={field.name}
+                //         label={field.label}
+                //         type={field.type}
+                //         values={values}
+                //         onChange={handleChange}
+                //         initialValues={initialValues}
+                //         disabled={disabledFields.includes(field.name)}
+                //         maxLength={field.maxLength}
+                //     />
+                //     );
+                // } else {
+                //     return (
+                //     <CustomTextFieldAggiungi
+                //         name={field.name}
+                //         label={field.label}
+                //         type={field.type}
+                //         values={values}
+                //         onChange={handleChange}
+                //         maxLength={field.maxLength}
 
-            //     />
-            //     );
-            // }
+                //     />
+                //     );
+                // }
 
-            case "text":
-                return (
-                <CustomTextFieldAggiungi
-                    name={field.name}
-                    label={field.label}
-                    type={field.type}
-                    values={values}
-                    onChange={handleChange}
-                    maxLength={field.maxLength}
-                />
-                );
+                case "text":
+                    return (
+                        <CustomTextFieldAggiungi
+                            name={field.name}
+                            label={field.label}
+                            type={field.type}
+                            values={values}
+                            onChange={handleChange}
+                            maxLength={field.maxLength}
+                        />
+                    );
 
 
 
-            case "note":
-            return (
-                <CustomNoteAggiungi
-                name={field.name}
-                label={field.label}
-                type={field.type}
-                values={values}
-                onChange={handleChange}
-                maxLength={field.maxLength}
+                case "note":
+                    return (
+                        <CustomNoteAggiungi
+                            name={field.name}
+                            label={field.label}
+                            type={field.type}
+                            values={values}
+                            onChange={handleChange}
+                            maxLength={field.maxLength}
 
-                />
-            );
+                        />
+                    );
 
-            case "select":
-            if (field.name === "idKeyPeople") {
-                return (
-                <CustomAutocomplete
-                    name={field.name}
-                    label={field.label}
-                    options={field.options}
-                    value={values[field.name] || null}
-                    onChange={handleChange}
-                    getOptionSelected={(option, value) =>
-                    option.value === value.value
+                case "select":
+                    if (field.name === "idKeyPeople") {
+                        return (
+                            <CustomAutocomplete
+                                name={field.name}
+                                label={field.label}
+                                options={field.options}
+                                value={values[field.name] || null}
+                                onChange={handleChange}
+                                getOptionSelected={(option, value) =>
+                                    option.value === value.value
+                                }
+                            />
+                        );
+                    } else {
+                        return (
+                            <CustomAutocomplete
+                                name={field.name}
+                                label={field.label}
+                                options={field.options}
+                                value={values[field.name] || null}
+                                onChange={handleChange}
+                                getOptionSelected={(option, value) =>
+                                    option.value === value.value
+                                }
+                            />
+                        );
                     }
-                />
-                );
-            } else {
-                return (
-                <CustomAutocomplete
-                    name={field.name}
-                    label={field.label}
-                    options={field.options}
-                    value={values[field.name] || null}
-                    onChange={handleChange}
-                    getOptionSelected={(option, value) =>
-                    option.value === value.value
-                    }
-                />
-                );
+
+                case "week":
+                    return (
+                        <CustomWeekDateAggiungi
+                            name={field.name}
+                            label={field.label}
+                            values={values}
+                            onChange={handleChange}
+                        />
+                    );
+
+                case "date":
+                    return (
+                        <CustomDatePickerAggiungi
+                            name={field.name}
+                            label={field.label}
+                            type={field.type}
+                            values={values}
+                            onChange={handleChange}
+                        />
+                    );
+
+                case "decimalNumber":
+                    return (
+                        <CustomDecimalNumberAggiungi
+                            name={field.name}
+                            label={field.label}
+                            type={field.type}
+                            values={values}
+                            onChange={handleChange}
+                        />
+                    );
+
+
+                case "number":
+                    return (
+                        <CustomNumberAggiunta
+                            name={field.name}
+                            label={field.label}
+                            type={field.type}
+                            values={values}
+                            onChange={handleChange}
+                        />
+                    );
+
+                case "multipleSelect":
+                    return (
+                        <CustomMultipleSelectAggiunta
+                            name={field.name}
+                            label={field.label}
+                            options={field.options}
+                            value={values[field.name] || null}
+                            onChange={handleChangeSkill}
+                            getOptionSelected={(option, value) =>
+                                option.value === value.value
+                            }
+                            skillsOptions={skillsOptions}
+                        />
+                    );
+
+                default:
+                    return null;
             }
-
-            case "week":
-            return (
-                <CustomWeekDateAggiungi
-                name={field.name}
-                label={field.label}
-                values={values}
-                onChange={handleChange}
-                />
-            );
-
-            case "date":
-            return (
-                <CustomDatePickerAggiungi
-                name={field.name}
-                label={field.label}
-                type={field.type}
-                values={values}
-                onChange={handleChange}
-                />
-            );
-
-            case "decimalNumber":
-            return (
-                <CustomDecimalNumberAggiungi
-                name={field.name}
-                label={field.label}
-                type={field.type}
-                values={values}
-                onChange={handleChange}
-                />
-            );
-
-
-            case "number":
-            return (
-                <CustomNumberAggiunta
-                name={field.name}
-                label={field.label}
-                type={field.type}
-                values={values}
-                onChange={handleChange}
-                />
-            );
-
-            case "multipleSelect":
-            return (
-                <CustomMultipleSelectAggiunta
-                name={field.name}
-                label={field.label}
-                options={field.options}
-                value={values[field.name] || null}
-                onChange={handleChangeSkill}
-                getOptionSelected={(option, value) =>
-                    option.value === value.value
-                }
-                skillsOptions={skillsOptions}
-                />
-            );
-
-            default:
-            return null;
-        }
         }
     };
 
     const renderFieldsGroups = () => {
         return (
-        <Box sx={{ ml: 15, mr: 15 }}>
-            <Grid container spacing={2}>
-            {groupedFields[currentPageIndex].map((field, index) => {
-                if (field.type === "titleGroups") {
-                return (
-                    <Grid item xs={12} key={index}>
-                    </Grid>
-                );
-                } else if (field.type === "note") {
-                return (
-                    <Grid item xs={12} key={index}>
-                    {renderFields(field)}
-                    </Grid>
-                );
-                } else {
-                return (
-                    <Grid item xs={12} sm={12} md={12} lg={6} key={index}>
-                    {renderFields(field)}
-                    </Grid>
-                );
-                }
-            })}
-            </Grid>
-        </Box>
+            <Box sx={{ ml: 15, mr: 15 }}>
+                <Grid container spacing={2}>
+                    {groupedFields[currentPageIndex].map((field, index) => {
+                        if (field.type === "titleGroups") {
+                            return (
+                                <Grid item xs={12} key={index}>
+                                </Grid>
+                            );
+                        } else if (field.type === "note") {
+                            return (
+                                <Grid item xs={12} key={index}>
+                                    {renderFields(field)}
+                                </Grid>
+                            );
+                        } else {
+                            return (
+                                <Grid item xs={12} sm={12} md={12} lg={6} key={index}>
+                                    {renderFields(field)}
+                                </Grid>
+                            );
+                        }
+                    })}
+                </Grid>
+            </Box>
         );
     };
 
     return (
         <Container maxWidth="false"
-        sx={{
-            display: "flex",
-            backgroundColor: "#EEEDEE",
-            height: "100vh",
-            width: "100vw",
-            flexDirection: "row",
-        }}
-        >
-        <Box
             sx={{
-            display: "flex",
-            height: "98%",
-            width: "100vw",
-            flexDirection: "row",
-            marginLeft: isSmallScreen ? "3.5em" : "12.8em",
-            mt: "0.5em",
-            mb: "0.5em",
-            mr: "0.8em",
-            borderRadius: "20px",
-            overflow: "hidden",
-            transition: 'marginLeft 0.3s ease',
+                display: "flex",
+                backgroundColor: "#EEEDEE",
+                height: "100vh",
+                width: "100vw",
+                flexDirection: "row",
             }}
         >
             <Box
-            sx={{
-                width: { xs: '70px', sm: '150px', md: '220px', lg: '280px' },
-                height: "98%",
-                background: theme.palette.aggiungiSidebar.bg,
-                p: 2,
-                overflow: "hidden",
-                position: "fixed",
-                borderRadius: "20px 0px 0px 20px",
-                transition: 'width 0.3s ease',
-            }}
-            >
-            <Box
                 sx={{
-                display: "flex",
-                justifyContent: "flex-start",
-                width: "100%",
+                    display: "flex",
+                    height: "98%",
+                    width: "100vw",
+                    flexDirection: "row",
+                    marginLeft: isSmallScreen ? "3.5em" : "12.8em",
+                    mt: "0.5em",
+                    mb: "0.5em",
+                    mr: "0.8em",
+                    borderRadius: "20px",
+                    overflow: "hidden",
+                    transition: 'marginLeft 0.3s ease',
                 }}
             >
-                <Button
-                onClick={handleGoBack}
-                sx={{
-                    color: theme.palette.textButton.main,
-                    border: "none",
-                    fontSize: "0.8em",
-                    cursor: "pointer",
-                    outline: "none",
-                    borderRadius: "10px",
-                    mt: 4,
-                    ml: 2,
-                    "&:hover": {
-                        color: 'black',
-                    },
-                }}
-                >
-                <span style={{ marginRight: "0.5em" }}>{"<"}</span>
-                Indietro
-                </Button>
-            </Box>
-            <Typography
-                variant="h6"
-                sx={{
-                display: "flex",
-                justifyContent: "flex-start",
-                fontWeight: "bold",
-                mt: 4,
-                ml: 3,
-                mb: 8,
-                fontSize: { xs: "1.2em", sm: "1.5em", md: "1.8em" },
-                transition: 'fontSize 0.3s ease',
-                color: theme.palette.aggiungiSidebar.title
-                }}
-            >
-                {" "}
-                {t('Aggiungi')} <br /> {t('Need')}
-            </Typography>
-            <List
-                sx={{ display: "flex", flexDirection: "column", width: "100%" }}
-            >
-                {menu.map((item) => (
-                <ListItem
-                    key={item.title}
-                    selected={activeSection === item.title}
+                <Box
                     sx={{
-                    mb: 4,
-                    "&.Mui-selected": {
-                        backgroundColor:
-                        activeSection === item.title ? theme.palette.aggiungiSidebar.hover : theme.palette.aggiungiSidebar.hover,
-                        "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
-                        color:
-                            activeSection === item.title ? theme.palette.aggiungiSidebar.textHover : theme.palette.aggiungiSidebar.textHover,
-                        },
-                        borderRadius: "10px",
-                    },
+                        width: { xs: '70px', sm: '150px', md: '220px', lg: '280px' },
+                        height: "98%",
+                        background: theme.palette.aggiungiSidebar.bg,
+                        p: 2,
+                        overflow: "hidden",
+                        position: "fixed",
+                        borderRadius: "20px 0px 0px 20px",
+                        transition: 'width 0.3s ease',
                     }}
                 >
-                    <ListItemIcon sx={{ color: theme.palette.aggiungiSidebar.text, mr: { xs: 0.01, sm: 0.01, md: 1.5, lg: 2 }, display: { xs: 'none', sm: 'none', md: 'block' }, }}>{item.icon}</ListItemIcon>
-                    <ListItemText primary={item.title} 
-                    sx={{ color: theme.palette.aggiungiSidebar.text, fontSize: { xs: "0.7em", sm: "0.8em", md: "1em" }, ml: { xs: 0.01, sm: 0.01, md: 1.5, lg: 2 } }}
-                    />
-                </ListItem>
-                ))}
-            </List>
-            </Box>
-            <Box
-            sx={{
-                flexGrow: 1,
-                height: "100%",
-                background: "#FEFCFD",
-                display: "flex",
-                flexDirection: "column",
-                ml: { xs: '70px', sm: '150px', md: '220px', lg: '280px' },
-            }}
-            >
-            <Box
-                sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                mt: 2,
-                mb: 3,
-                }}
-            >
-                <Snackbar
-                open={alert.open}
-                autoHideDuration={6000}
-                onClose={handleCloseAlert}
-                anchorOrigin={{ vertical: "top", horizontal: "center" }}
-                TransitionComponent={TransitionDown}
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "flex-start",
+                            width: "100%",
+                        }}
+                    >
+                        <Button
+                            onClick={handleGoBack}
+                            sx={{
+                                color: theme.palette.textButton.main,
+                                border: "none",
+                                fontSize: "0.8em",
+                                cursor: "pointer",
+                                outline: "none",
+                                borderRadius: "10px",
+                                mt: 4,
+                                ml: 2,
+                                "&:hover": {
+                                    color: 'black',
+                                },
+                            }}
+                        >
+                            <span style={{ marginRight: "0.5em" }}>{"<"}</span>
+                            Indietro
+                        </Button>
+                    </Box>
+                    <Typography
+                        variant="h6"
+                        sx={{
+                            display: "flex",
+                            justifyContent: "flex-start",
+                            fontWeight: "bold",
+                            mt: 4,
+                            ml: 3,
+                            mb: 8,
+                            fontSize: { xs: "1.2em", sm: "1.5em", md: "1.8em" },
+                            transition: 'fontSize 0.3s ease',
+                            color: theme.palette.aggiungiSidebar.title
+                        }}
+                    >
+                        {" "}
+                        {t('Aggiungi')} <br /> {t('Need')}
+                    </Typography>
+                    <List
+                        sx={{ display: "flex", flexDirection: "column", width: "100%" }}
+                    >
+                        {menu.map((item) => (
+                            <ListItem
+                                key={item.title}
+                                selected={activeSection === item.title}
+                                sx={{
+                                    mb: 4,
+                                    "&.Mui-selected": {
+                                        backgroundColor:
+                                            activeSection === item.title ? theme.palette.aggiungiSidebar.hover : theme.palette.aggiungiSidebar.hover,
+                                        "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
+                                            color:
+                                                activeSection === item.title ? theme.palette.aggiungiSidebar.textHover : theme.palette.aggiungiSidebar.textHover,
+                                        },
+                                        borderRadius: "10px",
+                                    },
+                                }}
+                            >
+                                <ListItemIcon sx={{ color: theme.palette.aggiungiSidebar.text, mr: { xs: 0.01, sm: 0.01, md: 1.5, lg: 2 }, display: { xs: 'none', sm: 'none', md: 'block' }, }}>{item.icon}</ListItemIcon>
+                                <ListItemText primary={item.title}
+                                    sx={{ color: theme.palette.aggiungiSidebar.text, fontSize: { xs: "0.7em", sm: "0.8em", md: "1em" }, ml: { xs: 0.01, sm: 0.01, md: 1.5, lg: 2 } }}
+                                />
+                            </ListItem>
+                        ))}
+                    </List>
+                </Box>
+                <Box
+                    sx={{
+                        flexGrow: 1,
+                        height: "100%",
+                        background: "#FEFCFD",
+                        display: "flex",
+                        flexDirection: "column",
+                        ml: { xs: '70px', sm: '150px', md: '220px', lg: '280px' },
+                    }}
                 >
-                <Alert
-                    onClose={handleCloseAlert}
-                    severity="error"
-                    sx={{ width: "100%" }}
-                >
-                    {alert.message}
-                </Alert>
-                </Snackbar>
-                <Typography
-                variant="h4"
-                component="h1"
-                sx={{ mt: 1, fontWeight: "bold", fontSize: "1.8" }}
-                >
-                {activeSection}
-                </Typography>
-            </Box>
-            <Box
-                sx={{
-                display: "flex",
-                width: "100%",
-                height: "100%",
-                flexDirection: "column",
-                pl: { xs: 1, sm: 2, md: 3, lg: 5 },
-                pr: { xs: 1, sm: 2, md: 3, lg: 5 },
-                overflow: "auto",
-                }}
-            >
-                {renderFieldsGroups(groupedFields)}
-            </Box>
-            <Typography
-                variant="h6"
-                sx={{ mt: 2, color: "#666565", fontSize: "1em", ml: 16 }}
-            >
-                {t('* Campo Obbligatorio')}
-            </Typography>
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5, gap: 2, flexDirection: { xs: 'row', sm: 'row', md: 'row', lg: 'row' } }}>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            mt: 2,
+                            mb: 3,
+                        }}
+                    >
+                        <Snackbar
+                            open={alert.open}
+                            autoHideDuration={6000}
+                            onClose={handleCloseAlert}
+                            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                            TransitionComponent={TransitionDown}
+                        >
+                            <Alert
+                                onClose={handleCloseAlert}
+                                severity="error"
+                                sx={{ width: "100%" }}
+                            >
+                                {alert.message}
+                            </Alert>
+                        </Snackbar>
+                        <Typography
+                            variant="h4"
+                            component="h1"
+                            sx={{ mt: 1, fontWeight: "bold", fontSize: "1.8" }}
+                        >
+                            {activeSection}
+                        </Typography>
+                    </Box>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            width: "100%",
+                            height: "100%",
+                            flexDirection: "column",
+                            pl: { xs: 1, sm: 2, md: 3, lg: 5 },
+                            pr: { xs: 1, sm: 2, md: 3, lg: 5 },
+                            overflow: "auto",
+                        }}
+                    >
+                        {renderFieldsGroups(groupedFields)}
+                    </Box>
+                    <Typography
+                        variant="h6"
+                        sx={{ mt: 2, color: "#666565", fontSize: "1em", ml: 16 }}
+                    >
+                        {t('* Campo Obbligatorio')}
+                    </Typography>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5, gap: 2, flexDirection: { xs: 'row', sm: 'row', md: 'row', lg: 'row' } }}>
 
-                {currentPageIndex > 0 && (
-                <Button
-                    onClick={handleBackButtonClick}
-                    sx={{
-                    mb: 4,
-                    width: { xs: '5%', sm: '10%', md: '15%', lg: '15%'}, 
-                    backgroundColor: theme.palette.button.main,
-                    color: theme.palette.textButton.white,
-                    fontWeight: "bold",
-                    boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
-                    borderRadius: "10px",
-                    fontSize: { xs: "0.5em", sm: "0.7em", md: "0.9em" },
-                    "&:hover": {
-                        backgroundColor: theme.palette.button.main,
-                        color: theme.palette.textButton.white,
-                        transform: "scale(1.05)",
-                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
-                        borderRadius: "10px",
-                    },
-                    }}
-                >
-                    Indietro
-                </Button>
-                )}
-                {currentPageIndex < groupedFields.length - 1 && (
-                <Button
-                    onClick={handleNextButtonClick}
-                    sx={{
-                    mb: 4,
-                    width: { xs: '5%', sm: '10%', md: '15%', lg: '15%'}, 
-                    backgroundColor: theme.palette.button.main,
-                    color: theme.palette.textButton.white,
-                    fontWeight: "bold",
-                    boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
-                    borderRadius: "10px",
-                    fontSize: { xs: "0.5em", sm: "0.7em", md: "0.9em" },
-                    "&:hover": {
-                        backgroundColor: theme.palette.button.main,
-                        color: theme.palette.textButton.white,
-                        transform: "scale(1.05)",
-                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
-                        borderRadius: "10px",
-                    },
-                    }}
-                >
-                    Avanti
-                </Button>
-                )}
-                {currentPageIndex === groupedFields.length - 1 && (
-                <Button
-                    onClick={() => handleSubmit(values)}
-                    type="submit"
-                    sx={{
-                    mb: 4,
-                    width: { xs: '5%', sm: '10%', md: '15%', lg: '15%'}, 
-                    backgroundColor: theme.palette.button.main,
-                    color: theme.palette.textButton.white,
-                    fontWeight: "bold",
-                    boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
-                    borderRadius: "10px",
-                    fontSize: { xs: "0.5em", sm: "0.7em", md: "0.9em" },
-                    "&:hover": {
-                        backgroundColor: theme.palette.button.mainHover,
-                        color: theme.palette.textButton.white,
-                        transform: "scale(1.05)",
-                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
-                        borderRadius: "10px",
-                    },
-                    }}
-                >
-                    {t('Salva')}
-                </Button>
-                )}
+                        {currentPageIndex > 0 && (
+                            <Button
+                                onClick={handleBackButtonClick}
+                                sx={{
+                                    mb: 4,
+                                    width: { xs: '5%', sm: '10%', md: '15%', lg: '15%' },
+                                    backgroundColor: theme.palette.button.main,
+                                    color: theme.palette.textButton.white,
+                                    fontWeight: "bold",
+                                    boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
+                                    borderRadius: "10px",
+                                    fontSize: { xs: "0.5em", sm: "0.7em", md: "0.9em" },
+                                    "&:hover": {
+                                        backgroundColor: theme.palette.button.main,
+                                        color: theme.palette.textButton.white,
+                                        transform: "scale(1.05)",
+                                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
+                                        borderRadius: "10px",
+                                    },
+                                }}
+                            >
+                                Indietro
+                            </Button>
+                        )}
+                        {currentPageIndex < groupedFields.length - 1 && (
+                            <Button
+                                onClick={handleNextButtonClick}
+                                sx={{
+                                    mb: 4,
+                                    width: { xs: '5%', sm: '10%', md: '15%', lg: '15%' },
+                                    backgroundColor: theme.palette.button.main,
+                                    color: theme.palette.textButton.white,
+                                    fontWeight: "bold",
+                                    boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
+                                    borderRadius: "10px",
+                                    fontSize: { xs: "0.5em", sm: "0.7em", md: "0.9em" },
+                                    "&:hover": {
+                                        backgroundColor: theme.palette.button.main,
+                                        color: theme.palette.textButton.white,
+                                        transform: "scale(1.05)",
+                                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
+                                        borderRadius: "10px",
+                                    },
+                                }}
+                            >
+                                Avanti
+                            </Button>
+                        )}
+                        {currentPageIndex === groupedFields.length - 1 && (
+                            <Button
+                                onClick={() => handleSubmit(values)}
+                                type="submit"
+                                sx={{
+                                    mb: 4,
+                                    width: { xs: '5%', sm: '10%', md: '15%', lg: '15%' },
+                                    backgroundColor: theme.palette.button.main,
+                                    color: theme.palette.textButton.white,
+                                    fontWeight: "bold",
+                                    boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
+                                    borderRadius: "10px",
+                                    fontSize: { xs: "0.5em", sm: "0.7em", md: "0.9em" },
+                                    "&:hover": {
+                                        backgroundColor: theme.palette.button.mainHover,
+                                        color: theme.palette.textButton.white,
+                                        transform: "scale(1.05)",
+                                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
+                                        borderRadius: "10px",
+                                    },
+                                }}
+                            >
+                                {t('Salva')}
+                            </Button>
+                        )}
+                    </Box>
+                </Box>
             </Box>
-            </Box>
-        </Box>
         </Container>
     );
-    };
+};
 
-    export default AggiungiNeedIDGragica;
+export default AggiungiNeedIDGrafica;

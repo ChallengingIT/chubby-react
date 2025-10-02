@@ -229,11 +229,12 @@
                 values[key] = null;
             }
             });
-
+            
             const response = await axios.post(
             "http://89.46.196.60:8443/keypeople/react/salva",
             values,
             {
+                params: { username: user?.username || null },
                 headers: headers,
             }
             );

@@ -184,7 +184,7 @@ const FormNeedCliente = ({ idNeed }) => {
           "http://89.46.196.60:8443/need/react/salva",
           transformedValues,
           {
-            params: { skill: skills },
+            params: { skill: skills, username: user?.username },
             headers: headers,
           }
         );

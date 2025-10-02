@@ -164,6 +164,19 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title }) => {
         const params = new URLSearchParams({ stato: idStato, priorita: priorita });
         const idNeed = selectedPipeline.id;
 
+        // recupero lo user dal sessionStorage
+    const userString = sessionStorage.getItem("user");
+    if (!userString) {
+        console.error("Nessun utente trovato in sessionStorage");
+        return;
+    }
+    const userObj = JSON.parse(userString);
+
+    // preparo il body da mandare
+    const body = {
+        stato: idStato,
+    };
+
         try {
             const responseUpdateStato = await axios.post(
                 `http://localhost:8080/need/react/salva/stato/${idNeed}?${params.toString()}`,

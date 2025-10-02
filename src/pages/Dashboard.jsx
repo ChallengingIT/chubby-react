@@ -256,10 +256,11 @@ function Dashboard() {
                         minHeight: "97vh",
                         mt: 1.5,
                         transition: 'margin-left 0.3s ease',
+                        paddingBottom: 0,
                     }}
                 >
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
+                    <Grid container spacing={2} >
+                        <Grid item xs={12} >
                             <CustomTableCell2
                                 columns={columns}
                                 rows={originalPipeline}
