@@ -1,22 +1,22 @@
-    import React, { useState, useEffect } from 'react';
-    import { useNavigate } from 'react-router-dom';
-    import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
-    import axios from 'axios';
-    import ChangeCircleIcon from '@mui/icons-material/ChangeCircle'; // cambia stato
-    import DeleteIcon from '@mui/icons-material/Delete'; // cancella
-    import { Edit } from '@mui/icons-material';
-    import AutoModeIcon from '@mui/icons-material/AutoMode'; // stato
-    import TagIcon from '@mui/icons-material/Tag'; // numero progressivo
-    import PlaceIcon from '@mui/icons-material/Place';
-    import CloseIcon from '@mui/icons-material/Close';
-    import TrendingDownIcon from '@mui/icons-material/TrendingDown';
-    import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
-    import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-    import CallMadeIcon from '@mui/icons-material/CallMade'; // priorità massima
-    import { useTranslation } from 'react-i18next';
-    import { motion }                     from "framer-motion"; 
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
+import axios from 'axios';
+import ChangeCircleIcon from '@mui/icons-material/ChangeCircle'; // cambia stato
+import DeleteIcon from '@mui/icons-material/Delete'; // cancella
+import { Edit } from '@mui/icons-material';
+import AutoModeIcon from '@mui/icons-material/AutoMode'; // stato
+import TagIcon from '@mui/icons-material/Tag'; // numero progressivo
+import PlaceIcon from '@mui/icons-material/Place';
+import CloseIcon from '@mui/icons-material/Close';
+import TrendingDownIcon from '@mui/icons-material/TrendingDown';
+import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import CallMadeIcon from '@mui/icons-material/CallMade'; // priorità massima
+import { useTranslation } from 'react-i18next';
+import { motion } from "framer-motion";
 
-    import {
+import {
     Card,
     CardContent,
     Box,
@@ -34,10 +34,10 @@
     Snackbar,
     Alert,
     Slide,
-    } from '@mui/material';
-    import { useUserTheme } from '../TorchyThemeProvider';
+} from '@mui/material';
+import { useUserTheme } from '../TorchyThemeProvider';
 
-    const NeedCardFlip = ({ valori, statoOptions, onDelete, onRefresh, isFirstCard }) => {
+const NeedCardFlip = ({ valori, statoOptions, onDelete, onRefresh, isFirstCard }) => {
     const navigate = useNavigate();
     const theme = useUserTheme();
     const { t } = useTranslation();
@@ -57,17 +57,17 @@
 
     useEffect(() => {
         if (isFirstCard && !hasAnimated) {
-        setTimeout(() => {
-            setMezzoFlip(true);
             setTimeout(() => {
-            setMezzoFlip(false);
-            setHasAnimated(true);
-            }, 500); // Durata della rotazione (mezzo secondo)
-        }, 500); // Attendere mezzo secondo prima di iniziare l'animazione
+                setMezzoFlip(true);
+                setTimeout(() => {
+                    setMezzoFlip(false);
+                    setHasAnimated(true);
+                }, 500); // Durata della rotazione (mezzo secondo)
+            }, 500); // Attendere mezzo secondo prima di iniziare l'animazione
         }
     }, [isFirstCard, hasAnimated]);
 
-     //animazione fade delle card
+    //animazione fade delle card
     const fadeInVariants = {
         hidden: { opacity: 0, y: 50 }, // L'elemento parte invisibile e spostato
         visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }, // Fade-in con durata
@@ -76,7 +76,7 @@
     // funzione per la chiusura dell'alert
     const handleCloseAlert = (reason) => {
         if (reason === 'clickaway') {
-        return;
+            return;
         }
         setAlert({ ...alert, open: false });
     };
@@ -89,7 +89,7 @@
     const userHasRole = (roleToCheck) => {
         const userString = sessionStorage.getItem('user');
         if (!userString) {
-        return false;
+            return false;
         }
         const userObj = JSON.parse(userString);
         return userObj.roles.includes(roleToCheck);
@@ -108,7 +108,7 @@
 
     const toggleFlip = () => {
         if (modalStato) {
-        return;
+            return;
         }
         setIsFlipped(!isFlipped);
     };
@@ -128,25 +128,40 @@
         setModalStato(true);
         setIdNeed(id);
         setValues((prevValues) => ({
-        ...prevValues,
-        stato: valori.stato?.id,
+            ...prevValues,
+            stato: valori.stato?.id,
         }));
     };
 
     const handleUpdateStato = async () => {
         const idStato = values.stato;
         const params = new URLSearchParams({ stato: idStato });
-        try {
-        const responseUpdateStato = await axios.post(`http://localhost:8080/need/react/salva/stato/${idNeed}?${params.toString()}`, {}, { headers: headers });
-        setModalStato(false);
-        onRefresh();
-        if (responseUpdateStato.data === 'ERRORE') {
-            setAlert({ open: true, message: t('errore durante il salvataggio dell\'azienda!') });
-            console.error('L\'azienda non è stata salvata.');
+
+        // recupero lo user dal sessionStorage
+        const userString = sessionStorage.getItem("user");
+        if (!userString) {
+            console.error("Nessun utente trovato in sessionStorage");
             return;
         }
+        const userObj = JSON.parse(userString);
+
+        // preparo il body da mandare
+        const body = {
+            stato: idStato,
+            username: userObj.username
+        };
+
+        try {
+            const responseUpdateStato = await axios.post(`http://localhost:8080/need/react/salva/stato/${idNeed}?${params.toString()}`, {body}, { headers: headers });
+            setModalStato(false);
+            onRefresh();
+            if (responseUpdateStato.data === 'ERRORE') {
+                setAlert({ open: true, message: t('errore durante il salvataggio dell\'azienda!') });
+                console.error('L\'azienda non è stata salvata.');
+                return;
+            }
         } catch (error) {
-        console.error('Errore durante l\'aggiornamento dello stato: ', error);
+            console.error('Errore durante l\'aggiornamento dello stato: ', error);
         }
     };
 
@@ -167,8 +182,8 @@
         borderColor: theme.palette.border.main,
         transition: 'transform 0.3s ease, border-width 0.3s ease',
         '&:hover': {
-        cursor: 'pointer',
-        transform: 'scale(1.02)',
+            cursor: 'pointer',
+            transform: 'scale(1.02)',
         },
     };
 
@@ -199,15 +214,15 @@
 
     const mediaPriorita = (priorita) => {
         if (priorita >= 0 && priorita <= 1) {
-        return { icon: <CallMadeIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />, text: '1' };
+            return { icon: <CallMadeIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />, text: '1' };
         } else if (priorita > 1 && priorita <= 2) {
-        return { icon: <TrendingUpIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />, text: '2' };
+            return { icon: <TrendingUpIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />, text: '2' };
         } else if (priorita > 2 && priorita <= 3) {
-        return { icon: <TrendingFlatIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />, text: '3' };
+            return { icon: <TrendingFlatIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />, text: '3' };
         } else if (priorita > 3) {
-        return { icon: <TrendingDownIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />, text: '4' };
+            return { icon: <TrendingDownIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />, text: '4' };
         } else {
-        return { icon: null, text: '' };
+            return { icon: null, text: '' };
         }
     };
 
@@ -215,354 +230,354 @@
 
     const menuData = [
         {
-        title: t('Aggiorna Need'),
-        icon: <Edit />,
-        onClick: (event) => {
-            navigateToAggiorna(valori.id, event);
-        },
-        },
-        {
-        title: t('Cambia Stato'),
-        icon: <ChangeCircleIcon />,
-        onClick: (event) => {
-            handleOpenModalStato(valori.id, event);
-        },
+            title: t('Aggiorna Need'),
+            icon: <Edit />,
+            onClick: (event) => {
+                navigateToAggiorna(valori.id, event);
+            },
         },
         {
-        title: t('Elimina Need'),
-        icon: <DeleteIcon />,
-        onClick: (event) => {
-            handleOpenModalDelete(event);
+            title: t('Cambia Stato'),
+            icon: <ChangeCircleIcon />,
+            onClick: (event) => {
+                handleOpenModalStato(valori.id, event);
+            },
         },
-        isVisible: userHasRole('ADMIN' && 'BUSINESS'),
+        {
+            title: t('Elimina Need'),
+            icon: <DeleteIcon />,
+            onClick: (event) => {
+                handleOpenModalDelete(event);
+            },
+            isVisible: userHasRole('ADMIN' && 'BUSINESS'),
         },
     ];
 
     return (
         <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        variants={fadeInVariants}
-    >
-        <Card raised sx={cardContainerStyle} onClick={toggleFlip}>
-        <div style={cardStyle}>
-            <div style={cardFrontStyle}>
-            <CardContent sx={{ backfaceVisibility: 'hidden' }}>
-                {/* Contenuto della Card */}
-                <Box sx={{ display: 'flex', alignItems: 'start', justifyContent: 'space-between', flexDirection: 'column', mb: 1 }}>
-                <Box sx={{ display: 'flex', alignItems: 'start', justifyContent: 'flex-start', flexDirection: 'column', mb: 1 }}>
-                    <Typography
-                    gutterBottom
-                    variant='h5'
-                    component='div'
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeInVariants}
+        >
+            <Card raised sx={cardContainerStyle} onClick={toggleFlip}>
+                <div style={cardStyle}>
+                    <div style={cardFrontStyle}>
+                        <CardContent sx={{ backfaceVisibility: 'hidden' }}>
+                            {/* Contenuto della Card */}
+                            <Box sx={{ display: 'flex', alignItems: 'start', justifyContent: 'space-between', flexDirection: 'column', mb: 1 }}>
+                                <Box sx={{ display: 'flex', alignItems: 'start', justifyContent: 'flex-start', flexDirection: 'column', mb: 1 }}>
+                                    <Typography
+                                        gutterBottom
+                                        variant='h5'
+                                        component='div'
+                                        sx={{
+                                            color: 'black',
+                                            fontWeight: 'bold',
+                                            overflow: 'hidden',
+                                            whiteSpace: 'nowrap',
+                                            textOverflow: 'ellipsis',
+                                            width: '100%',
+                                            ml: 1,
+                                        }}
+                                    >
+                                        {valori.descrizione}
+                                    </Typography>
+
+                                    <Typography variant='body2' color='text.primary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
+                                        <TagIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
+                                        {valori.progressivo}
+                                    </Typography>
+
+                                    <Typography variant='body2' color='text.primary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
+                                        <PlaceIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
+                                        {valori.location}
+                                    </Typography>
+
+                                    <Typography variant='body2' color='text.primary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
+                                        {icon}
+                                        {t('Priorità')}: {text}
+                                    </Typography>
+
+                                    <Typography variant='body2' color='text.primary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
+                                        <BusinessCenterIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
+                                        {valori.tipologia && valori.tipologia.descrizione ? valori.tipologia.descrizione : t('N/A')}
+                                    </Typography>
+
+                                    <Typography variant='body2' color='text.primary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
+                                        <AutoModeIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
+                                        {valori.stato && valori.stato.descrizione ? valori.stato.descrizione : t('N/A')}
+                                    </Typography>
+                                </Box>
+                                <Box
+                                    sx={{
+                                        position: 'absolute',
+                                        bottom: 0,
+                                        right: 0,
+                                        display: 'flex',
+                                        justifyContent: 'flex-end',
+                                        alignItems: 'end',
+                                        paddingRight: '16px',
+                                        paddingBottom: '16px',
+                                    }}
+                                >
+                                    <img src={`data:image/png;base64,${valori.cliente.logo}`} alt='Logo' style={{ width: '80px', height: '80px', borderRadius: '50%' }} />
+                                </Box>
+                            </Box>
+                        </CardContent>
+                    </div>
+
+                    <div style={cardBackStyle}>
+                        <CardContent sx={{ backfaceVisibility: 'hidden' }}>
+                            {/* Contenuto della Card */}
+                            <Typography
+                                gutterBottom
+                                variant='h5'
+                                component='div'
+                                sx={{
+                                    color: 'black',
+                                    fontWeight: 'bold',
+                                    overflow: 'hidden',
+                                    whiteSpace: 'nowrap',
+                                    textOverflow: 'ellipsis',
+                                    width: '100%',
+                                }}
+                            >
+                                {t('Menu')}
+                            </Typography>
+
+                            <Box sx={{ display: 'flex', alignItems: 'start', justifyContent: 'flex-start', flexDirection: 'column', mb: 1 }}>
+                                <List>
+                                    {menuData
+                                        .filter((item) => item.isVisible !== false)
+                                        .map((item, index) => (
+                                            <ListItem
+                                                key={item.title}
+                                                selected={activeLink === `/${item.title.toLowerCase()}`}
+                                                onClick={item.onClick}
+                                                sx={{
+                                                    gap: 0,
+                                                    '&:hover, &.Mui-selected': {
+                                                        backgroundColor: theme.palette.hover.main,
+                                                        cursor: 'pointer',
+                                                        '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+                                                            color: 'white',
+                                                        },
+                                                        borderRadius: '10px',
+                                                    },
+                                                    borderRadius: '10px',
+                                                    backgroundColor: activeLink === `/${item.title.toLowerCase()}` ? theme.palette.icon.main : '',
+                                                    '& .MuiListItemIcon-root': {
+                                                        color: activeLink === `/${item.title.toLowerCase()}` ? theme.palette.icon.main : theme.palette.icon.main,
+                                                        minWidth: '2.2em',
+                                                    },
+                                                    '& .MuiListItemText-primary': {
+                                                        color: activeLink === `/${item.title.toLowerCase()}` ? theme.palette.icon.main : 'black',
+                                                    },
+                                                }}
+                                            >
+                                                <ListItemIcon>{item.icon}</ListItemIcon>
+                                                <ListItemText primary={item.title} />
+                                            </ListItem>
+                                        ))}
+                                </List>
+                            </Box>
+                        </CardContent>
+                    </div>
+                </div>
+
+                <Modal
+                    open={modalDelete}
+                    onClose={handleCloseModalDelete}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    onClick={(event) => event.stopPropagation()}
                     sx={{
-                        color: 'black',
-                        fontWeight: 'bold',
-                        overflow: 'hidden',
-                        whiteSpace: 'nowrap',
-                        textOverflow: 'ellipsis',
-                        width: '100%',
-                        ml: 1,
-                    }}
-                    >
-                    {valori.descrizione}
-                    </Typography>
-
-                    <Typography variant='body2' color='text.primary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
-                    <TagIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
-                    {valori.progressivo}
-                    </Typography>
-
-                    <Typography variant='body2' color='text.primary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
-                    <PlaceIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
-                    {valori.location}
-                    </Typography>
-
-                    <Typography variant='body2' color='text.primary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
-                    {icon}
-                    {t('Priorità')}: {text}
-                    </Typography>
-
-                    <Typography variant='body2' color='text.primary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
-                    <BusinessCenterIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
-                    {valori.tipologia && valori.tipologia.descrizione ? valori.tipologia.descrizione : t('N/A')}
-                    </Typography>
-
-                    <Typography variant='body2' color='text.primary' sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
-                    <AutoModeIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
-                    {valori.stato && valori.stato.descrizione ? valori.stato.descrizione : t('N/A')}
-                    </Typography>
-                </Box>
-                <Box
-                    sx={{
-                    position: 'absolute',
-                    bottom: 0,
-                    right: 0,
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    alignItems: 'end',
-                    paddingRight: '16px',
-                    paddingBottom: '16px',
-                    }}
-                >
-                    <img src={`data:image/png;base64,${valori.cliente.logo}`} alt='Logo' style={{ width: '80px', height: '80px', borderRadius: '50%' }} />
-                </Box>
-                </Box>
-            </CardContent>
-            </div>
-
-            <div style={cardBackStyle}>
-            <CardContent sx={{ backfaceVisibility: 'hidden' }}>
-                {/* Contenuto della Card */}
-                <Typography
-                gutterBottom
-                variant='h5'
-                component='div'
-                sx={{
-                    color: 'black',
-                    fontWeight: 'bold',
-                    overflow: 'hidden',
-                    whiteSpace: 'nowrap',
-                    textOverflow: 'ellipsis',
-                    width: '100%',
-                }}
-                >
-                {t('Menu')}
-                </Typography>
-
-                <Box sx={{ display: 'flex', alignItems: 'start', justifyContent: 'flex-start', flexDirection: 'column', mb: 1 }}>
-                <List>
-                    {menuData
-                    .filter((item) => item.isVisible !== false)
-                    .map((item, index) => (
-                        <ListItem
-                        key={item.title}
-                        selected={activeLink === `/${item.title.toLowerCase()}`}
-                        onClick={item.onClick}
-                        sx={{
-                            gap: 0,
-                            '&:hover, &.Mui-selected': {
-                            backgroundColor: theme.palette.hover.main,
-                            cursor: 'pointer',
-                            '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-                                color: 'white',
-                            },
-                            borderRadius: '10px',
-                            },
-                            borderRadius: '10px',
-                            backgroundColor: activeLink === `/${item.title.toLowerCase()}` ? theme.palette.icon.main : '',
-                            '& .MuiListItemIcon-root': {
-                            color: activeLink === `/${item.title.toLowerCase()}` ? theme.palette.icon.main : theme.palette.icon.main,
-                            minWidth: '2.2em',
-                            },
-                            '& .MuiListItemText-primary': {
-                            color: activeLink === `/${item.title.toLowerCase()}` ? theme.palette.icon.main : 'black',
-                            },
-                        }}
-                        >
-                        <ListItemIcon>{item.icon}</ListItemIcon>
-                        <ListItemText primary={item.title} />
-                        </ListItem>
-                    ))}
-                </List>
-                </Box>
-            </CardContent>
-            </div>
-        </div>
-
-        <Modal
-                open={modalDelete}
-                onClose={handleCloseModalDelete}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-                onClick={(event) => event.stopPropagation()}
-                sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}
-            >
-                <Box
-                    sx={{
-                        backgroundColor: "white",
-                        p: 4,
-                        borderRadius: 4,
                         display: "flex",
-                        justifyContent: "center",
                         alignItems: "center",
-                        flexDirection: "column",
-                        gap: 2,
-                        width: "40vw",
-                        position: "relative",
+                        justifyContent: "center",
                     }}
                 >
-                    <IconButton
-                        onClick={handleCloseModalDelete}
-                        sx={{
-                            position: "absolute",
-                            top: 8,
-                            right: 8,
-                            color: "#8e8e8e",
-                            bgcolor: 'transparent',
-                            "&:hover": {
-                                color: "#db000e",
-                                bgcolor: 'transparent',
-                            },
-                        }}
-                    >
-                        <CloseIcon />
-                    </IconButton>
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                        {t('Sei sicuro di voler eliminare il need?')}
-                    </Typography>
                     <Box
                         sx={{
+                            backgroundColor: "white",
+                            p: 4,
+                            borderRadius: 4,
                             display: "flex",
-                            flexDirection: "row",
                             justifyContent: "center",
-                            gap: 3,
+                            alignItems: "center",
+                            flexDirection: "column",
+                            gap: 2,
+                            width: "40vw",
+                            position: "relative",
                         }}
                     >
-                        <Button
+                        <IconButton
                             onClick={handleCloseModalDelete}
                             sx={{
-                                width: '10em',
-                                backgroundColor: "#bfbfbf",
-                                color: "white",
-                                borderRadius: "10px",
+                                position: "absolute",
+                                top: 8,
+                                right: 8,
+                                color: "#8e8e8e",
+                                bgcolor: 'transparent',
                                 "&:hover": {
-                                    backgroundColor: "#8e8e8e",
-                                    color: "white",
-                                    transform: "scale(1.01)",
+                                    color: "#db000e",
+                                    bgcolor: 'transparent',
                                 },
                             }}
                         >
-                            {t('Indietro')}
-                        </Button>
-                        <Button
-                            onClick={confirmDelete}
+                            <CloseIcon />
+                        </IconButton>
+                        <Typography id="modal-modal-title" variant="h6" component="h2">
+                            {t('Sei sicuro di voler eliminare il need?')}
+                        </Typography>
+                        <Box
                             sx={{
-                                width: '10em',
-                                backgroundColor: "#ea333f",
-                                color: "white",
-                                borderRadius: "10px",
-                                "&:hover": {
-                                    backgroundColor: "#db000e",
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "center",
+                                gap: 3,
+                            }}
+                        >
+                            <Button
+                                onClick={handleCloseModalDelete}
+                                sx={{
+                                    width: '10em',
+                                    backgroundColor: "#bfbfbf",
                                     color: "white",
-                                    transform: "scale(1.01)",
+                                    borderRadius: "10px",
+                                    "&:hover": {
+                                        backgroundColor: "#8e8e8e",
+                                        color: "white",
+                                        transform: "scale(1.01)",
+                                    },
+                                }}
+                            >
+                                {t('Indietro')}
+                            </Button>
+                            <Button
+                                onClick={confirmDelete}
+                                sx={{
+                                    width: '10em',
+                                    backgroundColor: "#ea333f",
+                                    color: "white",
+                                    borderRadius: "10px",
+                                    "&:hover": {
+                                        backgroundColor: "#db000e",
+                                        color: "white",
+                                        transform: "scale(1.01)",
+                                    },
+                                }}
+                            >
+                                {t('Conferma')}
+                            </Button>
+                        </Box>
+                    </Box>
+                </Modal>
+
+                { /* MODAL PER IL CAMBIO STATO */}
+                <Modal
+                    open={modalStato}
+                    onClose={() => setModalStato(false)}
+                    aria-labelledby='modal-modal-title'
+                    aria-describedby='modal-modal-description'
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <Box
+                        sx={{
+                            backgroundColor: 'white',
+                            p: 4,
+                            borderRadius: 2,
+                            display: 'flex',
+                            position: 'relative',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flexDirection: 'column',
+                            gap: 2,
+                            width: '40vw',
+                            height: 'auto',
+                        }}
+                    >
+                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
+                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', ml: 2, mt: 0.5, mb: 0.5 }}>{t('Cambia Stato al Need')}</Typography>
+                            <IconButton sx={{ mr: 2, backgroundColor: 'transparent', border: 'none' }} onClick={() => setModalStato(false)}>
+                                <CloseIcon sx={{ backgroundColor: 'transparent' }} />
+                            </IconButton>
+                        </Box>
+
+                        <FormControl fullWidth>
+                            <Autocomplete
+                                id='stato-combo-box'
+                                options={statoOptions}
+                                getOptionLabel={(option) => option.label}
+                                value={statoOptions.find((option) => option.value === values.stato) || null}
+                                onChange={(event, newValue) => {
+                                    setValues((prevValues) => ({
+                                        ...prevValues,
+                                        stato: newValue ? newValue.value : null,
+                                    }));
+                                }}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        label={t('Stato')}
+                                        variant='filled'
+                                        sx={{
+                                            height: '4em',
+                                            p: 1,
+                                            borderRadius: '20px',
+                                            backgroundColor: '#EDEDED',
+                                            '& .MuiFilledInput-root': {
+                                                backgroundColor: 'transparent',
+                                            },
+                                            '& .MuiFilledInput-underline:after': {
+                                                borderBottomColor: 'transparent',
+                                            },
+                                            '& .MuiFilledInput-root::before': {
+                                                borderBottom: 'none',
+                                            },
+                                            '&:hover .MuiFilledInput-root::before': {
+                                                borderBottom: 'none',
+                                            },
+                                            '& .MuiFormLabel-root.Mui-focused': {
+                                                color: theme.palette.border.main,
+                                            },
+                                        }}
+                                    />
+                                )}
+                            />
+                        </FormControl>
+                        <Button
+                            onClick={handleUpdateStato}
+                            sx={{
+                                mt: 2,
+                                width: '60%',
+                                backgroundColor: theme.palette.button.main,
+                                color: 'white',
+                                borderRadius: '10px',
+                                '&:hover': {
+                                    backgroundColor: theme.palette.button.main,
+                                    transform: 'scale(1.02)',
                                 },
                             }}
                         >
-                            {t('Conferma')}
+                            {t('Cambia')}
                         </Button>
                     </Box>
-                </Box>
-            </Modal>
+                </Modal>
 
-        { /* MODAL PER IL CAMBIO STATO */ }
-        <Modal
-            open={modalStato}
-            onClose={() => setModalStato(false)}
-            aria-labelledby='modal-modal-title'
-            aria-describedby='modal-modal-description'
-            sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            }}
-        >
-            <Box
-            sx={{
-                backgroundColor: 'white',
-                p: 4,
-                borderRadius: 2,
-                display: 'flex',
-                position: 'relative',
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'column',
-                gap: 2,
-                width: '40vw',
-                height: 'auto',
-            }}
-            >
-            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
-                <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', ml: 2, mt: 0.5, mb: 0.5 }}>{t('Cambia Stato al Need')}</Typography>
-                <IconButton sx={{ mr: 2, backgroundColor: 'transparent', border: 'none' }} onClick={() => setModalStato(false)}>
-                <CloseIcon sx={{ backgroundColor: 'transparent' }} />
-                </IconButton>
-            </Box>
-
-            <FormControl fullWidth>
-                <Autocomplete
-                id='stato-combo-box'
-                options={statoOptions}
-                getOptionLabel={(option) => option.label}
-                value={statoOptions.find((option) => option.value === values.stato) || null}
-                onChange={(event, newValue) => {
-                    setValues((prevValues) => ({
-                    ...prevValues,
-                    stato: newValue ? newValue.value : null,
-                    }));
-                }}
-                renderInput={(params) => (
-                    <TextField
-                    {...params}
-                    label={t('Stato')}
-                    variant='filled'
-                    sx={{
-                        height: '4em',
-                        p: 1,
-                        borderRadius: '20px',
-                        backgroundColor: '#EDEDED',
-                        '& .MuiFilledInput-root': {
-                        backgroundColor: 'transparent',
-                        },
-                        '& .MuiFilledInput-underline:after': {
-                        borderBottomColor: 'transparent',
-                        },
-                        '& .MuiFilledInput-root::before': {
-                        borderBottom: 'none',
-                        },
-                        '&:hover .MuiFilledInput-root::before': {
-                        borderBottom: 'none',
-                        },
-                        '& .MuiFormLabel-root.Mui-focused': {
-                        color: theme.palette.border.main,
-                        },
-                    }}
-                    />
-                )}
-                />
-            </FormControl>
-            <Button
-                onClick={handleUpdateStato}
-                sx={{
-                mt: 2,
-                width: '60%',
-                backgroundColor: theme.palette.button.main,
-                color: 'white',
-                borderRadius: '10px',
-                '&:hover': {
-                    backgroundColor: theme.palette.button.main,
-                    transform: 'scale(1.02)',
-                },
-                }}
-            >
-                {t('Cambia')}
-            </Button>
-            </Box>
-        </Modal>
-
-        <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} TransitionComponent={TransitionDown}>
-            <Alert onClose={handleCloseAlert} severity='error' sx={{ width: '100%' }}>
-            {alert.message}
-            </Alert>
-        </Snackbar>
-        </Card>
+                <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} TransitionComponent={TransitionDown}>
+                    <Alert onClose={handleCloseAlert} severity='error' sx={{ width: '100%' }}>
+                        {alert.message}
+                    </Alert>
+                </Snackbar>
+            </Card>
         </motion.div>
     );
-    };
+};
 
-    export default NeedCardFlip;
+export default NeedCardFlip;

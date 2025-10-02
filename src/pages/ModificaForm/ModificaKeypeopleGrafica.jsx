@@ -255,8 +255,10 @@ const ModificaKeypeopleGrafica = () => {
                         }
                     });
 
-    
+                    values.username = user.username;
+
                     const response = await axios.post("http://localhost:8080/keypeople/react/salva", values, {
+                        params: { username: user?.username || null },
                         headers: headers
                     });
                     if (response.data === "DUPLICATO") {

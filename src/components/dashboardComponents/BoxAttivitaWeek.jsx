@@ -107,13 +107,13 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
     }, [interval]);
 
     return (
-        <Box className="cardTabellaBusiness" sx={{ width: '100%', height: '100%', position: 'relative', display: 'flex', flexDirection: 'column', paddingTop: 1, paddingBottom: 1}}>
-            <Box display="flex" alignItems="center" mb={0} ml={2}>
+        <Box className="cardTabellaBusiness" sx={{ width: '100%', height: '100%', position: 'relative', display: 'flex', flexDirection: 'column', paddingTop: 1, paddingBottom: 0}}>
+            <Box display="flex" alignItems="center" mb={0} ml={2} sx={{ paddingBottom: 0}}>
                 <Typography variant='h5' sx={{ fontWeight: 'bold', fontSize: '1.2em' }}>
                     {t("Piano Incontri")}
                 </Typography>
             </Box>
-            <Box sx={{ flexGrow: 1, width: '100%', overflowY: 'auto' }}>
+            <Box sx={{ flexGrow: 1, width: '100%', overflowY: 'auto', alignItems: "center", paddingBottom: 0}}>
                 <TabellaAzioni
                     data={weekDataKeyPeople}
                     aziendeOptions={aziendeOptions} />

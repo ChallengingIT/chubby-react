@@ -229,11 +229,12 @@
                 values[key] = null;
             }
             });
-
+            
             const response = await axios.post(
             "http://localhost:8080/keypeople/react/salva",
             values,
             {
+                params: { username: user?.username || null },
                 headers: headers,
             }
             );

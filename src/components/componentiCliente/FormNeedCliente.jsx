@@ -184,7 +184,7 @@ const FormNeedCliente = ({ idNeed }) => {
           "http://localhost:8080/need/react/salva",
           transformedValues,
           {
-            params: { skill: skills },
+            params: { skill: skills, username: user?.username },
             headers: headers,
           }
         );
