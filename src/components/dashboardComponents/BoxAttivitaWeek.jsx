@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Typography, IconButton, Divider } from '@mui/material';
+import { Box, Typography, IconButton, Divider } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import TabellaAttivitaBusiness from './TabellaAttivitaBusiness';
-import TabellaAttivitaRecruiting from './TabellaAttivitaRecruiting.jsx';
 import axios from 'axios';
 import { useUserTheme } from '../TorchyThemeProvider.jsx';
 import { useTranslation } from "react-i18next";
+import TabellaAzioni from './TabellaAzioni.jsx';
 
 const BoxAttivitaWeek = ({ aziendeOptions }) => {
+
     const theme = useUserTheme();
     const { t } = useTranslation();
 
     const [currentDate, setCurrentDate] = useState(new Date());
-    const [weekDataBusiness, setWeekDataBusiness] = useState([]);
-    const [weekDataRecruiting, setWeekDataRecruiting] = useState([]);
-    const [currentData, setCurrentData] = useState('recruiting');
+    const [weekDataKeyPeople, setWeekDataKeyPeople] = useState([]);
     const [interval, setInterval] = useState(0);
     const quantita = 10;
 
@@ -66,14 +65,6 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
     const weekEnd = getWeekEnd(currentDate);
     const weekRange = `${formatDate(weekStart, false)} - ${formatDate(weekEnd)}`;
 
-    const handlePreviousWeek = () => {
-        setInterval(prevInterval => prevInterval - 1);
-    };
-
-    const handleNextWeek = () => {
-        setInterval(prevInterval => prevInterval + 1);
-    };
-
     useEffect(() => {
         const newDate = new Date();
         newDate.setDate(newDate.getDate() + (interval * 7));
@@ -81,6 +72,7 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
     }, [interval]);
 
     useEffect(() => {
+
         const fetchWeekData = async (type) => {
             const isAdmin = userHasRole("ADMIN");
             const filtriDaInviare = {
@@ -91,128 +83,40 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
             };
 
             const baseUrl = isAdmin
-                ? `http://89.46.196.60:8443/dashboard/attivita/${type}`
-                : `http://89.46.196.60:8443/dashboard/attivita/${type}/personal`;
+                ? `http://localhost:8080/dashboard/attivita/business`
+                : `http://localhost:8080/dashboard/attivita/business/personal`;
 
             try {
                 const response = await axios.get(`${baseUrl}/interval`, {
                     headers: headers,
                     params: filtriDaInviare
                 });
-                if (type === 'business') {
-                    setWeekDataBusiness(response.data);
-                } else {
-                    setWeekDataRecruiting(response.data);
-                }
+                setWeekDataKeyPeople(Array.isArray(response.data) ? response.data : []);
+                console.log(response.data)
+                console.log("Interval:", interval);
+                console.log("User:", user.username);
+                console.log("Admin?", userHasRole("ADMIN"));
+                console.log("URL chiamata:", `${baseUrl}/interval`);
+                console.log("Params:", filtriDaInviare);
             } catch (error) {
                 console.error(`Error fetching ${type} week data:`, error);
             }
         };
 
-        fetchWeekData('business');
-        fetchWeekData('recruiting');
+        fetchWeekData();
     }, [interval]);
 
-    const isAdmin = userHasRole("ADMIN");
-    const isBM = userHasRole("BM");
-
     return (
-        <Box className="cardTabellaBusiness" id="cardTabellaBusiness" sx={{ width: '100%', height: '100%', position: 'relative', }}>
-            <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                <Box sx={{ display: 'flex', flexDirection: 'row', gap: 5 }}>
-                    <Typography variant='h5' sx={{ mt: 1, mb: 1, ml: 2, fontWeight: 'bold', fontSize: '1.2em' }}>
-                        {t("Actions")}
-                    </Typography>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.4 }}>
-                        <IconButton onClick={handlePreviousWeek} sx={{ color: '#00B400' }}>
-                            <ArrowBackIosIcon />
-                        </IconButton>
-                        <Typography variant="h8" style={{ color: 'black', textAlign: 'center', padding: 8, fontWeight: 'bold', fontSize: '0.9em' }}>
-                            {weekRange}
-                        </Typography>
-                        <IconButton onClick={handleNextWeek} style={{ color: '#00B400' }}>
-                            <ArrowForwardIosIcon />
-                        </IconButton>
-                    </Box>
-                </Box>
-                <Box
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        bgcolor: "#f0f0f0",
-                        borderRadius: "20px",
-                        padding: "4px",
-                        width: "fit-content",
-                        position: "relative",
-                        gap: 2,
-                        
-                    }}
-                >
-                    <Box
-                    sx={{
-                        position: "absolute",
-                        top: "4px",
-                        bottom: "4px",
-                        left: currentData === "business" ? "4px" : "50%",
-                        width: "50%",
-                        borderRadius: "16px",
-                        backgroundColor: "#00B400",
-                        transition: "all 0.3s ease",
-                        
-                    }}
-                />
-                {(isAdmin || isBM) && (
-                    <Button
-                        onClick={() => setCurrentData("business")}
-                        sx={{
-                            flex: 1,
-                            borderRadius: "20px",
-                            backgroundColor: currentData === "business" ? "#00B400" : "transparent",
-                            color: currentData === "business" ? "white" : "black",
-                            fontWeight: currentData === "business" ? "bold" : "normal",
-                            textTransform: "none",
-                            padding: "8px 16px",
-                            "&:hover": {
-                                // backgroundColor: currentData === "business" ? "#009e00" : "#e0e0e0",
-                                bgcolor: 'transparent'
-                            },
-                        }}
-                    >
-                        {t("Business")}
-                    </Button>
-                    )}
-                    <Button
-                        onClick={() => setCurrentData("recruiting")}
-                        sx={{
-                            flex: 1,
-                            borderRadius: "20px",
-                            backgroundColor: currentData === "recruiting" ? "#00B400" : "transparent",
-                            color: currentData === "recruiting" ? "white" : "black",
-                            fontWeight: currentData === "recruiting" ? "bold" : "normal",
-                            textTransform: "none",
-                            padding: "8px 16px",
-                            "&:hover": {
-                                // backgroundColor: currentData === "recruiting" ? "#009e00" : "#e0e0e0",
-                                bgcolor: 'transparent'
-                            },
-                        }}
-                    >
-                        {t("Recruiting")}
-                    </Button>
-                </Box>
+        <Box className="cardTabellaBusiness" sx={{ width: '100%', height: '100%', position: 'relative', display: 'flex', flexDirection: 'column', paddingTop: 1, paddingBottom: 1}}>
+            <Box display="flex" alignItems="center" mb={0} ml={2}>
+                <Typography variant='h5' sx={{ fontWeight: 'bold', fontSize: '1.2em' }}>
+                    {t("Piano Incontri")}
+                </Typography>
             </Box>
-            <Divider sx={{ bgcolor: 'lightgray', height: 2 }} />
-            <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end', height: 'calc(100% - 76px)', width: '100%', overflowY: 'auto' }}>
-                {currentData === 'business' ? (
-                    <TabellaAttivitaBusiness
-                        data={weekDataBusiness}
-                        aziendeOptions={aziendeOptions} />
-                ) : (
-                    <TabellaAttivitaRecruiting
-                        data={weekDataRecruiting}
-                        aziendeOptions={aziendeOptions} />
-                )}
+            <Box sx={{ flexGrow: 1, width: '100%', overflowY: 'auto' }}>
+                <TabellaAzioni
+                    data={weekDataKeyPeople}
+                    aziendeOptions={aziendeOptions} />
             </Box>
         </Box>
     );

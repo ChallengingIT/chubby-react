@@ -226,9 +226,9 @@ const Aziende = () => {
                 const { record, clienti } = responsePaginazione.data;
 
                 if (Array.isArray(clienti)) {
-                    const aziendeConId = clienti.map((aziende) => ({
-                        ...aziende,
-                    }));
+                    const aziendeConId = Array.isArray(responsePaginazione.data)
+    ? responsePaginazione.data.map((aziende) => ({ ...aziende }))
+    : [];
                     setFilteredAziende((prev) => [...prev, ...aziendeConId]);
                     setHasMore(filteredAziende.length + aziendeConId.length < recordTot);
                 } else {
