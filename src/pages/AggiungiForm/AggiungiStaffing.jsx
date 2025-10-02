@@ -77,12 +77,12 @@ const AggiungiStaffing = () => {
         try {
 
             const terminiPagamentoResponse = await axios.get(
-            "http://89.46.196.60:8443/hiring/termini",
+            "http://localhost:8080/hiring/termini",
             { headers: headers }
             );
 
             const candidatiResponse = await axios.get(
-                "http://89.46.196.60:8443/staffing/react/mod/hiring",
+                "http://localhost:8080/staffing/react/mod/hiring",
                 { headers: headers }
             );
 
@@ -273,7 +273,7 @@ const AggiungiStaffing = () => {
                         Authorization: `Bearer ${token}`
                     };
     
-                    const response = await axios.post("http://89.46.196.60:8443/hiring/salva/scheda", values, {
+                    const response = await axios.post("http://localhost:8080/hiring/salva/scheda", values, {
                         headers: headers,
                         params: { idHiring: idHiring, idTipoServizio: idTipoServizio }
                     });

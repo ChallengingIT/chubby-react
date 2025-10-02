@@ -31,7 +31,7 @@ const IntervistePage = ({ idNeed }) => {
     const fetchData = async () => {
       try {
         const responseIntervista = await axios.get(
-          `http://89.46.196.60:8443/need/react/${idNeed}`,
+          `http://localhost:8080/need/react/${idNeed}`,
           { headers: headers }
         );
         const dataIntervista = responseIntervista.data?.candidati || [];
