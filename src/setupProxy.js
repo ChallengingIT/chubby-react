@@ -8,8 +8,4 @@ module.exports = function(app) {
       changeOrigin: true,
     })
   );
-
-  devServer: {
-      allowedHosts: 'all',
-   }
 };

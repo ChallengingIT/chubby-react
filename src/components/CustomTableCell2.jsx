@@ -48,7 +48,7 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title }) => {
 
     const fetchStati = async () => {
         try {
-            const responseStato = await axios.get("http://localhost:8080/need/react/stato", { headers });
+            const responseStato = await axios.get("http://89.46.196.60:8443/need/react/stato", { headers });
 
             if (Array.isArray(responseStato.data)) {
                 const filteredStati = responseStato.data
@@ -179,8 +179,8 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title }) => {
 
         try {
             const responseUpdateStato = await axios.post(
-                `http://localhost:8080/need/react/salva/stato/${idNeed}?${params.toString()}`,
-                {},
+                `http://89.46.196.60:8443/need/react/salva/stato/${idNeed}?${params.toString()}`,
+                {}, 
                 { headers: headers }
             );
 

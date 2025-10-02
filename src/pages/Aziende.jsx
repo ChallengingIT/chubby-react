@@ -108,7 +108,7 @@ const Aziende = () => {
                 params: filtriDaInviare,
             });
 
-            const responseCliente = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
+            const responseCliente = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers: headers });
 
 
             if (Array.isArray(responseCliente.data)) {
@@ -289,7 +289,7 @@ const Aziende = () => {
                 { headers }
             );
 
-            const responseCliente = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
+            const responseCliente = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers: headers });
 
             if (Array.isArray(responseCliente.data)) {
                 setClienteOptions(responseCliente.data.map((cliente) => ({ label: cliente.denominazione, value: cliente.id })));

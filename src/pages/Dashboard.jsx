@@ -112,7 +112,7 @@ function Dashboard() {
                     priorita: pipeline?.priorita || "Priorità non disponibile",
                     stato: pipeline?.stato ? pipeline?.stato?.descrizione : "Stato non disponibile",
                     pipelineData: pipeline?.pipeline || "Dati non disponibili",
-                    aziendaInterna: pipeline?.aziendaInterna || "Azienda non disponibile"
+                    aziendaInterna: pipeline?.aziendaInterna ? `${pipeline?.aziendaInterna?.descrizione}` : "Azienda non disponibile"
                 }));
                 setOriginalPipeline(pipelineConId);
             } else {
@@ -198,14 +198,14 @@ function Dashboard() {
             render: (row) => (
                 <Link
                     component="button"
-                    onClick={() => handleDescrizioneClick(row.descrizione, row.cliente?.id || null)}
+                    onClick={() => handleDescrizioneClick(row?.descrizione, row?.cliente?.id || null)}
                     sx={{
                         textDecoration: "none",
                         color: "black",
                         borderBottom: "solid 1px black",
                     }}
                 >
-                    {row.descrizione}
+                    {row?.descrizione}
                 </Link>
             ),
         },

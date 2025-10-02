@@ -37,7 +37,7 @@
 // });
 
 // app.listen(PORT, () => {
-//     console.log(`Server is running on http://localhost:${PORT}`);
+//     console.log(`Server is running on http://89.46.196.60:${PORT}`);
 // });
 
 
@@ -69,6 +69,6 @@ app.get('/*', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    // console.log(`Server is running on http://localhost:${PORT}`);
+    // console.log(`Server is running on http://89.46.196.60:${PORT}`);
 });
 
