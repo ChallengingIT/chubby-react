@@ -274,7 +274,7 @@ function Dashboard() {
                             />
                         </Grid>
                         {/* ACTIONS TABLE */}
-                        <Grid container spacing={2}>
+                        {/* <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <Card
                                     sx={{
@@ -308,7 +308,7 @@ function Dashboard() {
                                     </CardContent>
                                 </Card>
                             </Grid>
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                 </Container>
             </Container>

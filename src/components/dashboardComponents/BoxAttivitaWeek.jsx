@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, IconButton, Divider } from '@mui/material';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import TabellaAttivitaBusiness from './TabellaAttivitaBusiness';
+import { Box, Typography} from '@mui/material';
 import axios from 'axios';
 import { useUserTheme } from '../TorchyThemeProvider.jsx';
 import { useTranslation } from "react-i18next";
