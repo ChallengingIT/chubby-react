@@ -64,7 +64,7 @@ const ModificaNeedGrafica = () => {
             try {
                 const responseAziende = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
                 const responseSkill = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
-                const ownerResponse = await axios.get("http://localhost:8080/owner", { headers: headers });
+                //const ownerResponse = await axios.get("http://localhost:8080/owner", { headers: headers });
                 const tipologiaResponse = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
                 const statoResponse = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
                 const needResponse = await axios.get(`http://localhost:8080/need/react/${id}`, { headers: headers });
@@ -85,20 +85,44 @@ const ModificaNeedGrafica = () => {
                 }
 
                 if (Array.isArray(tipologiaResponse.data)) {
-                    const tipologiaOptions = tipologiaResponse.data.map((tipologia) => ({
-                        label: tipologia.descrizione,
-                        value: tipologia.id,
+                    const allTipologie = tipologiaResponse.data.map(t => ({
+                        label: t.descrizione,
+                        value: t.id,
                     }));
-                    setTipologiaOptions(tipologiaOptions);
+
+                    // Esempio di logica: i primi 2 = Consulting, successivi 3 = Talent, restanti = Factory
+                    const consulting = allTipologie.slice(0, 2);
+                    const talent = allTipologie.slice(2, 5);
+                    const factory = allTipologie.slice(5);
+
+                    const groupedTipologie = [
+                        { label: "Consulting", value: "__header_consulting__", isHeader: true },
+                        ...consulting,
+                        { label: "Talent", value: "__header_talent__", isHeader: true },
+                        ...talent,
+                        { label: "Factory", value: "__header_factory__", isHeader: true },
+                        ...factory,
+                    ];
+
+                    setTipologiaOptions(groupedTipologie);
                 }
 
 
+                const userString = sessionStorage.getItem("user");
+                const user = userString ? JSON.parse(userString) : null;
+                const username = user?.username;
+
+                const ownerResponse = await axios.get(
+                `http://localhost:8080/owner/${username}`,
+                { headers: headers }
+                );
+
                 if (Array.isArray(ownerResponse.data)) {
-                    const ownerOptions = ownerResponse.data.map((owner) => ({
-                        label: owner.descrizione,
-                        value: owner.id,
-                    }));
-                    setOwnerOptions(ownerOptions);
+                const ownerOptions = ownerResponse.data.map((owner) => ({
+                    label: owner.descrizione,
+                    value: owner.id,
+                }));
+                setOwnerOptions(ownerOptions);
                 }
 
 

@@ -143,16 +143,28 @@ const Need = () => {
         try {
             const responseNeed = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
             const responseAzienda = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
-            const responseOwner = await axios.get("http://localhost:8080/owner", { headers: headers });
+            //const responseOwner = await axios.get("http://localhost:8080/owner", { headers: headers });
             const responseTipologia = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
             const responseStato = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
 
 
-            if (Array.isArray(responseOwner.data)) {
-                setOwnerOptions(responseOwner.data.map((owner) => ({ label: owner.descrizione, value: owner.id })));
-            } else {
-                console.error("I dati ottenuti dalla chiamata degli owner non sono nel formato Array; ", responseOwner.data);
+            const userString = sessionStorage.getItem("user");
+            const user = userString ? JSON.parse(userString) : null;
+            const username = user?.username;
+
+            const ownerResponse = await axios.get(
+                `http://localhost:8080/owner/${username}`,
+                { headers: headers }
+            );
+
+            if (Array.isArray(ownerResponse.data)) {
+                const ownerOptions = ownerResponse.data.map(owner => ({
+                    label: owner.descrizione,
+                    value: owner.id,
+                }));
+                setOwnerOptions(ownerOptions);
             }
+
 
             if (Array.isArray(responseAzienda.data)) {
                 setAziendaOptions(responseAzienda.data.map((azienda) => ({ label: azienda.denominazione, value: azienda.id })));

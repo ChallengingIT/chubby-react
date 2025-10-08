@@ -73,7 +73,7 @@ const ModificaIntervistaGrafica = () => {
             }
             try {
                 //jobtitle = tipologia, tipologiaIncontro = stato, owner = owner
-                const ownerResponse = await axios.get("http://localhost:8080/owner", { headers: headers });
+                //const ownerResponse = await axios.get("http://localhost:8080/owner", { headers: headers });
                 const responseTipoIntervista = await axios.get("http://localhost:8080/intervista/react/tipointervista", { headers: headers });
                 const responseIntervista = await axios.get(`http://localhost:8080/intervista/react/mod/${candidatoID}`, { headers: headers, params: paginazione }); //questa è la lista delle interviste di cui devo prendere sempre l'ultima
                 const responseCandidato = await axios.get(`http://localhost:8080/staffing/react/${candidatoID}`, { headers: headers }); //questo è il candidato
@@ -109,13 +109,23 @@ const ModificaIntervistaGrafica = () => {
                     setStatoOptions(statoOptions);
                 }
 
+                const userString = sessionStorage.getItem("user");
+                const user = userString ? JSON.parse(userString) : null;
+                const username = user?.username;
+
+                const ownerResponse = await axios.get(
+                `http://localhost:8080/owner/${username}`,
+                { headers: headers }
+                );
+
                 if (Array.isArray(ownerResponse.data)) {
-                    const ownerOptions = ownerResponse.data.map((owner) => ({
-                        label: owner.descrizione,
-                        value: owner.id,
-                    }));
-                    setOwnerOptions(ownerOptions);
+                const ownerOptions = ownerResponse.data.map(owner => ({
+                    label: owner.descrizione,
+                    value: owner.id,
+                }));
+                setOwnerOptions(ownerOptions);
                 }
+
 
                 if (responseCandidato.data && typeof responseCandidato.data === 'object') {
                     setCandidatoData(responseCandidato.data);

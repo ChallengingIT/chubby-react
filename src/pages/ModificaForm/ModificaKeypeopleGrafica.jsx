@@ -62,7 +62,7 @@ const ModificaKeypeopleGrafica = () => {
         try {
             const keypeopleResponse = await axios.get(`http://localhost:8080/keypeople/react/${id}`,    { headers: headers });
             const aziendeResponse = await axios.get("http://localhost:8080/aziende/react/select",       { headers: headers });
-            const ownerResponse   = await axios.get("http://localhost:8080/owner",        { headers: headers });
+            //const ownerResponse   = await axios.get("http://localhost:8080/owner",        { headers: headers });
             const statiResponse   = await axios.get("http://localhost:8080/keypeople/react/stati",      { headers: headers });
 
             if (Array.isArray(statiResponse.data)) {
@@ -74,13 +74,22 @@ const ModificaKeypeopleGrafica = () => {
                 } else {
                 console.error("I dati ottenuti non sono nel formato Array:", statiResponse.data);
                 }
-            if (Array.isArray(ownerResponse.data)) {
-            const ownerOptions = ownerResponse.data.map((owner) => ({
-                label: owner.descrizione,
-                value: owner.id,
-            }));
-            setOwnerOptions(ownerOptions);
-            } else {
+            const userString = sessionStorage.getItem("user");
+                const user = userString ? JSON.parse(userString) : null;
+                const username = user?.username;
+
+                const ownerResponse = await axios.get(
+                `http://localhost:8080/owner/${username}`,
+                { headers: headers }
+                );
+
+                if (Array.isArray(ownerResponse.data)) {
+                const ownerOptions = ownerResponse.data.map(owner => ({
+                    label: owner.descrizione,
+                    value: owner.id,
+                }));
+                setOwnerOptions(ownerOptions);
+                } else {
             console.error("I dati ottenuti non sono nel formato Array:", ownerResponse.data);
             }
     

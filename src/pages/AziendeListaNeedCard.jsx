@@ -70,10 +70,10 @@ import ListaNeedCardV2 from '../components/card/ListaNeedCardV2.jsx';
             `http://localhost:8080/need/react/cliente/modificato/${id}`,
             { headers: headers, params: filtriDaInviare }
         );
-        const responseOwner = await axios.get(
+        /* const responseOwner = await axios.get(
             "http://localhost:8080/owner",
             { headers: headers }
-        );
+        ); */
         const responseTipologia = await axios.get(
             "http://localhost:8080/need/react/tipologia",
             { headers: headers }
@@ -101,14 +101,22 @@ import ListaNeedCardV2 from '../components/card/ListaNeedCardV2.jsx';
             );
         }
 
-        if (Array.isArray(responseOwner.data)) {
-            setOwnerOptions(
-            responseOwner.data.map((owner) => ({
-                label: owner.descrizione,
-                value: owner.id,
-            }))
-            );
-        } else {
+        const userString = sessionStorage.getItem("user");
+                const user = userString ? JSON.parse(userString) : null;
+                const username = user?.username;
+
+                const responseOwner = await axios.get(
+                `http://localhost:8080/owner/${username}`,
+                { headers: headers }
+                );
+
+                if (Array.isArray(responseOwner.data)) {
+                const ownerOptions = responseOwner.data.map(owner => ({
+                    label: owner.descrizione,
+                    value: owner.id,
+                }));
+                setOwnerOptions(ownerOptions);
+                } else {
             console.error(
             "I dati ottenuti non sono nel formato Array; ",
             responseOwner.data
@@ -242,10 +250,10 @@ import ListaNeedCardV2 from '../components/card/ListaNeedCardV2.jsx';
             "http://localhost:8080/need/react/ricerca/modificato",
             { headers: headers, params: filtriDaInviare }
         );
-        const responseOwner = await axios.get(
+        /* const responseOwner = await axios.get(
             "http://localhost:8080/owner",
             { headers: headers }
-        );
+        ); */
         const responseTipologia = await axios.get(
             "http://localhost:8080/need/react/tipologia",
             { headers: headers }
@@ -255,14 +263,22 @@ import ListaNeedCardV2 from '../components/card/ListaNeedCardV2.jsx';
             { headers: headers }
         );
 
-        if (Array.isArray(responseOwner.data)) {
-            setOwnerOptions(
-            responseOwner.data.map((owner) => ({
-                label: owner.descrizione,
-                value: owner.id,
-            }))
-            );
-        } else {
+        const userString = sessionStorage.getItem("user");
+                const user = userString ? JSON.parse(userString) : null;
+                const username = user?.username;
+
+                const responseOwner = await axios.get(
+                `http://localhost:8080/owner/${username}`,
+                { headers: headers }
+                );
+
+                if (Array.isArray(responseOwner.data)) {
+                const ownerOptions = responseOwner.data.map(owner => ({
+                    label: owner.descrizione,
+                    value: owner.id,
+                }));
+                setOwnerOptions(ownerOptions);
+                } else {
             console.error(
             "I dati ottenuti non sono nel formato Array; ",
             responseOwner.data

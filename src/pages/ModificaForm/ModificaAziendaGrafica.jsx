@@ -56,7 +56,7 @@ const ModificaAziendaGrafica = () => {
         const fetchProvinceOptions = async () => {
             try {
                 const responseProvince = await axios.get("http://localhost:8080/aziende/react/province", { headers: headers });
-                const responseOwner = await axios.get("http://localhost:8080/owner", { headers: headers });
+                //const responseOwner = await axios.get("http://localhost:8080/owner", { headers: headers });
                 const responseAziende = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
                 const responseModifica = await axios.get(`http://localhost:8080/aziende/react/${id}`, { headers: headers });
                 const tipoServizioResponse = await axios.get("http://localhost:8080/hiring/servizi", { headers: headers });
@@ -80,13 +80,23 @@ const ModificaAziendaGrafica = () => {
                 }
 
 
-                if (Array.isArray(responseOwner.data)) {
-                    const ownerOptions = responseOwner.data.map((owner) => ({
-                        label: owner.descrizione,
-                        value: owner.id,
-                    }));
-                    setOwnerOptions(ownerOptions);
+                const userString = sessionStorage.getItem("user");
+                const user = userString ? JSON.parse(userString) : null;
+                const username = user?.username;
+
+                const ownerResponse = await axios.get(
+                `http://localhost:8080/owner/${username}`,
+                { headers: headers }
+                );
+
+                if (Array.isArray(ownerResponse.data)) {
+                const ownerOptions = ownerResponse.data.map(owner => ({
+                    label: owner.descrizione,
+                    value: owner.id,
+                }));
+                setOwnerOptions(ownerOptions);
                 }
+
 
 
                 if (Array.isArray(responseProvince.data)) {

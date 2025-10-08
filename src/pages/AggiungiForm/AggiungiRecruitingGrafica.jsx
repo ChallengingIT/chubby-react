@@ -67,7 +67,7 @@ const AggiungiRecruitingGrafica = () => {
             // const responseJobTitle            = await axios.get(`http://localhost:8080/aziende/react/tipologia/${id}`   , { headers: headers });
             const responseTipologia           = await axios.get("http://localhost:8080/staffing/react/tipo/candidatura" , { headers: headers });
             const responseNeedSkills          = await axios.get("http://localhost:8080/staffing/react/skill"            , { headers: headers });
-            const ownerResponse               = await axios.get("http://localhost:8080/owner"                           , { headers: headers });
+            //const ownerResponse               = await axios.get("http://localhost:8080/owner"                           , { headers: headers });
             const facoltaResponse             = await axios.get("http://localhost:8080/staffing/react/facolta"          , { headers: headers });
             const livelloScolasticoResponse   = await axios.get("http://localhost:8080/staffing/react/livello"          , { headers: headers });
             const funzioniAziendaliResponse   = await axios.get("http://localhost:8080/staffing/react/funzioni"         , { headers: headers });
@@ -111,13 +111,23 @@ const AggiungiRecruitingGrafica = () => {
         }
 
     
-            if (Array.isArray(ownerResponse.data)) {
-        const ownerOptions = ownerResponse.data.map((owner) => ({
-                label: owner.descrizione,
-                value: owner.id,
-            }));
-            setOwnerOptions(ownerOptions);
-        }
+            const userString = sessionStorage.getItem("user");
+                const user = userString ? JSON.parse(userString) : null;
+                const username = user?.username;
+
+                const ownerResponse = await axios.get(
+                `http://localhost:8080/owner/${username}`,
+                { headers: headers }
+                );
+
+                if (Array.isArray(ownerResponse.data)) {
+                const ownerOptions = ownerResponse.data.map(owner => ({
+                    label: owner.descrizione,
+                    value: owner.id,
+                }));
+                setOwnerOptions(ownerOptions);
+                }
+
             
             if (Array.isArray(responseNeedSkills.data)) {
             const skillsOptions = responseNeedSkills.data.map((skills) => ({
