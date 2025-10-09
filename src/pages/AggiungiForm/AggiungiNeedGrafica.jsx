@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Skeleton, Snackbar, Grid, Slide, Container } from '@mui/material';
+import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Skeleton, Snackbar, Grid, Slide, Container, FormControlLabel, Switch } from '@mui/material';
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
 import axios from 'axios';
 import CustomAutocomplete from '../../components/fields/CustomAutocomplete';
@@ -44,9 +44,9 @@ const AggiungiNeedGrafica = () => {
     const [keypeopleOptions, setKeypeopleOptions] = useState([]);
     const [isKeypeopleEnabled, setIsKeypeopleEnabled] = useState(false);
     const [aziendaInternaOptions, setAziendaInternaOptions] = useState([]);
+    const [isChallengingUser, setIsChallengingUser] = useState(false);
 
-
-    const [values, setValues] = useState([]);
+    const [values, setValues] = useState({});
 
     const user = JSON.parse(sessionStorage.getItem("user"));
     const token = user?.token;
@@ -59,12 +59,12 @@ const AggiungiNeedGrafica = () => {
     useEffect(() => {
         const fetchNeedOptions = async () => {
             try {
-                const responseAziende = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers: headers });
-                const responseSkill = await axios.get("http://89.46.196.60:8443/staffing/react/skill", { headers: headers });
-                const ownerResponse = await axios.get("http://89.46.196.60:8443/owner", { headers: headers });
-                const tipologiaResponse = await axios.get("http://89.46.196.60:8443/need/react/tipologia", { headers: headers });
-                const statoResponse = await axios.get("http://89.46.196.60:8443/need/react/stato", { headers: headers });
-                const aziendaInternaResponse = await axios.get("http://89.46.196.60:8443/gestione/aziende/interne", { headers: headers });
+                const responseAziende = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
+                const responseSkill = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
+                //const ownerResponse = await axios.get("http://localhost:8080/owner", { headers: headers });
+                const tipologiaResponse = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
+                const statoResponse = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
+                const aziendaInternaResponse = await axios.get("http://localhost:8080/gestione/aziende/interne", { headers: headers });
 
 
                 if (Array.isArray(statoResponse.data)) {
@@ -76,21 +76,45 @@ const AggiungiNeedGrafica = () => {
                 }
 
                 if (Array.isArray(tipologiaResponse.data)) {
-                    const tipologiaOptions = tipologiaResponse.data.map((tipologia) => ({
-                        label: tipologia.descrizione,
-                        value: tipologia.id,
+                    const allTipologie = tipologiaResponse.data.map(t => ({
+                        label: t.descrizione,
+                        value: t.id,
                     }));
-                    setTipologiaOptions(tipologiaOptions);
+
+                    // Esempio di logica: i primi 2 = Consulting, successivi 3 = Talent, restanti = Factory
+                    const consulting = allTipologie.slice(0, 2);
+                    const talent = allTipologie.slice(2, 5);
+                    const factory = allTipologie.slice(5);
+
+                    const groupedTipologie = [
+                        { label: "Consulting", value: "__header_consulting__", isHeader: true },
+                        ...consulting,
+                        { label: "Talent", value: "__header_talent__", isHeader: true },
+                        ...talent,
+                        { label: "Factory", value: "__header_factory__", isHeader: true },
+                        ...factory,
+                    ];
+
+                    setTipologiaOptions(groupedTipologie);
                 }
 
 
 
+                const userString = sessionStorage.getItem("user");
+                const user = userString ? JSON.parse(userString) : null;
+                const username = user?.username;
+
+                const ownerResponse = await axios.get(
+                `http://localhost:8080/owner/${username}`,
+                { headers: headers }
+                );
+
                 if (Array.isArray(ownerResponse.data)) {
-                    const ownerOptions = ownerResponse.data.map((owner) => ({
-                        label: owner.descrizione,
-                        value: owner.id,
-                    }));
-                    setOwnerOptions(ownerOptions);
+                const ownerOptions = ownerResponse.data.map(owner => ({
+                    label: owner.descrizione,
+                    value: owner.id,
+                }));
+                setOwnerOptions(ownerOptions);
                 }
 
 
@@ -129,6 +153,34 @@ const AggiungiNeedGrafica = () => {
         fetchNeedOptions();
     }, []);
 
+    useEffect(() => {
+        const fetchAziendaUtente = async () => {
+            try {
+                const userString = sessionStorage.getItem("user");
+                if (!userString) return;
+
+                const user = JSON.parse(userString);
+                const username = user?.username;
+                const headers = { Authorization: `Bearer ${user?.token}` };
+
+                const response = await axios.get(`http://localhost:8080/gestione/aziende/interne/${username}`, { headers });
+
+                const aziendaUtente = response.data;
+                console.log("Azienda utente:", aziendaUtente.descrizione);
+
+                if (aziendaUtente.descrizione?.toLowerCase().includes("challenging")) {
+                    setIsChallengingUser(true);
+                } else {
+                    setIsChallengingUser(false);
+                }
+            } catch (error) {
+                console.error("Errore durante il recupero dell'azienda utente:", error);
+            }
+        };
+
+        fetchAziendaUtente();
+    }, []);
+
 
     const pubblicazioneOptions = [
         { value: 1, label: 'To Do' },
@@ -155,7 +207,20 @@ const AggiungiNeedGrafica = () => {
             title: t('Descrizione Need'),
             icon: <CircleOutlinedIcon />
         },
+        {
+            title: t('Dettagli Need'),
+            icon: <CircleOutlinedIcon />
+        },
+        {
+            title: t('Dettagli Ricerca e Selezione'),
+            icon: <CircleOutlinedIcon />
+        },
     ];
+
+    //stato per verificare che tutti i campi obbligatori sono stati compilati e quindi sbloccare il menu di navigazione
+    const [sectionCompleted, setSectionCompleted] = useState(
+        new Array(menu.length).fill(false)
+    );
 
     const handleGoBack = () => {
         navigate(-1);
@@ -165,7 +230,11 @@ const AggiungiNeedGrafica = () => {
     const getMandatoryFields = (index) => {
         switch (index) {
             case 0:
-                return ["idAzienda", "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location", "idKeyPeople"];
+                return ["idAziendaInterna", "idAzienda", "idKeyPeople"];
+            case 1:
+                return ["descrizione", "stato", "priorita", "tipologia", "week", "location", "idOwner", "idOwnerRecruiter"];
+            case 2:
+                return isChallengingUser ? ["pubblicazione", "screening"] : [];
             default:
                 return [];
         }
@@ -187,7 +256,7 @@ const AggiungiNeedGrafica = () => {
 
     // Funzione per il cambio stato degli input
     const handleChange = (fieldValue) => {
-        setValues(prevValues => ({
+        setValues((prevValues) => ({
             ...prevValues,
             ...fieldValue
         }));
@@ -222,7 +291,7 @@ const AggiungiNeedGrafica = () => {
 
     const fetchKeypeopleOptions = async (aziendaConId) => {
         try {
-            const responseKeypeople = await axios.get(`http://89.46.196.60:8443/keypeople/react/azienda/${aziendaConId}`, { headers: headers });
+            const responseKeypeople = await axios.get(`http://localhost:8080/keypeople/react/azienda/${aziendaConId}`, { headers: headers });
             const keypeopleOptions = responseKeypeople.data.map(keypeople => ({
                 value: keypeople.id,
                 label: keypeople.nome
@@ -252,8 +321,14 @@ const AggiungiNeedGrafica = () => {
             const hasErrors = Object.keys(errors).length > 0;
 
             if (!hasErrors) {
-                setActiveSection(menu[currentIndex + 1].title);
-                setCurrentPageIndex(currentIndex + 1);
+                let newSectionCompleted = [...sectionCompleted];
+                newSectionCompleted[currentIndex] = true;
+                setSectionCompleted(newSectionCompleted);
+
+                if (currentIndex < menu.length - 1) {
+                    setActiveSection(menu[currentIndex + 1].title);
+                    setCurrentPageIndex(currentIndex + 1);
+                }
             } else {
                 setAlert({ open: true, message: t('Compilare tutti i field obbligatori presenti per poter avanzare') });
             }
@@ -277,13 +352,13 @@ const AggiungiNeedGrafica = () => {
 
 
 
-        //funzione per il salvataggio     
+    //funzione per il salvataggio     
     const handleSubmit = async (values) => {
         const currentIndex = menu.findIndex(item => item.title.toLowerCase() === activeSection.toLowerCase());
-        const mandatoryFields = getMandatoryFields(currentIndex); 
+        const mandatoryFields = getMandatoryFields(currentIndex);
         const errors = validateFields(values, mandatoryFields);
         const hasErrors = Object.keys(errors).length > 0;
-    
+
         if (!hasErrors) {
             try {
                 Object.keys(values).forEach(key => {
@@ -292,21 +367,43 @@ const AggiungiNeedGrafica = () => {
                     }
                 });
 
+                const userString = sessionStorage.getItem("user");
+                if (!userString) {
+                    console.error("Nessun utente o token trovato in sessionStorage");
+                    return;
+                }
+                const user = JSON.parse(userString);
+                const token = user?.token;
+
+                if (!token) {
+                    console.error("Nessun token di accesso disponibile");
+                    return;
+                }
+
                 // Prepara le skills come query param
                 const skills = values.skills ? values.skills.join(',') : '';
                 const username = user?.username || null;
-
+                const headers = {
+                    Authorization: `Bearer ${token}`,
+                };
 
                 delete values.skills;
 
-                const responseSaveNeed = await axios.post("http://89.46.196.60:8443/need/react/salva", values, { params: { skill1: skills , username: username}, headers: headers});
+                const responseSaveNeed = await axios.post(
+                    "http://localhost:8080/need/react/salva",
+                    values,
+                    {
+                        params: { skill1: skills, username: username },
+                        headers: headers
+                    }
+                );
                 if (responseSaveNeed.data === "ERRORE") {
                     setAlert({ open: true, message: t("errore durante il salvataggio del need!") });
                     console.error("Il need non è stata salvata.");
                     return;
                 }
                 navigate('/need');
-            } catch(error) {
+            } catch (error) {
                 console.error("Errore durante il salvataggio", error);
             }
         } else {
@@ -315,14 +412,27 @@ const AggiungiNeedGrafica = () => {
         }
     };
 
-    const fieldObbligatori = ["idAzienda", "descrizione", "priorita", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location", "idKeyPeople", "idOwnerRecruiter"];
+    const fieldObbligatori = ["idAziendaInterna", "idAzienda", "priorita", "descrizione", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location", "idKeyPeople", "idOwnerRecruiter"];
 
     const fields = [
-        { label: t("Azienda*"), name: "idAziendaInterna", type: "select", options: aziendaInternaOptions },
+        // Sezione Dettagli Business
+        { type: "titleGroups", label: t("Dettagli Business") },
+        { label: t("Società Owner*"), name: "idAziendaInterna", type: "select", options: aziendaInternaOptions },
         { label: t("Cliente*"), name: "idAzienda", type: "select", options: aziendeOptions },
-        { label: t('Contatto*'), name: "idKeyPeople", type: "select", options: keypeopleOptions },
-        { label: t("Descrizione Need*"), name: "descrizione", type: "text", maxLength: 200 },
         {
+            label: t("Tipo Azienda"), name: "tipo", type: "select", options: [
+                { value: 1, label: t("Cliente") },
+                { value: 2, label: t("Consulenza") },
+                { value: 3, label: t("Prospect") }
+            ]
+        },
+        { label: t("Contatto*"), name: "idKeyPeople", type: "select", options: keypeopleOptions },
+
+        // Sezione Dettagli Need
+        { type: "titleGroups", label: t("Dettagli Need") },
+        { label: t("Descrizione Need*"), name: "descrizione", type: "text" },
+        { label: t("Stato Need*"), name: "stato", type: "select", options: statoOptions },
+         {
             label: t("Priorità*"), name: "priorita", type: "select", options: [
                 { value: 1, label: "1" },
                 { value: 2, label: "2" },
@@ -330,25 +440,37 @@ const AggiungiNeedGrafica = () => {
                 { value: 4, label: "4" }
             ]
         },
-        { label: "Week*", name: "week", type: "week" },
-        { label: t("Tipologia*"), name: "tipologia", type: "select", options: tipologiaOptions },
+        { label: t("Tipo Need*"), name: "tipologia", type: "select", options: tipologiaOptions },
+        { label: "Data apertura Need*", name: "week", type: "week" },
+        { label: "Location*", name: "location", type: "text" },
         {
-            label: t("Tipologia Azienda"), name: "tipo", type: "select", options: [
-                { value: 1, label: t("Cliente") },
-                { value: 2, label: t("Consulenza") },
-                { value: 3, label: t("Prospect") }
+            label: "Delivery Model", name: "deliveryModel", type: "select", options: [
+                { value: "Product", label: "Product" },
+                { value: "Outsourcing", label: "Outsourcing" },
+                { value: "Service", label: "Service" },
+                { value: "Project", label: "Project" },
+                { value: "Task", label: "Task" },
+                { value: "Time&Material", label: "Time & Material" }
             ]
         },
-        { label: t("Owner Business*"), name: "idOwner", type: "select", options: ownerOptions },
-        { label: t("Owner Recruiter*"), name: "idOwnerRecruiter", type: "select", options: ownerOptions },
-        { label: t("Stato*"), name: "stato", type: "select", options: statoOptions },
-        { label: "Headcount", name: "numeroRisorse", type: "number" },
-        { label: "Location*", name: "location", type: "text", maxLength: 45 },
-        { label: "Skills", name: "skills", type: "multipleSelect", options: skillsOptions },
-        { label: "Seniority", name: "anniEsperienza", type: "select", options: seniorityOptions },
-        { label: t('Pubblicazione Annuncio*'), name: 'pubblicazione', type: 'select', options: pubblicazioneOptions },
-        { label: t('Screening*'), name: 'screening', type: 'select', options: screeningOptions },
-        { label: t("Note"), name: "note", type: "note", maxLength: 4000 },
+        { label: "Valore economico potenziale", name: "valorePotenziale", type: "number" },
+        { label: "Note", name: "noteValore", type: "note" },
+        { label: "Business Owner*", name: "idOwner", type: "select", options: ownerOptions },
+        { label: "Owner Operativo*", name: "idOwnerRecruiter", type: "select", options: ownerOptions },
+
+        // Sezione Dettagli Ricerca e Selezione
+        // Modalità A: solo Challenging
+        { type: "titleGroups", label: t("Dettagli Ricerca e Selezione") },
+        { label: "Headcount", name: "numeroRisorse", type: "number", visibleIf: () => isChallengingUser },
+        { label: "Seniority", name: "anniEsperienza", type: "select", options: seniorityOptions, visibleIf: () => isChallengingUser },
+        { label: "Skills", name: "skills", type: "multipleSelect", options: skillsOptions, visibleIf: () => isChallengingUser },
+        { label: "Pubblicazione Annuncio*", name: 'pubblicazione', type: 'select', options: pubblicazioneOptions, visibleIf: () => isChallengingUser },
+        { label: "Screening*", name: 'screening', type: 'select', options: screeningOptions, visibleIf: () => isChallengingUser },
+        { label: t("Note"), name: "noteRicerca", type: "note", visibleIf: () => isChallengingUser },
+
+        // Modalità B: tutti gli altri
+        { label: "Richiede ricerca e selezione?", name: "toggleRicerca", type: "toggle",   visibleIf: () => !isChallengingUser},
+        { label: "Note di ricerca e selezione", name: "noteRicercaToggle", type: "note", visibleIf: () => !isChallengingUser && values.toggleRicerca },
     ];
 
 
@@ -523,7 +645,19 @@ const AggiungiNeedGrafica = () => {
                         />
                     );
 
-
+                case 'toggle':
+                    return (
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={!!values[field.name]}
+                                    onChange={(e) => handleChange({ [field.name]: e.target.checked })}
+                                    color="primary"
+                                />
+                            }
+                            label={field.label}
+                        />
+                    );
                 default:
                     return null;
             }
@@ -536,6 +670,9 @@ const AggiungiNeedGrafica = () => {
             <Box sx={{ ml: 15, mr: 15 }}>
                 <Grid container spacing={2}>
                     {groupedFields[currentPageIndex].map((field, index) => {
+                        if (field.visibleIf && !field.visibleIf(values)) {
+                            return null;
+                        }
                         if (field.type === 'titleGroups') {
                             return (
                                 <Grid item xs={12} key={index}>
@@ -681,7 +818,7 @@ const AggiungiNeedGrafica = () => {
                                         boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
                                         borderRadius: '10px',
                                     },
-                                }}>Avanti</Button>
+                                }}>{t('Avanti')}</Button>
                         )}
                         {currentPageIndex === groupedFields.length - 1 && (
                             <Button

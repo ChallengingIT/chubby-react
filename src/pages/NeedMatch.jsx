@@ -1,74 +1,74 @@
-    import React, { useEffect, useState }                   from "react";
-    import { Link, useParams }                              from "react-router-dom";
-    import { useNavigate }                                  from "react-router-dom";
-    import axios                                            from "axios";
-    import { Modal, Box, Typography, Dialog, DialogContent, DialogTitle, IconButton, Tooltip }               from "@mui/material";
-    import { useLocation }                                  from "react-router-dom";
-    import Tabella                                          from "../components/Tabella.jsx";
-    import ModalBox                                         from "../components/ModalBox.jsx";
-    import CloseIconButton                                  from "../components/button/CloseIconButton.jsx";
-    import IntervistaButton                                 from "../components/button/IntervistaButton.jsx";
-    import ClipButton                                       from "../components/button/ClipButton.jsx";
-    import AddCircleIcon                                    from '@mui/icons-material/AddCircle';
-    import SchemePage                                       from "../components/SchemePage.jsx";
-    import NuovaRicercaNeedMatch                            from "../components/nuoveRicerche/NuovaRicercaNeedMatch.jsx";
-    import CheckListButton                                  from "../components/button/CheckListButton.jsx";
-    import { useTranslation }                               from "react-i18next"; 
-    import IntervisteModalButton                            from "../components/button/IntervisteModalButton.jsx";
-    import IntervisteModal                                  from "../components/modal/IntervisteModal.jsx";
-    import { motion }                                       from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { Modal, Box, Typography, Dialog, DialogContent, DialogTitle, IconButton, Tooltip } from "@mui/material";
+import { useLocation } from "react-router-dom";
+import Tabella from "../components/Tabella.jsx";
+import ModalBox from "../components/ModalBox.jsx";
+import CloseIconButton from "../components/button/CloseIconButton.jsx";
+import IntervistaButton from "../components/button/IntervistaButton.jsx";
+import ClipButton from "../components/button/ClipButton.jsx";
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import SchemePage from "../components/SchemePage.jsx";
+import NuovaRicercaNeedMatch from "../components/nuoveRicerche/NuovaRicercaNeedMatch.jsx";
+import CheckListButton from "../components/button/CheckListButton.jsx";
+import { useTranslation } from "react-i18next";
+import IntervisteModalButton from "../components/button/IntervisteModalButton.jsx";
+import IntervisteModal from "../components/modal/IntervisteModal.jsx";
+import { motion } from "framer-motion";
 
 
-    const NeedMatch = () => {
-    const { t } = useTranslation(); 
+const NeedMatch = () => {
+    const { t } = useTranslation();
 
-    const navigate      = useNavigate();
-    const params        = useParams();
-    const { id }        = params;
-    const location      = useLocation();
-    const valori        = location.state;
-    const descrizione   = valori.descrizione;
-    const nomeAzienda   = valori.cliente?.denominazione;
+    const navigate = useNavigate();
+    const params = useParams();
+    const { id } = params;
+    const location = useLocation();
+    const valori = location.state;
+    const descrizione = valori.descrizione;
+    const nomeAzienda = valori.cliente?.denominazione;
 
-    const [ originalCandidati,      setOriginalCandidati            ] = useState([]);
-    const [ originalStorico,        setOriginalStorico              ] = useState([]);
-    const [ originalAssociati,      setOriginalAssociati            ] = useState([]);
-    const [ ownerOptions,           setOwnerOptions                 ] = useState([]);
-    const [ statoOptions,           setStatoOptions                 ] = useState([]);
-    const [ isModalOpen,            setIsModalOpen                  ] = useState(false);
-    const [ initialValuesAggiorna,  setInitialValuesAggiorna        ] = useState([]);
-    const [ openModalIntervista,    setOpenModalIntervista          ] = useState(false);
-    const [ selectedIntervista,     setSelectedIntervista           ] = useState(null);
+    const [originalCandidati, setOriginalCandidati] = useState([]);
+    const [originalStorico, setOriginalStorico] = useState([]);
+    const [originalAssociati, setOriginalAssociati] = useState([]);
+    const [ownerOptions, setOwnerOptions] = useState([]);
+    const [statoOptions, setStatoOptions] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [initialValuesAggiorna, setInitialValuesAggiorna] = useState([]);
+    const [openModalIntervista, setOpenModalIntervista] = useState(false);
+    const [selectedIntervista, setSelectedIntervista] = useState(null);
 
 
 
-        //stati per il dialog
-        const [ openDialog,         setOpenDialog           ] = useState(false);
-        const [ selectedRow,        setSelectedRow          ] = useState(null);
-    
-        
-    
-        const handleCloseDialog = () => {
-            setSelectedRow(null);
-            setOpenDialog(false);
-        };
-    
+    //stati per il dialog
+    const [openDialog, setOpenDialog] = useState(false);
+    const [selectedRow, setSelectedRow] = useState(null);
 
-    
+
+
+    const handleCloseDialog = () => {
+        setSelectedRow(null);
+        setOpenDialog(false);
+    };
+
+
+
 
     //stati per le ricerche
-    const [ tipoOptions,            setTipoOptions                  ] = useState([]);
-    const [ tipologiaOptions,       setTipologiaOptions             ] = useState([]);
-    const [ filtri,                 setFiltri                       ] = useState(() => {
+    const [tipoOptions, setTipoOptions] = useState([]);
+    const [tipologiaOptions, setTipologiaOptions] = useState([]);
+    const [filtri, setFiltri] = useState(() => {
         const filtriSalvati = sessionStorage.getItem("filtriRicercaNeedMatch");
         return filtriSalvati
-        ? JSON.parse(filtriSalvati)
-        : {
-            nome: null,
-            cognome: null,
-            tipologia: null,
-            tipo: null,
-            seniority: null,
+            ? JSON.parse(filtriSalvati)
+            : {
+                nome: null,
+                cognome: null,
+                tipologia: null,
+                tipo: null,
+                seniority: null,
             };
     });
     const seniority = [
@@ -79,14 +79,14 @@
     ];
 
     //stati per la paginazione
-    const [ paginaCandidati,   setPaginaCandidati       ] = useState(0);
-    const [ righeTotCandidati, setRigheTotCandidati     ] = useState(0);
+    const [paginaCandidati, setPaginaCandidati] = useState(0);
+    const [righeTotCandidati, setRigheTotCandidati] = useState(0);
 
-    const [ paginaStorico,     setPaginaStorico         ] = useState(0);
-    const [ righeTotStorico,   setRigheTotStorico       ] = useState(0);
+    const [paginaStorico, setPaginaStorico] = useState(0);
+    const [righeTotStorico, setRigheTotStorico] = useState(0);
 
-    const [ paginaAssociati,   setPaginaAssociati       ] = useState(0);
-    const [ righeTotAssociati, setRigheTotAssociati     ] = useState(0);
+    const [paginaAssociati, setPaginaAssociati] = useState(0);
+    const [righeTotAssociati, setRigheTotAssociati] = useState(0);
 
 
     const quantita = 10;
@@ -112,117 +112,126 @@
 
     const fetchData = async () => {
         const filtriCandidati = {
-        nome: filtri.nome || null,
-        cognome: filtri.cognome || null,
-        tipologia: filtri.tipologia || null,
-        tipo: filtri.tipo || null,
-        seniority: filtri.seniority || null,
-        pagina: 0,
-        quantita: 10,
+            nome: filtri.nome || null,
+            cognome: filtri.cognome || null,
+            tipologia: filtri.tipologia || null,
+            tipo: filtri.tipo || null,
+            seniority: filtri.seniority || null,
+            pagina: 0,
+            quantita: 10,
         };
 
 
         const paginazione = {
-        pagina: 0,
-        quantita: 10,
+            pagina: 0,
+            quantita: 10,
         };
         try {
-        const candidatiResponse = await axios.get(
-            `http://89.46.196.60:8443/need/react/match/associabili/mod/${id}`,
-            { headers: headers, params: filtriCandidati }
-        );
-        const storicoResponse = await axios.get(
-            `http://89.46.196.60:8443/need/react/storico/${id}`,
-            { headers: headers, params: paginazione }
-        );
-        const associatiResponse = await axios.get(
-            `http://89.46.196.60:8443/need/react/match/associati/mod/${id}`,
-            { headers: headers, params: paginazione }
-        );
-        const responseTipologia = await axios.get(
-            "http://89.46.196.60:8443/aziende/react/tipologia",
-            { headers: headers }
-        );
-        const responseTipo = await axios.get(
-            "http://89.46.196.60:8443/staffing/react/tipo",
-            { headers: headers }
-        );
-        const ownerResponse = await axios.get(
-            "http://89.46.196.60:8443/owner",
-            { headers: headers }
-        );
-        const statoResponse = await axios.get(
-            "http://89.46.196.60:8443/associazioni/react/stati",
-            { headers: headers }
-        );
+            const candidatiResponse = await axios.get(
+                `http://localhost:8080/need/react/match/associabili/mod/${id}`,
+                { headers: headers, params: filtriCandidati }
+            );
+            const storicoResponse = await axios.get(
+                `http://localhost:8080/need/react/storico/${id}`,
+                { headers: headers, params: paginazione }
+            );
+            const associatiResponse = await axios.get(
+                `http://localhost:8080/need/react/match/associati/mod/${id}`,
+                { headers: headers, params: paginazione }
+            );
+            const responseTipologia = await axios.get(
+                "http://localhost:8080/aziende/react/tipologia",
+                { headers: headers }
+            );
+            const responseTipo = await axios.get(
+                "http://localhost:8080/staffing/react/tipo",
+                { headers: headers }
+            );
+            /* const ownerResponse = await axios.get(
+                "http://localhost:8080/owner",
+                { headers: headers }
+            ); */
+            const statoResponse = await axios.get(
+                "http://localhost:8080/associazioni/react/stati",
+                { headers: headers }
+            );
 
-        if (Array.isArray(ownerResponse.data)) {
-            const ownerOptions = ownerResponse.data.map((owner) => ({
-            label: owner.descrizione,
-            value: owner.id,
-            }));
-            setOwnerOptions(ownerOptions);
-        } else {
-            console.error("Errore nella lettura degli owner");
-        }
+            const userString = sessionStorage.getItem("user");
+            const user = userString ? JSON.parse(userString) : null;
+            const username = user?.username;
 
-        if (Array.isArray(statoResponse.data)) {
-            const statoOptions = statoResponse.data.map((stato) => ({
-            label: stato.descrizione,
-            value: stato.id,
-            }));
-            setStatoOptions(statoOptions);
-        } else {
-            console.error("Errore nella lettura degli stati");
-        }
+            const ownerResponse = await axios.get(
+                `http://localhost:8080/owner/${username}`,
+                { headers: headers }
+            );
 
-        if (Array.isArray(responseTipologia.data)) {
-            const tipologiaOptions = responseTipologia.data.map((tipologia) => ({
-            label: tipologia.descrizione,
-            value: tipologia.id,
-            }));
-            setTipologiaOptions(tipologiaOptions);
-        } else {
-            console.error("Errore nella lettura delle tipologie");
-        }
+            if (Array.isArray(ownerResponse.data)) {
+                const ownerOptions = ownerResponse.data.map(owner => ({
+                    label: owner.descrizione,
+                    value: owner.id,
+                }));
+                setOwnerOptions(ownerOptions);
+            } else {
+                console.error("Errore nella lettura degli owner");
+            }
 
-        if (Array.isArray(responseTipo.data)) {
-            const tipoOptions = responseTipo.data.map((tipo) => ({
-            label: tipo.descrizione,
-            value: tipo.id,
-            }));
-            setTipoOptions(tipoOptions);
-        } else {
-            console.error("Errore nella lettura dei tipi");
-        }
+            if (Array.isArray(statoResponse.data)) {
+                const statoOptions = statoResponse.data.map((stato) => ({
+                    label: stato.descrizione,
+                    value: stato.id,
+                }));
+                setStatoOptions(statoOptions);
+            } else {
+                console.error("Errore nella lettura degli stati");
+            }
 
-        const { data: candidatiData } = candidatiResponse;
-        const { data: storicoData } = storicoResponse;
-        const { data: associatiData } = associatiResponse;
+            if (Array.isArray(responseTipologia.data)) {
+                const tipologiaOptions = responseTipologia.data.map((tipologia) => ({
+                    label: tipologia.descrizione,
+                    value: tipologia.id,
+                }));
+                setTipologiaOptions(tipologiaOptions);
+            } else {
+                console.error("Errore nella lettura delle tipologie");
+            }
 
-        const recordCandidati = candidatiData.record;
-        const candidati = candidatiData.candidati;
+            if (Array.isArray(responseTipo.data)) {
+                const tipoOptions = responseTipo.data.map((tipo) => ({
+                    label: tipo.descrizione,
+                    value: tipo.id,
+                }));
+                setTipoOptions(tipoOptions);
+            } else {
+                console.error("Errore nella lettura dei tipi");
+            }
 
-        const recordStorico = storicoData.record;
-        const associazioni = storicoData.associazioni;
+            const { data: candidatiData } = candidatiResponse;
+            const { data: storicoData } = storicoResponse;
+            const { data: associatiData } = associatiResponse;
 
-        const recordAssociati = associatiData.record;
-        const associati = associatiData.candidati;
+            const recordCandidati = candidatiData.record;
+            const candidati = candidatiData.candidati;
 
-        setRigheTotCandidati(recordCandidati);
-        setOriginalCandidati(candidati);
+            const recordStorico = storicoData.record;
+            const associazioni = storicoData.associazioni;
 
-    if (!setOriginalCandidati) {
-        console.log("errore nel recupero dei candidati");
-    }
+            const recordAssociati = associatiData.record;
+            const associati = associatiData.candidati;
 
-        setRigheTotStorico(recordStorico);
-        setOriginalStorico(associazioni);
+            setRigheTotCandidati(recordCandidati);
+            setOriginalCandidati(candidati);
 
-        setRigheTotAssociati(recordAssociati);
-        setOriginalAssociati(associati);
+            if (!setOriginalCandidati) {
+                console.log("errore nel recupero dei candidati");
+            }
+
+            setRigheTotStorico(recordStorico);
+            setOriginalStorico(associazioni);
+
+            setRigheTotAssociati(recordAssociati);
+            setOriginalAssociati(associati);
         } catch (error) {
-        console.error("Errore durante il recupero dei dati: ", error);
+            console.error("Errore durante il recupero dei dati: ", error);
         }
     };
 
@@ -231,17 +240,17 @@
     useEffect(() => {
         const filtriSalvati = sessionStorage.getItem("filtriRicercaNeedMatch");
         if (filtriSalvati) {
-        const filtriParsed = JSON.parse(filtriSalvati);
-        setFiltri(filtriParsed);
+            const filtriParsed = JSON.parse(filtriSalvati);
+            setFiltri(filtriParsed);
 
-        const isAnyFilterSet = Object.values(filtriParsed).some((value) => value);
-        if (isAnyFilterSet) {
-            handleRicerche();
+            const isAnyFilterSet = Object.values(filtriParsed).some((value) => value);
+            if (isAnyFilterSet) {
+                handleRicerche();
+            } else {
+                fetchData();
+            }
         } else {
             fetchData();
-        }
-        } else {
-        fetchData();
         }
         // eslint-disable-next-line
     }, []);
@@ -250,122 +259,122 @@
 
     const fetchMoreDataCandidati = async (paginaCandidati) => {
         const filtriAttivi = Object.values(filtri).some(
-        (value) => value !== null && value !== ""
+            (value) => value !== null && value !== ""
         );
         const url = filtriAttivi
-        ? `http://89.46.196.60:8443/need/react/match/associabili/ricerca/mod/${id}`
-        : `http://89.46.196.60:8443/need/react/match/associabili/mod/${id}`;
+            ? `http://localhost:8080/need/react/match/associabili/ricerca/mod/${id}`
+            : `http://localhost:8080/need/react/match/associabili/mod/${id}`;
 
         const filtriCandidati = {
-        nome: filtri.nome || null,
-        cognome: filtri.cognome || null,
-        tipologia: filtri.tipologia || null,
-        tipo: filtri.tipo || null,
-        seniority: filtri.seniority || null,
-        pagina: paginaCandidati,
-        quantita: 10,
+            nome: filtri.nome || null,
+            cognome: filtri.cognome || null,
+            tipologia: filtri.tipologia || null,
+            tipo: filtri.tipo || null,
+            seniority: filtri.seniority || null,
+            pagina: paginaCandidati,
+            quantita: 10,
         };
 
         try {
-        const candidatiResponse = await axios.get(url, {
-            headers: headers,
-            params: filtriCandidati,
-        });
-        const { data: candidatiData } = candidatiResponse;
-        const recordCandidati = candidatiData.record;
-        const candidati = candidatiData.candidati;
+            const candidatiResponse = await axios.get(url, {
+                headers: headers,
+                params: filtriCandidati,
+            });
+            const { data: candidatiData } = candidatiResponse;
+            const recordCandidati = candidatiData.record;
+            const candidati = candidatiData.candidati;
 
-        setRigheTotCandidati(recordCandidati);
-        setOriginalCandidati(candidati);
+            setRigheTotCandidati(recordCandidati);
+            setOriginalCandidati(candidati);
         } catch (error) {
-        console.error("Errore durante il recupero dei dati: ", error);
+            console.error("Errore durante il recupero dei dati: ", error);
         }
     };
 
     const fetchMoreDataStorico = async (paginaStorico) => {
         const paginazione = {
-        pagina: paginaStorico,
-        quantita: 10,
+            pagina: paginaStorico,
+            quantita: 10,
         };
 
         try {
-        const storicoResponse = await axios.get(
-            `http://89.46.196.60:8443/need/react/storico/${id}`,
-            { headers: headers, params: paginazione }
-        );
-        // const { recordStorico, storico } = storicoResponse.data;
+            const storicoResponse = await axios.get(
+                `http://localhost:8080/need/react/storico/${id}`,
+                { headers: headers, params: paginazione }
+            );
+            // const { recordStorico, storico } = storicoResponse.data;
 
-        // if (storico && Array.isArray(storico)) {
-        //     setOriginalStorico(storico);
-        //     if (typeof storicoResponse === "number") {
-        //     setRigheTotAssociati(recordStorico);
-        //     } else {
-        //     console.error(
-        //         "Il numero di record di storico ottenuto non è un numero: ",
-        //         recordStorico
-        //     );
-        //     }
-        // } else {
-        //     console.error(
-        //     "I dati ottenuti di storico non sono nel formato Array:",
-        //     storicoResponse.data
-        //     );
-        // }
-        // } catch (error) {
-        // console.error("Errore durante il recupero dei dati: ", error);
-        // }
-        const { data: storicoData } = storicoResponse;
-        const recordStorico = storicoData.record;
-        const storico = storicoData.associazioni;
+            // if (storico && Array.isArray(storico)) {
+            //     setOriginalStorico(storico);
+            //     if (typeof storicoResponse === "number") {
+            //     setRigheTotAssociati(recordStorico);
+            //     } else {
+            //     console.error(
+            //         "Il numero di record di storico ottenuto non è un numero: ",
+            //         recordStorico
+            //     );
+            //     }
+            // } else {
+            //     console.error(
+            //     "I dati ottenuti di storico non sono nel formato Array:",
+            //     storicoResponse.data
+            //     );
+            // }
+            // } catch (error) {
+            // console.error("Errore durante il recupero dei dati: ", error);
+            // }
+            const { data: storicoData } = storicoResponse;
+            const recordStorico = storicoData.record;
+            const storico = storicoData.associazioni;
 
-        setRigheTotStorico(recordStorico);
-        setOriginalStorico(storico);
+            setRigheTotStorico(recordStorico);
+            setOriginalStorico(storico);
         } catch (error) {
-        console.error("Errore durante il recupero dei dati: ", error);
+            console.error("Errore durante il recupero dei dati: ", error);
         }
     };
 
     const fetchMoreDataAssociati = async (paginaAssociati) => {
         const paginazione = {
-        pagina: paginaAssociati,
-        quantita: 10,
+            pagina: paginaAssociati,
+            quantita: 10,
         };
         try {
-        const associatiResponse = await axios.get(
-            `http://89.46.196.60:8443/need/react/match/associati/mod/${id}`,
-            { headers: headers, params: paginazione }
-        );
-        // const { recordAssociati, associati } = associatiResponse.data;
+            const associatiResponse = await axios.get(
+                `http://localhost:8080/need/react/match/associati/mod/${id}`,
+                { headers: headers, params: paginazione }
+            );
+            // const { recordAssociati, associati } = associatiResponse.data;
 
-        // if (associati && Array.isArray(associati)) {
-        //     setOriginalAssociati(associati);
-        //     if (typeof recordAssociati === "number") {
-        //     setRigheTotAssociati(recordAssociati);
-        //     } else {
-        //     console.error(
-        //         "Il numero di record ottenuto non è un numero: ",
-        //         recordAssociati
-        //     );
-        //     }
-        // } else {
-        //     console.error(
-        //     "I dati ottenuti non sono nel formato Array:",
-        //     associatiResponse.data
-        //     );
-        // }
-        // } catch (error) {
-        // console.error("Errore durante il recupero dei dati: ", error);
-        // }
-        const { data: associatiData } = associatiResponse;
-        const recordAssociati = associatiData.record;
-        const associati = associatiData.candidati;
+            // if (associati && Array.isArray(associati)) {
+            //     setOriginalAssociati(associati);
+            //     if (typeof recordAssociati === "number") {
+            //     setRigheTotAssociati(recordAssociati);
+            //     } else {
+            //     console.error(
+            //         "Il numero di record ottenuto non è un numero: ",
+            //         recordAssociati
+            //     );
+            //     }
+            // } else {
+            //     console.error(
+            //     "I dati ottenuti non sono nel formato Array:",
+            //     associatiResponse.data
+            //     );
+            // }
+            // } catch (error) {
+            // console.error("Errore durante il recupero dei dati: ", error);
+            // }
+            const { data: associatiData } = associatiResponse;
+            const recordAssociati = associatiData.record;
+            const associati = associatiData.candidati;
 
-        setRigheTotAssociati(recordAssociati);
-        setOriginalAssociati(associati);
+            setRigheTotAssociati(recordAssociati);
+            setOriginalAssociati(associati);
         } catch (error) {
-        console.error("Errore durante il recupero dei dati: ", error);
+            console.error("Errore durante il recupero dei dati: ", error);
         }
-        
+
     };
 
     //funzione per il cambio pagina
@@ -414,109 +423,119 @@
     const handleRicerche = async (minimo, massimo) => {
         const isAnyFilterSet = Object.values(filtri).some((value) => value);
         if (!isAnyFilterSet) {
-        return;
+            return;
         }
 
         const paginazione = {
-        pagina: 0,
-        quantita: 10,
+            pagina: 0,
+            quantita: 10,
         };
         const filtriCandidati = {
-        nome: filtri.nome || null,
-        cognome: filtri.cognome || null,
-        tipologia: filtri.tipologia || null,
-        tipo: filtri.tipo || null,
-        minimo: filtri.minimo || null,
-        massimo: filtri.massimo || null,
-        pagina: 0,
-        quantita: 10,
+            nome: filtri.nome || null,
+            cognome: filtri.cognome || null,
+            tipologia: filtri.tipologia || null,
+            tipo: filtri.tipo || null,
+            minimo: filtri.minimo || null,
+            massimo: filtri.massimo || null,
+            pagina: 0,
+            quantita: 10,
         };
 
         try {
-        const candidatiResponse = await axios.get(
-            `http://89.46.196.60:8443/need/react/match/associabili/ricerca/mod/${id}`,
-            { headers: headers, params: filtriCandidati }
-        );
-        const storicoResponse = await axios.get(
-            `http://89.46.196.60:8443/need/react/storico/${id}`,
-            { headers: headers, params: paginazione }
-        );
-        const associatiResponse = await axios.get(
-            `http://89.46.196.60:8443/need/react/match/associati/mod/${id}`,
-            { headers: headers, params: paginazione }
-        );
-        const responseTipologia = await axios.get(
-            "http://89.46.196.60:8443/aziende/react/tipologia",
-            { headers: headers }
-        );
-        const responseTipo = await axios.get(
-            "http://89.46.196.60:8443/staffing/react/tipo",
-            { headers: headers }
-        );
-        const ownerResponse = await axios.get(
-            "http://89.46.196.60:8443/owner",
-            { headers: headers }
-        );
-        const statoResponse = await axios.get(
-            "http://89.46.196.60:8443/associazioni/react/stati",
-            { headers: headers }
-        );
+            const candidatiResponse = await axios.get(
+                `http://localhost:8080/need/react/match/associabili/ricerca/mod/${id}`,
+                { headers: headers, params: filtriCandidati }
+            );
+            const storicoResponse = await axios.get(
+                `http://localhost:8080/need/react/storico/${id}`,
+                { headers: headers, params: paginazione }
+            );
+            const associatiResponse = await axios.get(
+                `http://localhost:8080/need/react/match/associati/mod/${id}`,
+                { headers: headers, params: paginazione }
+            );
+            const responseTipologia = await axios.get(
+                "http://localhost:8080/aziende/react/tipologia",
+                { headers: headers }
+            );
+            const responseTipo = await axios.get(
+                "http://localhost:8080/staffing/react/tipo",
+                { headers: headers }
+            );
+            /* const ownerResponse = await axios.get(
+                "http://localhost:8080/owner",
+                { headers: headers }
+            ); */
+            const statoResponse = await axios.get(
+                "http://localhost:8080/associazioni/react/stati",
+                { headers: headers }
+            );
 
-        if (Array.isArray(ownerResponse.data)) {
-            const ownerOptions = ownerResponse.data.map((owner) => ({
-            label: owner.descrizione,
-            value: owner.id,
-            }));
-            setOwnerOptions(ownerOptions);
-        }
+            const userString = sessionStorage.getItem("user");
+                const user = userString ? JSON.parse(userString) : null;
+                const username = user?.username;
 
-        if (Array.isArray(statoResponse.data)) {
-            const statoOptions = statoResponse.data.map((stato) => ({
-            label: stato.descrizione,
-            value: stato.id,
-            }));
-            setStatoOptions(statoOptions);
-        }
+                const ownerResponse = await axios.get(
+                `http://localhost:8080/owner/${username}`,
+                { headers: headers }
+                );
 
-        if (Array.isArray(responseTipologia.data)) {
-            const tipologiaOptions = responseTipologia.data.map((tipologia) => ({
-            label: tipologia.descrizione,
-            value: tipologia.id,
-            }));
-            setTipologiaOptions(tipologiaOptions);
-        }
+                if (Array.isArray(ownerResponse.data)) {
+                const ownerOptions = ownerResponse.data.map(owner => ({
+                    label: owner.descrizione,
+                    value: owner.id,
+                }));
+                setOwnerOptions(ownerOptions);
+                }
 
-        if (Array.isArray(responseTipo.data)) {
-            const tipoOptions = responseTipo.data.map((tipo) => ({
-            label: tipo.descrizione,
-            value: tipo.id,
-            }));
-            setTipoOptions(tipoOptions);
-        }
 
-        const { data: candidatiData } = candidatiResponse;
-        const { data: storicoData } = storicoResponse;
-        const { data: associatiData } = associatiResponse;
+            if (Array.isArray(statoResponse.data)) {
+                const statoOptions = statoResponse.data.map((stato) => ({
+                    label: stato.descrizione,
+                    value: stato.id,
+                }));
+                setStatoOptions(statoOptions);
+            }
 
-        const recordCandidati = candidatiData.record;
-        const candidati = candidatiData.candidati;
+            if (Array.isArray(responseTipologia.data)) {
+                const tipologiaOptions = responseTipologia.data.map((tipologia) => ({
+                    label: tipologia.descrizione,
+                    value: tipologia.id,
+                }));
+                setTipologiaOptions(tipologiaOptions);
+            }
 
-        const recordStorico = storicoData.record;
-        const associazioni = storicoData.associazioni;
+            if (Array.isArray(responseTipo.data)) {
+                const tipoOptions = responseTipo.data.map((tipo) => ({
+                    label: tipo.descrizione,
+                    value: tipo.id,
+                }));
+                setTipoOptions(tipoOptions);
+            }
 
-        const recordAssociati = associatiData.record;
-        const associati = associatiData.candidati;
+            const { data: candidatiData } = candidatiResponse;
+            const { data: storicoData } = storicoResponse;
+            const { data: associatiData } = associatiResponse;
 
-        setRigheTotCandidati(recordCandidati);
-        setOriginalCandidati(candidati);
+            const recordCandidati = candidatiData.record;
+            const candidati = candidatiData.candidati;
 
-        setRigheTotStorico(recordStorico);
-        setOriginalStorico(associazioni);
+            const recordStorico = storicoData.record;
+            const associazioni = storicoData.associazioni;
 
-        setRigheTotAssociati(recordAssociati);
-        setOriginalAssociati(associati);
+            const recordAssociati = associatiData.record;
+            const associati = associatiData.candidati;
+
+            setRigheTotCandidati(recordCandidati);
+            setOriginalCandidati(candidati);
+
+            setRigheTotStorico(recordStorico);
+            setOriginalStorico(associazioni);
+
+            setRigheTotAssociati(recordAssociati);
+            setOriginalAssociati(associati);
         } catch (error) {
-        console.error("Errore durante il recupero dei dati filtrati: ", error);
+            console.error("Errore durante il recupero dei dati filtrati: ", error);
         }
     };
 
@@ -531,35 +550,35 @@
     //     }
     // }, [filtri.tipo, filtri.tipologia, filtri.seniority]);
 
-        const handleFilterChange = (name) => (event) => {
-            const newValue = event.target.value;
-            setFiltri(currentFilters => {
-                const newFilters = { ...currentFilters, [name]: newValue };
-                setPaginaCandidati(0);
-                return newFilters;
-            });
-        };
-        
-        
-        // useEffect(() => {
-        //     // Controllo se tutti i filtri sono vuoti 
-        //     const areFiltersEmpty = Object.values(filtri).every(value => value === null || value === '');
-        //     if (areFiltersEmpty) {
-        //         fetchData();
-        //     } else {
-        //         handleRicerche();
-        //     }
-        // }, [filtri, paginaCandidati]);
+    const handleFilterChange = (name) => (event) => {
+        const newValue = event.target.value;
+        setFiltri(currentFilters => {
+            const newFilters = { ...currentFilters, [name]: newValue };
+            setPaginaCandidati(0);
+            return newFilters;
+        });
+    };
+
+
+    // useEffect(() => {
+    //     // Controllo se tutti i filtri sono vuoti 
+    //     const areFiltersEmpty = Object.values(filtri).every(value => value === null || value === '');
+    //     if (areFiltersEmpty) {
+    //         fetchData();
+    //     } else {
+    //         handleRicerche();
+    //     }
+    // }, [filtri, paginaCandidati]);
 
     const handleReset = () => {
         setFiltri({
-        nome: '',
-        cognome: '',
-        tipo: null,
-        tipologia: null,
-        seniority: null,
-        minimo: null,
-        massimo: null,
+            nome: '',
+            cognome: '',
+            tipo: null,
+            tipologia: null,
+            seniority: null,
+            minimo: null,
+            massimo: null,
         });
         setPaginaCandidati(0);
         fetchData();
@@ -571,40 +590,40 @@
 
     const handleDeleteAssociati = async (row) => {
         try {
-        const idNeed = parseInt(id);
-        const idCandidato = row;
-        const url = `http://89.46.196.60:8443/associazioni/react/rimuovi/candidato/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
-        const responseDeleteAssociati = await axios.delete(url, {
-            headers: headers,
-        });
-        fetchData();
+            const idNeed = parseInt(id);
+            const idCandidato = row;
+            const url = `http://localhost:8080/associazioni/react/rimuovi/candidato/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
+            const responseDeleteAssociati = await axios.delete(url, {
+                headers: headers,
+            });
+            fetchData();
         } catch (error) {
-        console.error("Errore durante l'eliminazione: ", error);
+            console.error("Errore durante l'eliminazione: ", error);
         }
     };
 
     const handleDeleteStorico = async (row) => {
         try {
-        const idAssociazione = row;
-        const url = `http://89.46.196.60:8443/associazioni/react/rimuovi/associa/${idAssociazione}`;
-        const responseDeleteStorico = await axios.delete(url, {
-            headers: headers,
-        });
-        fetchData();
+            const idAssociazione = row;
+            const url = `http://localhost:8080/associazioni/react/rimuovi/associa/${idAssociazione}`;
+            const responseDeleteStorico = await axios.delete(url, {
+                headers: headers,
+            });
+            fetchData();
         } catch (error) {
-        console.error("Errore durante l'eliminazioneì: ", error);
+            console.error("Errore durante l'eliminazioneì: ", error);
         }
     };
 
     const handleAssocia = async (row) => {
         try {
-        const idNeed = parseInt(id);
-        const idCandidato = row.id;
-        const url = `http://89.46.196.60:8443/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
-        const responseAssocia = await axios.post(url, { headers: headers });
-        fetchData();
+            const idNeed = parseInt(id);
+            const idCandidato = row.id;
+            const url = `http://localhost:8080/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
+            const responseAssocia = await axios.post(url, { headers: headers });
+            fetchData();
         } catch (error) {
-        console.error("Errore durante il recuper dei dati: ", error);
+            console.error("Errore durante il recuper dei dati: ", error);
         }
     };
 
@@ -629,18 +648,18 @@
 
 
     const handleOpenModal = (selectedRow) => {
-    const initialValuesWithDefaults = {
-        cliente: nomeAzienda || "",
-        idNeed: descrizione || "",
-        candidato: `${selectedRow.nome || ""} ${selectedRow.cognome || ""}`.trim(),
-        idCandidato: selectedRow.id || "",
-        stato: null, 
-        idOwner: null 
-    };
+        const initialValuesWithDefaults = {
+            cliente: nomeAzienda || "",
+            idNeed: descrizione || "",
+            candidato: `${selectedRow.nome || ""} ${selectedRow.cognome || ""}`.trim(),
+            idCandidato: selectedRow.id || "",
+            stato: null,
+            idOwner: null
+        };
 
-    setInitialValuesAggiorna(initialValuesWithDefaults);
-    setIsModalOpen(true);
-};
+        setInitialValuesAggiorna(initialValuesWithDefaults);
+        setIsModalOpen(true);
+    };
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
@@ -648,33 +667,33 @@
 
     const handleSaveModal = async (selectedRow) => {
         try {
-        const idNeedNum = parseInt(id);
-        const idCandidatoNum = parseInt(selectedRow.idCandidato);
+            const idNeedNum = parseInt(id);
+            const idCandidatoNum = parseInt(selectedRow.idCandidato);
 
-        const updateValues = {
-            ...selectedRow,
-            idNeed: idNeedNum,
-            idCandidato: idCandidatoNum,
-        };
+            const updateValues = {
+                ...selectedRow,
+                idNeed: idNeedNum,
+                idCandidato: idCandidatoNum,
+            };
 
-        delete updateValues.candidato;
-        delete updateValues.cliente;
+            delete updateValues.candidato;
+            delete updateValues.cliente;
 
-        const response = await axios.post(
-            `http://89.46.196.60:8443/associazioni/salva`,
-            updateValues,
-            { headers: headers }
-        );
-        fetchData();
+            const response = await axios.post(
+                `http://localhost:8080/associazioni/salva`,
+                updateValues,
+                { headers: headers }
+            );
+            fetchData();
         } catch (error) {
-        console.error("Errore durante il recupero dei dati: ", error);
+            console.error("Errore durante il recupero dei dati: ", error);
         }
         handleCloseModal();
     };
 
 
     const handleDownloadCV = async (idFile, fileDescrizione) => {
-        const url = `http://89.46.196.60:8443/files/react/download/file/${idFile}`;
+        const url = `http://localhost:8080/files/react/download/file/${idFile}`;
         try {
             const responseDownloadCV = await axios({
                 method: 'GET',
@@ -689,22 +708,22 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            } catch(error) {
+        } catch (error) {
             console.error("Si è verificato un errore durante il download del file: ", error);
-            }
-        };
+        }
+    };
 
-        const handleModalIntervista = async(idCandidato) => {
-            try{
-                const responseIntervista = await axios.get(`http://89.46.196.60:8443/intervista/ultima/${idCandidato}`, {
-                    headers: headers
-                });
-                setSelectedIntervista(responseIntervista.data);
-                setOpenModalIntervista(true);
-            } catch (error) {
-                console.error("Errore durante il recupero dell'intervista: ", error);
-            }
-        };
+    const handleModalIntervista = async (idCandidato) => {
+        try {
+            const responseIntervista = await axios.get(`http://localhost:8080/intervista/ultima/${idCandidato}`, {
+                headers: headers
+            });
+            setSelectedIntervista(responseIntervista.data);
+            setOpenModalIntervista(true);
+        } catch (error) {
+            console.error("Errore durante il recupero dell'intervista: ", error);
+        }
+    };
 
 
     const fieldsAggiorna = [
@@ -712,17 +731,17 @@
         { label: t("Need"), name: "idNeed", type: "text", sortable: false, filterable: false, disableColumnMenu: true },
         { label: t("Candidato"), name: "candidato", type: "text", sortable: false, filterable: false, disableColumnMenu: true },
         {
-        label: t("Stato"),
-        name: "stato",
-        type: "select",  sortable: false, filterable: false, disableColumnMenu: true,
-        options: statoOptions || [],
+            label: t("Stato"),
+            name: "stato",
+            type: "select", sortable: false, filterable: false, disableColumnMenu: true,
+            options: statoOptions || [],
         },
         { label: t("Data Aggiornamento"), name: "dataModifica", type: "date", sortable: false, filterable: false, disableColumnMenu: true },
         {
-        label: t("Owner"),
-        name: "idOwner",
-        type: "select", sortable: false, filterable: false, disableColumnMenu: true,
-        options: ownerOptions || [],
+            label: t("Owner"),
+            name: "idOwner",
+            type: "select", sortable: false, filterable: false, disableColumnMenu: true,
+            options: ownerOptions || [],
         },
     ];
 
@@ -734,59 +753,60 @@
 
     const tabellaCandidati = [
         {
-        field: "nome",
-        headerName: t("Nome"),
-        flex: 1,
-        sortable: false, filterable: false, disableColumnMenu: true,
-        renderCell: (params) => (
-            <div style={{ textAlign: "left" }}>
-            <div onClick={() => navigateToCercaCandidato(params.row)}>
-                {params.row.nome} {params.row.cognome}
-            </div>
-            </div>
-        ),
+            field: "nome",
+            headerName: t("Nome"),
+            flex: 1,
+            sortable: false, filterable: false, disableColumnMenu: true,
+            renderCell: (params) => (
+                <div style={{ textAlign: "left" }}>
+                    <div onClick={() => navigateToCercaCandidato(params.row)}>
+                        {params.row.nome} {params.row.cognome}
+                    </div>
+                </div>
+            ),
         },
         {
-        field: "tipologia",
-        headerName: t("Job Title"),
-        flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
-        renderCell: (params) => (
-            <div style={{ textAlign: "start" }}>
-            {params.row.tipologia && params.row.tipologia.descrizione
-                ? params.row.tipologia.descrizione
-                : "N/A"}
-            </div>
-        ),
+            field: "tipologia",
+            headerName: t("Job Title"),
+            flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
+            renderCell: (params) => (
+                <div style={{ textAlign: "start" }}>
+                    {params.row.tipologia && params.row.tipologia.descrizione
+                        ? params.row.tipologia.descrizione
+                        : "N/A"}
+                </div>
+            ),
         },
         { field: "email", headerName: "E-Mail", flex: 1.4, sortable: false, filterable: false, disableColumnMenu: true },
 
-        { field: "rating", headerName: t("Rating"), flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
+        {
+            field: "rating", headerName: t("Rating"), flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
             renderCell: (params) => (
                 <div style={{ textAlign: "start" }}>
                     {params.row.rating ? params.row.rating.toFixed(2) : ""}
                 </div>
             ),
-         },
+        },
         {
-        field: "stato",
-        headerName: t("Stato"),
-        flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
-        renderCell: (params) => (
-            <div style={{ textAlign: "start" }}>
-            {params.row.stato && params.row.stato.descrizione
-                ? params.row.stato.descrizione
-                : "N/A"}
-            </div>
-        ),
+            field: "stato",
+            headerName: t("Stato"),
+            flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
+            renderCell: (params) => (
+                <div style={{ textAlign: "start" }}>
+                    {params.row.stato && params.row.stato.descrizione
+                        ? params.row.stato.descrizione
+                        : "N/A"}
+                </div>
+            ),
         },
         { field: "dataUltimoContatto", headerName: t("Contatto"), flex: 1, sortable: false, filterable: false, disableColumnMenu: true },
         {
-        field: "azioni",
-        headerName: "",
-        flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
-        renderCell: (params) => (
-            <div>
-            {/* <Button
+            field: "azioni",
+            headerName: "",
+            flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
+            renderCell: (params) => (
+                <div>
+                    {/* <Button
                 onClick={() => handleAssocia(params.row)}
                 sx={{
                 backgroundColor: "#00B401",
@@ -801,36 +821,36 @@
             >
                 Associa
             </Button> */}
-            <Tooltip title="Visualizza intervista">
-            <span> 
-            <IntervisteModalButton
-            hasIntervista={!!params.row?.hasInterviste}
-            onClick={() => handleModalIntervista(params.row?.id)} 
-            />
-            </span>
-            </Tooltip>
+                    <Tooltip title="Visualizza intervista">
+                        <span>
+                            <IntervisteModalButton
+                                hasIntervista={!!params.row?.hasInterviste}
+                                onClick={() => handleModalIntervista(params.row?.id)}
+                            />
+                        </span>
+                    </Tooltip>
 
-            <Tooltip title="Visualizza CV">
-            <span> 
-            <ClipButton 
-                hasFile={!!params.row?.file}
-                idFile={params.row.file ? params.row.file.id : null} 
-                fileDescrizione={params.row.file ? params.row.file.descrizione : null}
-                onClick={() => handleDownloadCV(
-                    params.row.file ? params.row.file.id : null,
-                    params.row.file ? params.row.file.descrizione : null
-                )}
-            />
-            </span>
-            </Tooltip>
+                    <Tooltip title="Visualizza CV">
+                        <span>
+                            <ClipButton
+                                hasFile={!!params.row?.file}
+                                idFile={params.row.file ? params.row.file.id : null}
+                                fileDescrizione={params.row.file ? params.row.file.descrizione : null}
+                                onClick={() => handleDownloadCV(
+                                    params.row.file ? params.row.file.id : null,
+                                    params.row.file ? params.row.file.descrizione : null
+                                )}
+                            />
+                        </span>
+                    </Tooltip>
 
-            <Tooltip title="Associa">
-            <IconButton onClick={() => handleAssocia(params.row)}>
-                    <AddCircleIcon sx={{ color: '#00B400'}} />
-            </IconButton>
-            </Tooltip>
-            </div>
-        ),
+                    <Tooltip title="Associa">
+                        <IconButton onClick={() => handleAssocia(params.row)}>
+                            <AddCircleIcon sx={{ color: '#00B400' }} />
+                        </IconButton>
+                    </Tooltip>
+                </div>
+            ),
         },
     ];
 
@@ -842,44 +862,44 @@
             flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
             renderCell: (params) => (
                 <div style={{ textAlign: "left" }}>
-                <div onClick={() => navigateToCercaCandidato(params.row)}>
-                    {params.row.candidato
-                    ? `${params.row.candidato.nome} ${params.row.candidato.cognome}`
-                    : ""}
-                </div>
+                    <div onClick={() => navigateToCercaCandidato(params.row)}>
+                        {params.row.candidato
+                            ? `${params.row.candidato.nome} ${params.row.candidato.cognome}`
+                            : ""}
+                    </div>
                 </div>
             ),
-            },
-            {
-                field: "tipologia",
-                headerName: t("Job Title"),
-                flex: 1.5, sortable: false, filterable: false, disableColumnMenu: true,
-                renderCell: (params) => (
-                    <div style={{ textAlign: "start" }}>
+        },
+        {
+            field: "tipologia",
+            headerName: t("Job Title"),
+            flex: 1.5, sortable: false, filterable: false, disableColumnMenu: true,
+            renderCell: (params) => (
+                <div style={{ textAlign: "start" }}>
                     {params.row.candidato && params.row.candidato.tipologia.descrizione}
-                    </div>
-                ),
-                },
-                {
-                    field: "rating",
-                    headerName: t("Rating"),
-                    flex: 0.7, sortable: false, filterable: false, disableColumnMenu: true,
-                    renderCell: (params) => (
-                        <div style={{ textAlign: "start" }}>
-                        {params.row?.candidato && params.row?.candidato?.rating}
-                        </div>
-                    ),
-                    },
+                </div>
+            ),
+        },
+        {
+            field: "rating",
+            headerName: t("Rating"),
+            flex: 0.7, sortable: false, filterable: false, disableColumnMenu: true,
+            renderCell: (params) => (
+                <div style={{ textAlign: "start" }}>
+                    {params.row?.candidato && params.row?.candidato?.rating}
+                </div>
+            ),
+        },
 
         {
-        field: "stato",
-        headerName: t("Stato"),
-        flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
-        renderCell: (params) => (
-            <div style={{ textAlign: "start" }}>
-            {params.row.stato && params.row.stato.descrizione}
-            </div>
-        ),
+            field: "stato",
+            headerName: t("Stato"),
+            flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
+            renderCell: (params) => (
+                <div style={{ textAlign: "start" }}>
+                    {params.row.stato && params.row.stato.descrizione}
+                </div>
+            ),
         },
         {
             field: "tipo",
@@ -887,86 +907,86 @@
             flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
             renderCell: (params) => (
                 <div style={{ textAlign: "start" }}>
-                {params.row.candidato && params.row.candidato.tipo
-                    ? params.row.candidato.tipo.descrizione
-                    : "N/A"}
+                    {params.row.candidato && params.row.candidato.tipo
+                        ? params.row.candidato.tipo.descrizione
+                        : "N/A"}
                 </div>
             ),
-            },
-        {
-        field: "owner",
-        headerName: t("Owner"),
-        flex: 0.5, sortable: false, filterable: false, disableColumnMenu: true,
-        renderCell: (params) => (
-            <div style={{ textAlign: "start" }}>
-            {params.row.owner && params.row.owner.descrizione}
-            </div>
-        ),
         },
         {
-        field: "azioni",
-        headerName: "",
-        flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
-        renderCell: (params) => (
-            <div>
-            {/* <CloseIcon onClick={handleDeleteStorico} id={params.row.associazioni && params.row.associazioni.candidato?.id} /> */}
-            <Tooltip title="Elimina da storico">
-            <span> 
-            <CloseIconButton onClick={handleDeleteStorico} id={params.row.id} />
-            </span>
-            </Tooltip>
-            </div>
-        ),
+            field: "owner",
+            headerName: t("Owner"),
+            flex: 0.5, sortable: false, filterable: false, disableColumnMenu: true,
+            renderCell: (params) => (
+                <div style={{ textAlign: "start" }}>
+                    {params.row.owner && params.row.owner.descrizione}
+                </div>
+            ),
+        },
+        {
+            field: "azioni",
+            headerName: "",
+            flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
+            renderCell: (params) => (
+                <div>
+                    {/* <CloseIcon onClick={handleDeleteStorico} id={params.row.associazioni && params.row.associazioni.candidato?.id} /> */}
+                    <Tooltip title="Elimina da storico">
+                        <span>
+                            <CloseIconButton onClick={handleDeleteStorico} id={params.row.id} />
+                        </span>
+                    </Tooltip>
+                </div>
+            ),
         },
     ];
 
     const tabellaAssociati = [
         {
-        field: "nome",
-        headerName: t("Nome"),
-        flex: 1.3, sortable: false, filterable: false, disableColumnMenu: true,
-        renderCell: (params) => (
-            <div style={{ textAlign: "left" }}>
-            <Link
-                to={`/recruiting/modifica/${params.row.id}`}
-                state={{ recruitingData: params.row }}
-                style={{ color: "black" }}
-            >
-                {params.row.nome} {params.row.cognome}
-            </Link>
-            </div>
-        ),
-        // renderCell: (params) => (
-        //     <div style={{ textAlign: "left" }}>
-        //         <Button
-        //             onClick={() => handleOpenDialog(params.row)}
-        //             sx={{
-        //                 color: "black",
-        //                 textDecoration: "underline",
-        //                 textTransform: "none",
-        //                 justifyContent: "left",
-        //                 "&:hover": {
-        //                     textDecoration: "underline",
-        //                     backgroundColor: "transparent"
-        //                 },
-        //             }}
-        //         >
-        //             {params.row.nome} {params.row.cognome}
-        //         </Button>
-        //     </div>
-        // ),
+            field: "nome",
+            headerName: t("Nome"),
+            flex: 1.3, sortable: false, filterable: false, disableColumnMenu: true,
+            renderCell: (params) => (
+                <div style={{ textAlign: "left" }}>
+                    <Link
+                        to={`/recruiting/modifica/${params.row.id}`}
+                        state={{ recruitingData: params.row }}
+                        style={{ color: "black" }}
+                    >
+                        {params.row.nome} {params.row.cognome}
+                    </Link>
+                </div>
+            ),
+            // renderCell: (params) => (
+            //     <div style={{ textAlign: "left" }}>
+            //         <Button
+            //             onClick={() => handleOpenDialog(params.row)}
+            //             sx={{
+            //                 color: "black",
+            //                 textDecoration: "underline",
+            //                 textTransform: "none",
+            //                 justifyContent: "left",
+            //                 "&:hover": {
+            //                     textDecoration: "underline",
+            //                     backgroundColor: "transparent"
+            //                 },
+            //             }}
+            //         >
+            //             {params.row.nome} {params.row.cognome}
+            //         </Button>
+            //     </div>
+            // ),
         },
         {
-        field: "tipologia",
-        headerName: t("Job Title"),
-        flex: 1.4, sortable: false, filterable: false, disableColumnMenu: true,
-        renderCell: (params) => (
-            <div style={{ textAlign: "start" }}>
-            {params.row.tipologia && params.row.tipologia.descrizione
-                ? params.row.tipologia.descrizione
-                : "N/A"}
-            </div>
-        ),
+            field: "tipologia",
+            headerName: t("Job Title"),
+            flex: 1.4, sortable: false, filterable: false, disableColumnMenu: true,
+            renderCell: (params) => (
+                <div style={{ textAlign: "start" }}>
+                    {params.row.tipologia && params.row.tipologia.descrizione
+                        ? params.row.tipologia.descrizione
+                        : "N/A"}
+                </div>
+            ),
         },
         {
             field: "rating",
@@ -979,25 +999,25 @@
             ),
         },
         {
-        field: "stato",
-        headerName: t("Stato Candidato"),
-        flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
-        renderCell: (params) => (
-            <div style={{ textAlign: "start" }}>
-            {params.row.stato && params.row.stato.descrizione
-                ? params.row.stato.descrizione
-                : "N/A"}
-            </div>
-        ),
+            field: "stato",
+            headerName: t("Stato Candidato"),
+            flex: 1, sortable: false, filterable: false, disableColumnMenu: true,
+            renderCell: (params) => (
+                <div style={{ textAlign: "start" }}>
+                    {params.row.stato && params.row.stato.descrizione
+                        ? params.row.stato.descrizione
+                        : "N/A"}
+                </div>
+            ),
         },
         { field: "dataUltimoContatto", headerName: t("Contatto"), flex: 0.8, sortable: false, filterable: false, disableColumnMenu: true },
         {
-        field: "azioni",
-        headerName: "",
-        flex: 1.5, sortable: false, filterable: false, disableColumnMenu: true,
-        renderCell: (params) => (
-            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
-            {/* <Button
+            field: "azioni",
+            headerName: "",
+            flex: 1.5, sortable: false, filterable: false, disableColumnMenu: true,
+            renderCell: (params) => (
+                <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
+                    {/* <Button
                 onClick={() => handleOpenModal(params.row)}
                 sx={{
                 backgroundColor: "transparent",
@@ -1012,164 +1032,164 @@
                 startIcon={<ChecklistIcon sx={{ backgroundColor: "transparent" }} />}
             >
             </Button> */}
-            <Tooltip title="Vai ad intervista">
-                <span>
-            <Link
-                to={`/recruiting/intervista/${params.row.id}`}
-                state = {{ recruitingData: params.row}}
-                >
-                <IntervistaButton /> 
-            </Link>
-            </span>
-                </Tooltip>
-            <Tooltip title="Visualizza CV">
-            <span> 
-            <ClipButton 
-                hasFile={!!params.row?.file}
-                idFile={params.row.file ? params.row.file.id : null} 
-                fileDescrizione={params.row.file ? params.row.file.descrizione : null}
-                onClick={() => handleDownloadCV(
-                    params.row.file ? params.row.file.id : null,
-                    params.row.file ? params.row.file.descrizione : null
-                )}
-            />
-            </span>
-            </Tooltip>
-            <Tooltip title="Modifica associazione">
-                <span>
-             <CheckListButton onClick={() => handleOpenModal(params.row)} />
-             </span>
-            </Tooltip>
-             <Tooltip title="Elimina da associati">
-             <span> 
-            <CloseIconButton onClick={handleDeleteAssociati} id={params.row.id} />
-            </span>
-            </Tooltip>
-            </Box>
-        ),
+                    <Tooltip title="Vai ad intervista">
+                        <span>
+                            <Link
+                                to={`/recruiting/intervista/${params.row.id}`}
+                                state={{ recruitingData: params.row }}
+                            >
+                                <IntervistaButton />
+                            </Link>
+                        </span>
+                    </Tooltip>
+                    <Tooltip title="Visualizza CV">
+                        <span>
+                            <ClipButton
+                                hasFile={!!params.row?.file}
+                                idFile={params.row.file ? params.row.file.id : null}
+                                fileDescrizione={params.row.file ? params.row.file.descrizione : null}
+                                onClick={() => handleDownloadCV(
+                                    params.row.file ? params.row.file.id : null,
+                                    params.row.file ? params.row.file.descrizione : null
+                                )}
+                            />
+                        </span>
+                    </Tooltip>
+                    <Tooltip title="Modifica associazione">
+                        <span>
+                            <CheckListButton onClick={() => handleOpenModal(params.row)} />
+                        </span>
+                    </Tooltip>
+                    <Tooltip title="Elimina da associati">
+                        <span>
+                            <CloseIconButton onClick={handleDeleteAssociati} id={params.row.id} />
+                        </span>
+                    </Tooltip>
+                </Box>
+            ),
         },
     ];
 
     return (
         <SchemePage>
-        <motion.div initial="hidden" animate="visible" variants={fadeInVariants}>
-            <Box
-            sx={{
-                position: "sticky",
-                top: 0,
-                zIndex: 1000,
-            }}
-            >
-            <NuovaRicercaNeedMatch
-                filtri={filtri}
-                onFilterChange={handleFilterChange}
-                onReset={handleReset}
-                onSearch={handleRicerche}
-                tipoOptions={tipoOptions}
-                tipologiaOptions={tipologiaOptions}
-                seniorityOptions={seniority}
-                onGoBack={handleGoBack}
-            />
-            </Box>
+            <motion.div initial="hidden" animate="visible" variants={fadeInVariants}>
+                <Box
+                    sx={{
+                        position: "sticky",
+                        top: 0,
+                        zIndex: 1000,
+                    }}
+                >
+                    <NuovaRicercaNeedMatch
+                        filtri={filtri}
+                        onFilterChange={handleFilterChange}
+                        onReset={handleReset}
+                        onSearch={handleRicerche}
+                        tipoOptions={tipoOptions}
+                        tipologiaOptions={tipologiaOptions}
+                        seniorityOptions={seniority}
+                        onGoBack={handleGoBack}
+                    />
+                </Box>
             </motion.div>
             <motion.div initial="hidden" animate="visible" variants={fadeInVariants}>
-            <Box
-            sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-            }}
-            >
-            <Typography
-                variant="h4"
-                component="h1"
-                sx={{
-                ml: 5,
-                fontWeight: "bold",
-                fontSize: "1.8rem",
-                color: "#00B401",
-                }}
-            >
-                {descrizione} {nomeAzienda}
-            </Typography>
-            </Box>
+                <Box
+                    sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
+                    <Typography
+                        variant="h4"
+                        component="h1"
+                        sx={{
+                            ml: 5,
+                            fontWeight: "bold",
+                            fontSize: "1.8rem",
+                            color: "#00B401",
+                        }}
+                    >
+                        {descrizione} {nomeAzienda}
+                    </Typography>
+                </Box>
             </motion.div>
             <motion.div initial="hidden" animate="visible" variants={fadeInVariants}>
-            <Modal
-            open={isModalOpen}
-            onClose={handleCloseModal}
-            aria-labelledby="modal-title"
-            aria-describedby="modal-description"
-            sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                ml: 10,
-            }}
-            >
-            <ModalBox
-                fields={fieldsAggiorna}
-                initialValues={initialValuesAggiorna}
-                disableFields={disableFields}
-                onSubmit={handleSaveModal}
-                title={t("Modifica Stato Associazioni")}
-                showBackButton={true}
-                onClose={handleCloseModal}
-            />
-            </Modal>
-            <Box sx={{ height: "auto", mt: 2, width: "100%", mb: 3 }}>
-            <Tabella
-                data={originalCandidati}
-                columns={tabellaCandidati}
-                title="Candidati"
-                getRowId={(row) => row.id}
-                pagina={paginaCandidati}
-                quantita={quantita}
-                righeTot={righeTotCandidati}
-                onPageChange={handlePageChangeCandidati}
-            />
-            </Box>
+                <Modal
+                    open={isModalOpen}
+                    onClose={handleCloseModal}
+                    aria-labelledby="modal-title"
+                    aria-describedby="modal-description"
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        ml: 10,
+                    }}
+                >
+                    <ModalBox
+                        fields={fieldsAggiorna}
+                        initialValues={initialValuesAggiorna}
+                        disableFields={disableFields}
+                        onSubmit={handleSaveModal}
+                        title={t("Modifica Stato Associazioni")}
+                        showBackButton={true}
+                        onClose={handleCloseModal}
+                    />
+                </Modal>
+                <Box sx={{ height: "auto", mt: 2, width: "100%", mb: 3 }}>
+                    <Tabella
+                        data={originalCandidati}
+                        columns={tabellaCandidati}
+                        title="Candidati"
+                        getRowId={(row) => row.id}
+                        pagina={paginaCandidati}
+                        quantita={quantita}
+                        righeTot={righeTotCandidati}
+                        onPageChange={handlePageChangeCandidati}
+                    />
+                </Box>
 
-            <Box sx={{ height: "auto", mt: 2, width: "100%", mb: 3 }}>
-            <Tabella
-                data={originalStorico}
-                columns={tabellaStorico}
-                title="Storico"
-                getRowId={(row) => row.id}
-                pagina={paginaStorico}
-                quantita={quantita}
-                righeTot={righeTotStorico}
-                onPageChange={handlePageChangeStorico}
-            />
-            </Box>
+                <Box sx={{ height: "auto", mt: 2, width: "100%", mb: 3 }}>
+                    <Tabella
+                        data={originalStorico}
+                        columns={tabellaStorico}
+                        title="Storico"
+                        getRowId={(row) => row.id}
+                        pagina={paginaStorico}
+                        quantita={quantita}
+                        righeTot={righeTotStorico}
+                        onPageChange={handlePageChangeStorico}
+                    />
+                </Box>
 
-            <Box sx={{ height: "auto", mt: 2, width: "100%", mb: 3 }}>
-            <Tabella
-                data={originalAssociati}
-                columns={tabellaAssociati}
-                title="Candidati Associati"
-                getRowId={(row) => row.id}
-                pagina={paginaAssociati}
-                quantita={quantita}
-                righeTot={righeTotAssociati}
-                onPageChange={handlePageChangeAssociati}
-            />
-            </Box>
-        <Dialog open={openDialog} onClose={handleCloseDialog}>
-            <DialogTitle id="form-dialog-title">
-                {t('Modifica Azienda')}
-            </DialogTitle>
-            <DialogContent>
-            </DialogContent>
-        </Dialog>
-        <IntervisteModal
-            open={openModalIntervista}
-            handleClose={() => setOpenModalIntervista(false)}
-            intervista={selectedIntervista}
-        />
-        </motion.div>
+                <Box sx={{ height: "auto", mt: 2, width: "100%", mb: 3 }}>
+                    <Tabella
+                        data={originalAssociati}
+                        columns={tabellaAssociati}
+                        title="Candidati Associati"
+                        getRowId={(row) => row.id}
+                        pagina={paginaAssociati}
+                        quantita={quantita}
+                        righeTot={righeTotAssociati}
+                        onPageChange={handlePageChangeAssociati}
+                    />
+                </Box>
+                <Dialog open={openDialog} onClose={handleCloseDialog}>
+                    <DialogTitle id="form-dialog-title">
+                        {t('Modifica Azienda')}
+                    </DialogTitle>
+                    <DialogContent>
+                    </DialogContent>
+                </Dialog>
+                <IntervisteModal
+                    open={openModalIntervista}
+                    handleClose={() => setOpenModalIntervista(false)}
+                    intervista={selectedIntervista}
+                />
+            </motion.div>
         </SchemePage>
     );
-    };
+};
 
-    export default NeedMatch;
+export default NeedMatch;

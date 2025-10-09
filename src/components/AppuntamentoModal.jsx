@@ -76,17 +76,23 @@ function AppuntamentoModal({ open, handleClose }) {
 
   const optionSelect = async () => {
     try {
+      const userString = sessionStorage.getItem("user");
+      const user = userString ? JSON.parse(userString) : null;
+      const username = user?.username;
+
       const ownerResponse = await axios.get(
-        "http://89.46.196.60:8443/owner",
+        `http://localhost:8080/owner/${username}`,
         { headers: headers }
       );
+
       if (Array.isArray(ownerResponse.data)) {
-        const ownerOptions = ownerResponse.data.map((owner) => ({
+        const ownerOptions = ownerResponse.data.map(owner => ({
           label: owner.descrizione,
           value: owner.id,
         }));
         setOwnerOptions(ownerOptions);
       }
+
     } catch (error) {
       console.error("Errore durante il recupero delle province:", error);
     }
@@ -115,7 +121,7 @@ function AppuntamentoModal({ open, handleClose }) {
     };
     try {
       const responseInviaAppuntamento = await axios.post(
-        "http://89.46.196.60:8443/calendar/insert",
+        "http://localhost:8080/calendar/insert",
         datiDaInviare,
         { headers: headers }
       );

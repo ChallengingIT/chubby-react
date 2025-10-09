@@ -52,7 +52,7 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title }) => {
 
             if (Array.isArray(responseStato.data)) {
                 const filteredStati = responseStato.data
-                    .filter(stato => [1, 6, 7].includes(stato.id))
+                    //.filter(stato => [1, 6, 7].includes(stato.id))
                     .map(stato => ({ label: stato.descrizione, value: stato.id }));
 
                 setStatoOptions(filteredStati);

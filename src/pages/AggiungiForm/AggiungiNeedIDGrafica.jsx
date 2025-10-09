@@ -72,27 +72,27 @@ const AggiungiNeedIDGrafica = () => {
         const fetchNeedOptions = async () => {
             try {
                 const responseAziende = await axios.get(
-                    `http://89.46.196.60:8443/aziende/react/${id}`,
+                    `http://localhost:8080/aziende/react/${id}`,
                     { headers: headers }
                 );
                 const responseSkill = await axios.get(
-                    "http://89.46.196.60:8443/staffing/react/skill",
+                    "http://localhost:8080/staffing/react/skill",
                     { headers: headers }
                 );
-                const ownerResponse = await axios.get(
-                    "http://89.46.196.60:8443/owner",
+                /* const ownerResponse = await axios.get(
+                    "http://localhost:8080/owner",
                     { headers: headers }
-                );
+                ); */
                 const tipologiaResponse = await axios.get(
-                    "http://89.46.196.60:8443/need/react/tipologia",
+                    "http://localhost:8080/need/react/tipologia",
                     { headers: headers }
                 );
                 const statoResponse = await axios.get(
-                    "http://89.46.196.60:8443/need/react/stato",
+                    "http://localhost:8080/need/react/stato",
                     { headers: headers }
                 );
                 const responseKeypeople = await axios.get(
-                    `http://89.46.196.60:8443/keypeople/react/azienda/${idAzienda}`,
+                    `http://localhost:8080/keypeople/react/azienda/${idAzienda}`,
                     { headers: headers }
                 );
                 const keypeopleOptions = responseKeypeople.data.map((keypeople) => ({
@@ -117,13 +117,23 @@ const AggiungiNeedIDGrafica = () => {
                     setTipologiaOptions(tipologiaOptions);
                 }
 
+                const userString = sessionStorage.getItem("user");
+                const user = userString ? JSON.parse(userString) : null;
+                const username = user?.username;
+
+                const ownerResponse = await axios.get(
+                `http://localhost:8080/owner/${username}`,
+                { headers: headers }
+                );
+
                 if (Array.isArray(ownerResponse.data)) {
-                    const ownerOptions = ownerResponse.data.map((owner) => ({
-                        label: owner.descrizione,
-                        value: owner.id,
-                    }));
-                    setOwnerOptions(ownerOptions);
+                const ownerOptions = ownerResponse.data.map(owner => ({
+                    label: owner.descrizione,
+                    value: owner.id,
+                }));
+                setOwnerOptions(ownerOptions);
                 }
+
 
                 if (Array.isArray(responseSkill.data)) {
                     const skillsOptions = responseSkill.data.map((skill) => ({
@@ -304,7 +314,7 @@ const AggiungiNeedIDGrafica = () => {
             delete values.idSkills;
 
             const responseSaveNeed = await axios.post(
-            "http://89.46.196.60:8443/need/react/salva",
+            "http://localhost:8080/need/react/salva",
             { ...values, idAzienda: parseInt(values.idAzienda, 10) }, 
             { params: { skill1: skills, username: username }, headers: headers }
             );

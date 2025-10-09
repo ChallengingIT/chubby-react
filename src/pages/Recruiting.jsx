@@ -215,6 +215,7 @@ const Recruiting = () => {
         );
       }
       const { record, candidati } = response.data;
+      console.log("Dati ricevuti dal server:", response.data);
 
       if (candidati && Array.isArray(candidati)) {
         setOriginalRecruiting(candidati);

@@ -22,6 +22,24 @@ function CustomAutocomplete({
 
   return (
     <Autocomplete
+      getOptionDisabled={(option) => option.isHeader === true}
+      renderOption={(props, option) =>
+        option.isHeader ? (
+          <li
+            {...props}
+            style={{
+              fontWeight: "bold",
+              color: "gray",
+              pointerEvents: "none",
+              backgroundColor: "#f5f5f5",
+            }}
+          >
+            {option.label}
+          </li>
+        ) : (
+          <li {...props}>{option.label}</li>
+        )
+      }
       fullWidth
       options={options}
       value={selectedOption}

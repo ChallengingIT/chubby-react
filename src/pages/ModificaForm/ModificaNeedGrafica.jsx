@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Skeleton, Snackbar, Grid, Slide, Container } from '@mui/material';
+import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Skeleton, Snackbar, Grid, Slide, Container, FormControlLabel, Switch } from '@mui/material';
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
 import axios from 'axios';
 import CustomAutocomplete from '../../components/fields/CustomAutocomplete';
@@ -15,6 +15,7 @@ import { useUserTheme } from '../../components/TorchyThemeProvider';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from '@mui/material';
+import { de } from 'date-fns/locale';
 
 
 
@@ -45,9 +46,9 @@ const ModificaNeedGrafica = () => {
     const [statoOptions, setStatoOptions] = useState([]);
     const [keyPeopleOptions, setKeyPeopleOptions] = useState([]);
     const [aziendaID, setAziendaID] = useState(null);
-    const [values, setValues] = useState([]);
-
-
+    const [aziendaInternaOptions, setAziendaInternaOptions] = useState([]);
+    const [isChallengingUser, setIsChallengingUser] = useState(false);
+    const [values, setValues] = useState({});
 
 
     const user = JSON.parse(sessionStorage.getItem("user"));
@@ -61,12 +62,13 @@ const ModificaNeedGrafica = () => {
     useEffect(() => {
         const fetchNeedOptions = async () => {
             try {
-                const responseAziende = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers: headers });
-                const responseSkill = await axios.get("http://89.46.196.60:8443/staffing/react/skill", { headers: headers });
-                const ownerResponse = await axios.get("http://89.46.196.60:8443/owner", { headers: headers });
-                const tipologiaResponse = await axios.get("http://89.46.196.60:8443/need/react/tipologia", { headers: headers });
-                const statoResponse = await axios.get("http://89.46.196.60:8443/need/react/stato", { headers: headers });
-                const needResponse = await axios.get(`http://89.46.196.60:8443/need/react/${id}`, { headers: headers });
+                const responseAziende = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
+                const responseSkill = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
+                //const ownerResponse = await axios.get("http://localhost:8080/owner", { headers: headers });
+                const tipologiaResponse = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
+                const statoResponse = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
+                const needResponse = await axios.get(`http://localhost:8080/need/react/${id}`, { headers: headers });
+                const aziendaInternaResponse = await axios.get("http://localhost:8080/gestione/aziende/interne", { headers: headers });
 
                 const modificaData = needResponse.data;
                 const aziendaId = needResponse.data.cliente.id;
@@ -83,20 +85,44 @@ const ModificaNeedGrafica = () => {
                 }
 
                 if (Array.isArray(tipologiaResponse.data)) {
-                    const tipologiaOptions = tipologiaResponse.data.map((tipologia) => ({
-                        label: tipologia.descrizione,
-                        value: tipologia.id,
+                    const allTipologie = tipologiaResponse.data.map(t => ({
+                        label: t.descrizione,
+                        value: t.id,
                     }));
-                    setTipologiaOptions(tipologiaOptions);
+
+                    // Esempio di logica: i primi 2 = Consulting, successivi 3 = Talent, restanti = Factory
+                    const consulting = allTipologie.slice(0, 2);
+                    const talent = allTipologie.slice(2, 5);
+                    const factory = allTipologie.slice(5);
+
+                    const groupedTipologie = [
+                        { label: "Consulting", value: "__header_consulting__", isHeader: true },
+                        ...consulting,
+                        { label: "Talent", value: "__header_talent__", isHeader: true },
+                        ...talent,
+                        { label: "Factory", value: "__header_factory__", isHeader: true },
+                        ...factory,
+                    ];
+
+                    setTipologiaOptions(groupedTipologie);
                 }
 
 
+                const userString = sessionStorage.getItem("user");
+                const user = userString ? JSON.parse(userString) : null;
+                const username = user?.username;
+
+                const ownerResponse = await axios.get(
+                `http://localhost:8080/owner/${username}`,
+                { headers: headers }
+                );
+
                 if (Array.isArray(ownerResponse.data)) {
-                    const ownerOptions = ownerResponse.data.map((owner) => ({
-                        label: owner.descrizione,
-                        value: owner.id,
-                    }));
-                    setOwnerOptions(ownerOptions);
+                const ownerOptions = ownerResponse.data.map((owner) => ({
+                    label: owner.descrizione,
+                    value: owner.id,
+                }));
+                setOwnerOptions(ownerOptions);
                 }
 
 
@@ -116,6 +142,15 @@ const ModificaNeedGrafica = () => {
                     }));
                     setAziendeOptions(ownerOptions);
                 }
+
+                if (Array.isArray(aziendaInternaResponse.data)) {
+                    const aziendaInternaOptions = aziendaInternaResponse.data.map((aziendaInterna) => ({
+                        value: aziendaInterna.id,
+                        label: aziendaInterna.descrizione
+                    }));
+                    setAziendaInternaOptions(aziendaInternaOptions);
+                }
+
             } catch (error) {
                 console.error("Errore durante il recupero delle aziende:", error);
             }
@@ -126,6 +161,33 @@ const ModificaNeedGrafica = () => {
         fetchNeedOptions();
     }, []);
 
+    useEffect(() => {
+        const fetchAziendaUtente = async () => {
+            try {
+                const userString = sessionStorage.getItem("user");
+                if (!userString) return;
+
+                const user = JSON.parse(userString);
+                const username = user?.username;
+                const headers = { Authorization: `Bearer ${user?.token}` };
+
+                const response = await axios.get(`http://localhost:8080/gestione/aziende/interne/${username}`, { headers });
+
+                const aziendaUtente = response.data;
+                console.log("Azienda utente:", aziendaUtente.descrizione);
+
+                if (aziendaUtente.descrizione?.toLowerCase().includes("challenging")) {
+                    setIsChallengingUser(true);
+                } else {
+                    setIsChallengingUser(false);
+                }
+            } catch (error) {
+                console.error("Errore durante il recupero dell'azienda utente:", error);
+            }
+        };
+
+        fetchAziendaUtente();
+    }, []);
 
     useEffect(() => {
         if (datiModifica.cliente && datiModifica.cliente.length !== 0) {
@@ -137,7 +199,7 @@ const ModificaNeedGrafica = () => {
     const fetchKeypeopleOptions = async (aziendaConId) => {
         try {
 
-            const keypeopleResponse = await axios.get(`http://89.46.196.60:8443/keypeople/react/azienda/${aziendaID}`, { headers: headers });
+            const keypeopleResponse = await axios.get(`http://localhost:8080/keypeople/react/azienda/${aziendaID}`, { headers: headers });
 
             if (Array.isArray(keypeopleResponse.data)) {
                 const keypeopleOptions = keypeopleResponse.data.map((keypeople) => ({
@@ -173,16 +235,17 @@ const ModificaNeedGrafica = () => {
 
 
 
-    const aziendaInterna = [
-        { value: "CHALLENGING", label: "Challenging" },
-        { value: "INNOTEK", label: "Innotek" }
-    ];
-
-
-
     const menu = [
         {
             title: t('Descrizione Need'),
+            icon: <CircleOutlinedIcon />
+        },
+        {
+            title: t('Dettagli Need'),
+            icon: <CircleOutlinedIcon />
+        },
+        {
+            title: t('Dettagli Ricerca e Selezione'),
             icon: <CircleOutlinedIcon />
         },
     ];
@@ -214,8 +277,11 @@ const ModificaNeedGrafica = () => {
     const getMandatoryFields = (index) => {
         switch (index) {
             case 0:
-                return ["descrizione", "idKeyPeople", "priorita", "week", "pubblicazione", "screening", "idTipologia", "idStato", "idOwner", "location"];
-
+                return ["idAziendaInterna", "idAzienda", "idKeyPeople"];
+            case 1:
+                return ["descrizione", "idStato", "priorita", "idTipologia", "week", "location", "idOwner", "idOwnerRecruiter"];
+            case 2:
+                return isChallengingUser ? ["pubblicazione", "screening"] : [];
             default:
                 return [];
         }
@@ -360,7 +426,7 @@ const ModificaNeedGrafica = () => {
                 const userObj = userString ? JSON.parse(userString) : null;
 
                 const responseSaveNeed = await axios.post(
-                    "http://89.46.196.60:8443/need/react/salva",
+                    "http://localhost:8080/need/react/salva",
                     transformedValues, // <-- body SENZA username
                     {
                         params: {
@@ -396,13 +462,25 @@ const ModificaNeedGrafica = () => {
         }
     };
 
-    const fieldObbligatori = ["descrizione", "idKeyPeople", "priorita", "week", "pubblicazione", "screening", "idTipologia", "idStato", "idOwner", "location", "idOwnerRecruiter"];
+    const fieldObbligatori = ["idAziendaInterna", "idAzienda", "priorita", "descrizione", "week", "pubblicazione", "screening", "idTipologia", "stato", "idOwner", "location", "idOwnerRecruiter"];
 
     const fields = [
-        { label: t("Azienda*"), name: "idAziendaInterna", type: "select", options: aziendaInterna },
-        { label: t("Cliente*"), name: "idAzienda", type: "select", options: aziendeOptions }, { label: t("Descrizione Need*"), name: "descrizione", type: "text", maxLength: 200 },
+        { type: "titleGroups", label: t("Dettagli Business") },
+        { label: t("Società Owner*"), name: "idAziendaInterna", type: "select", options: aziendaInternaOptions },
+        { label: t("Cliente*"), name: "idAzienda", type: "select", options: aziendeOptions }, 
+        {
+            label: t("Tipo Azienda"), name: "idTipo", type: "select", options: [
+                { value: 1, label: t("Cliente") },
+                { value: 2, label: t("Consulenza") },
+                { value: 3, label: t("Prospect") }
+            ]
+        },
         { label: t("Contatto*"), name: "idKeyPeople", type: "select", options: keyPeopleOptions },
-        // { label: "Priorità*",           name: "priorita",                     type: "decimalNumber"                                       },
+
+        // Sezione Dettagli Need
+        { type: "titleGroups", label: t("Dettagli Need") },
+        { label: t("Descrizione Need*"), name: "descrizione", type: "text", maxLength: 200 },
+        { label: t("Stato Need*"), name: "idStato", type: "select", options: statoOptions },
         {
             label: t("Priorità*"), name: "priorita", type: "select", options: [
                 { value: 1, label: "1" },
@@ -411,37 +489,51 @@ const ModificaNeedGrafica = () => {
                 { value: 4, label: "4" }
             ]
         },
-        { label: "Week*", name: "week", type: "week" },
-        { label: t("Tipologia*"), name: "idTipologia", type: "select", options: tipologiaOptions },
+        { label: t("Tipo Need*"), name: "idTipologia", type: "select", options: tipologiaOptions },
+        { label: "Data apertura Need*", name: "week", type: "week" },
+        { label: "Location*", name: "location", type: "text", maxLength: 45 },
         {
-            label: t("Tipologia Azienda"), name: "idTipo", type: "select", options: [
-                { value: 1, label: t("Cliente") },
-                { value: 2, label: t("Consulenza") },
-                { value: 3, label: t("Prospect") }
+            label: "Delivery Model", name: "deliveryModel", type: "select", options: [
+                { value: "Product", label: "Product" },
+                { value: "Outsourcing", label: "Outsourcing" },
+                { value: "Service", label: "Service" },
+                { value: "Project", label: "Project" },
+                { value: "Task", label: "Task" },
+                { value: "Time&Material", label: "Time & Material" }
             ]
         },
-        { label: t("Owner Business*"), name: "idOwner", type: "select", options: ownerOptions },
-        { label: t("Owner Recruiter*"), name: "idOwnerRecruiter", type: "select", options: ownerOptions },
-        { label: t("Stato*"), name: "idStato", type: "select", options: statoOptions },
+        { label: "Valore economico potenziale", name: "valorePotenziale", type: "number" },
+        { label: t("Note"), name: "note", type: "note", maxLength: 4000 },
+        { label: t("Business Owner*"), name: "idOwner", type: "select", options: ownerOptions },
+        { label: t("Owner Operativo*"), name: "idOwnerRecruiter", type: "select", options: ownerOptions },
+        
+        // Sezione Dettagli Ricerca e Selezione
+        // Modalità A: solo Challenging
+        { type: "titleGroups", label: t("Dettagli Ricerca e Selezione") },
         { label: "Headcount", name: "numeroRisorse", type: "number" },
-        { label: "Location*", name: "location", type: "text", maxLength: 45 },
-        { label: "Skills", name: "idSkills", type: "multipleSelect", options: skillsOptions },
         { label: "Seniority", name: "anniEsperienza", type: "select", options: seniorityOptions },
+        { label: "Skills", name: "idSkills", type: "multipleSelect", options: skillsOptions },
         { label: t('Pubblicazione Annuncio*'), name: 'pubblicazione', type: 'select', options: pubblicazioneOptions },
         { label: t('Screening*'), name: 'screening', type: 'select', options: screeningOptions },
-        { label: t("Note"), name: "note", type: "note", maxLength: 4000 },
+        { label: t("Note"), name: "noteRicerca", type: "note", visibleIf: () => isChallengingUser },
+        
+        // Modalità B: tutti gli altri
+        { label: "Richiede ricerca e selezione?", name: "toggleRicerca", type: "toggle",   visibleIf: () => !isChallengingUser},
+        { label: "Note di ricerca e selezione", name: "noteRicercaToggle", type: "note", visibleIf: () => !isChallengingUser && values.toggleRicerca },
     ];
 
     const initialValues = {
         id: datiModifica?.id || null,
         idAzienda: datiModifica?.cliente?.id,
-        idAziendaInterna: datiModifica?.aziendaInterna || null,
+        idAziendaInterna: (datiModifica?.aziendaInterna && datiModifica.aziendaInterna.id) || null,
         descrizione: datiModifica?.descrizione || null,
         idKeyPeople: (datiModifica?.keyPeople && datiModifica?.keyPeople?.id) || null,
         priorita: datiModifica?.priorita || null,
         week: datiModifica?.week || null,
         idTipologia: (datiModifica?.tipologia && datiModifica?.tipologia?.id) || null,
         idTipo: datiModifica?.tipo || null,
+        deliveryModel: datiModifica?.deliveryModel || null,
+        valorePotenziale: datiModifica?.valorePotenziale || null,
         idOwner: (datiModifica?.ownerBusiness && datiModifica?.ownerBusiness?.id) || null,
         idOwnerRecruiter: (datiModifica?.ownerRecruiter && datiModifica?.ownerRecruiter?.id) || null,
 
@@ -453,6 +545,10 @@ const ModificaNeedGrafica = () => {
         pubblicazione: datiModifica?.pubblicazione || null,
         screening: datiModifica?.screening || null,
         note: datiModifica?.note || null,
+        noteRicerca: datiModifica?.noteRicerca || null,
+        toggleRicerca: datiModifica?.noteRicerca ? true : false,
+        noteRicercaToggle: datiModifica?.noteRicerca || null,
+        
     };
 
 
@@ -649,7 +745,19 @@ const ModificaNeedGrafica = () => {
                         />
                     );
 
-
+                case 'toggle':
+                    return (
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={!!values[field.name]}
+                                    onChange={(e) => handleChange({ [field.name]: e.target.checked })}
+                                    color="primary"
+                                />
+                            }
+                            label={field.label}
+                        />
+                    );
                 default:
                     return null;
             }
@@ -661,6 +769,9 @@ const ModificaNeedGrafica = () => {
             <Box sx={{ ml: 15, mr: 15 }}>
                 <Grid container spacing={2}>
                     {groupedFields[currentPageIndex].map((field, index) => {
+                        if (field.visibleIf && !field.visibleIf(values)) {
+                            return null;
+                        }
                         if (field.type === 'titleGroups') {
                             return (
                                 <Grid item xs={12} key={index}>

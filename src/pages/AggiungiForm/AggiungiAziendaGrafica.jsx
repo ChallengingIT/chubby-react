@@ -85,15 +85,16 @@ const AggiungiAziendaGrafica = () => {
         const fetchProvinceOptions = async () => {
             try {
                 const provinceResponse = await axios.get(
-                    "http://89.46.196.60:8443/aziende/react/province",
+                    "http://localhost:8080/aziende/react/province",
                     { headers: headers }
                 );
-                const ownerResponse = await axios.get(
-                    "http://89.46.196.60:8443/owner",
+                /* const ownerResponse = await axios.get(
+                    "http://localhost:8080/owner",
                     { headers: headers }
-                );
+                ); */
+                
                 const ricercaResponse = await axios.get(
-                    "http://89.46.196.60:8443/hiring/servizi",
+                    "http://localhost:8080/hiring/servizi",
                     { headers: headers }
                 );
 
@@ -105,13 +106,23 @@ const AggiungiAziendaGrafica = () => {
                     setRicercaOptions(ricercaOptions);
                 }
 
+                const userString = sessionStorage.getItem("user");
+                const user = userString ? JSON.parse(userString) : null;
+                const username = user?.username;
+
+                const ownerResponse = await axios.get(
+                `http://localhost:8080/owner/${username}`,
+                { headers: headers }
+                );
+
                 if (Array.isArray(ownerResponse.data)) {
-                    const ownerOptions = ownerResponse.data.map((owner) => ({
-                        label: owner.descrizione,
-                        value: owner.id,
-                    }));
-                    setOwnerOptions(ownerOptions);
+                const ownerOptions = ownerResponse.data.map(owner => ({
+                    label: owner.descrizione,
+                    value: owner.id,
+                }));
+                setOwnerOptions(ownerOptions);
                 }
+
 
                 if (Array.isArray(provinceResponse.data)) {
                     const provinceOptions = provinceResponse.data.map((province) => ({
@@ -291,7 +302,7 @@ const AggiungiAziendaGrafica = () => {
             delete values.image;
 
             const response = await axios.post(
-            "http://89.46.196.60:8443/aziende/react/salva",
+            "http://localhost:8080/aziende/react/salva",
             values,
             {
                 params: { username: username },
@@ -319,7 +330,7 @@ const AggiungiAziendaGrafica = () => {
                 formDataIMG.append("logo", fileIMG);
 
                 const responseIMG = await axios.post(
-                `http://89.46.196.60:8443/aziende/react/salva/file/${aziendaID}`,
+                `http://localhost:8080/aziende/react/salva/file/${aziendaID}`,
                 formDataIMG,
                 {
                     params: { username: user?.username || null },
