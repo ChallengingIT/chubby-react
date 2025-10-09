@@ -151,7 +151,7 @@ const ModificaKeypeopleGrafica = () => {
     const getMandatoryFields = (index) => {
         switch (index) {
             case 0:
-                return ["nome", "idAzienda", "email", "idStato", "ruolo", "dataCreazione"]; 
+                return ["nome", "idAzienda", "idStato", "ruolo", "dataCreazione"]; 
             default:
                 return [];
         }
@@ -316,7 +316,7 @@ const ModificaKeypeopleGrafica = () => {
         const openTipo = Boolean(anchorElTipo);
 
 
-        const campiObbligatori = [ "nome", "idAzienda", "email", "idStato", "ruolo", "dataCreazione" ];
+        const campiObbligatori = [ "nome", "idAzienda", "idStato", "ruolo", "dataCreazione" ];
 
         const fields =[
             { type: "titleGroups",                label: t("Anagrafica")            },
@@ -330,7 +330,7 @@ const ModificaKeypeopleGrafica = () => {
               ] },
               { label: t("Stato*"),              name: "idStato",              type: "select",      options: statiOptions },
 
-            { label: "Email*",                name: "email",                type: "email", maxLength: 45 },
+            { label: "Email",                   name: "email",                type: "email", maxLength: 45 },
             { label: t("Cellulare"),             name: "cellulare",            type: "text", maxLength: 20},
            
             
