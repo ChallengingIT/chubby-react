@@ -182,7 +182,7 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
     ];
 
     return (
-        <Container disableGutters>
+        <Container disableGutters maxWidth={false} sx={{ width: "100%" }}>
             {loading ? <CircularProgress /> :
                 <div >
                     <DataGrid
