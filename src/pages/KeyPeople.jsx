@@ -115,6 +115,18 @@ const KeyPeople = () => {
             const user = userString ? JSON.parse(userString) : null;
             const username = user?.username;
 
+            if (!userHasRole("ADMIN")) {
+                await axios.post(
+                    "http://localhost:8080/logs/getRequest",
+                    {
+                        username: user.username,
+                        url: `${baseUrl}/interval`,
+                        params: filtriDaInviare,
+                        timestamp: new Date().toISOString(),
+                    },
+                    { headers }
+                );
+            }
             const responseOwner = await axios.get(
                 `http://localhost:8080/owner/${username}`,
                 { headers: headers }
@@ -201,6 +213,18 @@ const KeyPeople = () => {
             : (isSearchActive ? "http://localhost:8080/keypeople/react/ricerca/mod/personal" : "http://localhost:8080/keypeople/react/mod/personal");
 
         try {
+            if (!userHasRole("ADMIN")) {
+                await axios.post(
+                    "http://localhost:8080/logs/getRequest",
+                    {
+                        username: user.username,
+                        url: `${baseUrl}/interval`,
+                        params: filtriDaInviare,
+                        timestamp: new Date().toISOString(),
+                    },
+                    { headers }
+                );
+            }
             const responsePaginazione = await axios.get(baseUrl, {
                 headers: headers,
                 params: filtriDaInviare,
@@ -267,21 +291,34 @@ const KeyPeople = () => {
             const responseStati = await axios.get("http://localhost:8080/keypeople/react/stati", { headers: headers });
 
             const userString = sessionStorage.getItem("user");
-                const user = userString ? JSON.parse(userString) : null;
-                const username = user?.username;
+            const user = userString ? JSON.parse(userString) : null;
+            const username = user?.username;
+            
+            if (!userHasRole("ADMIN")) {
+                await axios.post(
+                    "http://localhost:8080/logs/getRequest",
+                    {
+                        username: user.username,
+                        url: `${baseUrl}/interval`,
+                        params: filtriDaInviare,
+                        timestamp: new Date().toISOString(),
+                    },
+                    { headers }
+                );
+            }
 
-                const responseOwner = await axios.get(
+            const responseOwner = await axios.get(
                 `http://localhost:8080/owner/${username}`,
                 { headers: headers }
-                );
+            );
 
-                if (Array.isArray(responseOwner.data)) {
+            if (Array.isArray(responseOwner.data)) {
                 const ownerOptions = responseOwner.data.map(owner => ({
                     label: owner.descrizione,
                     value: owner.id,
                 }));
                 setOwnerOptions(ownerOptions);
-                } else {
+            } else {
                 console.error("I dati dell'owner ottenuti non sono nel formato Array:", responseOwner.data);
             }
 

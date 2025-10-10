@@ -114,7 +114,8 @@
             if (
             userRole === "ADMIN" ||
             userRole === "RECRUITER" ||
-            userRole === "BM"
+            userRole === "BM" || 
+            userRole === "BM_OPERATIVO"
             ) {
             navigate("/dashboard");
             } else if (userRole === "USER" || userRole === "BUSINESS") {

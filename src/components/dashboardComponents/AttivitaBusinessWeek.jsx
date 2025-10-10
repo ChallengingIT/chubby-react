@@ -8,10 +8,10 @@ import { current } from '@reduxjs/toolkit';
 
 const AttivitaBusinessBox = ({ data, aziendeOptions }) => {
     const [currentDate, setCurrentDate] = useState(new Date());
-    const [weekData, setWeekData ] = useState(data);
+    const [weekData, setWeekData] = useState(data);
 
     //stati per cambiare settimana
-    const [interval, setInterval ] = useState(0);
+    const [interval, setInterval] = useState(0);
     const pagina = 0;
     const quantita = 10;
 
@@ -77,8 +77,18 @@ const AttivitaBusinessBox = ({ data, aziendeOptions }) => {
                 pagina: 0,
             };
 
+            const endpoint = 'http://localhost:8080/dashboard/attivita/business/personal/interval';
+
             try {
-                const response = await axios.get('http://localhost:8080/dashboard/attivita/business/personal/interval', {
+                // Log the request
+                await axios.post('http://localhost:8080/logs/getRequest', {
+                    username: user.username,
+                    url: endpoint,
+                    params: filtriDaInviare,
+                    timestamp: new Date().toISOString()
+                }, { headers });
+
+                const response = await axios.get(endpoint, {
                     headers: headers,
                     params: filtriDaInviare
                 });
@@ -97,7 +107,7 @@ const AttivitaBusinessBox = ({ data, aziendeOptions }) => {
             <CardContent style={{ width: '100%', display: 'flex', flexDirection: 'column', background: 'rgba(217, 217, 217, 0)', borderRadius: 20, border: '2px #00B400 solid' }}>
                 <Typography variant='h5' sx={{ display: 'flex', mt: 1, mb: 1, fontWeight: 'bold', justifyContent: 'flex-end', fontSize: '1.2em' }}>Attività ed Eventi Business</Typography>
                 <Container sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end', height: 'calc(100% - 76px)', width: '100%', pt: 5, overflowY: 'auto' }}>
-                    <TabellaAttivitaBusiness 
+                    <TabellaAttivitaBusiness
                         data={weekData}
                         aziendeOptions={aziendeOptions} />
                 </Container>

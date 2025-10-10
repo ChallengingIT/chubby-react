@@ -113,6 +113,9 @@
                     case "BM":
                         selectedTheme = themes.default;
                         break;
+                    case "BM_OPERATIVO":
+                        selectedTheme = themes.default;
+                        break;
                     case "BUSINESS":
                         if (user.idAzienda) {
                             const aziendaIds = Array.isArray(user.idAzienda) ? user.idAzienda : [user.idAzienda];
