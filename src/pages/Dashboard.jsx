@@ -293,6 +293,7 @@ function Dashboard() {
                                     }}
                                 >
                                     <CardContent
+                                        disableGutters
                                         sx={{
                                             padding: 1,
                                             flexGrow: 1,
