@@ -105,7 +105,7 @@ const Aziende = () => {
         try {
             if (!userHasRole("ADMIN")) {
                 await axios.post(
-                    "http://localhost:8080/logs/getRequest",
+                    "http://89.46.196.60:8443/logs/getRequest",
                     {
                         username: user.username,
                         url: `${baseUrl}/interval`,
@@ -236,7 +236,7 @@ const Aziende = () => {
         try {
             if (!userHasRole("ADMIN")) {
                 await axios.post(
-                    "http://localhost:8080/logs/getRequest",
+                    "http://89.46.196.60:8443/logs/getRequest",
                     {
                         username: user.username,
                         url: `${baseUrl}/interval`,
@@ -311,7 +311,7 @@ const Aziende = () => {
         try {
             if (!userHasRole("ADMIN")) {
                 await axios.post(
-                    "http://localhost:8080/logs/getRequest",
+                    "http://89.46.196.60:8443/logs/getRequest",
                     {
                         username: user.username,
                         url: `${baseUrl}/interval`,

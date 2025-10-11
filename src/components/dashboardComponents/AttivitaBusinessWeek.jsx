@@ -77,11 +77,11 @@ const AttivitaBusinessBox = ({ data, aziendeOptions }) => {
                 pagina: 0,
             };
 
-            const endpoint = 'http://localhost:8080/dashboard/attivita/business/personal/interval';
+            const endpoint = 'http://89.46.196.60:8443/dashboard/attivita/business/personal/interval';
 
             try {
                 // Log the request
-                await axios.post('http://localhost:8080/logs/getRequest', {
+                await axios.post('http://89.46.196.60:8443/logs/getRequest', {
                     username: user.username,
                     url: endpoint,
                     params: filtriDaInviare,
