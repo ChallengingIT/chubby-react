@@ -282,7 +282,7 @@ function Dashboard() {
                                         ml: 2,
                                         borderRadius: "20px",
                                         maxWidth: "100%",
-                                        maxHeight: "45vh", // limite massimo metà schermata
+                                        maxHeight: "45vh",
                                         border: "2px solid #00B401",
                                         display: "flex",
                                         flexDirection: "column",
@@ -293,6 +293,7 @@ function Dashboard() {
                                     }}
                                 >
                                     <CardContent
+                                        disableGutters
                                         sx={{
                                             padding: 1,
                                             flexGrow: 1,

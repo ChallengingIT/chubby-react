@@ -182,7 +182,7 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
     ];
 
     return (
-        <Container>
+        <Container disableGutters maxWidth={false} sx={{ width: "100%" }}>
             {loading ? <CircularProgress /> :
                 <div >
                     <DataGrid
@@ -196,6 +196,9 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
                         disableSelectionOnClick
                         disableColumnMenu
                         sx={{ border: "none" }}
+                        localeText={{
+                            noRowsLabel: "Nessuna azione trovata.",
+                        }}
                     />
                 </div>
 

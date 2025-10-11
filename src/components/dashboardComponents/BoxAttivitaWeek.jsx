@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography} from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import axios from 'axios';
 import { useUserTheme } from '../TorchyThemeProvider.jsx';
 import { useTranslation } from "react-i18next";
@@ -84,6 +84,18 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
                 : `http://89.46.196.60:8443/dashboard/attivita/business/personal`;
 
             try {
+                if (!isAdmin) {
+                    await axios.post(
+                        "http://localhost:8080/logs/getRequest",
+                        {
+                            username: user.username,
+                            url: `${baseUrl}/interval`,
+                            params: filtriDaInviare,
+                            timestamp: new Date().toISOString(),
+                        },
+                        { headers }
+                    );
+                }
                 const response = await axios.get(`${baseUrl}/interval`, {
                     headers: headers,
                     params: filtriDaInviare
@@ -104,13 +116,13 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
     }, [interval]);
 
     return (
-        <Box className="cardTabellaBusiness" sx={{ width: '100%', height: '100%', position: 'relative', display: 'flex', flexDirection: 'column', paddingTop: 1, paddingBottom: 0}}>
-            <Box display="flex" alignItems="center" mb={0} ml={2} sx={{ paddingBottom: 0}}>
+        <Box className="cardTabellaBusiness" sx={{ width: '100%', height: '100%', position: 'relative', display: 'flex', flexDirection: 'column', paddingTop: 1, paddingBottom: 0 }}>
+            <Box display="flex" alignItems="center" mb={0} ml={2} sx={{ paddingBottom: 0 }}>
                 <Typography variant='h5' sx={{ fontWeight: 'bold', fontSize: '1.2em' }}>
                     {t("Piano Incontri")}
                 </Typography>
             </Box>
-            <Box sx={{ flexGrow: 1, width: '100%', overflowY: 'auto', alignItems: "center", paddingBottom: 0}}>
+            <Box sx={{ flexGrow: 1, width: '100%', overflowY: 'auto', alignItems: "center", paddingBottom: 0 }}>
                 <TabellaAzioni
                     data={weekDataKeyPeople}
                     aziendeOptions={aziendeOptions} />

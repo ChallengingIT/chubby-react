@@ -109,7 +109,7 @@ const App = () => {
 
       <Route element={<Layout />}>
                 <Route path="/dashboard" element={
-                    <PrivateRoute roles={['ADMIN',  'RECRUITER', 'BM', 'USER', "BUSINESS"]}>
+                    <PrivateRoute roles={['ADMIN',  'RECRUITER', 'BM', 'BM_OPERATIVO', 'USER', "BUSINESS"]}>
                       <Dashboard />
                     </PrivateRoute>
                   } />
@@ -119,47 +119,47 @@ const App = () => {
                     </PrivateRoute>
                   } />
                 <Route path="/business" element={
-                    <PrivateRoute roles={['ADMIN', 'BM', 'USER']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BM_OPERATIVO', 'USER']}>
                       <Aziende />
                     </PrivateRoute>
                   } />
                 <Route path="/business/aggiungi"element={
-                    <PrivateRoute roles={['ADMIN', 'BM',]}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BM_OPERATIVO']}>
                       <AggiungiAziendaGrafica />
                     </PrivateRoute>
                   } />
                 <Route path="/business/modifica/:id"element={
-                    <PrivateRoute roles={['ADMIN', 'BM']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BM_OPERATIVO']}>
                       <ModificaAziendaGrafica />
                     </PrivateRoute>
                   } />
                 <Route path="/need/:id"element={
-                    <PrivateRoute roles={['ADMIN', 'BM', 'BUSINESS']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BUSINESS', 'BM_OPERATIVO']}>
                       <AziendeListaNeedCard />
                     </PrivateRoute>
                   } />
                 <Route path="/need/aggiungi/:id"element={
-                    <PrivateRoute roles={['ADMIN', 'BM', 'BUSINESS']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BUSINESS', 'BM_OPERATIVO']}>
                       <AggiungiNeedIDGragica />
                     </PrivateRoute>
                   } />
                 <Route path="/contacts"element={
-                    <PrivateRoute roles={['ADMIN', 'BM']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BM_OPERATIVO']}>
                       <KeyPeople />
                     </PrivateRoute>
                   } />
                 <Route path="/contacts/aggiungi"element={
-                    <PrivateRoute roles={['ADMIN', 'BM']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BM_OPERATIVO']}>
                       <AggiungiKeypeopleGrafica />
                     </PrivateRoute>
                   } />
                 <Route path="/contacts/modifica/:id" element={
-                    <PrivateRoute roles={['ADMIN', 'BM']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BM_OPERATIVO']}>
                       <ModificaKeypeopleGrafica />
                     </PrivateRoute>
                   } />
                 <Route path="/need" element={
-                    <PrivateRoute roles={['ADMIN', 'BM', 'RECRUITER']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BM_OPERATIVO', 'RECRUITER']}>
                       <Need />
                     </PrivateRoute>
                   } />
@@ -169,103 +169,103 @@ const App = () => {
                     </PrivateRoute>
                   } />
                 <Route path="/need/aggiungi" element={
-                    <PrivateRoute roles={['ADMIN', 'BM']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BM_OPERATIVO']}>
                       <AggiungiNeedGrafica />
                     </PrivateRoute>
                   } />
                 <Route path="/need/modifica/:id" element={
-                    <PrivateRoute roles={['ADMIN', 'BM', 'RECRUITER', 'BUSINESS']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BM_OPERATIVO', 'RECRUITER', 'BUSINESS']}>
                       <ModificaNeedGrafica />
                     </PrivateRoute>
                   } />
                 <Route path="/need/match/:id"element={
-                    <PrivateRoute roles={['ADMIN', 'BM', 'RECRUITER']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BM_OPERATIVO', 'RECRUITER']}>
                       <NeedMatch />
                     </PrivateRoute>
                   } />
                 <Route path="/recruiting"element={
-                    <PrivateRoute roles={['ADMIN', 'BM', 'RECRUITER']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BM_OPERATIVO', 'RECRUITER']}>
                       <Recruiting />
                     </PrivateRoute>
                   } />
                 <Route path="/recruiting/aggiungi" element={
-                    <PrivateRoute roles={['ADMIN', 'BM', 'RECRUITER']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BM_OPERATIVO', 'RECRUITER']}>
                       <AggiungiRecruitingGrafica />
                     </PrivateRoute>
                   } />
                 <Route path="/recruiting/modifica/:id"element={
-                    <PrivateRoute roles={['ADMIN', 'BM', 'RECRUITER']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BM_OPERATIVO', 'RECRUITER']}>
                       <ModificaRecruitingGrafica />
                     </PrivateRoute>
                   } />
                 <Route path="/recruiting/intervista/:id"element={
-                    <PrivateRoute roles={['ADMIN', 'BM', 'RECRUITER']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BM_OPERATIVO', 'RECRUITER']}>
                       <IntervisteList />
                     </PrivateRoute>
                   } />
                 <Route path="/intervista/aggiungi"element={
-                    <PrivateRoute roles={['ADMIN', 'BM', 'RECRUITER']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BM_OPERATIVO', 'RECRUITER']}>
                       <AggiungiIntervistaGrafica />
                     </PrivateRoute>
                   } />
                 <Route path="/intervista/modifica/:id" element={
-                    <PrivateRoute roles={['ADMIN', 'BM', 'RECRUITER']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BM_OPERATIVO', 'RECRUITER']}>
                       <ModificaIntervistaGrafica />
                     </PrivateRoute>
                   } />
                     <Route path="/intervista/visualizza/:id" element={
-                    <PrivateRoute roles={['ADMIN', 'BM', 'RECRUITER']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BM_OPERATIVO', 'RECRUITER']}>
                       <DettaglioIntervista />
                     </PrivateRoute>
                   } />
                 <Route path="/hiring" element={
-                    <PrivateRoute roles={['ADMIN', 'BM']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BM_OPERATIVO']}>
                       <Hiring />
                     </PrivateRoute>
                   } />
                   <Route path="hiring/aggiungi/recruiting/:id" element={
-                    <PrivateRoute roles={['ADMIN', 'BM']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BM_OPERATIVO']}>
                       <AggiungiRecruitingHiring />
                     </PrivateRoute>
                   } />
 
                 <Route path="hiring/aggiungi/Head_Hunting/:id" element={
-                    <PrivateRoute roles={['ADMIN', 'BM']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BM_OPERATIVO']}>
                       <AggiungiHeadHunting />
                     </PrivateRoute>
                   } />
                   <Route path="hiring/aggiungi/temporary/:id" element={
-                    <PrivateRoute roles={['ADMIN', 'BM']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BM_OPERATIVO']}>
                       <AggiungiTemporary />
                     </PrivateRoute>
                   } />
 
                   <Route path="hiring/aggiungi/staffing/:id" element={
-                    <PrivateRoute roles={['ADMIN', 'BM']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BM_OPERATIVO']}>
                       <AggiungiStaffing />
                     </PrivateRoute>
                   } />
 
                   <Route path="hiring/modifica/staffing/:idHiring/:idScheda" element={
-                    <PrivateRoute roles={['ADMIN', 'BM']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BM_OPERATIVO']}>
                       <ModificaStaffing />
                     </PrivateRoute>
                   } />
 
                   <Route path="hiring/modifica/temporary/:idHiring/:idScheda" element={
-                    <PrivateRoute roles={['ADMIN', 'BM']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BM_OPERATIVO']}>
                       <ModificaTemporary />
                     </PrivateRoute>
                   } />
 
                   <Route path="hiring/modifica/Head_Hunting/:idHiring/:idScheda" element={
-                    <PrivateRoute roles={['ADMIN', 'BM']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BM_OPERATIVO']}>
                       <ModificaHeadHunting />
                     </PrivateRoute>
                   } />
 
                   <Route path="hiring/modifica/recruiting/:idHiring/:idScheda" element={
-                    <PrivateRoute roles={['ADMIN', 'BM']}>
+                    <PrivateRoute roles={['ADMIN', 'BM', 'BM_OPERATIVO']}>
                       <ModificaHiringRecruiting />
                     </PrivateRoute>
                   } />
@@ -278,7 +278,7 @@ const App = () => {
                   } />
 
                   <Route path="/settings" element={
-                    <PrivateRoute roles={['ADMIN',  'RECRUITER', 'BM', 'USER', "BUSINESS"]}>
+                    <PrivateRoute roles={['ADMIN',  'RECRUITER', 'BM', 'BM_OPERATIVO', 'USER', "BUSINESS"]}>
                       <SettingsPage />
                     </PrivateRoute>
                   } />

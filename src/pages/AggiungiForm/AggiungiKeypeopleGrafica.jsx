@@ -145,7 +145,6 @@ const AggiungiKeypeopleGrafica = () => {
                 return [
                     "nome",
                     "idAzienda",
-                    "email",
                     "idStato",
                     "ruolo",
                     "dataCreazione",
@@ -320,7 +319,6 @@ const AggiungiKeypeopleGrafica = () => {
     const campiObbligatori = [
         "nome",
         "idAzienda",
-        "email",
         "idStato",
         "ruolo",
         "dataCreazione",
@@ -340,7 +338,7 @@ const AggiungiKeypeopleGrafica = () => {
         },
         { label: t("Stato*"), name: "idStato", type: "select", options: statiOptions },
 
-        { label: "Email*", name: "email", type: "email", maxLength: 45 },
+        { label: "Email", name: "email", type: "email", maxLength: 45 },
         { label: t("Cellulare"), name: "cellulare", type: "text", maxLength: 20 },
 
         { label: t("Data di Creazione*"), name: "dataCreazione", type: "date" },

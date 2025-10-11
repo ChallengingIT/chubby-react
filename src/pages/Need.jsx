@@ -152,6 +152,19 @@ const Need = () => {
             const user = userString ? JSON.parse(userString) : null;
             const username = user?.username;
 
+            if (!userHasRole("ADMIN")) {
+                await axios.post(
+                    "http://localhost:8080/logs/getRequest",
+                    {
+                        username: user.username,
+                        url: `${baseUrl}/interval`,
+                        params: filtriDaInviare,
+                        timestamp: new Date().toISOString(),
+                    },
+                    { headers }
+                );
+            }
+            
             const ownerResponse = await axios.get(
                 `http://89.46.196.60:8443/owner/${username}`,
                 { headers: headers }
