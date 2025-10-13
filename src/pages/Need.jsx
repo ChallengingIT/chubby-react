@@ -164,7 +164,7 @@ const Need = () => {
                     { headers }
                 );
             }
-            
+
             const ownerResponse = await axios.get(
                 `http://localhost:8080/owner/${username}`,
                 { headers: headers }
@@ -186,7 +186,25 @@ const Need = () => {
             }
 
             if (Array.isArray(responseTipologia.data)) {
-                setTipologiaOptions(responseTipologia.data.map((tipologia) => ({ label: tipologia.descrizione, value: tipologia.id })));
+                const allTipologie = responseTipologia.data.map(t => ({
+                    label: t.descrizione,
+                    value: t.id,
+                }));
+
+                const consulting = allTipologie.slice(0, 2);
+                const talent = allTipologie.slice(2, 5);
+                const factory = allTipologie.slice(5);
+
+                const groupedTipologie = [
+                    { label: "Consulting", value: "__header_consulting__", isHeader: true },
+                    ...consulting,
+                    { label: "Talent", value: "__header_talent__", isHeader: true },
+                    ...talent,
+                    { label: "Factory", value: "__header_factory__", isHeader: true },
+                    ...factory,
+                ];
+
+                setTipologiaOptions(groupedTipologie);
             } else {
                 console.error("I dati ottenuti dalla chiamata delle tipologie non sono nel formato Array; ", responseTipologia.data);
             }
@@ -344,7 +362,26 @@ const Need = () => {
             }
 
             if (Array.isArray(responseTipologia.data)) {
-                setTipologiaOptions(responseTipologia.data.map((tipologia) => ({ label: tipologia.descrizione, value: tipologia.id })));
+                const allTipologie = responseTipologia.data.map(t => ({
+                    label: t.descrizione,
+                    value: t.id,
+                }));
+
+                // Dividi le tipologie in gruppi
+                const consulting = allTipologie.slice(0, 2);
+                const talent = allTipologie.slice(2, 5);
+                const factory = allTipologie.slice(5);
+
+                const groupedTipologie = [
+                    { label: "Consulting", value: "__header_consulting__", isHeader: true },
+                    ...consulting,
+                    { label: "Talent", value: "__header_talent__", isHeader: true },
+                    ...talent,
+                    { label: "Factory", value: "__header_factory__", isHeader: true },
+                    ...factory,
+                ];
+
+                setTipologiaOptions(groupedTipologie);
             } else {
                 console.error("I dati ottenuti non sono nel formato Array; ", responseTipologia.data);
             }

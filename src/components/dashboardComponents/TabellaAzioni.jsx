@@ -4,6 +4,7 @@ import { TextField, IconButton, CircularProgress, Container } from "@mui/materia
 import CloseIcon from "@mui/icons-material/Close";
 import { format } from 'date-fns';
 import { useTranslation } from "react-i18next";
+import { startOfWeek, endOfWeek, addWeeks, isWithinInterval, parseISO } from "date-fns";
 
 
 const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
@@ -36,6 +37,14 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
     const contattoRef = useRef(null);
     const completatoRef = useRef(null);
     const descrizioneRef = useRef(null);
+
+    const today = new Date();
+    const currentWeekStart = startOfWeek(today, { weekStartsOn: 1 }); // lunedì
+    const weeks = [
+        { label: "Settimana precedente", start: addWeeks(currentWeekStart, -1), end: endOfWeek(addWeeks(currentWeekStart, -1), { weekStartsOn: 1 }) },
+        { label: "Settimana corrente", start: currentWeekStart, end: endOfWeek(currentWeekStart, { weekStartsOn: 1 }) },
+        { label: "Settimana successiva", start: addWeeks(currentWeekStart, 1), end: endOfWeek(addWeeks(currentWeekStart, 1), { weekStartsOn: 1 }) }
+    ];
 
     useEffect(() => {
         if (data) {
@@ -85,6 +94,14 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
             (item.descrizione || "").toLowerCase().includes(filters.descrizione.toLowerCase())
         );
     });
+
+    const groupedRows = weeks.map(week => ({
+        label: week.label,
+        rows: filteredRows.filter(row => {
+            const date = parseISO(row.formattedDate);
+            return isWithinInterval(date, { start: week.start, end: week.end });
+        })
+    }));
 
     const columns = [
         {
