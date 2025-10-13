@@ -98,6 +98,16 @@ const NeedMatch = () => {
         Authorization: `Bearer ${token}`,
     };
 
+    //controllo del ruolo dell'utente loggato
+    const userHasRole = (roleToCheck) => {
+        const userString = sessionStorage.getItem('user');
+        if (!userString) {
+            return false;
+        }
+        const userObj = JSON.parse(userString);
+        return userObj.roles.includes(roleToCheck);
+    };
+    
     const navigateToCercaCandidato = (params) => {
         navigate("/recruiting", { state: { params } });
     };
@@ -160,10 +170,11 @@ const NeedMatch = () => {
             const user = userString ? JSON.parse(userString) : null;
             const username = user?.username;
 
-            const ownerResponse = await axios.get(
-                `http://localhost:8080/owner/${username}`,
-                { headers: headers }
-            );
+            const ownerUrl = userHasRole('ADMIN')
+                    ? "http://localhost:8080/owner"
+                    : `http://localhost:8080/${username}`;
+
+            const ownerResponse = await axios.get(ownerUrl, { headers });
 
             if (Array.isArray(ownerResponse.data)) {
                 const ownerOptions = ownerResponse.data.map(owner => ({

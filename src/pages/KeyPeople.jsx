@@ -127,10 +127,12 @@ const KeyPeople = () => {
                     { headers }
                 );
             }
-            const responseOwner = await axios.get(
-                `http://localhost:8080/owner/${username}`,
-                { headers: headers }
-            );
+
+            const ownerUrl = userHasRole('ADMIN')
+                    ? "http://localhost:8080/owner"
+                    : `http://localhost:8080/${username}`;
+
+            const responseOwner = await axios.get(ownerUrl, { headers });
 
             if (Array.isArray(responseOwner.data)) {
                 const ownerOptions = responseOwner.data.map(owner => ({
@@ -307,11 +309,12 @@ const KeyPeople = () => {
                 );
             }
 
-            const responseOwner = await axios.get(
-                `http://localhost:8080/owner/${username}`,
-                { headers: headers }
-            );
+            const ownerUrl = userHasRole('ADMIN')
+                    ? "http://localhost:8080/owner"
+                    : `http://localhost:8080/${username}`;
 
+            const responseOwner = await axios.get(ownerUrl, { headers });
+            
             if (Array.isArray(responseOwner.data)) {
                 const ownerOptions = responseOwner.data.map(owner => ({
                     label: owner.descrizione,

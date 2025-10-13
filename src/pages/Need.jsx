@@ -165,10 +165,11 @@ const Need = () => {
                 );
             }
 
-            const ownerResponse = await axios.get(
-                `http://localhost:8080/owner/${username}`,
-                { headers: headers }
-            );
+            const ownerUrl = userHasRole('ADMIN')
+                    ? "http://localhost:8080/owner"
+                    : `http://localhost:8080/${username}`;
+
+            const ownerResponse = await axios.get(ownerUrl, { headers });
 
             if (Array.isArray(ownerResponse.data)) {
                 const ownerOptions = ownerResponse.data.map(owner => ({

@@ -51,6 +51,16 @@ const ModificaAziendaGrafica = () => {
         Authorization: `Bearer ${token}`
     };
 
+    //controllo del ruolo dell'utente loggato
+    const userHasRole = (roleToCheck) => {
+        const userString = sessionStorage.getItem('user');
+        if (!userString) {
+            return false;
+        }
+        const userObj = JSON.parse(userString);
+        return userObj.roles.includes(roleToCheck);
+    };
+
     //chiamata per ricevere i dati dal db
     useEffect(() => {
         const fetchProvinceOptions = async () => {
@@ -84,10 +94,11 @@ const ModificaAziendaGrafica = () => {
                 const user = userString ? JSON.parse(userString) : null;
                 const username = user?.username;
 
-                const ownerResponse = await axios.get(
-                `http://localhost:8080/owner/${username}`,
-                { headers: headers }
-                );
+                const ownerUrl = userHasRole('ADMIN')
+                    ? "http://localhost:8080/owner"
+                    : `http://localhost:8080/${username}`;
+
+                const ownerResponse = await axios.get(ownerUrl, { headers });
 
                 if (Array.isArray(ownerResponse.data)) {
                 const ownerOptions = ownerResponse.data.map(owner => ({
