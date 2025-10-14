@@ -230,6 +230,27 @@ function NuovaRicercaNeed({
                     <Autocomplete
                         id="tipologia-combo-box"
                         options={tipologiaOptions}
+                        getOptionDisabled={(option) => option.isHeader}
+                        renderOption={(props, option) => {
+                            if (option.isHeader) {
+                                return (
+                                    <li
+                                        {...props}
+                                        style={{
+                                            fontWeight: "bold",
+                                            opacity: 0.3,
+                                            pointerEvents: "none",
+                                            backgroundColor: "#f5f5f5",
+                                        }}
+                                    >
+                                        {option.label}
+                                    </li>
+                                );
+                            }
+                            return (
+                                <li {...props}>{option.label}</li>
+                            );
+                        }}
                         getOptionLabel={(option) => option.label}
                         value={
                             tipologiaOptions.find(
