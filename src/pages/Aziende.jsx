@@ -99,13 +99,13 @@ const Aziende = () => {
         }
 
         const baseUrl = userHasRole("ADMIN")
-            ? "http://localhost:8080/aziende/react/mod"
-            : "http://localhost:8080/aziende/react/mod/personal";
+            ? "http://89.46.196.60:8443/aziende/react/mod"
+            : "http://89.46.196.60:8443/aziende/react/mod/personal";
 
         try {
             if (!userHasRole("ADMIN")) {
                 await axios.post(
-                    "http://localhost:8080/logs/getRequest",
+                    "http://89.46.196.60:8443/logs/getRequest",
                     {
                         username: user.username,
                         url: `${baseUrl}/interval`,
@@ -120,7 +120,7 @@ const Aziende = () => {
                 params: filtriDaInviare,
             });
 
-            const responseCliente = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
+            const responseCliente = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers: headers });
 
 
             if (Array.isArray(responseCliente.data)) {
@@ -131,11 +131,11 @@ const Aziende = () => {
 
 
             /* const responseOwner = await axios.get(
-                "http://localhost:8080/owner",
+                "http://89.46.196.60:8443/owner",
                 { headers: headers }
             ); */
             const provinceResponse = await axios.get(
-                "http://localhost:8080/aziende/react/province",
+                "http://89.46.196.60:8443/aziende/react/province",
                 { headers: headers }
             );
 
@@ -144,8 +144,8 @@ const Aziende = () => {
                 const username = user?.username;
 
                 const ownerUrl = userHasRole('ADMIN')
-                    ? "http://localhost:8080/owner"
-                    : `http://localhost:8080/${username}`;
+                    ? "http://89.46.196.60:8443/owner"
+                    : `http://89.46.196.60:8443/${username}`;
 
                 const responseOwner = await axios.get(ownerUrl, { headers });
 
@@ -231,13 +231,13 @@ const Aziende = () => {
         }
 
         const baseUrl = userHasRole("ADMIN")
-            ? (isSearchActive ? "http://localhost:8080/aziende/react/ricerca/mod" : "http://localhost:8080/aziende/react/mod")
-            : (isSearchActive ? "http://localhost:8080/aziende/react/ricerca/mod/personal" : "http://localhost:8080/aziende/react/mod/personal");
+            ? (isSearchActive ? "http://89.46.196.60:8443/aziende/react/ricerca/mod" : "http://89.46.196.60:8443/aziende/react/mod")
+            : (isSearchActive ? "http://89.46.196.60:8443/aziende/react/ricerca/mod/personal" : "http://89.46.196.60:8443/aziende/react/mod/personal");
 
         try {
             if (!userHasRole("ADMIN")) {
                 await axios.post(
-                    "http://localhost:8080/logs/getRequest",
+                    "http://89.46.196.60:8443/logs/getRequest",
                     {
                         username: user.username,
                         url: `${baseUrl}/interval`,
@@ -305,14 +305,14 @@ const Aziende = () => {
         }
 
         const baseUrl = userHasRole("ADMIN")
-            ? "http://localhost:8080/aziende/react/ricerca/mod"
-            : "http://localhost:8080/aziende/react/ricerca/mod/personal";
+            ? "http://89.46.196.60:8443/aziende/react/ricerca/mod"
+            : "http://89.46.196.60:8443/aziende/react/ricerca/mod/personal";
 
         setLoading(true);
         try {
             if (!userHasRole("ADMIN")) {
                 await axios.post(
-                    "http://localhost:8080/logs/getRequest",
+                    "http://89.46.196.60:8443/logs/getRequest",
                     {
                         username: user.username,
                         url: `${baseUrl}/interval`,
@@ -327,11 +327,11 @@ const Aziende = () => {
                 params: filtriDaInviare,
             });
             /* const responseOwner = await axios.get(
-                "http://localhost:8080/owner",
+                "http://89.46.196.60:8443/owner",
                 { headers }
             ); */
 
-            const responseCliente = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
+            const responseCliente = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers: headers });
 
             if (Array.isArray(responseCliente.data)) {
                 setClienteOptions(responseCliente.data.map((cliente) => ({ label: cliente.denominazione, value: cliente.id })));
@@ -345,7 +345,7 @@ const Aziende = () => {
                 const username = user?.username;
 
                 const responseOwner = await axios.get(
-                `http://localhost:8080/owner/${username}`,
+                `http://89.46.196.60:8443/owner/${username}`,
                 { headers: headers }
                 );
 
@@ -408,7 +408,7 @@ const Aziende = () => {
     const handleDelete = async (id) => {
         try {
             await axios.delete(
-                `http://localhost:8080/aziende/react/elimina/${id}`,
+                `http://89.46.196.60:8443/aziende/react/elimina/${id}`,
                 { headers: headers }
             );
             const isAnyFilterSet = Object.values(filtri).some((value) => value);
