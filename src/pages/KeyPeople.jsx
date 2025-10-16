@@ -115,19 +115,6 @@ const KeyPeople = () => {
             const user = userString ? JSON.parse(userString) : null;
             const username = user?.username;
 
-            if (!userHasRole("ADMIN")) {
-                await axios.post(
-                    "http://localhost:8080/logs/getRequest",
-                    {
-                        username: user.username,
-                        url: `${baseUrl}/interval`,
-                        params: filtriDaInviare,
-                        timestamp: new Date().toISOString(),
-                    },
-                    { headers }
-                );
-            }
-
             const ownerUrl = userHasRole('ADMIN')
                     ? "http://localhost:8080/owner"
                     : `http://localhost:8080/${username}`;
@@ -215,18 +202,6 @@ const KeyPeople = () => {
             : (isSearchActive ? "http://localhost:8080/keypeople/react/ricerca/mod/personal" : "http://localhost:8080/keypeople/react/mod/personal");
 
         try {
-            if (!userHasRole("ADMIN")) {
-                await axios.post(
-                    "http://localhost:8080/logs/getRequest",
-                    {
-                        username: user.username,
-                        url: `${baseUrl}/interval`,
-                        params: filtriDaInviare,
-                        timestamp: new Date().toISOString(),
-                    },
-                    { headers }
-                );
-            }
             const responsePaginazione = await axios.get(baseUrl, {
                 headers: headers,
                 params: filtriDaInviare,
@@ -295,19 +270,6 @@ const KeyPeople = () => {
             const userString = sessionStorage.getItem("user");
             const user = userString ? JSON.parse(userString) : null;
             const username = user?.username;
-            
-            if (!userHasRole("ADMIN")) {
-                await axios.post(
-                    "http://localhost:8080/logs/getRequest",
-                    {
-                        username: user.username,
-                        url: `${baseUrl}/interval`,
-                        params: filtriDaInviare,
-                        timestamp: new Date().toISOString(),
-                    },
-                    { headers }
-                );
-            }
 
             const ownerUrl = userHasRole('ADMIN')
                     ? "http://localhost:8080/owner"

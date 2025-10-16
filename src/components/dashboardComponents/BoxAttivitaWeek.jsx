@@ -78,18 +78,6 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
                     : `http://localhost:8080/dashboard/attivita/business/personal`;
 
                 try {
-                    if (!isAdmin) {
-                        await axios.post(
-                            "http://localhost:8080/logs/getRequest",
-                            {
-                                username: user.username,
-                                url: `${baseUrl}/interval`,
-                                params: filtriDaInviare,
-                                timestamp: new Date().toISOString(),
-                            },
-                            { headers }
-                        );
-                    }
                     const response = await axios.get(`${baseUrl}/interval`, {
                         headers: headers,
                         params: filtriDaInviare

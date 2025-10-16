@@ -103,18 +103,7 @@ const Aziende = () => {
             : "http://localhost:8080/aziende/react/mod/personal";
 
         try {
-            if (!userHasRole("ADMIN")) {
-                await axios.post(
-                    "http://localhost:8080/logs/getRequest",
-                    {
-                        username: user.username,
-                        url: `${baseUrl}/interval`,
-                        params: filtriDaInviare,
-                        timestamp: new Date().toISOString(),
-                    },
-                    { headers }
-                );
-            }
+            
             const responseAziende = await axios.get(baseUrl, {
                 headers: headers,
                 params: filtriDaInviare,
@@ -235,18 +224,7 @@ const Aziende = () => {
             : (isSearchActive ? "http://localhost:8080/aziende/react/ricerca/mod/personal" : "http://localhost:8080/aziende/react/mod/personal");
 
         try {
-            if (!userHasRole("ADMIN")) {
-                await axios.post(
-                    "http://localhost:8080/logs/getRequest",
-                    {
-                        username: user.username,
-                        url: `${baseUrl}/interval`,
-                        params: filtriDaInviare,
-                        timestamp: new Date().toISOString(),
-                    },
-                    { headers }
-                );
-            }
+            
             const responsePaginazione = await axios.get(baseUrl, {
                 headers: headers,
                 params: filtriDaInviare,
@@ -310,18 +288,7 @@ const Aziende = () => {
 
         setLoading(true);
         try {
-            if (!userHasRole("ADMIN")) {
-                await axios.post(
-                    "http://localhost:8080/logs/getRequest",
-                    {
-                        username: user.username,
-                        url: `${baseUrl}/interval`,
-                        params: filtriDaInviare,
-                        timestamp: new Date().toISOString(),
-                    },
-                    { headers }
-                );
-            }
+            
             const response = await axios.get(baseUrl, {
                 headers: headers,
                 params: filtriDaInviare,
