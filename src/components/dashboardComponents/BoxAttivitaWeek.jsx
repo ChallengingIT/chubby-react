@@ -74,13 +74,13 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
                 };
 
                 const baseUrl = isAdmin
-                    ? `http://localhost:8080/dashboard/attivita/business`
-                    : `http://localhost:8080/dashboard/attivita/business/personal`;
+                    ? `http://89.46.196.60:8443/dashboard/attivita/business`
+                    : `http://89.46.196.60:8443/dashboard/attivita/business/personal`;
 
                 try {
                     if (!isAdmin) {
                         await axios.post(
-                            "http://localhost:8080/logs/getRequest",
+                            "http://89.46.196.60:8443/logs/getRequest",
                             {
                                 username: user.username,
                                 url: `${baseUrl}/interval`,
