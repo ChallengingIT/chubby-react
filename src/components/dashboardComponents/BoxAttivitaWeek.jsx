@@ -74,22 +74,10 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
                 };
 
                 const baseUrl = isAdmin
-                    ? `http://89.46.196.60:8443/dashboard/attivita/business`
-                    : `http://89.46.196.60:8443/dashboard/attivita/business/personal`;
+                    ? `http://localhost:8080/dashboard/attivita/business`
+                    : `http://localhost:8080/dashboard/attivita/business/personal`;
 
                 try {
-                    if (!isAdmin) {
-                        await axios.post(
-                            "http://89.46.196.60:8443/logs/getRequest",
-                            {
-                                username: user.username,
-                                url: `${baseUrl}/interval`,
-                                params: filtriDaInviare,
-                                timestamp: new Date().toISOString(),
-                            },
-                            { headers }
-                        );
-                    }
                     const response = await axios.get(`${baseUrl}/interval`, {
                         headers: headers,
                         params: filtriDaInviare

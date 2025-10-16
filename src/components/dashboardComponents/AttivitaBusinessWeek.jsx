@@ -76,19 +76,9 @@ const AttivitaBusinessBox = ({ data, aziendeOptions }) => {
                 quantita: quantita || null,
                 pagina: 0,
             };
-
-            const endpoint = 'http://89.46.196.60:8443/dashboard/attivita/business/personal/interval';
-
+            
             try {
-                // Log the request
-                await axios.post('http://89.46.196.60:8443/logs/getRequest', {
-                    username: user.username,
-                    url: endpoint,
-                    params: filtriDaInviare,
-                    timestamp: new Date().toISOString()
-                }, { headers });
-
-                const response = await axios.get(endpoint, {
+                const response = await axios.get('http://localhost:8080/dashboard/attivita/business/personal/interval', {
                     headers: headers,
                     params: filtriDaInviare
                 });
