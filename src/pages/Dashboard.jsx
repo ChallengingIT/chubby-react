@@ -111,6 +111,7 @@ function Dashboard() {
 
                     priorita: pipeline?.priorita || "Priorità non disponibile",
                     stato: pipeline?.stato ? pipeline?.stato?.descrizione : "Stato non disponibile",
+                    statoId: pipeline?.stato ? pipeline?.stato?.id : "Stato non disponibile",
                     pipelineData: pipeline?.pipeline || "Dati non disponibili",
                     aziendaInterna: pipeline?.aziendaInterna ? `${pipeline?.aziendaInterna?.descrizione}` : "Azienda non disponibile"
                 }));
