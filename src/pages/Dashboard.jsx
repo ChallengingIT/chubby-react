@@ -238,6 +238,7 @@ function Dashboard() {
                     backgroundColor: "#EEEDEE",
                     height: "auto",
                     width: "auto",
+                    overflow: "hidden",
                 }}
             >
                 <Container
@@ -248,7 +249,6 @@ function Dashboard() {
                         flexDirection: 'column',
                         p: 3,
                         marginLeft: isSmallScreen ? "3.5em" : "11em",
-                        // marginTop: "0.5em",
                         marginBottom: "0.8em",
                         marginRight: "0.8em",
                         backgroundColor: "#FEFCFD",
@@ -260,16 +260,16 @@ function Dashboard() {
                     }}
                 >
                     <Grid container spacing={2} >
-                        <Grid item xs={12} >
+                        <Grid item xs={12} sx= {{ marginBottom: "1em" }}>
                             <CustomTableCell2
                                 columns={columns}
                                 rows={originalPipeline}
                                 title={t("Pipeline")}
                                 onRefresh={handleRefresh}
                                 sx={{
-                                    maxHeight: "50vh",   // limite massimo metà schermo
-                                    overflow: "auto",    // scroll se supera
-                                    height: "auto",      // si adatta finché non arriva al max 
+                                    maxHeight: "50vh",  
+                                    overflow: "auto",   
+                                    height: "auto",
                                 }}
                             />
                         </Grid>
@@ -278,11 +278,11 @@ function Dashboard() {
                             <Grid item xs={12}>
                                 <Card
                                     sx={{
-                                        mt: 2,
+                                        mt: 0,
                                         ml: 2,
                                         borderRadius: "20px",
                                         maxWidth: "100%",
-                                        maxHeight: "45vh",
+                                        maxHeight: "50vh",
                                         border: "2px solid #00B401",
                                         display: "flex",
                                         flexDirection: "column",
@@ -295,7 +295,11 @@ function Dashboard() {
                                     <CardContent
                                         disableGutters
                                         sx={{
-                                            padding: 1,
+                                            "&:last-child": { paddingBottom: 0 },
+                                            paddingTop: 1,
+                                            paddingBottom: 0,
+                                            paddingLeft: 0,
+                                            paddingRight: 0,
                                             flexGrow: 1,
                                             display: "flex",
                                             flexDirection: "column",

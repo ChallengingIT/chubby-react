@@ -378,6 +378,9 @@ const AggiungiNeedGrafica = () => {
                     }
                 });
 
+                values.idNeedPadre = values.idNeedPadre || null;
+                values.compilato = values.idNeedPadre && values.compilato === false ? true : false;
+
                 const userString = sessionStorage.getItem("user");
                 if (!userString) {
                     console.error("Nessun utente o token trovato in sessionStorage");

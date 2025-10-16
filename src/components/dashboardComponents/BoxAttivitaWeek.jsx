@@ -10,9 +10,7 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
     const theme = useUserTheme();
     const { t } = useTranslation();
 
-    const [currentDate, setCurrentDate] = useState(new Date());
     const [weekDataKeyPeople, setWeekDataKeyPeople] = useState([]);
-    const [interval, setInterval] = useState(0);
     const quantita = 10;
 
     const user = JSON.parse(sessionStorage.getItem("user"));
@@ -58,74 +56,86 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
         return includeYear ? `${day} ${month} ${year}` : `${day}`;
     };
 
-    const weekStart = getWeekStart(currentDate);
-    const weekEnd = getWeekEnd(currentDate);
-    const weekRange = `${formatDate(weekStart, false)} - ${formatDate(weekEnd)}`;
+    // Fetch data for multiple weeks, for example current week and previous/next weeks
+    // Here we fetch data for -1, 0, 1 intervals to show multiple weeks together
+    const intervalsToFetch = [-1, 0, 1];
 
     useEffect(() => {
-        const newDate = new Date();
-        newDate.setDate(newDate.getDate() + (interval * 7));
-        setCurrentDate(newDate);
-    }, [interval]);
-
-    useEffect(() => {
-
-        const fetchWeekData = async (type) => {
+        const fetchAllWeeksData = async () => {
             const isAdmin = userHasRole("ADMIN");
-            const filtriDaInviare = {
-                interval: interval,
-                quantita: quantita || null,
-                pagina: 0,
-                ...(isAdmin ? {} : { username: user.username || null })
-            };
+            let allData = [];
 
-            const baseUrl = isAdmin
-                ? `http://89.46.196.60:8443/dashboard/attivita/business`
-                : `http://89.46.196.60:8443/dashboard/attivita/business/personal`;
+            for (const interval of intervalsToFetch) {
+                const filtriDaInviare = {
+                    interval: interval,
+                    quantita: quantita || null,
+                    pagina: 0,
+                    ...(isAdmin ? {} : { username: user.username || null })
+                };
 
-            try {
-                if (!isAdmin) {
-                    await axios.post(
-                        "http://89.46.196.60:8443/logs/getRequest",
-                        {
-                            username: user.username,
-                            url: `${baseUrl}/interval`,
-                            params: filtriDaInviare,
-                            timestamp: new Date().toISOString(),
-                        },
-                        { headers }
-                    );
+                const baseUrl = isAdmin
+                    ? `http://localhost:8080/dashboard/attivita/business`
+                    : `http://localhost:8080/dashboard/attivita/business/personal`;
+
+                try {
+                    if (!isAdmin) {
+                        await axios.post(
+                            "http://localhost:8080/logs/getRequest",
+                            {
+                                username: user.username,
+                                url: `${baseUrl}/interval`,
+                                params: filtriDaInviare,
+                                timestamp: new Date().toISOString(),
+                            },
+                            { headers }
+                        );
+                    }
+                    const response = await axios.get(`${baseUrl}/interval`, {
+                        headers: headers,
+                        params: filtriDaInviare
+                    });
+                    // Add interval info to each data item
+                    const dataWithInterval = (Array.isArray(response.data) ? response.data : []).map(item => ({
+                        ...item,
+                        interval
+                    }));
+                    allData = allData.concat(dataWithInterval);
+                } catch (error) {
+                    console.error(`Error fetching week data for interval ${interval}:`, error);
                 }
-                const response = await axios.get(`${baseUrl}/interval`, {
-                    headers: headers,
-                    params: filtriDaInviare
-                });
-                setWeekDataKeyPeople(Array.isArray(response.data) ? response.data : []);
-                console.log(response.data)
-                console.log("Interval:", interval);
-                console.log("User:", user.username);
-                console.log("Admin?", userHasRole("ADMIN"));
-                console.log("URL chiamata:", `${baseUrl}/interval`);
-                console.log("Params:", filtriDaInviare);
-            } catch (error) {
-                console.error(`Error fetching ${type} week data:`, error);
             }
+            setWeekDataKeyPeople(allData);
         };
 
-        fetchWeekData();
-    }, [interval]);
+        fetchAllWeeksData();
+    }, []);
+
+    // Helper to get week range string from interval
+    const getWeekRangeFromInterval = (interval) => {
+        const baseDate = new Date();
+        baseDate.setDate(baseDate.getDate() + (interval * 7));
+        const weekStart = getWeekStart(baseDate);
+        const weekEnd = getWeekEnd(baseDate);
+        return `${formatDate(weekStart)} - ${formatDate(weekEnd)}`;
+    };
+
+    // Prepare data grouped by week range for the table component to render merged cells
+    // This grouping will be done inside TabellaAzioni based on 'interval' property
 
     return (
-        <Box className="cardTabellaBusiness" sx={{ width: '100%', height: '100%', position: 'relative', display: 'flex', flexDirection: 'column', paddingTop: 1, paddingBottom: 0 }}>
-            <Box display="flex" alignItems="center" mb={0} ml={2} sx={{ paddingBottom: 0 }}>
+        <Box className="cardTabellaBusiness" sx={{ width: '100%', height: '100%', position: 'relative', display: 'flex', flexDirection: 'column', p: 0 }}>
+            <Box display="flex" alignItems="center" justifyContent="space-between" mb={0} ml={2} mt={1} sx={{ paddingBottom: 0 }}>
                 <Typography variant='h5' sx={{ fontWeight: 'bold', fontSize: '1.2em' }}>
                     {t("Piano Incontri")}
                 </Typography>
             </Box>
-            <Box sx={{ flexGrow: 1, width: '100%', overflowY: 'auto', alignItems: "center", paddingBottom: 0 }}>
+            <Box sx={{ flexGrow: 1, width: '100%', overflowY: 'auto', alignItems: "center", p: 0 }}>
                 <TabellaAzioni
                     data={weekDataKeyPeople}
-                    aziendeOptions={aziendeOptions} />
+                    aziendeOptions={aziendeOptions}
+                    getWeekRangeFromInterval={getWeekRangeFromInterval} // pass helper for week range formatting
+                    showWeekColumn={true} // flag to show the new week column with merged cells
+                />
             </Box>
         </Box>
     );
