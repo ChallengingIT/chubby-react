@@ -433,8 +433,17 @@ const ModificaNeedGrafica = () => {
 
                 const transformedValues = replaceKeysInValues(values, fieldMapping);
 
+                values.idNeedPadre = values.idNeedPadre || null;
+                values.compilato = values.idNeedPadre && values.compilato === false ? true : false;
+
                 const userString = sessionStorage.getItem("user");
                 const userObj = userString ? JSON.parse(userString) : null;
+
+                if (values.toggleRicerca === undefined || values.toggleRicerca === null) {
+                    values.toggleRicerca = false;
+                }
+
+                transformedValues.toggleRicerca = values.toggleRicerca;
 
                 const responseSaveNeed = await axios.post(
                     "http://localhost:8080/need/react/salva",

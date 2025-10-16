@@ -403,6 +403,10 @@ const AggiungiNeedGrafica = () => {
 
                 delete values.skills;
 
+                if (values.toggleRicerca === undefined || values.toggleRicerca === null) {
+                    values.toggleRicerca = false;
+                }
+
                 const responseSaveNeed = await axios.post(
                     "http://localhost:8080/need/react/salva",
                     values,
