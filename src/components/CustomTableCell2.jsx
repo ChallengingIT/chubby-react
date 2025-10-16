@@ -146,7 +146,7 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title }) => {
     const handleOpenModal = (row) => {
         setSelectedPipeline(row);
         setValues({
-            stato: row.stato || null,
+            stato: row.statoId || null,
             priorita: row.priorita || null
         });
         setModalStato(true);

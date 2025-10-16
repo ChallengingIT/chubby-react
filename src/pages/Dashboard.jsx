@@ -111,6 +111,7 @@ function Dashboard() {
 
                     priorita: pipeline?.priorita || "Priorità non disponibile",
                     stato: pipeline?.stato ? pipeline?.stato?.descrizione : "Stato non disponibile",
+                    statoId: pipeline?.stato ? pipeline?.stato?.id : "Stato non disponibile",
                     pipelineData: pipeline?.pipeline || "Dati non disponibili",
                     aziendaInterna: pipeline?.aziendaInterna ? `${pipeline?.aziendaInterna?.descrizione}` : "Azienda non disponibile"
                 }));
@@ -274,7 +275,7 @@ function Dashboard() {
                             />
                         </Grid>
                         {/* ACTIONS TABLE */}
-                        {/* <Grid container spacing={2}>
+                        <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <Card
                                     sx={{
@@ -313,7 +314,7 @@ function Dashboard() {
                                     </CardContent>
                                 </Card>
                             </Grid>
-                        </Grid> */}
+                        </Grid>
                     </Grid>
                 </Container>
             </Container>
