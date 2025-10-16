@@ -433,9 +433,6 @@ const ModificaNeedGrafica = () => {
 
                 const transformedValues = replaceKeysInValues(values, fieldMapping);
 
-                values.idNeedPadre = values.idNeedPadre || null;
-                values.compilato = values.idNeedPadre && values.compilato === false ? true : false;
-
                 const userString = sessionStorage.getItem("user");
                 const userObj = userString ? JSON.parse(userString) : null;
 
@@ -535,7 +532,7 @@ const ModificaNeedGrafica = () => {
         { label: "Skills", name: "idSkills", type: "multipleSelect", options: skillsOptions },
         { label: t('Pubblicazione Annuncio*'), name: 'pubblicazione', type: 'select', options: pubblicazioneOptions },
         { label: t('Screening*'), name: 'screening', type: 'select', options: screeningOptions },
-        { label: t("Note"), name: "noteRicerca", type: "note", visibleIf: () => isChallengingUser },
+        { label: t("Note"), name: "noteRicercaToggle", type: "note", visibleIf: () => isChallengingUser },
 
         // Modalità B: tutti gli altri
         { label: "Richiede ricerca e selezione?", name: "toggleRicerca", type: "toggle", visibleIf: () => !isChallengingUser },
@@ -565,9 +562,8 @@ const ModificaNeedGrafica = () => {
         pubblicazione: datiModifica?.pubblicazione || null,
         screening: datiModifica?.screening || null,
         note: datiModifica?.note || null,
-        noteRicerca: datiModifica?.noteRicerca || null,
-        toggleRicerca: datiModifica?.noteRicerca ? true : false,
-        noteRicercaToggle: datiModifica?.noteRicerca || null,
+        toggleRicerca: datiModifica?.toggleRicerca ? true : false,
+        noteRicercaToggle: datiModifica?.noteRicercaToggle || null,
 
     };
 

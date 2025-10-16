@@ -407,6 +407,9 @@ const AggiungiNeedGrafica = () => {
                     values.toggleRicerca = false;
                 }
 
+                values.note = values.note || values.noteValore || null;
+                values.noteRicercaToggle = values.noteRicercaToggle || null;
+
                 const responseSaveNeed = await axios.post(
                     "http://localhost:8080/need/react/salva",
                     values,
@@ -484,7 +487,7 @@ const AggiungiNeedGrafica = () => {
         { label: "Skills", name: "skills", type: "multipleSelect", options: skillsOptions, visibleIf: () => isChallengingUser },
         { label: "Pubblicazione Annuncio*", name: 'pubblicazione', type: 'select', options: pubblicazioneOptions, visibleIf: () => isChallengingUser },
         { label: "Screening*", name: 'screening', type: 'select', options: screeningOptions, visibleIf: () => isChallengingUser },
-        { label: t("Note"), name: "noteRicerca", type: "note", visibleIf: () => isChallengingUser },
+        { label: t("Note"), name: "noteRicercaToggle", type: "note", visibleIf: () => isChallengingUser },
 
         // Modalità B: tutti gli altri
         { label: "Richiede ricerca e selezione?", name: "toggleRicerca", type: "toggle",   visibleIf: () => !isChallengingUser},
