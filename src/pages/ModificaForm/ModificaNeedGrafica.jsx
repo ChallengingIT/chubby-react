@@ -290,7 +290,7 @@ const ModificaNeedGrafica = () => {
             case 0:
                 return ["idAziendaInterna", "idAzienda", "idKeyPeople"];
             case 1:
-                return ["descrizione", "idStato", "priorita", "idTipologia", "week", "location", "idOwner", "idOwnerRecruiter"];
+                return ["descrizione", "idStato", "priorita", "idTipologia", "dataRichiesta", "location", "idOwner", "idOwnerRecruiter"];
             case 2:
                 return isChallengingUser ? ["pubblicazione", "screening"] : [];
             default:
@@ -482,7 +482,7 @@ const ModificaNeedGrafica = () => {
         }
     };
 
-    const fieldObbligatori = ["idAziendaInterna", "idAzienda", "priorita", "descrizione", "week", "pubblicazione", "screening", "idTipologia", "stato", "idOwner", "location", "idOwnerRecruiter"];
+    const fieldObbligatori = ["idAziendaInterna", "idAzienda", "priorita", "descrizione", "dataRichiesta", "pubblicazione", "screening", "idTipologia", "stato", "idOwner", "location", "idOwnerRecruiter"];
 
     const fields = [
         { type: "titleGroups", label: t("Dettagli Business") },
@@ -510,7 +510,7 @@ const ModificaNeedGrafica = () => {
             ]
         },
         { label: t("Tipo Need*"), name: "idTipologia", type: "select", options: tipologiaOptions },
-        { label: "Data apertura Need*", name: "week", type: "week" },
+        { label: "Data apertura Need*", name: "dataRichiesta", type: "date" },
         { label: "Location*", name: "location", type: "text", maxLength: 45 },
         {
             label: "Delivery Model", name: "deliveryModel", type: "select", options: [
@@ -549,7 +549,7 @@ const ModificaNeedGrafica = () => {
         descrizione: datiModifica?.descrizione || null,
         idKeyPeople: (datiModifica?.keyPeople && datiModifica?.keyPeople?.id) || null,
         priorita: datiModifica?.priorita || null,
-        week: datiModifica?.week || null,
+        dataRichiesta: datiModifica?.dataRichiesta || null,
         idTipologia: (datiModifica?.tipologia && datiModifica?.tipologia?.id) || null,
         idTipo: datiModifica?.tipo || null,
         deliveryModel: datiModifica?.deliveryModel || null,

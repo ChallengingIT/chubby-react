@@ -243,7 +243,7 @@ const AggiungiNeedGrafica = () => {
             case 0:
                 return ["idAziendaInterna", "idAzienda", "idKeyPeople"];
             case 1:
-                return ["descrizione", "stato", "priorita", "tipologia", "week", "location", "idOwner", "idOwnerRecruiter"];
+                return ["descrizione", "stato", "priorita", "tipologia", "dataRichiesta", "location", "idOwner", "idOwnerRecruiter"];
             case 2:
                 return isChallengingUser ? ["pubblicazione", "screening"] : [];
             default:
@@ -430,7 +430,7 @@ const AggiungiNeedGrafica = () => {
         }
     };
 
-    const fieldObbligatori = ["idAziendaInterna", "idAzienda", "priorita", "descrizione", "week", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location", "idKeyPeople", "idOwnerRecruiter"];
+    const fieldObbligatori = ["idAziendaInterna", "idAzienda", "priorita", "descrizione", "dataRichiesta", "pubblicazione", "screening", "tipologia", "stato", "idOwner", "location", "idKeyPeople", "idOwnerRecruiter"];
 
     const fields = [
         // Sezione Dettagli Business
@@ -459,7 +459,7 @@ const AggiungiNeedGrafica = () => {
             ]
         },
         { label: t("Tipo Need*"), name: "tipologia", type: "select", options: tipologiaOptions },
-        { label: "Data apertura Need*", name: "week", type: "week" },
+        { label: "Data apertura Need*", name: "dataRichiesta", type: "date" },
         { label: "Location*", name: "location", type: "text" },
         {
             label: "Delivery Model", name: "deliveryModel", type: "select", options: [
