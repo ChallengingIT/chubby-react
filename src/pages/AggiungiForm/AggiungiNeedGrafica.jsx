@@ -116,7 +116,7 @@ const AggiungiNeedGrafica = () => {
 
                 const ownerUrl = userHasRole('ADMIN')
                    ? "http://localhost:8080/owner"
-                   : `http://localhost:8080/${username}`;
+                   : `http://localhost:8080/owner/${username}`;
 
                 const ownerResponse = await axios.get(ownerUrl, { headers });
 

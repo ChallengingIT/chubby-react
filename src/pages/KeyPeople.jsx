@@ -117,7 +117,7 @@ const KeyPeople = () => {
 
             const ownerUrl = userHasRole('ADMIN')
                     ? "http://localhost:8080/owner"
-                    : `http://localhost:8080/${username}`;
+                    : `http://localhost:8080/owner/${username}`;
 
             const responseOwner = await axios.get(ownerUrl, { headers });
 
@@ -273,7 +273,7 @@ const KeyPeople = () => {
 
             const ownerUrl = userHasRole('ADMIN')
                     ? "http://localhost:8080/owner"
-                    : `http://localhost:8080/${username}`;
+                    : `http://localhost:8080/owner/${username}`;
 
             const responseOwner = await axios.get(ownerUrl, { headers });
             
