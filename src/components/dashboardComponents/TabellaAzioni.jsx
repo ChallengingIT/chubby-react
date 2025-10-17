@@ -146,11 +146,12 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
             field: "formattedDate",
             headerName: "Data",
             flex: 1,
-            renderHeader: () => <span style={{ fontWeight: "normal", }}>Data</span>,
-            valueGetter: (params) => {
-                const date = params.value ? new Date(params.value) : null;
-                return date instanceof Date && !isNaN(date) ? format(date, "dd-MM-yyyy") : "";
-            }
+                        sortable: true,
+            valueGetter: (params) => params.value ? new Date(params.value) : null,
+            renderCell: (params) => {
+                return params.value instanceof Date ? format(params.value, "dd-MM-yyyy") : "";
+            },
+            renderHeader: () => <span style={{ fontWeight: "normal" }}>Data</span>
         },
         ...(userHasRole("ADMIN") ? [{
             field: "siglaOwner",
@@ -171,6 +172,7 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
             field: "azione",
             headerName: "Tipologia",
             flex: 1,
+            sorting: true,
             renderHeader: () =>
                 editableColumns.azione ? (
                     <div style={{ display: "flex" }}>

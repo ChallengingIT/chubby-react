@@ -20,7 +20,7 @@ import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 
 
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Alert, Stack, Pagination, Popover, Slide, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Alert, Stack, Pagination, Popover, Slide, Dialog, DialogTitle, DialogContent, DialogActions, Checkbox } from '@mui/material';
 import {
     Card,
     CardContent,
@@ -411,14 +411,14 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
     ];
 
     const handleAzioniSubmit = async (idKeyPeople) => {
-        const formattedData = values.data ? new Date(values.data).toISOString().slice(0,16) : null
+        const formattedData = values.data ? new Date(values.data).toISOString().slice(0, 16) : null
         const valoriDaInviare = {
             ...(azioneInModifica ? { id: azioneInModifica } : {}),
             data: formattedData,
             idTipologia: values.tipologie,
             note: values.note,
             descrizione: values.descrizione,
-            completata: values.completato? true : false
+            completata: values.completata ? true : false
         };
 
         try {
@@ -429,7 +429,7 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
             );
 
             if (response.data === "OK") {
-                setValues({ data: '', tipologie: '', note: '', descrizione: '', completato: '' });
+                setValues({ data: '', tipologie: '', note: '', descrizione: '', completata: false });
                 setAzioneInModifica(null);
                 handleOpenSnackbar(t('Azione modificata con successo!'), 'success');
                 await azioniKeypeople(idKeyPeople);
@@ -447,9 +447,53 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
             tipologie: azione.tipologia?.id || '',
             note: azione.note,
             descrizione: azione.descrizione,
-            completato: azione.completato
+            completata: azione.completata
         });
         setModalStorico(true);
+    };
+
+    // Funzione aggiornata per toggle stato completata di una azione
+    const handleToggleCompletata = async (azione) => {
+        if (!azione) return;
+
+        try {
+            // Recupera l'azione originale dal state
+            const azioneOriginale = azioni.find(a => a.id === azione.id);
+            if (!azioneOriginale) return;
+
+            const formattedData = azioneOriginale.dataModifica
+                ? azioneOriginale.dataModifica.slice(0, 16) // yyyy-MM-ddTHH:mm
+                : null;
+            const body = {
+                id: azioneOriginale.id,
+                completata: !azioneOriginale.completata,
+                data: formattedData,
+                descrizione: azioneOriginale.descrizione,
+                note: azioneOriginale.note,
+                idTipologia: azioneOriginale.tipologia?.id
+            };
+
+            const response = await axios.post(
+                `http://localhost:8080/azioni/react/salva/${valori.id}`,
+                body,
+                { headers }
+            );
+
+            if (response.data === "OK") {
+                setAzioni(prev =>
+                    prev.map(a =>
+                        a.id === azione.id ? { ...a, completata: !a.completata } : a
+                    )
+                );
+                handleOpenSnackbar("Stato aggiornato con successo!", 'success');
+            } else {
+                handleOpenSnackbar("Errore durante l'aggiornamento dello stato", 'error');
+            }
+
+        } catch (error) {
+            console.error(error);
+            handleOpenSnackbar("Errore durante l'aggiornamento dello stato", 'error');
+        }
     };
 
     const handleDeleteAzione = (id) => {
@@ -814,8 +858,8 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold', fontSize: 'large' }}>{t('Data')}</TableCell>
                                         <TableCell sx={{ fontWeight: 'bold', fontSize: 'large' }}>{t('Azione')}</TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold', fontSize: 'large' }}>{t('Note')}</TableCell>
                                         <TableCell sx={{ fontWeight: 'bold', fontSize: 'large' }}>{t('Descrizione')}</TableCell>
+                                        <TableCell sx={{ fontWeight: 'bold', fontSize: 'large' }}>{t('Note')}</TableCell>
                                         <TableCell sx={{ fontWeight: 'bold', fontSize: 'large' }}>{t('Stato')}</TableCell>
                                         <TableCell sx={{ fontWeight: 'bold', fontSize: 'large' }}>{t('Azioni')}</TableCell>
                                     </TableRow>
@@ -825,9 +869,20 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                                         <TableRow key={azione.id}>
                                             <TableCell>{azione.dataModifica}</TableCell>
                                             <TableCell>{azione.tipologia && azione.tipologia?.descrizione}</TableCell>
-                                            <TableCell>{azione.note}</TableCell>
                                             <TableCell>{azione.descrizione}</TableCell>
-                                            <TableCell>{azione.completato}</TableCell>
+                                            <TableCell>{azione.note}</TableCell>
+                                            <TableCell align="center">
+                                                <Checkbox
+                                                    checked={azione.completata || false}
+                                                    onChange={() => handleToggleCompletata(azione)}
+                                                    sx={{
+                                                        color: '#00B400',
+                                                        '&.Mui-checked': {
+                                                            color: '#00B400',
+                                                        },
+                                                    }}
+                                                />
+                                            </TableCell>
                                             <TableCell>
                                                 <IconButton onClick={() => handleEditAzione(azione)} sx={{ color: '#00B400' }}>
                                                     <EditIcon />
@@ -911,9 +966,7 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                                         }}
                                     />}
                             />
-                            {/* </FormControl> */}
-                        </Box>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', pr: 2, pl: 2, mb: 2 }}>
+                            {/* Descrizione */}
                             <TextField
                                 label={t("Descrizione")}
                                 variant="filled"
@@ -921,11 +974,12 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                                 multiline
                                 rows={1}  // Aggiunta di più righe per l'input delle note
                                 inputProps={{
-                                    maxLength: 100
+                                    maxLength: 37
                                 }}
                                 sx={{
-                                    width: '100%',  // Occupare tutta la larghezza
+                                    width: '40%',
                                     p: 1,
+                                    height: '4em',
                                     borderRadius: '20px',
                                     backgroundColor: '#EDEDED',
                                     '& .MuiFilledInput-root': {
