@@ -6,6 +6,7 @@ import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import BusinessIcon from '@mui/icons-material/Business'; //azienda
 import SettingsIcon from '@mui/icons-material/Settings';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import ExploreIcon from '@mui/icons-material/Explore'; //need
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow'; //azioni
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle'; //cambia stato
@@ -65,12 +66,18 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
     const [anchorElStato, setAnchorElStato] = useState(null);
     const [alert, setAlert] = useState(false);
     const [hasAnimated, setHasAnimated] = useState(false);
+    // Stato per dialog conferma eliminazione azione
+    const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+    const [azioneDaEliminare, setAzioneDaEliminare] = useState(null);
 
+    const [azioneInModifica, setAzioneInModifica] = useState(null);
 
     const [values, setValues] = useState({
         tipologie: '',
         data: '',
-        note: ''
+        note: '',
+        descrizione: '',
+        completata: false,
     });
 
     //stato per lo snackbar
@@ -200,7 +207,7 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
 
     const azioniKeypeople = async (id, event) => {
         try {
-            const responseAzioni = await axios.get(`http://89.46.196.60:8443/azioni/react/${id}`, { header: headers });
+            const responseAzioni = await axios.get(`http://localhost:8080/azioni/react/${id}`, { header: headers });
             if (Array.isArray(responseAzioni.data)) {
                 const azioni = responseAzioni.data.map((azione) => ({ ...azione }));
                 setAzioni(azioni);
@@ -224,7 +231,7 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
             quantita: 10
         };
         try {
-            const responseNeed = await axios.get(`http://89.46.196.60:8443/need/react/keypeople/modificato/${id}`, { headers: headers, params: datiDaInviare });
+            const responseNeed = await axios.get(`http://localhost:8080/need/react/keypeople/modificato/${id}`, { headers: headers, params: datiDaInviare });
             if (Array.isArray(responseNeed.data)) {
                 const needDaAssociare = responseNeed.data.map((keypeople) => ({ ...keypeople }));
                 setNeedAssociati(needDaAssociare);
@@ -244,7 +251,7 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
             quantita: 10
         };
         try {
-            const responseNeed = await axios.get(`http://89.46.196.60:8443/need/react/keypeople/modificato/${id}`, { headers: headers, params: datiDaInviare });
+            const responseNeed = await axios.get(`http://localhost:8080/need/react/keypeople/modificato/${id}`, { headers: headers, params: datiDaInviare });
             if (Array.isArray(responseNeed.data)) {
                 const needDaAssociare = responseNeed.data.map((keypeople) => ({ ...keypeople }));
                 setNeedAssociati(needDaAssociare);
@@ -265,7 +272,7 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
 
     const azioniData = async (id, event) => {
         try {
-            const responseAzioni = await axios.get(`http://89.46.196.60:8443/azioni/react/tipologie`, { headers: headers });
+            const responseAzioni = await axios.get(`http://localhost:8080/azioni/react/tipologie`, { headers: headers });
             if (Array.isArray(responseAzioni.data)) {
                 setTipologieOptions(responseAzioni.data.map((tipologie) => ({ label: tipologie.descrizione, value: tipologie.id })));
             } else {
@@ -288,11 +295,11 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
 
     //funzione per il cambio stato
     const handleUpdateStato = async () => {
-        const idStato = values.stato;  
+        const idStato = values.stato;
         const username = user?.username || null;
         const params = new URLSearchParams({ stato: idStato, username: username });
         try {
-            const responseUpdateStato = await axios.post(`http://89.46.196.60:8443/keypeople/react/salva/stato/${idKeypeople}?${params.toString()}`, {}, { headers: headers });
+            const responseUpdateStato = await axios.post(`http://localhost:8080/keypeople/react/salva/stato/${idKeypeople}?${params.toString()}`, {}, { headers: headers });
             setModalCambiaStato(false);
             onRefresh();
             handleOpenSnackbar(t('Stato aggiornato con successo!'), 'success');
@@ -403,29 +410,71 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
         }
     ];
 
-    const handleAzioniSubmit = async (id) => {
+    const handleAzioniSubmit = async (idKeyPeople) => {
+        const formattedData = values.data ? new Date(values.data).toISOString().slice(0,16) : null
         const valoriDaInviare = {
-            data: values.data,
+            ...(azioneInModifica ? { id: azioneInModifica } : {}),
+            data: formattedData,
             idTipologia: values.tipologie,
             note: values.note,
+            descrizione: values.descrizione,
+            completata: values.completato? true : false
         };
+
         try {
-            const responseSubmitAzione = await axios.post(`http://89.46.196.60:8443/azioni/react/salva/${id}`, valoriDaInviare, { headers: headers });
-            if (responseSubmitAzione.data === "OK") {
-                setValues({
-                    data: '',
-                    tipologie: '',
-                    note: ''
-                });
-                handleOpenSnackbar(t('Azione salvata con successo!'), 'success');
-                await azioniKeypeople(valori.id);
-            } else {
-                handleOpenSnackbar(t("Compila tutti i campi prima di aggiungere l'azione"), 'error');
+            const response = await axios.post(
+                `http://localhost:8080/azioni/react/salva/${idKeyPeople}`,
+                valoriDaInviare,
+                { headers }
+            );
+
+            if (response.data === "OK") {
+                setValues({ data: '', tipologie: '', note: '', descrizione: '', completato: '' });
+                setAzioneInModifica(null);
+                handleOpenSnackbar(t('Azione modificata con successo!'), 'success');
+                await azioniKeypeople(idKeyPeople);
             }
-            // handleCloseModalAzioni();
         } catch (error) {
-            console.error("Errore durante l'invio dei dati: ", error);
-            handleOpenSnackbar(t('Errore durante l invio dei dati.'), 'error');
+            console.error(error);
+        }
+    };
+
+
+    const handleEditAzione = (azione) => {
+        setAzioneInModifica(azione.id);
+        setValues({
+            data: azione.dataModifica,
+            tipologie: azione.tipologia?.id || '',
+            note: azione.note,
+            descrizione: azione.descrizione,
+            completato: azione.completato
+        });
+        setModalStorico(true);
+    };
+
+    const handleDeleteAzione = (id) => {
+        setAzioneDaEliminare(id);
+        setConfirmDeleteOpen(true);
+    };
+
+    const confirmDeleteAzione = async () => {
+        try {
+            const response = await axios.delete(
+                `http://localhost:8080/azioni/react/elimina/${azioneDaEliminare}`,
+                { header: headers }
+            );
+            if (response.data === "OK") {
+                handleOpenSnackbar(t('Azione eliminata con successo!'), 'success');
+                setAzioni(prev => prev.filter(a => a.id !== azioneDaEliminare));
+            } else {
+                handleOpenSnackbar(t('Errore durante l\'eliminazione dell\'azione'), 'error');
+            }
+        } catch (error) {
+            console.error(error);
+            handleOpenSnackbar(t('Errore durante l\'eliminazione dell\'azione'), 'error');
+        } finally {
+            setConfirmDeleteOpen(false);
+            setAzioneDaEliminare(null);
         }
     };
 
@@ -764,9 +813,11 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                                 <TableHead>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold', fontSize: 'large' }}>{t('Data')}</TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold', fontSize: 'large' }}>{t('Tipologia')}</TableCell>
+                                        <TableCell sx={{ fontWeight: 'bold', fontSize: 'large' }}>{t('Azione')}</TableCell>
                                         <TableCell sx={{ fontWeight: 'bold', fontSize: 'large' }}>{t('Note')}</TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold', fontSize: 'large' }}></TableCell>
+                                        <TableCell sx={{ fontWeight: 'bold', fontSize: 'large' }}>{t('Descrizione')}</TableCell>
+                                        <TableCell sx={{ fontWeight: 'bold', fontSize: 'large' }}>{t('Stato')}</TableCell>
+                                        <TableCell sx={{ fontWeight: 'bold', fontSize: 'large' }}>{t('Azioni')}</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -775,7 +826,16 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                                             <TableCell>{azione.dataModifica}</TableCell>
                                             <TableCell>{azione.tipologia && azione.tipologia?.descrizione}</TableCell>
                                             <TableCell>{azione.note}</TableCell>
-                                            <TableCell></TableCell>
+                                            <TableCell>{azione.descrizione}</TableCell>
+                                            <TableCell>{azione.completato}</TableCell>
+                                            <TableCell>
+                                                <IconButton onClick={() => handleEditAzione(azione)} sx={{ color: '#00B400' }}>
+                                                    <EditIcon />
+                                                </IconButton>
+                                                <IconButton onClick={() => handleDeleteAzione(azione.id)} sx={{ color: '#db000e' }}>
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            </TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
@@ -853,7 +913,40 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                             />
                             {/* </FormControl> */}
                         </Box>
-
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', pr: 2, pl: 2, mb: 2 }}>
+                            <TextField
+                                label={t("Descrizione")}
+                                variant="filled"
+                                value={values.descrizione || ""}
+                                multiline
+                                rows={1}  // Aggiunta di più righe per l'input delle note
+                                inputProps={{
+                                    maxLength: 100
+                                }}
+                                sx={{
+                                    width: '100%',  // Occupare tutta la larghezza
+                                    p: 1,
+                                    borderRadius: '20px',
+                                    backgroundColor: '#EDEDED',
+                                    '& .MuiFilledInput-root': {
+                                        backgroundColor: 'transparent',
+                                    },
+                                    '& .MuiFilledInput-underline:after': {
+                                        borderBottomColor: 'transparent',
+                                    },
+                                    '& .MuiFilledInput-root::before': {
+                                        borderBottom: 'none',
+                                    },
+                                    '&:hover .MuiFilledInput-root::before': {
+                                        borderBottom: 'none',
+                                    },
+                                    '& .MuiFormLabel-root.Mui-focused': {
+                                        color: '#00B400',
+                                    },
+                                }}
+                                onChange={(event) => handleValueChange('descrizione', event.target.value)}
+                            />
+                        </Box>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', pr: 2, pl: 2 }}>
                             <TextField
                                 label={t("Note")}
@@ -902,8 +995,8 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                                 '&:hover': { bgcolor: '#00B400', transform: 'scale(1.02)' }
                             }}
                         >
-                            <AddCircleIcon sx={{ color: 'white', mr: 1 }} />
-                            {t('AGGIUNGI')}
+                            {!azioneInModifica && <AddCircleIcon sx={{ color: 'white', mr: 1 }} />}
+                            {azioneInModifica ? t('SALVA MODIFICHE') : t('AGGIUNGI')}
                         </Button>
                     </DialogActions>
                 </Dialog>
@@ -1350,6 +1443,29 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                         {alert.message}
                     </Alert>
                 </Snackbar>
+                {/* Dialog conferma eliminazione azione */}
+                <Dialog
+                    open={confirmDeleteOpen}
+                    onClose={() => setConfirmDeleteOpen(false)}
+                    sx={{
+                        '& .MuiDialog-paper': {
+                            borderRadius: '20px',
+                        },
+                    }}
+                >
+                    <DialogTitle>{t('Conferma Eliminazione')}</DialogTitle>
+                    <DialogContent>
+                        <Typography>{t('Sei sicuro di voler eliminare questa azione?')}</Typography>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => setConfirmDeleteOpen(false)}>
+                            {t('Annulla')}
+                        </Button>
+                        <Button onClick={confirmDeleteAzione} sx={{ color: '#db000e' }}>
+                            {t('Elimina')}
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </Card>
         </motion.div>
     );
