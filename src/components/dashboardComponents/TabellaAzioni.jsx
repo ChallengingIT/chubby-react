@@ -187,7 +187,7 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
         {
             field: "descrizione",
             headerName: "Descrizione",
-            flex: 2,
+            flex: 2.2,
             valueGetter: (params) => params.row.descrizione || "Nessuna descrizione"
         },
         {
@@ -205,7 +205,7 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
         {
             field: "completato",
             headerName: "Stato",
-            flex: 0.6,
+            flex: 0.5,
             renderCell: (params) => params.value ? (
                 <span style={{ fontSize: "1.5rem" }}>✔️</span>
             ) : (
