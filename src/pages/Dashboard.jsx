@@ -294,7 +294,7 @@ function Dashboard() {
                                     }}
                                 >
                                     <CardContent
-                                        disableGutters
+                                        disablegutters="true"
                                         sx={{
                                             "&:last-child": { paddingBottom: 0 },
                                             paddingTop: 1,

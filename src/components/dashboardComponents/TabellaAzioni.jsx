@@ -48,7 +48,7 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
         azione: "",
         idCliente: "",
         contatto: "",
-        completato: "",
+        completata: "",
         descrizione: ""
     });
     const [editableColumns, setEditableColumns] = useState({
@@ -56,7 +56,7 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
         azione: false,
         idCliente: false,
         contatto: false,
-        completato: false,
+        completata: false,
         descrizione: false
     });
     const [loading, setLoading] = useState(true);
@@ -87,7 +87,7 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
                 azione: item.azione,
                 idCliente: item.idCliente,
                 nomeContatto: item.nomeContatto,
-                completato: item.completed || false,
+                completata: item.completata || false,
                 descrizione: item.descrizione || "Nessuna descrizione"
             })) : [];
             setRows(rowsWithDetails);
@@ -100,7 +100,7 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
         if (editableColumns.azione && azioneRef.current) azioneRef.current.focus();
         if (editableColumns.idCliente && clienteRef.current) clienteRef.current.focus();
         if (editableColumns.contatto && contattoRef.current) contattoRef.current.focus();
-        if (editableColumns.completato && completatoRef.current) completatoRef.current.focus();
+        if (editableColumns.completata && completatoRef.current) completatoRef.current.focus();
         if (editableColumns.descrizione && descrizioneRef.current) descrizioneRef.current.focus();
     }, [editableColumns]);
 
@@ -126,7 +126,7 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
             (item.azione || "").toLowerCase().includes(filters.azione.toLowerCase()) &&
             getAziendaLabel(item.idCliente).toLowerCase().includes(filters.idCliente.toLowerCase()) &&
             (item.nomeContatto || "").toLowerCase().includes(filters.contatto.toLowerCase()) &&
-            (filters.completato === "" || String(item.completato) === filters.completato) &&
+            (filters.completata === "" || String(item.completata) === filters.completata) &&
             (item.descrizione || "").toLowerCase().includes(filters.descrizione.toLowerCase())
         );
     });
@@ -203,11 +203,11 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
             renderCell: (params) => params.row.nomeContatto
         },
         {
-            field: "completato",
+            field: "completata",
             headerName: "Stato",
             flex: 0.5,
             renderCell: (params) => params.value ? (
-                <span style={{ fontSize: "1.5rem" }}>✔️</span>
+                <span style={{ fontSize: "1.2rem" }}>✔️</span>
             ) : (
                 <span style={{ fontSize: "1.8rem", opacity: "0.6" }}>⏱</span>
             )
@@ -223,7 +223,7 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
     }, []);
 
     return (
-        <Container disableGutters maxWidth={false} sx={{ width: "100%" }}>
+        <Container disablegutters="true" maxWidth={false} sx={{ width: "100%" }}>
             {loading ? <CircularProgress /> : (
                 <>
                     {/* Segmented Controller */}
