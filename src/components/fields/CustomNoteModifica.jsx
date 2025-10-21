@@ -32,7 +32,7 @@ function CustomNoteModifica({
       }}
       multiline
       rows={4}
-      value={values[name] || initialValues[name] || ""}
+      value={values[name] !== undefined ? values[name] : (initialValues[name] || "")}
       onChange={handleChange}
       sx={{
      
