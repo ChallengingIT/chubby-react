@@ -5,7 +5,7 @@ import { useUserTheme } from '../TorchyThemeProvider.jsx';
 import { useTranslation } from "react-i18next";
 import TabellaAzioni from './TabellaAzioni.jsx';
 
-const BoxAttivitaWeek = ({ aziendeOptions }) => {
+const BoxAttivitaWeek = ({ aziendeOptions, expanded, setExpanded, height, pageSize }) => {
 
     const theme = useUserTheme();
     const { t } = useTranslation();
@@ -111,11 +111,27 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
     // This grouping will be done inside TabellaAzioni based on 'interval' property
 
     return (
-        <Box className="cardTabellaBusiness" sx={{ width: '100%', height: '100%', position: 'relative', display: 'flex', flexDirection: 'column', p: 0 }}>
-            <Box display="flex" alignItems="center" justifyContent="space-between" mb={0} ml={2} mt={1} sx={{ paddingBottom: 0 }}>
-                <Typography variant='h5' sx={{ fontWeight: 'bold', fontSize: '1.2em' }}>
+        <Box className="cardTabellaBusiness" sx={{ width: '100%', height: height, position: 'relative', display: 'flex', flexDirection: 'column', p: 0 }}>
+            <Box display="flex" alignItems="center" justifyContent="space-between" mb={0} ml={2} mt={0} sx={{ paddingBottom: 0 }}>
+                <Typography variant='h5' sx={{ fontWeight: 'bold', fontSize: '1.2em', color: "#333" }}>
                     {t("Piano Incontri")}
                 </Typography>
+                <button
+                    onClick={() => setExpanded(prev => !prev)}
+                    style={{
+                        color: "#333",
+                        border: "thin solid #ccc",
+                        borderRadius: "8px",
+                        padding: "6px 16px",
+                        paddingRight: "12px",
+                        fontSize: "0.9rem",
+                        cursor: "pointer",
+                        marginRight: "6px",
+                        marginTop: "0px"
+                    }}
+                >
+                    {expanded ? "Comprimi ▲" : "Estendi ▼"}
+                </button>
             </Box>
             <Box sx={{ flexGrow: 1, width: '100%', overflowY: 'auto', alignItems: "center", p: 0 }}>
                 <TabellaAzioni
@@ -123,6 +139,8 @@ const BoxAttivitaWeek = ({ aziendeOptions }) => {
                     aziendeOptions={aziendeOptions}
                     getWeekRangeFromInterval={getWeekRangeFromInterval} // pass helper for week range formatting
                     showWeekColumn={true} // flag to show the new week column with merged cells
+                    pageSize={pageSize}
+                    expanded={expanded}
                 />
             </Box>
         </Box>

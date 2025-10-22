@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { styled } from "@mui/material/styles";
 import { toggleButtonClasses } from "@mui/material/ToggleButton";
 import { toggleButtonGroupClasses } from "@mui/material/ToggleButtonGroup";
+import { use } from "react";
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
     display: 'flex',
@@ -39,8 +40,10 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
     },
 }));
 
-const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
+const TabellaAzioni = ({ data = [], aziendeOptions = [], expanded, setExpanded, pageSize }) => {
     const { t } = useTranslation();
+
+    console.log("TabellaAzioni received pageSize:", pageSize);
 
     const [rows, setRows] = useState([]);
     const [filters, setFilters] = useState({
@@ -48,7 +51,7 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
         azione: "",
         idCliente: "",
         contatto: "",
-        completato: "",
+        completata: "",
         descrizione: ""
     });
     const [editableColumns, setEditableColumns] = useState({
@@ -56,7 +59,7 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
         azione: false,
         idCliente: false,
         contatto: false,
-        completato: false,
+        completata: false,
         descrizione: false
     });
     const [loading, setLoading] = useState(true);
@@ -87,7 +90,7 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
                 azione: item.azione,
                 idCliente: item.idCliente,
                 nomeContatto: item.nomeContatto,
-                completato: item.completed || false,
+                completata: item.completata || false,
                 descrizione: item.descrizione || "Nessuna descrizione"
             })) : [];
             setRows(rowsWithDetails);
@@ -100,7 +103,7 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
         if (editableColumns.azione && azioneRef.current) azioneRef.current.focus();
         if (editableColumns.idCliente && clienteRef.current) clienteRef.current.focus();
         if (editableColumns.contatto && contattoRef.current) contattoRef.current.focus();
-        if (editableColumns.completato && completatoRef.current) completatoRef.current.focus();
+        if (editableColumns.completata && completatoRef.current) completatoRef.current.focus();
         if (editableColumns.descrizione && descrizioneRef.current) descrizioneRef.current.focus();
     }, [editableColumns]);
 
@@ -126,7 +129,7 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
             (item.azione || "").toLowerCase().includes(filters.azione.toLowerCase()) &&
             getAziendaLabel(item.idCliente).toLowerCase().includes(filters.idCliente.toLowerCase()) &&
             (item.nomeContatto || "").toLowerCase().includes(filters.contatto.toLowerCase()) &&
-            (filters.completato === "" || String(item.completato) === filters.completato) &&
+            (filters.completata === "" || String(item.completata) === filters.completata) &&
             (item.descrizione || "").toLowerCase().includes(filters.descrizione.toLowerCase())
         );
     });
@@ -146,7 +149,7 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
             field: "formattedDate",
             headerName: "Data",
             flex: 1,
-                        sortable: true,
+            sortable: true,
             valueGetter: (params) => params.value ? new Date(params.value) : null,
             renderCell: (params) => {
                 return params.value instanceof Date ? format(params.value, "dd-MM-yyyy") : "";
@@ -187,7 +190,7 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
         {
             field: "descrizione",
             headerName: "Descrizione",
-            flex: 2,
+            flex: 1.8,
             valueGetter: (params) => params.row.descrizione || "Nessuna descrizione"
         },
         {
@@ -203,11 +206,11 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
             renderCell: (params) => params.row.nomeContatto
         },
         {
-            field: "completato",
+            field: "completata",
             headerName: "Stato",
-            flex: 0.6,
+            flex: 0.5,
             renderCell: (params) => params.value ? (
-                <span style={{ fontSize: "1.5rem" }}>✔️</span>
+                <span style={{ fontSize: "1.2rem" }}>✔️</span>
             ) : (
                 <span style={{ fontSize: "1.8rem", opacity: "0.6" }}>⏱</span>
             )
@@ -222,8 +225,23 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
         if (currentWeekIndex >= 0) setSelectedWeekIndex(currentWeekIndex);
     }, []);
 
+    const [paginationModel, setPaginationModel] = React.useState({
+        pageSize: expanded ? pageSize : 3,
+        page: 0,
+    });
+
+    console.log("TabellaAzioni paginationModel:", paginationModel);
+    console.log("TabellaAzioni expanded:", expanded);
+
+    useEffect(() => {
+        setPaginationModel((prev) => ({ ...prev,
+            pageSize: expanded ? 8 : 3,
+            page: 0,
+        }));
+    } , [expanded]);
+
     return (
-        <Container disableGutters maxWidth={false} sx={{ width: "100%" }}>
+        <Container disableGutters="true" maxWidth={false} sx={{ width: "100%", height: "100%" }}>
             {loading ? <CircularProgress /> : (
                 <>
                     {/* Segmented Controller */}
@@ -239,7 +257,7 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
                             justifyContent: 'center',
                             border: "none",
                             borderRadius: '16px',
-                            px: 3,
+                            px: 1,
                             py: 1,
                         }}
                     >
@@ -252,13 +270,11 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
 
                     {/* DataGrid della settimana selezionata */}
                     <DataGrid
-                        autoHeight
                         rows={weeksWithRows[selectedWeekIndex].rows}
                         columns={columns}
-                        pageSizeOptions={[3]}
-                        initialState={{
-                            pagination: { paginationModel: { pageSize: 3, page: 0 } },
-                        }}
+                        autoHeight
+                        paginationModel={paginationModel}
+                        onPaginationModelChange={setPaginationModel}
                         disableRowSelectionOnClick
                         disableSelectionOnClick
                         disableColumnMenu
@@ -269,8 +285,8 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
                                 fontSize: "0.95rem",
                                 fontWeight: 600,
                                 color: "#808080",
-                                backgroundColor: "#FFFFFF",
-                                borderBottom: "2px solid #ccc",
+                                // backgroundColor: "#FFFFFF",
+                                borderBottom: "2px solid #014d012e",
                                 textAlign: "left",
                                 lineHeight: "1.5rem"
                             },
@@ -278,6 +294,16 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [] }) => {
                                 fontSize: "0.9rem",
                                 color: "#333",
                             },
+                            "& .MuiDataGrid-row:hover": {
+                                backgroundColor: "#00b4000f",
+                            },
+                            "& .MuiDataGrid-footerContainer": {
+                                borderTop: "2px solid #014d012d",
+                            },
+                            '& .MuiDataGrid-row': {
+                                backgroundColor: '#F5FFF5',
+                            },
+
                         }}
                         localeText={{ noRowsLabel: "Nessuna azione trovata." }}
                     />

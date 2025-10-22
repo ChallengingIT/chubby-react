@@ -414,7 +414,7 @@ function Sidebar() {
         {
             title: "Recruiting",
             icon: <PersonSearchIcon />,
-            isVisible: !userHasRole("BUSINESS") && !userHasRole("CANDIDATO") && aziendaUser === "CHALLENGING",
+            isVisible: !userHasRole("BUSINESS") && !userHasRole("CANDIDATO") && aziendaUser === "CHALLENGING" || userHasRole("ADMIN"),
             onClick: () => navigate("/recruiting"),
             tooltip: t("Recruiting")
         },

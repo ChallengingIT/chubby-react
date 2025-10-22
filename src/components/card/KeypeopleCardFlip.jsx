@@ -824,6 +824,7 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                     maxWidth="md"
                     sx={{
                         '& .MuiDialog-paper': {
+                            minWidth: '65vw',
                             maxHeight: '80vh',
                             overflowY: 'auto',
                             borderRadius: '20px',
@@ -896,7 +897,7 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', p: 2, backgroundColor: 'white', borderTop: 'solid 1px #E0E0E0' }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2, backgroundColor: 'white', borderTop: 'solid 1px #E0E0E0' }}>
                             <TextField
                                 label={t("Seleziona Data")}
                                 type="datetime-local"

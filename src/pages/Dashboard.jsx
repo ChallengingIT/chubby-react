@@ -16,6 +16,8 @@ import { useTranslation } from "react-i18next";
 import { useMediaQuery } from '@mui/material';
 import { motion } from "framer-motion";
 import CustomTableCell2 from '../components/CustomTableCell2.jsx';
+import { set } from "date-fns";
+import { use } from "react";
 
 
 
@@ -32,6 +34,11 @@ function Dashboard() {
     const [loading, setLoading] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [currentPipelineData, setCurrentPipelineData] = useState({});
+
+    const [pipelineExpanded, setPipelineExpanded] = useState(false);
+    const [pianoIncontriExpanded, setPianoIncontriExpanded] = useState(false);
+
+    const [pageSizeAzioni, setPageSizeAzioni] = useState(3);
 
     const [filtri, setFiltri] = useState(() => {
         const filtriSalvati = sessionStorage.getItem("filtriRicercaPipeline");
@@ -157,6 +164,28 @@ function Dashboard() {
         fetchData();
     }
 
+    const expandedTogglePianoIncontri = () => {
+        if (pianoIncontriExpanded) {
+            setPianoIncontriExpanded(false);
+            setPipelineExpanded(false);
+            pageSizeAzioni === 5 ? setPageSizeAzioni(3) : setPageSizeAzioni(5);
+        } else {
+            setPipelineExpanded(false);
+            setPianoIncontriExpanded(true);
+            pageSizeAzioni === 3 ? setPageSizeAzioni(5) : setPageSizeAzioni(3);
+        }
+    }
+
+    const expandedTogglePipeline = () => {
+        if (pipelineExpanded) {
+            setPipelineExpanded(false);
+            setPianoIncontriExpanded(false);
+            return;
+        } else { 
+            setPianoIncontriExpanded(false);
+            setPipelineExpanded(true);
+        }
+    }
 
 
     const columns = [
@@ -233,87 +262,98 @@ function Dashboard() {
             variants={fadeInVariants}
         >
             <Container
-                maxWidth="false"
+                maxWidth="100vh"
+                maxheight="100vh"
                 sx={{
                     display: "flex",
+                    flexDirection: "row",
                     backgroundColor: "#EEEDEE",
-                    height: "auto",
                     width: "auto",
                     overflow: "hidden",
+                    padding: 0,
+                    margin: 0,
                 }}
             >
                 <Container
-                    maxWidth="xl"
+                    maxWidth="auto"
                     sx={{
                         display: "flex",
-                        flexGrow: 1,
-                        flexDirection: 'column',
+                        flexDirection: "column",
+                        height: "97vh",
                         p: 3,
                         marginLeft: isSmallScreen ? "3.5em" : "11em",
                         marginBottom: "0.8em",
-                        marginRight: "0.8em",
                         backgroundColor: "#FEFCFD",
                         borderRadius: "20px",
                         minHeight: "97vh",
                         mt: 1.5,
                         transition: 'margin-left 0.3s ease',
-                        paddingBottom: 0,
+
                     }}
                 >
-                    <Grid container spacing={2} >
-                        <Grid item xs={12} sx= {{ marginBottom: "1em" }}>
+                    <Grid container spacing={2} sx={{ display: "flex", flexDirection: "row", maxWidth: "100%" }}>
+                        {/* PIPELINE TABLE */}
+                        <Grid
+                            item
+                            xs={12}
+                            sx={{ 
+                                flex: 2, 
+                                overflow: "hidden", 
+                                mb: 0 
+                            }}
+                        >
                             <CustomTableCell2
                                 columns={columns}
                                 rows={originalPipeline}
                                 title={t("Pipeline")}
+                                pianoIncontriExpanded={pianoIncontriExpanded}
+                                expanded={pipelineExpanded}
+                                setExpanded={expandedTogglePipeline}
                                 onRefresh={handleRefresh}
                                 sx={{
-                                    maxHeight: "50vh",  
-                                    overflow: "auto",   
-                                    height: "auto",
+                                    flex: 1,
+                                    overflow: "auto",
                                 }}
                             />
                         </Grid>
                         {/* ACTIONS TABLE */}
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <Card
+                        <Grid item xs={12} sx={{ flex: 1, overflow: "hidden" }}>
+                            <Card
+                                sx={{
+                                    backgroundColor: "#FFFFFF",
+                                    borderRadius: "20px",
+                                    maxWidth: "100%",
+                                    maxheight: "50vh",
+                                    border: "2px solid #2e662ecf",
+                                    display: "flex",
+                                    overflow: "auto",
+                                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+                                }}
+                            >
+                                <CardContent
+                                    disableGutters="true"
                                     sx={{
-                                        mt: 0,
-                                        ml: 2,
-                                        borderRadius: "20px",
-                                        maxWidth: "100%",
-                                        maxHeight: "50vh",
-                                        border: "2px solid #00B401",
+                                        "&:last-child": { paddingBottom: 0 },
+                                        paddingBottom: 0,
+                                        paddingLeft: 0,
+                                        paddingRight: 0,
+                                        paddingTop: 1,
+                                        flexGrow: 1,
                                         display: "flex",
-                                        flexDirection: "column",
-                                        overflow: "auto",
-                                        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-                                        flexShrink: 0,
-                                        alignSelf: "flex-start",
+                                        flexDirection: "row",
+                                        height: "100%",
+                                        width: "100%",
                                     }}
                                 >
-                                    <CardContent
-                                        disableGutters
-                                        sx={{
-                                            "&:last-child": { paddingBottom: 0 },
-                                            paddingTop: 1,
-                                            paddingBottom: 0,
-                                            paddingLeft: 0,
-                                            paddingRight: 0,
-                                            flexGrow: 1,
-                                            display: "flex",
-                                            flexDirection: "column",
-                                            height: "100%",
-                                            width: "100%",
-                                        }}
-                                    >
-                                        <BoxAttivitaWeek
-                                            aziendeOptions={aziendeOptions}
-                                        />
-                                    </CardContent>
-                                </Card>
-                            </Grid>
+                                    <BoxAttivitaWeek
+                                        aziendeOptions={aziendeOptions}
+                                        expanded={pianoIncontriExpanded}
+                                        setExpanded={expandedTogglePianoIncontri}
+                                        height={pianoIncontriExpanded? "68vh": pipelineExpanded? "20vh": "42vh" }
+                                        pageSize={pageSizeAzioni}
+                                    />
+                                </CardContent>
+                            </Card>
                         </Grid>
                     </Grid>
                 </Container>
