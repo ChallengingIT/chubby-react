@@ -168,11 +168,11 @@ function Dashboard() {
         if (pianoIncontriExpanded) {
             setPianoIncontriExpanded(false);
             setPipelineExpanded(false);
-            pageSizeAzioni === 5 ? setPageSizeAzioni(3) : setPageSizeAzioni(5);
+            pageSizeAzioni === 7 ? setPageSizeAzioni(3) : setPageSizeAzioni(7);
         } else {
             setPipelineExpanded(false);
             setPianoIncontriExpanded(true);
-            pageSizeAzioni === 3 ? setPageSizeAzioni(5) : setPageSizeAzioni(3);
+            pageSizeAzioni === 3 ? setPageSizeAzioni(7) : setPageSizeAzioni(3);
         }
     }
 
