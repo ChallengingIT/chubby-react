@@ -172,7 +172,7 @@ function Dashboard() {
         } else {
             setPipelineExpanded(false);
             setPianoIncontriExpanded(true);
-            pageSizeAzioni === 3 ? setPageSizeAzioni(7) : setPageSizeAzioni(3);
+            setPageSizeAzioni(7);
         }
     }
 
