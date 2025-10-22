@@ -235,7 +235,7 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [], expanded, setExpanded, 
 
     useEffect(() => {
         setPaginationModel((prev) => ({ ...prev,
-            pageSize: expanded ? 8 : 3,
+            pageSize: expanded ? pageSize : 3,
             page: 0,
         }));
     } , [expanded]);
