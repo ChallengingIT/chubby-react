@@ -26,7 +26,7 @@ import axios from "axios";
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-const CustomTableCell2 = ({ columns, rows, onRefresh, title }) => {
+const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpanded, pianoIncontriExpanded}) => {
     const [filtersEnabled, setFiltersEnabled] = useState(true);
     const [filters, setFilters] = useState({});
     const [modalStato, setModalStato] = useState(false);
@@ -224,7 +224,7 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title }) => {
             <TableContainer
                 component={Paper}
                 sx={{
-                    maxHeight: filteredRows.length > 10 ? 370 : 'auto',
+                    maxHeight: expanded ? "68vh" : pianoIncontriExpanded? '20vh': "46vh",
                     overflowY: filteredRows.length > 10 ? 'auto' : 'visible',
                     borderRadius: "20px",
                     border: filteredRows.length > 0 ? '2px solid #00B400' : '1px dashed #ccc',
@@ -237,10 +237,25 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title }) => {
 
                 {/* Titolo */}
                 {title && (
-                    <Box sx={{ display: 'flex', bgcolor: '#FFFFF', width: '100%', height: '100%', justifyContent: 'flex-start', justifyItems: 'center' }}>
+                    <Box sx={{ display: 'flex', bgcolor: '#FFFFF', width: '100%', height: '100%', justifyContent: 'space-between', justifyItems: 'center' }}>
                         <Typography variant="h6" component="div" sx={{ textAlign: "left", fontWeight: "bold", color: "#333", ml: 2, mt: 1 }}>
                             {title}
                         </Typography>
+                        <button
+                            onClick={() => setExpanded(prev => !prev)}
+                            style={{
+                                color:  "#333",
+                                border: "thin solid #ccc",
+                                borderRadius: "8px",
+                                padding: "0px 16px",
+                                paddingRight: "12px",
+                                fontSize: "0.9rem",
+                                cursor: "pointer",
+                                margin: "6px"
+                            }}
+                        >
+                            {expanded ? "Comprimi ▲" : "Estendi ▼"}
+                        </button>
                     </Box>
                 )}
                 <Table stickyHeader>
