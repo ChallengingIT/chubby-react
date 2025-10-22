@@ -39,6 +39,7 @@ function Dashboard() {
     const [pianoIncontriExpanded, setPianoIncontriExpanded] = useState(false);
 
     const [pageSizeAzioni, setPageSizeAzioni] = useState(3);
+    const [pageSizePipeline, setPageSizePipeline] = useState(4);
 
     const [filtri, setFiltri] = useState(() => {
         const filtriSalvati = sessionStorage.getItem("filtriRicercaPipeline");
@@ -180,10 +181,12 @@ function Dashboard() {
         if (pipelineExpanded) {
             setPipelineExpanded(false);
             setPianoIncontriExpanded(false);
+            pageSizePipeline === 8 ? setPageSizePipeline(4) : setPageSizePipeline(8);
             return;
         } else { 
             setPianoIncontriExpanded(false);
             setPipelineExpanded(true);
+            setPageSizePipeline(8);
         }
     }
 
@@ -291,13 +294,14 @@ function Dashboard() {
 
                     }}
                 >
-                    <Grid container spacing={2} sx={{ display: "flex", flexDirection: "row", maxWidth: "100%" }}>
+                    <Grid container spacing={2} sx={{ display: "flex", flexDirection: "row", maxWidth: "100%", height: "100%" }}>
                         {/* PIPELINE TABLE */}
                         <Grid
                             item
                             xs={12}
+                            height={"auto"}
                             sx={{ 
-                                flex: 2, 
+                                flex: 1, 
                                 overflow: "hidden", 
                                 mb: 0 
                             }}
@@ -314,11 +318,13 @@ function Dashboard() {
                                     flex: 1,
                                     overflow: "auto",
                                 }}
+                                pageSize={pageSizePipeline}
                             />
                         </Grid>
                         {/* ACTIONS TABLE */}
-                        <Grid item xs={12} sx={{ flex: 1, overflow: "hidden" }}>
+                        <Grid item xs={12} sx={{ flex: 1, overflow: "hidden", height: "100%" }}>
                             <Card
+                            height={"auto"}
                                 sx={{
                                     backgroundColor: "#FFFFFF",
                                     borderRadius: "20px",
@@ -349,7 +355,7 @@ function Dashboard() {
                                         aziendeOptions={aziendeOptions}
                                         expanded={pianoIncontriExpanded}
                                         setExpanded={expandedTogglePianoIncontri}
-                                        height={pianoIncontriExpanded? "68vh": pipelineExpanded? "20vh": "42vh" }
+                                        height={pipelineExpanded? "20vh": "auto" }
                                         pageSize={pageSizeAzioni}
                                     />
                                 </CardContent>
