@@ -18,7 +18,8 @@ import {
     Autocomplete,
     Snackbar,
     Alert,
-    Slide
+    Slide,
+    TablePagination
 } from "@mui/material";
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import CloseIcon from '@mui/icons-material/Close';
@@ -26,7 +27,7 @@ import axios from "axios";
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpanded, pianoIncontriExpanded}) => {
+const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpanded, pianoIncontriExpanded, pageSize }) => {
     const [filtersEnabled, setFiltersEnabled] = useState(true);
     const [filters, setFilters] = useState({});
     const [modalStato, setModalStato] = useState(false);
@@ -37,6 +38,14 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
     const [orderBy, setOrderBy] = useState('');
     const [orderDirection, setOrderDirection] = useState('asc');
 
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(pageSize);
+
+    console.log("Rows per page:", rowsPerPage);
+    useEffect(() => {
+        setRowsPerPage(expanded ? pageSize : 4);
+        setPage(0);
+    }, [expanded]);
 
     const user = JSON.parse(sessionStorage.getItem('user'));
     const token = user?.token;
@@ -45,10 +54,18 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
         Authorization: `Bearer ${token}`
     };
 
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
 
     const fetchStati = async () => {
         try {
-            const responseStato = await axios.get("http://89.46.196.60:8443/need/react/stato", { headers });
+            const responseStato = await axios.get("http://localhost:8080/need/react/stato", { headers });
 
             if (Array.isArray(responseStato.data)) {
                 const filteredStati = responseStato.data
@@ -63,9 +80,6 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
             console.error("Errore durante il recupero degli stati: ", error);
         }
     };
-
-
-
 
 
     useEffect(() => {
@@ -93,7 +107,6 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
             return !prev;
         });
     };
-
 
     const filteredRows = rows.filter((row) => {
         return columns.every((column) => {
@@ -165,22 +178,22 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
         const idNeed = selectedPipeline.id;
 
         // recupero lo user dal sessionStorage
-    const userString = sessionStorage.getItem("user");
-    if (!userString) {
-        console.error("Nessun utente trovato in sessionStorage");
-        return;
-    }
-    const userObj = JSON.parse(userString);
+        const userString = sessionStorage.getItem("user");
+        if (!userString) {
+            console.error("Nessun utente trovato in sessionStorage");
+            return;
+        }
+        const userObj = JSON.parse(userString);
 
-    // preparo il body da mandare
-    const body = {
-        stato: idStato,
-    };
+        // preparo il body da mandare
+        const body = {
+            stato: idStato,
+        };
 
         try {
             const responseUpdateStato = await axios.post(
-                `http://89.46.196.60:8443/need/react/salva/stato/${idNeed}?${params.toString()}`,
-                {}, 
+                `http://localhost:8080/need/react/salva/stato/${idNeed}?${params.toString()}`,
+                {},
                 { headers: headers }
             );
 
@@ -224,7 +237,7 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
             <TableContainer
                 component={Paper}
                 sx={{
-                    maxHeight: expanded ? "68vh" : pianoIncontriExpanded? '20vh': "46vh",
+                    maxHeight: expanded ? "80vh" : pianoIncontriExpanded ? '20vh' : "48vh",
                     overflowY: filteredRows.length > 10 ? 'auto' : 'visible',
                     borderRadius: "20px",
                     border: filteredRows.length > 0 ? '2px solid #00B400' : '1px dashed #ccc',
@@ -244,7 +257,7 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
                         <button
                             onClick={() => setExpanded(prev => !prev)}
                             style={{
-                                color:  "#333",
+                                color: "#333",
                                 border: "thin solid #ccc",
                                 borderRadius: "8px",
                                 padding: "0px 16px",
@@ -319,24 +332,26 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
 
                     {/* Body */}
                     <TableBody>
-                        {sortedRows.map((row, rowIndex) => (
-                            <TableRow key={rowIndex} hover sx={{ "&:nth-of-type(odd)": { backgroundColor: "#f9f9f9", }, "&:nth-of-type(even)": { backgroundColor: "#fff", }, "&:hover": { backgroundColor: "#f1f1f1", }, height: "36px", }}>
-                                {columns.map((column, colIndex) => (
-                                    <TableCell key={colIndex} align={column.align || "center"} sx={{ borderBottom: "1px solid #e0e0e0", color: "black", fontSize: "14px", padding: "6px 14px", }}>
-                                        {column.render ? column.render(row) : row[column.field]}
-                                    </TableCell>
-                                ))}
-                                {/* Colonna delle icone */}
-                                <TableCell align="center" sx={{ borderBottom: "1px solid #e0e0e0", padding: "0.5px 0.5px", }}>
-                                    <Tooltip title="Modifica">
-                                        <IconButton onClick={(event) => handleOpenModal(row)}>
-                                            <MoreHorizIcon />
-                                        </IconButton>
-                                    </Tooltip>
+                        {sortedRows
+                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            .map((row, rowIndex) => (
+                                <TableRow key={rowIndex} hover sx={{ "&:nth-of-type(odd)": { backgroundColor: "#f9f9f9", }, "&:nth-of-type(even)": { backgroundColor: "#fff", }, "&:hover": { backgroundColor: "#f1f1f1", }, height: "36px", }}>
+                                    {columns.map((column, colIndex) => (
+                                        <TableCell key={colIndex} align={column.align || "center"} sx={{ borderBottom: "1px solid #e0e0e0", color: "black", fontSize: "14px", padding: "6px 14px", }}>
+                                            {column.render ? column.render(row) : row[column.field]}
+                                        </TableCell>
+                                    ))}
+                                    {/* Colonna delle icone */}
+                                    <TableCell align="center" sx={{ borderBottom: "1px solid #e0e0e0", padding: "0.5px 0.5px", }}>
+                                        <Tooltip title="Modifica">
+                                            <IconButton onClick={(event) => handleOpenModal(row)}>
+                                                <MoreHorizIcon />
+                                            </IconButton>
+                                        </Tooltip>
 
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                                    </TableCell>
+                                </TableRow>
+                            ))}
                         {filteredRows.length === 0 && (
                             <TableRow>
                                 <TableCell colSpan={columns.length + 1} align="center">
@@ -346,6 +361,19 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
                         )}
                     </TableBody>
                 </Table>
+                <TablePagination
+                    component="div"
+                    count={sortedRows.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    sx={{
+                        "& .MuiTablePagination-selectLabel": { display: "none" },
+                        "& .MuiTablePagination-select": { display: "none" },
+                        "& .MuiTablePagination-displayedRows": { marginLeft: 0 },
+                        "& .MuiInputBase-root": { display: "none" },
+                    }}
+                />
             </TableContainer>
             <Modal
                 open={modalStato}
@@ -374,7 +402,7 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
                     }}
                 >
                     {/* Header con Titolo e Pulsante di chiusura */}
-                    <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
                         <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', ml: 2, mt: 0.5, mb: 0.5 }}>
                             {selectedPipeline?.descrizione || "Dettagli Pipeline"}
                         </Typography>
