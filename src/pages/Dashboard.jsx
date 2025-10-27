@@ -3,21 +3,17 @@
 import React, { useEffect, useState } from "react";
 import {
     Grid,
-    Card,
-    CardContent,
     Container,
-    Link
+    Link,
+    Box
 } from "@mui/material";
 import axios from "axios";
-import { useNotification } from "../components/NotificationContext.js";
 import { useNavigate } from "react-router-dom";
 import BoxAttivitaWeek from "../components/dashboardComponents/BoxAttivitaWeek.jsx";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from '@mui/material';
 import { motion } from "framer-motion";
 import CustomTableCell2 from '../components/CustomTableCell2.jsx';
-import { set } from "date-fns";
-import { use } from "react";
 
 
 
@@ -27,13 +23,14 @@ function Dashboard() {
 
 
     const navigate = useNavigate();
-    const { showNotification } = useNotification();
 
     const [originalPipeline, setOriginalPipeline] = useState([]);
     const [aziendeOptions, setAziendaOptions] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [dialogOpen, setDialogOpen] = useState(false);
-    const [currentPipelineData, setCurrentPipelineData] = useState({});
+    const [initialState, setInitialState] = useState(0.5);
+    const espandiPrimo = () => setInitialState(prev => (prev === 0.7 ? 0.5 : 0.7));
+    const espandiSecondo = () => setInitialState(prev => (prev === 0.3 ? 0.5 : 0.3));
+
 
     const [pipelineExpanded, setPipelineExpanded] = useState(false);
     const [pianoIncontriExpanded, setPianoIncontriExpanded] = useState(false);
@@ -166,7 +163,7 @@ function Dashboard() {
     }
 
     const expandedTogglePianoIncontri = () => {
-        if (pianoIncontriExpanded) {
+        if (pianoIncontriExpanded) {            
             setPianoIncontriExpanded(false);
             setPipelineExpanded(false);
             pageSizeAzioni === 7 ? setPageSizeAzioni(3) : setPageSizeAzioni(7);
@@ -183,7 +180,7 @@ function Dashboard() {
             setPianoIncontriExpanded(false);
             pageSizePipeline === 8 ? setPageSizePipeline(4) : setPageSizePipeline(8);
             return;
-        } else { 
+        } else {
             setPianoIncontriExpanded(false);
             setPipelineExpanded(true);
             setPageSizePipeline(8);
@@ -254,10 +251,6 @@ function Dashboard() {
         },
     ];
 
-
-
-    const getRowId = (row) => row.id;
-
     return (
         <motion.div
             initial="hidden"
@@ -265,11 +258,11 @@ function Dashboard() {
             variants={fadeInVariants}
         >
             <Container
-                maxWidth="100vh"
-                maxheight="100vh"
+                maxWidth="auto"
                 sx={{
+                    height: "100dvh",
                     display: "flex",
-                    flexDirection: "row",
+                    flexDirection: "column",
                     backgroundColor: "#EEEDEE",
                     width: "auto",
                     overflow: "hidden",
@@ -277,35 +270,34 @@ function Dashboard() {
                     margin: 0,
                 }}
             >
-                <Container
-                    maxWidth="auto"
+                <Box
+                container
                     sx={{
                         display: "flex",
                         flexDirection: "column",
-                        height: "97vh",
+                        height: "97%",
                         p: 3,
                         marginLeft: isSmallScreen ? "3.5em" : "11em",
                         marginBottom: "0.8em",
                         backgroundColor: "#FEFCFD",
                         borderRadius: "20px",
-                        minHeight: "97vh",
                         mt: 1.5,
                         transition: 'margin-left 0.3s ease',
+                        overflow: "hidden",
+                        position: "relative",
 
                     }}
                 >
-                    <Grid container spacing={2} sx={{ display: "flex", flexDirection: "row", maxWidth: "100%", height: "100%" }}>
-                        {/* PIPELINE TABLE */}
+                    <Grid
+                        container
+                        direction="column"
+                        spacing={0}
+                        sx={{ flex: 1, minHeight: 0 , gap: 4}}>
                         <Grid
-                            item
-                            xs={12}
-                            height={"auto"}
-                            sx={{ 
-                                flex: 1, 
-                                overflow: "hidden", 
-                                mb: 0 
-                            }}
+                            size={12}
+                            sx={{ flex: initialState, minHeight: 0, display: 'flex', transition: 'flex 250ms ease', overflow: 'hidden' }}
                         >
+                            {/* PIPELINE TABLE */}
                             <CustomTableCell2
                                 columns={columns}
                                 rows={originalPipeline}
@@ -314,55 +306,27 @@ function Dashboard() {
                                 expanded={pipelineExpanded}
                                 setExpanded={expandedTogglePipeline}
                                 onRefresh={handleRefresh}
-                                sx={{
-                                    flex: 1,
-                                    overflow: "auto",
-                                }}
                                 pageSize={pageSizePipeline}
+                                onClickButton={espandiPrimo}
+                                initialState={initialState}
                             />
                         </Grid>
-                        {/* ACTIONS TABLE */}
-                        <Grid item xs={12} sx={{ flex: 1, overflow: "hidden", height: "100%" }}>
-                            <Card
-                            height={"auto"}
-                                sx={{
-                                    backgroundColor: "#FFFFFF",
-                                    borderRadius: "20px",
-                                    maxWidth: "100%",
-                                    maxheight: "50vh",
-                                    border: "2px solid #2e662ecf",
-                                    display: "flex",
-                                    overflow: "auto",
-                                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-                                }}
-                            >
-                                <CardContent
-                                    disableGutters="true"
-                                    sx={{
-                                        "&:last-child": { paddingBottom: 0 },
-                                        paddingBottom: 0,
-                                        paddingLeft: 0,
-                                        paddingRight: 0,
-                                        paddingTop: 1,
-                                        flexGrow: 1,
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        height: "100%",
-                                        width: "100%",
-                                    }}
-                                >
-                                    <BoxAttivitaWeek
-                                        aziendeOptions={aziendeOptions}
-                                        expanded={pianoIncontriExpanded}
-                                        setExpanded={expandedTogglePianoIncontri}
-                                        height={pipelineExpanded? "20vh": "auto" }
-                                        pageSize={pageSizeAzioni}
-                                    />
-                                </CardContent>
-                            </Card>
+                        <Grid
+                            size={12}
+                            sx={{ flex: 1 - initialState, minHeight: 0, display: 'flex', transition: 'flex 250ms ease', overflow: 'hidden' }}
+                        >
+                            {/* ACTIONS TABLE */}
+                            <BoxAttivitaWeek
+                                aziendeOptions={aziendeOptions}
+                                expanded={pianoIncontriExpanded}
+                                pipelineExpanded={pipelineExpanded}
+                                setExpanded={expandedTogglePianoIncontri}
+                                pageSize={pageSizeAzioni}
+                                onClickButton={espandiSecondo}
+                            />
                         </Grid>
                     </Grid>
-                </Container>
+                </Box>
             </Container>
         </motion.div>
     );
