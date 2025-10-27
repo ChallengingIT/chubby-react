@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Skeleton, Snackbar, Grid, Slide, Container, FormControlLabel, Switch } from '@mui/material';
+import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Skeleton, Snackbar, Grid, Slide, Container, FormControlLabel, Switch, Hidden } from '@mui/material';
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
 import axios from 'axios';
 import CustomAutocomplete from '../../components/fields/CustomAutocomplete';
@@ -16,6 +16,8 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from '@mui/material';
 import { de } from 'date-fns/locale';
+import { toBeVisible } from '@testing-library/jest-dom/matchers';
+import { isHSL } from 'validator';
 
 
 
@@ -25,7 +27,6 @@ const ModificaNeedGrafica = () => {
     const { id } = useParams();
     const theme = useUserTheme();
     const isSmallScreen = useMediaQuery('(max-width: 800px)');
-
 
 
     //stati della pagina
@@ -50,6 +51,8 @@ const ModificaNeedGrafica = () => {
     const [isChallengingUser, setIsChallengingUser] = useState(false);
     const [values, setValues] = useState({});
 
+    console.log("VALORI INIZIALI DEL MODIFICA NEED:", values);
+
 
     const user = JSON.parse(sessionStorage.getItem("user"));
     const token = user?.token;
@@ -67,7 +70,7 @@ const ModificaNeedGrafica = () => {
         const userObj = JSON.parse(userString);
         return userObj.roles.includes(roleToCheck);
     };
-    
+
     //chiamata per ricevere i dati dal db
     useEffect(() => {
         const fetchNeedOptions = async () => {
@@ -423,7 +426,7 @@ const ModificaNeedGrafica = () => {
         if (!hasErrors) {
             try {
                 Object.keys(values).forEach(key => {
-                    if (!fieldObbligatori.includes(key) && !values[key]) {
+                    if (key !== 'compilato' && !fieldObbligatori.includes(key) && !values[key]) {
                         values[key] = null;
                     }
                 });
@@ -440,11 +443,17 @@ const ModificaNeedGrafica = () => {
                     values.toggleRicerca = false;
                 }
 
+                if (values.idNeedPadre !== null && values.compilato === false) {
+                    console.log("IMPOSTO COMPILATO A TRUE");
+                    values.compilato = true;
+                }
+
                 transformedValues.toggleRicerca = values.toggleRicerca;
+                transformedValues.compilato = values.compilato ?? false ; // per includere il campo "compilato" nel body inviato al backend
 
                 const responseSaveNeed = await axios.post(
                     "http://localhost:8080/need/react/salva",
-                    transformedValues, // <-- body SENZA username
+                    transformedValues, 
                     {
                         params: {
                             skill1: skills,
@@ -527,11 +536,11 @@ const ModificaNeedGrafica = () => {
         // Sezione Dettagli Ricerca e Selezione
         // Modalità A: solo Challenging
         { type: "titleGroups", label: t("Dettagli Ricerca e Selezione") },
-        { label: "Headcount", name: "numeroRisorse", type: "number" },
-        { label: "Seniority", name: "anniEsperienza", type: "select", options: seniorityOptions },
-        { label: "Skills", name: "idSkills", type: "multipleSelect", options: skillsOptions },
-        { label: t('Pubblicazione Annuncio*'), name: 'pubblicazione', type: 'select', options: pubblicazioneOptions },
-        { label: t('Screening*'), name: 'screening', type: 'select', options: screeningOptions },
+        { label: "Headcount", name: "numeroRisorse", type: "number", visibleIf: () => isChallengingUser },
+        { label: "Seniority", name: "anniEsperienza", type: "select", options: seniorityOptions, visibleIf: () => isChallengingUser },
+        { label: "Skills", name: "idSkills", type: "multipleSelect", options: skillsOptions, visibleIf: () => isChallengingUser },
+        { label: t('Pubblicazione Annuncio*'), name: 'pubblicazione', type: 'select', options: pubblicazioneOptions, visibleIf: () => isChallengingUser },
+        { label: t('Screening*'), name: 'screening', type: 'select', options: screeningOptions, visibleIf: () => isChallengingUser },
         { label: t("Note"), name: "noteRicercaToggle", type: "note", visibleIf: () => isChallengingUser },
 
         // Modalità B: tutti gli altri
@@ -564,7 +573,8 @@ const ModificaNeedGrafica = () => {
         note: datiModifica?.note || null,
         toggleRicerca: datiModifica?.toggleRicerca ? true : false,
         noteRicercaToggle: datiModifica?.noteRicercaToggle || null,
-
+        compilato: datiModifica?.compilato || false,
+        idNeedPadre: datiModifica?.idNeedPadre || null,
     };
 
 
@@ -576,7 +586,7 @@ const ModificaNeedGrafica = () => {
             const updatedvalues = { ...initialValues };
 
             Object.keys(datiModifica).forEach(key => {
-                if (initialValues.hasOwnProperty(key)) {
+                if (initialValues.hasOwnProperty(key) && key !== 'compilato') {
                     updatedvalues[key] = datiModifica[key];
                 }
             });

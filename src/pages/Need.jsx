@@ -153,8 +153,8 @@ const Need = () => {
             const username = user?.username;
 
             const ownerUrl = userHasRole('ADMIN')
-                    ? "http://localhost:8080/owner"
-                    : `http://localhost:8080/owner/${username}`;
+                ? "http://localhost:8080/owner"
+                : `http://localhost:8080/owner/${username}`;
 
             const ownerResponse = await axios.get(ownerUrl, { headers });
 
@@ -741,6 +741,13 @@ const Need = () => {
                             setSelectedNeed(row);
                             setViewMode("cardSingola");
                         }}
+                         getRowClassName={(params) => {
+                            // Controlla se idNeedPadre è NON nullo e compilato è false
+                            if (params.row.idNeedPadre !== null && params.row.compilato === false) {
+                                return 'riga-evidenziata';
+                            }
+                            return '';
+                        }} 
                     />
                     {loading && (
                         <Box

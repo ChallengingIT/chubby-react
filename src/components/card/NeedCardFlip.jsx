@@ -338,16 +338,16 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
                     <AutoModeIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
-                    {valori.stato.descrizione}
+                    {valori?.stato?.descrizione || "N/A"}
             </Typography>
 
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
                     <AccountCircleIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
-                    Owner Business: {valori?.ownerBusiness?.descrizione}
+                    Owner Business: {valori?.ownerBusiness?.descrizione || "N/A"}
             </Typography>
             <Typography variant="body2" color="text.primary"  sx={{  color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
                     <AccountCircleOutlinedIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
-                    Owner Recruiter: {valori?.ownerRecruiter?.descrizione}
+                    Owner Recruiter: {valori?.ownerRecruiter?.descrizione || "N/A"}
             </Typography>
                 </Box>
                 <Box sx={{ 
