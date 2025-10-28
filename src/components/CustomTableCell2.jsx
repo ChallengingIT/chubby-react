@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
     Table,
     TableBody,
@@ -26,8 +26,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import axios from "axios";
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import useSmartRowsPerPage from "./useSmartRowsPerPage";
 
-const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpanded, pianoIncontriExpanded, pageSize }) => {
+const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpanded, pianoIncontriExpanded, pageSize, onClickButton, initialState }) => {
     const [filtersEnabled, setFiltersEnabled] = useState(true);
     const [filters, setFilters] = useState({});
     const [modalStato, setModalStato] = useState(false);
@@ -38,14 +39,31 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
     const [orderBy, setOrderBy] = useState('');
     const [orderDirection, setOrderDirection] = useState('asc');
 
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(pageSize);
 
-    console.log("Rows per page:", rowsPerPage);
-    useEffect(() => {
-        setRowsPerPage(expanded ? pageSize : 4);
-        setPage(0);
-    }, [expanded]);
+    const contRef   = useRef(null);
+    const headRef   = useRef(null);
+    const theadRef  = useRef(null);
+    const footRef   = useRef(null);
+    const rowRef    = useRef(null);
+
+    const rowsPerPageSmart = useSmartRowsPerPage({
+    containerRef: contRef,
+    headerRef: headRef,
+    theadRef,
+    footerRef: footRef,
+    rowProbeRef: rowRef,
+    fallbackRowHeight: 48
+    });
+
+    const [page, setPage] = useState(0);
+    useEffect(() => setPage(0), [rowsPerPageSmart, expanded, pianoIncontriExpanded, initialState]);
+
+
+    
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
 
     const user = JSON.parse(sessionStorage.getItem('user'));
     const token = user?.token;
@@ -54,14 +72,6 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
         Authorization: `Bearer ${token}`
     };
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    };
 
     const fetchStati = async () => {
         try {
@@ -97,15 +107,6 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
             ...prevFilters,
             [field]: value,
         }));
-    };
-
-    const toggleFilters = () => {
-        setFiltersEnabled((prev) => {
-            if (prev) {
-                resetFilters();
-            }
-            return !prev;
-        });
     };
 
     const filteredRows = rows.filter((row) => {
@@ -231,140 +232,210 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
         return <Slide {...props} direction="down" />;
     }
 
+    const dimensioniRiga = { height: 48 };
+
+    const handleClickButton = () => {
+        setExpanded();
+        onClickButton?.();
+    };
+
     return (
-        <Box sx={{ borderRadius: '20px', }}>
+        <Box sx={{ borderRadius: '20px', width: '100%' }}>
             {/* Tabella */}
             <TableContainer
                 component={Paper}
+                ref={contRef}
                 sx={{
-                    maxHeight: expanded ? "80vh" : pianoIncontriExpanded ? '20vh' : "48vh",
-                    overflowY: filteredRows.length > 10 ? 'auto' : 'visible',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    flex: 1,
+                    height: '100%',
+                    overflow: 'hidden',
                     borderRadius: "20px",
                     border: filteredRows.length > 0 ? '2px solid #00B400' : '1px dashed #ccc',
-                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
                     '&::-webkit-scrollbar': { display: 'none' },
                     scrollbarWidth: 'none',
                     msOverflowStyle: 'none',
                 }}
-            >
-
-                {/* Titolo */}
+                >
                 {title && (
-                    <Box sx={{ display: 'flex', bgcolor: '#FFFFF', width: '100%', height: '100%', justifyContent: 'space-between', justifyItems: 'center' }}>
-                        <Typography variant="h6" component="div" sx={{ textAlign: "left", fontWeight: "bold", color: "#333", ml: 2, mt: 1 }}>
-                            {title}
-                        </Typography>
-                        <button
-                            onClick={() => setExpanded(prev => !prev)}
-                            style={{
-                                color: "#333",
-                                border: "thin solid #ccc",
-                                borderRadius: "8px",
-                                padding: "0px 16px",
-                                paddingRight: "12px",
-                                fontSize: "0.9rem",
-                                cursor: "pointer",
-                                margin: "6px"
-                            }}
-                        >
-                            {expanded ? "Comprimi ▲" : "Estendi ▼"}
-                        </button>
+                    <Box
+                    ref={headRef}
+                    sx={{
+                        display: 'flex',
+                        bgcolor: '#FFFFFF',
+                        width: '100%',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        px: 2,
+                        py: 1
+                    }}
+                    >
+                    <Typography variant="h6" component="div" sx={{ fontWeight: "bold", color: "#333" }}>
+                        {title}
+                    </Typography>
+                    <Button
+                        onClick={() => {
+                            setExpanded();
+                            onClickButton?.();
+                        }}
+                        sx={{
+                            bgcolor: '#00B400',
+                            color: 'white',
+                            border: 'thin solid #ccc',
+                            borderRadius: '8px',
+                            padding: '4px 12px',
+                            fontSize: '0.9rem',
+                            cursor: 'pointer',
+                            '&:hover': {
+                                bgcolor: '#009700'
+                            }
+                        }}
+                    >
+                        {expanded ? 'Comprimi ▲' : 'Estendi ▼'}
+                    </Button>
                     </Box>
                 )}
-                <Table stickyHeader>
-                    {/* Header */}
-                    <TableHead>
-                        <TableRow>
-                            {columns.map((column, index) => (
-                                <TableCell
-                                    key={index}
-                                    align={column.align || "left"}
-                                    sx={{
-                                        fontWeight: "bold",
-                                        backgroundColor: "#FFFFF",
-                                        color: "#808080",
-                                        borderBottom: "2px solid #ccc",
-                                        fontSize: '14px',
-                                        textAlign: column.align || "left",
-                                        padding: "6px 14px",
-                                    }}
-                                >
-                                    {filtersEnabled && (
-                                        <Box display="flex" alignItems="center" gap={0}>
-                                            <TextField
-                                                variant="standard"
-                                                size="small"
-                                                placeholder={column.headerName}
-                                                value={filters[column.field] || ""}
-                                                onChange={(e) => handleFilterChange(column.field, e.target.value)}
-                                                fullWidth
-                                                inputProps={{ style: { textAlign: column.align || "left" } }}
-                                            />
-                                            <IconButton onClick={() => handleSort(column.field)} size="small">
-                                                {orderBy === column.field ? (
-                                                    orderDirection === "asc" ? (
-                                                        <ArrowDropUpIcon fontSize="small" />
-                                                    ) : (
-                                                        <ArrowDropDownIcon fontSize="small" />
-                                                    )
-                                                ) : (
-                                                    <ArrowDropDownIcon fontSize="small" sx={{ color: "gray" }} />
-                                                )}
-                                            </IconButton>
-                                        </Box>
+
+                <Box sx={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
+                    <Table stickyHeader size="small">
+                    <TableHead ref={theadRef}>
+                        <TableRow sx={dimensioniRiga}>
+                        {columns.map((column, index) => (
+                            <TableCell
+                            key={index}
+                            align={column.align || "left"}
+                            sx={{
+                                fontWeight: "bold",
+                                backgroundColor: "#FFFFFF",
+                                color: "#808080",
+                                borderBottom: "2px solid #ccc",
+                                fontSize: '14px',
+                                textAlign: column.align || "left",
+                                padding: "6px 14px",
+                            }}
+                            >
+                            {filtersEnabled && (
+                                <Box display="flex" alignItems="center" gap={0}>
+                                <TextField
+                                    variant="standard"
+                                    size="small"
+                                    placeholder={column.headerName}
+                                    value={filters[column.field] || ""}
+                                    onChange={(e) => handleFilterChange(column.field, e.target.value)}
+                                    fullWidth
+                                    inputProps={{ style: { textAlign: column.align || "left" } }}
+                                />
+                                <IconButton onClick={() => handleSort(column.field)} size="small">
+                                    {orderBy === column.field ? (
+                                    orderDirection === "asc" ? (
+                                        <ArrowDropUpIcon fontSize="small" />
+                                    ) : (
+                                        <ArrowDropDownIcon fontSize="small" />
+                                    )
+                                    ) : (
+                                    <ArrowDropDownIcon fontSize="small" sx={{ color: "gray" }} />
                                     )}
+                                </IconButton>
+                                </Box>
+                            )}
+                            </TableCell>
+                        ))}
+                        <TableCell
+                            align="center"
+                            sx={{
+                            fontWeight: "bold",
+                            backgroundColor: "#FFFFFF",
+                            color: "#808080",
+                            borderBottom: "2px solid #ccc",
+                            fontSize: '14px',
+                            padding: "6px 14px",
+                            }}
+                        />
+                        </TableRow>
+                    </TableHead>
+
+                    <TableBody>
+                        {sortedRows
+                        .slice(page * rowsPerPageSmart, page * rowsPerPageSmart + rowsPerPageSmart)
+                        .map((row, rowIndex) => (
+                            <TableRow
+                            key={rowIndex}
+                            hover
+                            sx={{
+                                "&:nth-of-type(odd)": { backgroundColor: "#f9f9f9" },
+                                "&:nth-of-type(even)": { backgroundColor: "#fff" },
+                                "&:hover": { backgroundColor: "#f1f1f1" },
+                                height: dimensioniRiga.height
+                            }}
+                            >
+                            {columns.map((column, colIndex) => (
+                                <TableCell
+                                key={colIndex}
+                                align={column.align || "center"}
+                                sx={{
+                                    borderBottom: "1px solid #e0e0e0",
+                                    color: "black",
+                                    fontSize: "14px",
+                                    padding: "6px 14px",
+                                    overflow: 'hidden'
+                                }}
+                                >
+                                {column.render ? column.render(row) : (
+                                    column.field.includes('.')
+                                    ? column.field.split('.').reduce((obj, key) => obj?.[key], row)
+                                    : row[column.field]
+                                )}
                                 </TableCell>
                             ))}
                             <TableCell
                                 align="center"
-                                sx={{
-                                    fontWeight: "bold",
-                                    backgroundColor: "#FFFFF",
-                                    color: "#808080",
-                                    borderBottom: "2px solid #ccc",
-                                    fontSize: '14px',
-                                    padding: "6px 14px",
-                                }}
+                                sx={{ borderBottom: "1px solid #e0e0e0", padding: "0.5px 0.5px" }}
                             >
+                                <Tooltip title="Modifica">
+                                <IconButton onClick={() => handleOpenModal(row)}>
+                                    <MoreHorizIcon />
+                                </IconButton>
+                                </Tooltip>
+                            </TableCell>
+                            </TableRow>
+                        ))}
+
+                        {filteredRows.length === 0 && (
+                        <TableRow>
+                            <TableCell colSpan={columns.length + 1} align="center">
+                            Nessun risultato trovato.
                             </TableCell>
                         </TableRow>
-                    </TableHead>
-
-                    {/* Body */}
-                    <TableBody>
-                        {sortedRows
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((row, rowIndex) => (
-                                <TableRow key={rowIndex} hover sx={{ "&:nth-of-type(odd)": { backgroundColor: "#f9f9f9", }, "&:nth-of-type(even)": { backgroundColor: "#fff", }, "&:hover": { backgroundColor: "#f1f1f1", }, height: "36px", }}>
-                                    {columns.map((column, colIndex) => (
-                                        <TableCell key={colIndex} align={column.align || "center"} sx={{ borderBottom: "1px solid #e0e0e0", color: "black", fontSize: "14px", padding: "6px 14px", }}>
-                                            {column.render ? column.render(row) : row[column.field]}
-                                        </TableCell>
-                                    ))}
-                                    {/* Colonna delle icone */}
-                                    <TableCell align="center" sx={{ borderBottom: "1px solid #e0e0e0", padding: "0.5px 0.5px", }}>
-                                        <Tooltip title="Modifica">
-                                            <IconButton onClick={(event) => handleOpenModal(row)}>
-                                                <MoreHorizIcon />
-                                            </IconButton>
-                                        </Tooltip>
-
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        {filteredRows.length === 0 && (
-                            <TableRow>
-                                <TableCell colSpan={columns.length + 1} align="center">
-                                    Nessun risultato trovato.
-                                </TableCell>
-                            </TableRow>
                         )}
                     </TableBody>
-                </Table>
-                <TablePagination
+                    </Table>
+
+                   <Table
+                    size="small"
+                    sx={{ position: 'absolute', visibility: 'hidden', pointerEvents: 'none' }}
+                    >
+                    <TableBody>
+                        <TableRow ref={rowRef} sx={{ height: dimensioniRiga.height }}>
+                        <TableCell
+                            sx={{
+                            padding: '6px 14px',
+                            borderBottom: '1px solid #e0e0e0',
+                            }}
+                        >
+                        </TableCell>
+                        </TableRow>
+                    </TableBody>
+                    </Table>
+
+                </Box>
+
+                <Box ref={footRef}>
+                    <TablePagination
                     component="div"
                     count={sortedRows.length}
-                    rowsPerPage={rowsPerPage}
+                    rowsPerPage={rowsPerPageSmart}
+                    rowsPerPageOptions={[rowsPerPageSmart]}
                     page={page}
                     onPageChange={handleChangePage}
                     sx={{
@@ -373,7 +444,8 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
                         "& .MuiTablePagination-displayedRows": { marginLeft: 0 },
                         "& .MuiInputBase-root": { display: "none" },
                     }}
-                />
+                    />
+                </Box>
             </TableContainer>
             <Modal
                 open={modalStato}
@@ -402,7 +474,7 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
                     }}
                 >
                     {/* Header con Titolo e Pulsante di chiusura */}
-                    <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
+                    <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
                         <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', ml: 2, mt: 0.5, mb: 0.5 }}>
                             {selectedPipeline?.descrizione || "Dettagli Pipeline"}
                         </Typography>
@@ -525,8 +597,6 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
                     </Button>
                 </Box>
             </Modal>
-
-
 
             <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} TransitionComponent={TransitionDown}>
                 <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>

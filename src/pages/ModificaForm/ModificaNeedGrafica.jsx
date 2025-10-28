@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Skeleton, Snackbar, Grid, Slide, Container, FormControlLabel, Switch } from '@mui/material';
+import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Skeleton, Snackbar, Grid, Slide, Container, FormControlLabel, Switch, Hidden } from '@mui/material';
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
 import axios from 'axios';
 import CustomAutocomplete from '../../components/fields/CustomAutocomplete';
@@ -16,6 +16,8 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from '@mui/material';
 import { de } from 'date-fns/locale';
+import { toBeVisible } from '@testing-library/jest-dom/matchers';
+import { isHSL } from 'validator';
 
 
 
@@ -25,7 +27,6 @@ const ModificaNeedGrafica = () => {
     const { id } = useParams();
     const theme = useUserTheme();
     const isSmallScreen = useMediaQuery('(max-width: 800px)');
-
 
 
     //stati della pagina
@@ -50,6 +51,8 @@ const ModificaNeedGrafica = () => {
     const [isChallengingUser, setIsChallengingUser] = useState(false);
     const [values, setValues] = useState({});
 
+    console.log("VALORI INIZIALI DEL MODIFICA NEED:", values);
+
 
     const user = JSON.parse(sessionStorage.getItem("user"));
     const token = user?.token;
@@ -67,18 +70,18 @@ const ModificaNeedGrafica = () => {
         const userObj = JSON.parse(userString);
         return userObj.roles.includes(roleToCheck);
     };
-    
+
     //chiamata per ricevere i dati dal db
     useEffect(() => {
         const fetchNeedOptions = async () => {
             try {
-                const responseAziende = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers: headers });
-                const responseSkill = await axios.get("http://89.46.196.60:8443/staffing/react/skill", { headers: headers });
-                //const ownerResponse = await axios.get("http://89.46.196.60:8443/owner", { headers: headers });
-                const tipologiaResponse = await axios.get("http://89.46.196.60:8443/need/react/tipologia", { headers: headers });
-                const statoResponse = await axios.get("http://89.46.196.60:8443/need/react/stato", { headers: headers });
-                const needResponse = await axios.get(`http://89.46.196.60:8443/need/react/${id}`, { headers: headers });
-                const aziendaInternaResponse = await axios.get("http://89.46.196.60:8443/gestione/aziende/interne", { headers: headers });
+                const responseAziende = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
+                const responseSkill = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
+                //const ownerResponse = await axios.get("http://localhost:8080/owner", { headers: headers });
+                const tipologiaResponse = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
+                const statoResponse = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
+                const needResponse = await axios.get(`http://localhost:8080/need/react/${id}`, { headers: headers });
+                const aziendaInternaResponse = await axios.get("http://localhost:8080/gestione/aziende/interne", { headers: headers });
 
                 const modificaData = needResponse.data;
                 const aziendaId = needResponse.data.cliente.id;
@@ -123,8 +126,8 @@ const ModificaNeedGrafica = () => {
                 const username = user?.username;
 
                 const ownerUrl = userHasRole('ADMIN')
-                    ? "http://89.46.196.60:8443/owner"
-                    : `http://89.46.196.60:8443/owner/${username}`;
+                    ? "http://localhost:8080/owner"
+                    : `http://localhost:8080/owner/${username}`;
 
                 const ownerResponse = await axios.get(ownerUrl, { headers });
 
@@ -182,7 +185,7 @@ const ModificaNeedGrafica = () => {
                 const username = user?.username;
                 const headers = { Authorization: `Bearer ${user?.token}` };
 
-                const response = await axios.get(`http://89.46.196.60:8443/gestione/aziende/interne/${username}`, { headers });
+                const response = await axios.get(`http://localhost:8080/gestione/aziende/interne/${username}`, { headers });
 
                 const aziendaUtente = response.data;
                 console.log("Azienda utente:", aziendaUtente.descrizione);
@@ -210,7 +213,7 @@ const ModificaNeedGrafica = () => {
     const fetchKeypeopleOptions = async (aziendaConId) => {
         try {
 
-            const keypeopleResponse = await axios.get(`http://89.46.196.60:8443/keypeople/react/azienda/${aziendaID}`, { headers: headers });
+            const keypeopleResponse = await axios.get(`http://localhost:8080/keypeople/react/azienda/${aziendaID}`, { headers: headers });
 
             if (Array.isArray(keypeopleResponse.data)) {
                 const keypeopleOptions = keypeopleResponse.data.map((keypeople) => ({
@@ -423,7 +426,7 @@ const ModificaNeedGrafica = () => {
         if (!hasErrors) {
             try {
                 Object.keys(values).forEach(key => {
-                    if (!fieldObbligatori.includes(key) && !values[key]) {
+                    if (key !== 'compilato' && !fieldObbligatori.includes(key) && !values[key]) {
                         values[key] = null;
                     }
                 });
@@ -440,11 +443,17 @@ const ModificaNeedGrafica = () => {
                     values.toggleRicerca = false;
                 }
 
+                if (values.idNeedPadre !== null && values.compilato === false) {
+                    console.log("IMPOSTO COMPILATO A TRUE");
+                    values.compilato = true;
+                }
+
                 transformedValues.toggleRicerca = values.toggleRicerca;
+                transformedValues.compilato = values.compilato ?? false ; // per includere il campo "compilato" nel body inviato al backend
 
                 const responseSaveNeed = await axios.post(
-                    "http://89.46.196.60:8443/need/react/salva",
-                    transformedValues, // <-- body SENZA username
+                    "http://localhost:8080/need/react/salva",
+                    transformedValues, 
                     {
                         params: {
                             skill1: skills,
@@ -527,11 +536,11 @@ const ModificaNeedGrafica = () => {
         // Sezione Dettagli Ricerca e Selezione
         // Modalità A: solo Challenging
         { type: "titleGroups", label: t("Dettagli Ricerca e Selezione") },
-        { label: "Headcount", name: "numeroRisorse", type: "number" },
-        { label: "Seniority", name: "anniEsperienza", type: "select", options: seniorityOptions },
-        { label: "Skills", name: "idSkills", type: "multipleSelect", options: skillsOptions },
-        { label: t('Pubblicazione Annuncio*'), name: 'pubblicazione', type: 'select', options: pubblicazioneOptions },
-        { label: t('Screening*'), name: 'screening', type: 'select', options: screeningOptions },
+        { label: "Headcount", name: "numeroRisorse", type: "number", visibleIf: () => isChallengingUser },
+        { label: "Seniority", name: "anniEsperienza", type: "select", options: seniorityOptions, visibleIf: () => isChallengingUser },
+        { label: "Skills", name: "idSkills", type: "multipleSelect", options: skillsOptions, visibleIf: () => isChallengingUser },
+        { label: t('Pubblicazione Annuncio*'), name: 'pubblicazione', type: 'select', options: pubblicazioneOptions, visibleIf: () => isChallengingUser },
+        { label: t('Screening*'), name: 'screening', type: 'select', options: screeningOptions, visibleIf: () => isChallengingUser },
         { label: t("Note"), name: "noteRicercaToggle", type: "note", visibleIf: () => isChallengingUser },
 
         // Modalità B: tutti gli altri
@@ -564,7 +573,8 @@ const ModificaNeedGrafica = () => {
         note: datiModifica?.note || null,
         toggleRicerca: datiModifica?.toggleRicerca ? true : false,
         noteRicercaToggle: datiModifica?.noteRicercaToggle || null,
-
+        compilato: datiModifica?.compilato || false,
+        idNeedPadre: datiModifica?.idNeedPadre || null,
     };
 
 
@@ -576,7 +586,7 @@ const ModificaNeedGrafica = () => {
             const updatedvalues = { ...initialValues };
 
             Object.keys(datiModifica).forEach(key => {
-                if (initialValues.hasOwnProperty(key)) {
+                if (initialValues.hasOwnProperty(key) && key !== 'compilato') {
                     updatedvalues[key] = datiModifica[key];
                 }
             });

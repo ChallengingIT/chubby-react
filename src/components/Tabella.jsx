@@ -14,6 +14,7 @@ const Tabella = ({
     onPageChange,
     righeTot,
     onRowClick,
+    getRowClassName
 }) => {
 
     const theme = useUserTheme();
@@ -108,9 +109,15 @@ const Tabella = ({
                         <CircularProgress sx={{ color: "#00B400" }} />
                     )
                 }
-                getRowClassName={(params) =>
-                    params.indexRelativeToCurrentPage % 2 === 0 ? "even-row" : "odd-row"
-                }
+                getRowClassName={(params) => {
+                    // Se viene passata da Need.jsx, usala
+                    if (getRowClassName) {
+                        const customClass = getRowClassName(params);
+                        if (customClass) return customClass;
+                    }
+                    // altrimenti, alterna i colori di default
+                    return params.indexRelativeToCurrentPage % 2 === 0 ? "even-row" : "odd-row";
+                }}
                 rowHeight={rowHeight}
                 sx={{
                     borderStyle: "none",
@@ -143,6 +150,11 @@ const Tabella = ({
                         fontWeight: "bolder",
                         fontSize: "1em",
                     },
+                    "& .riga-evidenziata": {
+                        backgroundColor: "#0080809a",
+                    },
+                    "& .even-row": { backgroundColor: "#ffffff" },
+                    "& .odd-row": { backgroundColor: "#ECECEC" },
                 }}
             />
         </Box>

@@ -29,7 +29,7 @@ function CustomTextFieldModifica({
       inputProps={{
         maxLength: maxLength,
       }}
-      value={values[name] || initialValues[name] || ""}
+      value={values[name] !== undefined ? values[name] : (initialValues[name] || "")}
       onChange={handleChange}
       disabled={disabled}
       sx={{
