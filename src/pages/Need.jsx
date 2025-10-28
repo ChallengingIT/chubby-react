@@ -741,13 +741,13 @@ const Need = () => {
                             setSelectedNeed(row);
                             setViewMode("cardSingola");
                         }}
-                         getRowClassName={(params) => {
+                        getRowClassName={(params) => {
                             // Controlla se idNeedPadre è NON nullo e compilato è false
                             if (params.row.idNeedPadre !== null && params.row.compilato === false) {
                                 return 'riga-evidenziata';
                             }
                             return '';
-                        }} 
+                        }}
                     />
                     {loading && (
                         <Box

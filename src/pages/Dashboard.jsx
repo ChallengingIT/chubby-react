@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import { useMediaQuery } from '@mui/material';
 import { motion } from "framer-motion";
 import CustomTableCell2 from '../components/CustomTableCell2.jsx';
+import { id } from "date-fns/locale";
 
 
 
@@ -118,7 +119,9 @@ function Dashboard() {
                     stato: pipeline?.stato ? pipeline?.stato?.descrizione : "Stato non disponibile",
                     statoId: pipeline?.stato ? pipeline?.stato?.id : "Stato non disponibile",
                     pipelineData: pipeline?.pipeline || "Dati non disponibili",
-                    aziendaInterna: pipeline?.aziendaInterna ? `${pipeline?.aziendaInterna?.descrizione}` : "Azienda non disponibile"
+                    aziendaInterna: pipeline?.aziendaInterna ? `${pipeline?.aziendaInterna?.descrizione}` : "Azienda non disponibile",
+                    idNeedPadre: pipeline?.idNeedPadre || null,
+                    compilato: pipeline?.compilato === undefined ? null : pipeline?.compilato,
                 }));
                 setOriginalPipeline(pipelineConId);
             } else {
@@ -163,7 +166,7 @@ function Dashboard() {
     }
 
     const expandedTogglePianoIncontri = () => {
-        if (pianoIncontriExpanded) {            
+        if (pianoIncontriExpanded) {
             setPianoIncontriExpanded(false);
             setPipelineExpanded(false);
             pageSizeAzioni === 7 ? setPageSizeAzioni(3) : setPageSizeAzioni(7);
@@ -271,7 +274,7 @@ function Dashboard() {
                 }}
             >
                 <Box
-                container
+                    container
                     sx={{
                         display: "flex",
                         flexDirection: "column",
@@ -292,7 +295,7 @@ function Dashboard() {
                         container
                         direction="column"
                         spacing={0}
-                        sx={{ flex: 1, minHeight: 0 , gap: 4}}>
+                        sx={{ flex: 1, minHeight: 0, gap: 4 }}>
                         <Grid
                             size={12}
                             sx={{ flex: initialState, minHeight: 0, display: 'flex', transition: 'flex 250ms ease', overflow: 'hidden' }}
@@ -309,6 +312,12 @@ function Dashboard() {
                                 pageSize={pageSizePipeline}
                                 onClickButton={espandiPrimo}
                                 initialState={initialState}
+                                getRowClassName={(params) => {
+                                    if (params.row.idNeedPadre !== null && params.row.compilato === false) {
+                                        return 'riga-evidenziata';
+                                    }
+                                    return '';
+                                }}
                             />
                         </Grid>
                         <Grid
