@@ -17,7 +17,7 @@ import CallMadeIcon                                 from '@mui/icons-material/Ca
 import AccountCircleIcon                            from '@mui/icons-material/AccountCircle'; //owner business
 import AccountCircleOutlinedIcon                    from '@mui/icons-material/AccountCircleOutlined'; //owner recruiter
 import { useTranslation }                           from "react-i18next"; 
-import { motion }                                   from "framer-motion"; 
+import { color, motion }                                   from "framer-motion"; 
 
 import { 
     Card, 
@@ -181,7 +181,10 @@ const NeedCardFlip = ({valori, statoOptions, onDelete, onRefresh, isFirstCard })
         marginLeft: '4em',
         marginRight: '2em',
         border: 'solid 2px',
-        borderColor: theme.palette.border.main,
+        borderColor:
+        valori.idNeedPadre !== null && valori.compilato === false
+            ? '#008080'
+            : theme.palette.border.main,
         transition: 'transform 0.3s ease, border-width 0.3s ease', 
             '&:hover': {
             cursor: 'pointer',
