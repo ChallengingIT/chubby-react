@@ -643,7 +643,7 @@ const Aziende = () => {
                         <Box sx={{ mt: 2, width: '50%'}}>
                             <AziendeCardFlip
                                 valori={selectedAziende?.row}
-                                onDelete={() => handleDelete(selectedAziende.id)}
+                                onDelete={() => handleDelete(selectedAziende?.row?.id)}
                                 onRefresh={handleRefresh}
                                 isFirstCard={true}
                             />
