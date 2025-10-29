@@ -938,7 +938,7 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                                 onChange={(event, newValue) => {
                                     handleValueChange('tipologie', newValue ? newValue.value : null);
                                 }}
-                                sx={{ width: '15em' }}
+                                sx={{ minWidth: '16em' }}
                                 renderInput={(params) =>
                                     <TextField
                                         {...params}
