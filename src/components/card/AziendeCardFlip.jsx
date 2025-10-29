@@ -455,6 +455,9 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                         {t('Sei sicuro di voler eliminare l\'azienda?')}
                     </Typography>
+                    <Typography id="modal-modal-title" variant="h6" fontSize={16} paddingBottom={2}>
+                        {"Procedendo verranno eliminati i Contatti ed i Need collegati."}
+                    </Typography>
                     <Box
                         sx={{
                             display: "flex",
