@@ -310,7 +310,7 @@ function Sidebar() {
                 </ListItem>
             )}
 
-            {!userHasRole("CANDIDATO") && (
+            {!userHasRole("CANDIDATO") && !userHasRole("RECRUITER") && (
                 <ListItem button onClick={handleAggiungiNeedClick}>
                     <ListItemIcon>
                         <ExploreIcon sx={{ color: theme.palette.icon.main }} />

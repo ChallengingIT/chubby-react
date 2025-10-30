@@ -41,6 +41,7 @@ const ModificaNeedGrafica = () => {
 
 
     const [aziendeOptions, setAziendeOptions] = useState([]);
+    const [skillsAreasOptions, setAreasSkillsOptions] = useState([]);
     const [skillsOptions, setSkillsOptions] = useState([]);
     const [ownerOptions, setOwnerOptions] = useState([]);
     const [tipologiaOptions, setTipologiaOptions] = useState([]);
@@ -50,6 +51,7 @@ const ModificaNeedGrafica = () => {
     const [aziendaInternaOptions, setAziendaInternaOptions] = useState([]);
     const [isChallengingUser, setIsChallengingUser] = useState(false);
     const [values, setValues] = useState({});
+    const [isSkillsEnabled, setIsSkillsEnabled] = useState(false);
 
     console.log("VALORI INIZIALI DEL MODIFICA NEED:", values);
 
@@ -76,7 +78,7 @@ const ModificaNeedGrafica = () => {
         const fetchNeedOptions = async () => {
             try {
                 const responseAziende = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
-                const responseSkill = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
+                const responseSkillArea = await axios.get("http://localhost:8080/staffing/react/areas", { headers: headers });
                 //const ownerResponse = await axios.get("http://localhost:8080/owner", { headers: headers });
                 const tipologiaResponse = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
                 const statoResponse = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
@@ -140,12 +142,12 @@ const ModificaNeedGrafica = () => {
                 }
 
 
-                if (Array.isArray(responseSkill.data)) {
-                    const skillsOptions = responseSkill.data.map((skill) => ({
-                        value: skill.id,
-                        label: skill.descrizione
+                if (Array.isArray(responseSkillArea.data)) {
+                    const skillsAreaOptions = responseSkillArea.data.map((area) => ({
+                        value: area.id,
+                        label: area.descrizione
                     }));
-                    setSkillsOptions(skillsOptions);
+                    setAreasSkillsOptions(skillsAreaOptions);
                 }
 
 
@@ -209,6 +211,7 @@ const ModificaNeedGrafica = () => {
             fetchKeypeopleOptions(aziendaConId);
         }
     }, [datiModifica.cliente]);
+
 
     const fetchKeypeopleOptions = async (aziendaConId) => {
         try {
@@ -449,11 +452,11 @@ const ModificaNeedGrafica = () => {
                 }
 
                 transformedValues.toggleRicerca = values.toggleRicerca;
-                transformedValues.compilato = values.compilato ?? false ; // per includere il campo "compilato" nel body inviato al backend
+                transformedValues.compilato = values.compilato ?? false; // per includere il campo "compilato" nel body inviato al backend
 
                 const responseSaveNeed = await axios.post(
                     "http://localhost:8080/need/react/salva",
-                    transformedValues, 
+                    transformedValues,
                     {
                         params: {
                             skill1: skills,
@@ -538,6 +541,7 @@ const ModificaNeedGrafica = () => {
         { type: "titleGroups", label: t("Dettagli Ricerca e Selezione") },
         { label: "Headcount", name: "numeroRisorse", type: "number", visibleIf: () => isChallengingUser },
         { label: "Seniority", name: "anniEsperienza", type: "select", options: seniorityOptions, visibleIf: () => isChallengingUser },
+        { label: "Skills Area", name: "idSkillsAreas", type: "select", options: skillsAreasOptions, visibleIf: () => isChallengingUser },
         { label: "Skills", name: "idSkills", type: "multipleSelect", options: skillsOptions, visibleIf: () => isChallengingUser },
         { label: t('Pubblicazione Annuncio*'), name: 'pubblicazione', type: 'select', options: pubblicazioneOptions, visibleIf: () => isChallengingUser },
         { label: t('Screening*'), name: 'screening', type: 'select', options: screeningOptions, visibleIf: () => isChallengingUser },
@@ -567,7 +571,7 @@ const ModificaNeedGrafica = () => {
         numeroRisorse: datiModifica?.numeroRisorse || null,
         location: datiModifica?.location || null,
         idSkills: datiModifica?.skills ? datiModifica.skills.map((skills) => skills?.id) : [],
-        anniEsperienza: datiModifica?.anniEsperienza || null,
+        anniEsperienza : datiModifica?.anniEsperienza || null,
         pubblicazione: datiModifica?.pubblicazione || null,
         screening: datiModifica?.screening || null,
         note: datiModifica?.note || null,
@@ -575,6 +579,7 @@ const ModificaNeedGrafica = () => {
         noteRicercaToggle: datiModifica?.noteRicercaToggle || null,
         compilato: datiModifica?.compilato || false,
         idNeedPadre: datiModifica?.idNeedPadre || null,
+        idSkillsAreas: datiModifica?.skills?.area || null
     };
 
 

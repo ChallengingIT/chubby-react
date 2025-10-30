@@ -15,6 +15,7 @@
     value,
     onChange,
     skillsOptions,
+    disabled
     }) => {
     const theme = useUserTheme();
 
@@ -26,7 +27,7 @@
     const currentValue = Array.isArray(value) ? value : [];
 
     return (
-        <FormControl fullWidth>
+        <FormControl disabled={disabled} fullWidth>
         <InputLabel
             sx={{
             // ml: 2,
@@ -65,6 +66,14 @@
             "& .MuiInputLabel-root.Mui-focused": {
                 color: theme.palette.border.main,
             },
+            "&.Mui-disabled": {
+                        WebkitTextFillColor: "#a09f9f", 
+                        backgroundColor: "#EDEDED",
+                        cursor: "not-allowed",
+                        "& .MuiSelect-select": {
+                            color: "#a09f9f",
+                        },
+                    },
             }}
             renderValue={(selected) =>
             selected

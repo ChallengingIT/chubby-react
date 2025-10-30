@@ -37,12 +37,14 @@ const AggiungiNeedGrafica = () => {
 
 
     const [aziendeOptions, setAziendeOptions] = useState([]);
+    const [skillsAreasOptions, setAreasSkillsOptions] = useState([]);
     const [skillsOptions, setSkillsOptions] = useState([]);
     const [ownerOptions, setOwnerOptions] = useState([]);
     const [tipologiaOptions, setTipologiaOptions] = useState([]);
     const [statoOptions, setStatoOptions] = useState([]);
     const [keypeopleOptions, setKeypeopleOptions] = useState([]);
     const [isKeypeopleEnabled, setIsKeypeopleEnabled] = useState(false);
+    const [isSkillsEnabled, setIsSkillsEnabled] = useState(false);
     const [aziendaInternaOptions, setAziendaInternaOptions] = useState([]);
     const [isChallengingUser, setIsChallengingUser] = useState(false);
 
@@ -70,7 +72,7 @@ const AggiungiNeedGrafica = () => {
         const fetchNeedOptions = async () => {
             try {
                 const responseAziende = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
-                const responseSkill = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
+                const responseSkillArea = await axios.get("http://localhost:8080/staffing/react/areas", { headers: headers });
                 //const ownerResponse = await axios.get("http://localhost:8080/owner", { headers: headers });
                 const tipologiaResponse = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
                 const statoResponse = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
@@ -115,26 +117,26 @@ const AggiungiNeedGrafica = () => {
                 const username = user?.username;
 
                 const ownerUrl = userHasRole('ADMIN')
-                   ? "http://localhost:8080/owner"
-                   : `http://localhost:8080/owner/${username}`;
+                    ? "http://localhost:8080/owner"
+                    : `http://localhost:8080/owner/${username}`;
 
                 const ownerResponse = await axios.get(ownerUrl, { headers });
 
                 if (Array.isArray(ownerResponse.data)) {
-                const ownerOptions = ownerResponse.data.map(owner => ({
-                    label: owner.descrizione,
-                    value: owner.id,
-                }));
-                setOwnerOptions(ownerOptions);
+                    const ownerOptions = ownerResponse.data.map(owner => ({
+                        label: owner.descrizione,
+                        value: owner.id,
+                    }));
+                    setOwnerOptions(ownerOptions);
                 }
 
 
-                if (Array.isArray(responseSkill.data)) {
-                    const skillsOptions = responseSkill.data.map((skill) => ({
-                        value: skill.id,
-                        label: skill.descrizione
+                if (Array.isArray(responseSkillArea.data)) {
+                    const skillsAreaOptions = responseSkillArea.data.map((area) => ({
+                        value: area.id,
+                        label: area.descrizione
                     }));
-                    setSkillsOptions(skillsOptions);
+                    setAreasSkillsOptions(skillsAreaOptions);
                 }
 
 
@@ -299,6 +301,22 @@ const AggiungiNeedGrafica = () => {
         }
     }, [values.idAzienda]);
 
+    //useEffect che controlla se l'area delle skill è selezionata
+    useEffect(() => {
+        if (values.skillsAreas && values.skillsAreas.length !== 0) {
+            console.log(values.skillsAreas)
+            const areaId = values.skillsAreas;
+
+            setIsSkillsEnabled(true);
+            fetchSkillAreaOptions(areaId);
+        } else {
+            console.log("values.skillsAreas: ", values.skillsAreas)
+
+            setIsSkillsEnabled(false);
+            setSkillsOptions([]);
+        }
+    }, [values.skillsAreas]);
+
 
     const fetchKeypeopleOptions = async (aziendaConId) => {
         try {
@@ -310,6 +328,19 @@ const AggiungiNeedGrafica = () => {
             setKeypeopleOptions(keypeopleOptions);
         } catch (error) {
             console.error("Errore durante il recupero dei keypeople:", error);
+        }
+    };
+
+    const fetchSkillAreaOptions = async (areaId) => {
+        try {
+            const responseSkillArea = await axios.get(`http://localhost:8080/staffing/react/skill/${areaId}`, { headers: headers });
+            const skillsOptions = responseSkillArea.data.map(skill => ({
+                label: skill.descrizione,
+                value: skill.id,
+            }));
+            setSkillsOptions(skillsOptions);
+        } catch (error) {
+            console.error("Errore durante il recupero delle skills:", error);
         }
     };
 
@@ -453,7 +484,7 @@ const AggiungiNeedGrafica = () => {
         { type: "titleGroups", label: t("Dettagli Need") },
         { label: t("Descrizione Need*"), name: "descrizione", type: "text" },
         { label: t("Stato Need*"), name: "stato", type: "select", options: statoOptions },
-         {
+        {
             label: t("Priorità*"), name: "priorita", type: "select", options: [
                 { value: 1, label: "1" },
                 { value: 2, label: "2" },
@@ -484,13 +515,15 @@ const AggiungiNeedGrafica = () => {
         { type: "titleGroups", label: t("Dettagli Ricerca e Selezione") },
         { label: "Headcount", name: "numeroRisorse", type: "number", visibleIf: () => isChallengingUser },
         { label: "Seniority", name: "anniEsperienza", type: "select", options: seniorityOptions, visibleIf: () => isChallengingUser },
+        { label: "Skills Area", name: "skillsAreas", type: "select", options: skillsAreasOptions, visibleIf: () => isChallengingUser },
         { label: "Skills", name: "skills", type: "multipleSelect", options: skillsOptions, visibleIf: () => isChallengingUser },
+
         { label: "Pubblicazione Annuncio*", name: 'pubblicazione', type: 'select', options: pubblicazioneOptions, visibleIf: () => isChallengingUser },
         { label: "Screening*", name: 'screening', type: 'select', options: screeningOptions, visibleIf: () => isChallengingUser },
         { label: t("Note"), name: "noteRicercaToggle", type: "note", visibleIf: () => isChallengingUser },
 
         // Modalità B: tutti gli altri
-        { label: "Richiede ricerca e selezione?", name: "toggleRicerca", type: "toggle",   visibleIf: () => !isChallengingUser},
+        { label: "Richiede ricerca e selezione?", name: "toggleRicerca", type: "toggle", visibleIf: () => !isChallengingUser },
         { label: "Note di ricerca e selezione", name: "noteRicercaToggle", type: "note", visibleIf: () => !isChallengingUser && values.toggleRicerca },
     ];
 
@@ -591,6 +624,17 @@ const AggiungiNeedGrafica = () => {
                                 disabled={!isKeypeopleEnabled}
                             />
                         );
+                    } else if (field.name === 'skills') {
+                        return (
+                            <CustomAutocomplete
+                                name={field.name}
+                                label={field.label}
+                                options={field.options}
+                                value={values[field.name] || null}
+                                onChange={handleChange}
+                                getOptionSelected={(option, value) => option.value === value.value}
+                            />
+                        );
                     } else {
 
                         return (
@@ -663,6 +707,7 @@ const AggiungiNeedGrafica = () => {
                             onChange={handleChangeSkill}
                             getOptionSelected={(option, value) => option.value === value.value}
                             skillsOptions={skillsOptions}
+                            disabled={!isSkillsEnabled}
                         />
                     );
 
