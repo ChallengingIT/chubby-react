@@ -22,14 +22,14 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
         padding: "4px 12px",
         margin: "0 4px",
         "&.Mui-selected": {
-        backgroundColor: "#00B400",
-        color: "#fff",
-        borderColor: "#00B400",
-        "&:hover": { backgroundColor: "#009700" }
+            backgroundColor: "#00B400",
+            color: "#fff",
+            borderColor: "#00B400",
+            "&:hover": { backgroundColor: "#009700" }
         },
         "&:hover": { backgroundColor: "#f1f1f1" }
     }
-    }));
+}));
 
 
 const BoxAttivitaWeek = ({ aziendeOptions, expanded, setExpanded, pipelineExpanded, pageSize, initialState, onClickButton }) => {
@@ -40,23 +40,23 @@ const BoxAttivitaWeek = ({ aziendeOptions, expanded, setExpanded, pipelineExpand
     const [modalStato, setModalStato] = useState(false);
     const [selectedPipeline, setSelectedPipeline] = useState(null);
     const [values, setValues] = useState({ stato: null, priorita: null });
-    const [orderBy, setOrderBy] = useState('');
+    const [orderBy, setOrderBy] = useState('formattedDate');
     const [orderDirection, setOrderDirection] = useState('asc');
     const [weekDataKeyPeople, setWeekDataKeyPeople] = useState([]);
-    const quantita = 10;    
-    const contRef   = useRef(null);
-    const headRef   = useRef(null);
-    const theadRef  = useRef(null);
-    const footRef   = useRef(null);
-    const rowRef    = useRef(null);
+    const quantita = 10;
+    const contRef = useRef(null);
+    const headRef = useRef(null);
+    const theadRef = useRef(null);
+    const footRef = useRef(null);
+    const rowRef = useRef(null);
 
     const rowsPerPageSmart = useSmartRowsPerPage({
-    containerRef: contRef,
-    headerRef: headRef,
-    theadRef,
-    footerRef: footRef,
-    rowProbeRef: rowRef,
-    fallbackRowHeight: 48
+        containerRef: contRef,
+        headerRef: headRef,
+        theadRef,
+        footerRef: footRef,
+        rowProbeRef: rowRef,
+        fallbackRowHeight: 48
     });
 
     const [page, setPage] = useState(0);
@@ -112,24 +112,24 @@ const BoxAttivitaWeek = ({ aziendeOptions, expanded, setExpanded, pipelineExpand
     ];
 
     useEffect(() => {
-    if (weekDataKeyPeople) {
-        const rowsWithDetails = Array.isArray(weekDataKeyPeople)
-        ? weekDataKeyPeople.map((item, index) => ({
-            id: item.idAzioneKeyPeople ?? index,
-            dateISO: item.data || null,
-            formattedDate: item.data ? format(parseISO(item.data), "dd-MM-yyyy") : "",
-            ruolo: item.ruolo,
-            siglaOwner: item.siglaOwner,
-            azione: item.azione,
-            idCliente: item.idCliente,
-            nomeContatto: item.nomeContatto,
-            completata: item.completata ?? false,
-            descrizione: item.descrizione ?? "Nessuna descrizione"
-            }))
-        : [];
-        setRows(rowsWithDetails);
-        setLoading(false);
-    }
+        if (weekDataKeyPeople) {
+            const rowsWithDetails = Array.isArray(weekDataKeyPeople)
+                ? weekDataKeyPeople.map((item, index) => ({
+                    id: item.idAzioneKeyPeople ?? index,
+                    dateISO: item.data || null,
+                    formattedDate: item.data ? format(parseISO(item.data), "dd-MM-yyyy") : "",
+                    ruolo: item.ruolo,
+                    siglaOwner: item.siglaOwner,
+                    azione: item.azione,
+                    idCliente: item.idCliente,
+                    nomeContatto: item.nomeContatto,
+                    completata: item.completata ?? false,
+                    descrizione: item.descrizione ?? "Nessuna descrizione"
+                }))
+                : [];
+            setRows(rowsWithDetails);
+            setLoading(false);
+        }
     }, [weekDataKeyPeople]);
 
 
@@ -160,55 +160,55 @@ const BoxAttivitaWeek = ({ aziendeOptions, expanded, setExpanded, pipelineExpand
 
     const filteredRows = rows.filter(item => {
         const matchDate =
-        (filters.formattedDate === "") ||
-        ((item.formattedDate || "").toLowerCase().includes(filters.formattedDate.toLowerCase()));
+            (filters.formattedDate === "") ||
+            ((item.formattedDate || "").toLowerCase().includes(filters.formattedDate.toLowerCase()));
 
-    const matchOwner =
-        !userHasRole("ADMIN") ||
-        ((item.siglaOwner || "").toLowerCase().includes((filters.siglaOwner || "").toLowerCase()));
+        const matchOwner =
+            !userHasRole("ADMIN") ||
+            ((item.siglaOwner || "").toLowerCase().includes((filters.siglaOwner || "").toLowerCase()));
 
         const matchAzione =
-        (item.azione || "").toLowerCase().includes((filters.azione || "").toLowerCase());
+            (item.azione || "").toLowerCase().includes((filters.azione || "").toLowerCase());
 
         const matchCliente =
-        getAziendaLabel(item.idCliente).toLowerCase().includes((filters.idCliente || "").toLowerCase());
+            getAziendaLabel(item.idCliente).toLowerCase().includes((filters.idCliente || "").toLowerCase());
 
         const matchContatto =
-        (item.nomeContatto || "").toLowerCase().includes((filters.nomeContatto || "").toLowerCase());
+            (item.nomeContatto || "").toLowerCase().includes((filters.nomeContatto || "").toLowerCase());
 
         const normalizeBool = (v) => {
-        if (v == null || v === "") return null;
-        const s = String(v).trim().toLowerCase();
-        if (["true","1","si","sì","yes","y"].includes(s)) return true;
-        if (["false","0","no","n"].includes(s)) return false;
-        return null;
+            if (v == null || v === "") return null;
+            const s = String(v).trim().toLowerCase();
+            if (["true", "1", "si", "sì", "yes", "y"].includes(s)) return true;
+            if (["false", "0", "no", "n"].includes(s)) return false;
+            return null;
         };
         const filterCompletata = normalizeBool(filters.completata);
         const matchCompletata =
-        filterCompletata === null ? true : item.completata === filterCompletata;
+            filterCompletata === null ? true : item.completata === filterCompletata;
 
         const matchDescrizione =
-        (item.descrizione || "").toLowerCase().includes((filters.descrizione || "").toLowerCase());
+            (item.descrizione || "").toLowerCase().includes((filters.descrizione || "").toLowerCase());
 
         return (
-        matchDate &&
-        matchOwner &&
-        matchAzione &&
-        matchCliente &&
-        matchContatto &&
-        matchCompletata &&
-        matchDescrizione
+            matchDate &&
+            matchOwner &&
+            matchAzione &&
+            matchCliente &&
+            matchContatto &&
+            matchCompletata &&
+            matchDescrizione
         );
     });
 
 
     const weeksWithRows = weeks.map((week) => {
-    const weekRows = filteredRows.filter(row =>
-        row.dateISO
-            ? isWithinInterval(parseISO(row.dateISO), { start: week.start, end: week.end })
-            : false
-    );
-    return { label: week.label, rows: weekRows };
+        const weekRows = filteredRows.filter(row =>
+            row.dateISO
+                ? isWithinInterval(parseISO(row.dateISO), { start: week.start, end: week.end })
+                : false
+        );
+        return { label: week.label, rows: weekRows };
     });
 
 
@@ -280,19 +280,19 @@ const BoxAttivitaWeek = ({ aziendeOptions, expanded, setExpanded, pipelineExpand
             renderCell: (params) => params.row.nomeContatto
         },
         {
-        field: "completata",
-        headerName: "Stato",
-        flex: 0.5,
-        renderCell: ({ value }) =>
-            value ? (
-            <CheckCircleIcon
-                sx={{ color: "grey", fontSize: "1.5rem" }}
-            />
-            ) : (
-            <AccessAlarmIcon
-                sx={{ color: "grey", opacity: 0.7, fontSize: "1.7rem" }}
-            />
-            ),
+            field: "completata",
+            headerName: "Stato",
+            flex: 0.5,
+            renderCell: ({ value }) =>
+                value ? (
+                    <CheckCircleIcon
+                        sx={{ color: "grey", fontSize: "1.5rem" }}
+                    />
+                ) : (
+                    <AccessAlarmIcon
+                        sx={{ color: "grey", opacity: 0.7, fontSize: "1.7rem" }}
+                    />
+                ),
         }
     ];
 
@@ -396,20 +396,26 @@ const BoxAttivitaWeek = ({ aziendeOptions, expanded, setExpanded, pipelineExpand
 
     const sortExtractors = {
         formattedDate: (row) => row.dateISO ? parseISO(row.dateISO).getTime() : 0,
-        siglaOwner:   (row) => (row.siglaOwner   || "").toLowerCase(),
-        azione:       (row) => (row.azione       || "").toLowerCase(),
-        descrizione:  (row) => (row.descrizione  || "").toLowerCase(),
-        idCliente:    (row) => getAziendaLabel(row.idCliente).toLowerCase(),
+        siglaOwner: (row) => (row.siglaOwner || "").toLowerCase(),
+        azione: (row) => (row.azione || "").toLowerCase(),
+        descrizione: (row) => (row.descrizione || "").toLowerCase(),
+        idCliente: (row) => getAziendaLabel(row.idCliente).toLowerCase(),
         nomeContatto: (row) => (row.nomeContatto || "").toLowerCase(),
-        completata:   (row) => row.completata ? 1 : 0,
+        completata: (row) => row.completata ? 1 : 0,
     };
 
 
     const sortedRows = [...filteredRows].sort((a, b) => {
-        if (!orderBy || !sortExtractors[orderBy]) return 0;
+        // Se non è impostato un ordine, ordina per data discendente (più recenti prima)
+        if (!orderBy) {
+            const dateA = a.dateISO ? parseISO(a.dateISO) : new Date(0);
+            const dateB = b.dateISO ? parseISO(b.dateISO) : new Date(0);
+            return dateB - dateA;
+        }
 
-        const aValue = sortExtractors[orderBy](a);
-        const bValue = sortExtractors[orderBy](b);
+        // Se c'è un ordine scelto dall’utente, applicalo normalmente
+        const aValue = sortExtractors[orderBy]?.(a) ?? 0;
+        const bValue = sortExtractors[orderBy]?.(b) ?? 0;
 
         if (aValue < bValue) return orderDirection === "asc" ? -1 : 1;
         if (aValue > bValue) return orderDirection === "asc" ? 1 : -1;
@@ -422,219 +428,231 @@ const BoxAttivitaWeek = ({ aziendeOptions, expanded, setExpanded, pipelineExpand
         return column.renderCell ? column.renderCell({ value, row }) : value;
     };
 
-        
+
     return (
-    <Box sx={{ borderRadius: '20px', width: '100%' }}>
-        <TableContainer
-        component={Paper}
-        ref={contRef}
-        sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            flex: 1,
-            height: '100%',        
-            overflow: 'hidden',
-            borderRadius: '20px',
-            border: '2px solid #00B400',
-            '&::-webkit-scrollbar': { display: 'none' },
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
-            transition: 'height 0.3s ease-in-out',
-            willChange: 'height'
-        }}
-        >
-        <Box
-            ref={headRef}
-            sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 0.5,
-            bgcolor: '#FFFFFF',
-            px: 2,
-            pt: 1,
-            pb: 0.5
-            }}
-        >
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', color: '#333' }}>
-                Piano Incontri
-            </Typography>
-            <StyledToggleButtonGroup
-                value={selectedWeekIndex}
-                exclusive
-                onChange={(event, newIndex) => newIndex !== null && setSelectedWeekIndex(newIndex)}
+        <Box sx={{ borderRadius: '20px', width: '100%' }}>
+            <TableContainer
+                component={Paper}
+                ref={contRef}
                 sx={{
-                    textTransform: 'none',
                     display: 'flex',
-                    justifyContent: 'center',
-                    border: 'none',
-                    borderRadius: '16px',
-                    px: 1,
-                    py: 0.5
-                }}
-                >
-                {weeksWithRows.map((week, index) => (
-                    <ToggleButton key={index} value={index}>
-                    {week.label}
-                    </ToggleButton>
-                ))}
-            </StyledToggleButtonGroup>
-            <Button
-                onClick={() => {
-                    setExpanded();
-                    onClickButton?.();
-                }}
-                sx={{
-                    bgcolor: '#00B400',
-                    color: 'white',
-                    border: 'thin solid #ccc',
-                    borderRadius: '8px',
-                    padding: '4px 12px',
-                    fontSize: '0.9rem',
-                    cursor: 'pointer',
-                    '&:hover': {
-                        bgcolor: '#009700'
-                    }
+                    flexDirection: 'column',
+                    flex: 1,
+                    height: '100%',
+                    overflow: 'hidden',
+                    borderRadius: '20px',
+                    border: '2px solid #00B400',
+                    '&::-webkit-scrollbar': { display: 'none' },
+                    scrollbarWidth: 'none',
+                    msOverflowStyle: 'none',
+                    transition: 'height 0.3s ease-in-out',
+                    willChange: 'height'
                 }}
             >
-                {expanded ? 'Comprimi ▲' : 'Estendi ▼'}
-            </Button>
-            </Box>
-        </Box>
-
-        <Box sx={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
-            <Table stickyHeader size="small">
-            <TableHead ref={theadRef}>
-                <TableRow>
-                {columns.map((column, index) => (
-                    <TableCell
-                    key={index}
-                    align={column.align || 'left'}
+                <Box
+                    ref={headRef}
                     sx={{
-                        fontWeight: 'bold',
-                        backgroundColor: '#FFFFFF',
-                        color: '#808080',
-                        borderBottom: '2px solid #ccc',
-                        fontSize: '14px',
-                        textAlign: column.align || 'left',
-                        padding: '6px 14px'
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 0.5,
+                        bgcolor: '#FFFFFF',
+                        px: 2,
+                        pt: 1,
+                        pb: 0.5
                     }}
-                    >
-                    {filtersEnabled && (
-                        <Box display="flex" alignItems="center" gap={0}>
-                        <TextField
-                            variant="standard"
-                            size="small"
-                            placeholder={column.headerName}
-                            value={filters[column.field] || ''}
-                            onChange={(e) => handleFilterChange(column.field, e.target.value)}
-                            fullWidth
-                            inputProps={{ style: { textAlign: column.align || 'left' } }}
-                        />
-                        <IconButton onClick={() => handleSort(column.field)} size="small">
-                            {orderBy === column.field ? (
-                            orderDirection === 'asc' ? (
-                                <ArrowDropUpIcon fontSize="small" />
-                            ) : (
-                                <ArrowDropDownIcon fontSize="small" />
-                            )
-                            ) : (
-                            <ArrowDropDownIcon fontSize="small" sx={{ color: 'gray' }} />
-                            )}
-                        </IconButton>
-                        </Box>
-                    )}
-                    </TableCell>
-                ))}
-                </TableRow>
-            </TableHead>
-
-            <TableBody>
-                {sortedRows
-                .slice(page * rowsPerPageSmart, page * rowsPerPageSmart + rowsPerPageSmart)
-                .map((row, rowIndex) => (
-                    <TableRow
-                    key={rowIndex}
-                    hover
-                    sx={{
-                        '&:nth-of-type(odd)': { backgroundColor: '#f9f9f9' },
-                        '&:nth-of-type(even)': { backgroundColor: '#fff' },
-                        '&:hover': { backgroundColor: '#f1f1f1' },
-                        height: 48
-                    }}
-                    >
-                    {columns.map((column, colIndex) => (
-                        <TableCell
-                        key={colIndex}
-                        align={column.align || 'center'}
-                        sx={{
-                            borderBottom: '1px solid #e0e0e0',
-                            color: 'black',
-                            fontSize: '14px',
-                            padding: '6px 14px'
-                        }}
-                        >
-                        {getCellContent(column, row)}
-                        </TableCell>
-                    ))}
-                    </TableRow>
-                ))}
-
-                {filteredRows.length === 0 && (
-                <TableRow>
-                    <TableCell colSpan={columns.length + 1} align="center">
-                    Nessun risultato trovato.
-                    </TableCell>
-                </TableRow>
-                )}
-            </TableBody>
-            </Table>
-
-            <Table
-                size="small"
-                sx={{ position: 'absolute', visibility: 'hidden', pointerEvents: 'none' }}
                 >
-                <TableBody>
-                    <TableRow
-                    ref={rowRef}
-                    sx={{
-                        height: 48,
-                        '&:nth-of-type(odd)': { backgroundColor: '#f9f9f9' },
-                        '&:nth-of-type(even)': { backgroundColor: '#fff' },
-                    }}
-                    >
-                    <TableCell
-                        sx={{
-                        borderBottom: '1px solid #e0e0e0',
-                        color: 'black',
-                        fontSize: '14px',
-                        padding: '6px 14px',
-                        }}
-                    >
-                    </TableCell>
-                    </TableRow>
-                </TableBody>
-            </Table>
-        </Box>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', color: '#333' }}>
+                            Piano Incontri
+                        </Typography>
+                        <StyledToggleButtonGroup
+                            value={selectedWeekIndex}
+                            exclusive
+                            onChange={(event, newIndex) => newIndex !== null && setSelectedWeekIndex(newIndex)}
+                            sx={{
+                                textTransform: 'none',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                border: 'none',
+                                borderRadius: '16px',
+                                px: 1,
+                                py: 0.5
+                            }}
+                        >
+                            {weeksWithRows.map((week, index) => (
+                                <ToggleButton key={index} value={index}>
+                                    {week.label}
+                                </ToggleButton>
+                            ))}
+                        </StyledToggleButtonGroup>
+                        <Button
+                            onClick={() => {
+                                setExpanded();
+                                onClickButton?.();
+                            }}
+                            sx={{
+                                bgcolor: '#00B400',
+                                color: 'white',
+                                border: 'thin solid #ccc',
+                                borderRadius: '8px',
+                                padding: '4px 12px',
+                                fontSize: '0.9rem',
+                                cursor: 'pointer',
+                                '&:hover': {
+                                    bgcolor: '#009700'
+                                }
+                            }}
+                        >
+                            {expanded ? 'Comprimi ▲' : 'Estendi ▼'}
+                        </Button>
+                    </Box>
+                </Box>
 
-        <Box ref={footRef}>
-            <TablePagination
-            component="div"
-            count={sortedRows.length}
-            rowsPerPage={rowsPerPageSmart}
-            rowsPerPageOptions={[rowsPerPageSmart]}
-            page={page}
-            onPageChange={handleChangePage}
-            sx={{
-                '& .MuiTablePagination-selectLabel': { display: 'none' },
-                '& .MuiTablePagination-select': { display: 'none' },
-                '& .MuiTablePagination-displayedRows': { marginLeft: 0 },
-                '& .MuiInputBase-root': { display: 'none' }
-            }}
-            />
+                <Box sx={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
+                    <Table stickyHeader size="small">
+                        <TableHead ref={theadRef}>
+                            <TableRow>
+                                {columns.map((column, index) => (
+                                    <TableCell
+                                        key={index}
+                                        align={column.align || 'left'}
+                                        sx={{
+                                            fontWeight: 'bold',
+                                            backgroundColor: '#FFFFFF',
+                                            color: '#808080',
+                                            borderBottom: '2px solid #ccc',
+                                            fontSize: '14px',
+                                            textAlign: column.align || 'left',
+                                            padding: '6px 14px'
+                                        }}
+                                    >
+                                        {filtersEnabled && (
+                                            <Box display="flex" alignItems="center" gap={0}>
+                                                <TextField
+                                                    variant="standard"
+                                                    size="small"
+                                                    placeholder={column.headerName}
+                                                    value={filters[column.field] || ''}
+                                                    onChange={(e) => handleFilterChange(column.field, e.target.value)}
+                                                    fullWidth
+                                                    inputProps={{ style: { textAlign: column.align || 'left' } }}
+                                                />
+                                                <IconButton onClick={() => handleSort(column.field)} size="small">
+                                                    {orderBy === column.field ? (
+                                                        orderDirection === 'asc' ? (
+                                                            <ArrowDropUpIcon fontSize="small" />
+                                                        ) : (
+                                                            <ArrowDropDownIcon fontSize="small" />
+                                                        )
+                                                    ) : (
+                                                        <ArrowDropDownIcon fontSize="small" sx={{ color: 'gray' }} />
+                                                    )}
+                                                </IconButton>
+                                            </Box>
+                                        )}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        </TableHead>
+
+                        <TableBody>
+                            {sortedRows
+                                .filter(row => {
+                                    const week = weeks[selectedWeekIndex];
+                                    return row.dateISO ? isWithinInterval(parseISO(row.dateISO), { start: week.start, end: week.end }) : false;
+                                })
+                                .slice(page * rowsPerPageSmart, page * rowsPerPageSmart + rowsPerPageSmart)
+                                .map((row, rowIndex) => (
+                                    <TableRow
+                                        key={rowIndex}
+                                        hover
+                                        sx={{
+                                            '&:nth-of-type(odd)': { backgroundColor: '#f9f9f9' },
+                                            '&:nth-of-type(even)': { backgroundColor: '#fff' },
+                                            '&:hover': { backgroundColor: '#f1f1f1' },
+                                            height: 48
+                                        }}
+                                    >
+                                        {columns.map((column, colIndex) => (
+                                            <TableCell
+                                                key={colIndex}
+                                                align={column.align || 'center'}
+                                                sx={{
+                                                    borderBottom: '1px solid #e0e0e0',
+                                                    color: 'black',
+                                                    fontSize: '14px',
+                                                    padding: '6px 14px'
+                                                }}
+                                            >
+                                                {getCellContent(column, row)}
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                ))}
+
+                            {weeksWithRows[selectedWeekIndex].rows.length === 0 && (
+                                <TableRow>
+                                    <TableCell
+                                        colSpan={columns.length + 1}
+                                        align="center"
+                                        sx={{
+                                            color: '#808080',
+                                            fontSize: '0.9rem',
+                                            padding: 2
+                                        }}
+                                    >
+                                        Nessuna azione trovata.
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+
+                    <Table
+                        size="small"
+                        sx={{ position: 'absolute', visibility: 'hidden', pointerEvents: 'none' }}
+                    >
+                        <TableBody>
+                            <TableRow
+                                ref={rowRef}
+                                sx={{
+                                    height: 48,
+                                    '&:nth-of-type(odd)': { backgroundColor: '#f9f9f9' },
+                                    '&:nth-of-type(even)': { backgroundColor: '#fff' },
+                                }}
+                            >
+                                <TableCell
+                                    sx={{
+                                        borderBottom: '1px solid #e0e0e0',
+                                        color: 'black',
+                                        fontSize: '14px',
+                                        padding: '6px 14px',
+                                    }}
+                                >
+                                </TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
+                </Box>
+
+                <Box ref={footRef}>
+                    <TablePagination
+                        component="div"
+                        count={weeksWithRows[selectedWeekIndex].rows.length}
+                        rowsPerPage={rowsPerPageSmart}
+                        rowsPerPageOptions={[rowsPerPageSmart]}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        sx={{
+                            '& .MuiTablePagination-selectLabel': { display: 'none' },
+                            '& .MuiTablePagination-select': { display: 'none' },
+                            '& .MuiTablePagination-displayedRows': { marginLeft: 0 },
+                            '& .MuiInputBase-root': { display: 'none' }
+                        }}
+                    />
+                </Box>
+            </TableContainer>
         </Box>
-        </TableContainer>
-    </Box>
     );
 
 };
