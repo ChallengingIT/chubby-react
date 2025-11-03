@@ -361,7 +361,6 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
                                 .map((row, rowIndex) => (
                                     <TableRow
                                         key={rowIndex}
-                                        hover
                                         sx={{
                                             backgroundColor:
                                                 row.idNeedPadre !== null && row.compilato === false
@@ -376,7 +375,7 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
                                             "&:hover": {
                                                 backgroundColor:
                                                     row.idNeedPadre !== null && row.compilato === false
-                                                        ? "#00808080"
+                                                        ? "#00808061"
                                                         : "#f1f1f1",
                                             },
                                             height: dimensioniRiga.height,
