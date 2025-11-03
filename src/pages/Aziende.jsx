@@ -99,8 +99,8 @@ const Aziende = () => {
         }
 
         const baseUrl = userHasRole("ADMIN")
-            ? "http://localhost:8080/aziende/react/mod"
-            : "http://localhost:8080/aziende/react/mod/personal";
+            ? "http://80.211.138.142:8443/aziende/react/mod"
+            : "http://80.211.138.142:8443/aziende/react/mod/personal";
 
         try {
             const userString = sessionStorage.getItem("user");
@@ -108,8 +108,8 @@ const Aziende = () => {
             const username = user?.username;
 
             const responseAziendeUrl = userHasRole("ADMIN")
-                ? "http://localhost:8080/aziende/react/select"
-                : `http://localhost:8080/aziende/react/select/${username}`;
+                ? "http://80.211.138.142:8443/aziende/react/select"
+                : `http://80.211.138.142:8443/aziende/react/select/${username}`;
 
 
             const responseAziende = await axios.get(baseUrl, {
@@ -128,18 +128,18 @@ const Aziende = () => {
 
 
             /* const responseOwner = await axios.get(
-                "http://localhost:8080/owner",
+                "http://80.211.138.142:8443/owner",
                 { headers: headers }
             ); */
             const provinceResponse = await axios.get(
-                "http://localhost:8080/aziende/react/province",
+                "http://80.211.138.142:8443/aziende/react/province",
                 { headers: headers }
             );
 
 
             const ownerUrl = userHasRole('ADMIN')
-                ? "http://localhost:8080/owner"
-                : `http://localhost:8080/owner/${username}`;
+                ? "http://80.211.138.142:8443/owner"
+                : `http://80.211.138.142:8443/owner/${username}`;
 
             const responseOwner = await axios.get(ownerUrl, { headers });
 
@@ -225,8 +225,8 @@ const Aziende = () => {
         }
 
         const baseUrl = userHasRole("ADMIN")
-            ? (isSearchActive ? "http://localhost:8080/aziende/react/ricerca/mod" : "http://localhost:8080/aziende/react/mod")
-            : (isSearchActive ? "http://localhost:8080/aziende/react/ricerca/mod/personal" : "http://localhost:8080/aziende/react/mod/personal");
+            ? (isSearchActive ? "http://80.211.138.142:8443/aziende/react/ricerca/mod" : "http://80.211.138.142:8443/aziende/react/mod")
+            : (isSearchActive ? "http://80.211.138.142:8443/aziende/react/ricerca/mod/personal" : "http://80.211.138.142:8443/aziende/react/mod/personal");
 
         try {
 
@@ -288,8 +288,8 @@ const Aziende = () => {
         }
 
         const baseUrl = userHasRole("ADMIN")
-            ? "http://localhost:8080/aziende/react/ricerca/mod"
-            : "http://localhost:8080/aziende/react/ricerca/mod/personal";
+            ? "http://80.211.138.142:8443/aziende/react/ricerca/mod"
+            : "http://80.211.138.142:8443/aziende/react/ricerca/mod/personal";
 
         setLoading(true);
         try {
@@ -299,11 +299,11 @@ const Aziende = () => {
                 params: filtriDaInviare,
             });
             /* const responseOwner = await axios.get(
-                "http://localhost:8080/owner",
+                "http://80.211.138.142:8443/owner",
                 { headers }
             ); */
 
-            const responseCliente = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
+            const responseCliente = await axios.get("http://80.211.138.142:8443/aziende/react/select", { headers: headers });
 
             if (Array.isArray(responseCliente.data)) {
                 setClienteOptions(responseCliente.data.map((cliente) => ({ label: cliente.denominazione, value: cliente.id })));
@@ -317,7 +317,7 @@ const Aziende = () => {
             const username = user?.username;
 
             const responseOwner = await axios.get(
-                `http://localhost:8080/owner/${username}`,
+                `http://80.211.138.142:8443/owner/${username}`,
                 { headers: headers }
             );
 
@@ -380,7 +380,7 @@ const Aziende = () => {
     const handleDelete = async (id) => {
         try {
             await axios.delete(
-                `http://localhost:8080/aziende/react/elimina/${id}`,
+                `http://80.211.138.142:8443/aziende/react/elimina/${id}`,
                 { headers: headers }
             );
             const isAnyFilterSet = Object.values(filtri).some((value) => value);
