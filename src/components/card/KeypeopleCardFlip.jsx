@@ -938,7 +938,7 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                                 onChange={(event, newValue) => {
                                     handleValueChange('tipologie', newValue ? newValue.value : null);
                                 }}
-                                sx={{ minWidth: '16em' }}
+                                sx={{ minWidth: '18em' }}
                                 renderInput={(params) =>
                                     <TextField
                                         {...params}
@@ -973,7 +973,7 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                                 variant="filled"
                                 value={values.descrizione || ""}
                                 multiline
-                                rows={1}  // Aggiunta di più righe per l'input delle note
+                                rows={1}  
                                 inputProps={{
                                     maxLength: 37
                                 }}
@@ -1008,12 +1008,12 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                                 variant="filled"
                                 value={values.note || ""}
                                 multiline
-                                rows={4}  // Aggiunta di più righe per l'input delle note
+                                rows={4} 
                                 inputProps={{
                                     maxLength: 4000
                                 }}
                                 sx={{
-                                    width: '100%',  // Occupare tutta la larghezza
+                                    width: '100%', 
                                     p: 1,
                                     borderRadius: '20px',
                                     backgroundColor: '#EDEDED',

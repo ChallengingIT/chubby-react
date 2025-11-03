@@ -385,7 +385,6 @@ const BoxAttivitaWeek = ({ aziendeOptions, expanded, setExpanded, pipelineExpand
         fetchAllWeeksData();
     }, []);
 
-    // Helper to get week range string from interval
     const getWeekRangeFromInterval = (interval) => {
         const baseDate = new Date();
         baseDate.setDate(baseDate.getDate() + (interval * 7));
@@ -413,7 +412,7 @@ const BoxAttivitaWeek = ({ aziendeOptions, expanded, setExpanded, pipelineExpand
             return dateB - dateA;
         }
 
-        // Se c'è un ordine scelto dall’utente, applicalo normalmente
+        // Se c'è un ordine scelto dall’utente, lo applica normalmente
         const aValue = sortExtractors[orderBy]?.(a) ?? 0;
         const bValue = sortExtractors[orderBy]?.(b) ?? 0;
 
