@@ -15,6 +15,7 @@ import { useMediaQuery } from '@mui/material';
 import { motion } from "framer-motion";
 import CustomTableCell2 from '../components/CustomTableCell2.jsx';
 import { id } from "date-fns/locale";
+import LinkIcon from '@mui/icons-material/Link';
 
 
 
@@ -157,8 +158,8 @@ function Dashboard() {
         console.log("handleRicerche");
     };
 
-    const handleDescrizioneClick = (descrizione, clienteId) => {
-        navigate('/need', { state: { descrizione, clienteId, fromDashboard: true } });
+    const handleDescrizioneClick = (descrizione, clienteId, idNeedPadre) => {
+        navigate('/need', { state: { descrizione, idNeedPadre, clienteId, fromDashboard: true } });
     };
 
     const handleRefresh = () => {
@@ -202,7 +203,34 @@ function Dashboard() {
             field: "cliente",
             headerName: "Azienda Cliente",
             align: 'center',
-            render: (row) => row.cliente?.denominazione || "Cliente non disponibile",
+            render: (row) => (
+                <Box display="flex" alignItems="center">
+                    {row.cliente?.denominazione || "Cliente non disponibile"}
+                    {(row.idNeedPadre !== null && row.compilato === false) && (
+                        <Link
+                            component="button"
+                            onClick={() => {
+                                const needPadre = originalPipeline.find(p => p.id === row.idNeedPadre);
+                                if (needPadre) {
+                                    navigate(`/need/modifica/${needPadre.id}`);
+                                }
+                            }}
+                            sx={{
+                                ml: 1,
+                                display: "flex",
+                                alignItems: "center",
+                                color: "primary.main",
+                                minHeight: 0,
+                                p: 0,
+                                lineHeight: 1,
+                            }}
+                            aria-label="Vai al need padre"
+                        >
+                            <LinkIcon fontSize="small" sx={{ color: "primary.main" }} />
+                        </Link>
+                    )}
+                </Box>
+            ),
         },
         {
             field: "tipologia",
