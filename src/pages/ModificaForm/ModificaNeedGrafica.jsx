@@ -75,13 +75,26 @@ const ModificaNeedGrafica = () => {
     useEffect(() => {
         const fetchNeedOptions = async () => {
             try {
-                const responseAziende = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
+                const userString = sessionStorage.getItem("user");
+                const user = userString ? JSON.parse(userString) : null;
+                const username = user?.username;
+
+                const aziendaInternaUrl = userHasRole("ADMIN")
+                    ? "http://localhost:8080/gestione/aziende/interne"
+                    : `http://localhost:8080/gestione/aziende/interne/${username}`;
+
+                const responseAziendeUrl = userHasRole("ADMIN")
+                    ? "http://localhost:8080/aziende/react/select"
+                    : `http://localhost:8080/aziende/react/select/${username}`;
+
+
+                const responseAziende = await axios.get(responseAziendeUrl, { headers: headers });
                 const responseSkill = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
                 //const ownerResponse = await axios.get("http://localhost:8080/owner", { headers: headers });
                 const tipologiaResponse = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
                 const statoResponse = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
                 const needResponse = await axios.get(`http://localhost:8080/need/react/${id}`, { headers: headers });
-                const aziendaInternaResponse = await axios.get("http://localhost:8080/gestione/aziende/interne", { headers: headers });
+                const aziendaInternaResponse = await axios.get(aziendaInternaUrl, { headers: headers });
 
                 const modificaData = needResponse.data;
                 const aziendaId = needResponse.data.cliente.id;
@@ -119,11 +132,6 @@ const ModificaNeedGrafica = () => {
 
                     setTipologiaOptions(groupedTipologie);
                 }
-
-
-                const userString = sessionStorage.getItem("user");
-                const user = userString ? JSON.parse(userString) : null;
-                const username = user?.username;
 
                 const ownerUrl = userHasRole('ADMIN')
                     ? "http://localhost:8080/owner"
@@ -163,6 +171,12 @@ const ModificaNeedGrafica = () => {
                         label: aziendaInterna.descrizione
                     }));
                     setAziendaInternaOptions(aziendaInternaOptions);
+                } else {
+                    const aziendaUtente = aziendaInternaResponse.data;
+                    setAziendaInternaOptions([{
+                        label: aziendaUtente.descrizione,
+                        value: aziendaUtente.id
+                    }]);
                 }
 
             } catch (error) {
@@ -449,11 +463,11 @@ const ModificaNeedGrafica = () => {
                 }
 
                 transformedValues.toggleRicerca = values.toggleRicerca;
-                transformedValues.compilato = values.compilato ?? false ; // per includere il campo "compilato" nel body inviato al backend
+                transformedValues.compilato = values.compilato ?? false; // per includere il campo "compilato" nel body inviato al backend
 
                 const responseSaveNeed = await axios.post(
                     "http://localhost:8080/need/react/salva",
-                    transformedValues, 
+                    transformedValues,
                     {
                         params: {
                             skill1: skills,

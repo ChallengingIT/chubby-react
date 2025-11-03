@@ -17,11 +17,11 @@ import {
     Tabs
 } from "@mui/material";
 import NuovaRicercaAziende from "../components/nuoveRicerche/NuovaRicercaAziende.jsx";
-import { useTranslation }                   from "react-i18next"; 
+import { useTranslation } from "react-i18next";
 
 
 const Aziende = () => {
-    const { t } = useTranslation(); 
+    const { t } = useTranslation();
 
 
     const [originalAziende, setOriginalAziende] = useState([]);
@@ -30,9 +30,9 @@ const Aziende = () => {
     const [clienteOptions, setClienteOptions] = useState([]);
     const [selectedAziende, setSelectedAziende] = useState(null);
     const [viewMode, setViewMode] = useState('table');
-    
-    
-    
+
+
+
 
     //stati ricerche
     const [ownerOptions, setOwnerOptions] = useState([]);
@@ -45,7 +45,7 @@ const Aziende = () => {
     const [isSearchActive, setIsSearchActive] = useState(false);
     const [recordTot, setRecordTot] = useState(0);
     const [righeTot, setRigheTot] = useState(0);
-    
+
 
     const [filtri, setFiltri] = useState(() => {
         const filtriSalvati = sessionStorage.getItem("filtriRicercaAziende");
@@ -103,13 +103,21 @@ const Aziende = () => {
             : "http://localhost:8080/aziende/react/mod/personal";
 
         try {
-            
+            const userString = sessionStorage.getItem("user");
+            const user = userString ? JSON.parse(userString) : null;
+            const username = user?.username;
+
+            const responseAziendeUrl = userHasRole("ADMIN")
+                ? "http://localhost:8080/aziende/react/select"
+                : `http://localhost:8080/aziende/react/select/${username}`;
+
+
             const responseAziende = await axios.get(baseUrl, {
                 headers: headers,
                 params: filtriDaInviare,
             });
 
-            const responseCliente = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
+            const responseCliente = await axios.get(responseAziendeUrl, { headers: headers });
 
 
             if (Array.isArray(responseCliente.data)) {
@@ -128,23 +136,20 @@ const Aziende = () => {
                 { headers: headers }
             );
 
-            const userString = sessionStorage.getItem("user");
-                const user = userString ? JSON.parse(userString) : null;
-                const username = user?.username;
 
-                const ownerUrl = userHasRole('ADMIN')
-                    ? "http://localhost:8080/owner"
-                    : `http://localhost:8080/owner/${username}`;
+            const ownerUrl = userHasRole('ADMIN')
+                ? "http://localhost:8080/owner"
+                : `http://localhost:8080/owner/${username}`;
 
-                const responseOwner = await axios.get(ownerUrl, { headers });
+            const responseOwner = await axios.get(ownerUrl, { headers });
 
-                if (Array.isArray(responseOwner.data)) {
+            if (Array.isArray(responseOwner.data)) {
                 const ownerOptions = responseOwner.data.map(owner => ({
                     label: owner.descrizione,
                     value: owner.id,
                 }));
                 setOwnerOptions(ownerOptions);
-                } else {
+            } else {
                 console.error("I dati dell'owner ottenuti non sono nel formato Array:", responseOwner.data);
             }
             if (Array.isArray(provinceResponse.data)) {
@@ -202,7 +207,7 @@ const Aziende = () => {
         // eslint-disable-next-line
     }, []);
 
-    const fetchMoreData = async ( paginaParam = 0) => {
+    const fetchMoreData = async (paginaParam = 0) => {
         const paginaSuccessiva = pagina + 1;
 
         const filtriDaInviare = {
@@ -224,7 +229,7 @@ const Aziende = () => {
             : (isSearchActive ? "http://localhost:8080/aziende/react/ricerca/mod/personal" : "http://localhost:8080/aziende/react/mod/personal");
 
         try {
-            
+
             const responsePaginazione = await axios.get(baseUrl, {
                 headers: headers,
                 params: filtriDaInviare,
@@ -235,8 +240,8 @@ const Aziende = () => {
 
                 if (Array.isArray(clienti)) {
                     const aziendeConId = Array.isArray(responsePaginazione.data)
-    ? responsePaginazione.data.map((aziende) => ({ ...aziende }))
-    : [];
+                        ? responsePaginazione.data.map((aziende) => ({ ...aziende }))
+                        : [];
                     setFilteredAziende((prev) => [...prev, ...aziendeConId]);
                     setHasMore(filteredAziende.length + aziendeConId.length < recordTot);
                 } else {
@@ -288,7 +293,7 @@ const Aziende = () => {
 
         setLoading(true);
         try {
-            
+
             const response = await axios.get(baseUrl, {
                 headers: headers,
                 params: filtriDaInviare,
@@ -308,21 +313,21 @@ const Aziende = () => {
 
 
             const userString = sessionStorage.getItem("user");
-                const user = userString ? JSON.parse(userString) : null;
-                const username = user?.username;
+            const user = userString ? JSON.parse(userString) : null;
+            const username = user?.username;
 
-                const responseOwner = await axios.get(
+            const responseOwner = await axios.get(
                 `http://localhost:8080/owner/${username}`,
                 { headers: headers }
-                );
+            );
 
-                if (Array.isArray(responseOwner.data)) {
+            if (Array.isArray(responseOwner.data)) {
                 const ownerOptions = responseOwner.data.map(owner => ({
                     label: owner.descrizione,
                     value: owner.id,
                 }));
                 setOwnerOptions(ownerOptions);
-                } else {
+            } else {
                 console.error("I dati dell'owner ottenuti non sono nel formato Array:", responseOwner.data);
             }
 
@@ -380,9 +385,9 @@ const Aziende = () => {
             );
             const isAnyFilterSet = Object.values(filtri).some((value) => value);
             if (!isAnyFilterSet) {
-            await fetchData();
+                await fetchData();
             } else {
-            await handleRicerche();
+                await handleRicerche();
             }
         } catch (error) {
             console.error("Errore durante la cancellazione: ", error);
@@ -394,11 +399,11 @@ const Aziende = () => {
     };
 
     const tipologiaOptions = [
-        { label: "Cliente",         value: "CLIENTE"    },
-        { label: "Prospect",        value: "PROSPECT"   },
-        { label: "Ex cliente",      value: "EXCLIENTE"  },
-        { label: "Fornitore",       value: "FORNITORE"  },
-        { label: "Partner",         value: "PARTNER"    },
+        { label: "Cliente", value: "CLIENTE" },
+        { label: "Prospect", value: "PROSPECT" },
+        { label: "Ex cliente", value: "EXCLIENTE" },
+        { label: "Fornitore", value: "FORNITORE" },
+        { label: "Partner", value: "PARTNER" },
     ];
 
     const statoOptions = [
@@ -415,12 +420,12 @@ const Aziende = () => {
 
 
     const idaConverter = (value) => {
-        if (value <= 1) return <ArrowDownwardIcon sx={{ color: "black"}}/>;
-        if (value > 1 && value <= 2) return <ArrowForwardIcon sx={{ color: "#00B400" }}/>;
-        if (value > 2) return <ArrowUpwardIcon sx={{ color: "orange" }}/>;
+        if (value <= 1) return <ArrowDownwardIcon sx={{ color: "black" }} />;
+        if (value > 1 && value <= 2) return <ArrowForwardIcon sx={{ color: "#00B400" }} />;
+        if (value > 2) return <ArrowUpwardIcon sx={{ color: "orange" }} />;
         return "N/A";
     };
-    
+
 
 
     const columns = [
@@ -433,13 +438,13 @@ const Aziende = () => {
             disableColumnMenu: true,
             renderCell: (params) => (
                 <span
-                style={{ textDecoration: "underline", color: "black", cursor: "pointer" }}
-                onClick={() => {
-                    setSelectedAziende({ row: params.row });
-                    setViewMode("cardSingola");
-                }}
+                    style={{ textDecoration: "underline", color: "black", cursor: "pointer" }}
+                    onClick={() => {
+                        setSelectedAziende({ row: params.row });
+                        setViewMode("cardSingola");
+                    }}
                 >
-                {params.value}
+                    {params.value}
                 </span>
             ),
         },
@@ -460,13 +465,13 @@ const Aziende = () => {
             disableColumnMenu: true,
             renderCell: (params) => (
                 <span
-                style={{ textDecoration: "underline", color: "black", cursor: "pointer" }}
-                onClick={() => {
-                    setSelectedAziende({ row: params.row });
-                    setViewMode("cardSingola");
-                }}
+                    style={{ textDecoration: "underline", color: "black", cursor: "pointer" }}
+                    onClick={() => {
+                        setSelectedAziende({ row: params.row });
+                        setViewMode("cardSingola");
+                    }}
                 >
-                {params.value}
+                    {params.value}
                 </span>
             ),
         },
@@ -506,32 +511,32 @@ const Aziende = () => {
     const handlePageChange = (newPage) => {
         setPagina(newPage);
         sessionStorage.setItem("paginaAziende", newPage);
-    
+
         if (Object.values(filtri).some(value => value)) {
             handleRicerche(filtri, newPage);
         } else {
-            fetchData(false, newPage);       
+            fetchData(false, newPage);
         }
     };
 
-        useEffect(() => {
-            setPagina(0);
-            setOriginalAziende([]);
-            setFilteredAziende([]);
-            setHasMore(true);
-            fetchData(true, 0);
-        }, [viewMode]);
-        
-        
+    useEffect(() => {
+        setPagina(0);
+        setOriginalAziende([]);
+        setFilteredAziende([]);
+        setHasMore(true);
+        fetchData(true, 0);
+    }, [viewMode]);
+
+
 
 
     return (
         <SchemePage>
             <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
-            <Tabs value={viewMode} onChange={(e, newValue) => setViewMode(newValue)}>
-                <Tab label="Tabella" value="table" />
-                <Tab label="Card" value="cards" />
-            </Tabs>
+                <Tabs value={viewMode} onChange={(e, newValue) => setViewMode(newValue)}>
+                    <Tab label="Tabella" value="table" />
+                    <Tab label="Card" value="cards" />
+                </Tabs>
             </Box>
             <Box
                 sx={{
@@ -554,103 +559,103 @@ const Aziende = () => {
                 />
             </Box>
             {viewMode === 'cards' ? (
-            <InfiniteScroll
-                dataLength={isSearchActive ? filteredAziende.length : originalAziende.length}
-                next={fetchMoreData}
-                hasMore={hasMore}
-                loader={
-                    <Box
-                    sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: "1em",
-                        overflow: "hidden",
-                    }}
-                    >
-                        <CircularProgress sx={{ color: "#00B400" }} />
-                    </Box>
-                }
+                <InfiniteScroll
+                    dataLength={isSearchActive ? filteredAziende.length : originalAziende.length}
+                    next={fetchMoreData}
+                    hasMore={hasMore}
+                    loader={
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                marginTop: "1em",
+                                overflow: "hidden",
+                            }}
+                        >
+                            <CircularProgress sx={{ color: "#00B400" }} />
+                        </Box>
+                    }
                 >
-                <Grid container spacing={2} sx={{ mt: 1, mb: 4 }}>
-                    {loading ? (
-                        <>
-                            {Array.from(new Array(quantita)).map((_, index) => (
+                    <Grid container spacing={2} sx={{ mt: 1, mb: 4 }}>
+                        {loading ? (
+                            <>
+                                {Array.from(new Array(quantita)).map((_, index) => (
+                                    <Grid item xs={12} md={6} key={index}>
+                                        <Box sx={{ marginRight: 2, marginBottom: 2 }}>
+                                            <Skeleton
+                                                variant="rectangular"
+                                                width="100%"
+                                                height={118}
+                                            />
+                                            <Skeleton variant="text" />
+                                            <Skeleton variant="text" />
+                                            <Skeleton variant="text" width="60%" />
+                                        </Box>
+                                    </Grid>
+                                ))}
+                            </>
+                        ) : (
+                            (isSearchActive ? filteredAziende : originalAziende).map((aziende, index) => (
                                 <Grid item xs={12} md={6} key={index}>
-                                    <Box sx={{ marginRight: 2, marginBottom: 2 }}>
-                                        <Skeleton
-                                            variant="rectangular"
-                                            width="100%"
-                                            height={118}
-                                        />
-                                        <Skeleton variant="text" />
-                                        <Skeleton variant="text" />
-                                        <Skeleton variant="text" width="60%" />
-                                    </Box>
+                                    <AziendeCardFlip
+                                        valori={aziende}
+                                        onDelete={() => handleDelete(aziende.id)}
+                                        onRefresh={handleRefresh}
+                                        isFirstCard={index === 0}
+                                    />
                                 </Grid>
-                            ))}
-                        </>
-                    ) : (
-                        (isSearchActive ? filteredAziende : originalAziende).map((aziende, index) => (
-                            <Grid item xs={12} md={6} key={index}>
-                                <AziendeCardFlip
-                                    valori={aziende}
-                                    onDelete={() => handleDelete(aziende.id)}
-                                    onRefresh={handleRefresh}
-                                    isFirstCard={index === 0}
-                                />
-                            </Grid>
-                        ))
-                    )}
-                </Grid>
-                    </InfiniteScroll>
-                ) : viewMode === 'table' ? (
-                    <Box sx={{position: 'relative'}}>
+                            ))
+                        )}
+                    </Grid>
+                </InfiniteScroll>
+            ) : viewMode === 'table' ? (
+                <Box sx={{ position: 'relative' }}>
                     <Tabella
                         data={isSearchActive ? filteredAziende : originalAziende}
                         columns={columns}
-                            title={t("Aziende")}
-                            getRowId={(row) => row.id}
-                            pagina={pagina}
-                            quantita={quantita}
-                            righeTot={righeTot}
-                            onPageChange={handlePageChange}
-                            // onRowClick={(row) => {
-                            //     setSelectedAziende(row);
-                            //     setViewMode("cardSingola");
-                            // }}
-                        />
-                        {loading && (
-                                <Box
-                                    sx={{
-                                        position: 'absolute',
-                                        top: 0,
-                                        left: 0,
-                                        width: '100%',
-                                        height: '100%',
-                                        bgcolor: 'rgba(255, 255, 255, 0.5)',
-                                        zIndex: 10,
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                    }}
-                                >
-                                    <CircularProgress sx={{ color: '#00B400' }} />
-                                </Box>
-                            )}
+                        title={t("Aziende")}
+                        getRowId={(row) => row.id}
+                        pagina={pagina}
+                        quantita={quantita}
+                        righeTot={righeTot}
+                        onPageChange={handlePageChange}
+                    // onRowClick={(row) => {
+                    //     setSelectedAziende(row);
+                    //     setViewMode("cardSingola");
+                    // }}
+                    />
+                    {loading && (
+                        <Box
+                            sx={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                width: '100%',
+                                height: '100%',
+                                bgcolor: 'rgba(255, 255, 255, 0.5)',
+                                zIndex: 10,
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <CircularProgress sx={{ color: '#00B400' }} />
                         </Box>
-                    ) : viewMode === 'cardSingola' && selectedAziende ? (
-                        <Box sx={{ mt: 2, width: '50%'}}>
-                            <AziendeCardFlip
-                                valori={selectedAziende?.row}
-                                onDelete={() => handleDelete(selectedAziende?.row?.id)}
-                                onRefresh={handleRefresh}
-                                isFirstCard={true}
-                            />
-                            <Box sx={{ mt: 2 }}>
-                            </Box>
-                            </Box>
-                        ) : null}
+                    )}
+                </Box>
+            ) : viewMode === 'cardSingola' && selectedAziende ? (
+                <Box sx={{ mt: 2, width: '50%' }}>
+                    <AziendeCardFlip
+                        valori={selectedAziende?.row}
+                        onDelete={() => handleDelete(selectedAziende?.row?.id)}
+                        onRefresh={handleRefresh}
+                        isFirstCard={true}
+                    />
+                    <Box sx={{ mt: 2 }}>
+                    </Box>
+                </Box>
+            ) : null}
         </SchemePage>
     );
 };

@@ -106,18 +106,24 @@ const KeyPeople = () => {
 
         const baseUrl = userHasRole('ADMIN') ? "http://localhost:8080/keypeople/react/mod" : "http://localhost:8080/keypeople/react/mod/personal";
         try {
-            const response = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
-            const responseCliente = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
-            //const responseOwner = await axios.get("http://localhost:8080/owner", { headers: headers });
-            const responseStati = await axios.get("http://localhost:8080/keypeople/react/stati", { headers: headers });
-
             const userString = sessionStorage.getItem("user");
             const user = userString ? JSON.parse(userString) : null;
             const username = user?.username;
 
             const ownerUrl = userHasRole('ADMIN')
-                    ? "http://localhost:8080/owner"
-                    : `http://localhost:8080/owner/${username}`;
+                ? "http://localhost:8080/owner"
+                : `http://localhost:8080/owner/${username}`;
+
+            const responseAziendeUrl = userHasRole("ADMIN")
+                ? "http://localhost:8080/aziende/react/select"
+                : `http://localhost:8080/aziende/react/select/${username}`;
+            
+            
+            const response = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
+            const responseCliente = await axios.get(responseAziendeUrl, { headers: headers });
+            //const responseOwner = await axios.get("http://localhost:8080/owner", { headers: headers });
+            const responseStati = await axios.get("http://localhost:8080/keypeople/react/stati", { headers: headers });
+
 
             const responseOwner = await axios.get(ownerUrl, { headers });
 
@@ -272,11 +278,11 @@ const KeyPeople = () => {
             const username = user?.username;
 
             const ownerUrl = userHasRole('ADMIN')
-                    ? "http://localhost:8080/owner"
-                    : `http://localhost:8080/owner/${username}`;
+                ? "http://localhost:8080/owner"
+                : `http://localhost:8080/owner/${username}`;
 
             const responseOwner = await axios.get(ownerUrl, { headers });
-            
+
             if (Array.isArray(responseOwner.data)) {
                 const ownerOptions = responseOwner.data.map(owner => ({
                     label: owner.descrizione,

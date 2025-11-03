@@ -59,18 +59,32 @@ const AggiungiKeypeopleGrafica = () => {
         Authorization: `Bearer ${token}`,
     };
 
+    const userHasRole = (roleToCheck) => {
+        const userString = sessionStorage.getItem('user');
+        if (!userString) {
+            return false;
+        }
+        const userObj = JSON.parse(userString);
+        return userObj.roles.includes(roleToCheck);
+    };
+
     //chiamata per ricevere i dati dal db
     useEffect(() => {
         const fetchAziendeOptions = async () => {
             try {
+                const userString = sessionStorage.getItem("user");
+                const user = userString ? JSON.parse(userString) : null;
+                const username = user?.username;
+
+                const responseAziendeUrl = userHasRole("ADMIN")
+                ? "http://localhost:8080/aziende/react/select"
+                : `http://localhost:8080/aziende/react/select/${username}`;
+
                 const aziendeResponse = await axios.get(
-                    "http://localhost:8080/aziende/react/select",
+                    responseAziendeUrl,
                     { headers: headers }
                 );
-                /* const ownerResponse = await axios.get(
-                "http://localhost:8080/owner",
-                { headers: headers }
-                ); */
+                
                 const statiResponse = await axios.get(
                     "http://localhost:8080/keypeople/react/stati",
                     { headers: headers }
@@ -89,9 +103,6 @@ const AggiungiKeypeopleGrafica = () => {
                     );
                 }
 
-                const userString = sessionStorage.getItem("user");
-                const user = userString ? JSON.parse(userString) : null;
-                const username = user?.username;
 
                 const ownerResponse = await axios.get(
                     `http://localhost:8080/owner/${username}`,
