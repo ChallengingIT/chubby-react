@@ -59,20 +59,34 @@ const AggiungiKeypeopleGrafica = () => {
         Authorization: `Bearer ${token}`,
     };
 
+    const userHasRole = (roleToCheck) => {
+        const userString = sessionStorage.getItem('user');
+        if (!userString) {
+            return false;
+        }
+        const userObj = JSON.parse(userString);
+        return userObj.roles.includes(roleToCheck);
+    };
+
     //chiamata per ricevere i dati dal db
     useEffect(() => {
         const fetchAziendeOptions = async () => {
             try {
+                const userString = sessionStorage.getItem("user");
+                const user = userString ? JSON.parse(userString) : null;
+                const username = user?.username;
+
+                const responseAziendeUrl = userHasRole("ADMIN")
+                ? "http://localhost:8080/aziende/react/select"
+                : `http://localhost:8080/aziende/react/select/${username}`;
+
                 const aziendeResponse = await axios.get(
-                    "http://89.46.196.60:8443/aziende/react/select",
+                    responseAziendeUrl,
                     { headers: headers }
                 );
-                /* const ownerResponse = await axios.get(
-                "http://89.46.196.60:8443/owner",
-                { headers: headers }
-                ); */
+                
                 const statiResponse = await axios.get(
-                    "http://89.46.196.60:8443/keypeople/react/stati",
+                    "http://localhost:8080/keypeople/react/stati",
                     { headers: headers }
                 );
 
@@ -89,12 +103,9 @@ const AggiungiKeypeopleGrafica = () => {
                     );
                 }
 
-                const userString = sessionStorage.getItem("user");
-                const user = userString ? JSON.parse(userString) : null;
-                const username = user?.username;
 
                 const ownerResponse = await axios.get(
-                    `http://89.46.196.60:8443/owner/${username}`,
+                    `http://localhost:8080/owner/${username}`,
                     { headers: headers }
                 );
 
@@ -235,7 +246,7 @@ const AggiungiKeypeopleGrafica = () => {
                 });
 
                 const response = await axios.post(
-                    "http://89.46.196.60:8443/keypeople/react/salva",
+                    "http://localhost:8080/keypeople/react/salva",
                     values,
                     {
                         params: { username: user?.username || null },
@@ -273,7 +284,7 @@ const AggiungiKeypeopleGrafica = () => {
     const verifyEmail = async (email) => {
         try {
             const emailResponse = await axios.get(
-                `http://89.46.196.60:8443/keypeople/${email}`,
+                `http://localhost:8080/keypeople/${email}`,
                 { headers: headers }
             );
             if (emailResponse.data === "KO") {

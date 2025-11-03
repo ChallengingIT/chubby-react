@@ -141,13 +141,6 @@ const Need = () => {
         const baseUrl = userHasRole('ADMIN') ? "http://localhost:8080/need/react/modificato" : "http://localhost:8080/need/react/modificato/personal";
 
         try {
-            const responseNeed = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
-            const responseAzienda = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
-            //const responseOwner = await axios.get("http://localhost:8080/owner", { headers: headers });
-            const responseTipologia = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
-            const responseStato = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
-
-
             const userString = sessionStorage.getItem("user");
             const user = userString ? JSON.parse(userString) : null;
             const username = user?.username;
@@ -155,6 +148,16 @@ const Need = () => {
             const ownerUrl = userHasRole('ADMIN')
                 ? "http://localhost:8080/owner"
                 : `http://localhost:8080/owner/${username}`;
+
+            const responseAziendeUrl = userHasRole("ADMIN")
+                ? "http://localhost:8080/aziende/react/select"
+                : `http://localhost:8080/aziende/react/select/${username}`;
+
+            const responseNeed = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
+            const responseAzienda = await axios.get(responseAziendeUrl, { headers: headers });
+            //const responseOwner = await axios.get("http://localhost:8080/owner", { headers: headers });
+            const responseTipologia = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
+            const responseStato = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
 
             const ownerResponse = await axios.get(ownerUrl, { headers });
 

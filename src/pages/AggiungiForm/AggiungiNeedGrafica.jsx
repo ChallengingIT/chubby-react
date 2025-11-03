@@ -69,13 +69,26 @@ const AggiungiNeedGrafica = () => {
     useEffect(() => {
         const fetchNeedOptions = async () => {
             try {
-                const responseAziende = await axios.get("http://89.46.196.60:8443/aziende/react/select", { headers: headers });
-                const responseSkill = await axios.get("http://89.46.196.60:8443/staffing/react/skill", { headers: headers });
-                //const ownerResponse = await axios.get("http://89.46.196.60:8443/owner", { headers: headers });
-                const tipologiaResponse = await axios.get("http://89.46.196.60:8443/need/react/tipologia", { headers: headers });
-                const statoResponse = await axios.get("http://89.46.196.60:8443/need/react/stato", { headers: headers });
-                const aziendaInternaResponse = await axios.get("http://89.46.196.60:8443/gestione/aziende/interne", { headers: headers });
 
+                const userString = sessionStorage.getItem("user");
+                const user = userString ? JSON.parse(userString) : null;
+                const username = user?.username;
+
+                const aziendaInternaUrl = userHasRole("ADMIN")
+                    ? "http://localhost:8080/gestione/aziende/interne"
+                    : `http://localhost:8080/gestione/aziende/interne/${username}`;
+
+                const responseAziendeUrl = userHasRole("ADMIN")
+                    ? "http://localhost:8080/aziende/react/select"
+                    : `http://localhost:8080/aziende/react/select/${username}`;
+
+
+                const responseAziende = await axios.get(responseAziendeUrl, { headers: headers });
+                const responseSkill = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
+                //const ownerResponse = await axios.get("http://localhost:8080/owner", { headers: headers });
+                const tipologiaResponse = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
+                const statoResponse = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
+                const aziendaInternaResponse = await axios.get(aziendaInternaUrl, { headers: headers });
 
                 if (Array.isArray(statoResponse.data)) {
                     const statoOptions = statoResponse.data.map((stato) => ({
@@ -108,24 +121,18 @@ const AggiungiNeedGrafica = () => {
                     setTipologiaOptions(groupedTipologie);
                 }
 
-
-
-                const userString = sessionStorage.getItem("user");
-                const user = userString ? JSON.parse(userString) : null;
-                const username = user?.username;
-
                 const ownerUrl = userHasRole('ADMIN')
-                   ? "http://89.46.196.60:8443/owner"
-                   : `http://89.46.196.60:8443/owner/${username}`;
+                    ? "http://localhost:8080/owner"
+                    : `http://localhost:8080/owner/${username}`;
 
                 const ownerResponse = await axios.get(ownerUrl, { headers });
 
                 if (Array.isArray(ownerResponse.data)) {
-                const ownerOptions = ownerResponse.data.map(owner => ({
-                    label: owner.descrizione,
-                    value: owner.id,
-                }));
-                setOwnerOptions(ownerOptions);
+                    const ownerOptions = ownerResponse.data.map(owner => ({
+                        label: owner.descrizione,
+                        value: owner.id,
+                    }));
+                    setOwnerOptions(ownerOptions);
                 }
 
 
@@ -148,10 +155,16 @@ const AggiungiNeedGrafica = () => {
 
                 if (Array.isArray(aziendaInternaResponse.data)) {
                     const aziendaInternaOptions = aziendaInternaResponse.data.map((aziendaInterna) => ({
-                        value: aziendaInterna.id,
-                        label: aziendaInterna.descrizione
+                        label: aziendaInterna.descrizione,
+                        value: aziendaInterna.id
                     }));
                     setAziendaInternaOptions(aziendaInternaOptions);
+                } else {
+                    const aziendaUtente = aziendaInternaResponse.data;
+                        setAziendaInternaOptions([{
+                            label: aziendaUtente.descrizione,
+                            value: aziendaUtente.id
+                        }]);
                 }
 
             } catch (error) {
@@ -174,7 +187,7 @@ const AggiungiNeedGrafica = () => {
                 const username = user?.username;
                 const headers = { Authorization: `Bearer ${user?.token}` };
 
-                const response = await axios.get(`http://89.46.196.60:8443/gestione/aziende/interne/${username}`, { headers });
+                const response = await axios.get(`http://localhost:8080/gestione/aziende/interne/${username}`, { headers });
 
                 const aziendaUtente = response.data;
                 console.log("Azienda utente:", aziendaUtente.descrizione);
@@ -302,7 +315,7 @@ const AggiungiNeedGrafica = () => {
 
     const fetchKeypeopleOptions = async (aziendaConId) => {
         try {
-            const responseKeypeople = await axios.get(`http://89.46.196.60:8443/keypeople/react/azienda/${aziendaConId}`, { headers: headers });
+            const responseKeypeople = await axios.get(`http://localhost:8080/keypeople/react/azienda/${aziendaConId}`, { headers: headers });
             const keypeopleOptions = responseKeypeople.data.map(keypeople => ({
                 value: keypeople.id,
                 label: keypeople.nome
@@ -411,7 +424,7 @@ const AggiungiNeedGrafica = () => {
                 values.noteRicercaToggle = values.noteRicercaToggle || null;
 
                 const responseSaveNeed = await axios.post(
-                    "http://89.46.196.60:8443/need/react/salva",
+                    "http://localhost:8080/need/react/salva",
                     values,
                     {
                         params: { skill1: skills, username: username },
@@ -453,7 +466,7 @@ const AggiungiNeedGrafica = () => {
         { type: "titleGroups", label: t("Dettagli Need") },
         { label: t("Descrizione Need*"), name: "descrizione", type: "text" },
         { label: t("Stato Need*"), name: "stato", type: "select", options: statoOptions },
-         {
+        {
             label: t("Priorità*"), name: "priorita", type: "select", options: [
                 { value: 1, label: "1" },
                 { value: 2, label: "2" },
@@ -490,7 +503,7 @@ const AggiungiNeedGrafica = () => {
         { label: t("Note"), name: "noteRicercaToggle", type: "note", visibleIf: () => isChallengingUser },
 
         // Modalità B: tutti gli altri
-        { label: "Richiede ricerca e selezione?", name: "toggleRicerca", type: "toggle",   visibleIf: () => !isChallengingUser},
+        { label: "Richiede ricerca e selezione?", name: "toggleRicerca", type: "toggle", visibleIf: () => !isChallengingUser },
         { label: "Note di ricerca e selezione", name: "noteRicercaToggle", type: "note", visibleIf: () => !isChallengingUser && values.toggleRicerca },
     ];
 
