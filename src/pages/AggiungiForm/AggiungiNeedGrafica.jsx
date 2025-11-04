@@ -84,11 +84,14 @@ const AggiungiNeedGrafica = () => {
 
 
                 const responseAziende = await axios.get(responseAziendeUrl, { headers: headers });
-                const responseSkill = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
                 //const ownerResponse = await axios.get("http://localhost:8080/owner", { headers: headers });
                 const tipologiaResponse = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
                 const statoResponse = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
                 const aziendaInternaResponse = await axios.get(aziendaInternaUrl, { headers: headers });
+                const responseAree = await axios.get("http://localhost:8080/staffing/react/areas", { headers });
+
+                let groupedSkills = [];
+
 
                 if (Array.isArray(statoResponse.data)) {
                     const statoOptions = statoResponse.data.map((stato) => ({
@@ -136,12 +139,35 @@ const AggiungiNeedGrafica = () => {
                 }
 
 
-                if (Array.isArray(responseSkill.data)) {
-                    const skillsOptions = responseSkill.data.map((skill) => ({
-                        value: skill.id,
-                        label: skill.descrizione
-                    }));
-                    setSkillsOptions(skillsOptions);
+                if (Array.isArray(responseAree.data)) {
+                    for (const area of responseAree.data) {
+                        // Header per l'area
+                        groupedSkills.push({
+                            label: area.descrizione,
+                            value: `__header_${area.id}__`,
+                            isHeader: true,
+                        });
+
+                        try {
+                            // Skill per area
+                            const responseSkillByArea = await axios.get(
+                                `http://localhost:8080/staffing/react/skill/${area.id}`,
+                                { headers }
+                            );
+
+                            if (Array.isArray(responseSkillByArea.data)) {
+                                const skills = responseSkillByArea.data.map(skill => ({
+                                    label: skill.descrizione,
+                                    value: skill.id,
+                                }));
+                                groupedSkills = [...groupedSkills, ...skills];
+                            }
+                        } catch (err) {
+                            console.error(`Errore durante il recupero delle skill per l'area ${area.descrizione}:`, err);
+                        }
+                    }
+
+                    setSkillsOptions(groupedSkills);
                 }
 
 
@@ -161,10 +187,10 @@ const AggiungiNeedGrafica = () => {
                     setAziendaInternaOptions(aziendaInternaOptions);
                 } else {
                     const aziendaUtente = aziendaInternaResponse.data;
-                        setAziendaInternaOptions([{
-                            label: aziendaUtente.descrizione,
-                            value: aziendaUtente.id
-                        }]);
+                    setAziendaInternaOptions([{
+                        label: aziendaUtente.descrizione,
+                        value: aziendaUtente.id
+                    }]);
                 }
 
             } catch (error) {

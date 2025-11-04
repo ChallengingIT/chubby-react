@@ -76,20 +76,35 @@
                 .join(", ")
             }
         >
-            {skillsOptions.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-                <Checkbox
-                checked={(value || []).indexOf(option.value) > -1}
-                sx={{
-                    color: theme.palette.border.main,
-                    "&.Mui-checked": {
-                    color: theme.palette.border.main,
-                    },
-                }}
-                />
-                <ListItemText primary={option.label} />
-            </MenuItem>
-            ))}
+            {skillsOptions.map((option) =>
+                option.isHeader ? (
+                    <MenuItem
+                        key={option.value}
+                        disabled
+                        sx={{
+                            fontWeight: "bold",
+                            color: "gray",
+                            backgroundColor: "#f5f5f5",
+                            pointerEvents: "none",
+                        }}
+                    >
+                        {option.label}
+                    </MenuItem>
+                ) : (
+                    <MenuItem key={option.value} value={option.value}>
+                        <Checkbox
+                            checked={(value || []).indexOf(option.value) > -1}
+                            sx={{
+                                color: theme.palette.border.main,
+                                "&.Mui-checked": {
+                                    color: theme.palette.border.main,
+                                },
+                            }}
+                        />
+                        <ListItemText primary={option.label} />
+                    </MenuItem>
+                )
+            )}
         </Select>
         </FormControl>
     );
