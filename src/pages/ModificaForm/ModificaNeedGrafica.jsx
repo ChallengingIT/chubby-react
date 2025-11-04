@@ -95,6 +95,9 @@ const ModificaNeedGrafica = () => {
                 const statoResponse = await axios.get("http://80.211.138.142:8443/need/react/stato", { headers: headers });
                 const needResponse = await axios.get(`http://80.211.138.142:8443/need/react/${id}`, { headers: headers });
                 const aziendaInternaResponse = await axios.get(aziendaInternaUrl, { headers: headers });
+                const responseAree = await axios.get("http://localhost:8080/staffing/react/areas", { headers });
+
+                let groupedSkills = [];
 
                 const modificaData = needResponse.data;
                 const aziendaId = needResponse.data.cliente.id;
@@ -148,12 +151,35 @@ const ModificaNeedGrafica = () => {
                 }
 
 
-                if (Array.isArray(responseSkill.data)) {
-                    const skillsOptions = responseSkill.data.map((skill) => ({
-                        value: skill.id,
-                        label: skill.descrizione
-                    }));
-                    setSkillsOptions(skillsOptions);
+                if (Array.isArray(responseAree.data)) {
+                    for (const area of responseAree.data) {
+                        // Header per l'area
+                        groupedSkills.push({
+                            label: area.descrizione,
+                            value: `__header_${area.id}__`,
+                            isHeader: true,
+                        });
+
+                        try {
+                            // Skill per area
+                            const responseSkillByArea = await axios.get(
+                                `http://localhost:8080/staffing/react/skill/${area.id}`,
+                                { headers }
+                            );
+
+                            if (Array.isArray(responseSkillByArea.data)) {
+                                const skills = responseSkillByArea.data.map(skill => ({
+                                    label: skill.descrizione,
+                                    value: skill.id,
+                                }));
+                                groupedSkills = [...groupedSkills, ...skills];
+                            }
+                        } catch (err) {
+                            console.error(`Errore durante il recupero delle skill per l'area ${area.descrizione}:`, err);
+                        }
+                    }
+
+                    setSkillsOptions(groupedSkills);
                 }
 
 
