@@ -22,10 +22,10 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
         padding: "4px 12px",
         margin: "0 4px",
         "&.Mui-selected": {
-            backgroundColor: "#00B400",
+            backgroundColor: "#029191ff",
             color: "#fff",
-            borderColor: "#00B400",
-            "&:hover": { backgroundColor: "#009700" }
+            borderColor: "#029191ff",
+            "&:hover": { backgroundColor: "#008080ff" }
         },
         "&:hover": { backgroundColor: "#f1f1f1" }
     }
@@ -286,11 +286,11 @@ const BoxAttivitaWeek = ({ aziendeOptions, expanded, setExpanded, pipelineExpand
             renderCell: ({ value }) =>
                 value ? (
                     <CheckCircleIcon
-                        sx={{ color: "grey", fontSize: "1.5rem" }}
+                        sx={{ color: "#00B400", fontSize: "1.5rem" }}
                     />
                 ) : (
                     <AccessAlarmIcon
-                        sx={{ color: "grey", opacity: 0.7, fontSize: "1.7rem" }}
+                        sx={{ color: "#507050ff", opacity: 0.7, fontSize: "1.7rem" }}
                     />
                 ),
         }
@@ -385,7 +385,6 @@ const BoxAttivitaWeek = ({ aziendeOptions, expanded, setExpanded, pipelineExpand
         fetchAllWeeksData();
     }, []);
 
-    // Helper to get week range string from interval
     const getWeekRangeFromInterval = (interval) => {
         const baseDate = new Date();
         baseDate.setDate(baseDate.getDate() + (interval * 7));
@@ -413,7 +412,7 @@ const BoxAttivitaWeek = ({ aziendeOptions, expanded, setExpanded, pipelineExpand
             return dateB - dateA;
         }
 
-        // Se c'è un ordine scelto dall’utente, applicalo normalmente
+        // Se c'è un ordine scelto dall’utente, lo applica normalmente
         const aValue = sortExtractors[orderBy]?.(a) ?? 0;
         const bValue = sortExtractors[orderBy]?.(b) ?? 0;
 
@@ -441,7 +440,7 @@ const BoxAttivitaWeek = ({ aziendeOptions, expanded, setExpanded, pipelineExpand
                     height: '100%',
                     overflow: 'hidden',
                     borderRadius: '20px',
-                    border: '2px solid #00B400',
+                    border: '2px solid #029191ff',
                     '&::-webkit-scrollbar': { display: 'none' },
                     scrollbarWidth: 'none',
                     msOverflowStyle: 'none',
@@ -491,7 +490,7 @@ const BoxAttivitaWeek = ({ aziendeOptions, expanded, setExpanded, pipelineExpand
                                 onClickButton?.();
                             }}
                             sx={{
-                                bgcolor: '#00B400',
+                                bgcolor: '#029191ff',
                                 color: 'white',
                                 border: 'thin solid #ccc',
                                 borderRadius: '8px',
@@ -499,7 +498,7 @@ const BoxAttivitaWeek = ({ aziendeOptions, expanded, setExpanded, pipelineExpand
                                 fontSize: '0.9rem',
                                 cursor: 'pointer',
                                 '&:hover': {
-                                    bgcolor: '#009700'
+                                    bgcolor: '#006868ff'
                                 }
                             }}
                         >
