@@ -95,7 +95,7 @@ const ModificaNeedGrafica = () => {
                 const statoResponse = await axios.get("http://80.211.138.142:8443/need/react/stato", { headers: headers });
                 const needResponse = await axios.get(`http://80.211.138.142:8443/need/react/${id}`, { headers: headers });
                 const aziendaInternaResponse = await axios.get(aziendaInternaUrl, { headers: headers });
-                const responseAree = await axios.get("http://localhost:8080/staffing/react/areas", { headers });
+                const responseAree = await axios.get("http://80.211.138.142:8443/staffing/react/areas", { headers });
 
                 let groupedSkills = [];
 
@@ -163,7 +163,7 @@ const ModificaNeedGrafica = () => {
                         try {
                             // Skill per area
                             const responseSkillByArea = await axios.get(
-                                `http://localhost:8080/staffing/react/skill/${area.id}`,
+                                `http://80.211.138.142:8443/staffing/react/skill/${area.id}`,
                                 { headers }
                             );
 
