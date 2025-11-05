@@ -471,7 +471,9 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                 data: formattedData,
                 descrizione: azioneOriginale.descrizione,
                 note: azioneOriginale.note,
-                idTipologia: azioneOriginale.tipologia?.id
+                idTipologia: azioneOriginale.tipologia?.id,
+                username: user?.username || null
+
             };
 
             const response = await axios.post(
