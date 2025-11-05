@@ -353,6 +353,7 @@ const KeyPeople = () => {
         try {
             await axios.delete(`http://localhost:8080/keypeople/react/elimina/${id}`, { headers: headers });
             await fetchData();
+            window.location.reload(true);
         } catch (error) {
             console.error("Errore durante la cancellazione:", error);
         }
@@ -660,7 +661,7 @@ const KeyPeople = () => {
                     <KeypeopleCardFlip
                         valori={selectedKeypeople?.row}
                         statiOptions={statiOptions}
-                        onDelete={() => handleDelete(selectedKeypeople.id)}
+                        onDelete={() => handleDelete(selectedKeypeople.row.id)}
                         onRefresh={handleRefresh}
                         isFirstCard={true}
                     />
