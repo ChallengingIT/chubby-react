@@ -383,12 +383,7 @@ const Aziende = () => {
                 `http://80.211.138.142:8443/aziende/react/elimina/${id}`,
                 { headers: headers }
             );
-            const isAnyFilterSet = Object.values(filtri).some((value) => value);
-            if (!isAnyFilterSet) {
-                await fetchData();
-            } else {
-                await handleRicerche();
-            }
+            window.location.reload(true);
         } catch (error) {
             console.error("Errore durante la cancellazione: ", error);
         }

@@ -589,6 +589,7 @@ const ModificaRecruitingGrafica = () => {
                 setValues({ ...values, cf: null });
             }
             setOpenDialog(false);
+            window.location.reload(true);
             setSelectedFileId(null);
         } catch (error) {
             console.error("Si è verificato un errore durante l'eliminazione del file:", error);

@@ -418,7 +418,8 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
             idTipologia: values.tipologie,
             note: values.note,
             descrizione: values.descrizione,
-            completata: values.completata ? true : false
+            completata: values.completata ? true : false,
+            username: user?.username || null
         };
 
         try {

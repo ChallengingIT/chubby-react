@@ -27,7 +27,7 @@ import {
 } from "@mui/material";
 import { useUserTheme } from "../TorchyThemeProvider";
 
-const AziendeCardFlip = ({ valori, onDelete, isFirstCard }) => {
+const AziendeCardFlip = ({ valori, onDelete, isFirstCard, onRefresh }) => {
     const theme = useUserTheme();
     const { t } = useTranslation(); 
     const [modalDelete, setModalDelete] = useState(false);
