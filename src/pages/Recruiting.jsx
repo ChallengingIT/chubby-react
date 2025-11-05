@@ -368,7 +368,7 @@ const Recruiting = () => {
         { headers: headers }
       );
       setOpenDialog(false);
-      fetchData();
+      window.location.reload(true);
     } catch (error) {
       console.error("Errore durante la cancellazione: ", error);
     }
