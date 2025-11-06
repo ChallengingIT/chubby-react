@@ -204,7 +204,11 @@ function Dashboard() {
             headerName: "Azienda Cliente",
             align: 'center',
             render: (row) => (
-                <Box display="flex" alignItems="center">
+                <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                >
                     {row.cliente?.denominazione || "Cliente non disponibile"}
                     {(row.idNeedPadre !== null && row.compilato === false) && (
                         <Link
