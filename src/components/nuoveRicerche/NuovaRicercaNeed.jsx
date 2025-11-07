@@ -489,7 +489,7 @@ function NuovaRicercaNeed({
                 </FormControl> */}
 
                 <IconButton
-                    onClick={onSearch}
+                    onClick={() => onSearch(filtri)}
                     disableRipple={true}
                     disableFocusRipple={true}
                     sx={{
