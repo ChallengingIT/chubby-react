@@ -104,18 +104,40 @@ const Need = () => {
 
     useEffect(() => {
         const fetchSkills = async () => {
-            try {
-                const responseNeedSkills = await axios.get("http://80.211.138.142:8443/staffing/react/skill", { headers: headers });
-                if (Array.isArray(responseNeedSkills.data)) {
-                    setSkillsOptions(responseNeedSkills.data.map((skill) => ({
-                        label: skill.descrizione,
-                        value: skill.id,
-                    })));
-                } else {
-                    console.error("Response Need Skills non è un array:", responseNeedSkills.data);
+
+            const responseAree = await axios.get("http://localhost:8080/staffing/react/areas", { headers });
+
+            let groupedSkills = [];
+
+            if (Array.isArray(responseAree.data)) {
+                for (const area of responseAree.data) {
+                    // Header per l'area
+                    groupedSkills.push({
+                        label: area.descrizione,
+                        value: `__header_${area.id}__`,
+                        isHeader: true,
+                    });
+
+                    try {
+                        // Skill per area
+                        const responseSkillByArea = await axios.get(
+                            `http://localhost:8080/staffing/react/skill/${area.id}`,
+                            { headers }
+                        );
+
+                        if (Array.isArray(responseSkillByArea.data)) {
+                            const skills = responseSkillByArea.data.map(skill => ({
+                                label: skill.descrizione,
+                                value: skill.id,
+                            }));
+                            groupedSkills = [...groupedSkills, ...skills];
+                        }
+                    } catch (err) {
+                        console.error(`Errore durante il recupero delle skill per l'area ${area.descrizione}:`, err);
+                    }
                 }
-            } catch (error) {
-                console.error("Errore durante il recupero delle skill:", error);
+
+                setSkillsOptions(groupedSkills);
             }
         };
         fetchSkills();
@@ -138,7 +160,7 @@ const Need = () => {
             }
         }
 
-        const baseUrl = userHasRole('ADMIN') ? "http://80.211.138.142:8443/need/react/modificato" : "http://80.211.138.142:8443/need/react/modificato/personal";
+        const baseUrl = userHasRole('ADMIN') ? "http://localhost:8080/need/react/modificato" : "http://localhost:8080/need/react/modificato/personal";
 
         try {
             const userString = sessionStorage.getItem("user");
@@ -146,18 +168,18 @@ const Need = () => {
             const username = user?.username;
 
             const ownerUrl = userHasRole('ADMIN')
-                ? "http://80.211.138.142:8443/owner"
-                : `http://80.211.138.142:8443/owner/${username}`;
+                ? "http://localhost:8080/owner"
+                : `http://localhost:8080/owner/${username}`;
 
             const responseAziendeUrl = userHasRole("ADMIN")
-                ? "http://80.211.138.142:8443/aziende/react/select"
-                : `http://80.211.138.142:8443/aziende/react/select/${username}`;
+                ? "http://localhost:8080/aziende/react/select"
+                : `http://localhost:8080/aziende/react/select/${username}`;
 
             const responseNeed = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
             const responseAzienda = await axios.get(responseAziendeUrl, { headers: headers });
-            //const responseOwner = await axios.get("http://80.211.138.142:8443/owner", { headers: headers });
-            const responseTipologia = await axios.get("http://80.211.138.142:8443/need/react/tipologia", { headers: headers });
-            const responseStato = await axios.get("http://80.211.138.142:8443/need/react/stato", { headers: headers });
+            //const responseOwner = await axios.get("http://localhost:8080/owner", { headers: headers });
+            const responseTipologia = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
+            const responseStato = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
 
             const ownerResponse = await axios.get(ownerUrl, { headers });
 
@@ -254,8 +276,8 @@ const Need = () => {
         }
 
         const baseUrl = userHasRole('ADMIN')
-            ? (isSearchActive ? "http://80.211.138.142:8443/need/react/ricerca/modificato" : "http://80.211.138.142:8443/need/react/modificato")
-            : (isSearchActive ? "http://80.211.138.142:8443/need/react/ricerca/modificato/personal" : "http://80.211.138.142:8443/need/react/modificato/personal");
+            ? (isSearchActive ? "http://localhost:8080/need/react/ricerca/modificato" : "http://localhost:8080/need/react/modificato")
+            : (isSearchActive ? "http://localhost:8080/need/react/ricerca/modificato/personal" : "http://localhost:8080/need/react/modificato/personal");
 
         const filtriDaInviare = {
             descrizione: filtri.descrizione || null,
@@ -331,14 +353,14 @@ const Need = () => {
             }
         }
 
-        const baseUrl = userHasRole('ADMIN') ? "http://80.211.138.142:8443/need/react/ricerca/modificato" : "http://80.211.138.142:8443/need/react/ricerca/modificato/personal";
+        const baseUrl = userHasRole('ADMIN') ? "http://localhost:8080/need/react/ricerca/modificato" : "http://localhost:8080/need/react/ricerca/modificato/personal";
         setLoading(true);
         try {
             const response = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
-            const responseAzienda = await axios.get("http://80.211.138.142:8443/aziende/react/select", { headers: headers });
-            const responseOwner = await axios.get("http://80.211.138.142:8443/owner", { headers: headers });
-            const responseTipologia = await axios.get("http://80.211.138.142:8443/need/react/tipologia", { headers: headers });
-            const responseStato = await axios.get("http://80.211.138.142:8443/need/react/stato", { headers: headers });
+            const responseAzienda = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
+            const responseOwner = await axios.get("http://localhost:8080/owner", { headers: headers });
+            const responseTipologia = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
+            const responseStato = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
 
             if (Array.isArray(responseOwner.data)) {
                 setOwnerOptions(responseOwner.data.map((owner) => ({ label: owner.descrizione, value: owner.id })));
@@ -515,7 +537,7 @@ const Need = () => {
     //funzione per cancellare il need
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://80.211.138.142:8443/need/react/elimina/${id}`, { headers: headers });
+            await axios.delete(`http://localhost:8080/need/react/elimina/${id}`, { headers: headers });
             await fetchData();
         } catch (error) {
             console.error("Errore durante la cancellazione: ", error);
