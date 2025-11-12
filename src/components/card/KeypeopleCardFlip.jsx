@@ -41,11 +41,9 @@ import {
 
 
 
-const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstCard }) => {
+const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstCard, openModalStoricoFromDashboard }) => {
 
     const { t } = useTranslation();
-
-
 
     //stati per la paginazione
     const [pagina, setPagina] = useState(0);
@@ -112,7 +110,14 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
         }
     }, [isFirstCard, hasAnimated]);
 
+    console.log("sono qui", openModalStoricoFromDashboard);
 
+    useEffect(() => {
+        if (openModalStoricoFromDashboard) {
+            console.log("sono dentro setOpenModalStoricoFromDashboard");
+            setModalStorico(!!openModalStoricoFromDashboard);
+        }
+    }, [openModalStoricoFromDashboard]);
 
     //funzione per bloccare il flip quando i modal sono aperti
     const toggleFlip = () => {
@@ -976,7 +981,7 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                                 variant="filled"
                                 value={values.descrizione || ""}
                                 multiline
-                                rows={1}  
+                                rows={1}
                                 inputProps={{
                                     maxLength: 37
                                 }}
@@ -1011,12 +1016,12 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                                 variant="filled"
                                 value={values.note || ""}
                                 multiline
-                                rows={4} 
+                                rows={4}
                                 inputProps={{
                                     maxLength: 4000
                                 }}
                                 sx={{
-                                    width: '100%', 
+                                    width: '100%',
                                     p: 1,
                                     borderRadius: '20px',
                                     backgroundColor: '#EDEDED',
