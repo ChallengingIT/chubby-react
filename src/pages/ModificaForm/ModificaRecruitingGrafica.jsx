@@ -438,7 +438,34 @@ const ModificaRecruitingGrafica = () => {
         setOpenDialog(true);
     };
 
+    const getFilenameFromContentDisposition = (disposition) => {
+        if (!disposition) return null;
+        const m1 = /filename\*\s*=\s*UTF-8''([^;]+)/i.exec(disposition);
+        if (m1 && m1[1]) return decodeURIComponent(m1[1]);
+        const m2 = /filename\s*=\s*"?(.*?)"?($|;)/i.exec(disposition);
+        if (m2 && m2[1]) return m2[1].replace(/"/g, '').trim();
+        return null;
+    };
 
+    const extFromContentType = (ct) => {
+        if (!ct) return '';
+        const t = ct.split(';')[0].trim().toLowerCase();
+        if (t.includes('pdf')) return 'pdf';
+        if (t.includes('zip')) return 'zip';
+        if (t.includes('json')) return 'json';
+        if (t.includes('spreadsheet') || t.includes('excel')) return 'xlsx';
+        if (t.includes('msword') || t.includes('wordprocessingml')) return 'docx';
+        if (t.includes('presentation')) return 'pptx';
+        if (t.includes('image/jpeg')) return 'jpg';
+        if (t.includes('image/png')) return 'png';
+        if (t.includes('image/gif')) return 'gif';
+        return '';
+    };
+
+    const ensureExt = (name, ext) => {
+        if (!ext) return name;
+        return /\.[a-z0-9]{2,5}$/i.test(name) ? name : `${name}.${ext}`;
+    };
 
     //funzione per scaricare il CV o il CF
     const handleDownloadCVCF = async (fileId, fileDescrizione) => {
@@ -446,21 +473,34 @@ const ModificaRecruitingGrafica = () => {
         try {
             const response = await axios({
                 method: 'GET',
-                url: url,
+                url,
                 responseType: 'blob',
-                headers: headers
+                headers,
             });
 
-            const fileURL = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+            const contentDisposition = response.headers?.['content-disposition'] || response.headers?.['Content-Disposition'];
+            const contentType = response.headers?.['content-type'] || response.headers?.['Content-Type'];
+
+            let filename = (fileDescrizione || '').toString().trim();
+            const fromContentDisposition = getFilenameFromContentDisposition(contentDisposition);
+            if (fromContentDisposition) filename = fromContentDisposition;
+
+            if (!/\.[a-z0-9]{2,5}$/i.test(filename)) {
+                const ext = extFromContentType(contentType) || 'bin';
+                filename = ensureExt(filename || `file_${fileId}`, ext);
+            }
+
+            const blob = response.data;
+            const fileURL = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = fileURL;
-            link.setAttribute('download', `${fileDescrizione}.pdf`);
+            link.setAttribute('download', filename);
             document.body.appendChild(link);
-
             link.click();
-            document.body.removeChild(link);
+            link.remove();
+            setTimeout(() => window.URL.revokeObjectURL(fileURL), 0);
         } catch (error) {
-            console.error('Si è verificato un errore durante il download del file:', error);
+            console.error('Errore durante il download del file:', error);
         }
     };
 
@@ -973,7 +1013,7 @@ const ModificaRecruitingGrafica = () => {
 
                                 </Button>
                             </Box>
-                            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', margin: '10px 0' }}>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', margin: '10px 0' }}>
                                 <Typography variant="body2" >
                                     {values.cf?.descrizione || t('Nessun file selezionato')}
                                 </Typography>

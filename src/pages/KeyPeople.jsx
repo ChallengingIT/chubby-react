@@ -21,6 +21,7 @@ import {
     DialogTitle,
     DialogContent
 } from '@mui/material';
+import { useLocation } from 'react-router-dom';
 
 
 
@@ -41,19 +42,109 @@ const KeyPeople = () => {
     const [statiOptions, setStatiOptions] = useState([]);
     const [recordTot, setRecordTot] = useState(0);
 
+    const [openModalStoricoFromDashboard, setOpenModalStoricoFromDashboard] = useState(false);
+
     //stati per la tabella
     const [righeTot, setRigheTot] = useState(0);
 
+    const location = useLocation();
+    /* 
+        useEffect(() => {
+            const fetchDataFromDashboard = async () => {
+                if (location.state?.fromDashboard) {
+                    const filtri = {
+                        nome: location.state.nomeContatto || null,
+                        azienda: location.state.idCliente || null,
+                        pagina: 0,
+                        quantita: 10
+                    };
+                    try {
+                        const responseKeypeople = await axios.get("http://localhost:8080/keypeople/react/ricerca/mod", {
+                            headers: { Authorization: `Bearer ${user?.token}` },
+                            params: filtri
+                        });
+    
+                        if (Array.isArray(responseKeypeople.data.keyPeoples)) {
+                            setOriginalKeypeople(responseKeypeople.data.keyPeoples);
+                            setSelectedKeypeople({ row: responseKeypeople.data.keyPeoples[0] });
+                            setViewMode("cardSingola");
+                            setRigheTot(responseKeypeople.data.record || 0);
+                        }
+    
+                        const responseAziende = await axios.get("http://localhost:8080/aziende/react/select", {
+                            headers: { Authorization: `Bearer ${user?.token}` }
+                        });
+    
+                        if (Array.isArray(responseAziende.data)) {
+                            setClienteOptions(responseAziende.data.map((cliente) => ({
+                                label: cliente.denominazione,
+                                value: cliente.id
+                            })));
+                        }
+    
+                    } catch (error) {
+                        console.error("Errore nel caricamento dei dati da Dashboard:", error);
+                    } finally {
+                        setOpenModalStoricoFromDashboard(true);
+                    }
+    
+                } else {
+                    fetchData(true, 0);
+                }
+            };
+    
+            fetchDataFromDashboard();
+        }, []); */
 
-    const [filtri, setFiltri] = useState(() => {
-        const filtriSalvati = sessionStorage.getItem('filtriRicercaKeypeople');
-        return filtriSalvati ? JSON.parse(filtriSalvati) : {
-            nome: null,
-            azienda: null,
-            stato: null,
-            owner: null
+    const getInitialFilters = () => {
+        if (location.state?.fromDashboard) {
+            return {
+                nome: location.state.nomeContatto || null,
+                azienda: location.state.idCliente || null,
+                stato: null,
+                owner: null
+            };
+        } else {
+            const filtriSalvati = sessionStorage.getItem('filtriRicercaKeypeople');
+            return filtriSalvati ? JSON.parse(filtriSalvati) : {
+                nome: null,
+                azienda: null,
+                stato: null,
+                owner: null
+            };
         };
-    });
+    };
+
+    useEffect(() => {
+        const fetchDataBasedOnState = async () => {
+            if (location.state?.fromDashboard) {
+                sessionStorage.setItem('filtriRicercaKeypeople', JSON.stringify(filtri));
+                await handleRicerche(filtri);
+            } else {
+                const filtriSalvati = sessionStorage.getItem('filtriRicercaKeypeople');
+                if (filtriSalvati) {
+                    const filtriParsed = JSON.parse(filtriSalvati);
+                    const isAnyFilterSet = Object.values(filtriParsed).some((value) => value);
+
+                    if (isAnyFilterSet) {
+                        setFiltri(filtriParsed);
+                        await handleRicerche(filtriParsed);
+                    } else {
+                        await fetchData();
+                    }
+                } else {
+                    await fetchData();
+                }
+            }
+        };
+
+        fetchDataBasedOnState();
+        // eslint-disable-next-line
+    }, []);
+
+    console.log("setOpenModalStoricoFromDashboard", setOpenModalStoricoFromDashboard);
+
+    const [filtri, setFiltri] = useState(getInitialFilters());
 
     //stati per la paginazione
     const [pagina, setPagina] = useState(0);
@@ -104,25 +195,25 @@ const KeyPeople = () => {
             }
         }
 
-        const baseUrl = userHasRole('ADMIN') ? "http://80.211.138.142:8443/keypeople/react/mod" : "http://80.211.138.142:8443/keypeople/react/mod/personal";
+        const baseUrl = userHasRole('ADMIN') ? "http://localhost:8080/keypeople/react/mod" : "http://localhost:8080/keypeople/react/mod/personal";
         try {
             const userString = sessionStorage.getItem("user");
             const user = userString ? JSON.parse(userString) : null;
             const username = user?.username;
 
             const ownerUrl = userHasRole('ADMIN')
-                ? "http://80.211.138.142:8443/owner"
-                : `http://80.211.138.142:8443/owner/${username}`;
+                ? "http://localhost:8080/owner"
+                : `http://localhost:8080/owner/${username}`;
 
             const responseAziendeUrl = userHasRole("ADMIN")
-                ? "http://80.211.138.142:8443/aziende/react/select"
-                : `http://80.211.138.142:8443/aziende/react/select/${username}`;
-            
-            
+                ? "http://localhost:8080/aziende/react/select"
+                : `http://localhost:8080/aziende/react/select/${username}`;
+
+
             const response = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
             const responseCliente = await axios.get(responseAziendeUrl, { headers: headers });
-            //const responseOwner = await axios.get("http://80.211.138.142:8443/owner", { headers: headers });
-            const responseStati = await axios.get("http://80.211.138.142:8443/keypeople/react/stati", { headers: headers });
+            //const responseOwner = await axios.get("http://localhost:8080/owner", { headers: headers });
+            const responseStati = await axios.get("http://localhost:8080/keypeople/react/stati", { headers: headers });
 
 
             const responseOwner = await axios.get(ownerUrl, { headers });
@@ -204,8 +295,8 @@ const KeyPeople = () => {
         }
 
         const baseUrl = userHasRole('ADMIN')
-            ? (isSearchActive ? "http://80.211.138.142:8443/keypeople/react/ricerca/mod" : "http://80.211.138.142:8443/keypeople/react/mod")
-            : (isSearchActive ? "http://80.211.138.142:8443/keypeople/react/ricerca/mod/personal" : "http://80.211.138.142:8443/keypeople/react/mod/personal");
+            ? (isSearchActive ? "http://localhost:8080/keypeople/react/ricerca/mod" : "http://localhost:8080/keypeople/react/mod")
+            : (isSearchActive ? "http://localhost:8080/keypeople/react/ricerca/mod/personal" : "http://localhost:8080/keypeople/react/mod/personal");
 
         try {
             const responsePaginazione = await axios.get(baseUrl, {
@@ -263,23 +354,23 @@ const KeyPeople = () => {
         }
 
         const baseUrl = userHasRole('ADMIN')
-            ? "http://80.211.138.142:8443/keypeople/react/ricerca/mod"
-            : "http://80.211.138.142:8443/keypeople/react/ricerca/mod/personal";
+            ? "http://localhost:8080/keypeople/react/ricerca/mod"
+            : "http://localhost:8080/keypeople/react/ricerca/mod/personal";
 
         setLoading(true);
         try {
             const response = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
-            const responseCliente = await axios.get("http://80.211.138.142:8443/aziende/react/select", { headers: headers });
-            //const responseOwner = await axios.get("http://80.211.138.142:8443/owner", { headers: headers });
-            const responseStati = await axios.get("http://80.211.138.142:8443/keypeople/react/stati", { headers: headers });
+            const responseCliente = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
+            //const responseOwner = await axios.get("http://localhost:8080/owner", { headers: headers });
+            const responseStati = await axios.get("http://localhost:8080/keypeople/react/stati", { headers: headers });
 
             const userString = sessionStorage.getItem("user");
             const user = userString ? JSON.parse(userString) : null;
             const username = user?.username;
 
             const ownerUrl = userHasRole('ADMIN')
-                ? "http://80.211.138.142:8443/owner"
-                : `http://80.211.138.142:8443/owner/${username}`;
+                ? "http://localhost:8080/owner"
+                : `http://localhost:8080/owner/${username}`;
 
             const responseOwner = await axios.get(ownerUrl, { headers });
 
@@ -314,6 +405,21 @@ const KeyPeople = () => {
                 setHasMore(keyPeoples.length < record);
                 setIsSearchActive(true);
                 setPagina(paginaParam);
+
+                if (location.state?.fromDashboard && keyPeoples.length > 0) {
+                    // Trova il contatto corretto in base a nome e azienda
+                    const contatto = keyPeoples.find(kp =>
+                        kp.nome?.toLowerCase().trim() === (location.state.nomeContatto?.toLowerCase().trim()) &&
+                        kp.cliente?.id === location.state.idCliente
+                    ) || keyPeoples[0];
+
+                    // Mostra solo la card del contatto
+                    setSelectedKeypeople({ row: contatto });
+                    setViewMode("cardSingola");
+
+                    // Apri lo storico azioni solo per quella card
+                    //setOpenModalStoricoFromDashboard(true);
+                }
             } else {
                 console.error("I dati ottenuti non contengono 'keyPeoples' come array:", response.data);
             }
@@ -331,7 +437,7 @@ const KeyPeople = () => {
 
     useEffect(() => {
         sessionStorage.setItem('filtriRicercaKeypeople', JSON.stringify(filtri));
-    }, [filtri]);
+    }, [filtri, location.state]);
 
     const handleReset = async () => {
         setFiltri({
@@ -351,7 +457,7 @@ const KeyPeople = () => {
     //funzione per cancellare l'azienda
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://80.211.138.142:8443/keypeople/react/elimina/${id}`, { headers: headers });
+            await axios.delete(`http://localhost:8080/keypeople/react/elimina/${id}`, { headers: headers });
             await fetchData();
             window.location.reload(true);
         } catch (error) {
@@ -664,6 +770,7 @@ const KeyPeople = () => {
                         onDelete={() => handleDelete(selectedKeypeople.row.id)}
                         onRefresh={handleRefresh}
                         isFirstCard={true}
+                        // openModalStoricoFromDashboard={openModalStoricoFromDashboard}
                     />
                     <Box sx={{ mt: 2 }}>
                     </Box>

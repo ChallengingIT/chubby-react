@@ -12,6 +12,8 @@ import { styled } from "@mui/material/styles";
 import { toggleButtonClasses } from "@mui/material/ToggleButton";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
+import { Link, useNavigate } from 'react-router-dom';
+import KeypeopleCardFlip from '../card/KeypeopleCardFlip.jsx';
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
     [`& .${toggleButtonClasses.root}`]: {
@@ -50,6 +52,8 @@ const BoxAttivitaWeek = ({ aziendeOptions, expanded, setExpanded, pipelineExpand
     const footRef = useRef(null);
     const rowRef = useRef(null);
 
+    const navigate = useNavigate();
+
     const rowsPerPageSmart = useSmartRowsPerPage({
         containerRef: contRef,
         headerRef: headRef,
@@ -62,8 +66,6 @@ const BoxAttivitaWeek = ({ aziendeOptions, expanded, setExpanded, pipelineExpand
     const [page, setPage] = useState(0);
     useEffect(() => setPage(0), [rowsPerPageSmart, expanded, pipelineExpanded, initialState]);
 
-
-
     const user = JSON.parse(sessionStorage.getItem("user"));
     const token = user?.token;
 
@@ -73,6 +75,10 @@ const BoxAttivitaWeek = ({ aziendeOptions, expanded, setExpanded, pipelineExpand
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
+    };
+
+    const handleDescrizioneClick = (idCliente, nomeContatto) => {
+        navigate('/contacts', { state: { idCliente, nomeContatto, fromDashboard: true } });
     };
 
     const [rows, setRows] = useState([]);
@@ -265,7 +271,23 @@ const BoxAttivitaWeek = ({ aziendeOptions, expanded, setExpanded, pipelineExpand
             field: "descrizione",
             headerName: "Descrizione",
             flex: 1.8,
-            valueGetter: (params) => params.row.descrizione || "Nessuna descrizione"
+            valueGetter: (params) => params.row.descrizione || "Nessuna descrizione",
+            renderCell: ({ row }) => (
+                <Typography
+                    component="span"
+                    onClick={() => handleDescrizioneClick(
+                        row?.idCliente,
+                        row?.nomeContatto || null
+                    )}
+                    sx={{
+                        color: "black",
+                        borderBottom: "1px solid black",
+                        cursor: "pointer"
+                    }}
+                >
+                    {row.descrizione}
+                </Typography>
+            )
         },
         {
             field: "idCliente",

@@ -321,16 +321,18 @@ function Sidebar() {
                 </ListItem>
             )}
 
-            {!userHasRole("BUSINESS") && !userHasRole("CANDIDATO") && (
-                <ListItem button onClick={handleAggiungiCandidatoClick}>
-                    <ListItemIcon>
-                        <PersonSearchIcon sx={{ color: theme.palette.icon.main }} />
-                    </ListItemIcon>
-                    <ListItemText sx={{ color: theme.palette.text.secondary }}>
-                        {t('Aggiungi candidato')}
-                    </ListItemText>
-                </ListItem>
-            )}
+            {!userHasRole("BUSINESS") &&
+                !userHasRole("CANDIDATO") &&
+                (userHasRole("ADMIN") || aziendaUser === "CHALLENGING") && (
+                    <ListItem button onClick={handleAggiungiCandidatoClick}>
+                        <ListItemIcon>
+                            <PersonSearchIcon sx={{ color: theme.palette.icon.main }} />
+                        </ListItemIcon>
+                        <ListItemText sx={{ color: theme.palette.text.secondary }}>
+                            {t('Aggiungi candidato')}
+                        </ListItemText>
+                    </ListItem>
+                )}
 
             {!userHasRole("RECRUITER") && userHasRole("BUSINESS") && !userHasRole("CANDIDATO") && (
                 <ListItem button onClick={handleAggiungiOwner}>
