@@ -5,7 +5,7 @@ import axios from 'axios';
 import JoinInnerIcon from '@mui/icons-material/JoinInner'; //match
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle'; //cambia stato
 import DeleteIcon from '@mui/icons-material/Delete'; //cancella
-import { ControlPointDuplicate, Edit } from '@mui/icons-material';
+import { CalendarMonth, ControlPointDuplicate, Edit } from '@mui/icons-material';
 import AutoModeIcon from '@mui/icons-material/AutoMode'; //stato
 import TagIcon from '@mui/icons-material/Tag'; //numero progressivo
 import PlaceIcon from '@mui/icons-material/Place';
@@ -344,7 +344,7 @@ const NeedCardFlip = ({ valori, statoOptions, onDelete, onRefresh, isFirstCard }
 
 
                                     <Typography variant="body2" color="text.primary" sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
-                                        <TagIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
+                                        <CalendarMonth sx={{ color: theme.palette.icon.main, mr: 1 }} />
                                         {valori.progressivo}
                                     </Typography>
 
@@ -376,11 +376,11 @@ const NeedCardFlip = ({ valori, statoOptions, onDelete, onRefresh, isFirstCard }
 
                                     <Typography variant="body2" color="text.primary" sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
                                         <AccountCircleIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
-                                        Owner Business: {valori?.ownerBusiness?.descrizione || "N/A"}
+                                        Business Owner: {valori?.ownerBusiness?.descrizione || "N/A"}
                                     </Typography>
                                     <Typography variant="body2" color="text.primary" sx={{ color: 'black', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', mt: 1, mb: 1, pl: 1 }}>
                                         <AccountCircleOutlinedIcon sx={{ color: theme.palette.icon.main, mr: 1 }} />
-                                        Owner Recruiter: {valori?.ownerRecruiter?.descrizione || "N/A"}
+                                        Owner Operativo: {valori?.ownerRecruiter?.descrizione || "N/A"}
                                     </Typography>
                                 </Box>
                                 <Box sx={{

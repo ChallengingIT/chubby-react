@@ -196,7 +196,7 @@ function NuovaRicercaNeed({
                         renderInput={(params) => (
                             <TextField
                                 {...params}
-                                label={t("Azienda")}
+                                label={t("Azienda Cliente")}
                                 variant="filled"
                                 sx={{
                                     textAlign: "left",
