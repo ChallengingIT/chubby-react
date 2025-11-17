@@ -285,8 +285,9 @@ const Need = () => {
             tipologia: filtri.tipologia || null,
             stato: filtri.stato || null,
             owner: filtri.owner || null,
+            //ownerRecruiter: filtri.owner || null,
             keypeople: filtri.keypeople || null,
-            // skills: filtri.skills ? JSON.stringify(filtri.skills) : null,  
+            skills: filtri.skills ? JSON.stringify(filtri.skills) : null,  
             location: filtri.location || null,
             pagina: paginaParam || paginaSuccessiva,
             quantita: quantita
@@ -336,8 +337,9 @@ const Need = () => {
             tipologia: filtri.tipologia || null,
             stato: filtri.stato || null,
             owner: filtri.owner || null,
+            //ownerRecruiter: filtri.owner || null,
             keypeople: filtri.keypeople || null,
-            // skills: filtri.skills ? JSON.stringify(filtri.skills) : null,  
+            skills: filtri.skills ? JSON.stringify(filtri.skills) : null,  
             location: filtri.location || null,
             pagina: paginaParam,
             quantita: quantita
