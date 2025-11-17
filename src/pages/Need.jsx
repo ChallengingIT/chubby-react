@@ -287,7 +287,7 @@ const Need = () => {
             owner: filtri.owner || null,
             //ownerRecruiter: filtri.owner || null,
             keypeople: filtri.keypeople || null,
-            skills: filtri.skills ? JSON.stringify(filtri.skills) : null,  
+            skills: filtri.skills || null,
             location: filtri.location || null,
             pagina: paginaParam || paginaSuccessiva,
             quantita: quantita
@@ -295,7 +295,24 @@ const Need = () => {
 
 
         try {
-            const responsePaginazione = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
+            const responsePaginazione = await axios.get(baseUrl, {
+                headers: headers,
+                params: filtriDaInviare,
+                paramsSerializer: (params) => {
+                    const query = [];
+
+                    Object.keys(params).forEach(key => {
+                        const value = params[key];
+                        if (Array.isArray(value)) {
+                            value.forEach(v => query.push(`${key}=${encodeURIComponent(v)}`));
+                        } else if (value !== null && value !== undefined) {
+                            query.push(`${key}=${encodeURIComponent(value)}`);
+                        }
+                    });
+
+                    return query.join("&");
+                }
+            });
             if (isSearchActive) {
                 const { record, needs } = responsePaginazione.data;
                 if (Array.isArray(needs)) {
@@ -339,7 +356,7 @@ const Need = () => {
             owner: filtri.owner || null,
             //ownerRecruiter: filtri.owner || null,
             keypeople: filtri.keypeople || null,
-            skills: filtri.skills ? JSON.stringify(filtri.skills) : null,  
+            skills: filtri.skills || null,
             location: filtri.location || null,
             pagina: paginaParam,
             quantita: quantita
@@ -358,7 +375,23 @@ const Need = () => {
         const baseUrl = userHasRole('ADMIN') ? "http://localhost:8080/need/react/ricerca/modificato" : "http://localhost:8080/need/react/ricerca/modificato/personal";
         setLoading(true);
         try {
-            const response = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
+            const response = await axios.get(baseUrl, {
+                headers: headers, params: filtriDaInviare,
+                paramsSerializer: (params) => {
+                    const query = [];
+
+                    Object.keys(params).forEach(key => {
+                        const value = params[key];
+                        if (Array.isArray(value)) {
+                            value.forEach(v => query.push(`${key}=${encodeURIComponent(v)}`));
+                        } else if (value !== null && value !== undefined) {
+                            query.push(`${key}=${encodeURIComponent(value)}`);
+                        }
+                    });
+
+                    return query.join("&");
+                }
+            });
             const responseAzienda = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
             const responseOwner = await axios.get("http://localhost:8080/owner", { headers: headers });
             const responseTipologia = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
@@ -519,21 +552,29 @@ const Need = () => {
 
     //funzione di reset dei campi di ricerca
     const handleReset = async () => {
-        setFiltri({
-            descrizione: '',
+        const resetFilters = {
+            descrizione: null,
             cliente: null,
             stato: null,
             tipologia: null,
             owner: null,
             azienda: null,
             keypeople: null,
-        });
+            skills: null,
+            location: null
+        };
+
+        setFiltri(resetFilters);
+
         setPagina(0);
         setFilteredNeed([]);
         setOriginalNeed([]);
         setHasMore(true);
+        setIsSearchActive(false);
+        setRecordTot(0);
         sessionStorage.removeItem('filtriRicercaNeed');
-        await fetchData(true);
+
+        await fetchData(true, 0);
     };
 
     //funzione per cancellare il need
