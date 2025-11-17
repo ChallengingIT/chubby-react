@@ -27,6 +27,7 @@ import axios from "axios";
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import useSmartRowsPerPage from "./useSmartRowsPerPage";
+import { ControlPointDuplicate } from "@mui/icons-material";
 
 const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpanded, pianoIncontriExpanded, pageSize, onClickButton, initialState, getRowClassName }) => {
     const [filtersEnabled, setFiltersEnabled] = useState(true);
@@ -166,6 +167,27 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
         setModalStato(true);
     };
 
+    const handleClonaNeed = async (idNeed) => {
+            try {
+                const response = await axios.post(
+                    `http://localhost:8080/need/clona`, 
+                    null,
+                    {
+                        params: { id: idNeed },
+                        headers
+                    }
+                );
+                if (response.data === "OK") {
+                    setAlert({ open: true, message: "Need clonato con successo!" });
+                    onRefresh();
+                } else {
+                    setAlert({ open: true, message: "Errore durante la clonazione del need" });
+                }
+            } catch (error) {
+                console.error("Errore durante la clonazione del need:", error);
+                setAlert({ open: true, message: "Errore durante la clonazione del need" });
+            }
+        };
 
     const handleUpdateStato = async () => {
         if (!selectedPipeline) {
@@ -404,11 +426,24 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
                                             align="center"
                                             sx={{ borderBottom: "1px solid #e0e0e0", padding: "0.5px 0.5px" }}
                                         >
-                                            <Tooltip title="Modifica">
-                                                <IconButton onClick={() => handleOpenModal(row)}>
-                                                    <MoreHorizIcon />
-                                                </IconButton>
-                                            </Tooltip>
+                                            <div style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                gap: "1px",
+                                                marginBottom: "6px",
+                                                marginTop:"6px"
+                                            }}>
+                                                <Tooltip title="Modifica">
+                                                    <IconButton onClick={() => handleOpenModal(row)}>
+                                                        <MoreHorizIcon />
+                                                    </IconButton>
+                                                </Tooltip>
+                                                {/* <Tooltip title="Duplica">
+                                                    <IconButton size="small" onClick={() => handleClonaNeed(row.idNeed)}>
+                                                        <ControlPointDuplicate fontSize="small" />
+                                                    </IconButton>
+                                                </Tooltip> */}
+                                            </div>
                                         </TableCell>
                                     </TableRow>
                                 ))}
@@ -616,11 +651,9 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
                 </Alert>
             </Snackbar>
 
-
-
-
         </Box>
     );
 };
 
 export default CustomTableCell2;
+

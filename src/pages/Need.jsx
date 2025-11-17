@@ -582,7 +582,7 @@ const Need = () => {
     const columns = [
         {
             field: "descrizione",
-            headerName: "Descrizione",
+            headerName: "Need",
             flex: 1.3,
             sortable: false,
             filterable: false,
@@ -590,7 +590,7 @@ const Need = () => {
         },
         {
             field: "progressivo",
-            headerName: t("#Numero"),
+            headerName: t("Data Apertura"),
             flex: 1,
             sortable: false,
             filterable: false,
@@ -644,7 +644,7 @@ const Need = () => {
         },
         {
             field: "ownerBusiness",
-            headerName: t("Owner business"),
+            headerName: t("Business Owner"),
             flex: 0.6,
             sortable: false,
             filterable: false,
@@ -659,7 +659,7 @@ const Need = () => {
         },
         {
             field: "ownerRecruiter",
-            headerName: t("Owner recruiter"),
+            headerName: t("Owner Operativo"),
             flex: 0.6,
             sortable: false,
             filterable: false,

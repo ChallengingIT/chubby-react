@@ -434,7 +434,7 @@ const AggiungiNeedGrafica = () => {
                 }
 
                 // Prepara le skills come query param
-                const skills = values.skills ? values.skills.join(',') : '';
+                const skills = values.skills ? values.skills.join(',') : null;
                 const username = user?.username || null;
                 const headers = {
                     Authorization: `Bearer ${token}`,
