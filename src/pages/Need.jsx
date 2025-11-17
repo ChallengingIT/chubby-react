@@ -577,29 +577,32 @@ const Need = () => {
         }
     };
 
-
-
     const columns = [
+        {
+            field: "progressivo",
+            headerName: t("Data Apertura"),
+            flex: 0.8,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+        },
+        {
+            field: "azienda",
+            headerName: t("Azienda Cliente"),
+            flex: 1,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            renderCell: (params) => (
+                <div style={{ textAlign: "start" }}>
+                    {params.row?.cliente?.denominazione || "N/A"}
+                </div>
+            ),
+        },
         {
             field: "descrizione",
             headerName: "Need",
             flex: 1.3,
-            sortable: false,
-            filterable: false,
-            disableColumnMenu: true,
-        },
-        {
-            field: "progressivo",
-            headerName: t("Data Apertura"),
-            flex: 1,
-            sortable: false,
-            filterable: false,
-            disableColumnMenu: true,
-        },
-        {
-            field: "location",
-            headerName: t("Location"),
-            flex: 1,
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -643,9 +646,17 @@ const Need = () => {
             ),
         },
         {
+            field: "location",
+            headerName: t("Location"),
+            flex: 0.8,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+        },
+        {
             field: "ownerBusiness",
             headerName: t("Business Owner"),
-            flex: 0.6,
+            flex: 0.75,
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -660,7 +671,7 @@ const Need = () => {
         {
             field: "ownerRecruiter",
             headerName: t("Owner Operativo"),
-            flex: 0.6,
+            flex: 0.75,
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
