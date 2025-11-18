@@ -170,7 +170,7 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
     const handleClonaNeed = async (idNeed) => {
         try {
             const response = await axios.post(
-                `http://localhost:8080/need/clona`,
+                `http://80.211.138.142:8443/need/clona`,
                 null,
                 {
                     params: { id: idNeed },

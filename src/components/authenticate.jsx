@@ -3,7 +3,7 @@ import axios from 'axios';
 const authenticate = async (username, password) => {
 
   try {
-    const response = await axios.post('http://89.46.196.60:8443/login', {
+    const response = await axios.post('http://80.211.138.142:8443/login', {
       username,
       password,
     });

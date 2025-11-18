@@ -69,7 +69,7 @@ const ModificaStaffing = () => {
         try {
 
           const schedaResponse = await axios.get(
-                "http://89.46.196.60:8443/hiring/scheda",
+                "http://80.211.138.142:8443/hiring/scheda",
                 { headers: headers,
                     params: { idScheda: idScheda}
                 }
@@ -77,7 +77,7 @@ const ModificaStaffing = () => {
     
 
             const terminiPagamentoResponse = await axios.get(
-            "http://89.46.196.60:8443/hiring/termini",
+            "http://80.211.138.142:8443/hiring/termini",
             { headers: headers }
             );
 
@@ -273,7 +273,7 @@ const ModificaStaffing = () => {
                     const valuesWithId = { ...values, id: idScheda };
 
     
-                    const response = await axios.post("http://89.46.196.60:8443/hiring/salva/scheda", valuesWithId, {
+                    const response = await axios.post("http://80.211.138.142:8443/hiring/salva/scheda", valuesWithId, {
                         headers: headers,
                         params: { idHiring: idHiring, idTipoServizio: idTipoServizio }
                     });

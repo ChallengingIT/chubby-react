@@ -383,8 +383,8 @@ const BoxAttivitaWeek = ({ aziendeOptions, expanded, setExpanded, pipelineExpand
                 };
 
                 const baseUrl = isAdmin
-                    ? `http://89.46.196.60:8443/dashboard/attivita/business`
-                    : `http://89.46.196.60:8443/dashboard/attivita/business/personal`;
+                    ? `http://80.211.138.142:8443/dashboard/attivita/business`
+                    : `http://80.211.138.142:8443/dashboard/attivita/business/personal`;
 
                 try {
                     const response = await axios.get(`${baseUrl}/interval`, {

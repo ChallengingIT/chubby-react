@@ -39,7 +39,7 @@ function RicercheNeedCandidato({
         if (aziendaId) {
             try {
                 const response = await axios.get(
-                    `http://89.46.196.60:8443/keypeople/react/azienda/${aziendaId}`
+                    `http://80.211.138.142:8443/keypeople/react/azienda/${aziendaId}`
                 );
                 setContactOptions(
                     response.data.map((keyPeople) => ({

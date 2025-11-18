@@ -152,7 +152,7 @@ const NeedCardFlip = ({ valori, statoOptions, onDelete, onRefresh, isFirstCard }
         };
 
         try {
-            const responseUpdateStato = await axios.post(`http://89.46.196.60:8443/need/react/salva/stato/${idNeed}?${params.toString()}`, {body}, { headers: headers });
+            const responseUpdateStato = await axios.post(`http://80.211.138.142:8443/need/react/salva/stato/${idNeed}?${params.toString()}`, {body}, { headers: headers });
             setModalStato(false);
             onRefresh();
             if (responseUpdateStato.data === 'ERRORE') {

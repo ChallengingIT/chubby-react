@@ -75,11 +75,11 @@ const AggiungiHeadHunting = () => {
         try {
     
         const terminiPagamentoResponse = await axios.get(
-            "http://89.46.196.60:8443/hiring/termini",
+            "http://80.211.138.142:8443/hiring/termini",
             { headers: headers }
             );
             const candidatiResponse = await axios.get(
-                "http://89.46.196.60:8443/staffing/react/mod/hiring",
+                "http://80.211.138.142:8443/staffing/react/mod/hiring",
                 { headers: headers }
             );
 
@@ -270,7 +270,7 @@ const AggiungiHeadHunting = () => {
                         Authorization: `Bearer ${token}`
                     };
     
-                    const response = await axios.post("http://89.46.196.60:8443/hiring/salva/scheda", values, {
+                    const response = await axios.post("http://80.211.138.142:8443/hiring/salva/scheda", values, {
                         headers: headers,
                         params: { idHiring: idHiring, idTipoServizio: idTipoServizio }
                     });

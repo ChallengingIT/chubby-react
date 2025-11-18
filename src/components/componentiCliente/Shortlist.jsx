@@ -21,7 +21,7 @@ const Shortlist = ({ idNeed }) => {
     const fetchData = async () => {
       try {
         const responseShortlist = await axios.get(
-          `http://89.46.196.60:8443/need/react/${idNeed}`,
+          `http://80.211.138.142:8443/need/react/${idNeed}`,
           { headers: headers }
         );
         const dataShortlist = responseShortlist.data?.candidati || [];
@@ -44,7 +44,7 @@ const Shortlist = ({ idNeed }) => {
 
     try {
       const responseRating = await axios.post(
-        'http://89.46.196.60:8443/staffing/salva/rating',
+        'http://80.211.138.142:8443/staffing/salva/rating',
         null, // il corpo della richiesta è nullo, dato che stiamo usando i parametri di query
         {
           headers: headers,

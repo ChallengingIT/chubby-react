@@ -72,27 +72,27 @@ const AggiungiNeedIDGrafica = () => {
         const fetchNeedOptions = async () => {
             try {
                 const responseAziende = await axios.get(
-                    `http://89.46.196.60:8443/aziende/react/${id}`,
+                    `http://80.211.138.142:8443/aziende/react/${id}`,
                     { headers: headers }
                 );
                 const responseSkill = await axios.get(
-                    "http://89.46.196.60:8443/staffing/react/skill",
+                    "http://80.211.138.142:8443/staffing/react/skill",
                     { headers: headers }
                 );
                 /* const ownerResponse = await axios.get(
-                    "http://89.46.196.60:8443/owner",
+                    "http://80.211.138.142:8443/owner",
                     { headers: headers }
                 ); */
                 const tipologiaResponse = await axios.get(
-                    "http://89.46.196.60:8443/need/react/tipologia",
+                    "http://80.211.138.142:8443/need/react/tipologia",
                     { headers: headers }
                 );
                 const statoResponse = await axios.get(
-                    "http://89.46.196.60:8443/need/react/stato",
+                    "http://80.211.138.142:8443/need/react/stato",
                     { headers: headers }
                 );
                 const responseKeypeople = await axios.get(
-                    `http://89.46.196.60:8443/keypeople/react/azienda/${idAzienda}`,
+                    `http://80.211.138.142:8443/keypeople/react/azienda/${idAzienda}`,
                     { headers: headers }
                 );
                 const keypeopleOptions = responseKeypeople.data.map((keypeople) => ({
@@ -122,7 +122,7 @@ const AggiungiNeedIDGrafica = () => {
                 const username = user?.username;
 
                 const ownerResponse = await axios.get(
-                `http://89.46.196.60:8443/owner/${username}`,
+                `http://80.211.138.142:8443/owner/${username}`,
                 { headers: headers }
                 );
 
@@ -314,7 +314,7 @@ const AggiungiNeedIDGrafica = () => {
             delete values.idSkills;
 
             const responseSaveNeed = await axios.post(
-            "http://89.46.196.60:8443/need/react/salva",
+            "http://80.211.138.142:8443/need/react/salva",
             { ...values, idAzienda: parseInt(values.idAzienda, 10) }, 
             { params: { skill1: skills, username: username }, headers: headers }
             );

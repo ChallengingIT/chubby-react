@@ -1,7 +1,7 @@
     // // src/api/recruitingService.js
     // import axios from 'axios';
 
-    // const baseUrl = 'http://89.46.196.60:8443';
+    // const baseUrl = 'http://80.211.138.142:8443';
 
     // const apiClient = axios.create({
     // baseURL: baseUrl,

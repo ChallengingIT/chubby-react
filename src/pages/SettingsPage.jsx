@@ -144,7 +144,7 @@
             };
 
             const response = await axios.post(
-            "http://89.46.196.60:8443/api/auth/change/password",
+            "http://80.211.138.142:8443/api/auth/change/password",
             payload,
             {
                 headers: headers,

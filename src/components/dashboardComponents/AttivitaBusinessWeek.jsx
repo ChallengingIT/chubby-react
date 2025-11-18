@@ -78,7 +78,7 @@ const AttivitaBusinessBox = ({ data, aziendeOptions }) => {
             };
             
             try {
-                const response = await axios.get('http://89.46.196.60:8443/dashboard/attivita/business/personal/interval', {
+                const response = await axios.get('http://80.211.138.142:8443/dashboard/attivita/business/personal/interval', {
                     headers: headers,
                     params: filtriDaInviare
                 });
