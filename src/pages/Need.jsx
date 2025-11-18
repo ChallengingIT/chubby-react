@@ -105,7 +105,7 @@ const Need = () => {
     useEffect(() => {
         const fetchSkills = async () => {
 
-            const responseAree = await axios.get("http://80.211.138.142:8443/staffing/react/areas", { headers });
+            const responseAree = await axios.get("http://localhost:8080/staffing/react/areas", { headers });
 
             let groupedSkills = [];
 
@@ -121,7 +121,7 @@ const Need = () => {
                     try {
                         // Skill per area
                         const responseSkillByArea = await axios.get(
-                            `http://80.211.138.142:8443/staffing/react/skill/${area.id}`,
+                            `http://localhost:8080/staffing/react/skill/${area.id}`,
                             { headers }
                         );
 
@@ -160,7 +160,7 @@ const Need = () => {
             }
         }
 
-        const baseUrl = userHasRole('ADMIN') ? "http://80.211.138.142:8443/need/react/modificato" : "http://80.211.138.142:8443/need/react/modificato/personal";
+        const baseUrl = userHasRole('ADMIN') ? "http://localhost:8080/need/react/modificato" : "http://localhost:8080/need/react/modificato/personal";
 
         try {
             const userString = sessionStorage.getItem("user");
@@ -168,18 +168,18 @@ const Need = () => {
             const username = user?.username;
 
             const ownerUrl = userHasRole('ADMIN')
-                ? "http://80.211.138.142:8443/owner"
-                : `http://80.211.138.142:8443/owner/${username}`;
+                ? "http://localhost:8080/owner"
+                : `http://localhost:8080/owner/${username}`;
 
             const responseAziendeUrl = userHasRole("ADMIN")
-                ? "http://80.211.138.142:8443/aziende/react/select"
-                : `http://80.211.138.142:8443/aziende/react/select/${username}`;
+                ? "http://localhost:8080/aziende/react/select"
+                : `http://localhost:8080/aziende/react/select/${username}`;
 
             const responseNeed = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
             const responseAzienda = await axios.get(responseAziendeUrl, { headers: headers });
-            //const responseOwner = await axios.get("http://80.211.138.142:8443/owner", { headers: headers });
-            const responseTipologia = await axios.get("http://80.211.138.142:8443/need/react/tipologia", { headers: headers });
-            const responseStato = await axios.get("http://80.211.138.142:8443/need/react/stato", { headers: headers });
+            //const responseOwner = await axios.get("http://localhost:8080/owner", { headers: headers });
+            const responseTipologia = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
+            const responseStato = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
 
             const ownerResponse = await axios.get(ownerUrl, { headers });
 
@@ -276,8 +276,8 @@ const Need = () => {
         }
 
         const baseUrl = userHasRole('ADMIN')
-            ? (isSearchActive ? "http://80.211.138.142:8443/need/react/ricerca/modificato" : "http://80.211.138.142:8443/need/react/modificato")
-            : (isSearchActive ? "http://80.211.138.142:8443/need/react/ricerca/modificato/personal" : "http://80.211.138.142:8443/need/react/modificato/personal");
+            ? (isSearchActive ? "http://localhost:8080/need/react/ricerca/modificato" : "http://localhost:8080/need/react/modificato")
+            : (isSearchActive ? "http://localhost:8080/need/react/ricerca/modificato/personal" : "http://localhost:8080/need/react/modificato/personal");
 
         const filtriDaInviare = {
             descrizione: filtri.descrizione || null,
@@ -285,8 +285,9 @@ const Need = () => {
             tipologia: filtri.tipologia || null,
             stato: filtri.stato || null,
             owner: filtri.owner || null,
+            //ownerRecruiter: filtri.owner || null,
             keypeople: filtri.keypeople || null,
-            // skills: filtri.skills ? JSON.stringify(filtri.skills) : null,  
+            skills: filtri.skills || null,
             location: filtri.location || null,
             pagina: paginaParam || paginaSuccessiva,
             quantita: quantita
@@ -294,7 +295,24 @@ const Need = () => {
 
 
         try {
-            const responsePaginazione = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
+            const responsePaginazione = await axios.get(baseUrl, {
+                headers: headers,
+                params: filtriDaInviare,
+                paramsSerializer: (params) => {
+                    const query = [];
+
+                    Object.keys(params).forEach(key => {
+                        const value = params[key];
+                        if (Array.isArray(value)) {
+                            value.forEach(v => query.push(`${key}=${encodeURIComponent(v)}`));
+                        } else if (value !== null && value !== undefined) {
+                            query.push(`${key}=${encodeURIComponent(value)}`);
+                        }
+                    });
+
+                    return query.join("&");
+                }
+            });
             if (isSearchActive) {
                 const { record, needs } = responsePaginazione.data;
                 if (Array.isArray(needs)) {
@@ -336,8 +354,9 @@ const Need = () => {
             tipologia: filtri.tipologia || null,
             stato: filtri.stato || null,
             owner: filtri.owner || null,
+            //ownerRecruiter: filtri.owner || null,
             keypeople: filtri.keypeople || null,
-            // skills: filtri.skills ? JSON.stringify(filtri.skills) : null,  
+            skills: filtri.skills || null,
             location: filtri.location || null,
             pagina: paginaParam,
             quantita: quantita
@@ -353,14 +372,30 @@ const Need = () => {
             }
         }
 
-        const baseUrl = userHasRole('ADMIN') ? "http://80.211.138.142:8443/need/react/ricerca/modificato" : "http://80.211.138.142:8443/need/react/ricerca/modificato/personal";
+        const baseUrl = userHasRole('ADMIN') ? "http://localhost:8080/need/react/ricerca/modificato" : "http://localhost:8080/need/react/ricerca/modificato/personal";
         setLoading(true);
         try {
-            const response = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
-            const responseAzienda = await axios.get("http://80.211.138.142:8443/aziende/react/select", { headers: headers });
-            const responseOwner = await axios.get("http://80.211.138.142:8443/owner", { headers: headers });
-            const responseTipologia = await axios.get("http://80.211.138.142:8443/need/react/tipologia", { headers: headers });
-            const responseStato = await axios.get("http://80.211.138.142:8443/need/react/stato", { headers: headers });
+            const response = await axios.get(baseUrl, {
+                headers: headers, params: filtriDaInviare,
+                paramsSerializer: (params) => {
+                    const query = [];
+
+                    Object.keys(params).forEach(key => {
+                        const value = params[key];
+                        if (Array.isArray(value)) {
+                            value.forEach(v => query.push(`${key}=${encodeURIComponent(v)}`));
+                        } else if (value !== null && value !== undefined) {
+                            query.push(`${key}=${encodeURIComponent(value)}`);
+                        }
+                    });
+
+                    return query.join("&");
+                }
+            });
+            const responseAzienda = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
+            const responseOwner = await axios.get("http://localhost:8080/owner", { headers: headers });
+            const responseTipologia = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
+            const responseStato = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
 
             if (Array.isArray(responseOwner.data)) {
                 setOwnerOptions(responseOwner.data.map((owner) => ({ label: owner.descrizione, value: owner.id })));
@@ -517,27 +552,35 @@ const Need = () => {
 
     //funzione di reset dei campi di ricerca
     const handleReset = async () => {
-        setFiltri({
-            descrizione: '',
+        const resetFilters = {
+            descrizione: null,
             cliente: null,
             stato: null,
             tipologia: null,
             owner: null,
             azienda: null,
             keypeople: null,
-        });
+            skills: null,
+            location: null
+        };
+
+        setFiltri(resetFilters);
+
         setPagina(0);
         setFilteredNeed([]);
         setOriginalNeed([]);
         setHasMore(true);
+        setIsSearchActive(false);
+        setRecordTot(0);
         sessionStorage.removeItem('filtriRicercaNeed');
-        await fetchData(true);
+
+        await fetchData(true, 0);
     };
 
     //funzione per cancellare il need
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://80.211.138.142:8443/need/react/elimina/${id}`, { headers: headers });
+            await axios.delete(`http://localhost:8080/need/react/elimina/${id}`, { headers: headers });
             await fetchData();
         } catch (error) {
             console.error("Errore durante la cancellazione: ", error);
@@ -577,29 +620,32 @@ const Need = () => {
         }
     };
 
-
-
     const columns = [
+        {
+            field: "progressivo",
+            headerName: t("Data Apertura"),
+            flex: 0.8,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+        },
+        {
+            field: "azienda",
+            headerName: t("Azienda Cliente"),
+            flex: 1,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            renderCell: (params) => (
+                <div style={{ textAlign: "start" }}>
+                    {params.row?.cliente?.denominazione || "N/A"}
+                </div>
+            ),
+        },
         {
             field: "descrizione",
             headerName: "Need",
             flex: 1.3,
-            sortable: false,
-            filterable: false,
-            disableColumnMenu: true,
-        },
-        {
-            field: "progressivo",
-            headerName: t("Data Apertura"),
-            flex: 1,
-            sortable: false,
-            filterable: false,
-            disableColumnMenu: true,
-        },
-        {
-            field: "location",
-            headerName: t("Location"),
-            flex: 1,
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -643,9 +689,17 @@ const Need = () => {
             ),
         },
         {
+            field: "location",
+            headerName: t("Location"),
+            flex: 0.8,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+        },
+        {
             field: "ownerBusiness",
             headerName: t("Business Owner"),
-            flex: 0.6,
+            flex: 0.75,
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -660,7 +714,7 @@ const Need = () => {
         {
             field: "ownerRecruiter",
             headerName: t("Owner Operativo"),
-            flex: 0.6,
+            flex: 0.75,
             sortable: false,
             filterable: false,
             disableColumnMenu: true,

@@ -35,7 +35,7 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
     const [modalStato, setModalStato] = useState(false);
     const [selectedPipeline, setSelectedPipeline] = useState(null);
     const [values, setValues] = useState({ stato: null, priorita: null });
-    const [alert, setAlert] = useState(false);
+    const [alert, setAlert] = useState({open: false, severity: "error"});
     const [statoOptions, setStatoOptions] = useState([]);
     const [orderBy, setOrderBy] = useState('');
     const [orderDirection, setOrderDirection] = useState('asc');
@@ -168,26 +168,26 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
     };
 
     const handleClonaNeed = async (idNeed) => {
-            try {
-                const response = await axios.post(
-                    `http://localhost:8080/need/clona`, 
-                    null,
-                    {
-                        params: { id: idNeed },
-                        headers
-                    }
-                );
-                if (response.data === "OK") {
-                    setAlert({ open: true, message: "Need clonato con successo!" });
-                    onRefresh();
-                } else {
-                    setAlert({ open: true, message: "Errore durante la clonazione del need" });
+        try {
+            const response = await axios.post(
+                `http://localhost:8080/need/clona`,
+                null,
+                {
+                    params: { id: idNeed },
+                    headers
                 }
-            } catch (error) {
-                console.error("Errore durante la clonazione del need:", error);
+            );
+            if (response.data === "OK") {
+                setAlert({ open: true, message: "Need clonato con successo!", severity: "success"});
+                onRefresh();
+            } else {
                 setAlert({ open: true, message: "Errore durante la clonazione del need" });
             }
-        };
+        } catch (error) {
+            console.error("Errore durante la clonazione del need:", error);
+            setAlert({ open: true, message: "Errore durante la clonazione del need" });
+        }
+    };
 
     const handleUpdateStato = async () => {
         if (!selectedPipeline) {
@@ -431,18 +431,18 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
                                                 alignItems: "center",
                                                 gap: "1px",
                                                 marginBottom: "6px",
-                                                marginTop:"6px"
+                                                marginTop: "6px"
                                             }}>
                                                 <Tooltip title="Modifica">
                                                     <IconButton onClick={() => handleOpenModal(row)}>
                                                         <MoreHorizIcon />
                                                     </IconButton>
                                                 </Tooltip>
-                                                {/* <Tooltip title="Duplica">
-                                                    <IconButton size="small" onClick={() => handleClonaNeed(row.idNeed)}>
+                                                <Tooltip title="Duplica">
+                                                    <IconButton size="small" onClick={() => handleClonaNeed(row.id)}>
                                                         <ControlPointDuplicate fontSize="small" />
                                                     </IconButton>
-                                                </Tooltip> */}
+                                                </Tooltip>
                                             </div>
                                         </TableCell>
                                     </TableRow>
@@ -646,7 +646,7 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
             </Modal>
 
             <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} TransitionComponent={TransitionDown}>
-                <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
+                <Alert onClose={handleCloseAlert} severity={alert.severity || "error"} sx={{ width: '100%' }}>
                     {alert.message}
                 </Alert>
             </Snackbar>
