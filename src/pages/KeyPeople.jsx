@@ -43,58 +43,12 @@ const KeyPeople = () => {
     const [recordTot, setRecordTot] = useState(0);
 
     const [openModalStoricoFromDashboard, setOpenModalStoricoFromDashboard] = useState(false);
+    
 
     //stati per la tabella
     const [righeTot, setRigheTot] = useState(0);
 
     const location = useLocation();
-    /* 
-        useEffect(() => {
-            const fetchDataFromDashboard = async () => {
-                if (location.state?.fromDashboard) {
-                    const filtri = {
-                        nome: location.state.nomeContatto || null,
-                        azienda: location.state.idCliente || null,
-                        pagina: 0,
-                        quantita: 10
-                    };
-                    try {
-                        const responseKeypeople = await axios.get("http://localhost:8080/keypeople/react/ricerca/mod", {
-                            headers: { Authorization: `Bearer ${user?.token}` },
-                            params: filtri
-                        });
-    
-                        if (Array.isArray(responseKeypeople.data.keyPeoples)) {
-                            setOriginalKeypeople(responseKeypeople.data.keyPeoples);
-                            setSelectedKeypeople({ row: responseKeypeople.data.keyPeoples[0] });
-                            setViewMode("cardSingola");
-                            setRigheTot(responseKeypeople.data.record || 0);
-                        }
-    
-                        const responseAziende = await axios.get("http://localhost:8080/aziende/react/select", {
-                            headers: { Authorization: `Bearer ${user?.token}` }
-                        });
-    
-                        if (Array.isArray(responseAziende.data)) {
-                            setClienteOptions(responseAziende.data.map((cliente) => ({
-                                label: cliente.denominazione,
-                                value: cliente.id
-                            })));
-                        }
-    
-                    } catch (error) {
-                        console.error("Errore nel caricamento dei dati da Dashboard:", error);
-                    } finally {
-                        setOpenModalStoricoFromDashboard(true);
-                    }
-    
-                } else {
-                    fetchData(true, 0);
-                }
-            };
-    
-            fetchDataFromDashboard();
-        }, []); */
 
     const getInitialFilters = () => {
         if (location.state?.fromDashboard) {
@@ -115,34 +69,6 @@ const KeyPeople = () => {
         };
     };
 
-    useEffect(() => {
-        const fetchDataBasedOnState = async () => {
-            if (location.state?.fromDashboard) {
-                sessionStorage.setItem('filtriRicercaKeypeople', JSON.stringify(filtri));
-                await handleRicerche(filtri);
-            } else {
-                const filtriSalvati = sessionStorage.getItem('filtriRicercaKeypeople');
-                if (filtriSalvati) {
-                    const filtriParsed = JSON.parse(filtriSalvati);
-                    const isAnyFilterSet = Object.values(filtriParsed).some((value) => value);
-
-                    if (isAnyFilterSet) {
-                        setFiltri(filtriParsed);
-                        await handleRicerche(filtriParsed);
-                    } else {
-                        await fetchData();
-                    }
-                } else {
-                    await fetchData();
-                }
-            }
-        };
-
-        fetchDataBasedOnState();
-        // eslint-disable-next-line
-    }, []);
-
-    console.log("setOpenModalStoricoFromDashboard", setOpenModalStoricoFromDashboard);
 
     const [filtri, setFiltri] = useState(getInitialFilters());
 
@@ -175,6 +101,38 @@ const KeyPeople = () => {
         const userObj = JSON.parse(userString);
         return userObj.roles.includes(roleToCheck);
     };
+
+
+        useEffect(() => {
+        const init = async () => {
+            if (location.state?.fromDashboard) {
+                const filtersToUse = filtri;
+
+                sessionStorage.setItem('filtriRicercaKeypeople', JSON.stringify(filtersToUse));
+                await handleRicerche(filtersToUse);
+                setOpenModalStoricoFromDashboard(true);
+                return;
+            }
+
+            const filtriSalvati = sessionStorage.getItem('filtriRicercaKeypeople');
+
+            if (filtriSalvati) {
+                const filtriParsed = JSON.parse(filtriSalvati);
+                setFiltri(filtriParsed);
+
+                const isAnyFilterSet = Object.values(filtriParsed).some(value => value);
+            if (isAnyFilterSet) {
+                await handleRicerche(filtriParsed);
+            } else {
+                await fetchData();
+            }
+            } else {
+                await fetchData();
+            }
+        };
+
+        init();
+    }, [location.state]); 
 
     const fetchData = async (reset = false, paginaParam = 0) => {
         setLoading(true);
@@ -259,24 +217,6 @@ const KeyPeople = () => {
         }
     };
 
-    useEffect(() => {
-        const filtriSalvati = sessionStorage.getItem('filtriRicercaKeypeople');
-        if (filtriSalvati) {
-            const filtriParsed = JSON.parse(filtriSalvati);
-            setFiltri(filtriParsed);
-
-            const isAnyFilterSet = Object.values(filtriParsed).some(value => value);
-            if (isAnyFilterSet) {
-                handleRicerche();
-            } else {
-                fetchData();
-            }
-        } else {
-            fetchData();
-        }
-        // eslint-disable-next-line
-    }, []);
-
     const fetchMoreData = async (paginaParam = 0) => {
         const paginaSuccessiva = pagina + 1;
 
@@ -333,14 +273,17 @@ const KeyPeople = () => {
 
     //funzione per la ricerca
     const handleRicerche = async (filtriParam, paginaParam = 0) => {
-        const isAnyFilterSet = Object.values(filtri).some(value => value);
-        if (!isAnyFilterSet) {
-            setIsSearchActive(false);
-            return;
+        const currentFilters = filtriParam || filtri;
+
+        const isAnyFilterSet = Object.values(currentFilters).some(value => value);
+            if (!isAnyFilterSet) {
+                setIsSearchActive(false);
+                await fetchData();
+                return;
         }
 
         const filtriDaInviare = {
-            ...filtri,
+            ...currentFilters,
             pagina: paginaParam,
             quantita: quantita,
         };
@@ -450,8 +393,10 @@ const KeyPeople = () => {
         setFilteredKeypeople([]);
         setOriginalKeypeople([]);
         setHasMore(true);
+        setSelectedKeypeople(null);
+        setViewMode("table");
 
-        await fetchData(true); // passiamo true per indicare il reset
+        await fetchData(true);
     };
 
     //funzione per cancellare l'azienda
@@ -469,19 +414,6 @@ const KeyPeople = () => {
     const handleRefresh = async () => {
         await fetchData();
     };
-
-
-    // const handlePageChange = (newPage) => {
-    //     setPagina(newPage);
-    //     sessionStorage.setItem("paginaRecruiting", newPage);
-
-    //     if (Object.values(filtri).some(value => value)) {
-    //         handleRicerche(filtri, newPage);
-    //     } else {
-    //         fetchData(newPage);
-    //     }
-    // };
-
 
     const handlePageChange = (newPage) => {
         setPagina(newPage);
@@ -653,14 +585,6 @@ const KeyPeople = () => {
     ];
 
 
-    useEffect(() => {
-        setPagina(0);
-        setOriginalKeypeople([]);
-        setFilteredKeypeople([]);
-        setHasMore(true);
-        fetchData(true, 0);
-    }, [viewMode]);
-
     return (
         <SchemePage>
             <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
@@ -770,7 +694,7 @@ const KeyPeople = () => {
                         onDelete={() => handleDelete(selectedKeypeople.row.id)}
                         onRefresh={handleRefresh}
                         isFirstCard={true}
-                        // openModalStoricoFromDashboard={openModalStoricoFromDashboard}
+                        openModalStoricoFromDashboard={openModalStoricoFromDashboard}
                     />
                     <Box sx={{ mt: 2 }}>
                     </Box>

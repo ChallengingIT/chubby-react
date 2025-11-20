@@ -110,11 +110,11 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
         }
     }, [isFirstCard, hasAnimated]);
 
-    console.log("sono qui", openModalStoricoFromDashboard);
 
     useEffect(() => {
         if (openModalStoricoFromDashboard) {
-            console.log("sono dentro setOpenModalStoricoFromDashboard");
+            azioniData();
+            azioniKeypeople(valori.id)
             setModalStorico(!!openModalStoricoFromDashboard);
         }
     }, [openModalStoricoFromDashboard]);
