@@ -295,49 +295,17 @@ function NuovaRicercaNeed({
                 </FormControl>
 
                 <FormControl fullWidth sx={{ mb: 0.2 }}>
-                    <Autocomplete
-                        id="stato-combo-box"
-                        options={statoOptions}
-                        getOptionLabel={(option) => option.label}
-                        value={
-                            statoOptions.find(
-                                (option) => option.value === filtri.stato
-                            ) || null
-                        }
-                        onChange={(event, newValue) => {
+                    <FilterMultipleAutocomplete
+                        name="stato"
+                        label={t("Stato")}
+                        skillsOptions={statoOptions}
+                        value={filtri.stato || []} 
+                        onChange={(newValue) => {
                             onFilterChange("stato")({
-                                target: { value: newValue?.value || null },
+                                target: { value: newValue.stato || [] },
                             });
-                            }}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                label={t("Stato")}
-                                variant="filled"
-                                sx={{
-                                    textAlign: "left",
-                                    borderRadius: "20px",
-                                    border: 'solid 1px #00B400',
-                                    bgcolor: 'white',
-                                    boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
-                                    "& .MuiFilledInput-root": {
-                                        backgroundColor: "transparent",
-                                    },
-                                    "& .MuiFilledInput-underline:after": {
-                                        borderBottomColor: "transparent",
-                                    },
-                                    "& .MuiFilledInput-root::before": {
-                                        borderBottom: "none",
-                                    },
-                                    "&:hover .MuiFilledInput-root::before": {
-                                        borderBottom: "none",
-                                    },
-                                    "& .MuiFormLabel-root.Mui-focused": {
-                                        color: theme.palette.border.main,
-                                    },
-                                }}
-                            />
-                        )}
+                        }}
+                      
                     />
                 </FormControl>
 
