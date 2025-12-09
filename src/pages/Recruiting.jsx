@@ -139,6 +139,48 @@ const Recruiting = () => {
     Authorization: `Bearer ${token}`,
   };
 
+  useEffect(() => {
+    const fetchSkills = async () => {
+
+      const responseAree = await axios.get("http://localhost:8080/staffing/react/areas", { headers });
+
+      let groupedSkills = [];
+
+      if (Array.isArray(responseAree.data)) {
+        for (const area of responseAree.data) {
+          // Header per l'area
+          groupedSkills.push({
+            label: area.descrizione,
+            value: `__header_${area.id}__`,
+            isHeader: true,
+          });
+
+          try {
+            // Skill per area
+            const responseSkillByArea = await axios.get(
+              `http://localhost:8080/staffing/react/skill/${area.id}`,
+              { headers }
+            );
+
+            if (Array.isArray(responseSkillByArea.data)) {
+              const skills = responseSkillByArea.data.map(skill => ({
+                label: skill.descrizione,
+                value: skill.id,
+              }));
+              groupedSkills = [...groupedSkills, ...skills];
+            }
+          } catch (err) {
+            console.error(`Errore durante il recupero delle skill per l'area ${area.descrizione}:`, err);
+          }
+        }
+
+        setSkillsOptions(groupedSkills);
+      }
+    };
+    fetchSkills();
+  }, []);
+
+
   const fetchData = async (paginaCorrente = pagina) => {
     setLoading(true);
 
@@ -373,26 +415,6 @@ const Recruiting = () => {
       console.error("Errore durante la cancellazione: ", error);
     }
   };
-
-
-  useEffect(() => {
-    const fetchSkills = async () => {
-      try {
-        const responseNeedSkills = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
-        if (Array.isArray(responseNeedSkills.data)) {
-          setSkillsOptions(responseNeedSkills.data.map((skill) => ({
-            label: skill.descrizione,
-            value: skill.id,
-          })));
-        } else {
-          console.error("Response Need Skills non è un array:", responseNeedSkills.data);
-        }
-      } catch (error) {
-        console.error("Errore durante il recupero delle skill:", error);
-      }
-    };
-    fetchSkills();
-  }, []);
 
 
   useEffect(() => {
