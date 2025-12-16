@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { useUserTheme } from "../TorchyThemeProvider";
@@ -13,6 +13,7 @@ import {
     Container
 } from "@mui/material";
 import FilterMultipleAutocomplete from "../fields/FilterMultipleAutocomplete";
+import axios from "axios";
 
 function NuovaRicercaNeed({
     filtri,
@@ -31,8 +32,30 @@ function NuovaRicercaNeed({
     const [isRotated, setIsRotated] = useState(false);
     const [contactOptions, setContactOptions] = useState([]);
     const [selectedContact, setSelectedContact] = useState("");
+    const [aziendaUser, setAziendaUser] = useState(null);
 
-    
+    useEffect(() => {
+        const fetchAziendaUser = async () => {
+            const userString = sessionStorage.getItem("user");
+            if (!userString) return;
+            const userObj = JSON.parse(userString);
+
+            try {
+                const response = await axios.get(
+                    `http://localhost:8080/gestione/aziende/interne/${userObj.username}`,
+                    { headers: { Authorization: `Bearer ${userObj.token}` } }
+                );
+
+                if (response.data && response.data.descrizione) {
+                    setAziendaUser(response.data.descrizione.toUpperCase());
+                }
+            } catch (error) {
+                console.error("Errore durante il fetch dell’azienda utente:", error);
+            }
+        };
+
+        fetchAziendaUser();
+    }, []);
 
     // Funzione per gestire il cambiamento del filtro azienda
     const handleAziendaChange = (event, newValue) => {
@@ -68,19 +91,28 @@ function NuovaRicercaNeed({
         onSearch();
     };
 
-     // Varianti di animazione per far spuntare il box
+    // Varianti di animazione per far spuntare il box
     const boxVariants = {
         hidden: { opacity: 0, y: 50 }, // Parte dal basso con opacità 0
         visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }, // Appare al centro
     };
 
+    const userHasRole = (roleToCheck) => {
+        const userString = sessionStorage.getItem("user");
+        if (!userString) {
+            return false;
+        }
+        const userObj = JSON.parse(userString);
+        return userObj.roles.includes(roleToCheck);
+    };
+
     return (
         <motion.div
-                initial="hidden" 
-                animate="visible" 
-                variants={boxVariants} 
-            >
-        {/* <Container maxWidth='xl' sx={{ maxWidth: '75vw', display: 'flex', justifyContent: 'space-around'}}> */}
+            initial="hidden"
+            animate="visible"
+            variants={boxVariants}
+        >
+            {/* <Container maxWidth='xl' sx={{ maxWidth: '75vw', display: 'flex', justifyContent: 'space-around'}}> */}
             <Box
                 sx={{
                     width: '100%',
@@ -192,7 +224,7 @@ function NuovaRicercaNeed({
                             onFilterChange("cliente")({
                                 target: { value: newValue?.value || null },
                             });
-                            }}
+                        }}
                         renderInput={(params) => (
                             <TextField
                                 {...params}
@@ -261,7 +293,7 @@ function NuovaRicercaNeed({
                             onFilterChange("tipologia")({
                                 target: { value: newValue?.value || null },
                             });
-                            }}
+                        }}
                         renderInput={(params) => (
                             <TextField
                                 {...params}
@@ -299,13 +331,13 @@ function NuovaRicercaNeed({
                         name="stato"
                         label={t("Stato")}
                         skillsOptions={statoOptions}
-                        value={filtri.stato || []} 
+                        value={filtri.stato || []}
                         onChange={(newValue) => {
                             onFilterChange("stato")({
                                 target: { value: newValue.stato || [] },
                             });
                         }}
-                      
+
                     />
                 </FormControl>
 
@@ -323,7 +355,7 @@ function NuovaRicercaNeed({
                             onFilterChange("owner")({
                                 target: { value: newValue?.value || null },
                             });
-                            }}
+                        }}
                         renderInput={(params) => (
                             <TextField
                                 {...params}
@@ -393,19 +425,21 @@ function NuovaRicercaNeed({
                     />
                 </FormControl>
 
-                <FormControl fullWidth sx={{ mb: 0.2 }}>
-    <FilterMultipleAutocomplete
-        name="skills"
-        label={t("Skills")}
-        skillsOptions={skillsOptions}
-        value={filtri.skills || []} 
-        onChange={(newValue) => {
-            onFilterChange("skills")({
-                target: { value: newValue.skills || [] },
-            });
-        }}
-    />
-</FormControl>
+                {(userHasRole("ADMIN") || aziendaUser === "CHALLENGING") && (
+                    <FormControl fullWidth sx={{ mb: 0.2 }}>
+                        <FilterMultipleAutocomplete
+                            name="skills"
+                            label={t("Skills")}
+                            skillsOptions={skillsOptions}
+                            value={filtri.skills || []}
+                            onChange={(newValue) => {
+                                onFilterChange("skills")({
+                                    target: { value: newValue.skills || [] },
+                                });
+                            }}
+                        />
+                    </FormControl>
+                )}
 
 
 
@@ -500,7 +534,7 @@ function NuovaRicercaNeed({
                     />
                 </IconButton>
             </Box>
-        {/* </Container> */}
+            {/* </Container> */}
         </motion.div>
     );
 }
