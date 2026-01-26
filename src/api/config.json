@@ -1,0 +1,359 @@
+{
+    "preFix": "torchy/",
+    "basePath": "http://localhost:8080/",
+
+    "paths": {
+        "login": {
+            "method": "POST",
+            "path": "api/auth/signin"
+        },
+        "lostPassword": {
+            "method": "POST",
+            "path": "api/auth/lost/password"
+        },
+        "getPipelineAdmin": {
+            "method": "GET",
+            "path": "dashboard/pipeline/admin"
+        },
+        "getPipeline": {
+            "method": "GET",
+            "path": "dashboard/pipeline"
+        },
+        "getAziendeSelect": {
+            "method": "GET",
+            "path": "aziende/react/select"
+        },
+        "getStatoNeed": {
+            "method": "GET",
+            "path": "need/react/stato"
+        },
+        "salvaStatoNeed": {
+            "method": "POST",
+            "path": "need/react/salva/stato/{idNeed}"
+        },
+        "weekDataPersonal": {
+            "method": "GET",
+            "path": "dashboard/attivita/{type}/personal/interval"
+        },
+        "weekData": {
+            "method": "GET",
+            "path": "dashboard/attivita/{type}/interval"
+        },
+        "getAllAziendeSelect": {
+            "method": "GET",
+            "path": "aziende/react/select"
+        },
+        "getAllBusinessDataAdmin": {
+            "method": "GET",
+            "path": "aziende/react/mod"
+        },
+        "getAllBusinessDataPersonal": {
+            "method": "GET",
+            "path": "aziende/react/mod/personal"
+        },
+        "getAllOwnerSelect": {
+            "method": "GET",
+            "path": "owner"
+        },
+        "getAllProvinceSelect": {
+            "method": "GET",
+            "path": "aziende/react/province"
+        },
+        "getAllBusinessRicercaAdmin": {
+            "method": "GET",
+            "path": "aziende/react/ricerca/mod"
+        },
+        "getAllBusinessRicercaPersonal": {
+            "method": "GET",
+            "path": "aziende/react/ricerca/mod/personal"
+        },
+        "DeleteBusiness": {
+            "method": "DELETE",
+            "path": "aziende/react/elimina/{idAzienda}"
+        },
+        "getAllContattiAdmin": {
+            "method": "GET",
+            "path": "keypeople/react/mod"
+        },
+        "getAllContattiPersonal": {
+            "method": "GET",
+            "path": "keypeople/react/mod/personal"
+        },
+        "statiContattoSelect": {
+            "method": "GET",
+            "path": "keypeople/react/stati"
+        },
+        "getAllContattiRicercaAdmin": {
+            "method": "GET",
+            "path": "keypeople/react/ricerca/mod"
+        },
+        "getAllContattiRicercaPersonal": {
+            "method": "GET",
+            "path": "keypeople/react/ricerca/mod/personal"
+        },
+        "DeleteContatto": {
+            "method": "DELETE",
+            "path": "keypeople/react/elimina/{idContatto}"
+        },
+        "azioniContatto": {
+            "method": "GET",
+            "path": "azioni/react/{idContatto}"
+        },
+        "needContatto": {
+            "method": "GET",
+            "path": "need/react/keypeople/modificato/{idContatto}"
+        },
+        "tipologieContatto": {
+            "method": "GET",
+            "path": "azioni/react/tipologie"
+        },
+        "cambiaStatoContatto": {
+            "method": "POST",
+            "path": "keypeople/react/salva/stato/{idKeypeople}"
+        },
+        "salvaAzioneContatto": {
+            "method": "POST",
+            "path": "azioni/react/salva/{idContatto}"
+        },
+        "skillSelect": {
+            "method": "GET",
+            "path": "staffing/react/skill"
+        },
+        "getAllNeedAdmin": {
+            "method": "GET",
+            "path": "need/react/modificato"
+        },
+        "getAllNeedPersonal": {
+            "method": "GET",
+            "path": "need/react/modificato/personal"
+        },
+        "tipologiaSelect": {
+            "method": "GET",
+            "path": "need/react/tipologia"
+        },
+        "statoSelect": {
+            "method": "GET",
+            "path": "need/react/stato"
+        },
+        "ricercaNeedAdmin": {
+            "method": "GET",
+            "path": "need/react/ricerca/modificato"
+        },
+        "ricercaNeedPersonal": {
+            "method": "GET",
+            "path": "need/react/ricerca/modificato/personal"
+        },
+        "deleteNeed": {
+            "method": "DELETE",
+            "path": "need/react/elimina/{idNeed}"
+        },
+        "aziendaFromKeypeople": {
+            "method":"GET",
+            "path": "keypeople/react/azienda/{idAzienda}"
+        },
+        "getAllRecruiting": {
+            "method": "GET",
+            "path": "staffing/react/mod"
+        },
+        "tipologieAziende": {
+            "method": "GET",
+            "path": "aziende/react/tipologia"
+        },
+        "tipoRecruitingSelect": {
+            "method": "GET",
+            "path": "staffing/react/tipo"
+        },
+        "statoRecruitingSelect": {
+            "method": "GET",
+            "path": "staffing/react/stato/candidato"
+        },
+        "ricercaRecruiting": {
+            "method": "GET",
+            "path": "staffing/react/mod/ricerca"
+        },
+        "deleteRecruiting": {
+            "method": "DELETE",
+            "path": "staffing/elimina/{deleteId}"
+        },
+        "downloadCV": {
+            "method": "GET",
+            "path": "files/react/download/file/{idFile}"
+        },
+        "downloadCF": {
+            "method": "GET",
+            "path": "files/download/cf/{idCandidato}"
+        },
+        "updateStatoRecruiting": {
+            "method": "POST",
+            "path": "staffing/react/salva/stato/{idCandidato}"
+        },
+
+        "getAllHiring": {
+            "method": "GET",
+            "path": "hiring"
+        },
+        "terminiHiringSelect": {
+            "method": "GET",
+            "path": "hiring/termini"
+        },
+        "serviziHiringSelect": {
+            "method": "GET",
+            "path": "hiring/servizi"
+        },
+        "ricercaHiring": {
+            "method": "GET",
+            "path": "hiring/ricerca"
+        },
+        "resetPassword": {
+            "method": "POST",
+            "path": "api/auth/change/password"
+        },
+
+        "needMatchAssociabili": {
+            "method": "GET",
+            "path": "need/react/match/associabili/mod/{id}"
+        },
+        "needMatchStorico": {
+            "method": "GET",
+            "path": "need/react/storico/{id}"
+        },
+        "needMatchAssociati": {
+            "method": "GET",
+            "path": "need/react/match/associati/mod/{id}"
+        },
+        "statiAssociazioniSelect": {
+            "method": "GET",
+            "path": "associazioni/react/stati"
+        },
+        "ricercaNeedMatchAssociabili": {
+            "method": "GET",
+            "path": "need/react/match/associabili/ricerca/mod/{id}"
+        },
+        "deleteStorico": {
+            "method": "DELETE",
+            "path": "associazioni/react/rimuovi/associa/{idAssociazione}"
+        },
+        "salvaNeedMatchAssociazioni": {
+            "method": "POST",
+            "path": "associazioni/salva"
+        },
+        "ultimaIntervista": {
+            "method": "GET",
+            "path": "intervista/ultima/{idCandidato}"
+        },
+        "deleteAssociati": {
+            "method": "DELETE",
+            "path": "associazioni/react/rimuovi/candidato/associa"
+        },
+        "needMatchAssocia": {
+            "method": "POST",
+            "path": "associazioni/react/associa"
+        },
+        "intervistaByID": {
+            "method": "GET",
+            "path": "intervista/react/mod/{idCandidato}"
+        },
+        "getCandidato": {
+            "method": "GET",
+            "path": "staffing/react/{candidatoID}"
+        },
+        "deleteIntervista": {
+            "method": "DELETE",
+            "path": "intervista/react/elimina/{deleteId}"
+        },
+        "salvaAzienda": {
+            "method": "POST",
+            "path": "aziende/react/salva"
+        },
+        "salvaLogoAzienda": {
+            "method": "POST",
+            "path": "aziende/react/salva/file/{aziendaID}"
+        },
+        "salvaContatto": {
+            "method": "POST",
+            "path": "keypeople/react/salva"
+        },
+        "verificaEmialContatto": {
+            "method": "GET",
+            "path": "keypeople/{email}"
+        },
+        "contattiOptions": {
+            "method": "GET",
+            "path": "keypeople/react/azienda/{aziendaConId}"
+        },
+        "salvaNeed": {
+            "method": "POST",
+            "path": "need/react/salva"
+        },
+        "tipoCandidaturaCandidato": {
+            "method": "GET",
+            "path": "staffing/react/tipo/candidatura"
+        },
+        "facoltaCandidato": {
+            "method": "GET",
+            "path": "staffing/react/facolta"
+        },
+        "livelloScolasticoCandidato": {
+            "method": "GET",
+            "path": "staffing/react/livello"
+        },
+        "funzioniAziendaliCandidato": {
+            "method": "GET",
+            "path": "staffing/react/funzioni"
+        },
+        "ricercaCandidato": {
+            "method": "GET",
+            "path": "staffing/react/tipo/ricerca"
+        },
+        "salvaCandidato": {
+            "method": "POST",
+            "path": "staffing/salva"
+        },
+        "salvaCVCandidato": {
+            "method": "POST",
+            "path": "staffing/react/staff/salva/file/{candidatoId}"
+        },
+        "jobTitleSelect": {
+            "method": "GET",
+            "path": "aziende/react/tipologia/{funzioneAziendaleId}"
+        },
+        "tipoIntervistaSelect": {
+            "method": "GET",
+            "path": "intervista/react/tipointervista"
+        },
+        "getIntervistaByCandidato": {
+            "method": "GET",
+            "path": "intervista/react/mod/{candidatoID}"
+        },
+        "salvaIntervista": {
+            "method": "POST",
+            "path": "intervista/react/salva"
+        },
+        "aziendaByID": {
+            "method": "GET",
+            "path": "aziende/react/{id}"
+        },
+        "contattoByID": {
+            "method": "GET",
+            "path": "keypeople/react/{id}"
+        },
+        "needByID": {
+            "method": "GET",
+            "path": "need/react/{id}"
+        },
+        "candidatoByID": {
+            "method": "GET",
+            "path": "staffing/react/{id}"
+        },
+        "downloadCVCF": {
+            "method": "GET",
+            "path": "files/react/download/file/{fileId}"
+        },
+        "deleteCVCF": {
+            "method": "DELETE",
+            "path": "files/react/elimina/file/candidato/{fileId}/{id}"
+        }
+    }
+}
+
+    
