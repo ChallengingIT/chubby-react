@@ -749,42 +749,50 @@ const ModificaAziendaGrafica = () => {
 
 
     return (
-        <Container maxWidth="false"
+        <Container 
+            maxWidth={false}
+            disableGutters
             sx={{
-                display: "flex",
-                backgroundColor: "#EEEDEE",
-                height: "100vh",
-                width: "100vw",
-                flexDirection: "row",
+            display: "flex",
+            backgroundColor: "#EEEDEE",
+            minHeight: "100dvh",
+            width: "100%",
+            overflowX: "hidden",
             }}
         >
-            <Box
-                sx={{
-                    display: "flex",
-                    height: "98%",
-                    width: "100vw",
-                    flexDirection: "row",
-                    marginLeft: isSmallScreen ? "3.5em" : "12.8em",
-                    mt: "0.5em",
-                    mb: "0.5em",
-                    mr: "0.8em",
-                    borderRadius: "20px",
-                    overflow: "hidden",
-                    transition: 'margin-left 0.3s ease',
-                }}
-            >
-                <Box
+            {/* WRAPPER */}
+                    <Box
                     sx={{
-                        width: { xs: '70px', sm: '150px', md: '220px', lg: '280px' },
-                        height: "98%",
+                        display: "flex",
+                        flex: 1,
+                        width: "100%",
+                        minHeight: "100dvh",
+                        flexDirection: "row",
+                        mt: "0.5em",
+                        mb: "0.5em",
+                        mr: "0.8em",
+                        ml: isSmallScreen ? "3.5em" : "12.8em",
+                        borderRadius: "20px",
+                        overflow: "hidden",
+                        transition: "margin-left 0.3s ease",
+                    }}
+                    >
+                    {/* SIDEBAR */}
+                    <Box
+                        sx={{
+                        width: { xs: "70px", sm: "150px", md: "220px", lg: "280px" },
                         background: theme.palette.aggiungiSidebar.bg,
                         p: 2,
-                        overflow: "hidden",
-                        position: "fixed",
                         borderRadius: "20px 0px 0px 20px",
-                        transition: 'width 0.3s ease',
-                    }}
-                >
+                        transition: "width 0.3s ease",
+                        position: "sticky",
+                        top: 0,
+                        alignSelf: "flex-start",
+                        height: "100dvh",
+                        overflow: "hidden",
+                        flexShrink: 0,
+                        }}
+                    >
                     <Box sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%' }}>
                         <Button
                             onClick={handleGoBack}
@@ -809,39 +817,24 @@ const ModificaAziendaGrafica = () => {
                     <Typography variant="h6" sx={{ display: 'flex', justifyContent: 'flex-start', fontWeight: 'bold', mt: 4, ml: 3, mb: 8, fontSize: { xs: "1.2em", sm: "1.5em", md: "1.8em" }, transition: 'fontSize 0.3s ease', color: 'black' }}>  {t('Aggiorna')} <br /> {t('Azienda')} </Typography>
                     <List sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
                         {menu.map((item, index) => (
-                            // <ListItem
-                            // key={item.title}
-                            // selected={activeSection === item.title}
-                            // sx={{
-                            //     mb: 4,
-                            //     '&.Mui-selected': {
-                            //         backgroundColor: activeSection === item.title ? 'black' : 'trasparent',
-                            //         '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-                            //             color: activeSection === item.title ? '#EDEDED' : '#EDEDED'
-                            //         },
-                            //         borderRadius: '10px',
-                            //     }
-                            // }}
-                            // >
-                            //     <ListItemIcon>
-                            //         {item.icon}
-                            //     </ListItemIcon>
-                            //     <ListItemText primary={item.title} />
-                            // </ListItem>
                             <ListItem
                                 key={item.title}
                                 selected={activeSection === item.title}
                                 onClick={() => handleMenuItemClick(item.title, index)}
                                 sx={{
                                     mb: 4,
-                                    cursor: 'pointer', // Assicurati che l'elemento sembri cliccabile
-                                    '&.Mui-selected': {
-                                        backgroundColor: activeSection === item.title ? 'black' : 'transparent',
-                                        '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-                                            color: activeSection === item.title ? '#EDEDED' : '#EDEDED'
-                                        },
-                                        borderRadius: '10px',
-                                    }
+                                    cursor: sectionCompleted[index] ? "pointer" : "not-allowed",
+                                    "&.Mui-selected, &:hover": {
+                                    backgroundColor: sectionCompleted[index]
+                                        ? theme.palette.aggiungiSidebar.hover
+                                        : theme.palette.aggiungiSidebar.hover,
+                                    "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
+                                        color: sectionCompleted[index]
+                                        ? theme.palette.aggiungiSidebar.textHover
+                                        : theme.palette.aggiungiSidebar.textHover,
+                                    },
+                                    borderRadius: "10px",
+                                    },
                                 }}
                             >
                                 <ListItemIcon
@@ -854,7 +847,7 @@ const ModificaAziendaGrafica = () => {
                         ))}
                     </List>
                 </Box>
-                <Box sx={{ flexGrow: 1, height: '100%', background: '#FEFCFD', display: 'flex', flexDirection: 'column', ml: { xs: '70px', sm: '150px', md: '220px', lg: '280px' }, }}>
+                <Box sx={{ flexGrow: 1, height: '100%', background: '#FEFCFD', display: 'flex', flexDirection: 'column', minHeight: "100dvh" }}>
                     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, mb: 3 }}>
                         <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} TransitionComponent={TransitionDown}>
                             <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>

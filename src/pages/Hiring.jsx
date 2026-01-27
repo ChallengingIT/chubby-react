@@ -1,23 +1,19 @@
-import React, { useEffect, useState }   from 'react'
-import RicercheHiring                   from '../components/ricerche/RicercheHiring'
-import { useNavigate }                  from 'react-router-dom';
-import EditButton                       from '../components/button/EditButton.jsx';
-import SchemePage                       from '../components/SchemePage.jsx';
-import TabellaHiring                    from '../components/TabellaHiring.jsx';
-import ApiService                       from '../services/ApiService.js';
-import { 
-    Box,
-    Grid, 
-    Skeleton, 
-    IconButton 
-} from '@mui/material'
-
+import React, { useEffect, useState } from 'react'
+import { Box, Grid, Skeleton, Typography, Fab, Popover, IconButton } from '@mui/material'
+import RicercheHiring from '../components/ricerche/RicercheHiring'
+import { useNavigate } from 'react-router-dom';
+import EditButton from '../components/button/EditButton.jsx';
+import TabellaHiring2 from '../components/TabellaHiring2.jsx';
+import SchemePage from '../components/SchemePage.jsx';
+import axios from 'axios';
 
 const Hiring = () => {
 
-    const navigate = useNavigate();
-    const [ loading,                    setLoading              ] = useState(false);
-    const [ filtri,                     setFiltri               ] = useState(() => {
+  const navigate = useNavigate();
+  const [ openFiltri,                 setOpenFiltri           ] = useState(false);
+  const [ loading,                    setLoading              ] = useState(false);
+  const [ righeTot,                   setRigheTot             ] = useState(0);
+  const [ filtri,                     setFiltri               ] = useState(() => {
     const filtriSalvati = sessionStorage.getItem('filtriRicercaHiring');
     return filtriSalvati ? JSON.parse(filtriSalvati) : {
     cliente: null,
@@ -28,35 +24,74 @@ const Hiring = () => {
     };
 });
 
-    //stati per il fetch
+  //stati per il fetch
     const [ hiringData,                    setHiringData               ] = useState([]);
     const [ clienteOptions,                setClienteOptions           ] = useState([]);
 
-    //stati per la paginazione
-    const [ pagina,                 setPagina       ] = useState(0);
-    const [hasMore,                 setHasMore      ] = useState(true);
-    const quantita = 10;
-
 
     const serviziOptions = [
-    { value: "Temporary",     label: "Temporary"    },
-    { value: "Head Hunting",  label: "Head Hunting" },
-    { value: "Staffing",      label: "Staffing"     },
-    { value: "Recruiting",    label: "Recruiting"   },
-    ];
+      { value: "Temporary",     label: "Temporary"    },
+      { value: "Head Hunting",  label: "Head Hunting" },
+      { value: "Staffing",      label: "Staffing"     },
+      { value: "Recruiting",    label: "Recruiting"   },
+  ];
 
+    
+  //stati per la paginazione
+  const [ pagina,                 setPagina       ] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const quantita = 10;
+
+
+
+  const userHasRole = (role) => {
+    const userString = sessionStorage.getItem('user');
+    if (!userString) {
+      return false;
+    }
+    const userObj = JSON.parse(userString);
+    return userObj.roles.includes(role);
+  };
+
+      //funzione per il cambio pagina
+      const handlePageChange = (newPage) => {
+        setPagina(newPage);
+        // fetchMoreData(newPage);
+    };
 
     useEffect(() => {
-        sessionStorage.setItem('filtriRicercaRecruiting', JSON.stringify(filtri));
+      sessionStorage.setItem('filtriRicercaRecruiting', JSON.stringify(filtri));
     }, [filtri]);
 
 
-    const fetchData = async () => {
+  const user = JSON.parse(sessionStorage.getItem('user'));
+  const token = user?.token;
 
-        setLoading(true);
+  const headers = {
+    Authorization: `Bearer ${token}`
+  };
+
+   const fetchData = async () => {
+
+    setLoading(true);
+
+    const filtriDaInviare = {
+      idCliente: null,
+      idTipoServizio: null,
+      idScheda: null,
+      idCandidato: null,
+      pagina: 0,
+      quantita: 10
+  };
+
     try {
-        const responseHiring    = await ApiService.request("getAllHiring");
-        const responseCliente   = await ApiService.request("getAziendeSelect");        
+        // const response          = await axios.get("http://localhost:8080/staffing/react/mod",          { headers: headers, params: filtriDaInviare });
+
+        const responseHiring    = await axios.get("http://localhost:8080/hiring",                       { headers: headers });
+        const responseTermini   = await axios.get("http://localhost:8080/hiring/termini",            { headers: headers });
+        const responseServizi   = await axios.get("http://localhost:8080/hiring/servizi",              { headers: headers });
+        const responseCliente = await axios.get("http://localhost:8080/aziende/react/select",            { headers: headers });
+
 
         if (Array.isArray(responseCliente.data)) {
             setClienteOptions(responseCliente.data.map((cliente) => ({ label: cliente.denominazione, value: cliente.id })));
@@ -64,18 +99,47 @@ const Hiring = () => {
             console.error("I dati degli stati ottenuti non sono nel formato Array:", responseCliente.data);
         }
 
+        // if (Array.isArray(responseTermini.data)) {
+        //     setTerminiOptions(responseTermini.data.map((termini, index) => ({ label: termini.descrizione, value: termini.id })));
+        // } else {
+        //     console.error("I dati ottenuti non sono nel formato Array:", responseTermini.data);
+        // } 
+
+
+        // if (Array.isArray(responseServizi.data)) {
+        //     setServiziOptions(responseServizi.data.map((servizi, index) => ({ label: servizi.descrizione, value: servizi.id })));
+    
+        // } else {
+        //     console.error("I dati ottenuti non sono nel formato Array:", responseServizi.data);
+        // } 
+
+
         if (Array.isArray(responseHiring.data)) {
             const hiringConId = responseHiring.data.map((hiring) => ({
             ...hiring,
             }));
             setHiringData(hiringConId);
             setHasMore(hiringConId.length >= quantita);
+            // setPagina(pagina + 1);
         } else {
             console.error(
             "I dati ottenuti non sono nel formato Array:",
             responseHiring.data
             );
         }
+    //     const { record, hiring } = responseHiring.data;
+
+    // if (hiring && Array.isArray(hiring)) {
+    //     setHiringData(hiring); 
+
+    //     if (typeof record === 'number') {
+    //         setRigheTot(record);
+    //     } else {
+    //         console.error("Il numero di record da hiring ottenuto non è un numero: ", record);
+    //     }
+    // } else {
+    //     console.error("I dati ottenuti non contengono 'hiring' come array: ", responseHiring.data);
+    // }
         setLoading(false);
         } catch(error) {
         console.error("Errore durante il recupero dei dati: ", error);
@@ -83,48 +147,49 @@ const Hiring = () => {
     };
 
     useEffect(() => {
-        const filtriSalvati = sessionStorage.getItem('filtriRicercaHiring');
-        if (filtriSalvati) {
-        const filtriParsed = JSON.parse(filtriSalvati);
-        setFiltri(filtriParsed);
-        
-        const isAnyFilterSet = Object.values(filtriParsed).some(value => value);
-        if (isAnyFilterSet) {
-            handleRicerche();
-        } else {
-            fetchData();
-        }
-        } else {
-        fetchData();
-        }
-        // eslint-disable-next-line
-    }, []);
+      const filtriSalvati = sessionStorage.getItem('filtriRicercaHiring');
+      if (filtriSalvati) {
+      const filtriParsed = JSON.parse(filtriSalvati);
+      setFiltri(filtriParsed);
+      
+      const isAnyFilterSet = Object.values(filtriParsed).some(value => value);
+      if (isAnyFilterSet) {
+          handleRicerche();
+      } else {
+          fetchData();
+      }
+      } else {
+      fetchData();
+      }
+      // eslint-disable-next-line
+  }, []);
 
 
 const handleRicerche = async () => {
-    const isAnyFilterSet = Object.values(filtri).some(value => value);
-    if (!isAnyFilterSet) {
-        return; 
-    }
+  const isAnyFilterSet = Object.values(filtri).some(value => value);
+  if (!isAnyFilterSet) {
+      return; 
+  }
 
 
     const filtriDaInviare = {
-    idCliente:          filtri.cliente || null,
-    idTipoServizio:     filtri.servizi || null,
-    pagina: 0,
-    quantita: 10
+      idCliente: filtri.cliente || null,
+      idTipoServizio: filtri.servizi || null,
+      pagina: 0,
+      quantita: 10
     };
     setLoading(true);
 
     try {
-        const responseRicerca = await await ApiService.request("ricercaHiring", {}, {}, {}, filtriDaInviare);
+        const responseRicerca          = await axios.get("http://localhost:8080/hiring/ricerca", { headers: headers, params: filtriDaInviare });
 
-    if (Array.isArray(responseRicerca.data)) {
+      if (Array.isArray(responseRicerca.data)) {
             const hiringConId = responseRicerca.data.map((hiring) => ({
             ...hiring,
             }));
             setHiringData(hiringConId);
             setHasMore(hiringConId.length >= quantita);
+            // setPagina(pagina + 1);
         } else {
             console.error(
             "I dati ottenuti non sono nel formato Array:",
@@ -139,66 +204,67 @@ const handleRicerche = async () => {
 };
 
 
-const handleFilterChange = (name) => (event) => {
+  const handleFilterChange = (name) => (event) => {
     const newValue = event.target.value;
     setFiltri(currentFilters => {
         const newFilters = { ...currentFilters, [name]: newValue };
-            setPagina(0);
+          setPagina(0);
         return newFilters;
     });
+  };
+
+  useEffect(() => {
+    // Controllo se tutti i filtri sono vuoti 
+    const areFiltersEmpty = Object.values(filtri).every(value => value === null || value === '');
+    if (areFiltersEmpty) {
+        // fetchData();
+    } else {
+        // handleRicerche();
+    }
+  }, [filtri, pagina]);
+
+
+  const handleReset = async () => {
+    setFiltri({
+    cliente: null,
+    servizi: null,
+    scheda: null,
+    candidato: null,
+    termini: null
+    });
+    // sessionStorage.removeItem("RicercheRecruiting");
+    setPagina(0);
+    setHiringData([]);
+
+    await fetchData();
 };
-
-//   useEffect(() => {
-//     // Controllo se tutti i filtri sono vuoti 
-//     const areFiltersEmpty = Object.values(filtri).every(value => value === null || value === '');
-//     if (areFiltersEmpty) {
-//         // fetchData();
-//     } else {
-//         // handleRicerche();
-//     }
-//   }, [filtri, pagina]);
-
-
-    const handleReset = async () => {
-        setFiltri({
-        cliente: null,
-        servizi: null,
-        scheda: null,
-        candidato: null,
-        termini: null
-        });
-        setPagina(0);
-        setHiringData([]);
-
-        await fetchData();
-    };
 
 const navigateToModificaHiring = (id) => {
 navigate(`/modificaHiring/${id}`);
 };
 
 const columns = [
-    { field: "denominazioneCliente",              headerName: "Nome Azienda",            flex: 1.5 },
-    { field: "azioni",                            headerName: "",                        flex: 1.6, renderCell: (params) => (
-        <IconButton sx={{ bgcolor: 'transparent'}}>
-        <EditButton onClick={() => {
-            navigateToModificaHiring(params.row.id);
-        }}
-        />
-        </IconButton>
-    ), },];
+  { field: "denominazioneCliente",              headerName: "Nome Azienda",            flex: 1.5 },
+  { field: "azioni",                            headerName: "",                  flex: 1.6, renderCell: (params) => (
+    <IconButton sx={{ bgcolor: 'transparent'}}>
+      <EditButton onClick={() => {
+        navigateToModificaHiring(params.row.id);
+      }}
+      />
+    </IconButton>
+  ), },];
 
 
-    return (
+  return (
     <SchemePage>
-        <RicercheHiring 
-        filtri={filtri}
-        onFilterChange={handleFilterChange}
-        onReset={handleReset}
-        clienteOptions={clienteOptions}
-        serviziOptions={serviziOptions}
-        onRicerche={handleRicerche}
-        />
+      <RicercheHiring 
+      filtri={filtri}
+      onFilterChange={handleFilterChange}
+      onReset={handleReset}
+      clienteOptions={clienteOptions}
+      serviziOptions={serviziOptions}
+      onRicerche={handleRicerche}
+      />
 <Box sx={{ mr: 0.2}}>
         { loading ? (
             <>
@@ -214,14 +280,14 @@ const columns = [
             ))}
             </>   
         ) : ( 
-            <TabellaHiring
-            data={hiringData}
-            columns={columns}
-            getRowId={(row) => row.id}
-            />
+          <TabellaHiring2
+          data={hiringData}
+          columns={columns}
+          getRowId={(row) => row.id}
+          />
         )} 
-        </Box>
-        </SchemePage>
+      </Box>
+      </SchemePage>
 
 );
 }

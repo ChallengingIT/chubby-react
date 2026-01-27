@@ -212,7 +212,7 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
 
     const azioniKeypeople = async (id, event) => {
         try {
-            const responseAzioni = await axios.get(`http://localhost:8080/azioni/react/${id}`, { header: headers });
+            const responseAzioni = await axios.get(`http://localhost:8080/azioni/react/${id}`, { headers: headers });
             if (Array.isArray(responseAzioni.data)) {
                 const azioni = responseAzioni.data.map((azione) => ({ ...azione }));
                 setAzioni(azioni);
@@ -431,7 +431,7 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
             const response = await axios.post(
                 `http://localhost:8080/azioni/react/salva/${idKeyPeople}`,
                 valoriDaInviare,
-                { headers }
+                { headers: headers }
             );
 
             if (response.data === "OK") {
@@ -484,7 +484,7 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
             const response = await axios.post(
                 `http://localhost:8080/azioni/react/salva/${valori.id}`,
                 body,
-                { headers }
+                { headers: headers }
             );
 
             if (response.data === "OK") {
@@ -513,7 +513,7 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
         try {
             const response = await axios.delete(
                 `http://localhost:8080/azioni/react/elimina/${azioneDaEliminare}`,
-                { header: headers }
+                { headers: headers }
             );
             if (response.data === "OK") {
                 handleOpenSnackbar(t('Azione eliminata con successo!'), 'success');

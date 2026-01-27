@@ -1,5 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
-import Box from "@mui/material/Box";
+import {
+    Box,
+    Typography,
+} from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { DataGrid } from "@mui/x-data-grid";
 import { useUserTheme } from "./TorchyThemeProvider";
@@ -74,19 +77,21 @@ const Tabella = ({
             }}
         >
             {title && (
-                <Box
+                <Typography
+                    variant="h6"
                     sx={{
-                        display: "flex",
-                        alignItems: "flex-start",
-                        color: "black",
-                        mt: 2,
-                        mb: 1,
-                        ml: 2,
-                        fontWeight: "bold",
+                    display: "flex",
+                    alignItems: "flex-start",
+                    color: "black",
+                    mt: 2,
+                    mb: 1,
+                    ml: 2,
+                    fontWeight: "bold",
+                    fontFamily: "Roboto, sans-serif",
                     }}
                 >
                     {title}
-                </Box>
+                </Typography>
             )}
 
             <DataGrid

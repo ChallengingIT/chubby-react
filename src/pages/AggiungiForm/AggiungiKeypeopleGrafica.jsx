@@ -692,42 +692,50 @@ const AggiungiKeypeopleGrafica = () => {
     };
 
     return (
-        <Container maxWidth="false"
-            sx={{
+        <Container
+                maxWidth={false}
+                disableGutters
+                sx={{
                 display: "flex",
                 backgroundColor: "#EEEDEE",
-                height: "100vh",
-                width: "100vw",
-                flexDirection: "row",
-            }}
-        >
-            <Box
-                sx={{
-                    display: "flex",
-                    height: "98%",
-                    width: "100vw",
-                    flexDirection: "row",
-                    marginLeft: isSmallScreen ? "3.5em" : "12.8em",
-                    mt: "0.5em",
-                    mb: "0.5em",
-                    mr: "0.8em",
-                    borderRadius: "20px",
-                    overflow: "hidden",
-                    transition: 'margin-left 0.3s ease',
+                minHeight: "100dvh",
+                width: "100%",
+                overflowX: "hidden",
                 }}
             >
+            {/* WRAPPER */}
                 <Box
                     sx={{
-                        width: { xs: '70px', sm: '150px', md: '220px', lg: '280px' },
-                        height: "98%",
-                        background: "#00B400",
-                        p: 2,
+                        display: "flex",
+                        flex: 1,
+                        width: "100%",
+                        minHeight: "100dvh",
+                        flexDirection: "row",
+                        mt: "0.5em",
+                        mb: "0.5em",
+                        mr: "0.8em",
+                        ml: isSmallScreen ? "3.5em" : "12.8em",
+                        borderRadius: "20px",
                         overflow: "hidden",
-                        position: "fixed",
-                        borderRadius: "20px 0px 0px 20px",
-                        transition: 'width 0.3s ease',
+                        transition: "margin-left 0.3s ease",
                     }}
                 >
+                {/* SIDEBAR */}
+                        <Box
+                            sx={{
+                            width: { xs: "70px", sm: "150px", md: "220px", lg: "280px" },
+                            background: theme.palette.aggiungiSidebar.bg,
+                            p: 2,
+                            borderRadius: "20px 0px 0px 20px",
+                            transition: "width 0.3s ease",
+                            position: "sticky",
+                            top: 0,
+                            alignSelf: "flex-start",
+                            height: "100dvh",
+                            overflow: "hidden",
+                            flexShrink: 0,
+                            }}
+                        >
                     <Box
                         sx={{
                             display: "flex",
@@ -810,7 +818,7 @@ const AggiungiKeypeopleGrafica = () => {
                         background: "#FEFCFD",
                         display: "flex",
                         flexDirection: "column",
-                        ml: { xs: '70px', sm: '150px', md: '220px', lg: '280px' },
+                        minHeight: "100dvh",
                     }}
                 >
                     <Box
@@ -820,6 +828,7 @@ const AggiungiKeypeopleGrafica = () => {
                             alignItems: "center",
                             mt: 2,
                             mb: 3,
+                            px: { xs: 1, sm: 2, md: 3, lg: 5 },
                         }}
                     >
                         <Snackbar
@@ -847,9 +856,9 @@ const AggiungiKeypeopleGrafica = () => {
                     </Box>
                     <Box
                         sx={{
+                            flex: 1,
                             display: "flex",
                             width: "100%",
-                            height: "100%",
                             flexDirection: "column",
                             pl: { xs: 1, sm: 2, md: 3, lg: 5 },
                             pr: { xs: 1, sm: 2, md: 3, lg: 5 },

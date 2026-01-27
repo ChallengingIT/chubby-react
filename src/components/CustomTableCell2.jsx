@@ -225,8 +225,6 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
                 console.error("L'azienda non è stata salvata.");
                 return;
             }
-
-            console.log("Update successo!");
             setModalStato(false);
             onRefresh();
         } catch (error) {

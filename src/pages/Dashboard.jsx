@@ -293,13 +293,13 @@ function Dashboard() {
             variants={fadeInVariants}
         >
             <Container
-                maxWidth="false"
+                maxWidth="auto"
                 sx={{
                     height: "100dvh",
                     display: "flex",
                     flexDirection: "column",
                     backgroundColor: "#EEEDEE",
-                    width: "100vw",
+                    width: "auto",
                     overflow: "hidden",
                     padding: 0,
                     margin: 0,
@@ -307,7 +307,6 @@ function Dashboard() {
             >
                 <Box
                     container
-                    maxWidth="false"
                     sx={{
                         display: "flex",
                         flexDirection: "column",

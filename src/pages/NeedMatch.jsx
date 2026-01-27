@@ -98,6 +98,8 @@ const NeedMatch = () => {
         Authorization: `Bearer ${token}`,
     };
 
+    
+
     //controllo del ruolo dell'utente loggato
     const userHasRole = (roleToCheck) => {
         const userString = sessionStorage.getItem('user');
@@ -630,8 +632,8 @@ const NeedMatch = () => {
         try {
             const idNeed = parseInt(id);
             const idCandidato = row.id;
-            const url = `http://localhost:8080/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
-            const responseAssocia = await axios.post(url, { headers: headers });
+            const responseAssocia = await axios.post(`http://localhost:8080/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`, {},
+                { headers: headers });
             fetchData();
         } catch (error) {
             console.error("Errore durante il recuper dei dati: ", error);

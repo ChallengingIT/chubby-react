@@ -43,8 +43,6 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 const TabellaAzioni = ({ data = [], aziendeOptions = [], expanded, setExpanded, pageSize }) => {
     const { t } = useTranslation();
 
-    console.log("TabellaAzioni received pageSize:", pageSize);
-
     const [rows, setRows] = useState([]);
     const [filters, setFilters] = useState({
         owner: "",
@@ -229,9 +227,6 @@ const TabellaAzioni = ({ data = [], aziendeOptions = [], expanded, setExpanded, 
         pageSize: expanded ? pageSize : 3,
         page: 0,
     });
-
-    console.log("TabellaAzioni paginationModel:", paginationModel);
-    console.log("TabellaAzioni expanded:", expanded);
 
     useEffect(() => {
         setPaginationModel((prev) => ({ ...prev,
