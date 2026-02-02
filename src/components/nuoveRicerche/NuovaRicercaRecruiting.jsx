@@ -43,7 +43,7 @@
 
     return (
         <motion.div initial="hidden" animate="visible" variants={boxVariants}>
-        <Box sx={{ maxWidth: "100%", display: "flex", justifyContent: "space-around", p: 0, m: 0 }}>
+        <Box sx={{ maxWidth: "100%", display: "flex", justifyContent: "space-between", p: 0, m: 0 }}>
             <Box
             sx={{
                 width: "100%",

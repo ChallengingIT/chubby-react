@@ -62,7 +62,7 @@ function NuovaRicercaAziende({
                 animate="visible" 
                 variants={boxVariants} 
             >
-        <Container maxWidth='false' sx={{ maxWidth: '75vw', maxHeight: '20vh', display: 'flex', justifyContent: 'space-around'}}>
+        <Container maxWidth={false} sx={{ maxWidth: '100vw', maxHeight: '20vh', display: 'flex', justifyContent: 'space-between'}}>
             <Box
                 sx={{
                     width: '100%',
@@ -73,7 +73,7 @@ function NuovaRicercaAziende({
                     alignItems: "center",
                     justifyContent: "space-between",
                     marginBottom: "1rem",
-                    p: 1.2,
+                    p:0,
                     gap: 3
                 }}
             >

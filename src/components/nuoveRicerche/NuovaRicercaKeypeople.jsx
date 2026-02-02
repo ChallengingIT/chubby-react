@@ -71,20 +71,19 @@ import { motion } from "framer-motion";
         animate="visible" 
         variants={boxVariants} 
     >
-        <Container maxWidth='false' sx={{ maxWidth: '75vw', display: 'flex', justifyContent: 'space-around'}}>
+        <Container maxWidth={false} sx={{ maxWidth: '100vw', display: 'flex', justifyContent: 'space-between'}}>
 
         <Box
         sx={{
             width: '100%',
             bgcolor: "#FEFCFD",
-            // border: 'solid 2px #00B400',
             borderRadius: '20px',
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
             marginBottom: "1rem",
-            p: 1.2,
+            p: 0,
             gap: 3
         }}
         >
