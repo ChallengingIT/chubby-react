@@ -72,23 +72,23 @@ const AggiungiIntervistaGrafica = () => {
             try {
                 //jobtitle = tipologia, tipologiaIncontro = stato, owner = owner
                 /* const ownerResponse = await axios.get(
-                "http://localhost:8080/owner",
+                "http://80.211.138.142:8443/owner",
                 { headers: headers }
                 ); */
                 const responseTipoIntervista = await axios.get(
-                    "http://localhost:8080/intervista/react/tipointervista",
+                    "http://80.211.138.142:8443/intervista/react/tipointervista",
                     { headers: headers }
                 );
                 const responseIntervista = await axios.get(
-                    `http://localhost:8080/intervista/react/mod/${candidatoID}`,
+                    `http://80.211.138.142:8443/intervista/react/mod/${candidatoID}`,
                     { headers: headers, params: paginazione }
                 ); //questa è la lista delle interviste di cui devo prendere sempre l'ultima
                 const responseCandidato = await axios.get(
-                    `http://localhost:8080/staffing/react/${candidatoID}`,
+                    `http://80.211.138.142:8443/staffing/react/${candidatoID}`,
                     { headers: headers }
                 ); //questo è il candidato
                 const responseStato = await axios.get(
-                    "http://localhost:8080/staffing/react/stato/candidato",
+                    "http://80.211.138.142:8443/staffing/react/stato/candidato",
                     { headers: headers }
                 );
 
@@ -138,7 +138,7 @@ const AggiungiIntervistaGrafica = () => {
                 const username = user?.username;
 
                 const ownerResponse = await axios.get(
-                    `http://localhost:8080/owner/${username}`,
+                    `http://80.211.138.142:8443/owner/${username}`,
                     { headers: headers }
                 );
 
@@ -315,7 +315,7 @@ const AggiungiIntervistaGrafica = () => {
 
                 const modifica = 0;
                 const response = await axios.post(
-                    "http://localhost:8080/intervista/react/salva",
+                    "http://80.211.138.142:8443/intervista/react/salva",
                     values,
                     {
                         params: {

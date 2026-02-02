@@ -2,10 +2,10 @@ import axios from "axios";
 
 
 
-const API_LOGIN = "http://localhost:8080/api/auth/";
-const API_LOGIN_CANDIDATO = "http://localhost:8080/candidato/auth/";
-const API_LOGOUT = "http://localhost:8080/logout";
-const API_REGISTER_CANDIDATO = "http://localhost:8080/candidato/auth/signup"
+const API_LOGIN = "http://80.211.138.142:8443/api/auth/";
+const API_LOGIN_CANDIDATO = "http://80.211.138.142:8443/candidato/auth/";
+const API_LOGOUT = "http://80.211.138.142:8443/logout";
+const API_REGISTER_CANDIDATO = "http://80.211.138.142:8443/candidato/auth/signup"
 
 
 
@@ -71,7 +71,7 @@ class AuthService {
             formData.append("cv", file);
             formData.append('username', usernameResponse);
 
-            const cvResponse = await axios.post('http://localhost:8080/candidato/auth/signup/cv', formData, {
+            const cvResponse = await axios.post('http://80.211.138.142:8443/candidato/auth/signup/cv', formData, {
               headers: {
                 "Content-Type": "multipart/form-data",
               },

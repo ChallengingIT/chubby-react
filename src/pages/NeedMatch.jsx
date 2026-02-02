@@ -115,8 +115,8 @@ const NeedMatch = () => {
     const username = u?.username;
 
     return userHasRole("ADMIN")
-      ? "http://localhost:8080/owner"
-      : `http://localhost:8080/owner/${username}`;
+      ? "http://80.211.138.142:8443/owner"
+      : `http://80.211.138.142:8443/owner/${username}`;
   };
 
 
@@ -173,7 +173,7 @@ const NeedMatch = () => {
     visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
   };
   const fetchAllAssociabili = async () => {
-    const baseUrl = `http://localhost:8080/need/react/match/associabili/mod/${id}`;
+    const baseUrl = `http://80.211.138.142:8443/need/react/match/associabili/mod/${id}`;
 
     const chunk = 200;
     let pagina = 0;
@@ -216,7 +216,7 @@ const NeedMatch = () => {
 
   const fetchStoricoPage = async (page) => {
     const paginazione = { pagina: page, quantita };
-    const resp = await axios.get(`http://localhost:8080/need/react/storico/${id}`, {
+    const resp = await axios.get(`http://80.211.138.142:8443/need/react/storico/${id}`, {
       headers,
       params: paginazione,
     });
@@ -229,7 +229,7 @@ const NeedMatch = () => {
   const fetchAssociatiPage = async (page) => {
     const paginazione = { pagina: page, quantita };
     const resp = await axios.get(
-      `http://localhost:8080/need/react/match/associati/mod/${id}`,
+      `http://80.211.138.142:8443/need/react/match/associati/mod/${id}`,
       {
         headers: headers,
         params: paginazione,
@@ -244,9 +244,9 @@ const NeedMatch = () => {
   const fetchOptions = async () => {
     const [responseTipologia, responseTipo, statoResponse, ownerResponse] =
       await Promise.all([
-        axios.get("http://localhost:8080/aziende/react/tipologia", { headers: headers }),
-        axios.get("http://localhost:8080/staffing/react/tipo", { headers: headers }),
-        axios.get("http://localhost:8080/associazioni/react/stati", { headers: headers }),
+        axios.get("http://80.211.138.142:8443/aziende/react/tipologia", { headers: headers }),
+        axios.get("http://80.211.138.142:8443/staffing/react/tipo", { headers: headers }),
+        axios.get("http://80.211.138.142:8443/associazioni/react/stati", { headers: headers }),
         axios.get(getOwnerUrl(), { headers: headers }),
       ]);
 
@@ -417,7 +417,7 @@ const NeedMatch = () => {
     try {
       const idNeed = parseInt(id, 10);
       const idCandidato = row;
-      const url = `http://localhost:8080/associazioni/react/rimuovi/candidato/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
+      const url = `http://80.211.138.142:8443/associazioni/react/rimuovi/candidato/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
       await axios.delete(url, { headers });
 
       await Promise.all([
@@ -433,7 +433,7 @@ const NeedMatch = () => {
   const handleDeleteStorico = async (row) => {
     try {
       const idAssociazione = row;
-      const url = `http://localhost:8080/associazioni/react/rimuovi/associa/${idAssociazione}`;
+      const url = `http://80.211.138.142:8443/associazioni/react/rimuovi/associa/${idAssociazione}`;
       await axios.delete(url, { headers });
 
       await Promise.all([
@@ -452,7 +452,7 @@ const NeedMatch = () => {
       const idCandidato = row.id;
 
       await axios.post(
-        `http://localhost:8080/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`,
+        `http://80.211.138.142:8443/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`,
         {},
         { headers }
       );
@@ -499,7 +499,7 @@ const NeedMatch = () => {
       delete updateValues.candidato;
       delete updateValues.cliente;
 
-      await axios.post(`http://localhost:8080/associazioni/salva`, updateValues, { headers });
+      await axios.post(`http://80.211.138.142:8443/associazioni/salva`, updateValues, { headers });
 
       await Promise.all([
         fetchAllAssociabili(),
@@ -514,7 +514,7 @@ const NeedMatch = () => {
   };
 
   const handleDownloadCV = async (idFile, fileDescrizione) => {
-    const url = `http://localhost:8080/files/react/download/file/${idFile}`;
+    const url = `http://80.211.138.142:8443/files/react/download/file/${idFile}`;
     try {
       const responseDownloadCV = await axios({
         method: "GET",
@@ -541,7 +541,7 @@ const NeedMatch = () => {
   const handleModalIntervista = async (idCandidato) => {
     try {
       const responseIntervista = await axios.get(
-        `http://localhost:8080/intervista/ultima/${idCandidato}`,
+        `http://80.211.138.142:8443/intervista/ultima/${idCandidato}`,
         { headers }
       );
       setSelectedIntervista(responseIntervista.data);

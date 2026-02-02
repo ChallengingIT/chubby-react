@@ -1,6 +1,6 @@
 {
     "preFix": "torchy/",
-    "basePath": "http://localhost:8080/",
+    "basePath": "http://80.211.138.142:8443/",
 
     "paths": {
         "login": {

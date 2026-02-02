@@ -74,8 +74,8 @@ function IntervisteList() {
     };
 
     try {
-      const response                           = await axios.get(`http://localhost:8080/intervista/react/mod/${id}`       , { headers: headers, params: paginazione});  //queste sono le interviste effettive
-      const responseCandidato                  = await axios.get(`http://localhost:8080/staffing/react/${candidatoID}`            , { headers: headers }); //questo è il candidato
+      const response                           = await axios.get(`http://80.211.138.142:8443/intervista/react/mod/${id}`       , { headers: headers, params: paginazione});  //queste sono le interviste effettive
+      const responseCandidato                  = await axios.get(`http://80.211.138.142:8443/staffing/react/${candidatoID}`            , { headers: headers }); //questo è il candidato
 
 
 
@@ -104,7 +104,7 @@ function IntervisteList() {
         pagina: 0,
         quantita: 1
       }
-      const responseCandidatoFiltrato          = await axios.get("http://localhost:8080/staffing/react/mod/ricerca",        { headers: headers, params: filtriDaInviare }); //questo è il candidato
+      const responseCandidatoFiltrato          = await axios.get("http://80.211.138.142:8443/staffing/react/mod/ricerca",        { headers: headers, params: filtriDaInviare }); //questo è il candidato
 
       if (typeof responseCandidatoFiltrato.data === 'object') {
         setCandidatoData([responseCandidatoFiltrato.data]); 
@@ -134,8 +134,8 @@ function IntervisteList() {
   }
 
     try{
-      const responseIntervista                = await axios.get(`http://localhost:8080/intervista/react/mod/${id}`       , { headers: headers, params: paginazione});
-      const responseCandidatoFiltrato          = await axios.get("http://localhost:8080/staffing/react/mod/ricerca", { headers: headers, params: filtriDaInviare });
+      const responseIntervista                = await axios.get(`http://80.211.138.142:8443/intervista/react/mod/${id}`       , { headers: headers, params: paginazione});
+      const responseCandidatoFiltrato          = await axios.get("http://80.211.138.142:8443/staffing/react/mod/ricerca", { headers: headers, params: filtriDaInviare });
 
       const { record, interviste } = responseIntervista.data;
 
@@ -181,7 +181,7 @@ function IntervisteList() {
   const handleDelete = async (id) => {
     try {
 
-        const response = await axios.delete(`http://localhost:8080/intervista/react/elimina/${deleteId}`, { headers: headers});
+        const response = await axios.delete(`http://80.211.138.142:8443/intervista/react/elimina/${deleteId}`, { headers: headers});
         setOpenDialog(false);
         fetchData();
     } catch (error) {

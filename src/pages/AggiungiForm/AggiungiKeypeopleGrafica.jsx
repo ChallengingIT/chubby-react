@@ -77,8 +77,8 @@ const AggiungiKeypeopleGrafica = () => {
                 const username = user?.username;
 
                 const responseAziendeUrl = userHasRole("ADMIN")
-                ? "http://localhost:8080/aziende/react/select"
-                : `http://localhost:8080/aziende/react/select/${username}`;
+                ? "http://80.211.138.142:8443/aziende/react/select"
+                : `http://80.211.138.142:8443/aziende/react/select/${username}`;
 
                 const aziendeResponse = await axios.get(
                     responseAziendeUrl,
@@ -86,7 +86,7 @@ const AggiungiKeypeopleGrafica = () => {
                 );
                 
                 const statiResponse = await axios.get(
-                    "http://localhost:8080/keypeople/react/stati",
+                    "http://80.211.138.142:8443/keypeople/react/stati",
                     { headers: headers }
                 );
 
@@ -105,7 +105,7 @@ const AggiungiKeypeopleGrafica = () => {
 
 
                 const ownerResponse = await axios.get(
-                    `http://localhost:8080/owner/${username}`,
+                    `http://80.211.138.142:8443/owner/${username}`,
                     { headers: headers }
                 );
 
@@ -246,7 +246,7 @@ const AggiungiKeypeopleGrafica = () => {
                 });
 
                 const response = await axios.post(
-                    "http://localhost:8080/keypeople/react/salva",
+                    "http://80.211.138.142:8443/keypeople/react/salva",
                     values,
                     {
                         params: { username: user?.username || null },
@@ -284,7 +284,7 @@ const AggiungiKeypeopleGrafica = () => {
     const verifyEmail = async (email) => {
         try {
             const emailResponse = await axios.get(
-                `http://localhost:8080/keypeople/${email}`,
+                `http://80.211.138.142:8443/keypeople/${email}`,
                 { headers: headers }
             );
             if (emailResponse.data === "KO") {

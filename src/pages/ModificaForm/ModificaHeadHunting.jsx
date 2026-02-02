@@ -71,14 +71,14 @@ const ModificaHeadHunting = () => {
 
 
            const schedaResponse = await axios.get(
-                "http://localhost:8080/hiring/scheda",
+                "http://80.211.138.142:8443/hiring/scheda",
                 { headers: headers,
                     params: { idScheda: idScheda}
                 }
             );
     
         const terminiPagamentoResponse = await axios.get(
-            "http://localhost:8080/hiring/termini",
+            "http://80.211.138.142:8443/hiring/termini",
             { headers: headers }
             );
             if (schedaResponse.data) {
@@ -273,7 +273,7 @@ const ModificaHeadHunting = () => {
                     const valuesWithId = { ...values, id: idScheda };
 
     
-                    const response = await axios.post("http://localhost:8080/hiring/salva/scheda", valuesWithId, {
+                    const response = await axios.post("http://80.211.138.142:8443/hiring/salva/scheda", valuesWithId, {
                         headers: headers,
                         params: { idHiring: idHiring, idTipoServizio: idTipoServizio }
                     });

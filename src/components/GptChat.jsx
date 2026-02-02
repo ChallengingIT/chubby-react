@@ -55,7 +55,7 @@ const GptChat = () => {
     const fetchChatGPT = async (chatMessages) => {
         try {
             const lastMessage = chatMessages[chatMessages.length - 1];
-            const response = await axios.get('http://localhost:8080/ai/open/generate',
+            const response = await axios.get('http://80.211.138.142:8443/ai/open/generate',
                     {
                         params: { message: lastMessage.message },
                         headers: headers,

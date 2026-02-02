@@ -92,8 +92,8 @@
         const username = userObj?.username;
 
         const baseUrl = userHasRole("ADMIN")
-            ? "http://localhost:8080/aziende/react/mod"
-            : "http://localhost:8080/aziende/react/mod/personal";
+            ? "http://80.211.138.142:8443/aziende/react/mod"
+            : "http://80.211.138.142:8443/aziende/react/mod/personal";
 
         const params = {};
         if (!userHasRole("ADMIN") && username) params.username = username;
@@ -104,8 +104,8 @@
         setOriginalAziende(Array.isArray(clienti) ? clienti : []);
 
         const responseAziendeUrl = userHasRole("ADMIN")
-            ? "http://localhost:8080/aziende/react/select"
-            : `http://localhost:8080/aziende/react/select/${username}`;
+            ? "http://80.211.138.142:8443/aziende/react/select"
+            : `http://80.211.138.142:8443/aziende/react/select/${username}`;
 
         const responseCliente = await axios.get(responseAziendeUrl, { headers });
         setClienteOptions(
@@ -115,7 +115,7 @@
         );
 
         // province
-        const provinceResponse = await axios.get("http://localhost:8080/aziende/react/province", {
+        const provinceResponse = await axios.get("http://80.211.138.142:8443/aziende/react/province", {
             headers,
         });
         setProvinceOptions(
@@ -126,8 +126,8 @@
 
         // owner
         const ownerUrl = userHasRole("ADMIN")
-            ? "http://localhost:8080/owner"
-            : `http://localhost:8080/owner/${username}`;
+            ? "http://80.211.138.142:8443/owner"
+            : `http://80.211.138.142:8443/owner/${username}`;
 
         const responseOwner = await axios.get(ownerUrl, { headers });
         setOwnerOptions(
@@ -261,7 +261,7 @@
 
     const handleDelete = async (id) => {
         try {
-        await axios.delete(`http://localhost:8080/aziende/react/elimina/${id}`, { headers });
+        await axios.delete(`http://80.211.138.142:8443/aziende/react/elimina/${id}`, { headers });
         await fetchData();
         } catch (error) {
         console.error("Errore durante la cancellazione: ", error);

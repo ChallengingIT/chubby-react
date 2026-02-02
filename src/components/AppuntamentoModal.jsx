@@ -81,7 +81,7 @@ function AppuntamentoModal({ open, handleClose }) {
       const username = user?.username;
 
       const ownerResponse = await axios.get(
-        `http://localhost:8080/owner/${username}`,
+        `http://80.211.138.142:8443/owner/${username}`,
         { headers: headers }
       );
 
@@ -121,7 +121,7 @@ function AppuntamentoModal({ open, handleClose }) {
     };
     try {
       const responseInviaAppuntamento = await axios.post(
-        "http://localhost:8080/calendar/insert",
+        "http://80.211.138.142:8443/calendar/insert",
         datiDaInviare,
         { headers: headers }
       );

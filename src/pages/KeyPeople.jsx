@@ -116,25 +116,25 @@
         const username = userObj?.username;
 
         const baseUrl = userHasRole("ADMIN")
-            ? "http://localhost:8080/keypeople/react/mod"
-            : "http://localhost:8080/keypeople/react/mod/personal";
+            ? "http://80.211.138.142:8443/keypeople/react/mod"
+            : "http://80.211.138.142:8443/keypeople/react/mod/personal";
 
         const params = {};
         if (!userHasRole("ADMIN") && username) params.username = username;
 
         const ownerUrl = userHasRole("ADMIN")
-            ? "http://localhost:8080/owner"
-            : `http://localhost:8080/owner/${username}`;
+            ? "http://80.211.138.142:8443/owner"
+            : `http://80.211.138.142:8443/owner/${username}`;
 
         const aziendeSelectUrl = userHasRole("ADMIN")
-            ? "http://localhost:8080/aziende/react/select"
-            : `http://localhost:8080/aziende/react/select/${username}`;
+            ? "http://80.211.138.142:8443/aziende/react/select"
+            : `http://80.211.138.142:8443/aziende/react/select/${username}`;
 
         const [respKP, respAziende, respOwner, respStati] = await Promise.all([
             axios.get(baseUrl, { headers, params }),
             axios.get(aziendeSelectUrl, { headers }),
             axios.get(ownerUrl, { headers }),
-            axios.get("http://localhost:8080/keypeople/react/stati", { headers }),
+            axios.get("http://80.211.138.142:8443/keypeople/react/stati", { headers }),
         ]);
 
         const kps = respKP.data?.keyPeoples;
@@ -230,7 +230,7 @@
 
     const handleDelete = async (id) => {
         try {
-        await axios.delete(`http://localhost:8080/keypeople/react/elimina/${id}`, { headers });
+        await axios.delete(`http://80.211.138.142:8443/keypeople/react/elimina/${id}`, { headers });
         await fetchData();
         } catch (error) {
         console.error("Errore durante la cancellazione:", error);

@@ -94,7 +94,7 @@
         const fetchSkills = async () => {
         try {
             const responseAree = await axios.get(
-            "http://localhost:8080/staffing/react/areas",
+            "http://80.211.138.142:8443/staffing/react/areas",
             { headers }
             );
 
@@ -110,7 +110,7 @@
 
                 try {
                 const responseSkillByArea = await axios.get(
-                    `http://localhost:8080/staffing/react/skill/${area.id}`,
+                    `http://80.211.138.142:8443/staffing/react/skill/${area.id}`,
                     { headers }
                 );
 
@@ -149,8 +149,8 @@
         const username = u?.username;
 
         const baseUrl = userHasRole("ADMIN")
-            ? "http://localhost:8080/need/react/modificato"
-            : "http://localhost:8080/need/react/modificato/personal";
+            ? "http://80.211.138.142:8443/need/react/modificato"
+            : "http://80.211.138.142:8443/need/react/modificato/personal";
 
         const params = {};
         if (!userHasRole("ADMIN") && username) params.username = username;
@@ -166,8 +166,8 @@
         setOriginalNeed(needs);
 
         const ownerUrl = userHasRole("ADMIN")
-            ? "http://localhost:8080/owner"
-            : `http://localhost:8080/owner/${username}`;
+            ? "http://80.211.138.142:8443/owner"
+            : `http://80.211.138.142:8443/owner/${username}`;
 
         const ownerResponse = await axios.get(ownerUrl, { headers });
         setOwnerOptions(
@@ -177,8 +177,8 @@
         );
 
         const aziendeUrl = userHasRole("ADMIN")
-            ? "http://localhost:8080/aziende/react/select"
-            : `http://localhost:8080/aziende/react/select/${username}`;
+            ? "http://80.211.138.142:8443/aziende/react/select"
+            : `http://80.211.138.142:8443/aziende/react/select/${username}`;
 
         const responseAzienda = await axios.get(aziendeUrl, { headers });
         setAziendaOptions(
@@ -188,7 +188,7 @@
         );
 
         const responseTipologia = await axios.get(
-            "http://localhost:8080/need/react/tipologia",
+            "http://80.211.138.142:8443/need/react/tipologia",
             { headers }
         );
 
@@ -215,7 +215,7 @@
         }
 
         const responseStato = await axios.get(
-            "http://localhost:8080/need/react/stato",
+            "http://80.211.138.142:8443/need/react/stato",
             { headers }
         );
 
@@ -319,7 +319,7 @@
 
     const handleDelete = async (id) => {
         try {
-        await axios.delete(`http://localhost:8080/need/react/elimina/${id}`, { headers });
+        await axios.delete(`http://80.211.138.142:8443/need/react/elimina/${id}`, { headers });
         await fetchData();
         } catch (error) {
         console.error("Errore durante la cancellazione: ", error);
