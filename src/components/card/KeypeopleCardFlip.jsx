@@ -801,7 +801,6 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                                     height: "5em",
                                 }}
                                 >
-                                {/* Floating label */}
                                 <span
                                     style={{
                                     position: "absolute",
@@ -832,9 +831,9 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                                     onFocus={() => setFocusedDateTime(true)}
                                     onBlur={() => setFocusedDateTime(false)}
 
-                                    // ✅ FIX: il popup viene renderizzato dentro il dialog e non sotto
                                     getPopupContainer={() => dateTimeWrapperRef.current || document.body}
                                     dropdownClassName="torchy-datetime-dropdown"
+                                    placement="bottomLeft"
 
                                     style={{
                                     width: "100%",
@@ -850,7 +849,6 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                                 />
 
                                 <style>{`
-                                    /* ✅ FIX ALTEZZA: non forzare 4em sull’input interno */
                                     .torchy-datetime .ant-picker {
                                     height: 100% !important;
                                     display: flex !important;
@@ -860,7 +858,7 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
 
                                     .torchy-datetime .ant-picker-input > input {
                                     background: transparent !important;
-                                    height: 100% !important;          /* ✅ invece di 4em */
+                                    height: 100% !important;
                                     padding-left: 6px;
                                     padding-right: 10px;
                                     font-family: Roboto, sans-serif;
@@ -876,14 +874,13 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                                     opacity: 0.65;
                                     }
 
-                                    /* ✅ FIX Z-INDEX: calendario sopra il dialog MUI */
                                     .torchy-datetime-dropdown {
                                     z-index: 2000 !important;
                                     }
-                                `}</style>
+                                `}
+                                </style>
                                 </div>
                                 </ConfigProvider>
-                            {/* <FormControl fullWidth sx={{ ml: 2, mr: 2 }}> */}
                             <Autocomplete
                                 id="stato-combo-box"
                                 options={tipologieOptions}

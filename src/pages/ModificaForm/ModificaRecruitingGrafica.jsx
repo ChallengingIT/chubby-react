@@ -76,8 +76,7 @@ const ModificaRecruitingGrafica = () => {
     const [funzioniAziendaliOptions, setFunzioniAziendaliOptions] = useState([]);
     const [ricercaOptions, setRicercaOptions] = useState([]);
     const [tipoOptions, setTipoOptions] = useState([]);
-    const [deleteDialogIntervista, setDeleteDialogIntervista] = useState({ open: false, index: null });
-
+    const [deleteDialogIntervista, setDeleteDialogIntervista] = useState({ open: false, index: null });    
 
     const createEmptyIntervista = () => ({
         id: null,
@@ -635,7 +634,8 @@ const ModificaRecruitingGrafica = () => {
         idTipologia: "tipologia",
         idOwner: "owner",
         idSkills: "skills",
-        idTipo: 'tipo'
+        idTipo: 'tipo',
+        intervistatore: 'intervistatore'
     };
 
     //funzione per convertire le chiavi delle select da "idX" a "X"
@@ -854,19 +854,17 @@ const ModificaRecruitingGrafica = () => {
                 valutazione: i.valutazione != null
                     ? (valutazioneOptions.find((o) => o.value === i.valutazione) ?? { value: i.valutazione, label: String(i.valutazione) })
                     : null,
-                dataIntervista: i.dataIntervista ?? null,
+                dataIntervista: i?.dataIntervista ?? null,
                 intervistatore: i?.intervistatore
-                    ? { value: i.intervistatore.id, label: i.intervistatore.descrizione }
+                    ? { value: i?.intervistatore?.id, label: i?.intervistatore?.descrizione }
                     : null,
-                descrizioneIntervista: i.descrizioneIntervista ?? "",
+                descrizioneIntervista: i?.descrizioneIntervista ?? "",
                 }))
             : [createEmptyIntervista()],
         cv: datiModifica.files ? datiModifica.files.find(file => file && file.tipologia && file.tipologia.descrizione === 'CV') || null : null,
         cf: datiModifica.files ? datiModifica.files.find(file => file && file.tipologia && file.tipologia.descrizione === 'CF') || null : null,
         note: datiModifica.note || null,
     };
-
-
 
     //funzione per caricare i dati nei campi solo dopo aver terminato la chiamata
     useEffect(() => {
@@ -1091,7 +1089,7 @@ const ModificaRecruitingGrafica = () => {
                                         name="intervistatore"
                                         label={t("Intervistatore")}
                                         options={ownerOptions || []}
-                                        value={intervista.intervistatore || null}
+                                        value={intervista?.intervistatore || null}
                                         onChange={handleChangeIntervista(idx)}
                                         getOptionSelected={(option, value) => option.value === value.value}
                                     />
