@@ -43,7 +43,7 @@
     const { t } = useTranslation();
     const location = useLocation();
 
-    const [originalKeypeople, setOriginalKeypeople] = useState([]);
+    const [originalKeypeople, setOriginalKeypeople] = useState([]);    
     const [loading, setLoading] = useState(false);
 
     const [viewMode, setViewMode] = useState("table");
@@ -131,10 +131,10 @@
             : `http://localhost:8080/aziende/react/select/${username}`;
 
         const [respKP, respAziende, respOwner, respStati] = await Promise.all([
-            axios.get(baseUrl, { headers, params }),
-            axios.get(aziendeSelectUrl, { headers }),
-            axios.get(ownerUrl, { headers }),
-            axios.get("http://localhost:8080/keypeople/react/stati", { headers }),
+            axios.get(baseUrl, { headers: headers, params }),
+            axios.get(aziendeSelectUrl, { headers: headers }),
+            axios.get(ownerUrl, { headers: headers }),
+            axios.get("http://localhost:8080/keypeople/react/stati", { headers: headers }),
         ]);
 
         const kps = respKP.data?.keyPeoples;
