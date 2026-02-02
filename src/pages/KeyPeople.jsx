@@ -131,10 +131,10 @@
             : `http://80.211.138.142:8443/aziende/react/select/${username}`;
 
         const [respKP, respAziende, respOwner, respStati] = await Promise.all([
-            axios.get(baseUrl, { headers, params }),
-            axios.get(aziendeSelectUrl, { headers }),
-            axios.get(ownerUrl, { headers }),
-            axios.get("http://80.211.138.142:8443/keypeople/react/stati", { headers }),
+            axios.get(baseUrl, { headers: headers, params }),
+            axios.get(aziendeSelectUrl, { headers: headers }),
+            axios.get(ownerUrl, { headers: headers }),
+            axios.get("http://80.211.138.142:8443/keypeople/react/stati", { headers: headers }),
         ]);
 
         const kps = respKP.data?.keyPeoples;
