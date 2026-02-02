@@ -34,13 +34,6 @@ function NuovaRicercaAziende({
         setTimeout(() => setIsRotated(false), 500);
     };
 
-    const handleInputChange = (name) => (event) => {
-        onFilterChange({
-            ...filtri,
-            [name]: event.target.value,
-        });
-    };
-
     const handleAutocompleteChange = (name) => (event, newValue) => {
         onFilterChange({
             ...filtri,

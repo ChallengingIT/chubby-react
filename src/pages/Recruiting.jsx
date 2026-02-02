@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import PersonInfoButton from "../components/button/PersonInfoButton.jsx";
-import DeleteButton from "../components/button/DeleteButton.jsx";
-import ClipButton from "../components/button/ClipButton.jsx";
-import { Link } from "react-router-dom";
-import Tabella from "../components/Tabella.jsx";
-import CloseIcon from "@mui/icons-material/Close";
-import { useTranslation } from "react-i18next";
-import { motion } from "framer-motion";
-import SchemePage from "../components/SchemePage.jsx";
-import NuovaRicercaRecruiting from "../components/nuoveRicerche/NuovaRicercaRecruiting.jsx";
-import CFButton from "../components/button/CFButton.jsx";
-import CFModal from "../components/modal/CFModal.jsx";
-import InfoIcon from '@mui/icons-material/Info';
-
+import React, { useEffect, useState }     from "react";
+import axios                              from "axios";
+import PersonInfoButton                   from "../components/button/PersonInfoButton.jsx";
+import DeleteButton                       from "../components/button/DeleteButton.jsx";
+import ClipButton                         from "../components/button/ClipButton.jsx";
+import { Link }                           from "react-router-dom";
+import CloseIcon                          from "@mui/icons-material/Close";
+import { useTranslation }                 from "react-i18next";
+import { motion }                         from "framer-motion";
+import SchemePage                         from "../components/SchemePage.jsx";
+import NuovaRicercaRecruiting             from "../components/nuoveRicerche/NuovaRicercaRecruiting.jsx";
+import CFButton                           from "../components/button/CFButton.jsx";
+import CFModal                            from "../components/modal/CFModal.jsx";
+import EditButton                         from "../components/button/EditButton.jsx";
+import { Typography }                     from "antd";
+import TabellaCandidati                   from "../components/Tabelle/TabellaCandidati.jsx";
+import DialogDelete                       from "../components/dialog/DialogDelete.jsx";
 import {
   Dialog,
   DialogTitle,
@@ -32,82 +33,150 @@ import {
   FormControl,
   Autocomplete,
   TextField,
-  Tooltip
+  Tooltip,
+  Tabs,
+  Tab
 } from "@mui/material";
-import EditButton from "../components/button/EditButton.jsx";
-import { Typography } from "antd";
+
 
 
 const Recruiting = () => {
   const { t } = useTranslation();
 
+  const EMPTY_FILTRI = {
+    nome: "",
+    cognome: "",
+    tipologia: null,
+    stato: null,
+    tipo: null,
+    citta: "",
+    skills: [],
+    email: "",
+  };
 
-  const [originalRecruiting, setOriginalRecruiting] = useState([]);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [deleteId, setDeleteId] = useState(null);
-  const [tipologiaOptions, setTipologiaOptions] = useState([]);
-  const [tipoOptions, setTipoOptions] = useState([]);
-  const [statoOptions, setStatoOptions] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [loadingCF, setLoadingCF] = useState(false);
-  const [righeTot, setRigheTot] = useState(0);
-  const [idCandidato, setIdCandidato] = useState([]);
-  const [nomeCandidato, setNomeCandidato] = useState([]);
-  const [cognomeCandidato, setCognomeCandidato] = useState([]);
-  const [modalCambiaStato, setModalCambiaStato] = useState(false);
-  const [anchorElStato, setAnchorElStato] = useState(null);
-  const [snackbarType, setSnackbarType] = useState('success');
-  const [alert, setAlert] = useState(false);
-  const [values, setValues] = useState({});
-  const [skillsOptions, setSkillsOptions] = useState([]);
-  const [hasFetched, setHasFetched] = useState(false);
+  const DEFAULT_POOL_VIEW = "ALL";
 
 
+  const [allRecruiting,                 setAllRecruiting                ] = useState([]);  
+  const [openDialog,                    setOpenDialog                   ] = useState(false);
+  const [deleteId,                      setDeleteId                     ] = useState(null);
+  const [tipologiaOptions,              setTipologiaOptions             ] = useState([]);
+  const [tipologieById,                 setTipologieById                ] = useState({});
+  const [tipoOptions,                   setTipoOptions                  ] = useState([]);
+  const [statoOptions,                  setStatoOptions                 ] = useState([]);
+  const [loading,                       setLoading                      ] = useState(false);
+  const [loadingCF,                     setLoadingCF                    ] = useState(false);
+  const [idCandidato,                   setIdCandidato                  ] = useState([]);
+  const [nomeCandidato,                 setNomeCandidato                ] = useState([]);
+  const [cognomeCandidato,              setCognomeCandidato             ] = useState([]);
+  const [modalCambiaStato,              setModalCambiaStato             ] = useState(false);
+  const [anchorElStato,                 setAnchorElStato                ] = useState(null);
+  const [snackbarType,                  setSnackbarType                 ] = useState('success');
+  const [alert,                         setAlert                        ] = useState(false);
+  const [values,                        setValues                       ] = useState({});
+  const [skillsOptions,                 setSkillsOptions                ] = useState([]);
+  const [hasFetched,                    setHasFetched                   ] = useState(false);
 
+  //stato per il dialog
+  const [openDialogNome,                setOpenDialogNome               ] = useState(false);
+  const [selectedRow,                   setSelectedRow                  ] = useState(null);
 
+  // Stato per snackbar
+  const [snackbarOpen,                  setSnackbarOpen                 ] = useState(false);
+  const [snackbarMessage,               setSnackbarMessage              ] = useState("");
+  const [descrizioneModalOpen,          setDescrizioneModalOpen         ] = useState(false);
 
+  const [appliedFiltri,                 setAppliedFiltri                ] = useState(EMPTY_FILTRI);
+  const [poolView,                      setPoolView                     ] = useState(() => {
+    return sessionStorage.getItem("poolView") || DEFAULT_POOL_VIEW;
+  });
 
-  const [filtri, setFiltri] = useState(() => {
-    const filtriSalvati = sessionStorage.getItem("filtriRicercaRecruiting");
-    return filtriSalvati
-      ? JSON.parse(filtriSalvati)
-      : {
-        nome: null,
-        cognome: null,
-        tipologia: null,
-        stato: null,
-        tipo: null,
-        location: null,
-        skills: null
-      };
+  const [filtri,                        setFiltri                       ] = useState(() => {
+    const saved = sessionStorage.getItem("filtriRicercaRecruiting");
+    return saved
+      ? JSON.parse(saved)
+      : { ...EMPTY_FILTRI };
   });
 
 
   //stati per la paginazione
-  // const [pagina, setPagina] = useState(""); //da vedere meglio il fatto del ritornare alla pagina che si era lasciata
-  const [pagina, setPagina] = useState(() => {
+    const [pagina, setPagina] = useState(() => {
     const paginaSalvata = sessionStorage.getItem("paginaRecruiting");
     return paginaSalvata ? parseInt(paginaSalvata, 10) : 0;
   });
-
-
-  const quantita = 10;
-
-  //stato per il dialog
-  const [openDialogNome, setOpenDialogNome] = useState(false);
-  const [selectedRow, setSelectedRow] = useState(null);
-
-  // Stato per snackbar
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [descrizioneModalOpen, setDescrizioneModalOpen] = useState(false);
-
 
   // Varianti di animazione per far apparire la tabella
   const fadeInVariants = {
     hidden: { opacity: 0, y: 50 }, // Parte dal basso
     visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }, // Appare al centro
   };
+
+
+  useEffect(() => {
+    setFiltri((f) => ({
+      ...EMPTY_FILTRI,
+      ...(f || {}),
+      skills: Array.isArray(f?.skills) ? f.skills : [],
+    }));
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const norm = (v) => (v ?? "").toString().trim().toLowerCase();
+
+  const filteredRecruiting = React.useMemo(() => {
+    const f = appliedFiltri || {};
+    const nomeF = norm(f.nome);
+    const cognomeF = norm(f.cognome);
+    const emailF = norm(f.email);
+    const cittaF = norm(f.citta);
+    const skillsIds = Array.isArray(f?.skills) ? f.skills : [];
+
+
+    const toId = (v) => {
+      if (v == null || v === "") return null;
+      if (typeof v === "object") return v.id ?? v.value ?? null;
+      return Number(v);
+    };
+
+    const tipologiaId = toId(f.tipologia);
+    const statoId     = toId(f.stato);
+    const tipoId      = toId(f.tipo);
+
+
+    return (allRecruiting ?? []).filter((c) => {
+      if (nomeF && !norm(c.nome).includes(nomeF)) return false;
+      if (cognomeF && !norm(c.cognome).includes(cognomeF)) return false;
+      if (emailF && !norm(c.email).includes(emailF)) return false;
+      if (cittaF && !norm(c.citta).includes(cittaF)) return false;
+
+      if (tipologiaId && c?.tipologiaId !== tipologiaId) return false;
+      if (statoId && c?.stato?.id !== statoId) return false;
+      if (tipoId && c?.tipo?.id !== tipoId) return false;
+      if (skillsIds.length) {
+        const candidateSkills = (c?.skills ?? c?.skill ?? []).map(s => s?.id ?? s).filter(Boolean);
+        const hasAll = skillsIds.every(id => candidateSkills.includes(id));
+        if (!hasAll) return false;
+      }
+      return true;
+    });
+  }, [allRecruiting, appliedFiltri]);  
+
+
+
+  const recruitingByPoolView = React.useMemo(() => {
+    const data = filteredRecruiting ?? [];
+
+    if (poolView === "POOL") {
+      return data.filter((c) => c.pool === 2 || c.pool === 3);
+    }
+
+    if (poolView === "HOTPOOL") {
+      return data.filter((c) => c.pool === 3);
+    }
+    return data;
+  }, [filteredRecruiting, poolView]);
+
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -121,7 +190,10 @@ const Recruiting = () => {
     setSnackbarOpen(true);
   };
 
-
+  const handleSearch = () => {
+  setAppliedFiltri(filtri);
+  setPagina(0);
+};
 
   const userHasRole = (role) => {
     const userString = sessionStorage.getItem("user");
@@ -142,13 +214,12 @@ const Recruiting = () => {
   useEffect(() => {
     const fetchSkills = async () => {
 
-      const responseAree = await axios.get("http://localhost:8080/staffing/react/areas", { headers });
+      const responseAree = await axios.get("http://localhost:8080/staffing/react/areas", { headers: headers });
 
       let groupedSkills = [];
 
       if (Array.isArray(responseAree.data)) {
         for (const area of responseAree.data) {
-          // Header per l'area
           groupedSkills.push({
             label: area.descrizione,
             value: `__header_${area.id}__`,
@@ -156,10 +227,9 @@ const Recruiting = () => {
           });
 
           try {
-            // Skill per area
             const responseSkillByArea = await axios.get(
               `http://localhost:8080/staffing/react/skill/${area.id}`,
-              { headers }
+              { headers: headers }
             );
 
             if (Array.isArray(responseSkillByArea.data)) {
@@ -184,36 +254,24 @@ const Recruiting = () => {
   const fetchData = async (paginaCorrente = pagina) => {
     setLoading(true);
 
-    const filtriDaInviare = {
-      nome: null,
-      cognome: null,
-      email: null,
-      tipologia: null,
-      tipo: null,
-      stato: null,
-      skills: null,
-      location: null,
-      pagina: paginaCorrente,
-      quantita: 10,
-    };
-
     try {
       const response = await axios.get(
         "http://localhost:8080/staffing/react/mod",
-        { headers: headers, params: filtriDaInviare }
+        { headers: headers }
       );
+      
       const responseTipologia = await axios.get(
         "http://localhost:8080/aziende/react/tipologia",
-        { headers }
+        { headers: headers }
       );
       const responseTipo = await axios.get(
         "http://localhost:8080/staffing/react/tipo",
-        { headers }
+        { headers: headers }
       );
       const responseStato = await axios.get(
         "http://localhost:8080/staffing/react/stato/candidato",
-        { headers }
-      );
+        { headers: headers }
+      );      
 
       if (Array.isArray(responseStato.data)) {
         setStatoOptions(
@@ -236,6 +294,12 @@ const Recruiting = () => {
             value: tipologia.id,
           }))
         );
+        const map = responseTipologia.data.reduce((acc, tipologia) => {
+          acc[String(tipologia.id)] = tipologia.descrizione;
+          return acc;
+        }, {});
+        setTipologieById(map);
+
       } else {
         console.error(
           "I dati ottenuti non sono nel formato Array:",
@@ -256,52 +320,15 @@ const Recruiting = () => {
           responseTipo.data
         );
       }
-      const { record, candidati } = response.data;
 
-      if (candidati && Array.isArray(candidati)) {
-        setOriginalRecruiting(candidati);
 
-        if (typeof record === "number") {
-          setRigheTot(record);
-        } else {
-          console.error(
-            "Il numero di record ottenuto non è un numero: ",
-            record
-          );
-        }
-      } else {
-        console.error(
-          "I dati ottenuti non contengono 'candidati' come array: ",
-          response.data
-        );
-      }
+      const lista = response.data?.candidati ?? [];
+      setAllRecruiting(lista);
       setLoading(false);
     } catch (error) {
       console.error("Errore durante il recupero dei dati: ", error);
     }
   };
-
-
-
-
-
-  // useEffect(() => {
-  //   const filtriSalvati = sessionStorage.getItem("filtriRicercaRecruiting");
-  //   if (filtriSalvati) {
-  //     const filtriParsed = JSON.parse(filtriSalvati);
-  //     setFiltri(filtriParsed);
-
-  //     const isAnyFilterSet = Object.values(filtriParsed).some((value) => value);
-  //     if (isAnyFilterSet) {
-  //       handleRicerche();
-  //     } else {
-  //       fetchData();
-  //     }
-  //   } else {
-  //     fetchData();
-  //   }
-  //   // eslint-disable-next-line
-  // }, []);
 
   useEffect(() => {
     if (hasFetched) return;
@@ -315,12 +342,6 @@ const Recruiting = () => {
     if (filtriSalvati) {
       const filtriParsed = JSON.parse(filtriSalvati);
       setFiltri(filtriParsed);
-
-      if (Object.values(filtriParsed).some(value => value)) {
-        handleRicerche(filtriParsed, paginaDaUsare);
-      } else {
-        fetchData(paginaDaUsare);
-      }
     } else {
       fetchData(paginaDaUsare);
     }
@@ -328,73 +349,10 @@ const Recruiting = () => {
     setHasFetched(true);
   }, [hasFetched]);
 
-
-  //funzione per la paginazione
-  const fetchMoreData = async (newPage, currentFilters) => {
-    const filtriAttivi = Object.values(currentFilters).some(
-      (value) => value !== null && value !== ""
-    );
-
-    const url = filtriAttivi
-      ? "http://localhost:8080/staffing/react/filtri/ricerca"
-      : "http://localhost:8080/staffing/react/mod";
-
-    const filtriDaInviare = {
-      nome: currentFilters.nome || null,
-      cognome: currentFilters.cognome || null,
-      email: null,
-      tipologia: currentFilters.tipologia || null,
-      tipo: currentFilters.tipo || null,
-      stato: currentFilters.stato || null,
-      skills: currentFilters.skills ? JSON.stringify(currentFilters.skills) : null,
-      location: currentFilters.location || null,
-      pagina: newPage,
-      quantita: 10,
-    };
-
-    try {
-      const response = await axios.get(url, {
-        headers: headers,
-        params: filtriDaInviare,
-      });
-      const { record, candidati } = response.data;
-
-      if (candidati && Array.isArray(candidati)) {
-        setOriginalRecruiting(candidati);
-
-        if (typeof record === "number") {
-          setRigheTot(record);
-        } else {
-          console.error("Il numero di record ottenuto non è un numero: ", record);
-        }
-      } else {
-        console.error("I dati ottenuti non contengono 'candidati' come array: ", response.data);
-      }
-    } catch (error) {
-      console.error("Errore durante il recupero dei dati: ", error);
-    }
-  };
-
-
-  //funzione per il cambio pagina
-  // const handlePageChange = (newPage) => {
-  //   setPagina(newPage);
-  //   fetchMoreData(newPage);
-  // };
-
   const handlePageChange = (newPage) => {
     setPagina(newPage);
     sessionStorage.setItem("paginaRecruiting", newPage);
-
-    if (Object.values(filtri).some(value => value)) {
-      handleRicerche(filtri, newPage);
-    } else {
-      fetchData(newPage);
-    }
   };
-
-
-
 
   const openDeleteDialog = (id) => {
     setDeleteId(id);
@@ -420,122 +378,6 @@ const Recruiting = () => {
     sessionStorage.setItem("filtriRicercaRecruiting", JSON.stringify(filtri));
   }, [filtri]);
 
-  // useEffect(() => {
-  //   return () => {
-  //     sessionStorage.removeItem("paginaRecruiting");
-  //   };
-  // }, []);
-
-  const handleRicerche = async () => {
-    const paginaSalvata = sessionStorage.getItem("paginaRecruiting");
-    const paginaDaUsare = paginaSalvata ? parseInt(paginaSalvata, 10) : 0;
-
-    const isAnyFilterSet = Object.values(filtri).some((value) => value);
-    if (!isAnyFilterSet) {
-      return;
-    }
-
-    const filtriDaInviare = {
-      nome: filtri.nome || null,
-      cognome: filtri.cognome || null,
-      email: null,
-      tipologia: filtri.tipologia || null,
-      tipo: filtri.tipo || null,
-      stato: filtri.stato || null,
-      skills: filtri.skills ? filtri.skills.join(",") : null,
-      location: filtri.citta || null,
-      pagina: paginaDaUsare,
-      quantita: 10,
-    };
-
-    setLoading(true);
-
-    try {
-      const response = await axios.get(
-        "http://localhost:8080/staffing/react/mod/ricerca",
-        { headers: headers, params: filtriDaInviare }
-      );
-      const responseTipologia = await axios.get(
-        "http://localhost:8080/aziende/react/tipologia",
-        { headers: headers }
-      );
-      const responseTipo = await axios.get(
-        "http://localhost:8080/staffing/react/tipo",
-        { headers: headers }
-      );
-      const responseStato = await axios.get(
-        "http://localhost:8080/staffing/react/stato/candidato",
-        { headers: headers }
-      );
-
-
-
-      if (Array.isArray(responseStato.data)) {
-        setStatoOptions(
-          responseStato.data.map((stato, index) => ({
-            label: stato.descrizione,
-            value: stato.id,
-          }))
-        );
-      } else {
-        console.error(
-          "I dati ottenuti non sono nel formato Array:",
-          responseStato.data
-        );
-      }
-
-      if (Array.isArray(responseTipologia.data)) {
-        setTipologiaOptions(
-          responseTipologia.data.map((tipologia, index) => ({
-            label: tipologia.descrizione,
-            value: tipologia.id,
-          }))
-        );
-      } else {
-        console.error(
-          "I dati ottenuti non sono nel formato Array:",
-          responseTipologia.data
-        );
-      }
-
-      if (Array.isArray(responseTipo.data)) {
-        setTipoOptions(
-          responseTipo.data.map((tipo, index) => ({
-            label: tipo.descrizione,
-            value: tipo.id,
-          }))
-        );
-      } else {
-        console.error(
-          "I dati ottenuti non sono nel formato Array:",
-          responseTipo.data
-        );
-      }
-
-      const { record, candidati } = response.data;
-      if (candidati && Array.isArray(candidati)) {
-        setOriginalRecruiting(candidati);
-        if (typeof record === "number") {
-          setRigheTot(record);
-        } else {
-          console.error(
-            "Il numero di record dei candidati in ricercha non è un numero: ",
-            record
-          );
-        }
-      } else {
-        console.error(
-          "I dati ottenuti per la ricerca non sono nel formato Array:",
-          response.data
-        );
-      }
-    } catch (error) {
-      console.error("Errore durante il recupero dei dati filtrati:", error);
-    } finally {
-      setLoading(false);
-    }
-    // }
-  };
   const handleFilterChange = (name) => (event) => {
     const newValue = event.target.value;
 
@@ -546,24 +388,19 @@ const Recruiting = () => {
     });
   };
 
+  const resetState = () => {
+  const empty = { ...EMPTY_FILTRI };
+  setFiltri(empty);
+  setAppliedFiltri(empty);
+  setPagina(0);
+};
 
-  const handleReset = () => {
-    setFiltri({
-      nome: "",
-      cognome: "",
-      tipo: null,
-      tipologia: null,
-      stato: null,
-      location: "",
-      skills: null
-    });
 
-    sessionStorage.removeItem("filtriRicercaRecruiting");
-    sessionStorage.removeItem("paginaRecruiting");
-    setPagina(0);
-
-    fetchData(0);
-  };
+const handleReset = () => {
+  resetState();
+  sessionStorage.removeItem("filtriRicercaRecruiting");
+  sessionStorage.setItem("paginaRecruiting", "0");
+};
 
 
   const handleDownloadCV = async (idFile, fileDescrizione) => {
@@ -701,12 +538,6 @@ const Recruiting = () => {
     }));
   };
 
-
-
-
-  const openStato = Boolean(anchorElStato);
-
-
   //funzioni per gestire lo snackbar
   const handleOpenSnackbar = (message, type) => {
     setSnackbarMessage(message);
@@ -729,7 +560,6 @@ const Recruiting = () => {
     const params = new URLSearchParams({ stato: idStato });
     try {
       const responseUpdateStato = await axios.post
-        // (`http://localhost:8080/keypeople/react/salva/stato/${idKeypeople}?${params.toString()}`, {}, { headers: headers });
         (`http://localhost:8080/staffing/react/salva/stato/${idCandidato}?${params.toString()}`, {}, { headers: headers });
       setModalCambiaStato(false);
       fetchData();
@@ -746,10 +576,7 @@ const Recruiting = () => {
   };
 
 
-
-
-
-
+  
 
   const columns = [
 
@@ -760,50 +587,24 @@ const Recruiting = () => {
       sortable: false,
       filterable: false,
       disableColumnMenu: true,
-      renderCell: (params) => (
-        <div style={{ textAlign: "left" }}>
-          <Link
-            to={`/recruiting/modifica/${params.row.id}`}
-            state={{ recruitingData: params.row }}
-            style={{ color: "black" }}
-          >
-            {params.row.nome} {params.row.cognome}
-          </Link>
-        </div>
-      ),
-    },
-    //   {
-    //     field: "nome",
-    //     headerName: "Nome",
-    //     flex: 1.3,
-    //     renderCell: (params) => (
-    //         <div style={{ textAlign: "left", cursor: "pointer", textDecoration: "underline" }}>
-    //             <span onClick={() => handleClickOpen(params.row)}>
-    //                 {params.row.nome} {params.row.cognome}
-    //             </span>
-    //         </div>
-    //     ),
-    // },
+      renderCell: (params) => {
+        const isHotpool = params.row?.pool === 3;
 
-    //   { field: "email",          headerName: "Email",          flex: 1.5},
-    //   { field: "tipologia",      headerName: "Job Title",      flex: 1.4, renderCell: (params) => (
-    //     <div style={{ textAlign: "start" }}>
-    //       {params.row.tipologia && params.row.tipologia.descrizione
-    //         ? params.row.tipologia.descrizione
-    //         : "N/A"}
-    //     </div>
-    //   ),
-    // },
-    // {
-    //   field: "skills",
-    //   headerName: t("Skills"),
-    //   flex: 1,
-    //   sortable: false,
-    //   filterable: false,
-    //   disableColumnMenu: true,
-    // },
+        return (
+          <div style={{ textAlign: "left" }}>
+            <Link
+              to={`/recruiting/modifica/${params.row.id}`}
+              state={{ recruitingData: params.row }}
+              style={{ color: isHotpool ? "#00B400" : "black" }}
+            >
+              {params.row.nome} {params.row.cognome}
+            </Link>
+          </div>
+        );
+      },
+    },
     {
-      field: "tipologia",
+      field: "tipologiaId",
       headerName: t("Job Title"),
       flex: 1,
       sortable: false,
@@ -811,9 +612,7 @@ const Recruiting = () => {
       disableColumnMenu: true,
       renderCell: (params) => (
         <div style={{ textAlign: "start" }}>
-          {params.row.tipologia && params.row.tipologia.descrizione
-            ? params.row.tipologia.descrizione
-            : "N/A"}
+          {tipologieById[String(params.row.tipologiaId)] ?? "N/A"}
         </div>
       ),
     },
@@ -829,7 +628,6 @@ const Recruiting = () => {
           {params.row.rating ? params.row.rating.toFixed(2) : ""}
         </div>
       ),
-      // renderCell: (params) => getSmileIcon(params),
     }, //fino a 1.9 è rosso, da 2 a 3 giallo, sopra 3 è verde
     {
       field: "owner",
@@ -888,20 +686,6 @@ const Recruiting = () => {
       disableColumnMenu: true,
       renderCell: (params) => (
         <Box>
-          {/* <NoteButton
-            onClick={() => {
-              setNotePopup(true);
-              setSelectedNote(params.row.note);
-            }}
-          />
-
-          <EuroButton
-            onClick={() => {
-              setRalPopup(true);
-              setSelectedRal(params.row.ral);
-            }}
-          /> */}
-
           <Link
             to={`/recruiting/intervista/${params.row.id}`}
             state={{ recruitingData: params.row }}
@@ -977,7 +761,7 @@ const Recruiting = () => {
         filtri={filtri}
         onFilterChange={handleFilterChange}
         onReset={handleReset}
-        onSearch={() => handleRicerche(filtri, 0)}
+        onSearch={handleSearch}
         tipologiaOptions={tipologiaOptions}
         statoOptions={statoOptions}
         tipoOptions={tipoOptions}
@@ -1004,131 +788,51 @@ const Recruiting = () => {
             </>
           ) : (
 
-            <Tabella
-              data={originalRecruiting}
+            <TabellaCandidati
+              data={recruitingByPoolView}
               columns={columns}
               title={t("Candidati")}
               getRowId={(row) => row.id}
-              pagina={pagina}
-              quantita={quantita}
-              righeTot={righeTot}
+              headerRight={
+              <Tabs
+                value={poolView}
+                onChange={(e, v) => {
+                  setPoolView(v);
+                  sessionStorage.setItem("poolView", v);
+                  setPagina(0);
+                }}
+                variant="scrollable"
+                scrollButtons="auto"
+                sx={{
+                  minHeight: 36,
+                  "& .MuiTab-root": { minHeight: 36, textTransform: "none", fontWeight: 700, color: '#6d6c6c' },
+                  "& .MuiTab-root.Mui-selected": {
+                    color: "#00B400",
+                  },
+                }}
+              >
+                <Tab value="ALL" label="Tutti" />
+                <Tab value="POOL" label="Pool" />
+                <Tab value="HOTPOOL" label="Hotpool" />
+              </Tabs>
+            }
               onPageChange={handlePageChange}
             />
           )}
         </Box>
       </motion.div>
-      {/* {notePopup && (
-        <Dialog
-            open={notePopup}
-            onClose={handleCloseNotesModal}
-            sx={{ "& .MuiDialog-paper": { width: "400px", height: "auto", borderRadius: '20px' } }}
-          >
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
-              <DialogTitle sx={{ m: 0, p: 0 }}>Note</DialogTitle>
-              <IconButton onClick={handleCloseNotesModal} sx={{ bgcolor: 'transparent', ml: 2, '&:hover': { bgcolor: 'transparent'} }}>
-                <CloseIcon sx={{ '&:hover': { color: 'red'}}} />
-              </IconButton>
-            </Box>
-            <DialogContent>
-              <DialogContentText sx={{ pb: 2}}>{selectedNote}</DialogContentText>
-            </DialogContent>
-          </Dialog>
 
-      )}
 
-      {ralPopup && (
-        <Dialog
-          open={ralPopup}
-          onClose={() => setRalPopup(false)}
-          sx={{ "& .MuiDialog-paper": { width: "400px", height: "auto", borderRadius: '20px' } }}
-        >
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
-              <DialogTitle sx={{ m: 0, p: 0 }}>Ral</DialogTitle>
-              <IconButton onClick={handleCloseRalModal} sx={{ bgcolor: 'transparent', ml: 2, '&:hover': { bgcolor: 'transparent'} }}>
-                <CloseIcon sx={{ '&:hover': { color: 'red'}}} />
-              </IconButton>
-            </Box>
-          <DialogContent>
-            <DialogContentText sx={{ pb: 2}}>{selectedRal}</DialogContentText>
-          </DialogContent>
-        </Dialog>
-      )} */}
-
-      <Dialog
-        open={openDialog}
-        onClose={() => setOpenDialog(false)}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        PaperProps={{
-          sx: {
-            borderRadius: "20px",
-            width: "30vw",
-            position: "relative",
-          },
-        }}
-      >
-        <DialogTitle id="alert-dialog-title">
-          {t("Conferma Eliminazione")}
-        </DialogTitle>
-        <DialogContent>
-          <IconButton
-            onClick={() => setOpenDialog(false)}
-            sx={{
-              position: "absolute",
-              top: 8,
-              right: 8,
-              color: "#8e8e8e",
-              bgcolor: 'transparent',
-              "&:hover": {
-                color: "#db000e",
-                bgcolor: 'transparent',
-              },
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
-          <DialogContentText id="alert-dialog-description">
-            {t('Sei sicuro di voler eliminare questo candidato?')}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, mb: 2 }}>
-          <Button
-            onClick={() => setOpenDialog(false)}
-            color="primary"
-            sx={{
-              width: '8em',
-              borderRadius: '10px',
-              backgroundColor: "#bfbfbf",
-              color: "white",
-              "&:hover": {
-                backgroundColor: "#8e8e8e",
-                transform: "scale(1.05)",
-              },
-            }}
-          >
-            {t('Annulla')}
-          </Button>
-          <Button
-            onClick={handleDelete}
-            color="primary"
-            variant="contained"
-            type="submit"
-            sx={{
-              width: '8em',
-              borderRadius: '10px',
-              backgroundColor: "#ea333f",
-              color: "white",
-              "&:hover": {
-                backgroundColor: "#db000e",
-                color: "white",
-                transform: "scale(1.05)",
-              },
-            }}
-          >
-            {t('Conferma')}
-          </Button>
-        </DialogActions>
-      </Dialog>
+                <DialogDelete
+                    open={openDialog}
+                    title={t("Sei sicuro di voler eliminare questo candidato?")}
+                    description={t("Questa azione non potrà essere annullata.")}
+                    onClick={() => setOpenDialog(false)}
+                    onDelete={(event) => {
+                        event?.stopPropagation?.();
+                        handleDelete();
+                    }}
+                />
 
 
       <Dialog

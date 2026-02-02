@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import EmailIcon from '@mui/icons-material/Email';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
@@ -18,6 +18,10 @@ import InfoIcon from '@mui/icons-material/Info';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
+import DialogDelete from '../dialog/DialogDelete';
+import { DatePicker, ConfigProvider } from "antd";
+import dayjs from "dayjs";
+import "dayjs/locale/it";
 
 
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Alert, Stack, Pagination, Popover, Slide, Dialog, DialogTitle, DialogContent, DialogActions, Checkbox } from '@mui/material';
@@ -44,6 +48,7 @@ import {
 const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstCard, openModalStoricoFromDashboard }) => {
 
     const { t } = useTranslation();
+    dayjs.locale("it");
 
     //stati per la paginazione
     const [pagina, setPagina] = useState(0);
@@ -69,6 +74,9 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
     const [azioneDaEliminare, setAzioneDaEliminare] = useState(null);
 
     const [azioneInModifica, setAzioneInModifica] = useState(null);
+    const [focusedDateTime, setFocusedDateTime] = useState(false);
+    const dateTimeWrapperRef = useRef(null);
+
 
     const [values, setValues] = useState({
         tipologie: '',
@@ -151,12 +159,14 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
         azioniKeypeople(valori.id, event)
     };
 
-    // const handleOpenModalAzioni = (event) => {
-    //     event.stopPropagation();
-    //     setModalAzioni(true);
-    //     azioniData();
-    // };
-    // const handleCloseModalAzioni = () => setModalAzioni(false);
+    const rawDateTime = values.data || "";
+    const hasDateTime = Boolean(rawDateTime);
+
+    const pickerDateTimeValue = hasDateTime
+    ? dayjs(rawDateTime, "YYYY-MM-DDTHH:mm")
+    : null;
+
+    const shrink = focusedDateTime || hasDateTime;
 
 
     const handleOpenModalDelete = (event) => {
@@ -674,154 +684,19 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
 
 
                 { /* MODAL PER IL CANCELLA */}
-                <Modal
+                <DialogDelete
                     open={modalDelete}
-                    onClose={handleCloseModalDelete}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                    onClick={(event) => event.stopPropagation()}
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
+                    title={t("Sei sicuro di voler eliminare il contatto?")}
+                    description={t("Questa azione non potrà essere annullata.")}
+                    onClose={(event) => {
+                        event?.stopPropagation?.();
+                        handleCloseModalDelete();
                     }}
-                >
-                    <Box
-                        sx={{
-                            backgroundColor: "white",
-                            p: 4,
-                            borderRadius: 4,
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            flexDirection: "column",
-                            gap: 2,
-                            width: "40vw",
-                            position: "relative",
-                        }}
-                    >
-                        <IconButton
-                            onClick={handleCloseModalDelete}
-                            sx={{
-                                position: "absolute",
-                                top: 8,
-                                right: 8,
-                                color: "#8e8e8e",
-                                bgcolor: 'transparent',
-                                "&:hover": {
-                                    color: "#db000e",
-                                    bgcolor: 'transparent',
-                                },
-                            }}
-                        >
-                            <CloseIcon />
-                        </IconButton>
-                        <Typography id="modal-modal-title" variant="h6" component="h2">
-                            {t('Sei sicuro di voler eliminare il contatto?')}
-                        </Typography>
-                        <Box
-                            sx={{
-                                display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "center",
-                                gap: 3,
-                            }}
-                        >
-                            <Button
-                                onClick={handleCloseModalDelete}
-                                sx={{
-                                    width: '10em',
-                                    backgroundColor: "#bfbfbf",
-                                    color: "white",
-                                    borderRadius: "10px",
-                                    "&:hover": {
-                                        backgroundColor: "#8e8e8e",
-                                        color: "white",
-                                        transform: "scale(1.01)",
-                                    },
-                                }}
-                            >
-                                {t('Indietro')}
-                            </Button>
-                            <Button
-                                onClick={confirmDelete}
-                                sx={{
-                                    width: '10em',
-                                    backgroundColor: "#ea333f",
-                                    color: "white",
-                                    borderRadius: "10px",
-                                    "&:hover": {
-                                        backgroundColor: "#db000e",
-                                        color: "white",
-                                        transform: "scale(1.01)",
-                                    },
-                                }}
-                            >
-                                {t('Conferma')}
-                            </Button>
-                        </Box>
-                    </Box>
-                </Modal>
-
-
-
-                { /* MODAL PER LO STORICO */}
-                {/* <Modal
-                open={modalStorico}
-                onClose={() => setModalStorico(false)}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-                sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    
-                }}>
-                    <Box sx={{ display:'flex', justifyContent: 'center', width: '60%', height: 'auto', flexDirection: 'column', backgroundColor: 'white', borderRadius: '20px', overflow: 'auto', border: 'solid 2.2px #00B400'}}>
-                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', p: 3,}}>
-                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', mt: 0.5, mb: 0.5}}>Storico delle azioni</Typography>
-                            <IconButton sx={{ 
-                                mr: 2, 
-                                backgroundColor: 'transparent', 
-                                border: 'none',
-                                '&:hover': {
-                                    backgroundColor: 'transparent'
-                                }}} onClick={() => setModalStorico(false)}>
-                                <CloseIcon sx={{ 
-                                    backgroundColor: 'transparent',
-                                    '&:hover': {
-                                        color: 'red',
-                                        backgroundColor: 'transparent',
-
-                                    }
-                                    }}/>
-                            </IconButton>
-                        </Box>
-                        <TableContainer component={Paper}>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold', fontSize: 'large'}}>Data</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold', fontSize: 'large'}}>Tipologia</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold', fontSize: 'large'}}>Note</TableCell>
-
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {azioni.slice(pagina * righePerPagina, pagina * righePerPagina + righePerPagina).map((azioni) => (
-                                    <TableRow key={azioni.id}>
-                                        <TableCell>{azioni.dataModifica}</TableCell>
-                                        <TableCell>{azioni.tipologia && azioni.tipologia?.descrizione}</TableCell>
-                                        <TableCell>{azioni.note}</TableCell>
-
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                    </Box>
-                </Modal> */}
-
+                    onDelete={(event) => {
+                        event?.stopPropagation?.();
+                        confirmDelete();
+                    }}
+                />
 
                 { /* MODAL PER LE AZIONI COMMERCIALI */}
 
@@ -829,11 +704,12 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                     open={modalStorico}
                     onClose={() => setModalStorico(false)}
                     fullWidth
-                    maxWidth="md"
+                    maxWidth="lg"
                     sx={{
                         '& .MuiDialog-paper': {
                             minWidth: '65vw',
-                            maxHeight: '80vh',
+                            height: "82vh",
+                            maxHeight: '82vh',
                             overflowY: 'auto',
                             borderRadius: '20px',
                             border: 'solid 2.2px #00B400',
@@ -905,38 +781,108 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2, backgroundColor: 'white', borderTop: 'solid 1px #E0E0E0' }}>
-                            <TextField
-                                label={t("Seleziona Data")}
-                                type="datetime-local"
-                                value={values.data || ""}
-                                variant="filled"
-                                sx={{
-                                    height: '4em',
-                                    p: 1,
-                                    borderRadius: '20px',
-                                    backgroundColor: '#EDEDED',
-                                    '& .MuiFilledInput-root': {
-                                        backgroundColor: 'transparent',
-                                    },
-                                    '& .MuiFilledInput-underline:after': {
-                                        borderBottomColor: 'transparent',
-                                    },
-                                    '& .MuiFilledInput-root::before': {
-                                        borderBottom: 'none',
-                                    },
-                                    '&:hover .MuiFilledInput-root::before': {
-                                        borderBottom: 'none',
-                                    },
-                                    '& .MuiFormLabel-root.Mui-focused': {
-                                        color: '#00B400',
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2, backgroundColor: 'white', borderTop: 'solid 1px #E0E0E0', gap: 4 }}>
+                            <ConfigProvider
+                                theme={{
+                                    token: {
+                                    colorPrimary: "#00B400",
+                                    colorLink: "#00B400",
+                                    colorLinkHover: "#00B400",
+                                    colorTextBase: "rgba(0,0,0,0.88)",
                                     },
                                 }}
-                                InputLabelProps={{
-                                    shrink: true,
+                                >
+                                <div
+                                ref={dateTimeWrapperRef}
+                                className={`torchy-datetime ${shrink ? "torchy-datetime--shrink" : ""}`}
+                                style={{
+                                    position: "relative",
+                                    width: "50%",
+                                    height: "5em",
                                 }}
-                                onChange={(event) => handleValueChange('data', event.target.value)}
-                            />
+                                >
+                                {/* Floating label */}
+                                <span
+                                    style={{
+                                    position: "absolute",
+                                    left: 18,
+                                    top: shrink ? 8 : "50%",
+                                    transform: shrink ? "translateY(0)" : "translateY(-50%)",
+                                    fontSize: shrink ? 11 : 14,
+                                    fontFamily: "Roboto, sans-serif",
+                                    fontWeight: 500,
+                                    color: "rgba(0,0,0,0.75)",
+                                    transition: "all 180ms ease",
+                                    pointerEvents: "none",
+                                    zIndex: 3,
+                                    }}
+                                >
+                                    {t("Seleziona Data")}
+                                </span>
+
+                                <DatePicker
+                                    value={pickerDateTimeValue}
+                                    onChange={(dateObj) => {
+                                    const formatted = dateObj ? dateObj.format("YYYY-MM-DDTHH:mm") : "";
+                                    handleValueChange("data", formatted);
+                                    }}
+                                    format="YYYY-MM-DD HH:mm"
+                                    showTime={{ format: "HH:mm" }}
+                                    placeholder=""
+                                    onFocus={() => setFocusedDateTime(true)}
+                                    onBlur={() => setFocusedDateTime(false)}
+
+                                    // ✅ FIX: il popup viene renderizzato dentro il dialog e non sotto
+                                    getPopupContainer={() => dateTimeWrapperRef.current || document.body}
+                                    dropdownClassName="torchy-datetime-dropdown"
+
+                                    style={{
+                                    width: "100%",
+                                    height: "100%",
+                                    borderRadius: 20,
+                                    background: "#EDEDED",
+                                    border: "1px solid transparent",
+                                    paddingLeft: 12,
+                                    position: "relative",
+                                    zIndex: 1,
+                                    boxSizing: "border-box",
+                                    }}
+                                />
+
+                                <style>{`
+                                    /* ✅ FIX ALTEZZA: non forzare 4em sull’input interno */
+                                    .torchy-datetime .ant-picker {
+                                    height: 100% !important;
+                                    display: flex !important;
+                                    align-items: center !important;
+                                    box-sizing: border-box !important;
+                                    }
+
+                                    .torchy-datetime .ant-picker-input > input {
+                                    background: transparent !important;
+                                    height: 100% !important;          /* ✅ invece di 4em */
+                                    padding-left: 6px;
+                                    padding-right: 10px;
+                                    font-family: Roboto, sans-serif;
+                                    color: rgba(0,0,0,0.88);
+                                    box-sizing: border-box !important;
+                                    }
+
+                                    .torchy-datetime--shrink .ant-picker-input > input {
+                                    padding-top: 16px !important;
+                                    }
+
+                                    .torchy-datetime .ant-picker-suffix {
+                                    opacity: 0.65;
+                                    }
+
+                                    /* ✅ FIX Z-INDEX: calendario sopra il dialog MUI */
+                                    .torchy-datetime-dropdown {
+                                    z-index: 2000 !important;
+                                    }
+                                `}</style>
+                                </div>
+                                </ConfigProvider>
                             {/* <FormControl fullWidth sx={{ ml: 2, mr: 2 }}> */}
                             <Autocomplete
                                 id="stato-combo-box"
@@ -1063,185 +1009,6 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                         </Button>
                     </DialogActions>
                 </Dialog>
-
-                { /* MODAL DELLE AZIONI */}
-                {/* <Modal
-                    open={modalAzioni}
-                    onClose={() => setModalAzioni(false)}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}
-                >
-                    <Box
-                        sx={{
-                            backgroundColor: 'white',
-                            p: 4,
-                            borderRadius: '20px',
-                            display: 'flex',
-                            position: 'relative', 
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            flexDirection: 'column',
-                            gap: 2,
-                            width: '40vw',
-                            height: 'auto',
-                            
-                        }}
-                    >
-                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
-                            <Typography sx={{ fontWeight: '600', fontSize: '1.5em', textAlign: 'center', ml: 2, mt: 0.5, mb: 0.5}}>Azioni</Typography>
-                            <IconButton sx={{ 
-                                mr: 2, 
-                                backgroundColor: 'transparent', 
-                                border: 'none',
-                                '&:hover': {
-                                    bgcolor: 'transparent'
-                                }
-                                
-                                }} onClick={() => setModalAzioni(false)}>
-                                <CloseIcon sx={{ 
-                                    backgroundColor: 'transparent',
-                                    '&:hover': {
-                                        color: 'red',
-                                        backgroundColor: 'transparent',
-
-                                    }
-                                    }}/>
-                            </IconButton>
-                        </Box>
-                        <FormControl fullWidth >
-                            
-                                <Autocomplete
-                                    id="stato-combo-box"
-                                    options={tipologieOptions}
-                                    getOptionLabel={(option) => option.label}
-                                    value={tipologieOptions.find(option => option.value === values.tipologie) || null}
-                                    onChange={(event, newValue) => {
-                                        handleValueChange('tipologie', newValue ? newValue.value : null);
-                                    }}
-                                    renderInput={(params) => 
-                                    <TextField 
-                                    {...params} 
-                                    label="Azione"
-                                    variant='filled' 
-                                    sx={{
-                                        height: '4em',
-                                        
-                                        p: 1,
-                                        borderRadius: '20px', 
-                                        backgroundColor: '#EDEDED', 
-                                        '& .MuiFilledInput-root': {
-                                            backgroundColor: 'transparent',
-                                        },
-                                        '& .MuiFilledInput-underline:after': {
-                                            borderBottomColor: 'transparent',
-                                        },
-                                        '& .MuiFilledInput-root::before': {
-                                            borderBottom: 'none', 
-                                        },
-                                        '&:hover .MuiFilledInput-root::before': {
-                                            borderBottom: 'none', 
-                                        },
-                                        '& .MuiFormLabel-root.Mui-focused': {
-                                            color: '#00B400',
-                                        }, 
-                                    }}  
-                                    />}
-                                />
-                            </FormControl>
-
-
-
-                        <TextField
-                            fullWidth
-                            label="Seleziona Data"
-                            type="datetime-local"
-                            defaultValue={""} 
-                            variant="filled"
-                            sx={{
-                                height: '4em',
-                                p: 1,
-                                borderRadius: '20px', 
-                                backgroundColor: '#EDEDED', 
-                                '& .MuiFilledInput-root': {
-                                    backgroundColor: 'transparent',
-                                },
-                                '& .MuiFilledInput-underline:after': {
-                                    borderBottomColor: 'transparent',
-                                },
-                                '& .MuiFilledInput-root::before': {
-                                    borderBottom: 'none', 
-                                },
-                                '&:hover .MuiFilledInput-root::before': {
-                                    borderBottom: 'none', 
-                                },
-                                '& .MuiFormLabel-root.Mui-focused': {
-                                    color: '#00B400',
-                                },
-                                }} 
-                            InputLabelProps={{
-                                shrink: true, 
-                            }}
-                            onChange={(event) => handleValueChange('data', event.target.value)}
-                            />
-
-                        <TextField
-                            fullWidth
-                            label="Note"
-                            multiline
-                            variant="filled"
-                            inputProps={{
-                                maxLength: 4000
-                            }}
-                            rows={4}
-                            sx={{
-                                height: '8em',
-                                p: 1,
-                                borderRadius: '20px', 
-                                backgroundColor: '#EDEDED', 
-                                '& .MuiFilledInput-root': {
-                                    backgroundColor: 'transparent',
-                                },
-                                '& .MuiFilledInput-underline:after': {
-                                    borderBottomColor: 'transparent',
-                                },
-                                '& .MuiFilledInput-root::before': {
-                                    borderBottom: 'none', 
-                                },
-                                '&:hover .MuiFilledInput-root::before': {
-                                    borderBottom: 'none', 
-                                },
-                                '& .MuiFormLabel-root.Mui-focused': {
-                                    color: '#00B400',
-                                }, 
-                                }} 
-                            onChange={(event) => handleValueChange('note', event.target.value)}
-                            />
-
-
-                        <Button sx={{
-                            width: '60%',
-                            height: '40px',
-                            backgroundColor: '#00B400',
-                            color: 'white',
-                            mt: 2,
-                            borderRadius: '10px',
-                            fontWeight: 'bold',
-                            '&:hover': {
-                                backgroundColor: '#019301',
-                                transform: 'scale(1.01)'
-                            },
-                        }}
-                        onClick={() => handleAzioniSubmit(valori.id)}
-                        >
-                            Invia
-                        </Button>
-                    </Box>
-                </Modal> */}
 
 
                 { /* MODAL PER LA LISTA DEI NEED */}
@@ -1506,29 +1273,17 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                         {alert.message}
                     </Alert>
                 </Snackbar>
-                {/* Dialog conferma eliminazione azione */}
-                <Dialog
-                    open={confirmDeleteOpen}
-                    onClose={() => setConfirmDeleteOpen(false)}
-                    sx={{
-                        '& .MuiDialog-paper': {
-                            borderRadius: '20px',
-                        },
-                    }}
-                >
-                    <DialogTitle>{t('Conferma Eliminazione')}</DialogTitle>
-                    <DialogContent>
-                        <Typography>{t('Sei sicuro di voler eliminare questa azione?')}</Typography>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={() => setConfirmDeleteOpen(false)}>
-                            {t('Annulla')}
-                        </Button>
-                        <Button onClick={confirmDeleteAzione} sx={{ color: '#db000e' }}>
-                            {t('Elimina')}
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                
+            <DialogDelete
+                open={confirmDeleteOpen}
+                title={t("Sei sicuro di voler eliminare questa azione?")}
+                description={t("Questa azione non potrà essere annullata.")}
+                onClose={() => setConfirmDeleteOpen(false)}
+                onDelete={(event) => {
+                    event?.stopPropagation?.();
+                    confirmDeleteAzione();
+                }}
+            />
             </Card>
         </motion.div>
     );

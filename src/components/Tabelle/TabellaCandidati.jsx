@@ -1,44 +1,45 @@
-    import React, { useEffect, useState } from "react";
+    import React, { useEffect, useState, useRef } from "react";
     import { Box, Typography } from "@mui/material";
     import CircularProgress from "@mui/material/CircularProgress";
     import { DataGrid } from "@mui/x-data-grid";
-    import { useUserTheme } from "./TorchyThemeProvider";
+    import { useUserTheme } from "../TorchyThemeProvider";
 
-    const Tabella = ({
+    const TabellaCandidati = ({
     data = [],
-    columns,
+    columns = [],
     title,
     getRowId,
-    pagina,
-    quantita,
-    onPageChange,
-    righeTot,
     onRowClick,
     getRowClassName,
+    headerRight,
     }) => {
     const theme = useUserTheme();
 
     const [loading, setLoading] = useState(false);
     const [showNoDataMessage, setShowNoDataMessage] = useState(false);
-
-    const rowHeight = 42;
+    const [rowHeight] = useState(42);
+    const dataGridRef = useRef(null);
 
     useEffect(() => {
-        if (data.length === 0) {
+        if (!data || data.length === 0) {
         setLoading(true);
+        setShowNoDataMessage(false);
+
         const timer = setTimeout(() => {
             setLoading(false);
             setShowNoDataMessage(true);
         }, 500);
+
         return () => clearTimeout(timer);
-        } else {
+        }
+
         setLoading(false);
         setShowNoDataMessage(false);
-        }
     }, [data]);
 
     return (
         <Box
+        ref={dataGridRef}
         sx={{
             backgroundColor: "white",
             borderRadius: "20px",
@@ -52,20 +53,39 @@
             overflow: "hidden",
         }}
         >
-        {title && (
-            <Box sx={{ px: 2, pt: 2, pb: 1 }}>
-            <Typography
+        {(title || headerRight) && (
+            <Box
+            sx={{
+                px: 2,
+                pt: 2,
+                pb: 1,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 2,
+                flexWrap: "wrap",
+            }}
+            >
+            {title && (
+                <Typography
                 variant="h6"
                 sx={{
-                color: "black",
-                fontWeight: "bold",
-                fontFamily: "Roboto, sans-serif",
-                lineHeight: 1.2,
-                m: 0,
+                    color: "black",
+                    fontWeight: "bold",
+                    fontFamily: "Roboto, sans-serif",
+                    m: 0,
+                    lineHeight: 1.2,
                 }}
-            >
+                >
                 {title}
-            </Typography>
+                </Typography>
+            )}
+
+            {headerRight && (
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                {headerRight}
+                </Box>
+            )}
             </Box>
         )}
 
@@ -101,43 +121,21 @@
             }}
             rowHeight={rowHeight}
             sx={{
-            border: "none",
-
-            "& .MuiDataGrid-columnHeaders": {
-                borderBottom: "1px solid #e0e0e0",
-                backgroundColor: "#fafafa",
+            borderStyle: "none",
+            "& .MuiDataGrid-columnHeader": {
+                borderBottom: "2px solid #c4c4c4",
             },
-
-            "& .MuiDataGrid-columnHeaderTitle": {
-                color: "#808080",
-                fontWeight: "bolder",
-                fontSize: "1em",
-            },
-
             "& .even-row": { backgroundColor: "#ffffff" },
-            "& .odd-row": { backgroundColor: "#ECECEC" },
-
+            "& .odd-row": { backgroundColor: "#eaeaea" },
             "& .MuiDataGrid-row:hover": {
                 backgroundColor: "#eef6ff",
             },
-
-            "& .MuiDataGrid-cell": {
-                fontSize: "1em",
-                display: "flex",
-                alignItems: "center",
-            },
-
             "& .MuiDataGrid-footerContainer": {
-                borderTop: "1px solid #e0e0e0",
-                backgroundColor: "#fafafa",
+                borderTop: "2px solid #dbd9d9",
             },
-
-            "& .riga-evidenziata": {
-                backgroundColor: "#0080801f",
-            },
-
-            "& .MuiDataGrid-row": {
-                borderBottom: "1px solid #f0f0f0",
+            "& .MuiDataGrid-columnHeaderTitle": {
+                color: "#808080",
+                fontWeight: "bolder",
             },
             }}
         />
@@ -145,4 +143,4 @@
     );
     };
 
-    export default Tabella;
+    export default TabellaCandidati;

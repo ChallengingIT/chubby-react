@@ -765,7 +765,7 @@ return (
         sx={{
         display: "flex",
         backgroundColor: "#EEEDEE",
-        minHeight: "100dvh",
+        maxHeight: "100dvh",
         width: "100%",
         overflowX: "hidden",
         }}
@@ -776,10 +776,9 @@ return (
             display: "flex",
             flex: 1,
             width: "100%",
-            minHeight: "100dvh",
             flexDirection: "row",
             mt: "0.5em",
-            mb: "0.5em",
+            mb: 2,
             mr: "0.8em",
             ml: isSmallScreen ? "3.5em" : "12.8em",
             borderRadius: "20px",
@@ -988,7 +987,7 @@ return (
                 <Button
                     onClick={handleBackButtonClick}
                     sx={{
-                    mb: 0,
+                    mb: 4,
                     minWidth: { xs: 120, sm: 140, md: 170, lg: 170 },
                     backgroundColor: "black",
                     color: "white",
@@ -1012,7 +1011,7 @@ return (
                 <Button
                     onClick={handleNextButtonClick}
                     sx={{
-                    mb: 0,
+                    mb: 4,
                     minWidth: { xs: 120, sm: 140, md: 170, lg: 170 },
                     backgroundColor: "black",
                     color: "white",
@@ -1038,7 +1037,7 @@ return (
                     onClick={() => handleSubmit(values)}
                     type="submit"
                     sx={{
-                    mb: 0,
+                    mb: 4,
                     minWidth: { xs: 120, sm: 140, md: 170, lg: 170 },
                     backgroundColor: "#00B400",
                     color: "#EDEDED",

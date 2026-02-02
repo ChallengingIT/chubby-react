@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Box, Typography, Button, List, ListItem, ListItemIcon, ListItemText, Alert, Skeleton, Snackbar, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Grid, Slide, Container } from '@mui/material';
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined'; //cerchio vuoto
 import axios from 'axios';
 import CustomTextFieldModifica from '../../components/fields/CustomTextFieldModifica';
@@ -16,6 +15,29 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from '@mui/material';
 import { useUserTheme } from "../../components/TorchyThemeProvider";
+import CloseIcon from "@mui/icons-material/Close";
+import { 
+    Box, 
+    Typography, 
+    Button, 
+    List, 
+    ListItem, 
+    ListItemIcon, 
+    ListItemText, 
+    Alert, 
+    Skeleton, 
+    Snackbar, 
+    Dialog, 
+    DialogTitle, 
+    DialogContent, 
+    DialogContentText, 
+    DialogActions, 
+    Grid, 
+    Slide, 
+    Container,
+    IconButton
+} from '@mui/material';
+
 
 
 
@@ -54,7 +76,16 @@ const ModificaRecruitingGrafica = () => {
     const [funzioniAziendaliOptions, setFunzioniAziendaliOptions] = useState([]);
     const [ricercaOptions, setRicercaOptions] = useState([]);
     const [tipoOptions, setTipoOptions] = useState([]);
+    const [deleteDialogIntervista, setDeleteDialogIntervista] = useState({ open: false, index: null });
 
+
+    const createEmptyIntervista = () => ({
+        id: null,
+        valutazione: null,
+        dataIntervista: null,
+        intervistatore: null,
+        descrizioneIntervista: "",
+    });
 
     const user = JSON.parse(sessionStorage.getItem("user"));
     const token = user?.token;
@@ -63,7 +94,6 @@ const ModificaRecruitingGrafica = () => {
         Authorization: `Bearer ${token}`
     };
 
-    //chiamata per ricevere i dati dal db
     useEffect(() => {
         const fetchAziendeOptions = async () => {
             try {
@@ -213,6 +243,25 @@ const ModificaRecruitingGrafica = () => {
     }, []);
 
 
+    useEffect(() => {
+        if (!ownerOptions?.length) return;
+
+        setValues((prev) => {
+            const interviste = Array.isArray(prev?.interviste) ? prev.interviste : [];
+            if (!interviste.length) return prev;
+
+            const normalized = interviste.map((i) => {
+            const id = i?.intervistatore?.value ?? i?.intervistatore?.id ?? null;
+            if (!id) return i;
+
+            const match = ownerOptions.find((o) => String(o.value) === String(id));
+            return match ? { ...i, intervistatore: match } : i;
+            });
+
+            return { ...prev, interviste: normalized };
+        });
+    }, [ownerOptions]);
+
 
 
 
@@ -263,6 +312,10 @@ const ModificaRecruitingGrafica = () => {
             icon: <CircleOutlinedIcon />
         },
         {
+            title: t('Interviste'),
+            icon: <CircleOutlinedIcon />
+        },
+        {
             title: t('Allegati'),
             icon: <CircleOutlinedIcon />
         }
@@ -291,7 +344,83 @@ const ModificaRecruitingGrafica = () => {
         navigate(-1);
     };
 
-    //funzione per campire quali campi sono obbligatori nel form corrente
+
+
+    const valutazioneOptions = [
+        { value: 1, label: t("1 - KO") },
+        { value: 2, label: "2" },
+        { value: 3, label: "3" },
+        { value: 4, label: "4" },
+        { value: 5, label: "5" },
+    ];
+
+    const isIntervistaComplete = (i) => {
+    const valutazione = i?.valutazione?.value ?? i?.valutazione;
+    return (
+        (i?.intervistatore?.value ?? i?.intervistatore?.id ?? null) != null &&
+        i?.dataIntervista != null &&
+        valutazione != null &&
+        String(i?.descrizioneIntervista ?? "").trim().length > 0
+    );
+    };
+
+    const openDeleteDialogIntervista = (index) => setDeleteDialogIntervista({ open: true, index });
+    const closeDeleteDialogIntervista = () => setDeleteDialogIntervista({ open: false, index: null });
+
+    const canAddIntervista = () => {
+    const list = Array.isArray(values?.interviste) ? values.interviste : [];
+    if (!list.length) return true;
+    return isIntervistaComplete(list[list.length - 1]);
+    };
+
+    const handleAddIntervista = () => {
+    if (!canAddIntervista()) return;
+    setValues((prev) => ({
+        ...prev,
+        interviste: [...(Array.isArray(prev?.interviste) ? prev.interviste : []), createEmptyIntervista()],
+    }));
+    };
+
+    const confirmDeleteIntervista = () => {
+    const idx = deleteDialogIntervista.index;
+    if (idx == null) return;
+
+    setValues((prev) => {
+        const list = Array.isArray(prev?.interviste) ? [...prev.interviste] : [];
+        list.splice(idx, 1);
+        return { ...prev, interviste: list.length ? list : [createEmptyIntervista()] };
+    });
+
+    closeDeleteDialogIntervista();
+    };
+
+    const handleChangeIntervista = (index) => (fieldValue) => {
+        const nameFromEvent = fieldValue?.target?.name;
+        const valueFromEvent = fieldValue?.target?.value;
+
+        const isObjectMap =
+            fieldValue &&
+            typeof fieldValue === "object" &&
+            !Array.isArray(fieldValue) &&
+            !fieldValue.target;
+
+        const nameFromMap = isObjectMap ? Object.keys(fieldValue)[0] : null;
+        const valueFromMap = isObjectMap ? fieldValue[nameFromMap] : null;
+
+        const name = nameFromEvent ?? nameFromMap;
+        const value = nameFromEvent ? valueFromEvent : valueFromMap;
+
+        if (!name) return;
+
+        setValues((prev) => {
+            const list = Array.isArray(prev?.interviste) ? [...prev.interviste] : [];
+            const current = list[index] ?? createEmptyIntervista();
+            list[index] = { ...current, [name]: value };
+            return { ...prev, interviste: list };
+        });
+    };
+
+
     const getMandatoryFields = (index) => {
         switch (index) {
             case 0:
@@ -300,22 +429,13 @@ const ModificaRecruitingGrafica = () => {
                 return ["anniEsperienzaRuolo", "idLivelloScolastico"];
             case 2:
                 return ["idCandidatura", "idTipologia", "dataUltimoContatto", "idFunzioneAziendale"];
+            case 3: 
+                return [];
             default:
                 return [];
         }
     };
 
-
-    //funzione per la validazione dei campi
-    // const validateFields = (values, mandatoryFields) => {
-    //     let errors = {};
-    //     mandatoryFields.forEach(field => {
-    //         if (!values[field]) {
-    //             errors[field] = 'Questo campo è obbligatorio';
-    //         }
-    //     });
-    //     return errors;
-    // };
 
     const validateFields = (values, mandatoryFields, index) => {
         let errors = {};
@@ -557,10 +677,22 @@ const ModificaRecruitingGrafica = () => {
                 delete values.cv;
                 delete values.cf;
 
+
+                const toId = (v) => (typeof v === "object" ? (v.value ?? v.id ?? null) : v);
+
+                const intervistePayload = (Array.isArray(values?.interviste) ? values.interviste : [])
+                .filter((i) => i && (i.dataIntervista || i.descrizioneIntervista || i.valutazione || i.intervistatore))
+                .map((i) => ({
+                    id: i.id ?? null,
+                    valutazione: toId(i.valutazione),
+                    dataIntervista: i.dataIntervista ?? null,
+                    descrizioneIntervista: i.descrizioneIntervista ?? "",
+                    intervistatore: { id: toId(i.intervistatore) },
+                }));
+
                 const transformedValues = replaceKeysInValues(values, fieldMapping);
 
-
-
+                transformedValues.interviste = intervistePayload;
 
                 const datiResponse = await axios.post("http://localhost:8080/staffing/salva", transformedValues, {
                     params: { skill: skills },
@@ -663,7 +795,6 @@ const ModificaRecruitingGrafica = () => {
         { type: "titleGroups", label: t("Posizione Lavorativa") },
         { label: t('Tipo Ingaggio'), name: 'idTipo', type: 'select', options: tipoOptions },
         { label: t("Tipo Candidatura*"), name: "idCandidatura", type: "select", options: tipologiaOptions },
-        // { label: "Tipo Ricerca*",                  name: "idRicerca",                  type: "select",          options: ricercaOptions                        },
 
         {
             label: t("Modalità Di Lavoro"), name: "modalita", type: "select", options: [
@@ -675,12 +806,15 @@ const ModificaRecruitingGrafica = () => {
         { label: t("Funzione Aziendale*"), name: "idFunzioneAziendale", type: "select", options: funzioniAziendaliOptions },
         { label: t("Job Title*"), name: "idTipologia", type: "select", options: jobTitleOptions },
         { label: t("Data Inserimento*"), name: "dataUltimoContatto", type: "date" },
-        // { label: "Stato*",                             name: "idStato",                    type: "select",               options: statoOptions                     },
         { label: t("Owner"), name: "idOwner", type: "select", options: ownerOptions },
         { label: "Skills", name: "idSkills", type: "multipleSelect", options: skillsOptions },
         { label: t("RAL/Tariffa"), name: "ral", type: "text", maxLength: 100 },
         { label: t("Disponibilità"), name: "disponibilita", type: "text", maxLength: 45 },
         { label: t("Note"), name: "note", type: "note", maxLength: 8000 },
+
+        { type: "titleGroups", label: t("Interviste") },
+        { type: "interviewList", name: "interviste" },
+
 
 
         { type: "titleGroups", label: t("Allegati") },
@@ -694,7 +828,6 @@ const ModificaRecruitingGrafica = () => {
 
         id: datiModifica.id,
         idCandidatura: (datiModifica.candidatura && datiModifica.candidatura.id) || null,
-        // idRicerca:                         (datiModifica.ricerca && datiModifica.ricerca.id )                                  || null,
         nome: datiModifica.nome || null,
         cognome: datiModifica.cognome || null,
         dataNascita: datiModifica.dataNascita || null,
@@ -715,6 +848,19 @@ const ModificaRecruitingGrafica = () => {
         ral: datiModifica.ral || null,
         disponibilita: datiModifica.disponibilita || null,
         idTipo: datiModifica.tipo && datiModifica.tipo.id || null,
+        interviste: Array.isArray(datiModifica?.interviste) && datiModifica.interviste.length
+            ? datiModifica.interviste.map((i) => ({
+                id: i.id ?? null,
+                valutazione: i.valutazione != null
+                    ? (valutazioneOptions.find((o) => o.value === i.valutazione) ?? { value: i.valutazione, label: String(i.valutazione) })
+                    : null,
+                dataIntervista: i.dataIntervista ?? null,
+                intervistatore: i?.intervistatore
+                    ? { value: i.intervistatore.id, label: i.intervistatore.descrizione }
+                    : null,
+                descrizioneIntervista: i.descrizioneIntervista ?? "",
+                }))
+            : [createEmptyIntervista()],
         cv: datiModifica.files ? datiModifica.files.find(file => file && file.tipologia && file.tipologia.descrizione === 'CV') || null : null,
         cf: datiModifica.files ? datiModifica.files.find(file => file && file.tipologia && file.tipologia.descrizione === 'CF') || null : null,
         note: datiModifica.note || null,
@@ -736,6 +882,7 @@ const ModificaRecruitingGrafica = () => {
             setValues(updatedvalues);
         }
     }, [datiModifica]);
+
 
 
     useEffect(() => {
@@ -783,6 +930,9 @@ const ModificaRecruitingGrafica = () => {
             case 'select':
             case 'multipleSelectSkill':
                 return <Skeleton variant="text" sx={{ fontSize: '3rem' }} />
+
+            case 'interviewList':
+                return <Skeleton variant="rectangular" height={260} />;
 
             case 'note':
                 return <Skeleton variant="text" width={710} height={120} />;
@@ -899,6 +1049,202 @@ const ModificaRecruitingGrafica = () => {
                         />
                     );
 
+                    case "interviewList": {
+                        const interviste = Array.isArray(values?.interviste) ? values.interviste : [];
+
+                        return (
+                            <Box sx={{ width: "100%" }}>
+                                <Box
+                                    sx={{
+                                    maxHeight: "70vh",
+                                    overflowY: "auto",
+                                    pr: 1,
+                                    }}
+                                >
+                            {interviste.map((intervista, idx) => (
+                                <Box
+                                key={intervista?.id ?? idx}
+                                sx={{
+                                    position: "relative",
+                                    border: "1px solid rgba(0,0,0,0.12)",
+                                    borderRadius: 2,
+                                    p: 2,
+                                    mb: 2,
+                                    backgroundColor: "white",
+                                }}
+                                >
+                                <IconButton
+                                    aria-label="delete"
+                                    onClick={() => openDeleteDialogIntervista(idx)}
+                                    sx={{ position: "absolute", top: 8, right: 8 }}
+                                >
+                                    <CloseIcon />
+                                </IconButton>
+
+                                <Typography sx={{ fontWeight: 700, mb: 2 }}>
+                                    {t("Intervista")} #{idx + 1}
+                                </Typography>
+
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} md={6}>
+                                    <CustomAutocomplete
+                                        name="intervistatore"
+                                        label={t("Intervistatore")}
+                                        options={ownerOptions || []}
+                                        value={intervista.intervistatore || null}
+                                        onChange={handleChangeIntervista(idx)}
+                                        getOptionSelected={(option, value) => option.value === value.value}
+                                    />
+                                    </Grid>
+
+                                    <Grid item xs={12} md={6}>
+                                    <CustomDatePickerModifica
+                                        name="dataIntervista"
+                                        label={t("Data Intervista")}
+                                        type="date"
+                                        values={intervista}
+                                        onChange={handleChangeIntervista(idx)}
+                                        initialValues={intervista}
+                                    />
+                                    </Grid>
+
+                                    <Grid item xs={12} md={6}>
+                                    <CustomAutocomplete
+                                        name="valutazione"
+                                        label={t("Valutazione")}
+                                        options={valutazioneOptions}
+                                        value={intervista.valutazione || null}
+                                        onChange={handleChangeIntervista(idx)}
+                                        getOptionSelected={(option, value) => option.value === value.value}
+                                    />
+                                    </Grid>
+
+                                    <Grid item xs={12}>
+                                    <CustomNoteModifica
+                                        name="descrizioneIntervista"
+                                        label={t("Descrizione")}
+                                        type="note"
+                                        values={intervista}
+                                        onChange={handleChangeIntervista(idx)}
+                                        initialValues={intervista}
+                                        maxLength={8000}
+                                    />
+                                    </Grid>
+                                </Grid>
+                                
+                                </Box>
+                            ))}
+
+                            <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                                <Button
+                                variant="contained"
+                                onClick={handleAddIntervista}
+                                disabled={!canAddIntervista()}
+                                sx={{
+                                    backgroundColor: "#00B400",
+                                    color: "white",
+                                    borderRadius: '10px',
+                                    mb: 2,
+                                    ":hover": { backgroundColor: "#00B400", transform: "scale(1.05)" },
+                                }}
+                                >
+                                {t("Aggiungi intervista")}
+                                </Button>
+                            </Box>
+
+
+                <Dialog
+                    open={deleteDialogIntervista.open}
+                    onClose={closeDeleteDialogIntervista}
+                    onClick={(event) => event.stopPropagation()}
+                    PaperProps={{
+                        sx: {
+                        backgroundColor: "white",
+                        p: 4,
+                        borderRadius: 4,
+                        width: { xs: "90vw", sm: "70vw", md: "40vw" },
+                        position: "relative",
+                        },
+                    }}
+                    >
+                    <IconButton
+                        onClick={closeDeleteDialogIntervista}
+                        sx={{
+                        position: "absolute",
+                        top: 8,
+                        right: 8,
+                        color: "#8e8e8e",
+                        bgcolor: "transparent",
+                        "&:hover": {
+                            color: "#db000e",
+                            bgcolor: "transparent",
+                        },
+                        }}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+
+                    <Box
+                        sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        flexDirection: "column",
+                        gap: 2,
+                        }}
+                    >
+                        <Typography variant="h6" component="h2">
+                        {t("Sei sicuro di voler eliminare l'intervista?")}
+                        </Typography>
+
+                        <Box
+                        sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "center",
+                            gap: 3,
+                        }}
+                        >
+                        <Button
+                            onClick={closeDeleteDialogIntervista}
+                            sx={{
+                            width: "10em",
+                            backgroundColor: "#bfbfbf",
+                            color: "white",
+                            borderRadius: "10px",
+                            "&:hover": {
+                                backgroundColor: "#8e8e8e",
+                                color: "white",
+                                transform: "scale(1.01)",
+                            },
+                            }}
+                        >
+                            {t("Indietro")}
+                        </Button>
+
+                        <Button
+                            onClick={confirmDeleteIntervista}
+                            sx={{
+                            width: "10em",
+                            backgroundColor: "#ea333f",
+                            color: "white",
+                            borderRadius: "10px",
+                            "&:hover": {
+                                backgroundColor: "#db000e",
+                                color: "white",
+                                transform: "scale(1.01)",
+                            },
+                            }}
+                        >
+                            {t("Conferma")}
+                        </Button>
+                        </Box>
+                    </Box>
+                    </Dialog>
+                    </Box>
+                            </Box>
+                        );
+                        }
 
                 case "modificaFileCV":
                     return (
@@ -1089,7 +1435,7 @@ const ModificaRecruitingGrafica = () => {
                                 <Grid item xs={12} key={index}>
                                 </Grid>
                             );
-                        } else if (field.type === 'note') {
+                        } else if (field.type === 'note' || field.type === "interviewList") {
                             return (
                                 <Grid item xs={12} key={index}>
                                     {renderFields(field)}
@@ -1116,7 +1462,7 @@ const ModificaRecruitingGrafica = () => {
                 sx={{
                 display: "flex",
                 backgroundColor: "#EEEDEE",
-                minHeight: "100dvh",
+                maxHeight: "100dvh",
                 width: "100%",
                 overflowX: "hidden",
                 }}
@@ -1127,10 +1473,9 @@ const ModificaRecruitingGrafica = () => {
                     display: "flex",
                     flex: 1,
                     width: "100%",
-                    minHeight: "100dvh",
                     flexDirection: "row",
                     mt: "0.5em",
-                    mb: "0.5em",
+                    mb: 2,
                     mr: "0.8em",
                     ml: isSmallScreen ? "3.5em" : "12.8em",
                     borderRadius: "20px",
@@ -1247,7 +1592,7 @@ const ModificaRecruitingGrafica = () => {
                         {currentPageIndex > 0 && (
                             <Button onClick={handleBackButtonClick}
                                 sx={{
-                                    mb: 4,
+                                    mb: 6,
                                     width: { xs: '5%', sm: '10%', md: '15%', lg: '15%' },
                                     backgroundColor: "black",
                                     color: "white",
@@ -1266,7 +1611,7 @@ const ModificaRecruitingGrafica = () => {
                         {currentPageIndex < groupedFields.length - 1 && (
                             <Button onClick={handleNextButtonClick}
                                 sx={{
-                                    mb: 4,
+                                    mb: 6,
                                     width: { xs: '5%', sm: '10%', md: '15%', lg: '15%' },
                                     backgroundColor: "black",
                                     color: "white",
@@ -1289,7 +1634,7 @@ const ModificaRecruitingGrafica = () => {
                                 type="submit"
                                 sx={{
                                     width: { xs: '5%', sm: '10%', md: '15%', lg: '15%' },
-                                    mb: 4,
+                                    mb: 6,
                                     backgroundColor: "#00B400",
                                     color: "#EDEDED",
                                     fontWeight: "bold",

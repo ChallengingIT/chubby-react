@@ -18,6 +18,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle'; //owner busin
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'; //owner recruiter
 import { useTranslation } from "react-i18next";
 import { color, motion } from "framer-motion";
+import DialogDelete from '../dialog/DialogDelete';
 
 import {
     Card,
@@ -465,94 +466,20 @@ const NeedCardFlip = ({ valori, statoOptions, onDelete, onRefresh, isFirstCard }
                     </div>
                 </div>
 
-                <Modal
+
+                <DialogDelete
                     open={modalDelete}
-                    onClose={handleCloseModalDelete}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                    onClick={(event) => event.stopPropagation()}
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
+                    title={t("Sei sicuro di voler eliminare il need?")}
+                    description={t("Questa azione non potrà essere annullata.")}
+                    onClose={(event) => {
+                        event?.stopPropagation?.();
+                        handleCloseModalDelete();
                     }}
-                >
-                    <Box
-                        sx={{
-                            backgroundColor: "white",
-                            p: 4,
-                            borderRadius: 4,
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            flexDirection: "column",
-                            gap: 2,
-                            width: "40vw",
-                            position: "relative",
-                        }}
-                    >
-                        <IconButton
-                            onClick={handleCloseModalDelete}
-                            sx={{
-                                position: "absolute",
-                                top: 8,
-                                right: 8,
-                                color: "#8e8e8e",
-                                bgcolor: 'transparent',
-                                "&:hover": {
-                                    color: "#db000e",
-                                    bgcolor: 'transparent',
-                                },
-                            }}
-                        >
-                            <CloseIcon />
-                        </IconButton>
-                        <Typography id="modal-modal-title" variant="h6" component="h2">
-                            {t('Sei sicuro di voler eliminare il need?')}
-                        </Typography>
-                        <Box
-                            sx={{
-                                display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "center",
-                                gap: 3,
-                            }}
-                        >
-                            <Button
-                                onClick={handleCloseModalDelete}
-                                sx={{
-                                    width: '10em',
-                                    backgroundColor: "#bfbfbf",
-                                    color: "white",
-                                    borderRadius: "10px",
-                                    "&:hover": {
-                                        backgroundColor: "#8e8e8e",
-                                        color: "white",
-                                        transform: "scale(1.01)",
-                                    },
-                                }}
-                            >
-                                {t('Indietro')}
-                            </Button>
-                            <Button
-                                onClick={confirmDelete}
-                                sx={{
-                                    width: '10em',
-                                    backgroundColor: "#ea333f",
-                                    color: "white",
-                                    borderRadius: "10px",
-                                    "&:hover": {
-                                        backgroundColor: "#db000e",
-                                        color: "white",
-                                        transform: "scale(1.01)",
-                                    },
-                                }}
-                            >
-                                {t('Conferma')}
-                            </Button>
-                        </Box>
-                    </Box>
-                </Modal>
+                    onDelete={(event) => {
+                        event?.stopPropagation?.();
+                        confirmDelete();
+                    }}
+                />
 
                 { /* MODAL PER IL CAMBIO STATO */}
                 <Modal

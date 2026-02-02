@@ -859,7 +859,7 @@ const ModificaNeedGrafica = () => {
                 sx={{
                 display: "flex",
                 backgroundColor: "#EEEDEE",
-                minHeight: "100dvh",
+                maxHeight: "100dvh",
                 width: "100%",
                 overflowX: "hidden",
                 }}
@@ -870,10 +870,9 @@ const ModificaNeedGrafica = () => {
                     display: "flex",
                     flex: 1,
                     width: "100%",
-                    minHeight: "100dvh",
                     flexDirection: "row",
                     mt: "0.5em",
-                    mb: "0.5em",
+                    mb: 2,
                     mr: "0.8em",
                     ml: isSmallScreen ? "3.5em" : "12.8em",
                     borderRadius: "20px",
@@ -985,20 +984,20 @@ const ModificaNeedGrafica = () => {
                         {currentPageIndex > 0 && (
                             <Button onClick={handleBackButtonClick}
                                 sx={{
-                                    mb: 4,
-                                    width: { xs: '5%', sm: '10%', md: '15%', lg: '15%' },
-                                    backgroundColor: theme.palette.button.main,
-                                    color: theme.palette.textButton.white,
+                                    mb: 6,
+                                    minWidth: { xs: 120, sm: 140, md: 170, lg: 170 },
+                                    backgroundColor: "black",
+                                    color: "white",
                                     fontWeight: "bold",
-                                    boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
-                                    borderRadius: '10px',
-                                    fontSize: { xs: "0.5em", sm: "0.7em", md: "0.9em" },
+                                    boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
+                                    borderRadius: "10px",
+                                    fontSize: { xs: "0.75em", sm: "0.85em", md: "0.95em" },
                                     "&:hover": {
-                                        backgroundColor: theme.palette.button.main,
-                                        color: theme.palette.textButton.white,
+                                        backgroundColor: "black",
+                                        color: "white",
                                         transform: "scale(1.05)",
-                                        boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
-                                        borderRadius: '10px',
+                                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
+                                        borderRadius: "10px",
                                     },
                                 }}>
                                 {t('Indietro')}
@@ -1007,20 +1006,20 @@ const ModificaNeedGrafica = () => {
                         {currentPageIndex < groupedFields.length - 1 && (
                             <Button onClick={handleNextButtonClick}
                                 sx={{
-                                    mb: 4,
-                                    width: { xs: '5%', sm: '10%', md: '15%', lg: '15%' },
-                                    backgroundColor: theme.palette.button.main,
-                                    color: theme.palette.textButton.white,
+                                    mb: 6,
+                                    minWidth: { xs: 120, sm: 140, md: 170, lg: 170 },
+                                    backgroundColor: "black",
+                                    color: "white",
                                     fontWeight: "bold",
-                                    boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
-                                    borderRadius: '10px',
-                                    fontSize: { xs: "0.5em", sm: "0.7em", md: "0.9em" },
+                                    boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
+                                    borderRadius: "10px",
+                                    fontSize: { xs: "0.75em", sm: "0.85em", md: "0.95em" },
                                     "&:hover": {
-                                        backgroundColor: theme.palette.button.main,
-                                        color: theme.palette.textButton.white,
+                                        backgroundColor: "black",
+                                        color: "white",
                                         transform: "scale(1.05)",
-                                        boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.1)',
-                                        borderRadius: '10px',
+                                        boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.1)",
+                                        borderRadius: "10px",
                                     },
                                 }}>{t('Avanti')}</Button>
                         )}
@@ -1029,7 +1028,7 @@ const ModificaNeedGrafica = () => {
                                 onClick={() => handleSubmit(values)}
                                 type="submit"
                                 sx={{
-                                    mb: 4,
+                                    mb: 6,
                                     width: { xs: '5%', sm: '10%', md: '15%', lg: '15%' },
                                     backgroundColor: theme.palette.button.main,
                                     color: theme.palette.textButton.white,

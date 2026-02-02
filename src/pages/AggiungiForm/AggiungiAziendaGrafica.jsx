@@ -577,7 +577,7 @@ const AggiungiAziendaGrafica = () => {
         sx={{
         display: "flex",
         backgroundColor: "#EEEDEE",
-        minHeight: "100dvh",
+        maxHeight: '100vh',
         width: "100%",
         overflowX: "hidden",
         }}
@@ -588,10 +588,9 @@ const AggiungiAziendaGrafica = () => {
             display: "flex",
             flex: 1,
             width: "100%",
-            minHeight: "100dvh",
             flexDirection: "row",
             mt: "0.5em",
-            mb: "0.5em",
+            mb: 2,
             mr: "0.8em",
             ml: isSmallScreen ? "3.5em" : "12.8em",
             borderRadius: "20px",
@@ -800,7 +799,7 @@ const AggiungiAziendaGrafica = () => {
                 <Button
                     onClick={handleBackButtonClick}
                     sx={{
-                    mb: 0,
+                    mb: 2,
                     minWidth: { xs: 120, sm: 140, md: 170, lg: 170 },
                     backgroundColor: "black",
                     color: "white",
@@ -824,7 +823,7 @@ const AggiungiAziendaGrafica = () => {
                 <Button
                     onClick={handleNextButtonClick}
                     sx={{
-                    mb: 0,
+                    mb: 2,
                     minWidth: { xs: 120, sm: 140, md: 170, lg: 170 },
                     backgroundColor: "black",
                     color: "white",
@@ -850,7 +849,7 @@ const AggiungiAziendaGrafica = () => {
                     onClick={() => handleSubmit(values)}
                     type="submit"
                     sx={{
-                    mb: 0,
+                    mb: 2,
                     minWidth: { xs: 120, sm: 140, md: 170, lg: 170 },
                     backgroundColor: "#00B400",
                     color: "#EDEDED",
