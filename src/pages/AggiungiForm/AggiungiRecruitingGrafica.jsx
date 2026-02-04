@@ -86,13 +86,13 @@
     useEffect(() => {
         const fetchAziendeOptions = async () => {
         try {
-            const responseTipologia = await axios.get("http://80.211.138.142:8443/staffing/react/tipo/candidatura", { headers: headers });
-            const facoltaResponse = await axios.get("http://80.211.138.142:8443/staffing/react/facolta", { headers: headers });
-            const livelloScolasticoResponse = await axios.get("http://80.211.138.142:8443/staffing/react/livello", { headers: headers });
-            const funzioniAziendaliResponse = await axios.get("http://80.211.138.142:8443/staffing/react/funzioni", { headers: headers });
-            const ricercaResponse = await axios.get("http://80.211.138.142:8443/staffing/react/tipo/ricerca", { headers: headers });
-            const tipoResponse = await axios.get("http://80.211.138.142:8443/staffing/react/tipo", { headers: headers });
-            const responseAree = await axios.get("http://80.211.138.142:8443/staffing/react/areas", { headers: headers });
+            const responseTipologia = await axios.get("http://localhost:8080/staffing/react/tipo/candidatura", { headers: headers });
+            const facoltaResponse = await axios.get("http://localhost:8080/staffing/react/facolta", { headers: headers });
+            const livelloScolasticoResponse = await axios.get("http://localhost:8080/staffing/react/livello", { headers: headers });
+            const funzioniAziendaliResponse = await axios.get("http://localhost:8080/staffing/react/funzioni", { headers: headers });
+            const ricercaResponse = await axios.get("http://localhost:8080/staffing/react/tipo/ricerca", { headers: headers });
+            const tipoResponse = await axios.get("http://localhost:8080/staffing/react/tipo", { headers: headers });
+            const responseAree = await axios.get("http://localhost:8080/staffing/react/areas", { headers: headers });
 
             let groupedSkills = [];
 
@@ -133,7 +133,7 @@
             const username = user?.username;
 
             const ownerResponse = await axios.get(
-            `http://80.211.138.142:8443/owner/${username}`,
+            `http://localhost:8080/owner/${username}`,
             { headers: headers }
             );
 
@@ -155,7 +155,7 @@
 
                 try {
                 const responseSkillByArea = await axios.get(
-                    `http://80.211.138.142:8443/staffing/react/skill/${area.id}`,
+                    `http://localhost:8080/staffing/react/skill/${area.id}`,
                     { headers: headers }
                 );
 
@@ -401,7 +401,7 @@
             delete payload.cv;
             delete payload.cf;
 
-            const datiResponse = await axios.post("http://80.211.138.142:8443/staffing/salva", payload, {
+            const datiResponse = await axios.post("http://localhost:8080/staffing/salva", payload, {
             params: { skill: skills },
             headers: headers,
             });
@@ -427,7 +427,7 @@
                 formDataCV.append('tipo', 1);
 
                 await axios.post(
-                `http://80.211.138.142:8443/staffing/react/staff/salva/file/${candidatoId}`,
+                `http://localhost:8080/staffing/react/staff/salva/file/${candidatoId}`,
                 formDataCV,
                 { headers: headers }
                 );
@@ -443,7 +443,7 @@
                 formDataCF.append('tipo', 2);
 
                 await axios.post(
-                `http://80.211.138.142:8443/staffing/react/staff/salva/file/${candidatoId}`,
+                `http://localhost:8080/staffing/react/staff/salva/file/${candidatoId}`,
                 formDataCF,
                 { headers: headers }
                 );
@@ -476,7 +476,7 @@
 
     const fetchJobTitleOptions = async (funzioneAziendaleId) => {
         try {
-        const response = await axios.get(`http://80.211.138.142:8443/aziende/react/tipologia/${funzioneAziendaleId}`, { headers: headers });
+        const response = await axios.get(`http://localhost:8080/aziende/react/tipologia/${funzioneAziendaleId}`, { headers: headers });
         const jobTitleOptions = response.data.map(jobTitle => ({
             label: jobTitle.descrizione,
             value: jobTitle.id,

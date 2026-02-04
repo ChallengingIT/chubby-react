@@ -163,7 +163,7 @@
 //     e.preventDefault();
 //     try {
 //       const response = await axios.post(
-//         "http://80.211.138.142:8443/api/auth/lost/password",
+//         "http://localhost:8080/api/auth/lost/password",
 //         {
 //           email,
 //         }

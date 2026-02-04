@@ -100,7 +100,7 @@ const TabellaHiring2 = ({ data, columns, getRowId }) => {
 
   const handleDeleteScheda = async(idScheda, idHiring) => {
     try {
-      const responseDelete = await axios.post(`http://80.211.138.142:8443/hiring/elimina/scheda/${idScheda}`, {
+      const responseDelete = await axios.post(`http://localhost:8080/hiring/elimina/scheda/${idScheda}`, {
         headers: headers,
       })
 

@@ -168,11 +168,11 @@ const Recruiting = () => {
     const data = filteredRecruiting ?? [];
 
     if (poolView === "POOL") {
-      return data.filter((c) => c.pool === 2 || c.pool === 3);
+      return data.filter((c) => c.pool === 1 || c.pool === 2);
     }
 
     if (poolView === "HOTPOOL") {
-      return data.filter((c) => c.pool === 3);
+      return data.filter((c) => c.pool === 2);
     }
     return data;
   }, [filteredRecruiting, poolView]);
@@ -214,7 +214,7 @@ const Recruiting = () => {
   useEffect(() => {
     const fetchSkills = async () => {
 
-      const responseAree = await axios.get("http://80.211.138.142:8443/staffing/react/areas", { headers: headers });
+      const responseAree = await axios.get("http://localhost:8080/staffing/react/areas", { headers: headers });
 
       let groupedSkills = [];
 
@@ -228,7 +228,7 @@ const Recruiting = () => {
 
           try {
             const responseSkillByArea = await axios.get(
-              `http://80.211.138.142:8443/staffing/react/skill/${area.id}`,
+              `http://localhost:8080/staffing/react/skill/${area.id}`,
               { headers: headers }
             );
 
@@ -256,20 +256,20 @@ const Recruiting = () => {
 
     try {
       const response = await axios.get(
-        "http://80.211.138.142:8443/staffing/react/mod",
+        "http://localhost:8080/staffing/react/mod",
         { headers: headers }
       );
       
       const responseTipologia = await axios.get(
-        "http://80.211.138.142:8443/aziende/react/tipologia",
+        "http://localhost:8080/aziende/react/tipologia",
         { headers: headers }
       );
       const responseTipo = await axios.get(
-        "http://80.211.138.142:8443/staffing/react/tipo",
+        "http://localhost:8080/staffing/react/tipo",
         { headers: headers }
       );
       const responseStato = await axios.get(
-        "http://80.211.138.142:8443/staffing/react/stato/candidato",
+        "http://localhost:8080/staffing/react/stato/candidato",
         { headers: headers }
       );      
 
@@ -363,7 +363,7 @@ const Recruiting = () => {
   const handleDelete = async () => {
     try {
       const responseDelete = await axios.delete(
-        `http://80.211.138.142:8443/staffing/elimina/${deleteId}`,
+        `http://localhost:8080/staffing/elimina/${deleteId}`,
         { headers: headers }
       );
       setOpenDialog(false);
@@ -404,7 +404,7 @@ const handleReset = () => {
 
 
   const handleDownloadCV = async (idFile, fileDescrizione) => {
-    const url = `http://80.211.138.142:8443/files/react/download/file/${idFile}`;
+    const url = `http://localhost:8080/files/react/download/file/${idFile}`;
     try {
       const responseDownloadCV = await axios({
         method: "GET",
@@ -484,7 +484,7 @@ const handleReset = () => {
   const handleDownloadCF = async (idCandidato, nomeCandidato, cognomeCandidato, tipo) => {
     try {
       setLoadingCF(true);
-      const downloadUrl = `http://80.211.138.142:8443/files/download/cf/${idCandidato}`;
+      const downloadUrl = `http://localhost:8080/files/download/cf/${idCandidato}`;
       const params = new URLSearchParams({ tipo });
 
       const res = await axios({
@@ -560,7 +560,7 @@ const handleReset = () => {
     const params = new URLSearchParams({ stato: idStato });
     try {
       const responseUpdateStato = await axios.post
-        (`http://80.211.138.142:8443/staffing/react/salva/stato/${idCandidato}?${params.toString()}`, {}, { headers: headers });
+        (`http://localhost:8080/staffing/react/salva/stato/${idCandidato}?${params.toString()}`, {}, { headers: headers });
       setModalCambiaStato(false);
       fetchData();
       handleOpenSnackbar(t('Stato aggiornato con successo!'), 'success');
@@ -588,7 +588,7 @@ const handleReset = () => {
       filterable: false,
       disableColumnMenu: true,
       renderCell: (params) => {
-        const isHotpool = params.row?.pool === 3;
+        const isHotpool = params.row?.pool === 2;
 
         return (
           <div style={{ textAlign: "left" }}>

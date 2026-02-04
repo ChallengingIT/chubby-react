@@ -59,7 +59,7 @@ function EmailModal({ open, handleClose }) {
     };
     try {
       const responseInviaEmail = await axios.post(
-        "http://80.211.138.142:8443/email/send",
+        "http://localhost:8080/email/send",
         datiDaInviare,
         { headers: headers }
       );

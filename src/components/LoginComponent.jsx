@@ -149,7 +149,7 @@
     const handleForgotPassword = async (e) => {
         e.preventDefault();
         try {
-        const response = await axios.post("http://80.211.138.142:8443/api/auth/lost/password", {
+        const response = await axios.post("http://localhost:8080/api/auth/lost/password", {
             email,
         });
         } catch (error) {

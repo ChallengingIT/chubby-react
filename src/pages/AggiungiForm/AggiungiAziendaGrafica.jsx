@@ -95,16 +95,16 @@ const AggiungiAziendaGrafica = () => {
         const fetchProvinceOptions = async () => {
             try {
                 const provinceResponse = await axios.get(
-                    "http://80.211.138.142:8443/aziende/react/province",
+                    "http://localhost:8080/aziende/react/province",
                     { headers: headers }
                 );
                 /* const ownerResponse = await axios.get(
-                    "http://80.211.138.142:8443/owner",
+                    "http://localhost:8080/owner",
                     { headers: headers }
                 ); */
                 
                 const ricercaResponse = await axios.get(
-                    "http://80.211.138.142:8443/hiring/servizi",
+                    "http://localhost:8080/hiring/servizi",
                     { headers: headers }
                 );
 
@@ -121,8 +121,8 @@ const AggiungiAziendaGrafica = () => {
                 const username = user?.username;
 
                 const ownerUrl = userHasRole('ADMIN')
-                    ? "http://80.211.138.142:8443/owner"
-                    : `http://80.211.138.142:8443/owner/${username}`;
+                    ? "http://localhost:8080/owner"
+                    : `http://localhost:8080/owner/${username}`;
 
                 const ownerResponse = await axios.get(ownerUrl, { headers });
 
@@ -314,7 +314,7 @@ const AggiungiAziendaGrafica = () => {
             delete values.image;
 
             const response = await axios.post(
-            "http://80.211.138.142:8443/aziende/react/salva",
+            "http://localhost:8080/aziende/react/salva",
             values,
             {
                 params: { username: username },
@@ -342,7 +342,7 @@ const AggiungiAziendaGrafica = () => {
                 formDataIMG.append("logo", fileIMG);
 
                 const responseIMG = await axios.post(
-                `http://80.211.138.142:8443/aziende/react/salva/file/${aziendaID}`,
+                `http://localhost:8080/aziende/react/salva/file/${aziendaID}`,
                 formDataIMG,
                 {
                     params: { username: user?.username || null },

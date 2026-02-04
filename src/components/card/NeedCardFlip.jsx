@@ -94,7 +94,7 @@ const NeedCardFlip = ({ valori, statoOptions, onDelete, onRefresh, isFirstCard }
         event.stopPropagation();
         try {
             const response = await axios.post(
-                `http://80.211.138.142:8443/need/clona`,
+                `http://localhost:8080/need/clona`,
                 null,
                 {
                     params: { id: idNeed },
@@ -177,7 +177,7 @@ const NeedCardFlip = ({ valori, statoOptions, onDelete, onRefresh, isFirstCard }
         const priorita = values.priorita;
         const params = new URLSearchParams({ stato: idStato, priorita: priorita });
         try {
-            const responseUpdateStato = await axios.post(`http://80.211.138.142:8443/need/react/salva/stato/${idNeed}?${params.toString()}`, {}, { headers: headers });
+            const responseUpdateStato = await axios.post(`http://localhost:8080/need/react/salva/stato/${idNeed}?${params.toString()}`, {}, { headers: headers });
             setModalStato(false);
             onRefresh();
             if (responseUpdateStato.data === "ERRORE") {

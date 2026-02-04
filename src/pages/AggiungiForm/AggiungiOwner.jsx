@@ -141,7 +141,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
     if (!hasErrors) {
         try {
             const response = await axios.post(
-                "http://80.211.138.142:8443/owner/salva",
+                "http://localhost:8080/owner/salva",
                 values,
                 {
                     headers: headers,

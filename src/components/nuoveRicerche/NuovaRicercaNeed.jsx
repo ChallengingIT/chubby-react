@@ -42,7 +42,7 @@ function NuovaRicercaNeed({
 
             try {
                 const response = await axios.get(
-                    `http://80.211.138.142:8443/gestione/aziende/interne/${userObj.username}`,
+                    `http://localhost:8080/gestione/aziende/interne/${userObj.username}`,
                     { headers: { Authorization: `Bearer ${userObj.token}` } }
                 );
 

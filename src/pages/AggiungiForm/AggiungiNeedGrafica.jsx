@@ -77,20 +77,20 @@ const AggiungiNeedGrafica = () => {
                 const username = user?.username;
 
                 const aziendaInternaUrl = userHasRole("ADMIN")
-                    ? "http://80.211.138.142:8443/gestione/aziende/interne"
-                    : `http://80.211.138.142:8443/gestione/aziende/interne/${username}`;
+                    ? "http://localhost:8080/gestione/aziende/interne"
+                    : `http://localhost:8080/gestione/aziende/interne/${username}`;
 
                 const responseAziendeUrl = userHasRole("ADMIN")
-                    ? "http://80.211.138.142:8443/aziende/react/select"
-                    : `http://80.211.138.142:8443/aziende/react/select/${username}`;
+                    ? "http://localhost:8080/aziende/react/select"
+                    : `http://localhost:8080/aziende/react/select/${username}`;
 
 
                 const responseAziende = await axios.get(responseAziendeUrl, { headers: headers });
-                //const ownerResponse = await axios.get("http://80.211.138.142:8443/owner", { headers: headers });
-                const tipologiaResponse = await axios.get("http://80.211.138.142:8443/need/react/tipologia", { headers: headers });
-                const statoResponse = await axios.get("http://80.211.138.142:8443/need/react/stato", { headers: headers });
+                //const ownerResponse = await axios.get("http://localhost:8080/owner", { headers: headers });
+                const tipologiaResponse = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
+                const statoResponse = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
                 const aziendaInternaResponse = await axios.get(aziendaInternaUrl, { headers: headers });
-                const responseAree = await axios.get("http://80.211.138.142:8443/staffing/react/areas", { headers });
+                const responseAree = await axios.get("http://localhost:8080/staffing/react/areas", { headers });
 
                 let groupedSkills = [];
 
@@ -127,8 +127,8 @@ const AggiungiNeedGrafica = () => {
                 }
 
                 const ownerUrl = userHasRole('ADMIN')
-                    ? "http://80.211.138.142:8443/owner"
-                    : `http://80.211.138.142:8443/owner/${username}`;
+                    ? "http://localhost:8080/owner"
+                    : `http://localhost:8080/owner/${username}`;
 
                 const ownerResponse = await axios.get(ownerUrl, { headers });
 
@@ -153,7 +153,7 @@ const AggiungiNeedGrafica = () => {
                         try {
                             // Skill per area
                             const responseSkillByArea = await axios.get(
-                                `http://80.211.138.142:8443/staffing/react/skill/${area.id}`,
+                                `http://localhost:8080/staffing/react/skill/${area.id}`,
                                 { headers }
                             );
 
@@ -215,7 +215,7 @@ const AggiungiNeedGrafica = () => {
                 const username = user?.username;
                 const headers = { Authorization: `Bearer ${user?.token}` };
 
-                const response = await axios.get(`http://80.211.138.142:8443/gestione/aziende/interne/${username}`, { headers });
+                const response = await axios.get(`http://localhost:8080/gestione/aziende/interne/${username}`, { headers });
 
                 const aziendaUtente = response.data;
 
@@ -342,7 +342,7 @@ const AggiungiNeedGrafica = () => {
 
     const fetchKeypeopleOptions = async (aziendaConId) => {
         try {
-            const responseKeypeople = await axios.get(`http://80.211.138.142:8443/keypeople/react/azienda/${aziendaConId}`, { headers: headers });
+            const responseKeypeople = await axios.get(`http://localhost:8080/keypeople/react/azienda/${aziendaConId}`, { headers: headers });
             const keypeopleOptions = responseKeypeople.data.map(keypeople => ({
                 value: keypeople.id,
                 label: keypeople.nome
@@ -451,7 +451,7 @@ const AggiungiNeedGrafica = () => {
                 values.noteRicercaToggle = values.noteRicercaToggle || null;
 
                 const responseSaveNeed = await axios.post(
-                    "http://80.211.138.142:8443/need/react/salva",
+                    "http://localhost:8080/need/react/salva",
                     values,
                     {
                         params: { skill1: skills, username: username },
