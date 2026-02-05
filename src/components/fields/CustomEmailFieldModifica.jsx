@@ -73,9 +73,6 @@ function CustomEmailFieldModifica({
             cursor: 'not-allowed',
             borderBottom: 'none'
         },
-        "& .Mui-disabled": {
-            cursor: 'not-allowed'
-        },
         ...sx
       }}
     />
