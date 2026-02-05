@@ -599,7 +599,6 @@ const NeedMatch = () => {
             sx={{
               cursor: "pointer",
               color: isHotpool ? "#00B400" : "black",
-              fontWeight: isHotpool ? 700 : 400,
               textDecoration: "underline",
               "&:hover": { opacity: 0.85 },
             }}
