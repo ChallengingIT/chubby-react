@@ -80,7 +80,7 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
 
     const [values, setValues] = useState({
         tipologie: '',
-        data: '',
+        data: null,
         note: '',
         descrizione: '',
         completata: false,
@@ -163,7 +163,7 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
     const hasDateTime = Boolean(rawDateTime);
 
     const pickerDateTimeValue = hasDateTime
-    ? dayjs(rawDateTime, "YYYY-MM-DDTHH:mm")
+    ? dayjs(rawDateTime)
     : null;
 
     const shrink = focusedDateTime || hasDateTime;
@@ -426,7 +426,11 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
     ];
 
     const handleAzioniSubmit = async (idKeyPeople) => {
-        const formattedData = values.data ? new Date(values.data).toISOString().slice(0, 16) : null
+        const formattedData = values.data
+        ? values.data.format("YYYY-MM-DDTHH:mm")
+        : null;
+
+
         const valoriDaInviare = {
             ...(azioneInModifica ? { id: azioneInModifica } : {}),
             data: formattedData,
@@ -456,17 +460,21 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
     };
 
 
-    const handleEditAzione = (azione) => {
-        setAzioneInModifica(azione.id);
-        setValues({
-            data: azione.dataModifica,
-            tipologie: azione.tipologia?.id || '',
-            note: azione.note,
-            descrizione: azione.descrizione,
-            completata: azione.completata
-        });
-        setModalStorico(true);
-    };
+const handleEditAzione = (azione) => {
+  setAzioneInModifica(azione.id);
+
+  setValues({
+    data: azione.dataModifica ? dayjs(azione.dataModifica) : null,
+    tipologie: azione.tipologia?.id || '',
+    note: azione.note,
+    descrizione: azione.descrizione,
+    completata: azione.completata
+  });
+
+  setModalStorico(true);
+};
+
+
 
     // Funzione aggiornata per toggle stato completata di una azione
     const handleToggleCompletata = async (azione) => {
@@ -478,8 +486,9 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
             if (!azioneOriginale) return;
 
             const formattedData = azioneOriginale.dataModifica
-                ? azioneOriginale.dataModifica.slice(0, 16) // yyyy-MM-ddTHH:mm
+                ? dayjs(azioneOriginale.dataModifica).format("YYYY-MM-DDTHH:mm")
                 : null;
+
             const body = {
                 id: azioneOriginale.id,
                 completata: !azioneOriginale.completata,
@@ -816,18 +825,14 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
                                     zIndex: 3,
                                     }}
                                 >
-                                    {t("Seleziona Data")}
+                                    {/* {t("Seleziona Data")} */}
                                 </span>
 
                                 <DatePicker
-                                    value={pickerDateTimeValue}
-                                    onChange={(dateObj) => {
-                                    const formatted = dateObj ? dateObj.format("YYYY-MM-DDTHH:mm") : "";
-                                    handleValueChange("data", formatted);
-                                    }}
+                                    value={values.data}
+                                    onChange={(dateObj) => handleValueChange("data", dateObj)}
                                     format="YYYY-MM-DD HH:mm"
                                     showTime={{ format: "HH:mm" }}
-                                    placeholder=""
                                     onFocus={() => setFocusedDateTime(true)}
                                     onBlur={() => setFocusedDateTime(false)}
 
