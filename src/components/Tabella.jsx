@@ -70,15 +70,25 @@
         )}
 
         <DataGrid
-            rows={data}
-            columns={columns}
-            getRowId={getRowId}
-            pagination
-            initialState={{
-            pagination: { paginationModel: { page: 0, pageSize: 10 } },
-            }}
-            onRowClick={(params) => onRowClick?.(params)}
-            loading={loading}
+                rows={data}
+                columns={columns}
+                paginationMode="server"
+                pageSizeOptions={[10]}
+                rowCount={righeTot}
+                onRowClick={(params) => onRowClick && onRowClick(params)}
+                paginationModel={{ page: pagina, pageSize: quantita }}
+                onPaginationModelChange={({ page }) => {
+                    onPageChange(page);
+                }}
+                loading={data.length === 0 && loading}
+                noRowsOverlay={
+                    showNoDataMessage ? (
+                        <h1>Nessun dato</h1>
+                    ) : (
+                        <CircularProgress sx={{ color: "#00B400" }} />
+                    )
+                }
+                rowHeight={rowHeight}
             slots={{
             noRowsOverlay: () =>
                 showNoDataMessage ? (
@@ -99,7 +109,6 @@
                 ? "even-row"
                 : "odd-row";
             }}
-            rowHeight={rowHeight}
             sx={{
             border: "none",
 

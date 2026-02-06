@@ -8,8 +8,12 @@
     data = [],
     columns = [],
     title,
+    pagina,
+    quantita,
     getRowId,
     onRowClick,
+    onPageChange,
+    righeTot,
     getRowClassName,
     headerRight,
     }) => {
@@ -93,9 +97,12 @@
             rows={data}
             columns={columns}
             getRowId={getRowId}
-            pagination
-            initialState={{
-            pagination: { paginationModel: { page: 0, pageSize: 10 } },
+            paginationMode="server"
+            pageSizeOptions={[10]}
+            rowCount={righeTot}
+            paginationModel={{ page: pagina, pageSize: quantita }}
+            onPaginationModelChange={(model) => {
+                onPageChange?.(model.page, model.pageSize);
             }}
             onRowClick={(params) => onRowClick?.(params)}
             loading={loading}

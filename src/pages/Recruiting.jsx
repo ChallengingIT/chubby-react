@@ -15,6 +15,8 @@ import EditButton                         from "../components/button/EditButton.
 import { Typography }                     from "antd";
 import TabellaCandidati                   from "../components/Tabelle/TabellaCandidati.jsx";
 import DialogDelete                       from "../components/dialog/DialogDelete.jsx";
+import qs from "qs";
+
 import {
   Dialog,
   DialogTitle,
@@ -49,15 +51,16 @@ const Recruiting = () => {
     tipologia: null,
     stato: null,
     tipo: null,
-    citta: "",
-    skills: [],
+    location: "",
+    skills: null,
     email: "",
+    pool: null
   };
 
   const DEFAULT_POOL_VIEW = "ALL";
 
 
-  const [allRecruiting,                 setAllRecruiting                ] = useState([]);  
+  const [originalRecruiting,            setOriginalRecruiting           ] = useState([]);
   const [openDialog,                    setOpenDialog                   ] = useState(false);
   const [deleteId,                      setDeleteId                     ] = useState(null);
   const [tipologiaOptions,              setTipologiaOptions             ] = useState([]);
@@ -70,7 +73,6 @@ const Recruiting = () => {
   const [nomeCandidato,                 setNomeCandidato                ] = useState([]);
   const [cognomeCandidato,              setCognomeCandidato             ] = useState([]);
   const [modalCambiaStato,              setModalCambiaStato             ] = useState(false);
-  const [anchorElStato,                 setAnchorElStato                ] = useState(null);
   const [snackbarType,                  setSnackbarType                 ] = useState('success');
   const [alert,                         setAlert                        ] = useState(false);
   const [values,                        setValues                       ] = useState({});
@@ -98,12 +100,23 @@ const Recruiting = () => {
       : { ...EMPTY_FILTRI };
   });
 
+  const poolToParam = (view) => {
+    if (view === "POOL") return 1;
+    if (view === "HOTPOOL") return 2;
+    return null;
+  };
+
+
 
   //stati per la paginazione
     const [pagina, setPagina] = useState(() => {
     const paginaSalvata = sessionStorage.getItem("paginaRecruiting");
     return paginaSalvata ? parseInt(paginaSalvata, 10) : 0;
   });
+    const [righeTot, setRigheTot] = useState(0);
+
+
+  const quantita = 10;
 
   // Varianti di animazione per far apparire la tabella
   const fadeInVariants = {
@@ -112,70 +125,15 @@ const Recruiting = () => {
   };
 
 
-  useEffect(() => {
-    setFiltri((f) => ({
-      ...EMPTY_FILTRI,
-      ...(f || {}),
-      skills: Array.isArray(f?.skills) ? f.skills : [],
-    }));
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const norm = (v) => (v ?? "").toString().trim().toLowerCase();
-
-  const filteredRecruiting = React.useMemo(() => {
-    const f = appliedFiltri || {};
-    const nomeF = norm(f.nome);
-    const cognomeF = norm(f.cognome);
-    const emailF = norm(f.email);
-    const cittaF = norm(f.citta);
-    const skillsIds = Array.isArray(f?.skills) ? f.skills : [];
-
-
-    const toId = (v) => {
-      if (v == null || v === "") return null;
-      if (typeof v === "object") return v.id ?? v.value ?? null;
-      return Number(v);
-    };
-
-    const tipologiaId = toId(f.tipologia);
-    const statoId     = toId(f.stato);
-    const tipoId      = toId(f.tipo);
-
-
-    return (allRecruiting ?? []).filter((c) => {
-      if (nomeF && !norm(c.nome).includes(nomeF)) return false;
-      if (cognomeF && !norm(c.cognome).includes(cognomeF)) return false;
-      if (emailF && !norm(c.email).includes(emailF)) return false;
-      if (cittaF && !norm(c.citta).includes(cittaF)) return false;
-
-      if (tipologiaId && c?.tipologiaId !== tipologiaId) return false;
-      if (statoId && c?.stato?.id !== statoId) return false;
-      if (tipoId && c?.tipo?.id !== tipoId) return false;
-      if (skillsIds.length) {
-        const candidateSkills = (c?.skills ?? c?.skill ?? []).map(s => s?.id ?? s).filter(Boolean);
-        const hasAll = skillsIds.every(id => candidateSkills.includes(id));
-        if (!hasAll) return false;
-      }
-      return true;
-    });
-  }, [allRecruiting, appliedFiltri]);  
-
-
-
-  const recruitingByPoolView = React.useMemo(() => {
-    const data = filteredRecruiting ?? [];
-
-    if (poolView === "POOL") {
-      return data.filter((c) => c.pool === 1 || c.pool === 2);
-    }
-
-    if (poolView === "HOTPOOL") {
-      return data.filter((c) => c.pool === 2);
-    }
-    return data;
-  }, [filteredRecruiting, poolView]);
+  // useEffect(() => {
+  //   setFiltri((f) => ({
+  //     ...EMPTY_FILTRI,
+  //     ...(f || {}),
+  //     skills: Array.isArray(f?.skills) ? f.skills : [],
+  //   }));
+  //   fetchData();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
 
   const handleSnackbarClose = (event, reason) => {
@@ -251,27 +209,40 @@ const Recruiting = () => {
   }, []);
 
 
-  const fetchData = async (paginaCorrente = pagina) => {
+const fetchData = async (paginaCorrente = pagina) => {
     setLoading(true);
+
+    const filtriDaInviare = {
+      nome: null,
+      cognome: null,
+      email: null,
+      tipologia: null,
+      tipo: null,
+      stato: null,
+      skills: null,
+      location: null,
+      pool: poolToParam(poolView),
+      pagina: paginaCorrente,
+      quantita: 10,
+    };
 
     try {
       const response = await axios.get(
         "http://localhost:8080/staffing/react/mod",
-        { headers: headers }
+        { headers: headers, params: filtriDaInviare }
       );
-      
       const responseTipologia = await axios.get(
         "http://localhost:8080/aziende/react/tipologia",
-        { headers: headers }
+        { headers }
       );
       const responseTipo = await axios.get(
         "http://localhost:8080/staffing/react/tipo",
-        { headers: headers }
+        { headers }
       );
       const responseStato = await axios.get(
         "http://localhost:8080/staffing/react/stato/candidato",
-        { headers: headers }
-      );      
+        { headers }
+      );
 
       if (Array.isArray(responseStato.data)) {
         setStatoOptions(
@@ -280,7 +251,7 @@ const Recruiting = () => {
             value: stato.id,
           }))
         );
-      } else {
+        } else {
         console.error(
           "I dati ottenuti non sono nel formato Array:",
           responseStato.data
@@ -294,12 +265,6 @@ const Recruiting = () => {
             value: tipologia.id,
           }))
         );
-        const map = responseTipologia.data.reduce((acc, tipologia) => {
-          acc[String(tipologia.id)] = tipologia.descrizione;
-          return acc;
-        }, {});
-        setTipologieById(map);
-
       } else {
         console.error(
           "I dati ottenuti non sono nel formato Array:",
@@ -320,15 +285,37 @@ const Recruiting = () => {
           responseTipo.data
         );
       }
+      const { record, candidati } = response.data;
 
+      if (candidati && Array.isArray(candidati)) {
+        setOriginalRecruiting(candidati);
 
-      const lista = response.data?.candidati ?? [];
-      setAllRecruiting(lista);
+        if (typeof record === "number") {
+          setRigheTot(record);
+        } else {
+          console.error(
+            "Il numero di record ottenuto non è un numero: ",
+            record
+          );
+        }
+      } else {
+        console.error(
+          "I dati ottenuti non contengono 'candidati' come array: ",
+          response.data
+        );
+      }
       setLoading(false);
     } catch (error) {
       console.error("Errore durante il recupero dei dati: ", error);
     }
   };
+
+  const hasActiveFilters = (f) =>
+    Object.values(f).some(
+      (v) => v !== null && v !== "" && !(Array.isArray(v) && v.length === 0)
+  );
+
+
 
   useEffect(() => {
     if (hasFetched) return;
@@ -337,22 +324,204 @@ const Recruiting = () => {
     const paginaSalvata = sessionStorage.getItem("paginaRecruiting");
     const paginaDaUsare = paginaSalvata ? parseInt(paginaSalvata, 10) : 0;
 
+    const filtriParsed = filtriSalvati ? JSON.parse(filtriSalvati) : { ...EMPTY_FILTRI };
+
+    const normalized = {
+      ...EMPTY_FILTRI,
+      ...filtriParsed,
+      skills: Array.isArray(filtriParsed?.skills) ? filtriParsed.skills : [],
+    };
+
+    setFiltri(normalized);
     setPagina(paginaDaUsare);
 
-    if (filtriSalvati) {
-      const filtriParsed = JSON.parse(filtriSalvati);
-      setFiltri(filtriParsed);
+    if (hasActiveFilters(normalized) || poolView !== "ALL") {
+      handleRicerche(normalized, paginaDaUsare);
     } else {
       fetchData(paginaDaUsare);
     }
 
     setHasFetched(true);
-  }, [hasFetched]);
+  }, [hasFetched, poolView]);
 
-  const handlePageChange = (newPage) => {
-    setPagina(newPage);
-    sessionStorage.setItem("paginaRecruiting", newPage);
+
+   const fetchMoreData = async (newPage, currentFilters) => {
+    const filtriAttivi = Object.values(currentFilters).some(
+      (value) => value !== null && value !== ""
+    );
+
+    const url = filtriAttivi
+      ? "http://localhost:8080/staffing/react/mod/ricerca"
+      : "http://localhost:8080/staffing/react/mod";
+
+    const filtriDaInviare = {
+      nome: currentFilters.nome || null,
+      cognome: currentFilters.cognome || null,
+      email: null,
+      tipologia: currentFilters.tipologia || null,
+      tipo: currentFilters.tipo || null,
+      stato: currentFilters.stato || null,
+      skills: currentFilters.skills ? JSON.stringify(currentFilters.skills) : null,
+      location: currentFilters.location || null,
+      pool: poolToParam(poolView),
+      pagina: newPage,
+      quantita: 10,
+    };
+
+    try {
+      const response = await axios.get(url, {
+        headers: headers,
+        params: filtriDaInviare,
+      });
+      const { record, candidati } = response.data;
+
+      if (candidati && Array.isArray(candidati)) {
+        // setOriginalRecruiting(candidati);
+        setOriginalRecruiting(prev => [...prev, ...candidati]);
+
+
+        if (typeof record === "number") {
+          setRigheTot(record);
+        } else {
+          console.error("Il numero di record ottenuto non è un numero: ", record);
+        }
+      } else {
+        console.error("I dati ottenuti non contengono 'candidati' come array: ", response.data);
+      }
+    } catch (error) {
+      console.error("Errore durante il recupero dei dati: ", error);
+    }
   };
+
+const handleRicerche = async (
+  filtriParam = filtri,
+  paginaParam = 0,
+  viewParam = poolView
+) => {
+  const paginaSafe = Number.isFinite(Number(paginaParam)) ? Number(paginaParam) : 0;
+
+  const normalizeSkillsToArray = (raw) => {
+    if (!raw) return [];
+
+    if (Array.isArray(raw)) return raw;
+
+    if (typeof raw === "string") {
+      const trimmed = raw.trim();
+      if (!trimmed) return [];
+
+      try {
+        const parsed = JSON.parse(trimmed);
+        if (Array.isArray(parsed)) return parsed;
+      } catch (_) {
+      }
+
+      return trimmed
+        .replace(/^\[|\]$/g, "")
+        .split(",")
+        .map((x) => x.trim())
+        .filter(Boolean);
+    }
+
+    return [];
+  };
+
+  const skillsNormalized = normalizeSkillsToArray(filtriParam?.skills);
+
+  const normalized = {
+    ...EMPTY_FILTRI,
+    ...(filtriParam || {}),
+    skills: skillsNormalized,
+    pool: poolToParam(viewParam),
+  };
+
+  const poolAttivo = viewParam !== "ALL";
+
+  const skillsIds = Array.isArray(normalized.skills)
+    ? normalized.skills
+        .map((s) => (typeof s === "object" && s !== null ? s.value : s))
+        .filter((v) => v !== null && v !== undefined && v !== "" && !String(v).startsWith("__header_"))
+        .map((v) => Number(v))
+        .filter((v) => Number.isFinite(v))
+    : [];
+
+  const hasAnyFilter =
+    hasActiveFilters({ ...normalized, skills: skillsIds }) || poolAttivo;
+
+  if (!hasAnyFilter) {
+    await fetchData(paginaSafe);
+    return;
+  }
+
+  const params = {
+    nome: normalized.nome || undefined,
+    cognome: normalized.cognome || undefined,
+    email: normalized.email || undefined,
+    tipologia: normalized.tipologia || undefined,
+    tipo: normalized.tipo || undefined,
+    stato: normalized.stato || undefined,
+    location: normalized.location || undefined,
+
+    skills: skillsIds.length ? skillsIds : undefined,
+
+    pool: normalized.pool ?? undefined,
+    pagina: paginaSafe,
+    quantita,
+  };
+
+  console.log("[handleRicerche] filtriParam.skills =", filtriParam?.skills);
+  console.log("[handleRicerche] skillsIds =", skillsIds);
+  console.log("[handleRicerche] params =", params);
+
+  setLoading(true);
+
+  try {
+    const response = await axios.get(
+      "http://localhost:8080/staffing/react/mod/ricerca",
+      {
+        headers,
+        params,
+
+        paramsSerializer: (p) =>
+          qs.stringify(p, { arrayFormat: "repeat", skipNulls: true }),
+      }
+    );
+
+    const { record, candidati } = response.data || {};
+
+    setOriginalRecruiting(Array.isArray(candidati) ? candidati : []);
+    setRigheTot(typeof record === "number" ? record : 0);
+  } catch (error) {
+    console.error("Errore durante il recupero dei dati filtrati:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+  const loadPage = async (page, view = poolView) => {
+    const filtriAttivi = Object.values(filtri).some(
+      (v) => v !== null && v !== "" && !(Array.isArray(v) && v.length === 0)
+    );
+
+    const poolAttivo = view !== "ALL";
+
+    if (filtriAttivi || poolAttivo) {
+      await handleRicerche({ ...filtri }, page, view);
+    } else {
+      await fetchData(page);
+    }
+  };
+
+
+const handlePageChange = async (newPage) => {
+  const safePage = Number.isFinite(Number(newPage)) ? Number(newPage) : 0;
+
+  setPagina(safePage);
+  sessionStorage.setItem("paginaRecruiting", String(safePage));
+
+  await loadPage(safePage);
+};
+
+
 
   const openDeleteDialog = (id) => {
     setDeleteId(id);
@@ -388,19 +557,22 @@ const Recruiting = () => {
     });
   };
 
-  const resetState = () => {
-  const empty = { ...EMPTY_FILTRI };
-  setFiltri(empty);
-  setAppliedFiltri(empty);
-  setPagina(0);
-};
 
+  const handleReset = async () => {
+    const empty = { ...EMPTY_FILTRI };
 
-const handleReset = () => {
-  resetState();
-  sessionStorage.removeItem("filtriRicercaRecruiting");
-  sessionStorage.setItem("paginaRecruiting", "0");
-};
+    setFiltri(empty);
+    setAppliedFiltri(empty);
+    setPagina(0);
+    setOriginalRecruiting([]);
+    setRigheTot(0);
+
+    sessionStorage.setItem("filtriRicercaRecruiting", JSON.stringify(empty));
+    sessionStorage.setItem("paginaRecruiting", "0");
+
+    await loadPage(0, poolView);
+  };
+
 
 
   const handleDownloadCV = async (idFile, fileDescrizione) => {
@@ -761,7 +933,7 @@ const handleReset = () => {
         filtri={filtri}
         onFilterChange={handleFilterChange}
         onReset={handleReset}
-        onSearch={handleSearch}
+        onSearch={() => handleRicerche(filtri, 0)}
         tipologiaOptions={tipologiaOptions}
         statoOptions={statoOptions}
         tipoOptions={tipoOptions}
@@ -789,17 +961,25 @@ const handleReset = () => {
           ) : (
 
             <TabellaCandidati
-              data={recruitingByPoolView}
+              data={originalRecruiting}
               columns={columns}
               title={t("Candidati")}
               getRowId={(row) => row.id}
+              pagina={pagina}
+              quantita={quantita}
+              righeTot={righeTot}
+              onPageChange={handlePageChange}
               headerRight={
               <Tabs
                 value={poolView}
-                onChange={(e, v) => {
+                onChange={async (e, v) => {
                   setPoolView(v);
                   sessionStorage.setItem("poolView", v);
                   setPagina(0);
+                  sessionStorage.setItem("paginaRecruiting", "0");
+                  setOriginalRecruiting([]);
+
+                  await loadPage(0, v);
                 }}
                 variant="scrollable"
                 scrollButtons="auto"
@@ -816,7 +996,6 @@ const handleReset = () => {
                 <Tab value="HOTPOOL" label="Hotpool" />
               </Tabs>
             }
-              onPageChange={handlePageChange}
             />
           )}
         </Box>

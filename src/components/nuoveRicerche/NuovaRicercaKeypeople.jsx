@@ -307,7 +307,7 @@ import { motion } from "framer-motion";
                 )}
 
                 <IconButton
-                    onClick={onSearch}
+                    onClick={() => onSearch()}
                     disableRipple={true}
                     disableFocusRipple={true}
                     sx={{

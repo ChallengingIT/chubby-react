@@ -251,7 +251,7 @@ function NuovaRicercaAziende({
                 )}
 
                 <IconButton
-                    onClick={onSearch}
+                    onClick={() => onSearch()}
                     disableRipple={true}
                     disableFocusRipple={true}
                     sx={{
