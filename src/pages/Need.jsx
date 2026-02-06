@@ -530,12 +530,48 @@ const Need = () => {
     //funzione per cancellare il need
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:8080/need/react/elimina/${id}`, { headers: headers });
-            await fetchData();
+            const response = await axios.delete(
+            `http://localhost:8080/need/react/elimina/${id}`,
+            { headers }
+            );
+
+            const isOk =
+            response?.data === "OK" ||
+            response?.data?.message === "OK"
+
+            const firstPage = 0;
+            setPagina(firstPage);
+
+            if (isOk) {
+            const isAnyFilterSet = Object.values(filtri).some((v) => v);
+
+            if (isAnyFilterSet) {
+                setFilteredNeed([]);
+                await handleRicerche(filtri, firstPage);
+            } else {
+                setOriginalNeed([]);
+                setIsSearchActive(false);
+                await fetchData(true, firstPage);
+            }
+            } else {
+            setOriginalNeed([]);
+            setFilteredNeed([]);
+            setIsSearchActive(false);
+            await fetchData(true, firstPage);
+            }
         } catch (error) {
             console.error("Errore durante la cancellazione: ", error);
+
+            const firstPage = 0;
+            setPagina(firstPage);
+            setOriginalNeed([]);
+            setFilteredNeed([]);
+            setIsSearchActive(false);
+            await fetchData(true, firstPage);
         }
     };
+
+
 
     //funzione per il refresh
     const handleRefresh = async () => {
@@ -547,17 +583,6 @@ const Need = () => {
         setFiltri(prev => ({ ...prev, keypeople: contattoId }));
     };
 
-
-    // const handlePageChange = (newPage) => {
-    //     setPagina(newPage);
-    //     sessionStorage.setItem("paginaRecruiting", newPage);
-
-    //     if (Object.values(filtri).some(value => value)) {
-    //         handleRicerche(filtri, newPage);
-    //     } else {
-    //         fetchData(newPage);
-    //     }
-    // };
 
     const handlePageChange = (newPage) => {
         setPagina(newPage);
