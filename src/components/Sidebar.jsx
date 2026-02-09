@@ -16,6 +16,8 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { useUserTheme } from "./TorchyThemeProvider";
 import { useTranslation } from 'react-i18next';
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import {
     Box,
     Drawer,
@@ -746,100 +748,140 @@ function Sidebar() {
                 <Box sx={{ width: 250 }}>{additionalDrawerContent}</Box>
             </Popover>
 
+
+
+
             <Dialog
                 open={isLogoutPopupOpen}
                 onClose={closeLogoutPopup}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
                 PaperProps={{
-                    style: {
-                        backgroundColor: "#FEFCFD",
-                        color: theme.palette.primary.main,
-                        borderRadius: '20px',
-                        minWidth: '30vw'
+                    sx: {
+                    backgroundColor: "#FEFCFD",
+                    borderRadius: "10px",
+                    minWidth: { xs: "90vw", sm: "420px" },
+                    maxWidth: "520px",
+                    overflow: "visible",
+                    px: 3,
+                    pt: 3,
+                    pb: 2.5,
+                    boxShadow: "0 18px 50px rgba(0,0,0,0.25)",
                     },
                 }}
-            >
+                >
+                <Box
+                    sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    mt: 0.5,
+                    mb: 1.5,
+                    }}
+                >
+                <Box
+                    sx={{
+                        width: 64,
+                        height: 64,
+                        borderRadius: "999px",
+                        background: "linear-gradient(135deg, #00C800, #00A800)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        boxShadow: "0 10px 24px rgba(0,180,0,0.45)",
+                    }}
+                    >
+                    <ErrorOutlineIcon sx={{ fontSize: 34, color: "#fff" }} />
+                </Box>
+
+                </Box>
+
                 <DialogTitle
                     id="alert-dialog-title"
                     sx={{
-                        color: 'black',
-                        fontSize: "24px",
-                        textAlign: "center",
-                        fontWeight: "bold",
+                    textAlign: "center",
+                    p: 0,
+                    mb: 1,
+                    lineHeight: 1.1,
                     }}
                 >
+                    <Typography sx={{ fontSize: 30, fontWeight: 600, color: "#908f90" }}>
                     {t("Conferma Logout")}
+                    </Typography>
                 </DialogTitle>
-                <DialogContent>
+
+                <DialogContent sx={{ p: 0 }}>
                     <DialogContentText
-                        id="alert-dialog-description"
-                        sx={{
-                            color: theme.palette.text.secondary,
-                            fontSize: "18px",
-                            textAlign: "center",
-                        }}
+                    id="alert-dialog-description"
+                    sx={{
+                        textAlign: "center",
+                        color: "#908f90",
+                        fontSize: 16,
+                        px: 1,
+                    }}
                     >
-                        {t('Sei sicuro di voler effettuare il logout?')}
+                    {t("Sei sicuro di voler effettuare il logout?")}
                     </DialogContentText>
                 </DialogContent>
-                <DialogActions>
-                    <Box
-                        sx={{
-                            width: '100%',
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            flexDirection: "row",
-                            marginBottom: "1em",
-                            gap: 5
-                        }}
+
+                <DialogActions
+                    sx={{
+                    position: "relative",
+                    mt: 3,
+                    p: 0,
+                    justifyContent: "center",
+                    minHeight: 56,
+                    }}
+                >
+                    <Button
+                    onClick={closeLogoutPopup}
+                    variant="text"
+                    sx={{
+                        textTransform: "none",
+                        color: "#908f90",
+                        fontSize: 16,
+                        px: 2,
+                        position: "absolute",
+                        right: 50,
+                        "&:hover": { backgroundColor: "transparent", color: "#777777" },
+                    }}
                     >
-                        <Button
-                            onClick={closeLogoutPopup}
-                            variant="contained"
-                            sx={{
-                                borderRadius: '10px',
-                                width: '10em',
-                                bgcolor: "#bfbfbf",
-                                color: "white",
-                                "&:hover": {
-                                    transform: "scale(1.05)",
-                                    bgcolor: "#8e8e8e",
-                                    color: "white",
-                                },
-                            }}
-                        >
-                            {t('Annulla')}
-                        </Button>
-                        <Button
-                            onClick={handleLogout}
-                            variant="contained"
-                            sx={{
-                                borderRadius: '10px',
-                                width: '10em',
-                                bgcolor: "#ea333f",
-                                color: "white",
-                                "&:hover": {
-                                    bgcolor: "#db000e",
-                                    color: "white",
-                                    transform: "scale(1.05)",
-                                },
-                            }}
-                            autoFocus
-                        >
-                            {t('Conferma')}
-                        </Button>
-                    </Box>
+                    {t("Cancel")}
+                    </Button>
+
+                    <Button
+                    onClick={handleLogout}
+                    variant="contained"
+                    endIcon={<ArrowForwardIcon />}
+                    autoFocus
+                    sx={{
+                        position: "absolute",
+                        right: -60,
+                        textTransform: "none",
+                        borderRadius: "12px",
+                        px: 2.5,
+                        py: 1.2,
+                        fontSize: 16,
+                        color: 'white',
+                        bgcolor: "#00B400",
+                        boxShadow: `
+                                0 6px 12px rgba(0, 180, 0, 0.25),
+                                0 14px 28px rgba(0, 180, 0, 0.18)
+                            `,
+                        "&:hover": {
+                        bgcolor: "#019301",
+                        transform: "translateY(-1px)",
+                        boxShadow: `
+                            0 6px 12px rgba(0, 180, 0, 0.25),
+                            0 14px 28px rgba(0, 180, 0, 0.18)
+                        `,
+                        },
+                    }}
+                    >
+                    {t("Yes")}
+                    </Button>
                 </DialogActions>
             </Dialog>
 
-            {/* <AppuntamentoModal
-            open={appuntamentoModal}
-            handleClose={closeAppuntamentoModal}
-        /> */}
-
-            {/* <EmailModal open={emailModal} handleClose={closeEmailModal} /> */}
         </Box>
     );
 }

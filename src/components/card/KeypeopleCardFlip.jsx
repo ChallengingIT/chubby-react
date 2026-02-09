@@ -825,14 +825,16 @@ const handleEditAzione = (azione) => {
                                     zIndex: 3,
                                     }}
                                 >
-                                    {/* {t("Seleziona Data")} */}
                                 </span>
 
                                 <DatePicker
                                     value={values.data}
                                     onChange={(dateObj) => handleValueChange("data", dateObj)}
                                     format="YYYY-MM-DD HH:mm"
-                                    showTime={{ format: "HH:mm" }}
+                                    showTime={{ format: "HH:mm", needConfirm: false }}
+                                    onCalendarChange={(dateObj) => {
+                                        handleValueChange("data", dateObj);
+                                    }}
                                     onFocus={() => setFocusedDateTime(true)}
                                     onBlur={() => setFocusedDateTime(false)}
 
