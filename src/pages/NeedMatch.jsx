@@ -620,7 +620,7 @@ const NeedMatch = () => {
             const idCandidato = row;
             const url = `http://localhost:8080/associazioni/react/rimuovi/candidato/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
             const responseDeleteAssociati = await axios.delete(url, {
-                headers: headers,
+                headers,
             });
             fetchData();
         } catch (error) {
@@ -633,7 +633,7 @@ const NeedMatch = () => {
             const idAssociazione = row;
             const url = `http://localhost:8080/associazioni/react/rimuovi/associa/${idAssociazione}`;
             const responseDeleteStorico = await axios.delete(url, {
-                headers: headers,
+                headers,
             });
             fetchData();
         } catch (error) {
@@ -646,7 +646,7 @@ const NeedMatch = () => {
             const idNeed = parseInt(id);
             const idCandidato = row.id;
             const url = `http://localhost:8080/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
-            const responseAssocia = await axios.post(url, { headers: headers });
+            const responseAssocia = await axios.post(url, null, { headers });
             fetchData();
         } catch (error) {
             console.error("Errore durante il recuper dei dati: ", error);
