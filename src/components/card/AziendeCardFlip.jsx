@@ -109,30 +109,54 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard, onRefresh }) => {
         },
     };
 
+    // const cardStyle = {
+    //     transformStyle: "preserve-3d",
+    //     transition: "transform 0.6s",
+    //     transform: isFlipped ? "rotateY(180deg)" : mezzoFlip ? "rotateY(40deg)" : "none",
+    //     width: "100%",
+    //     perspective: "1000px",
+    //     borderRadius: "20px",
+    //     display: "flex",
+    //     minHeight: "16em",
+    // };
+
     const cardStyle = {
+        position: "relative",
         transformStyle: "preserve-3d",
+        WebkitTransformStyle: "preserve-3d",
         transition: "transform 0.6s",
-        transform: isFlipped ? "rotateY(180deg)" : mezzoFlip ? "rotateY(40deg)" : "none",
+        transform: isFlipped
+            ? "rotateY(180deg)"
+            : mezzoFlip
+            ? "rotateY(40deg)"
+            : "rotateY(0deg)",
         width: "100%",
-        perspective: "1000px",
         borderRadius: "20px",
         display: "flex",
         minHeight: "16em",
     };
 
-    const cardFrontStyle = {
+    const faceCommon = {
+        position: "absolute",
+        inset: 0,
+        width: "100%",
+        height: "100%",
         backfaceVisibility: "hidden",
+        WebkitBackfaceVisibility: "hidden",
+        transformStyle: "preserve-3d",
+        WebkitTransformStyle: "preserve-3d",
+    };
+
+    const cardFrontStyle = {
+        ...faceCommon,
+        transform: "rotateY(0deg)",
     };
 
     const cardBackStyle = {
-        backfaceVisibility: "hidden",
+        ...faceCommon,
         transform: "rotateY(180deg)",
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
     };
+
 
     //animazione fade delle card
     const fadeInVariants = {
@@ -310,24 +334,27 @@ const AziendeCardFlip = ({ valori, onDelete, isFirstCard, onRefresh }) => {
                                     IDA: {text}
                                 </Typography>
                             </Box>
+                            {!isFlipped && (
                             <Box
                                 sx={{
-                                    position: "absolute",
-                                    bottom: 0,
-                                    right: 0,
-                                    display: "flex",
-                                    justifyContent: "flex-end",
-                                    alignItems: "end",
-                                    paddingRight: "16px",
-                                    paddingBottom: "16px",
+                                position: "absolute",
+                                bottom: 0,
+                                right: 0,
+                                display: "flex",
+                                justifyContent: "flex-end",
+                                alignItems: "end",
+                                paddingRight: "16px",
+                                paddingBottom: "16px",
                                 }}
                             >
                                 <img
-                                    src={`data:image/png;base64,${valori.logo}`}
-                                    alt="Logo"
-                                    style={{ width: "80px", height: "80px", borderRadius: "50%" }}
+                                src={`data:image/png;base64,${valori.logo}`}
+                                alt="Logo"
+                                style={{ width: "80px", height: "80px", borderRadius: "50%" }}
                                 />
                             </Box>
+                            )}
+
                         </Box>
                     </CardContent>
                 </div>

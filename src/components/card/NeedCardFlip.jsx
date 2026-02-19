@@ -217,28 +217,40 @@ const NeedCardFlip = ({ valori, statoOptions, onDelete, onRefresh, isFirstCard }
     };
 
     const cardStyle = {
-        transformStyle: 'preserve-3d',
-        transition: 'transform 0.6s',
-        transform: isFlipped ? "rotateY(180deg)" : mezzoFlip ? "rotateY(40deg)" : "none",
-        width: '100%',
-        perspective: '1000px',
-        borderRadius: '20px',
-        display: 'flex',
-        minHeight: '18em',
+        position: "relative",
+        transformStyle: "preserve-3d",
+        WebkitTransformStyle: "preserve-3d",
+        transition: "transform 0.6s",
+        transform: isFlipped
+            ? "rotateY(180deg)"
+            : mezzoFlip
+            ? "rotateY(40deg)"
+            : "rotateY(0deg)",
+        width: "100%",
+        borderRadius: "20px",
+        display: "flex",
+        minHeight: "16em",
+    };
+
+    const faceCommon = {
+        position: "absolute",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        backfaceVisibility: "hidden",
+        WebkitBackfaceVisibility: "hidden",
+        transformStyle: "preserve-3d",
+        WebkitTransformStyle: "preserve-3d",
     };
 
     const cardFrontStyle = {
-        backfaceVisibility: 'hidden',
+        ...faceCommon,
+        transform: "rotateY(0deg)",
     };
 
     const cardBackStyle = {
-        backfaceVisibility: 'hidden',
-        transform: 'rotateY(180deg)',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
+        ...faceCommon,
+        transform: "rotateY(180deg)",
     };
 
     const prioritaOptions = [
@@ -384,20 +396,26 @@ const NeedCardFlip = ({ valori, statoOptions, onDelete, onRefresh, isFirstCard }
                                         Owner Operativo: {valori?.ownerRecruiter?.descrizione || "N/A"}
                                     </Typography>
                                 </Box>
-                                <Box sx={{
-                                    position: 'absolute',
+                                {!isFlipped && (
+                                <Box
+                                    sx={{
+                                    position: "absolute",
                                     bottom: 0,
                                     right: 0,
-                                    display: 'flex',
-                                    justifyContent: 'flex-end',
-                                    alignItems: 'end',
-                                    paddingRight: '16px',
-                                    paddingBottom: '16px'
-                                }}>
-                                    {/* <Typography variant="h6" color="text.primary" sx={{ color: 'black', fontWeight: 'bold', display: 'flex', mr: 1, mt: 2 }}>{valori.cliente.denominazione}</Typography> */}
-                                    <img src={`data:image/png;base64,${valori.cliente.logo}`} alt="Logo" style={{ width: '80px', height: '80px', borderRadius: '50%' }} />
-
+                                    display: "flex",
+                                    justifyContent: "flex-end",
+                                    alignItems: "end",
+                                    paddingRight: "16px",
+                                    paddingBottom: "16px",
+                                    }}
+                                >
+                                    <img
+                                    src={`data:image/png;base64,${valori.logo}`}
+                                    alt="Logo"
+                                    style={{ width: "80px", height: "80px", borderRadius: "50%" }}
+                                    />
                                 </Box>
+                                )}
                             </Box>
                         </CardContent>
                     </div>
