@@ -17,6 +17,7 @@ import TabellaCandidati                   from "../components/Tabelle/TabellaCan
 import DialogDelete                       from "../components/dialog/DialogDelete.jsx";
 import qs from "qs";
 
+import BASE_URL from '../api/apiConfig';
 import {
   Dialog,
   DialogTitle,
@@ -172,7 +173,7 @@ const Recruiting = () => {
   useEffect(() => {
     const fetchSkills = async () => {
 
-      const responseAree = await axios.get("http://localhost:8080/staffing/react/areas", { headers: headers });
+      const responseAree = await axios.get(`${BASE_URL}staffing/react/areas`, { headers: headers });
 
       let groupedSkills = [];
 
@@ -186,7 +187,7 @@ const Recruiting = () => {
 
           try {
             const responseSkillByArea = await axios.get(
-              `http://localhost:8080/staffing/react/skill/${area.id}`,
+              `${BASE_URL}staffing/react/skill/${area.id}`,
               { headers: headers }
             );
 
@@ -228,19 +229,19 @@ const fetchData = async (paginaCorrente = pagina) => {
 
     try {
       const response = await axios.get(
-        "http://localhost:8080/staffing/react/mod",
+        `${BASE_URL}staffing/react/mod`,
         { headers: headers, params: filtriDaInviare }
       );
       const responseTipologia = await axios.get(
-        "http://localhost:8080/aziende/react/tipologia",
+        `${BASE_URL}aziende/react/tipologia`,
         { headers }
       );
       const responseTipo = await axios.get(
-        "http://localhost:8080/staffing/react/tipo",
+        `${BASE_URL}staffing/react/tipo`,
         { headers }
       );
       const responseStato = await axios.get(
-        "http://localhost:8080/staffing/react/stato/candidato",
+        `${BASE_URL}staffing/react/stato/candidato`,
         { headers }
       );
 
@@ -351,8 +352,8 @@ const fetchData = async (paginaCorrente = pagina) => {
     );
 
     const url = filtriAttivi
-      ? "http://localhost:8080/staffing/react/mod/ricerca"
-      : "http://localhost:8080/staffing/react/mod";
+      ? `${BASE_URL}staffing/react/mod/ricerca`
+      : `${BASE_URL}staffing/react/mod`;
 
     const filtriDaInviare = {
       nome: currentFilters.nome || null,
@@ -476,7 +477,7 @@ const handleRicerche = async (
 
   try {
     const response = await axios.get(
-      "http://localhost:8080/staffing/react/mod/ricerca",
+      `${BASE_URL}staffing/react/mod/ricerca`,
       {
         headers,
         params,
@@ -532,7 +533,7 @@ const handlePageChange = async (newPage) => {
   const handleDelete = async () => {
     try {
       const responseDelete = await axios.delete(
-        `http://localhost:8080/staffing/elimina/${deleteId}`,
+        `${BASE_URL}staffing/elimina/${deleteId}`,
         { headers: headers }
       );
       setOpenDialog(false);
@@ -576,7 +577,7 @@ const handlePageChange = async (newPage) => {
 
 
   const handleDownloadCV = async (idFile, fileDescrizione) => {
-    const url = `http://localhost:8080/files/react/download/file/${idFile}`;
+    const url = `${BASE_URL}files/react/download/file/${idFile}`;
     try {
       const responseDownloadCV = await axios({
         method: "GET",
@@ -656,7 +657,7 @@ const handlePageChange = async (newPage) => {
   const handleDownloadCF = async (idCandidato, nomeCandidato, cognomeCandidato, tipo) => {
     try {
       setLoadingCF(true);
-      const downloadUrl = `http://localhost:8080/files/download/cf/${idCandidato}`;
+      const downloadUrl = `${BASE_URL}files/download/cf/${idCandidato}`;
       const params = new URLSearchParams({ tipo });
 
       const res = await axios({
@@ -732,7 +733,7 @@ const handlePageChange = async (newPage) => {
     const params = new URLSearchParams({ stato: idStato });
     try {
       const responseUpdateStato = await axios.post
-        (`http://localhost:8080/staffing/react/salva/stato/${idCandidato}?${params.toString()}`, {}, { headers: headers });
+        (`${BASE_URL}staffing/react/salva/stato/${idCandidato}?${params.toString()}`, {}, { headers: headers });
       setModalCambiaStato(false);
       fetchData();
       handleOpenSnackbar(t('Stato aggiornato con successo!'), 'success');

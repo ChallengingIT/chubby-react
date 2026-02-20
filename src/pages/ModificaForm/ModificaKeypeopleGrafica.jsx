@@ -15,6 +15,7 @@ import CustomEmailFieldModfifica from '../../components/fields/CustomEmailFieldM
 import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from '@mui/material';
 import { useUserTheme } from "../../components/TorchyThemeProvider";
+import BASE_URL from '../../api/apiConfig';
 
 
 const ModificaKeypeopleGrafica = () => {
@@ -74,14 +75,14 @@ const ModificaKeypeopleGrafica = () => {
                 const username = user?.username;
 
                 const responseAziendeUrl = userHasRole("ADMIN")
-                    ? "http://localhost:8080/aziende/react/select"
-                    : `http://localhost:8080/aziende/react/select/${username}`;
+                    ? `${BASE_URL}aziende/react/select`
+                    : `${BASE_URL}aziende/react/select/${username}`;
 
 
-                const keypeopleResponse = await axios.get(`http://localhost:8080/keypeople/react/${id}`, { headers: headers });
+                const keypeopleResponse = await axios.get(`${BASE_URL}keypeople/react/${id}`, { headers: headers });
                 const aziendeResponse = await axios.get(responseAziendeUrl, { headers: headers });
-                //const ownerResponse   = await axios.get("http://localhost:8080/owner",        { headers: headers });
-                const statiResponse = await axios.get("http://localhost:8080/keypeople/react/stati", { headers: headers });
+                //const ownerResponse   = await axios.get(`${BASE_URL}owner`,        { headers: headers });
+                const statiResponse = await axios.get(`${BASE_URL}keypeople/react/stati`, { headers: headers });
 
                 if (Array.isArray(statiResponse.data)) {
                     const statiOptions = statiResponse.data.map((stati) => ({
@@ -94,7 +95,7 @@ const ModificaKeypeopleGrafica = () => {
                 }
 
                 const ownerResponse = await axios.get(
-                    `http://localhost:8080/owner/${username}`,
+                    `${BASE_URL}owner/${username}`,
                     { headers: headers }
                 );
 
@@ -224,7 +225,7 @@ const ModificaKeypeopleGrafica = () => {
     const verifyEmail = async (email) => {
         try {
             const emailResponse = await axios.get(
-                `http://localhost:8080/keypeople/${email}`,
+                `${BASE_URL}keypeople/${email}`,
                 { headers: headers }
             );
             if (emailResponse.data === "KO") {
@@ -281,7 +282,7 @@ const ModificaKeypeopleGrafica = () => {
 
                 values.username = user.username;
 
-                const response = await axios.post("http://localhost:8080/keypeople/react/salva", values, {
+                const response = await axios.post(`${BASE_URL}keypeople/react/salva`, values, {
                     params: { username: user?.username || null },
                     headers: headers
                 });

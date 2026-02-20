@@ -3,6 +3,7 @@ import { useNavigate, useLocation, useParams }      from "react-router-dom";
 import { Button, Box, Typography }                                   from "@mui/material";
 import IntervistaBox                                from "../../components/IntervistaBox";
 import axios from "axios";
+import BASE_URL from '../../api/apiConfig';
 
 const DettaglioIntervista = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const DettaglioIntervista = () => {
 
   const fetchData = async () => {
     try{
-      const responseCandidato                      = await axios.get(`http://localhost:8080/staffing/react/${candidatoID}`            , { headers: headers }); //questo è il candidato
+      const responseCandidato                      = await axios.get(`${BASE_URL}staffing/react/${candidatoID}`            , { headers: headers }); //questo è il candidato
       if (responseCandidato.data && typeof responseCandidato.data === 'object' && !Array.isArray(responseCandidato.data)) {
         setCandidato(responseCandidato.data);
     } else {

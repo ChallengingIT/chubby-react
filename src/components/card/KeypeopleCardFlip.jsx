@@ -25,6 +25,7 @@ import "dayjs/locale/it";
 
 
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Alert, Stack, Pagination, Popover, Slide, Dialog, DialogTitle, DialogContent, DialogActions, Checkbox } from '@mui/material';
+import BASE_URL from '../../api/apiConfig';
 import {
     Card,
     CardContent,
@@ -222,7 +223,7 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
 
     const azioniKeypeople = async (id, event) => {
         try {
-            const responseAzioni = await axios.get(`http://localhost:8080/azioni/react/${id}`, { headers: headers });
+            const responseAzioni = await axios.get(`${BASE_URL}azioni/react/${id}`, { headers: headers });
             if (Array.isArray(responseAzioni.data)) {
                 const azioni = responseAzioni.data.map((azione) => ({ ...azione }));
                 setAzioni(azioni);
@@ -246,7 +247,7 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
             quantita: 10
         };
         try {
-            const responseNeed = await axios.get(`http://localhost:8080/need/react/keypeople/modificato/${id}`, { headers: headers, params: datiDaInviare });
+            const responseNeed = await axios.get(`${BASE_URL}need/react/keypeople/modificato/${id}`, { headers: headers, params: datiDaInviare });
             if (Array.isArray(responseNeed.data)) {
                 const needDaAssociare = responseNeed.data.map((keypeople) => ({ ...keypeople }));
                 setNeedAssociati(needDaAssociare);
@@ -266,7 +267,7 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
             quantita: 10
         };
         try {
-            const responseNeed = await axios.get(`http://localhost:8080/need/react/keypeople/modificato/${id}`, { headers: headers, params: datiDaInviare });
+            const responseNeed = await axios.get(`${BASE_URL}need/react/keypeople/modificato/${id}`, { headers: headers, params: datiDaInviare });
             if (Array.isArray(responseNeed.data)) {
                 const needDaAssociare = responseNeed.data.map((keypeople) => ({ ...keypeople }));
                 setNeedAssociati(needDaAssociare);
@@ -287,7 +288,7 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
 
     const azioniData = async (id, event) => {
         try {
-            const responseAzioni = await axios.get(`http://localhost:8080/azioni/react/tipologie`, { headers: headers });
+            const responseAzioni = await axios.get(`${BASE_URL}azioni/react/tipologie`, { headers: headers });
             if (Array.isArray(responseAzioni.data)) {
                 setTipologieOptions(responseAzioni.data.map((tipologie) => ({ label: tipologie.descrizione, value: tipologie.id })));
             } else {
@@ -314,7 +315,7 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
         const username = user?.username || null;
         const params = new URLSearchParams({ stato: idStato, username: username });
         try {
-            const responseUpdateStato = await axios.post(`http://localhost:8080/keypeople/react/salva/stato/${idKeypeople}?${params.toString()}`, {}, { headers: headers });
+            const responseUpdateStato = await axios.post(`${BASE_URL}keypeople/react/salva/stato/${idKeypeople}?${params.toString()}`, {}, { headers: headers });
             setModalCambiaStato(false);
             onRefresh();
             handleOpenSnackbar(t('Stato aggiornato con successo!'), 'success');
@@ -455,7 +456,7 @@ const KeypeopleCardFlip = ({ valori, statiOptions, onDelete, onRefresh, isFirstC
 
         try {
             const response = await axios.post(
-                `http://localhost:8080/azioni/react/salva/${idKeyPeople}`,
+                `${BASE_URL}azioni/react/salva/${idKeyPeople}`,
                 valoriDaInviare,
                 { headers: headers }
             );
@@ -513,7 +514,7 @@ const handleEditAzione = (azione) => {
             };
 
             const response = await axios.post(
-                `http://localhost:8080/azioni/react/salva/${valori.id}`,
+                `${BASE_URL}azioni/react/salva/${valori.id}`,
                 body,
                 { headers: headers }
             );
@@ -543,7 +544,7 @@ const handleEditAzione = (azione) => {
     const confirmDeleteAzione = async () => {
         try {
             const response = await axios.delete(
-                `http://localhost:8080/azioni/react/elimina/${azioneDaEliminare}`,
+                `${BASE_URL}azioni/react/elimina/${azioneDaEliminare}`,
                 { headers: headers }
             );
             if (response.data === "OK") {

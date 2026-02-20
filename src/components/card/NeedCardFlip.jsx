@@ -41,6 +41,7 @@ import {
 
 } from '@mui/material';
 import { useUserTheme } from '../TorchyThemeProvider';
+import BASE_URL from '../../api/apiConfig';
 
 const NeedCardFlip = ({ valori, statoOptions, onDelete, onRefresh, isFirstCard }) => {
 
@@ -94,7 +95,7 @@ const NeedCardFlip = ({ valori, statoOptions, onDelete, onRefresh, isFirstCard }
         event.stopPropagation();
         try {
             const response = await axios.post(
-                `http://localhost:8080/need/clona`,
+                `${BASE_URL}need/clona`,
                 null,
                 {
                     params: { id: idNeed },
@@ -177,7 +178,7 @@ const NeedCardFlip = ({ valori, statoOptions, onDelete, onRefresh, isFirstCard }
         const priorita = values.priorita;
         const params = new URLSearchParams({ stato: idStato, priorita: priorita });
         try {
-            const responseUpdateStato = await axios.post(`http://localhost:8080/need/react/salva/stato/${idNeed}?${params.toString()}`, {}, { headers: headers });
+            const responseUpdateStato = await axios.post(`${BASE_URL}need/react/salva/stato/${idNeed}?${params.toString()}`, {}, { headers: headers });
             setModalStato(false);
             onRefresh();
             if (responseUpdateStato.data === "ERRORE") {

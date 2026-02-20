@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useUserTheme } from '../TorchyThemeProvider';
 import CustomDatePickerAggiungi from '../fields/CustomDatePickerAggiungi';
 import axios from 'axios';
+import BASE_URL from '../../api/apiConfig';
 
 const Shortlist = ({ idNeed }) => {
   const theme = useUserTheme();
@@ -21,7 +22,7 @@ const Shortlist = ({ idNeed }) => {
     const fetchData = async () => {
       try {
         const responseShortlist = await axios.get(
-          `http://localhost:8080/need/react/${idNeed}`,
+          `${BASE_URL}need/react/${idNeed}`,
           { headers: headers }
         );
         const dataShortlist = responseShortlist.data?.candidati || [];
@@ -44,7 +45,7 @@ const Shortlist = ({ idNeed }) => {
 
     try {
       const responseRating = await axios.post(
-        'http://localhost:8080/staffing/salva/rating',
+        `${BASE_URL}staffing/salva/rating`,
         null, // il corpo della richiesta è nullo, dato che stiamo usando i parametri di query
         {
           headers: headers,

@@ -18,6 +18,7 @@ import IntervisteModalButton from "../components/button/IntervisteModalButton.js
 import IntervisteModal from "../components/modal/IntervisteModal.jsx";
 import { motion } from "framer-motion";
 import TabellaCandidati from "../components/Tabelle/TabellaCandidati.jsx";
+import BASE_URL from '../api/apiConfig';
 
 
 const NeedMatch = () => {
@@ -156,31 +157,31 @@ const NeedMatch = () => {
         };
         try {
             const candidatiResponse = await axios.get(
-                `http://localhost:8080/need/react/match/associabili/mod/${id}`,
+                `${BASE_URL}need/react/match/associabili/mod/${id}`,
                 { headers: headers, params: filtriCandidati }
             );
             const storicoResponse = await axios.get(
-                `http://localhost:8080/need/react/storico/${id}`,
+                `${BASE_URL}need/react/storico/${id}`,
                 { headers: headers, params: paginazione }
             );
             const associatiResponse = await axios.get(
-                `http://localhost:8080/need/react/match/associati/mod/${id}`,
+                `${BASE_URL}need/react/match/associati/mod/${id}`,
                 { headers: headers, params: paginazione }
             );
             const responseTipologia = await axios.get(
-                "http://localhost:8080/aziende/react/tipologia",
+                `${BASE_URL}aziende/react/tipologia`,
                 { headers: headers }
             );
             const responseTipo = await axios.get(
-                "http://localhost:8080/staffing/react/tipo",
+                `${BASE_URL}staffing/react/tipo`,
                 { headers: headers }
             );
             /* const ownerResponse = await axios.get(
-                "http://localhost:8080/owner",
+                `${BASE_URL}owner`,
                 { headers: headers }
             ); */
             const statoResponse = await axios.get(
-                "http://localhost:8080/associazioni/react/stati",
+                `${BASE_URL}associazioni/react/stati`,
                 { headers: headers }
             );
 
@@ -189,8 +190,8 @@ const NeedMatch = () => {
             const username = user?.username;
 
             const ownerUrl = userHasRole('ADMIN')
-                    ? "http://localhost:8080/owner"
-                    : `http://localhost:8080/owner/${username}`;
+                    ? `${BASE_URL}owner`
+                    : `${BASE_URL}owner/${username}`;
 
             const ownerResponse = await axios.get(ownerUrl, { headers });
 
@@ -292,8 +293,8 @@ const NeedMatch = () => {
 
         const url =
           filtriAttivi || poolAttivo
-            ? `http://localhost:8080/need/react/match/associabili/ricerca/mod/${id}`
-            : `http://localhost:8080/need/react/match/associabili/mod/${id}`;
+            ? `${BASE_URL}need/react/match/associabili/ricerca/mod/${id}`
+            : `${BASE_URL}need/react/match/associabili/mod/${id}`;
 
         const filtriCandidati = {
             nome: filtri.nome || null,
@@ -330,7 +331,7 @@ const NeedMatch = () => {
 
         try {
             const storicoResponse = await axios.get(
-                `http://localhost:8080/need/react/storico/${id}`,
+                `${BASE_URL}need/react/storico/${id}`,
                 { headers: headers, params: paginazione }
             );
             // const { recordStorico, storico } = storicoResponse.data;
@@ -372,7 +373,7 @@ const NeedMatch = () => {
         };
         try {
             const associatiResponse = await axios.get(
-                `http://localhost:8080/need/react/match/associati/mod/${id}`,
+                `${BASE_URL}need/react/match/associati/mod/${id}`,
                 { headers: headers, params: paginazione }
             );
             // const { recordAssociati, associati } = associatiResponse.data;
@@ -476,31 +477,31 @@ const NeedMatch = () => {
 
         try {
             const candidatiResponse = await axios.get(
-                `http://localhost:8080/need/react/match/associabili/ricerca/mod/${id}`,
+                `${BASE_URL}need/react/match/associabili/ricerca/mod/${id}`,
                 { headers: headers, params: filtriCandidati }
             );
             const storicoResponse = await axios.get(
-                `http://localhost:8080/need/react/storico/${id}`,
+                `${BASE_URL}need/react/storico/${id}`,
                 { headers: headers, params: paginazione }
             );
             const associatiResponse = await axios.get(
-                `http://localhost:8080/need/react/match/associati/mod/${id}`,
+                `${BASE_URL}need/react/match/associati/mod/${id}`,
                 { headers: headers, params: paginazione }
             );
             const responseTipologia = await axios.get(
-                "http://localhost:8080/aziende/react/tipologia",
+                `${BASE_URL}aziende/react/tipologia`,
                 { headers: headers }
             );
             const responseTipo = await axios.get(
-                "http://localhost:8080/staffing/react/tipo",
+                `${BASE_URL}staffing/react/tipo`,
                 { headers: headers }
             );
             /* const ownerResponse = await axios.get(
-                "http://localhost:8080/owner",
+                `${BASE_URL}owner`,
                 { headers: headers }
             ); */
             const statoResponse = await axios.get(
-                "http://localhost:8080/associazioni/react/stati",
+                `${BASE_URL}associazioni/react/stati`,
                 { headers: headers }
             );
 
@@ -509,7 +510,7 @@ const NeedMatch = () => {
                 const username = user?.username;
 
                 const ownerResponse = await axios.get(
-                `http://localhost:8080/owner/${username}`,
+                `${BASE_URL}owner/${username}`,
                 { headers: headers }
                 );
 
@@ -618,7 +619,7 @@ const NeedMatch = () => {
         try {
             const idNeed = parseInt(id);
             const idCandidato = row;
-            const url = `http://localhost:8080/associazioni/react/rimuovi/candidato/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
+            const url = `${BASE_URL}associazioni/react/rimuovi/candidato/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
             const responseDeleteAssociati = await axios.delete(url, {
                 headers,
             });
@@ -631,7 +632,7 @@ const NeedMatch = () => {
     const handleDeleteStorico = async (row) => {
         try {
             const idAssociazione = row;
-            const url = `http://localhost:8080/associazioni/react/rimuovi/associa/${idAssociazione}`;
+            const url = `${BASE_URL}associazioni/react/rimuovi/associa/${idAssociazione}`;
             const responseDeleteStorico = await axios.delete(url, {
                 headers,
             });
@@ -645,7 +646,7 @@ const NeedMatch = () => {
         try {
             const idNeed = parseInt(id);
             const idCandidato = row.id;
-            const url = `http://localhost:8080/associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
+            const url = `${BASE_URL}associazioni/react/associa?idNeed=${idNeed}&idCandidato=${idCandidato}`;
             const responseAssocia = await axios.post(url, null, { headers });
             fetchData();
         } catch (error) {
@@ -706,7 +707,7 @@ const NeedMatch = () => {
             delete updateValues.cliente;
 
             const response = await axios.post(
-                `http://localhost:8080/associazioni/salva`,
+                `${BASE_URL}associazioni/salva`,
                 updateValues,
                 { headers: headers }
             );
@@ -719,7 +720,7 @@ const NeedMatch = () => {
 
 
     const handleDownloadCV = async (idFile, fileDescrizione) => {
-        const url = `http://localhost:8080/files/react/download/file/${idFile}`;
+        const url = `${BASE_URL}files/react/download/file/${idFile}`;
         try {
             const responseDownloadCV = await axios({
                 method: 'GET',
@@ -741,7 +742,7 @@ const NeedMatch = () => {
 
     const handleModalIntervista = async (idCandidato) => {
         try {
-            const responseIntervista = await axios.get(`http://localhost:8080/intervista/ultima/${idCandidato}`, {
+            const responseIntervista = await axios.get(`${BASE_URL}intervista/ultima/${idCandidato}`, {
                 headers: headers
             });
             setSelectedIntervista(responseIntervista.data);

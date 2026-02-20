@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from '@mui/material';
 import { useUserTheme } from "../../components/TorchyThemeProvider";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import BASE_URL from '../../api/apiConfig';
 
 
 
@@ -77,20 +78,20 @@ const AggiungiNeedGrafica = () => {
                 const username = user?.username;
 
                 const aziendaInternaUrl = userHasRole("ADMIN")
-                    ? "http://localhost:8080/gestione/aziende/interne"
-                    : `http://localhost:8080/gestione/aziende/interne/${username}`;
+                    ? `${BASE_URL}gestione/aziende/interne`
+                    : `${BASE_URL}gestione/aziende/interne/${username}`;
 
                 const responseAziendeUrl = userHasRole("ADMIN")
-                    ? "http://localhost:8080/aziende/react/select"
-                    : `http://localhost:8080/aziende/react/select/${username}`;
+                    ? `${BASE_URL}aziende/react/select`
+                    : `${BASE_URL}aziende/react/select/${username}`;
 
 
                 const responseAziende = await axios.get(responseAziendeUrl, { headers: headers });
-                //const ownerResponse = await axios.get("http://localhost:8080/owner", { headers: headers });
-                const tipologiaResponse = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
-                const statoResponse = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
+                //const ownerResponse = await axios.get(`${BASE_URL}owner`, { headers: headers });
+                const tipologiaResponse = await axios.get(`${BASE_URL}need/react/tipologia`, { headers: headers });
+                const statoResponse = await axios.get(`${BASE_URL}need/react/stato`, { headers: headers });
                 const aziendaInternaResponse = await axios.get(aziendaInternaUrl, { headers: headers });
-                const responseAree = await axios.get("http://localhost:8080/staffing/react/areas", { headers });
+                const responseAree = await axios.get(`${BASE_URL}staffing/react/areas`, { headers });
 
                 let groupedSkills = [];
 
@@ -127,8 +128,8 @@ const AggiungiNeedGrafica = () => {
                 }
 
                 const ownerUrl = userHasRole('ADMIN')
-                    ? "http://localhost:8080/owner"
-                    : `http://localhost:8080/owner/${username}`;
+                    ? `${BASE_URL}owner`
+                    : `${BASE_URL}owner/${username}`;
 
                 const ownerResponse = await axios.get(ownerUrl, { headers });
 
@@ -153,7 +154,7 @@ const AggiungiNeedGrafica = () => {
                         try {
                             // Skill per area
                             const responseSkillByArea = await axios.get(
-                                `http://localhost:8080/staffing/react/skill/${area.id}`,
+                                `${BASE_URL}staffing/react/skill/${area.id}`,
                                 { headers }
                             );
 
@@ -215,7 +216,7 @@ const AggiungiNeedGrafica = () => {
                 const username = user?.username;
                 const headers = { Authorization: `Bearer ${user?.token}` };
 
-                const response = await axios.get(`http://localhost:8080/gestione/aziende/interne/${username}`, { headers });
+                const response = await axios.get(`${BASE_URL}gestione/aziende/interne/${username}`, { headers });
 
                 const aziendaUtente = response.data;
 
@@ -342,7 +343,7 @@ const AggiungiNeedGrafica = () => {
 
     const fetchKeypeopleOptions = async (aziendaConId) => {
         try {
-            const responseKeypeople = await axios.get(`http://localhost:8080/keypeople/react/azienda/${aziendaConId}`, { headers: headers });
+            const responseKeypeople = await axios.get(`${BASE_URL}keypeople/react/azienda/${aziendaConId}`, { headers: headers });
             const keypeopleOptions = responseKeypeople.data.map(keypeople => ({
                 value: keypeople.id,
                 label: keypeople.nome
@@ -451,7 +452,7 @@ const AggiungiNeedGrafica = () => {
                 values.noteRicercaToggle = values.noteRicercaToggle || null;
 
                 const responseSaveNeed = await axios.post(
-                    "http://localhost:8080/need/react/salva",
+                    `${BASE_URL}need/react/salva`,
                     values,
                     {
                         params: { skill1: skills, username: username },

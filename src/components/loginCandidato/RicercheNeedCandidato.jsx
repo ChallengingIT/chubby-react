@@ -4,6 +4,7 @@ import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import axios from "axios";
 import { useUserTheme } from "../TorchyThemeProvider";
 import { useTranslation } from 'react-i18next';
+import BASE_URL from '../../api/apiConfig';
 import {
     Box,
     FormControl,
@@ -39,7 +40,7 @@ function RicercheNeedCandidato({
         if (aziendaId) {
             try {
                 const response = await axios.get(
-                    `http://localhost:8080/keypeople/react/azienda/${aziendaId}`
+                    `${BASE_URL}keypeople/react/azienda/${aziendaId}`
                 );
                 setContactOptions(
                     response.data.map((keyPeople) => ({

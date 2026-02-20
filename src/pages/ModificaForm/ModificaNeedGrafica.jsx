@@ -15,6 +15,7 @@ import { useUserTheme } from '../../components/TorchyThemeProvider';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from '@mui/material';
+import BASE_URL from '../../api/apiConfig';
 
 
 const ModificaNeedGrafica = () => {
@@ -73,22 +74,22 @@ const ModificaNeedGrafica = () => {
                 const username = user?.username;
 
                 const aziendaInternaUrl = userHasRole("ADMIN")
-                    ? "http://localhost:8080/gestione/aziende/interne"
-                    : `http://localhost:8080/gestione/aziende/interne/${username}`;
+                    ? `${BASE_URL}gestione/aziende/interne`
+                    : `${BASE_URL}gestione/aziende/interne/${username}`;
 
                 const responseAziendeUrl = userHasRole("ADMIN")
-                    ? "http://localhost:8080/aziende/react/select"
-                    : `http://localhost:8080/aziende/react/select/${username}`;
+                    ? `${BASE_URL}aziende/react/select`
+                    : `${BASE_URL}aziende/react/select/${username}`;
 
 
                 const responseAziende = await axios.get(responseAziendeUrl, { headers: headers });
-                const responseSkill = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
-                //const ownerResponse = await axios.get("http://localhost:8080/owner", { headers: headers });
-                const tipologiaResponse = await axios.get("http://localhost:8080/need/react/tipologia", { headers: headers });
-                const statoResponse = await axios.get("http://localhost:8080/need/react/stato", { headers: headers });
-                const needResponse = await axios.get(`http://localhost:8080/need/react/${id}`, { headers: headers });
+                const responseSkill = await axios.get(`${BASE_URL}staffing/react/skill`, { headers: headers });
+                //const ownerResponse = await axios.get(`${BASE_URL}owner`, { headers: headers });
+                const tipologiaResponse = await axios.get(`${BASE_URL}need/react/tipologia`, { headers: headers });
+                const statoResponse = await axios.get(`${BASE_URL}need/react/stato`, { headers: headers });
+                const needResponse = await axios.get(`${BASE_URL}need/react/${id}`, { headers: headers });
                 const aziendaInternaResponse = await axios.get(aziendaInternaUrl, { headers: headers });
-                const responseAree = await axios.get("http://localhost:8080/staffing/react/areas", { headers });
+                const responseAree = await axios.get(`${BASE_URL}staffing/react/areas`, { headers });
 
                 let groupedSkills = [];
 
@@ -130,8 +131,8 @@ const ModificaNeedGrafica = () => {
                 }
 
                 const ownerUrl = userHasRole('ADMIN')
-                    ? "http://localhost:8080/owner"
-                    : `http://localhost:8080/owner/${username}`;
+                    ? `${BASE_URL}owner`
+                    : `${BASE_URL}owner/${username}`;
 
                 const ownerResponse = await axios.get(ownerUrl, { headers });
 
@@ -156,7 +157,7 @@ const ModificaNeedGrafica = () => {
                         try {
                             // Skill per area
                             const responseSkillByArea = await axios.get(
-                                `http://localhost:8080/staffing/react/skill/${area.id}`,
+                                `${BASE_URL}staffing/react/skill/${area.id}`,
                                 { headers }
                             );
 
@@ -218,7 +219,7 @@ const ModificaNeedGrafica = () => {
                 const username = user?.username;
                 const headers = { Authorization: `Bearer ${user?.token}` };
 
-                const response = await axios.get(`http://localhost:8080/gestione/aziende/interne/${username}`, { headers });
+                const response = await axios.get(`${BASE_URL}gestione/aziende/interne/${username}`, { headers });
 
                 const aziendaUtente = response.data;
                 if (aziendaUtente.descrizione?.toLowerCase().includes("challenging")) {
@@ -244,7 +245,7 @@ const ModificaNeedGrafica = () => {
     const fetchKeypeopleOptions = async (aziendaConId) => {
         try {
 
-            const keypeopleResponse = await axios.get(`http://localhost:8080/keypeople/react/azienda/${aziendaID}`, { headers: headers });
+            const keypeopleResponse = await axios.get(`${BASE_URL}keypeople/react/azienda/${aziendaID}`, { headers: headers });
 
             if (Array.isArray(keypeopleResponse.data)) {
                 const keypeopleOptions = keypeopleResponse.data.map((keypeople) => ({
@@ -482,7 +483,7 @@ const ModificaNeedGrafica = () => {
                 transformedValues.compilato = values.compilato ?? false; // per includere il campo "compilato" nel body inviato al backend
 
                 const responseSaveNeed = await axios.post(
-                    "http://localhost:8080/need/react/salva",
+                    `${BASE_URL}need/react/salva`,
                     transformedValues,
                     {
                         params: {

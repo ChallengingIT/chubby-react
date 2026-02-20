@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import FilterMultipleAutocomplete from "../fields/FilterMultipleAutocomplete";
 import axios from "axios";
+import BASE_URL from '../../api/apiConfig';
 
 function NuovaRicercaNeed({
     filtri,
@@ -42,7 +43,7 @@ function NuovaRicercaNeed({
 
             try {
                 const response = await axios.get(
-                    `http://localhost:8080/gestione/aziende/interne/${userObj.username}`,
+                    `${BASE_URL}gestione/aziende/interne/${userObj.username}`,
                     { headers: { Authorization: `Bearer ${userObj.token}` } }
                 );
 

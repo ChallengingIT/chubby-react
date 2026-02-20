@@ -22,6 +22,7 @@ import {
     DialogContent
 } from '@mui/material';
 import { useLocation } from 'react-router-dom';
+import BASE_URL from '../api/apiConfig';
 
 
 
@@ -153,25 +154,25 @@ const KeyPeople = () => {
             }
         }
 
-        const baseUrl = userHasRole('ADMIN') ? "http://localhost:8080/keypeople/react/mod" : "http://localhost:8080/keypeople/react/mod/personal";
+        const baseUrl = userHasRole('ADMIN') ? `${BASE_URL}keypeople/react/mod` : `${BASE_URL}keypeople/react/mod/personal`;
         try {
             const userString = sessionStorage.getItem("user");
             const user = userString ? JSON.parse(userString) : null;
             const username = user?.username;
 
             const ownerUrl = userHasRole('ADMIN')
-                ? "http://localhost:8080/owner"
-                : `http://localhost:8080/owner/${username}`;
+                ? `${BASE_URL}owner`
+                : `${BASE_URL}owner/${username}`;
 
             const responseAziendeUrl = userHasRole("ADMIN")
-                ? "http://localhost:8080/aziende/react/select"
-                : `http://localhost:8080/aziende/react/select/${username}`;
+                ? `${BASE_URL}aziende/react/select`
+                : `${BASE_URL}aziende/react/select/${username}`;
 
 
             const response = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
             const responseCliente = await axios.get(responseAziendeUrl, { headers: headers });
-            //const responseOwner = await axios.get("http://localhost:8080/owner", { headers: headers });
-            const responseStati = await axios.get("http://localhost:8080/keypeople/react/stati", { headers: headers });
+            //const responseOwner = await axios.get(`${BASE_URL}owner`, { headers: headers });
+            const responseStati = await axios.get(`${BASE_URL}keypeople/react/stati`, { headers: headers });
 
 
             const responseOwner = await axios.get(ownerUrl, { headers });
@@ -235,8 +236,8 @@ const KeyPeople = () => {
         }
 
         const baseUrl = userHasRole('ADMIN')
-            ? (isSearchActive ? "http://localhost:8080/keypeople/react/ricerca/mod" : "http://localhost:8080/keypeople/react/mod")
-            : (isSearchActive ? "http://localhost:8080/keypeople/react/ricerca/mod/personal" : "http://localhost:8080/keypeople/react/mod/personal");
+            ? (isSearchActive ? `${BASE_URL}keypeople/react/ricerca/mod` : `${BASE_URL}keypeople/react/mod`)
+            : (isSearchActive ? `${BASE_URL}keypeople/react/ricerca/mod/personal` : `${BASE_URL}keypeople/react/mod/personal`);
 
         try {
             const responsePaginazione = await axios.get(baseUrl, {
@@ -297,23 +298,23 @@ const KeyPeople = () => {
         }
 
         const baseUrl = userHasRole('ADMIN')
-            ? "http://localhost:8080/keypeople/react/ricerca/mod"
-            : "http://localhost:8080/keypeople/react/ricerca/mod/personal";
+            ? `${BASE_URL}keypeople/react/ricerca/mod`
+            : `${BASE_URL}keypeople/react/ricerca/mod/personal`;
 
         setLoading(true);
         try {
             const response = await axios.get(baseUrl, { headers: headers, params: filtriDaInviare });
-            const responseCliente = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
-            //const responseOwner = await axios.get("http://localhost:8080/owner", { headers: headers });
-            const responseStati = await axios.get("http://localhost:8080/keypeople/react/stati", { headers: headers });
+            const responseCliente = await axios.get(`${BASE_URL}aziende/react/select`, { headers: headers });
+            //const responseOwner = await axios.get(`${BASE_URL}owner`, { headers: headers });
+            const responseStati = await axios.get(`${BASE_URL}keypeople/react/stati`, { headers: headers });
 
             const userString = sessionStorage.getItem("user");
             const user = userString ? JSON.parse(userString) : null;
             const username = user?.username;
 
             const ownerUrl = userHasRole('ADMIN')
-                ? "http://localhost:8080/owner"
-                : `http://localhost:8080/owner/${username}`;
+                ? `${BASE_URL}owner`
+                : `${BASE_URL}owner/${username}`;
 
             const responseOwner = await axios.get(ownerUrl, { headers });
 
@@ -402,7 +403,7 @@ const KeyPeople = () => {
     //funzione per cancellare l'azienda
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:8080/keypeople/react/elimina/${id}`, { headers: headers });
+            await axios.delete(`${BASE_URL}keypeople/react/elimina/${id}`, { headers: headers });
             await fetchData();
             window.location.reload(true);
         } catch (error) {

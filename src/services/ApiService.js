@@ -1,9 +1,10 @@
 import axios from 'axios';
-import config from '../api/config.json'; 
+import config from '../api/config.json';
+import BASE_URL from '../api/apiConfig';
 
 class ApiService {
     constructor() {
-        this.baseUrl = config.basePath;
+        this.baseUrl = BASE_URL || config.basePath;
         this.preFix = config.preFix;
         this.paths = config.paths;
     }

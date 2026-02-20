@@ -29,6 +29,7 @@ import {
     Container
 } from "@mui/material";
 import CustomNumberAggiunta from "../../components/fields/CustomNumberAggiunta";
+import BASE_URL from '../../api/apiConfig';
 
 const AggiungiNeedIDGrafica = () => {
     const theme = useUserTheme();
@@ -72,27 +73,27 @@ const AggiungiNeedIDGrafica = () => {
         const fetchNeedOptions = async () => {
             try {
                 const responseAziende = await axios.get(
-                    `http://localhost:8080/aziende/react/${id}`,
+                    `${BASE_URL}aziende/react/${id}`,
                     { headers: headers }
                 );
                 const responseSkill = await axios.get(
-                    "http://localhost:8080/staffing/react/skill",
+                    `${BASE_URL}staffing/react/skill`,
                     { headers: headers }
                 );
                 /* const ownerResponse = await axios.get(
-                    "http://localhost:8080/owner",
+                    `${BASE_URL}owner`,
                     { headers: headers }
                 ); */
                 const tipologiaResponse = await axios.get(
-                    "http://localhost:8080/need/react/tipologia",
+                    `${BASE_URL}need/react/tipologia`,
                     { headers: headers }
                 );
                 const statoResponse = await axios.get(
-                    "http://localhost:8080/need/react/stato",
+                    `${BASE_URL}need/react/stato`,
                     { headers: headers }
                 );
                 const responseKeypeople = await axios.get(
-                    `http://localhost:8080/keypeople/react/azienda/${idAzienda}`,
+                    `${BASE_URL}keypeople/react/azienda/${idAzienda}`,
                     { headers: headers }
                 );
                 const keypeopleOptions = responseKeypeople.data.map((keypeople) => ({
@@ -122,7 +123,7 @@ const AggiungiNeedIDGrafica = () => {
                 const username = user?.username;
 
                 const ownerResponse = await axios.get(
-                `http://localhost:8080/owner/${username}`,
+                `${BASE_URL}owner/${username}`,
                 { headers: headers }
                 );
 
@@ -314,7 +315,7 @@ const AggiungiNeedIDGrafica = () => {
             delete values.idSkills;
 
             const responseSaveNeed = await axios.post(
-            "http://localhost:8080/need/react/salva",
+            `${BASE_URL}need/react/salva`,
             { ...values, idAzienda: parseInt(values.idAzienda, 10) }, 
             { params: { skill1: skills, username: username }, headers: headers }
             );

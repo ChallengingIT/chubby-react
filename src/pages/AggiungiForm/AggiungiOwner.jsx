@@ -22,6 +22,7 @@
     Slide,
     } from "@mui/material";
 import { useUserTheme } from "../../components/TorchyThemeProvider";
+import BASE_URL from '../../api/apiConfig';
 
     const AggiungiOwner = () => {
     const navigate = useNavigate();
@@ -141,7 +142,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
     if (!hasErrors) {
         try {
             const response = await axios.post(
-                "http://localhost:8080/owner/salva",
+                `${BASE_URL}owner/salva`,
                 values,
                 {
                     headers: headers,

@@ -16,6 +16,7 @@ import { motion } from "framer-motion";
 import CustomTableCell2 from '../components/CustomTableCell2.jsx';
 import { id } from "date-fns/locale";
 import LinkIcon from '@mui/icons-material/Link';
+import BASE_URL from '../api/apiConfig';
 
 
 
@@ -91,12 +92,12 @@ function Dashboard() {
         }
 
         const baseUrlPipeline = userHasRole("ADMIN")
-            ? "http://localhost:8080/dashboard/pipeline/admin"
-            : "http://localhost:8080/dashboard/pipeline";
+            ? `${BASE_URL}dashboard/pipeline/admin`
+            : `${BASE_URL}dashboard/pipeline`;
 
         try {
             const responsePipeline = await axios.get(baseUrlPipeline, { headers: headers, params: filtriDaInviare });
-            const responseAzienda = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
+            const responseAzienda = await axios.get(`${BASE_URL}aziende/react/select`, { headers: headers });
 
             if (Array.isArray(responseAzienda.data)) {
                 setAziendaOptions(responseAzienda.data.map((azienda) => ({

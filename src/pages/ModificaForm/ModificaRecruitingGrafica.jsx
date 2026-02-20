@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from '@mui/material';
 import { useUserTheme } from "../../components/TorchyThemeProvider";
 import CloseIcon from "@mui/icons-material/Close";
+import BASE_URL from '../../api/apiConfig';
 import { 
     Box, 
     Typography, 
@@ -96,18 +97,18 @@ const ModificaRecruitingGrafica = () => {
     useEffect(() => {
         const fetchAziendeOptions = async () => {
             try {
-                const responseStaffing = await axios.get(`http://localhost:8080/staffing/react/${id}`, { headers: headers });
-                const responseStato = await axios.get("http://localhost:8080/staffing/react/stato/candidato", { headers: headers });
-                const responseJobTitle = await axios.get("http://localhost:8080/aziende/react/tipologia", { headers: headers });
-                const responseTipologia = await axios.get("http://localhost:8080/staffing/react/tipo/candidatura", { headers: headers });
-                const responseNeedSkills = await axios.get("http://localhost:8080/staffing/react/skill", { headers: headers });
-                //const ownerResponse               = await axios.get("http://localhost:8080/owner"           , { headers: headers });
-                const facoltaResponse = await axios.get("http://localhost:8080/staffing/react/facolta", { headers: headers });
-                const livelloScolasticoResponse = await axios.get("http://localhost:8080/staffing/react/livello", { headers: headers });
-                const funzioniAziendaliResponse = await axios.get("http://localhost:8080/staffing/react/funzioni", { headers: headers });
-                const ricercaResponse = await axios.get("http://localhost:8080/staffing/react/tipo/ricerca", { headers: headers });
-                const tipoResponse = await axios.get("http://localhost:8080/staffing/react/tipo", { headers: headers });
-                const responseAree = await axios.get("http://localhost:8080/staffing/react/areas", { headers });
+                const responseStaffing = await axios.get(`${BASE_URL}staffing/react/${id}`, { headers: headers });
+                const responseStato = await axios.get(`${BASE_URL}staffing/react/stato/candidato`, { headers: headers });
+                const responseJobTitle = await axios.get(`${BASE_URL}aziende/react/tipologia`, { headers: headers });
+                const responseTipologia = await axios.get(`${BASE_URL}staffing/react/tipo/candidatura`, { headers: headers });
+                const responseNeedSkills = await axios.get(`${BASE_URL}staffing/react/skill`, { headers: headers });
+                //const ownerResponse               = await axios.get(`${BASE_URL}owner`           , { headers: headers });
+                const facoltaResponse = await axios.get(`${BASE_URL}staffing/react/facolta`, { headers: headers });
+                const livelloScolasticoResponse = await axios.get(`${BASE_URL}staffing/react/livello`, { headers: headers });
+                const funzioniAziendaliResponse = await axios.get(`${BASE_URL}staffing/react/funzioni`, { headers: headers });
+                const ricercaResponse = await axios.get(`${BASE_URL}staffing/react/tipo/ricerca`, { headers: headers });
+                const tipoResponse = await axios.get(`${BASE_URL}staffing/react/tipo`, { headers: headers });
+                const responseAree = await axios.get(`${BASE_URL}staffing/react/areas`, { headers });
 
                 let groupedSkills = [];
 
@@ -150,7 +151,7 @@ const ModificaRecruitingGrafica = () => {
                 const username = user?.username;
 
                 const ownerResponse = await axios.get(
-                    `http://localhost:8080/owner/${username}`,
+                    `${BASE_URL}owner/${username}`,
                     { headers: headers }
                 );
 
@@ -175,7 +176,7 @@ const ModificaRecruitingGrafica = () => {
                         try {
                             // Skill per area
                             const responseSkillByArea = await axios.get(
-                                `http://localhost:8080/staffing/react/skill/${area.id}`,
+                                `${BASE_URL}staffing/react/skill/${area.id}`,
                                 { headers }
                             );
 
@@ -283,7 +284,7 @@ const ModificaRecruitingGrafica = () => {
 
     const fetchJobTitleOptions = async (funzioneAziendaleId) => {
         try {
-            const response = await axios.get(`http://localhost:8080/aziende/react/tipologia/${funzioneAziendaleId}`, { headers: headers });
+            const response = await axios.get(`${BASE_URL}aziende/react/tipologia/${funzioneAziendaleId}`, { headers: headers });
             const jobTitleOptions = response.data.map(jobTitle => ({
                 label: jobTitle.descrizione,
                 value: jobTitle.id,
@@ -588,7 +589,7 @@ const ModificaRecruitingGrafica = () => {
 
     //funzione per scaricare il CV o il CF
     const handleDownloadCVCF = async (fileId, fileDescrizione) => {
-        const url = `http://localhost:8080/files/react/download/file/${fileId}`;
+        const url = `${BASE_URL}files/react/download/file/${fileId}`;
         try {
             const response = await axios({
                 method: 'GET',
@@ -694,7 +695,7 @@ const ModificaRecruitingGrafica = () => {
 
                 transformedValues.interviste = intervistePayload;
 
-                const datiResponse = await axios.post("http://localhost:8080/staffing/salva", transformedValues, {
+                const datiResponse = await axios.post(`${BASE_URL}staffing/salva`, transformedValues, {
                     params: { skill: skills },
                     headers: headers,
                 });
@@ -717,7 +718,7 @@ const ModificaRecruitingGrafica = () => {
                         formDataCV.append('file', fileCV);
                         formDataCV.append('tipo', 1);
 
-                        const responseCV = await axios.post(`http://localhost:8080/staffing/react/staff/salva/file/${candidatoId}`, formDataCV,
+                        const responseCV = await axios.post(`${BASE_URL}staffing/react/staff/salva/file/${candidatoId}`, formDataCV,
                             { headers: headers });
                     }
                 } catch (error) {
@@ -729,7 +730,7 @@ const ModificaRecruitingGrafica = () => {
                         const formDataCF = new FormData();
                         formDataCF.append('file', fileCF);
                         formDataCF.append('tipo', 2);
-                        const responseCF = await axios.post(`http://localhost:8080/staffing/react/staff/salva/file/${candidatoId}`, formDataCF, { headers: headers });
+                        const responseCF = await axios.post(`${BASE_URL}staffing/react/staff/salva/file/${candidatoId}`, formDataCF, { headers: headers });
                     }
                 } catch (error) {
                     console.error("errore nell'invio del CF", error);
@@ -750,7 +751,7 @@ const ModificaRecruitingGrafica = () => {
     const handleDeleteCVCF = async (fileId, fileType) => {
 
         try {
-            const response = await axios.delete(`http://localhost:8080/files/react/elimina/file/candidato/${fileId}/${id}`, { headers: headers })
+            const response = await axios.delete(`${BASE_URL}files/react/elimina/file/candidato/${fileId}/${id}`, { headers: headers })
             if (response.data === "OK") {
             } else {
                 console.error("Errore dal server: ", response.data);

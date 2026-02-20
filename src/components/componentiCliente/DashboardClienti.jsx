@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 // import TabellaPipelineNeed2 from "../dashboardComponents/TabellaPipelineNeed2.jsx";
 import BoxAttivitaWeek from "../dashboardComponents/BoxAttivitaWeek.jsx";
 import { useUserTheme } from "../TorchyThemeProvider.jsx";
+import BASE_URL from '../../api/apiConfig';
 
 function DashboardClienti() {
     const navigate = useNavigate();
@@ -69,12 +70,12 @@ function DashboardClienti() {
         }
 
         const baseUrlPipeline = userHasRole("ADMIN")
-            ? "http://localhost:8080/dashboard/pipeline/admin"
-            : "http://localhost:8080/dashboard/pipeline";
+            ? `${BASE_URL}dashboard/pipeline/admin`
+            : `${BASE_URL}dashboard/pipeline`;
 
         try {
             const responsePipeline = await axios.get(baseUrlPipeline, { headers: headers, params: filtriDaInviare });
-            const responseAzienda = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
+            const responseAzienda = await axios.get(`${BASE_URL}aziende/react/select`, { headers: headers });
 
             if (Array.isArray(responseAzienda.data)) {
                 setAziendaOptions(responseAzienda.data.map((azienda) => ({

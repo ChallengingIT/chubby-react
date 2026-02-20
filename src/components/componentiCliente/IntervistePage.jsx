@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useUserTheme } from '../TorchyThemeProvider';
 import CloseIcon from "@mui/icons-material/Close";
 import axios from 'axios';
+import BASE_URL from '../../api/apiConfig';
 
 
 
@@ -31,7 +32,7 @@ const IntervistePage = ({ idNeed }) => {
     const fetchData = async () => {
       try {
         const responseIntervista = await axios.get(
-          `http://localhost:8080/need/react/${idNeed}`,
+          `${BASE_URL}need/react/${idNeed}`,
           { headers: headers }
         );
         const dataIntervista = responseIntervista.data?.candidati || [];

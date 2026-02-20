@@ -18,6 +18,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import axios from "axios";
 import { useUserTheme } from "./TorchyThemeProvider";
+import BASE_URL from '../api/apiConfig';
 
 function EmailModal({ open, handleClose }) {
   const theme = useUserTheme();
@@ -59,7 +60,7 @@ function EmailModal({ open, handleClose }) {
     };
     try {
       const responseInviaEmail = await axios.post(
-        "http://localhost:8080/email/send",
+        `${BASE_URL}email/send`,
         datiDaInviare,
         { headers: headers }
       );

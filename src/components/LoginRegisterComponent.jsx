@@ -1,3 +1,4 @@
+import BASE_URL from '../api/apiConfig';
 // import React, { useState, useEffect }                                               from "react";
 // import { useNavigate }                                                              from "react-router-dom";
 // import authService                                                                  from "../services/auth.service";
@@ -197,7 +198,7 @@
 //             event.preventDefault();
 //         }
 //         try {
-//             const response = await axios.post("http://localhost:8080/api/auth/signup", values);
+//             const response = await axios.post(`${BASE_URL}api/auth/signup`, values);
 //             // const response = await authService.register(values);
 //             if (response.data.message === 'OK') {
 //                 handleFlip();

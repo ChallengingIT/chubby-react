@@ -36,6 +36,7 @@ import {
     Slide,
 } from '@mui/material';
 import { useUserTheme } from '../TorchyThemeProvider';
+import BASE_URL from '../../api/apiConfig';
 
 const NeedCardFlip = ({ valori, statoOptions, onDelete, onRefresh, isFirstCard }) => {
     const navigate = useNavigate();
@@ -152,7 +153,7 @@ const NeedCardFlip = ({ valori, statoOptions, onDelete, onRefresh, isFirstCard }
         };
 
         try {
-            const responseUpdateStato = await axios.post(`http://localhost:8080/need/react/salva/stato/${idNeed}?${params.toString()}`, {body}, { headers: headers });
+            const responseUpdateStato = await axios.post(`${BASE_URL}need/react/salva/stato/${idNeed}?${params.toString()}`, {body}, { headers: headers });
             setModalStato(false);
             onRefresh();
             if (responseUpdateStato.data === 'ERRORE') {

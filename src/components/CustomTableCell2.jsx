@@ -28,6 +28,7 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import useSmartRowsPerPage from "./useSmartRowsPerPage";
 import { ControlPointDuplicate } from "@mui/icons-material";
+import BASE_URL from '../api/apiConfig';
 
 const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpanded, pianoIncontriExpanded, pageSize, onClickButton, initialState, getRowClassName }) => {
     const [filtersEnabled, setFiltersEnabled] = useState(true);
@@ -76,7 +77,7 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
 
     const fetchStati = async () => {
         try {
-            const responseStato = await axios.get("http://localhost:8080/need/react/stato", { headers });
+            const responseStato = await axios.get(`${BASE_URL}need/react/stato`, { headers });
 
             if (Array.isArray(responseStato.data)) {
                 const filteredStati = responseStato.data
@@ -170,7 +171,7 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
     const handleClonaNeed = async (idNeed) => {
         try {
             const response = await axios.post(
-                `http://localhost:8080/need/clona`,
+                `${BASE_URL}need/clona`,
                 null,
                 {
                     params: { id: idNeed },
@@ -215,7 +216,7 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
 
         try {
             const responseUpdateStato = await axios.post(
-                `http://localhost:8080/need/react/salva/stato/${idNeed}?${params.toString()}`,
+                `${BASE_URL}need/react/salva/stato/${idNeed}?${params.toString()}`,
                 {},
                 { headers: headers }
             );

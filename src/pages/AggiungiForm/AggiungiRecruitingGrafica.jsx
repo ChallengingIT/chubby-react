@@ -1,3 +1,4 @@
+import BASE_URL from '../../api/apiConfig';
     import React, { useState, useEffect } from 'react';
     import { useNavigate } from 'react-router-dom';
     import {
@@ -86,13 +87,13 @@
     useEffect(() => {
         const fetchAziendeOptions = async () => {
         try {
-            const responseTipologia = await axios.get("http://localhost:8080/staffing/react/tipo/candidatura", { headers: headers });
-            const facoltaResponse = await axios.get("http://localhost:8080/staffing/react/facolta", { headers: headers });
-            const livelloScolasticoResponse = await axios.get("http://localhost:8080/staffing/react/livello", { headers: headers });
-            const funzioniAziendaliResponse = await axios.get("http://localhost:8080/staffing/react/funzioni", { headers: headers });
-            const ricercaResponse = await axios.get("http://localhost:8080/staffing/react/tipo/ricerca", { headers: headers });
-            const tipoResponse = await axios.get("http://localhost:8080/staffing/react/tipo", { headers: headers });
-            const responseAree = await axios.get("http://localhost:8080/staffing/react/areas", { headers: headers });
+            const responseTipologia = await axios.get(`${BASE_URL}staffing/react/tipo/candidatura`, { headers: headers });
+            const facoltaResponse = await axios.get(`${BASE_URL}staffing/react/facolta`, { headers: headers });
+            const livelloScolasticoResponse = await axios.get(`${BASE_URL}staffing/react/livello`, { headers: headers });
+            const funzioniAziendaliResponse = await axios.get(`${BASE_URL}staffing/react/funzioni`, { headers: headers });
+            const ricercaResponse = await axios.get(`${BASE_URL}staffing/react/tipo/ricerca`, { headers: headers });
+            const tipoResponse = await axios.get(`${BASE_URL}staffing/react/tipo`, { headers: headers });
+            const responseAree = await axios.get(`${BASE_URL}staffing/react/areas`, { headers: headers });
 
             let groupedSkills = [];
 
@@ -133,7 +134,7 @@
             const username = user?.username;
 
             const ownerResponse = await axios.get(
-            `http://localhost:8080/owner/${username}`,
+            `${BASE_URL}owner/${username}`,
             { headers: headers }
             );
 
@@ -155,7 +156,7 @@
 
                 try {
                 const responseSkillByArea = await axios.get(
-                    `http://localhost:8080/staffing/react/skill/${area.id}`,
+                    `${BASE_URL}staffing/react/skill/${area.id}`,
                     { headers: headers }
                 );
 
@@ -401,7 +402,7 @@
             delete payload.cv;
             delete payload.cf;
 
-            const datiResponse = await axios.post("http://localhost:8080/staffing/salva", payload, {
+            const datiResponse = await axios.post(`${BASE_URL}staffing/salva`, payload, {
             params: { skill: skills },
             headers: headers,
             });
@@ -427,7 +428,7 @@
                 formDataCV.append('tipo', 1);
 
                 await axios.post(
-                `http://localhost:8080/staffing/react/staff/salva/file/${candidatoId}`,
+                `${BASE_URL}staffing/react/staff/salva/file/${candidatoId}`,
                 formDataCV,
                 { headers: headers }
                 );
@@ -443,7 +444,7 @@
                 formDataCF.append('tipo', 2);
 
                 await axios.post(
-                `http://localhost:8080/staffing/react/staff/salva/file/${candidatoId}`,
+                `${BASE_URL}staffing/react/staff/salva/file/${candidatoId}`,
                 formDataCF,
                 { headers: headers }
                 );
@@ -476,7 +477,7 @@
 
     const fetchJobTitleOptions = async (funzioneAziendaleId) => {
         try {
-        const response = await axios.get(`http://localhost:8080/aziende/react/tipologia/${funzioneAziendaleId}`, { headers: headers });
+        const response = await axios.get(`${BASE_URL}aziende/react/tipologia/${funzioneAziendaleId}`, { headers: headers });
         const jobTitleOptions = response.data.map(jobTitle => ({
             label: jobTitle.descrizione,
             value: jobTitle.id,

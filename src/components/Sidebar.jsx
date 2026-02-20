@@ -38,6 +38,7 @@ import {
     Avatar,
 } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
+import BASE_URL from '../api/apiConfig';
 
 // import PersonAddIcon from "@mui/icons-material/PersonAdd"; // aggiungi candidato
 // import AddCircleIcon from "@mui/icons-material/AddCircle"; // aggiungi need
@@ -72,7 +73,7 @@ function Sidebar() {
 
             try {
                 const response = await axios.get(
-                    `http://localhost:8080/gestione/aziende/interne/${userObj.username}`,
+                    `${BASE_URL}gestione/aziende/interne/${userObj.username}`,
                     { headers: { Authorization: `Bearer ${userObj.token}` } }
                 );
 
@@ -368,7 +369,7 @@ function Sidebar() {
                 };
 
                 try {
-                    const response = await axios.get(`http://localhost:8080/aziende/react/logo`, {
+                    const response = await axios.get(`${BASE_URL}aziende/react/logo`, {
                         headers: headers,
                         params: parametroDaInviare
                     });

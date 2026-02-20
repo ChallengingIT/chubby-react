@@ -1,3 +1,4 @@
+import BASE_URL from '../api/apiConfig';
     import React, { useState, useEffect } from "react";
     import { useNavigate } from "react-router-dom";
     import {
@@ -144,7 +145,7 @@
             };
 
             const response = await axios.post(
-            "http://localhost:8080/api/auth/change/password",
+            `${BASE_URL}api/auth/change/password`,
             payload,
             {
                 headers: headers,

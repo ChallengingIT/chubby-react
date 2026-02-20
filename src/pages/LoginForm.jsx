@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import BASE_URL from '../api/apiConfig';
 
 const LoginForm = () => {
   const [username, setUsername] = useState('');
@@ -10,7 +11,7 @@ const LoginForm = () => {
   useEffect(() => {
     const fetchCsrfToken = async () => {
       try {
-        const response = await fetch('http://localhost:8080/csrf');
+        const response = await fetch(`${BASE_URL}csrf`);
         const data = await response.json();
         setCsrfToken(data['XSRF-TOKEN']); 
       } catch (error) {
@@ -23,7 +24,7 @@ const LoginForm = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://localhost:8080/login', {
+      const response = await fetch(`${BASE_URL}login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -38,7 +39,7 @@ const LoginForm = () => {
 
       const data = await response.json();
 
-      await fetch('http://localhost:8080/home', {
+      await fetch(`${BASE_URL}home`, {
         method: 'GET', 
         headers: {
           'XSRF-TOKEN': csrfToken,

@@ -10,6 +10,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useUserTheme } from '../../components/TorchyThemeProvider';
 import CustomDecimalNumberAggiungi from '../../components/fields/CustomDecimalNumberAggiungi';
 import CloseIcon                            from '@mui/icons-material/Close';
+import BASE_URL from '../../api/apiConfig';
 
 const AggiungiStaffing = () => {
     const theme = useUserTheme();
@@ -77,12 +78,12 @@ const AggiungiStaffing = () => {
         try {
 
             const terminiPagamentoResponse = await axios.get(
-            "http://localhost:8080/hiring/termini",
+            `${BASE_URL}hiring/termini`,
             { headers: headers }
             );
 
             const candidatiResponse = await axios.get(
-                "http://localhost:8080/staffing/react/mod/hiring",
+                `${BASE_URL}staffing/react/mod/hiring`,
                 { headers: headers }
             );
 
@@ -273,7 +274,7 @@ const AggiungiStaffing = () => {
                         Authorization: `Bearer ${token}`
                     };
     
-                    const response = await axios.post("http://localhost:8080/hiring/salva/scheda", values, {
+                    const response = await axios.post(`${BASE_URL}hiring/salva/scheda`, values, {
                         headers: headers,
                         params: { idHiring: idHiring, idTipoServizio: idTipoServizio }
                     });

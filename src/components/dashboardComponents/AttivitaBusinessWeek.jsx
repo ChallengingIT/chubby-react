@@ -5,6 +5,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import TabellaAttivitaBusiness from './TabellaAttivitaBusiness';
 import axios from 'axios';
 import { current } from '@reduxjs/toolkit';
+import BASE_URL from '../../api/apiConfig';
 
 const AttivitaBusinessBox = ({ data, aziendeOptions }) => {
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -78,7 +79,7 @@ const AttivitaBusinessBox = ({ data, aziendeOptions }) => {
             };
             
             try {
-                const response = await axios.get('http://localhost:8080/dashboard/attivita/business/personal/interval', {
+                const response = await axios.get(`${BASE_URL}dashboard/attivita/business/personal/interval`, {
                     headers: headers,
                     params: filtriDaInviare
                 });

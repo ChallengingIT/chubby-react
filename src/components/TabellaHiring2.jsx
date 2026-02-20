@@ -21,6 +21,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import { useTranslation } from "react-i18next"; 
+import BASE_URL from '../api/apiConfig';
 
 const serviceColumns = {
   "Head Hunting": ["RAL"],
@@ -100,7 +101,7 @@ const TabellaHiring2 = ({ data, columns, getRowId }) => {
 
   const handleDeleteScheda = async(idScheda, idHiring) => {
     try {
-      const responseDelete = await axios.post(`http://localhost:8080/hiring/elimina/scheda/${idScheda}`, {
+      const responseDelete = await axios.post(`${BASE_URL}hiring/elimina/scheda/${idScheda}`, {
         headers: headers,
       })
 

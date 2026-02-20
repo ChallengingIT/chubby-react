@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from '@mui/material';
 import { useUserTheme } from "../../components/TorchyThemeProvider";
 
+import BASE_URL from '../../api/apiConfig';
 import {
     Box,
     Typography,
@@ -72,23 +73,23 @@ const AggiungiIntervistaGrafica = () => {
             try {
                 //jobtitle = tipologia, tipologiaIncontro = stato, owner = owner
                 /* const ownerResponse = await axios.get(
-                "http://localhost:8080/owner",
+                `${BASE_URL}owner`,
                 { headers: headers }
                 ); */
                 const responseTipoIntervista = await axios.get(
-                    "http://localhost:8080/intervista/react/tipointervista",
+                    `${BASE_URL}intervista/react/tipointervista`,
                     { headers: headers }
                 );
                 const responseIntervista = await axios.get(
-                    `http://localhost:8080/intervista/react/mod/${candidatoID}`,
+                    `${BASE_URL}intervista/react/mod/${candidatoID}`,
                     { headers: headers, params: paginazione }
                 ); //questa è la lista delle interviste di cui devo prendere sempre l'ultima
                 const responseCandidato = await axios.get(
-                    `http://localhost:8080/staffing/react/${candidatoID}`,
+                    `${BASE_URL}staffing/react/${candidatoID}`,
                     { headers: headers }
                 ); //questo è il candidato
                 const responseStato = await axios.get(
-                    "http://localhost:8080/staffing/react/stato/candidato",
+                    `${BASE_URL}staffing/react/stato/candidato`,
                     { headers: headers }
                 );
 
@@ -138,7 +139,7 @@ const AggiungiIntervistaGrafica = () => {
                 const username = user?.username;
 
                 const ownerResponse = await axios.get(
-                    `http://localhost:8080/owner/${username}`,
+                    `${BASE_URL}owner/${username}`,
                     { headers: headers }
                 );
 
@@ -315,7 +316,7 @@ const AggiungiIntervistaGrafica = () => {
 
                 const modifica = 0;
                 const response = await axios.post(
-                    "http://localhost:8080/intervista/react/salva",
+                    `${BASE_URL}intervista/react/salva`,
                     values,
                     {
                         params: {

@@ -5,6 +5,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import axios from "axios";
 import dayjs from "dayjs";
 import { useUserTheme } from "./TorchyThemeProvider";
+import BASE_URL from '../api/apiConfig';
 import {
   Dialog,
   DialogTitle,
@@ -81,7 +82,7 @@ function AppuntamentoModal({ open, handleClose }) {
       const username = user?.username;
 
       const ownerResponse = await axios.get(
-        `http://localhost:8080/owner/${username}`,
+        `${BASE_URL}owner/${username}`,
         { headers: headers }
       );
 
@@ -121,7 +122,7 @@ function AppuntamentoModal({ open, handleClose }) {
     };
     try {
       const responseInviaAppuntamento = await axios.post(
-        "http://localhost:8080/calendar/insert",
+        `${BASE_URL}calendar/insert`,
         datiDaInviare,
         { headers: headers }
       );

@@ -18,6 +18,7 @@ import {
 } from "@mui/material";
 import NuovaRicercaAziende from "../components/nuoveRicerche/NuovaRicercaAziende.jsx";
 import { useTranslation } from "react-i18next";
+import BASE_URL from '../api/apiConfig';
 
 
 const Aziende = () => {
@@ -97,8 +98,8 @@ const Aziende = () => {
         }
 
         const baseUrl = userHasRole("ADMIN")
-            ? "http://localhost:8080/aziende/react/mod"
-            : "http://localhost:8080/aziende/react/mod/personal";
+            ? `${BASE_URL}aziende/react/mod`
+            : `${BASE_URL}aziende/react/mod/personal`;
 
         try {
             const userString = sessionStorage.getItem("user");
@@ -106,8 +107,8 @@ const Aziende = () => {
             const username = user?.username;
 
             const responseAziendeUrl = userHasRole("ADMIN")
-                ? "http://localhost:8080/aziende/react/select"
-                : `http://localhost:8080/aziende/react/select/${username}`;
+                ? `${BASE_URL}aziende/react/select`
+                : `${BASE_URL}aziende/react/select/${username}`;
 
 
             const responseAziende = await axios.get(baseUrl, {
@@ -125,14 +126,14 @@ const Aziende = () => {
             }
 
             const provinceResponse = await axios.get(
-                "http://localhost:8080/aziende/react/province",
+                `${BASE_URL}aziende/react/province`,
                 { headers: headers }
             );
 
 
             const ownerUrl = userHasRole('ADMIN')
-                ? "http://localhost:8080/owner"
-                : `http://localhost:8080/owner/${username}`;
+                ? `${BASE_URL}owner`
+                : `${BASE_URL}owner/${username}`;
 
             const responseOwner = await axios.get(ownerUrl, { headers });
 
@@ -218,8 +219,8 @@ const Aziende = () => {
         }
 
         const baseUrl = userHasRole("ADMIN")
-            ? (isSearchActive ? "http://localhost:8080/aziende/react/ricerca/mod" : "http://localhost:8080/aziende/react/mod")
-            : (isSearchActive ? "http://localhost:8080/aziende/react/ricerca/mod/personal" : "http://localhost:8080/aziende/react/mod/personal");
+            ? (isSearchActive ? `${BASE_URL}aziende/react/ricerca/mod` : `${BASE_URL}aziende/react/mod`)
+            : (isSearchActive ? `${BASE_URL}aziende/react/ricerca/mod/personal` : `${BASE_URL}aziende/react/mod/personal`);
 
         try {
 
@@ -281,8 +282,8 @@ const Aziende = () => {
         }
 
         const baseUrl = userHasRole("ADMIN")
-            ? "http://localhost:8080/aziende/react/ricerca/mod"
-            : "http://localhost:8080/aziende/react/ricerca/mod/personal";
+            ? `${BASE_URL}aziende/react/ricerca/mod`
+            : `${BASE_URL}aziende/react/ricerca/mod/personal`;
 
         setLoading(true);
         try {
@@ -292,7 +293,7 @@ const Aziende = () => {
                 params: filtriDaInviare,
             });
 
-            const responseCliente = await axios.get("http://localhost:8080/aziende/react/select", { headers: headers });
+            const responseCliente = await axios.get(`${BASE_URL}aziende/react/select`, { headers: headers });
 
             if (Array.isArray(responseCliente.data)) {
                 setClienteOptions(responseCliente.data.map((cliente) => ({ label: cliente.denominazione, value: cliente.id })));
@@ -306,7 +307,7 @@ const Aziende = () => {
             const username = user?.username;
 
             const responseOwner = await axios.get(
-                `http://localhost:8080/owner/${username}`,
+                `${BASE_URL}owner/${username}`,
                 { headers: headers }
             );
 
@@ -369,7 +370,7 @@ const Aziende = () => {
     const handleDelete = async (id) => {
         try {
             await axios.delete(
-                `http://localhost:8080/aziende/react/elimina/${id}`,
+                `${BASE_URL}aziende/react/elimina/${id}`,
                 { headers: headers }
             );
             window.location.reload(true);

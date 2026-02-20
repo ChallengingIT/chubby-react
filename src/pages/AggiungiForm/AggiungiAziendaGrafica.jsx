@@ -13,6 +13,7 @@ import { useUserTheme } from "../../components/TorchyThemeProvider";
 import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from '@mui/material';
 
+import BASE_URL from '../../api/apiConfig';
 import {
     Box,
     Typography,
@@ -95,16 +96,16 @@ const AggiungiAziendaGrafica = () => {
         const fetchProvinceOptions = async () => {
             try {
                 const provinceResponse = await axios.get(
-                    "http://localhost:8080/aziende/react/province",
+                    `${BASE_URL}aziende/react/province`,
                     { headers: headers }
                 );
                 /* const ownerResponse = await axios.get(
-                    "http://localhost:8080/owner",
+                    `${BASE_URL}owner`,
                     { headers: headers }
                 ); */
                 
                 const ricercaResponse = await axios.get(
-                    "http://localhost:8080/hiring/servizi",
+                    `${BASE_URL}hiring/servizi`,
                     { headers: headers }
                 );
 
@@ -121,8 +122,8 @@ const AggiungiAziendaGrafica = () => {
                 const username = user?.username;
 
                 const ownerUrl = userHasRole('ADMIN')
-                    ? "http://localhost:8080/owner"
-                    : `http://localhost:8080/owner/${username}`;
+                    ? `${BASE_URL}owner`
+                    : `${BASE_URL}owner/${username}`;
 
                 const ownerResponse = await axios.get(ownerUrl, { headers });
 
@@ -314,7 +315,7 @@ const AggiungiAziendaGrafica = () => {
             delete values.image;
 
             const response = await axios.post(
-            "http://localhost:8080/aziende/react/salva",
+            `${BASE_URL}aziende/react/salva`,
             values,
             {
                 params: { username: username },
@@ -342,7 +343,7 @@ const AggiungiAziendaGrafica = () => {
                 formDataIMG.append("logo", fileIMG);
 
                 const responseIMG = await axios.post(
-                `http://localhost:8080/aziende/react/salva/file/${aziendaID}`,
+                `${BASE_URL}aziende/react/salva/file/${aziendaID}`,
                 formDataIMG,
                 {
                     params: { username: user?.username || null },

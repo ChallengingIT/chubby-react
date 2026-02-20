@@ -7,6 +7,7 @@ import { Box, Skeleton, Grid } from "@mui/material";
 import CustomTextFieldModifica from "../fields/CustomTextFieldModifica";
 import CustomNoteModifica from "../fields/CustomNoteModifica";
 import CustomAutocompleteSeniority from "../fields/CustomAutocompleteSeniority";
+import BASE_URL from '../../api/apiConfig';
 
 const FormNeedCliente = ({ idNeed }) => {
   const { id } = useParams();
@@ -33,26 +34,26 @@ const FormNeedCliente = ({ idNeed }) => {
     const fetchNeedOptions = async () => {
       try {
         const responseSkill = await axios.get(
-          "http://localhost:8080/staffing/react/skill",
+          `${BASE_URL}staffing/react/skill`,
           { headers: headers }
         );
         const needResponse = await axios.get(
-          `http://localhost:8080/need/react/${idNeed}`,
+          `${BASE_URL}need/react/${idNeed}`,
           { headers: headers }
         );
 
         const impiegoResponse = await axios.get(
-          "http://localhost:8080/need/impiego",
+          `${BASE_URL}need/impiego`,
           { headers: headers }
         );
 
         const lavoroResponse = await axios.get(
-          "http://localhost:8080/need/lavoro",
+          `${BASE_URL}need/lavoro`,
           { headers: headers }
         );
 
         const responseJobtitle = await axios.get(
-          "http://localhost:8080/aziende/react/tipologia",
+          `${BASE_URL}aziende/react/tipologia`,
           { headers: headers }
         );
 
@@ -181,7 +182,7 @@ const FormNeedCliente = ({ idNeed }) => {
         const transformedValues = replaceKeysInValues(values, fieldMapping);
 
         const responseSaveNeed = await axios.post(
-          "http://localhost:8080/need/react/salva",
+          `${BASE_URL}need/react/salva`,
           transformedValues,
           {
             params: { skill: skills, username: user?.username },

@@ -1,3 +1,4 @@
+import BASE_URL from '../../api/apiConfig';
     import React, { useState } from "react";
 
     import CloseIcon from "@mui/icons-material/Close";
@@ -59,7 +60,7 @@
         if (aziendaId) {
         try {
             const response = await axios.get(
-            `http://localhost:8080/keypeople/react/azienda/${aziendaId}`
+            `${BASE_URL}keypeople/react/azienda/${aziendaId}`
             );
             setContactOptions(
             response.data.map((keyPeople) => ({

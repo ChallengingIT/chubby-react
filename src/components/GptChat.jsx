@@ -5,6 +5,7 @@ import StopCircleIcon from '@mui/icons-material/StopCircle';
 import axios from 'axios';
 import Logo from '../images/tochyChallenging.svg';
 import InfoIcon from '@mui/icons-material/Info';
+import BASE_URL from '../api/apiConfig';
 
 const GptChat = () => {
     const user = JSON.parse(sessionStorage.getItem("user"));
@@ -55,7 +56,7 @@ const GptChat = () => {
     const fetchChatGPT = async (chatMessages) => {
         try {
             const lastMessage = chatMessages[chatMessages.length - 1];
-            const response = await axios.get('http://localhost:8080/ai/open/generate',
+            const response = await axios.get(`${BASE_URL}ai/open/generate`,
                     {
                         params: { message: lastMessage.message },
                         headers: headers,

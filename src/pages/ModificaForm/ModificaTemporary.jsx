@@ -9,6 +9,7 @@ import { useUserTheme } from '../../components/TorchyThemeProvider';
 import CustomTextFieldModifica from '../../components/fields/CustomTextFieldModifica';
 import CustomDatePickerModifica from '../../components/fields/CustomDatePickerModifica';
 import CustomDecimalNumberModifica from '../../components/fields/CustomDecimalNumberModifica';
+import BASE_URL from '../../api/apiConfig';
 
 
 const ModificaTemporary = () => {
@@ -68,14 +69,14 @@ const ModificaTemporary = () => {
         try {
 
             const schedaResponse = await axios.get(
-                "http://localhost:8080/hiring/scheda",
+                `${BASE_URL}hiring/scheda`,
                 { headers: headers,
                     params: { idScheda: idScheda}
                 }
             );
     
         const terminiPagamentoResponse = await axios.get(
-            "http://localhost:8080/hiring/termini",
+            `${BASE_URL}hiring/termini`,
             { headers: headers }
             );
 
@@ -259,7 +260,7 @@ const ModificaTemporary = () => {
 
                     const valuesWithId = { ...values, id: idScheda };
     
-                    const response = await axios.post("http://localhost:8080/hiring/salva/scheda", valuesWithId, {
+                    const response = await axios.post(`${BASE_URL}hiring/salva/scheda`, valuesWithId, {
                         headers: headers,
                         params: { idHiring: idHiring, idTipoServizio: idTipoServizio }
                     });

@@ -1,3 +1,4 @@
+import BASE_URL from '../api/apiConfig';
 // import React, { useState, useEffect } from "react";
 // import { Link, useNavigate } from "react-router-dom";
 // import axios from "axios";
@@ -163,7 +164,7 @@
 //     e.preventDefault();
 //     try {
 //       const response = await axios.post(
-//         "http://localhost:8080/api/auth/lost/password",
+//         `${BASE_URL}api/auth/lost/password`,
 //         {
 //           email,
 //         }

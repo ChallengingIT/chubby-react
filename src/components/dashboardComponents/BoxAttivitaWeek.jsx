@@ -14,6 +14,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import { Link, useNavigate } from 'react-router-dom';
 import KeypeopleCardFlip from '../card/KeypeopleCardFlip.jsx';
+import BASE_URL from '../../api/apiConfig';
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
     [`& .${toggleButtonClasses.root}`]: {
@@ -383,8 +384,8 @@ const BoxAttivitaWeek = ({ aziendeOptions, expanded, setExpanded, pipelineExpand
                 };
 
                 const baseUrl = isAdmin
-                    ? `http://localhost:8080/dashboard/attivita/business`
-                    : `http://localhost:8080/dashboard/attivita/business/personal`;
+                    ? `${BASE_URL}dashboard/attivita/business`
+                    : `${BASE_URL}dashboard/attivita/business/personal`;
 
                 try {
                     const response = await axios.get(`${baseUrl}/interval`, {

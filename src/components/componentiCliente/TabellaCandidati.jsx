@@ -5,6 +5,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useParams } from 'react-router-dom';
 import { useUserTheme } from "../TorchyThemeProvider";
 import DataGridClienti from './DataGridClienti';
+import BASE_URL from '../../api/apiConfig';
 
 const TabellaCandidati = ({ idNeed }) => {
     const theme = useUserTheme();
@@ -46,7 +47,7 @@ const TabellaCandidati = ({ idNeed }) => {
         };
         try {
             const candidatiResponse = await axios.get(
-                `http://localhost:8080/staffing/react/mod`,
+                `${BASE_URL}staffing/react/mod`,
                 { headers: headers, params: paginazione }
             );
 
@@ -71,7 +72,7 @@ const TabellaCandidati = ({ idNeed }) => {
     }, []);
 
     const fetchMoreDataCandidati = async (paginaCandidati, filters = filtri) => {
-        const url = `http://localhost:8080/need/react/match/associabili/ricerca/mod/${id}`
+        const url = `${BASE_URL}need/react/match/associabili/ricerca/mod/${id}`
 
         const filtriCandidati = {
             ...filters,
@@ -102,7 +103,7 @@ const TabellaCandidati = ({ idNeed }) => {
     const handleAssocia = async (row) => {
         try {
             const idCandidato = row.id;
-            const url = `http://localhost:8080/need/add/shortlist?id=${idNeed}&idCandidato=${idCandidato}&username=${username}`;
+            const url = `${BASE_URL}need/add/shortlist?id=${idNeed}&idCandidato=${idCandidato}&username=${username}`;
             const responseAssocia = await axios.post(url, { headers: headers });
             if (responseAssocia.data === "OK") {
                 setOriginalCandidati((prevCandidati) => prevCandidati.filter(candidato => candidato.id !== idCandidato));
