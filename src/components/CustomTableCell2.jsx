@@ -19,7 +19,8 @@ import {
     Snackbar,
     Alert,
     Slide,
-    TablePagination
+    TablePagination,
+
 } from "@mui/material";
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import CloseIcon from '@mui/icons-material/Close';
@@ -28,11 +29,12 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import useSmartRowsPerPage from "./useSmartRowsPerPage";
 import { ControlPointDuplicate } from "@mui/icons-material";
+import StatoMultiFilter from "./fields/StatoMultiFilter";
+import DialogClone from "./dialog/DialogClone";
 import BASE_URL from '../api/apiConfig';
 
 const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpanded, pianoIncontriExpanded, pageSize, onClickButton, initialState, getRowClassName }) => {
     const [filtersEnabled, setFiltersEnabled] = useState(true);
-    const [filters, setFilters] = useState({});
     const [modalStato, setModalStato] = useState(false);
     const [selectedPipeline, setSelectedPipeline] = useState(null);
     const [values, setValues] = useState({ stato: null, priorita: null });
@@ -40,6 +42,42 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
     const [statoOptions, setStatoOptions] = useState([]);
     const [orderBy, setOrderBy] = useState('');
     const [orderDirection, setOrderDirection] = useState('asc');
+    const [openCloneDialog, setOpenCloneDialog] = useState(false);
+    const [needToCloneId, setNeedToCloneId] = useState(null);
+
+    const STORAGE_KEY = "filtriRicercaPipeline";
+
+const defaultFilters = {
+    aziendaInterna: "",
+    cliente: "",
+    tipologia: "",
+    ownerBusiness: "",
+    ownerRecruiter: "",
+    descrizione: "",
+    priorita: "",
+    stato: [],
+};
+
+const [filters, setFilters] = useState(() => {
+    const savedFilters = sessionStorage.getItem(STORAGE_KEY);
+
+    if (!savedFilters) {
+        return defaultFilters;
+    }
+
+    try {
+        const parsedFilters = JSON.parse(savedFilters);
+
+        return {
+            ...defaultFilters,
+            ...parsedFilters,
+            stato: Array.isArray(parsedFilters?.stato) ? parsedFilters.stato : [],
+        };
+    } catch (error) {
+        console.error("Errore nel parsing dei filtri salvati:", error);
+        return defaultFilters;
+    }
+});
 
 
     const contRef = useRef(null);
@@ -96,12 +134,18 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
 
     useEffect(() => {
         fetchStati();
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(filters));
+    }, [filters]);
 
     // Funzione per resettare i filtri
-    const resetFilters = () => {
-        setFilters({});
-    };
+const resetFilters = () => {
+    setFilters(defaultFilters);
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(defaultFilters));
+    setPage(0);
+};
 
     // Funzione per gestire il cambiamento dei filtri
     const handleFilterChange = (field, value) => {
@@ -109,22 +153,58 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
             ...prevFilters,
             [field]: value,
         }));
+        setPage(0);
     };
 
+        const columnsWithFilters = columns.map((column) => {
+        if (column.field === "stato") {
+            return {
+                ...column,
+                filterComponent: ({ value, onChange, align }) => (
+                    <StatoMultiFilter
+                        value={value}
+                        onChange={onChange}
+                        options={statoOptions}
+                        placeholder={column.headerName}
+                        align={align}
+                    />
+                ),
+            };
+        }
+
+        return column;
+    });
+
     const filteredRows = rows.filter((row) => {
-        return columns.every((column) => {
-            const cellValue = column.field.includes('.')
-                ? column.field.split('.').reduce((obj, key) => obj?.[key], row)
+        return columnsWithFilters.every((column) => {
+            const filterValue = filters[column.field];
+
+            if (
+                filterValue === undefined ||
+                filterValue === null ||
+                filterValue === "" ||
+                (Array.isArray(filterValue) && filterValue.length === 0)
+            ) {
+                return true;
+            }
+
+            const cellValue = column.field.includes(".")
+                ? column.field.split(".").reduce((obj, key) => obj?.[key], row)
                 : row[column.field];
-            const normalizedCellValue = column.field === 'cliente'
-                ? (cellValue?.denominazione || '').toLowerCase()
-                : String(cellValue || '').toLowerCase();
 
-            const normalizedFilterValue = filters[column.field]
-                ? filters[column.field].toLowerCase()
-                : "";
+            if (column.field === "stato") {
+                const selectedIds = filterValue.map((item) => item.value);
+                return selectedIds.includes(row.statoId);
+            }
 
-            return !normalizedFilterValue || normalizedCellValue.includes(normalizedFilterValue);
+            const normalizedCellValue =
+                column.field === "cliente"
+                    ? (cellValue?.denominazione || "").toLowerCase()
+                    : String(cellValue || "").toLowerCase();
+
+            const normalizedFilterValue = String(filterValue).toLowerCase();
+
+            return normalizedCellValue.includes(normalizedFilterValue);
         });
     });
 
@@ -252,12 +332,31 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
     function TransitionDown(props) {
         return <Slide {...props} direction="down" />;
     }
-
+    
+    const dimensioniHeader = { height: 72 };
     const dimensioniRiga = { height: 48 };
 
     const handleClickButton = () => {
         setExpanded();
         onClickButton?.();
+    };
+
+
+    const handleOpenCloneDialog = (idNeed) => {
+        setNeedToCloneId(idNeed);
+        setOpenCloneDialog(true);
+    };
+
+    const handleCloseCloneDialog = () => {
+        setOpenCloneDialog(false);
+        setNeedToCloneId(null);
+    };
+
+    const handleConfirmClone = async () => {
+        if (!needToCloneId) return;
+
+        await handleClonaNeed(needToCloneId);
+        handleCloseCloneDialog();
     };
 
     return (
@@ -322,8 +421,8 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
                 <Box sx={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
                     <Table stickyHeader size="small">
                         <TableHead ref={theadRef}>
-                            <TableRow sx={dimensioniRiga}>
-                                {columns.map((column, index) => (
+                            <TableRow sx={dimensioniHeader}>
+                                {columnsWithFilters.map((column, index) => (
                                     <TableCell
                                         key={index}
                                         align={column.align || "left"}
@@ -337,30 +436,41 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
                                             padding: "6px 14px",
                                         }}
                                     >
-                                        {filtersEnabled && (
-                                            <Box display="flex" alignItems="center" gap={0}>
-                                                <TextField
-                                                    variant="standard"
-                                                    size="small"
-                                                    placeholder={column.headerName}
-                                                    value={filters[column.field] || ""}
-                                                    onChange={(e) => handleFilterChange(column.field, e.target.value)}
-                                                    fullWidth
-                                                    inputProps={{ style: { textAlign: column.align || "left" } }}
-                                                />
-                                                <IconButton onClick={() => handleSort(column.field)} size="small">
-                                                    {orderBy === column.field ? (
-                                                        orderDirection === "asc" ? (
-                                                            <ArrowDropUpIcon fontSize="small" />
-                                                        ) : (
-                                                            <ArrowDropDownIcon fontSize="small" />
-                                                        )
-                                                    ) : (
-                                                        <ArrowDropDownIcon fontSize="small" sx={{ color: "gray" }} />
-                                                    )}
-                                                </IconButton>
+                                    {filtersEnabled && (
+                                        <Box display="flex" alignItems="center" gap={0} width="100%">
+                                            <Box flex={1}>
+                                                {column.filterComponent ? (
+                                                    column.filterComponent({
+                                                        value: filters[column.field] || [],
+                                                        onChange: (value) => handleFilterChange(column.field, value),
+                                                        align: column.align || "left",
+                                                    })
+                                                ) : (
+                                                    <TextField
+                                                        variant="standard"
+                                                        size="small"
+                                                        placeholder={column.headerName}
+                                                        value={filters[column.field] || ""}
+                                                        onChange={(e) => handleFilterChange(column.field, e.target.value)}
+                                                        fullWidth
+                                                        inputProps={{ style: { textAlign: column.align || "left" } }}
+                                                    />
+                                                )}
                                             </Box>
-                                        )}
+
+                                            <IconButton onClick={() => handleSort(column.field)} size="small">
+                                                {orderBy === column.field ? (
+                                                    orderDirection === "asc" ? (
+                                                        <ArrowDropUpIcon fontSize="small" />
+                                                    ) : (
+                                                        <ArrowDropDownIcon fontSize="small" />
+                                                    )
+                                                ) : (
+                                                    <ArrowDropDownIcon fontSize="small" sx={{ color: "gray" }} />
+                                                )}
+                                            </IconButton>
+                                        </Box>
+                                    )}
                                     </TableCell>
                                 ))}
                                 <TableCell
@@ -403,7 +513,7 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
                                             height: dimensioniRiga.height,
                                         }}
                                     >
-                                        {columns.map((column, colIndex) => (
+                                        {columnsWithFilters.map((column, colIndex) => (
                                             <TableCell
                                                 key={colIndex}
                                                 align={column.align || "center"}
@@ -439,7 +549,7 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
                                                     </IconButton>
                                                 </Tooltip>
                                                 <Tooltip title="Duplica">
-                                                    <IconButton size="small" onClick={() => handleClonaNeed(row.id)}>
+                                                    <IconButton size="small" onClick={() => handleOpenCloneDialog(row.id)}>
                                                         <ControlPointDuplicate fontSize="small" />
                                                     </IconButton>
                                                 </Tooltip>
@@ -450,7 +560,7 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
 
                             {filteredRows.length === 0 && (
                                 <TableRow>
-                                    <TableCell colSpan={columns.length + 1} align="center">
+                                    <TableCell colSpan={columnsWithFilters.length + 1} align="center">
                                         Nessun risultato trovato.
                                     </TableCell>
                                 </TableRow>
@@ -644,6 +754,20 @@ const CustomTableCell2 = ({ columns, rows, onRefresh, title, expanded, setExpand
                     </Button>
                 </Box>
             </Modal>
+
+            <DialogClone
+                open={openCloneDialog}
+                title="Sei sicuro di voler duplicare il need?"
+                description="Verrà creata una copia del need selezionato."
+                onClose={(event) => {
+                    event?.stopPropagation?.();
+                    handleCloseCloneDialog();
+                }}
+                onConfirm={(event) => {
+                    event?.stopPropagation?.();
+                    handleConfirmClone();
+                }}
+            />
 
             <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} TransitionComponent={TransitionDown}>
                 <Alert onClose={handleCloseAlert} severity={alert.severity || "error"} sx={{ width: '100%' }}>

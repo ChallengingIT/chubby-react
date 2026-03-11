@@ -469,10 +469,6 @@ const handleRicerche = async (
     quantita,
   };
 
-  console.log("[handleRicerche] filtriParam.skills =", filtriParam?.skills);
-  console.log("[handleRicerche] skillsIds =", skillsIds);
-  console.log("[handleRicerche] params =", params);
-
   setLoading(true);
 
   try {

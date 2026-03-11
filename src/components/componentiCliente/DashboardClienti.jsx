@@ -109,26 +109,9 @@ function DashboardClienti() {
     };
 
     useEffect(() => {
-        const filtriSalvati = sessionStorage.getItem("filtriRicercaPipeline");
-        if (filtriSalvati) {
-            const filtriParsed = JSON.parse(filtriSalvati);
-            setFiltri(filtriParsed);
-
-            const isAnyFilterSet = Object.values(filtriParsed).some((value) => value);
-            if (isAnyFilterSet) {
-                handleRicerche();
-            } else {
-                fetchData();
-            }
-        } else {
-            fetchData();
-        }
+        fetchData();
         // eslint-disable-next-line
     }, []);
-
-    const handleRicerche = () => {
-        console.log("handleRicerche");
-    };
 
     const handleDescrizioneClick = (descrizione) => {
         navigate('/need', { state: { descrizione } });

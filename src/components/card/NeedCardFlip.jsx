@@ -19,6 +19,7 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import { useTranslation } from "react-i18next";
 import { color, motion } from "framer-motion";
 import DialogDelete from '../dialog/DialogDelete';
+import DialogClone from '../dialog/DialogClone';
 
 import {
     Card,
@@ -37,7 +38,7 @@ import {
     Autocomplete,
     Snackbar,
     Alert,
-    Slide
+    Slide,
 
 } from '@mui/material';
 import { useUserTheme } from '../TorchyThemeProvider';
@@ -59,8 +60,14 @@ const NeedCardFlip = ({ valori, statoOptions, onDelete, onRefresh, isFirstCard }
     const [isFlipped, setIsFlipped] = useState(false);
     const [mezzoFlip, setMezzoFlip] = useState(false);
     const [activeLink,] = useState(null);
-    const [alert, setAlert] = useState(false);
     const [hasAnimated, setHasAnimated] = useState(false);
+    const [openCloneDialog, setOpenCloneDialog] = useState(false);
+    const [needToCloneId, setNeedToCloneId] = useState(null);
+    const [alert, setAlert] = useState({
+        open: false,
+        message: "",
+        severity: "error"
+    });
 
 
 
@@ -91,8 +98,24 @@ const NeedCardFlip = ({ valori, statoOptions, onDelete, onRefresh, isFirstCard }
         setAlert({ ...alert, open: false });
     };
 
-    const handleClonaNeed = async (idNeed, event) => {
-        event.stopPropagation();
+    const handleOpenCloneDialog = (idNeed) => {
+        setNeedToCloneId(idNeed);
+        setOpenCloneDialog(true);
+    };
+
+    const handleCloseCloneDialog = () => {
+        setOpenCloneDialog(false);
+        setNeedToCloneId(null);
+    };
+
+    const handleConfirmClone = async () => {
+        if (!needToCloneId) return;
+
+        await handleClonaNeed(needToCloneId);
+        handleCloseCloneDialog();
+    };
+
+    const handleClonaNeed = async (idNeed) => {
         try {
             const response = await axios.post(
                 `${BASE_URL}need/clona`,
@@ -102,15 +125,28 @@ const NeedCardFlip = ({ valori, statoOptions, onDelete, onRefresh, isFirstCard }
                     headers
                 }
             );
+
             if (response.data === "OK") {
-                setAlert({ open: true, message: "Need clonato con successo!" });
+                setAlert({
+                    open: true,
+                    message: "Need clonato con successo!",
+                    severity: "success"
+                });
                 onRefresh();
             } else {
-                setAlert({ open: true, message: "Errore durante la clonazione del need" });
+                setAlert({
+                    open: true,
+                    message: "Errore durante la clonazione del need",
+                    severity: "error"
+                });
             }
         } catch (error) {
             console.error("Errore durante la clonazione del need:", error);
-            setAlert({ open: true, message: "Errore durante la clonazione del need" });
+            setAlert({
+                open: true,
+                message: "Errore durante la clonazione del need",
+                severity: "error"
+            });
         }
     };
 
@@ -230,7 +266,7 @@ const NeedCardFlip = ({ valori, statoOptions, onDelete, onRefresh, isFirstCard }
         width: "100%",
         borderRadius: "20px",
         display: "flex",
-        minHeight: "16em",
+        minHeight: "22em",
     };
 
     const faceCommon = {
@@ -290,7 +326,8 @@ const NeedCardFlip = ({ valori, statoOptions, onDelete, onRefresh, isFirstCard }
             title: t('Clona Need'),
             icon: <ControlPointDuplicate />,
             onClick: (event) => {
-                handleClonaNeed(valori.id, event);
+                event.stopPropagation();
+                handleOpenCloneDialog(valori.id);
             }
         },
         {
@@ -654,8 +691,32 @@ const NeedCardFlip = ({ valori, statoOptions, onDelete, onRefresh, isFirstCard }
                     </Box>
                 </Modal>
 
-                <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} TransitionComponent={TransitionDown}>
-                    <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
+                <DialogClone
+                    open={openCloneDialog}
+                    title="Sei sicuro di voler duplicare il need?"
+                    description="Verrà creata una copia del need selezionato."
+                    onClose={(event) => {
+                        event?.stopPropagation?.();
+                        handleCloseCloneDialog();
+                    }}
+                    onConfirm={(event) => {
+                        event?.stopPropagation?.();
+                        handleConfirmClone();
+                    }}
+                />
+
+                <Snackbar
+                    open={alert.open}
+                    autoHideDuration={6000}
+                    onClose={handleCloseAlert}
+                    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                    TransitionComponent={TransitionDown}
+                >
+                    <Alert
+                        onClose={handleCloseAlert}
+                        severity={alert.severity || "error"}
+                        sx={{ width: '100%' }}
+                    >
                         {alert.message}
                     </Alert>
                 </Snackbar>
