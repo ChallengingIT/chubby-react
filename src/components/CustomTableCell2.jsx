@@ -510,7 +510,12 @@ const resetFilters = () => {
                                                         ? "#00808061"
                                                         : "#f1f1f1",
                                             },
-                                            height: dimensioniRiga.height,
+                                                height: `${dimensioniRiga.height}px`,
+                                                    "& > td": {
+                                                    height: `${dimensioniRiga.height}px`,
+                                                    boxSizing: "border-box",
+                                                    py: 0,
+                                                    },
                                         }}
                                     >
                                         {columnsWithFilters.map((column, colIndex) => (
@@ -522,7 +527,8 @@ const resetFilters = () => {
                                                     color: "black",
                                                     fontSize: "14px",
                                                     padding: "6px 14px",
-                                                    overflow: 'hidden'
+                                                    overflow: "hidden",
+                                                    boxSizing: "border-box",
                                                 }}
                                             >
                                                 {column.render ? column.render(row) : (
@@ -536,13 +542,15 @@ const resetFilters = () => {
                                             align="center"
                                             sx={{ borderBottom: "1px solid #e0e0e0", padding: "0.5px 0.5px" }}
                                         >
-                                            <div style={{
-                                                display: "flex",
-                                                alignItems: "center",
-                                                gap: "1px",
-                                                marginBottom: "6px",
-                                                marginTop: "6px"
-                                            }}>
+                                            <div
+                                                style={{
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    gap: "1px",
+                                                    height: "100%",
+                                                }}
+                                            >
                                                 <Tooltip title="Modifica">
                                                     <IconButton onClick={() => handleOpenModal(row)}>
                                                         <MoreHorizIcon />
@@ -571,16 +579,17 @@ const resetFilters = () => {
                     <Table
                         size="small"
                         sx={{ position: 'absolute', visibility: 'hidden', pointerEvents: 'none' }}
-                    >
+                        >
                         <TableBody>
-                            <TableRow ref={rowRef} sx={{ height: dimensioniRiga.height }}>
-                                <TableCell
-                                    sx={{
-                                        padding: '6px 14px',
-                                        borderBottom: '1px solid #e0e0e0',
-                                    }}
-                                >
-                                </TableCell>
+                            <TableRow ref={rowRef} sx={{ height: `${dimensioniRiga.height}px` }}>
+                            <TableCell
+                                sx={{
+                                padding: "6px 14px",
+                                borderBottom: "1px solid #e0e0e0",
+                                boxSizing: "border-box",
+                                height: `${dimensioniRiga.height}px`,
+                                }}
+                            />
                             </TableRow>
                         </TableBody>
                     </Table>
