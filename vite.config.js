@@ -13,6 +13,6 @@ export default defineConfig({
     host: true
   },
   preview: {
-      allowedHosts: ['torchy.it']
-    }
+        allowedHosts: ['torchy.it']
+      }
 })
