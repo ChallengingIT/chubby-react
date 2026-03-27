@@ -29,7 +29,7 @@ function CustomTextFieldModifica({
       inputProps={{
         maxLength: maxLength,
       }}
-      value={values[name] !== undefined ? values[name] : (initialValues[name] || "")}
+      value={values?.[name] ?? initialValues?.[name] ?? ""}
       onChange={handleChange}
       disabled={disabled}
       sx={{
@@ -51,7 +51,7 @@ function CustomTextFieldModifica({
           borderBottom: "none",
         },
         "& .MuiFilledInput-underline:hover:before": {
-          borderBottomStyle: "trasparent",
+          borderBottomStyle: "transparent",
         },
         "& .Mui-disabled": {
           WebkitTextFillColor: "black", // Questo sovrascrive il colore del testo per i browser basati su Webkit come Chrome e Safari
