@@ -1,19 +1,41 @@
-import React            from "react";
-import TextField        from "@mui/material/TextField";
+import React, { useRef } from "react";
+import TextField from "@mui/material/TextField";
 import { useUserTheme } from "../TorchyThemeProvider";
 
-function CustomNoteAggiungi({
+function CustomNoteModifica({
   name,
   label,
   type,
   onChange,
   values,
   maxLength,
+  onMaxLengthReached,
 }) {
   const theme = useUserTheme();
+  const hasShownLimitRef = useRef(false);
+
+  const currentValue = values?.[name] || "";
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    if (value.length > maxLength) {
+      const trimmedValue = value.slice(0, maxLength);
+
+      onChange({ [name]: trimmedValue });
+
+      if (!hasShownLimitRef.current && onMaxLengthReached) {
+        onMaxLengthReached(maxLength);
+        hasShownLimitRef.current = true;
+      }
+
+      return;
+    }
+
+    if (value.length < maxLength) {
+      hasShownLimitRef.current = false;
+    }
+
     onChange({ [name]: value });
   };
 
@@ -24,15 +46,15 @@ function CustomNoteAggiungi({
       type={type}
       variant="filled"
       fullWidth
-      inputProps={{
-        maxLength: maxLength,
-      }}
       multiline
       rows={4}
-      value={values[name] || ""}
+      value={currentValue}
       onChange={handleChange}
+      inputProps={{
+        maxLength,
+      }}
+      helperText={`${currentValue.length}/${maxLength}`}
       sx={{
-        // m: 2,
         width: "100%",
         textAlign: "left",
         borderRadius: "20px",
@@ -57,4 +79,4 @@ function CustomNoteAggiungi({
   );
 }
 
-export default CustomNoteAggiungi;
+export default CustomNoteModifica;

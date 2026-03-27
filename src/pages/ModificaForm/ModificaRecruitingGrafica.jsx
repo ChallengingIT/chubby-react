@@ -355,13 +355,15 @@ const ModificaRecruitingGrafica = () => {
     ];
 
     const isIntervistaComplete = (i) => {
-    const valutazione = i?.valutazione?.value ?? i?.valutazione;
-    return (
-        (i?.intervistatore?.value ?? i?.intervistatore?.id ?? null) != null &&
-        i?.dataIntervista != null &&
-        valutazione != null &&
-        String(i?.descrizioneIntervista ?? "").trim().length > 0
-    );
+        const valutazione = i?.valutazione?.value ?? i?.valutazione ?? null;
+        const intervistatore = i?.intervistatore?.value ?? i?.intervistatore?.id ?? i?.intervistatore ?? null;
+
+        return (
+            intervistatore != null &&
+            i?.dataIntervista != null &&
+            valutazione != null &&
+            String(i?.descrizioneIntervista ?? "").trim().length > 0
+        );
     };
 
     const openDeleteDialogIntervista = (index) => setDeleteDialogIntervista({ open: true, index });
@@ -538,11 +540,15 @@ const ModificaRecruitingGrafica = () => {
 
 
     //funzione per la chiusura dell'alert
-    const handleCloseAlert = (reason) => {
+    const handleCloseAlert = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
-        setAlert({ ...alert, open: false });
+
+        setAlert((prev) => ({
+            ...prev,
+            open: false,
+        }));
     };
 
     //funzione per la transizione dell'alert
@@ -942,6 +948,13 @@ const ModificaRecruitingGrafica = () => {
     };
 
 
+    const handleMaxLengthReached = (maxLength) => {
+        setAlert({
+            open: true,
+            message: t(`Hai raggiunto il limite massimo di ${maxLength} caratteri. Il testo in eccesso non è stato incollato.`),
+        });
+    };
+
 
     //funzione per richiamare i vari campi
     const renderFields = (field) => {
@@ -978,6 +991,7 @@ const ModificaRecruitingGrafica = () => {
                             onChange={handleChange}
                             initialValues={initialValues}
                             maxLength={field.maxLength}
+                            onMaxLengthReached={handleMaxLengthReached}
 
                         />
                     );
@@ -1126,7 +1140,8 @@ const ModificaRecruitingGrafica = () => {
                                         values={intervista}
                                         onChange={handleChangeIntervista(idx)}
                                         initialValues={intervista}
-                                        maxLength={8000}
+                                        maxLength={4000}
+                                        onMaxLengthReached={handleMaxLengthReached}
                                     />
                                     </Grid>
                                 </Grid>

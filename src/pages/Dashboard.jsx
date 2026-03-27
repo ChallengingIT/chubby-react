@@ -166,12 +166,12 @@ function Dashboard() {
         if (pipelineExpanded) {
             setPipelineExpanded(false);
             setPianoIncontriExpanded(false);
-            pageSizePipeline === 8 ? setPageSizePipeline(4) : setPageSizePipeline(8);
+            pageSizePipeline === 7 ? setPageSizePipeline(4) : setPageSizePipeline(7);
             return;
         } else {
             setPianoIncontriExpanded(false);
             setPipelineExpanded(true);
-            setPageSizePipeline(8);
+            setPageSizePipeline(7);
         }
     }
 

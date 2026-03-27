@@ -65,7 +65,7 @@ const StatoMultiFilter = ({
                         ...params.inputProps,
                         style: {
                             textAlign: align,
-                            fontSize: "14px",
+                            fontSize: "16px",
                         },
                     }}
                 />
