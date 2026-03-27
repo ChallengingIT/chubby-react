@@ -1,5 +1,5 @@
-import React            from "react";
-import TextField        from "@mui/material/TextField";
+import React from "react";
+import TextField from "@mui/material/TextField";
 import { useUserTheme } from "../TorchyThemeProvider";
 
 function CustomNoteModifica({
@@ -10,15 +10,30 @@ function CustomNoteModifica({
   values,
   initialValues,
   maxLength,
+  onMaxLengthReached,
 }) {
   const theme = useUserTheme();
+
+  const currentValue =
+    values?.[name] !== undefined ? values[name] : (initialValues?.[name] || "");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     onChange({ [name]: value });
   };
 
+  const handlePaste = (e) => {
+    const pastedText = e.clipboardData.getData("text");
+    const selectedText = window.getSelection()?.toString() || "";
+    const currentLength = currentValue.length;
+    const selectedLength = selectedText.length;
 
+    const futureLength = currentLength - selectedLength + pastedText.length;
+
+    if (futureLength > maxLength && onMaxLengthReached) {
+      onMaxLengthReached(maxLength);
+    }
+  };
 
   return (
     <TextField
@@ -27,15 +42,16 @@ function CustomNoteModifica({
       type={type}
       variant="filled"
       fullWidth
+      multiline
+      rows={4}
+      value={currentValue}
+      onChange={handleChange}
+      onPaste={handlePaste}
       inputProps={{
         maxLength: maxLength,
       }}
-      multiline
-      rows={4}
-      value={values[name] !== undefined ? values[name] : (initialValues[name] || "")}
-      onChange={handleChange}
+      helperText={`${currentValue.length}/${maxLength}`}
       sx={{
-     
         width: "100%",
         textAlign: "left",
         borderRadius: "20px",

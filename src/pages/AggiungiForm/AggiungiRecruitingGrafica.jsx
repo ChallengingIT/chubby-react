@@ -317,13 +317,17 @@ import BASE_URL from '../../api/apiConfig';
         return <Slide {...props} direction="down" />;
     }
 
+
+
     const isIntervistaComplete = (i) => {
+        const valutazione = i?.valutazione?.value ?? i?.valutazione ?? null;
+        const intervistatore = i?.intervistatore?.value ?? i?.intervistatore?.id ?? i?.intervistatore ?? null;
+
         return (
-        i &&
-        i.intervistatore != null &&
-        i.dataIntervista != null &&
-        i.valutazione != null &&
-        String(i.descrizioneIntervista ?? "").trim().length > 0
+            intervistatore != null &&
+            i?.dataIntervista != null &&
+            valutazione != null &&
+            String(i?.descrizioneIntervista ?? "").trim().length > 0
         );
     };
 
@@ -738,7 +742,8 @@ import BASE_URL from '../../api/apiConfig';
                         type="note"
                         values={intervista}
                         onChange={handleChangeIntervista(idx)}
-                        maxLength={8000}
+                        maxLength={4000}
+                        onMaxLengthReached={handleMaxLengthReached}
                         />
                     </Grid>
                     </Grid>
@@ -939,6 +944,14 @@ import BASE_URL from '../../api/apiConfig';
         default:
             return null;
         }
+    };
+
+
+    const handleMaxLengthReached = (maxLength) => {
+        setAlert({
+            open: true,
+            message: t(`Hai raggiunto il limite massimo di ${maxLength} caratteri. Il testo in eccesso non è stato incollato.`),
+        });
     };
 
     const renderFieldsGroups = () => {
