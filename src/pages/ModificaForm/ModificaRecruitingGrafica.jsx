@@ -996,7 +996,7 @@ const initialValues = {
                     );
 
                 case 'select':
-                    if (field.name === 'idTipologia') {
+                    if (field.name === 'tipologia') {
                         const selectedOption = (field.options || []).find(opt => String(opt.value) === String(values[field.name])) || null;
 
                         return (
@@ -1007,7 +1007,7 @@ const initialValues = {
                                 value={selectedOption}
                                 onChange={handleChange}
                                 getOptionSelected={(option, value) => option.value === value.value}
-                                disabled={field.name === 'idTipologia' ? !jobTitleEnable : false}
+                                disabled={field.name === 'tipologia' ? !jobTitleEnable : false}
                             />
                         );
                     } else {
