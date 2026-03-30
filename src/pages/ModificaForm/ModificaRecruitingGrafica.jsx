@@ -267,10 +267,10 @@ const ModificaRecruitingGrafica = () => {
 
     //useEffect che controlla il cambiamento di stato di funzioneAziendale, abilita la select di jobTitle e attiva la chiamata per popolarlo correttamente
     useEffect(() => {
-        if (values.idFunzioneAziendale && values.idFunzioneAziendale.length !== 0) {
-            const funzioneAziendaleId = values.idFunzioneAziendale;
+        const funzioneAziendaleId =
+            values?.idFunzioneAziendale?.value ?? values?.idFunzioneAziendale ?? null;
 
-
+        if (funzioneAziendaleId != null) {
             setJobTitleEnable(true);
             fetchJobTitleOptions(funzioneAziendaleId);
         } else {
@@ -830,48 +830,46 @@ const ModificaRecruitingGrafica = () => {
     ];
 
 
-
-    const initialValues = {
-
-        id: datiModifica.id,
-        idCandidatura: (datiModifica.candidatura && datiModifica.candidatura.id) || null,
-        nome: datiModifica.nome || null,
-        cognome: datiModifica.cognome || null,
-        dataNascita: datiModifica.dataNascita || null,
-        email: datiModifica.email || null,
-        cellulare: datiModifica.cellulare || null,
-        anniEsperienza: datiModifica.anniEsperienza || null,
-        citta: datiModifica.citta || null,
-        modalita: datiModifica.modalita || null,
-        anniEsperienzaRuolo: datiModifica.anniEsperienzaRuolo || null,
-        idLivelloScolastico: (datiModifica.livelloScolastico && datiModifica.livelloScolastico.id) || null,
-        idFacolta: (datiModifica.facolta && datiModifica.facolta.id) || null,
-        idFunzioneAziendale: (datiModifica.tipologia?.funzione && datiModifica.tipologia.funzione?.id) || null,
-        idTipologia: (datiModifica.tipologia && datiModifica.tipologia.id) || null,
-        dataUltimoContatto: datiModifica.dataUltimoContatto || null,
-        idStato: datiModifica.stato && datiModifica.stato.id || null,
-        idOwner: (datiModifica.owner && datiModifica.owner.id) || null,
-        idSkills: datiModifica.skills ? datiModifica.skills.map((skills) => skills.id) : [],
-        ral: datiModifica.ral || null,
-        disponibilita: datiModifica.disponibilita || null,
-        idTipo: datiModifica.tipo && datiModifica.tipo.id || null,
-        interviste: Array.isArray(datiModifica?.interviste) && datiModifica.interviste.length
-            ? datiModifica.interviste.map((i) => ({
-                id: i.id ?? null,
-                valutazione: i.valutazione != null
-                    ? (valutazioneOptions.find((o) => o.value === i.valutazione) ?? { value: i.valutazione, label: String(i.valutazione) })
-                    : null,
-                dataIntervista: i?.dataIntervista ?? null,
-                intervistatore: i?.intervistatore
-                    ? { value: i?.intervistatore?.id, label: i?.intervistatore?.descrizione }
-                    : null,
-                descrizioneIntervista: i?.descrizioneIntervista ?? "",
-                }))
-            : [createEmptyIntervista()],
-        cv: datiModifica.files ? datiModifica.files.find(file => file && file.tipologia && file.tipologia.descrizione === 'CV') || null : null,
-        cf: datiModifica.files ? datiModifica.files.find(file => file && file.tipologia && file.tipologia.descrizione === 'CF') || null : null,
-        note: datiModifica.note || null,
-    };
+const initialValues = {
+    id: datiModifica.id ?? null,
+    idCandidatura: datiModifica.candidatura?.id ?? null,
+    nome: datiModifica.nome ?? "",
+    cognome: datiModifica.cognome ?? "",
+    dataNascita: datiModifica.dataNascita ?? null,
+    email: datiModifica.email ?? "",
+    cellulare: datiModifica.cellulare ?? "",
+    anniEsperienza: datiModifica.anniEsperienza ?? "",
+    citta: datiModifica.citta ?? "",
+    modalita: datiModifica.modalita ?? null,
+    anniEsperienzaRuolo: datiModifica.anniEsperienzaRuolo ?? "",
+    idLivelloScolastico: datiModifica.livelloScolastico?.id ?? null,
+    idFacolta: datiModifica.facolta?.id ?? null,
+    idFunzioneAziendale: datiModifica.tipologia?.funzione?.id ?? null,
+    idTipologia: datiModifica.tipologia?.id ?? null,
+    dataUltimoContatto: datiModifica.dataUltimoContatto ?? null,
+    idStato: datiModifica.stato?.id ?? null,
+    idOwner: datiModifica.owner?.id ?? null,
+    idSkills: datiModifica.skills ? datiModifica.skills.map((skills) => skills.id) : [],
+    ral: datiModifica.ral ?? "",
+    disponibilita: datiModifica.disponibilita ?? "",
+    idTipo: datiModifica.tipo?.id ?? null,
+    interviste: Array.isArray(datiModifica?.interviste) && datiModifica.interviste.length
+        ? datiModifica.interviste.map((i) => ({
+            id: i.id ?? null,
+            valutazione: i.valutazione != null
+                ? (valutazioneOptions.find((o) => o.value === i.valutazione) ?? { value: i.valutazione, label: String(i.valutazione) })
+                : null,
+            dataIntervista: i?.dataIntervista ?? null,
+            intervistatore: i?.intervistatore
+                ? { value: i?.intervistatore?.id, label: i?.intervistatore?.descrizione }
+                : null,
+            descrizioneIntervista: i?.descrizioneIntervista ?? "",
+        }))
+        : [createEmptyIntervista()],
+    cv: datiModifica.files?.find(file => file?.tipologia?.descrizione === 'CV') ?? null,
+    cf: datiModifica.files?.find(file => file?.tipologia?.descrizione === 'CF') ?? null,
+    note: datiModifica.note ?? "",
+};
 
     //funzione per caricare i dati nei campi solo dopo aver terminato la chiamata
     useEffect(() => {
@@ -956,6 +954,7 @@ const ModificaRecruitingGrafica = () => {
     };
 
 
+
     //funzione per richiamare i vari campi
     const renderFields = (field) => {
         if (loading) {
@@ -998,15 +997,17 @@ const ModificaRecruitingGrafica = () => {
 
                 case 'select':
                     if (field.name === 'tipologia') {
+                        const selectedOption = (field.options || []).find(opt => String(opt.value) === String(values[field.name])) || null;
+
                         return (
                             <CustomAutocomplete
                                 name={field.name}
                                 label={field.label}
                                 options={field.options || []}
-                                value={values[field.name] || null}
+                                value={selectedOption}
                                 onChange={handleChange}
                                 getOptionSelected={(option, value) => option.value === value.value}
-                                disabled={!jobTitleEnable}
+                                disabled={field.name === 'tipologia' ? !jobTitleEnable : false}
                             />
                         );
                     } else {
@@ -1053,8 +1054,8 @@ const ModificaRecruitingGrafica = () => {
                         <CustomMultipleSelectModifica
                             name={field.name}
                             label={field.label}
-                            options={field.options}
-                            value={values[field.name] || null}
+                            options={field.options || []}
+                            value={Array.isArray(values[field.name]) ? values[field.name] : []}
                             onChange={handleChangeSkill}
                             getOptionSelected={(option, value) => option.value === value.value}
                             skillsOptions={skillsOptions}

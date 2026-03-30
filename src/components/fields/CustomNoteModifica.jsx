@@ -50,7 +50,6 @@ function CustomNoteModifica({
       inputProps={{
         maxLength: maxLength,
       }}
-      helperText={`${currentValue.length}/${maxLength}`}
       sx={{
         width: "100%",
         textAlign: "left",

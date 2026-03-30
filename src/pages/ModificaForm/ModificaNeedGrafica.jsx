@@ -34,7 +34,7 @@ const ModificaNeedGrafica = () => {
     const [loading, setLoading] = useState(true);
 
     //stati per i datiModifica
-    const [datiModifica, setDatiModifica] = useState([]);
+    const [datiModifica, setDatiModifica] = useState({});
 
 
     const [aziendeOptions, setAziendeOptions] = useState([]);
@@ -62,7 +62,7 @@ const ModificaNeedGrafica = () => {
             return false;
         }
         const userObj = JSON.parse(userString);
-        return userObj.roles.includes(roleToCheck);
+        return Array.isArray(userObj?.roles) && userObj.roles.includes(roleToCheck);
     };
 
     //chiamata per ricevere i dati dal db
@@ -245,7 +245,7 @@ const ModificaNeedGrafica = () => {
     const fetchKeypeopleOptions = async (aziendaConId) => {
         try {
 
-            const keypeopleResponse = await axios.get(`${BASE_URL}keypeople/react/azienda/${aziendaID}`, { headers: headers });
+            const keypeopleResponse = await axios.get(`${BASE_URL}keypeople/react/azienda/${aziendaConId}`, { headers: headers });
 
             if (Array.isArray(keypeopleResponse.data)) {
                 const keypeopleOptions = keypeopleResponse.data.map((keypeople) => ({
@@ -271,12 +271,16 @@ const ModificaNeedGrafica = () => {
         { value: 3, label: 'Done' }
     ];
 
+    const anniEsperienza = Number(values?.anniEsperienza);
+
     const seniorityOptions = [
         { label: "Neo", value: 1 },
         { label: "Junior", value: 2 },
         { label: "Middle", value: 3 },
         { label: "Senior", value: 4 },
-        ...(values.anniEsperienza > 4 ? [{ label: "Senior", value: values.anniEsperienza }] : [])
+        ...(Number.isFinite(anniEsperienza) && anniEsperienza > 4
+            ? [{ label: "Senior", value: anniEsperienza }]
+            : [])
     ];
 
 
@@ -339,11 +343,16 @@ const ModificaNeedGrafica = () => {
         let errors = {};
         let allFieldsValid = true;
 
+        const isEmptyValue = (value) =>
+            value === null ||
+            value === undefined ||
+            value === "" ||
+            (Array.isArray(value) && value.length === 0);
+
         mandatoryFields.forEach(field => {
-            if (!values[field]) {
+            if (isEmptyValue(values?.[field])) {
                 errors[field] = t('Questo campo è obbligatorio');
                 allFieldsValid = false;
-
             }
         });
 
@@ -502,7 +511,7 @@ const ModificaNeedGrafica = () => {
 
                 if (userString) {
                     const userObj = JSON.parse(userString);
-                    if (userObj.roles.includes("BUSINESS")) {
+                    if (Array.isArray(userObj?.roles) && userObj.roles.includes("BUSINESS")) {
                         navigate(`/need/${aziendaID}`);
                     } else {
                         navigate('/need');
@@ -579,34 +588,34 @@ const ModificaNeedGrafica = () => {
         { label: "Note di ricerca e selezione", name: "noteRicercaToggle", type: "note", visibleIf: () => !isChallengingUser && values.toggleRicerca },
     ];
 
-    const initialValues = {
-        id: datiModifica?.id || null,
-        idAzienda: datiModifica?.cliente?.id,
-        idAziendaInterna: (datiModifica?.aziendaInterna && datiModifica.aziendaInterna.id) || null,
-        descrizione: datiModifica?.descrizione || null,
-        idKeyPeople: (datiModifica?.keyPeople && datiModifica?.keyPeople?.id) || null,
-        priorita: datiModifica?.priorita || null,
-        dataRichiesta: datiModifica?.dataRichiesta || null,
-        idTipologia: (datiModifica?.tipologia && datiModifica?.tipologia?.id) || null,
-        idTipo: datiModifica?.tipo || null,
-        deliveryModel: datiModifica?.deliveryModel || null,
-        valorePotenziale: datiModifica?.valorePotenziale || null,
-        idOwner: (datiModifica?.ownerBusiness && datiModifica?.ownerBusiness?.id) || null,
-        idOwnerRecruiter: (datiModifica?.ownerRecruiter && datiModifica?.ownerRecruiter?.id) || null,
 
-        idStato: (datiModifica?.stato && datiModifica?.stato?.id) || null,
-        numeroRisorse: datiModifica?.numeroRisorse || null,
-        location: datiModifica?.location || null,
-        idSkills: datiModifica?.skills ? datiModifica.skills.map((skills) => skills?.id) : [],
-        anniEsperienza: datiModifica?.anniEsperienza || null,
-        pubblicazione: datiModifica?.pubblicazione || null,
-        screening: datiModifica?.screening || null,
-        note: datiModifica?.note || null,
-        toggleRicerca: datiModifica?.toggleRicerca ? true : false,
-        noteRicercaToggle: datiModifica?.noteRicercaToggle || null,
-        compilato: datiModifica?.compilato || false,
-        idNeedPadre: datiModifica?.idNeedPadre || null,
-    };
+    const initialValues = {
+    id: datiModifica?.id ?? null,
+    idAzienda: datiModifica?.cliente?.id ?? null,
+    idAziendaInterna: datiModifica?.aziendaInterna?.id ?? null,
+    descrizione: datiModifica?.descrizione ?? null,
+    idKeyPeople: datiModifica?.keyPeople?.id ?? null,
+    priorita: datiModifica?.priorita ?? null,
+    dataRichiesta: datiModifica?.dataRichiesta ?? null,
+    idTipologia: datiModifica?.tipologia?.id ?? null,
+    idTipo: datiModifica?.tipo ?? null,
+    deliveryModel: datiModifica?.deliveryModel ?? null,
+    valorePotenziale: datiModifica?.valorePotenziale ?? null,
+    idOwner: datiModifica?.ownerBusiness?.id ?? null,
+    idOwnerRecruiter: datiModifica?.ownerRecruiter?.id ?? null,
+    idStato: datiModifica?.stato?.id ?? null,
+    numeroRisorse: datiModifica?.numeroRisorse ?? null,
+    location: datiModifica?.location ?? null,
+    idSkills: Array.isArray(datiModifica?.skills) ? datiModifica.skills.map(skill => skill?.id) : [],
+    anniEsperienza: datiModifica?.anniEsperienza ?? null,
+    pubblicazione: datiModifica?.pubblicazione ?? null,
+    screening: datiModifica?.screening ?? null,
+    note: datiModifica?.note ?? null,
+    toggleRicerca: datiModifica?.toggleRicerca ?? false,
+    noteRicercaToggle: datiModifica?.noteRicercaToggle ?? null,
+    compilato: datiModifica?.compilato ?? false,
+    idNeedPadre: datiModifica?.idNeedPadre ?? null,
+};
 
 
 
@@ -632,6 +641,13 @@ const ModificaNeedGrafica = () => {
             setLoading(false);
         }
     }, [values]);
+
+    useEffect(() => {
+        const aziendaConId = datiModifica?.cliente?.id;
+        if (aziendaConId) {
+            fetchKeypeopleOptions(aziendaConId);
+        }
+    }, [datiModifica?.cliente?.id]);
 
 
 
