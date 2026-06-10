@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DatePicker, ConfigProvider } from "antd";
 import dayjs from "dayjs";
 import "dayjs/locale/it";
@@ -8,23 +8,43 @@ dayjs.locale("it");
 function CustomDatePickerModifica({
   name,
   label,
-  type,
   onChange,
-  values,
-  initialValues,
+  values = {},
+  initialValues = {},
   disabled,
 }) {
-  const rawValue = values?.[name] || initialValues?.[name] || "";
-  const hasValue = Boolean(rawValue);
+  const rawValue =
+    values?.[name] !== undefined && values?.[name] !== null
+      ? values[name]
+      : initialValues?.[name] ?? "";
+
+  const selectedDate =
+    rawValue && dayjs(rawValue, "YYYY-MM-DD", true).isValid()
+      ? dayjs(rawValue, "YYYY-MM-DD")
+      : null;
 
   const [focused, setFocused] = useState(false);
+  const [panelDate, setPanelDate] = useState(selectedDate || dayjs());
+
+  const hasValue = Boolean(selectedDate);
   const shrink = focused || hasValue;
 
-  const pickerValue = hasValue ? dayjs(rawValue, "YYYY-MM-DD") : null;
+  useEffect(() => {
+    if (selectedDate) {
+      setPanelDate(selectedDate);
+    }
+  }, [rawValue]);
 
   const handleChange = (dateObj) => {
     const formatted = dateObj ? dateObj.format("YYYY-MM-DD") : "";
-    onChange({ [name]: formatted });
+
+    if (dateObj) {
+      setPanelDate(dateObj);
+    }
+
+    onChange({
+      [name]: formatted,
+    });
   };
 
   return (
@@ -69,7 +89,13 @@ function CustomDatePickerModifica({
         )}
 
         <DatePicker
-          value={pickerValue}
+          value={selectedDate}
+          pickerValue={panelDate}
+          onPanelChange={(newPanelDate) => {
+            if (newPanelDate) {
+              setPanelDate(newPanelDate);
+            }
+          }}
           onChange={handleChange}
           format="YYYY-MM-DD"
           placeholder=""
@@ -91,7 +117,6 @@ function CustomDatePickerModifica({
         />
 
         <style>{`
-          /* Input trasparente per far vedere la label */
           .torchy-date .ant-picker-input > input {
             background: transparent !important;
             height: 4em;
@@ -101,17 +126,14 @@ function CustomDatePickerModifica({
             color: rgba(0,0,0,0.88);
           }
 
-          /* Spazio sotto la label quando shrink */
           .torchy-date--shrink .ant-picker-input > input {
             padding-top: 16px !important;
           }
 
-          /* Icona calendario un filo più soft */
           .torchy-date .ant-picker-suffix {
             opacity: 0.65;
           }
 
-          /* Disabled: simile al tuo MUI (testo leggibile, cursor not-allowed) */
           .torchy-date--disabled .ant-picker-input > input {
             -webkit-text-fill-color: rgba(0,0,0,0.88) !important;
             color: rgba(0,0,0,0.88) !important;

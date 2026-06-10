@@ -71,7 +71,7 @@ const ModificaRecruitingGrafica = () => {
     const [skillsOptions, setSkillsOptions] = useState([]);
     const [ownerOptions, setOwnerOptions] = useState([]);
     const [facoltaOptions, setFacoltaOptions] = useState([]);
-    const [values, setValues] = useState([]);
+    const [values, setValues] = useState({});
     const [jobTitleEnable, setJobTitleEnable] = useState(false);
     const [livelloScolasticoOptions, setLivelloScolasticoOptions] = useState([]);
     const [funzioniAziendaliOptions, setFunzioniAziendaliOptions] = useState([]);
